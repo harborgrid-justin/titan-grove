@@ -15,8 +15,9 @@ process.env.ANALYTICS_ENABLED = 'false';
 process.env.JWT_SECRET = 'test-secret-key';
 
 // Mock console methods to reduce test noise
-global.console = {
-  ...console,
+const originalConsole = console;
+(global as any).console = {
+  ...originalConsole,
   log: jest.fn(),
   debug: jest.fn(),
   info: jest.fn(),
