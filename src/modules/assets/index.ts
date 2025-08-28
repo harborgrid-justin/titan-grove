@@ -467,8 +467,15 @@ export class AssetManager {
   /**
    * Install Base Management
    */
+  /**
+   * Generate a unique ID with a given prefix.
+   */
+  private generateId(prefix: string): string {
+    return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
   async createInstallBase(installBase: Omit<InstallBase, 'id' | 'createdAt' | 'updatedAt'>): Promise<InstallBase> {
-    const id = `install_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const id = this.generateId('install');
     const now = new Date();
 
     const newInstallBase: InstallBase = {
