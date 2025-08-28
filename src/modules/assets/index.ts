@@ -313,12 +313,17 @@ export interface MaintenanceMetrics {
 // ASSET MANAGER CLASS
 // ============================================================================
 
+// Utility function for generating unique asset IDs
+function generateAssetId(): string {
+  return `asset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
 export class AssetManager {
   /**
    * Asset Lifecycle Management
    */
   async createAsset(asset: Omit<Asset, 'id' | 'createdAt' | 'updatedAt' | 'childAssets'>): Promise<Asset> {
-    const id = `asset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const id = generateAssetId();
     const now = new Date();
     
     const newAsset: Asset = {
