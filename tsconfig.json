@@ -16,7 +16,7 @@
     "removeComments": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {

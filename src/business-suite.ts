@@ -9,6 +9,7 @@ import { crmManager, CRMManager } from './modules/crm';
 import { scmManager, SCMManager } from './modules/scm';
 import { projectManager, ProjectManager } from './modules/project';
 import { biManager, BIManager } from './modules/bi';
+import { assetManager, AssetManager } from './modules/assets';
 
 export interface TitanGroveConfig {
   database?: {
@@ -40,6 +41,7 @@ export interface TitanGroveConfig {
     scm?: boolean;
     project?: boolean;
     bi?: boolean;
+    assets?: boolean;
   };
   multiTenant?: {
     enabled: boolean;
@@ -58,6 +60,7 @@ export interface BusinessModules {
   scm: SCMManager;
   project: ProjectManager;
   bi: BIManager;
+  assets: AssetManager;
 }
 
 /**
@@ -76,6 +79,7 @@ export class TitanGrove {
   public readonly scm: SCMManager;
   public readonly project: ProjectManager;
   public readonly bi: BIManager;
+  public readonly assets: AssetManager;
 
   constructor(config: TitanGroveConfig = {}) {
     this.config = {
@@ -86,7 +90,8 @@ export class TitanGrove {
         crm: true,
         scm: true,
         project: true,
-        bi: true
+        bi: true,
+        assets: true
       },
       multiTenant: { enabled: false },
       auditLogging: { enabled: true, level: 'basic' },
@@ -100,6 +105,7 @@ export class TitanGrove {
     this.scm = scmManager;
     this.project = projectManager;
     this.bi = biManager;
+    this.assets = assetManager;
   }
 
   /**
@@ -269,6 +275,50 @@ export class TitanGrove {
         // Record financial impact, update resource allocations, etc.
         return { projectId: data.projectId, laborCost };
 
+      case 'CREATE_ASSET':
+        // Example: Create asset that involves Asset and Financial modules
+        const asset = await this.assets.createAsset(data.asset);
+        // Record initial depreciation schedule, update fixed assets
+        const depreciation = await this.assets.calculateAssetDepreciation(asset.id, new Date());
+        return { asset, depreciation };
+
+      case 'TRANSFER_ASSET':
+        // Example: Transfer asset between locations with audit trail
+        await this.assets.transferAsset(
+          data.assetId,
+          data.fromLocation,
+          data.toLocation,
+          data.transferredBy,
+          data.reason
+        );
+        const updatedLocation = await this.assets.trackAssetLocation(data.assetId);
+        return { assetId: data.assetId, newLocation: updatedLocation };
+
+      case 'CREATE_WORK_ORDER':
+        // Example: Create work order for asset maintenance
+        const workOrder = await this.assets.createWorkOrder(data.workOrder);
+        // Reserve inventory items, schedule resources
+        if (data.workOrder.materials && data.workOrder.materials.length > 0) {
+          for (const material of data.workOrder.materials) {
+            await this.scm.reserveInventory(
+              material.materialId,
+              data.locationId,
+              material.quantityRequired,
+              workOrder.id
+            );
+          }
+        }
+        return { workOrder };
+
+      case 'INSTALL_BASE_SERVICE':
+        // Example: Record service for install base
+        const serviceRecord = await this.assets.recordServiceActivity(
+          data.installBaseId,
+          data.serviceRecord
+        );
+        // Update customer service history, potentially create invoice
+        return { serviceRecord };
+
       default:
         throw new Error(`Unknown business transaction type: ${type}`);
     }
@@ -431,3 +481,4 @@ export * from './modules/crm';
 export * from './modules/scm';
 export * from './modules/project';
 export * from './modules/bi';
+export * from './modules/assets';
