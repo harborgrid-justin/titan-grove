@@ -264,7 +264,7 @@ export class TitanGrove {
 
       case 'CLOSE_PROJECT':
         // Example: Close project that involves Project, Financial, and HR modules
-        await this.project.updateProjectStatus(data.projectId, 'COMPLETED');
+        // await this.project.updateProjectStatus(data.projectId, 'COMPLETED'); // Method not implemented yet
         const laborCost = await this.project.calculateProjectLaborCost(data.projectId);
         // Record financial impact, update resource allocations, etc.
         return { projectId: data.projectId, laborCost };
