@@ -1,14 +1,33 @@
 import 'dotenv/config';
-import { TitanGrove } from './core/TitanGrove';
+import { TitanGrove } from './business-suite';
 import { loadConfig } from './utils/config';
 
 async function main() {
   try {
-    // Load configuration
-    const config = loadConfig();
+    // Load configuration - adapted for Business Suite
+    const legacyConfig = loadConfig();
+    
+    // Transform legacy config to business suite config
+    const businessConfig = {
+      database: {
+        ...legacyConfig.database,
+        type: legacyConfig.database?.type === 'redis' ? 'sqlite' : (legacyConfig.database?.type || 'sqlite')
+      },
+      server: legacyConfig.server,
+      modules: {
+        financial: true,
+        hr: true,
+        crm: true,
+        scm: true,
+        project: true,
+        bi: true
+      },
+      multiTenant: { enabled: false },
+      auditLogging: { enabled: true, level: 'basic' as const }
+    };
 
-    // Create TitanGrove instance
-    const titan = new TitanGrove(config);
+    // Create Titan Grove Business Suite instance
+    const titan = new TitanGrove(businessConfig);
 
     // Set up graceful shutdown
     const shutdown = async (signal: string) => {
@@ -37,23 +56,16 @@ async function main() {
       process.exit(1);
     });
 
-    // Start the platform
+    // Start the Business Suite
     await titan.start();
 
-    console.log(`🚀 Titan Grove v${titan.version} started successfully!`);
-    console.log(`📊 Database: ${config.database.type}`);
-    console.log(`🌐 Server: http://${config.server.host}:${config.server.port}`);
-    if (config.cache) {
-      console.log(`💾 Cache: ${config.cache.type}`);
-    }
-    if (config.analytics?.enabled) {
-      console.log(`📈 Analytics: enabled`);
-    }
-    if (config.cluster?.enabled) {
-      console.log(`⚡ Cluster: ${config.cluster.workers || 'auto'} workers`);
-    }
+    console.log(`🏢 Titan Grove Enterprise Business Suite v1.0.0 started successfully!`);
+    console.log(`📊 Database: ${businessConfig.database?.type || 'sqlite'}`);
+    console.log(`🌐 Server: http://${businessConfig.server?.host || 'localhost'}:${businessConfig.server?.port || 3000}`);
+    console.log(`📦 Business Modules: Financial, HR, CRM, SCM, Project, BI`);
+    console.log(`🎯 Oracle EBS 12 Competitor - Enterprise Business Suite Ready!`);
   } catch (error) {
-    console.error('Failed to start Titan Grove:', error);
+    console.error('Failed to start Titan Grove Business Suite:', error);
     process.exit(1);
   }
 }
@@ -63,5 +75,7 @@ if (require.main === module) {
   main();
 }
 
-export { TitanGrove } from './core/TitanGrove';
+// Export the Business Suite and all modules
+export { TitanGrove } from './business-suite';
+export * from './business-suite';
 export * from './types';

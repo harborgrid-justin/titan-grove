@@ -1,7 +1,7 @@
 {
   "name": "titan-grove",
   "version": "1.0.0",
-  "description": "Enterprise-grade Node.js database and application platform - Oracle competitor",
+  "description": "Enterprise Business Suite - Modern Oracle EBS 12 competitor with integrated business applications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -27,18 +27,21 @@
     "security:audit": "npm audit && npx audit-ci --config audit-ci.json"
   },
   "keywords": [
-    "database",
-    "oracle",
-    "enterprise",
-    "sql",
-    "nosql",
-    "orm",
-    "query-builder",
-    "application-server",
-    "microservices",
-    "analytics",
-    "caching",
-    "clustering"
+    "erp",
+    "enterprise-business-suite",
+    "oracle-ebs-12",
+    "financial-management",
+    "human-resources",
+    "supply-chain",
+    "customer-relationship-management",
+    "project-management",
+    "business-intelligence",
+    "accounting",
+    "payroll",
+    "inventory",
+    "crm",
+    "business-applications",
+    "enterprise-software"
   ],
   "author": "Titan Grove Team",
   "license": "MIT",
