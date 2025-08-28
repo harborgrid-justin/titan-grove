@@ -3,7 +3,7 @@
  * Handles activity-based costing, cost tracking, and expenditure analysis
  */
 
-import type { ProjectBudget } from '../types';
+import type { ProjectBudget } from '../../types';
 
 export class ProjectCostingService {
   
@@ -258,7 +258,7 @@ export class ProjectCostingService {
       projectId,
       breakdown: costData.costCategories,
       totalCosts: costData.summary.totalActual,
-      largestCategory: costData.costCategories.reduce((max, cat) => 
+      largestCategory: costData.costCategories.reduce((max: any, cat: any) => 
         cat.actual > max.actual ? cat : max, costData.costCategories[0]),
       generatedAt: new Date()
     };

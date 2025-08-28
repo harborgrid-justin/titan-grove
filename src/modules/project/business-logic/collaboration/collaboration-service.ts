@@ -3,7 +3,7 @@
  * Handles document management, deliverables, and centralized repository
  */
 
-import type { ProjectDocument, ProjectDeliverable } from '../types';
+import type { ProjectDocument, ProjectDeliverable } from '../../types';
 
 export class ProjectCollaborationService {
   

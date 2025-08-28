@@ -3,7 +3,7 @@
  * Handles portfolio evaluation, prioritization, and analysis
  */
 
-import type { ProjectFinancialAnalysis } from '../types';
+import type { ProjectFinancialAnalysis } from '../../types';
 
 export class ProjectPortfolioService {
   

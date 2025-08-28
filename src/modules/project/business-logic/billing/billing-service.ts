@@ -8,7 +8,7 @@ import type {
   ProjectInvoiceItem, 
   ProjectContract, 
   ProjectBudget 
-} from '../types';
+} from '../../types';
 
 export class ProjectBillingService {
   

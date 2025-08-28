@@ -3,7 +3,7 @@
  * Handles resource optimization, capacity planning, and performance management
  */
 
-import type { ResourceCapacity, ResourceSkill, ResourceAllocation } from '../types';
+import type { ResourceCapacity, ResourceSkill, ResourceAllocation } from '../../types';
 
 export class ProjectResourcesService {
   

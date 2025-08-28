@@ -3,7 +3,7 @@
  * Handles work planning, resource assignment, forecasting, and stakeholder communication
  */
 
-import type { ResourceAllocation } from '../types';
+import type { ResourceAllocation } from '../../types';
 
 export class ProjectPlanningService {
   
