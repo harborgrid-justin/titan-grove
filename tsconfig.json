@@ -17,6 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "types": ["node", "jest"],
+    "skipLibCheck": true,
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {
