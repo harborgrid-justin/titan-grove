@@ -7,12 +7,15 @@ import { CacheManager } from '../cache/CacheManager';
 import { AnalyticsManager } from '../analytics/AnalyticsManager';
 import { SecurityManager } from '../security/SecurityManager';
 import { ClusterManager } from '../server/ClusterManager';
+import { ServiceRegistry } from './error-handling/ServiceRegistry';
+import { FederalComplianceService } from '../modules/financial/business-logic/federal-compliance/federal-compliance-service';
 import { createLogger } from '../utils/logger';
 import { validateConfig } from '../utils/config';
 
 export class TitanGrove extends EventEmitter {
   private config: TitanConfig;
   private logger: Logger;
+  private serviceRegistry: ServiceRegistry;
   private databaseManager: DatabaseManager;
   private serverManager: ServerManager;
   private cacheManager?: CacheManager;
@@ -26,6 +29,9 @@ export class TitanGrove extends EventEmitter {
     super();
     this.config = validateConfig(config);
     this.logger = createLogger(this.config.logging);
+
+    // Initialize service registry
+    this.serviceRegistry = new ServiceRegistry(this.logger);
 
     // Initialize core managers
     this.databaseManager = new DatabaseManager(this.config.database, this.logger);
@@ -46,6 +52,7 @@ export class TitanGrove extends EventEmitter {
     }
 
     this.setupEventHandlers();
+    this.registerBusinessServices();
   }
 
   private setupEventHandlers(): void {
@@ -106,6 +113,56 @@ export class TitanGrove extends EventEmitter {
         this.emit('analytics:error', error);
       });
     }
+
+    // Service registry events
+    this.serviceRegistry.on('service:registered', (serviceName: string) => {
+      this.logger.info(`Business service registered: ${serviceName}`);
+      this.emit('service:registered', serviceName);
+    });
+
+    this.serviceRegistry.on('service:initialization_failed', (serviceName: string, error: Error) => {
+      this.logger.error(`Service initialization failed: ${serviceName}`, error);
+      this.emit('service:initialization_failed', serviceName, error);
+    });
+  }
+
+  private registerBusinessServices(): void {
+    this.logger.info('Registering business services with error boundaries...');
+    
+    // Register Federal Compliance Service with error boundary configuration
+    this.serviceRegistry.register(
+      () => new FederalComplianceService(this.serviceRegistry),
+      {
+        metadata: {
+          name: 'FederalComplianceService',
+          version: '1.0.0',
+          description: 'FAR/DFARS compliance validation with circuit breaker protection',
+          dependencies: [],
+          tags: ['compliance', 'federal', 'regulations']
+        },
+        errorBoundaryConfig: {
+          serviceName: 'FederalComplianceService',
+          circuitBreakerConfig: {
+            failureThreshold: 5,
+            recoveryTimeout: 30000,
+            monitoringPeriod: 60000
+          },
+          retryConfig: {
+            maxAttempts: 3,
+            initialDelay: 1000,
+            maxDelay: 10000,
+            backoffMultiplier: 2
+          },
+          fallbackConfig: {
+            enabled: true
+          }
+        },
+        singleton: true,
+        lazy: false
+      }
+    );
+
+    this.logger.info('Business services registration completed');
   }
 
   async initialize(): Promise<void> {
@@ -140,6 +197,9 @@ export class TitanGrove extends EventEmitter {
         analytics: this.analyticsManager,
         security: this.securityManager,
       });
+
+      // Initialize business services with error boundaries
+      await this.serviceRegistry.initializeAll();
 
       this.initialized = true;
       this.logger.info('TitanGrove initialized successfully');
@@ -213,6 +273,9 @@ export class TitanGrove extends EventEmitter {
 
       // Stop database
       await this.databaseManager.stop();
+
+      // Stop business services
+      await this.serviceRegistry.destroyAll();
 
       this.started = false;
       this.logger.info('TitanGrove stopped successfully');
@@ -288,6 +351,28 @@ export class TitanGrove extends EventEmitter {
       }
     }
 
+    // Business services health
+    try {
+      const serviceHealths = await this.serviceRegistry.healthCheck();
+      checks.push(...serviceHealths.map(sh => ({
+        service: sh.serviceName,
+        status: sh.status === 'healthy' ? 'healthy' as const : 'unhealthy' as const,
+        timestamp: sh.lastCheck,
+        details: {
+          ...sh.details,
+          errorBoundaryMetrics: sh.errorBoundaryMetrics,
+          circuitBreakerMetrics: sh.circuitBreakerMetrics
+        }
+      })));
+    } catch (error) {
+      checks.push({
+        service: 'business_services',
+        status: 'unhealthy',
+        timestamp: new Date(),
+        details: { error: (error as Error).message }
+      });
+    }
+
     return checks;
   }
 
@@ -310,6 +395,10 @@ export class TitanGrove extends EventEmitter {
 
   get security(): SecurityManager {
     return this.securityManager;
+  }
+
+  get services(): ServiceRegistry {
+    return this.serviceRegistry;
   }
 
   // Status getters

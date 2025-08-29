@@ -251,7 +251,6 @@ interface DataQualityMetric {
   qualityScore: number;
   completeness: number;
   accuracy: number;
-  }
 }
 
 export const procurementPlanningService = new ProcurementPlanningService();
