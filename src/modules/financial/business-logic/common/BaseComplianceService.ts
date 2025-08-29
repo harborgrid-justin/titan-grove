@@ -52,7 +52,7 @@ export abstract class BaseComplianceService extends BaseService {
           checks.push(check);
         }
         return {
-          success: true,
+          success: true as const,
           data: checks,
           timestamp: new Date(),
           correlationId: this.correlationId
@@ -81,7 +81,7 @@ export abstract class BaseComplianceService extends BaseService {
           checks.push(check);
         }
         return {
-          success: true,
+          success: true as const,
           data: checks,
           timestamp: new Date(),
           correlationId: this.correlationId
@@ -314,7 +314,7 @@ export abstract class BaseComplianceService extends BaseService {
       try {
         const rules = await this.loadComplianceRules(entityType, regulationType);
         return {
-          success: true,
+          success: true as const,
           data: rules,
           timestamp: new Date(),
           correlationId: this.correlationId
@@ -338,7 +338,7 @@ export abstract class BaseComplianceService extends BaseService {
       async () => {
         const rules = await this.loadComplianceRules(entityType, regulationType);
         return {
-          success: true,
+          success: true as const,
           data: rules,
           timestamp: new Date(),
           correlationId: this.correlationId
