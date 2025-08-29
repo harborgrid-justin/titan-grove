@@ -5,6 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 import { ServerConfig, HealthCheck, APIResponse } from '../types';
 import { DatabaseManager } from '../database/DatabaseManager';
 import { CacheManager } from '../cache/CacheManager';
@@ -78,6 +79,14 @@ export class ServerManager extends EventEmitter {
   }
 
   private setupRoutes(): void {
+    // Serve static files for UI
+    this.app.use('/ui', express.static('src/ui/static'));
+
+    // Serve main UI application
+    this.app.get('/', (req: Request, res: Response) => {
+      res.sendFile(path.resolve('src/ui/static/index.html'));
+    });
+
     // Health check endpoint
     this.app.get('/health', async (req: Request, res: Response) => {
       const startTime = Date.now();
@@ -120,6 +129,9 @@ export class ServerManager extends EventEmitter {
       };
       res.json(response);
     });
+
+    // UI System API endpoints
+    this.app.use('/api/ui', this.createUIRoutes());
 
     // Database API endpoints
     this.app.use('/api/database', this.createDatabaseRoutes());
@@ -266,6 +278,150 @@ export class ServerManager extends EventEmitter {
       } catch (error) {
         next(error);
       }
+    });
+
+    return router;
+  }
+
+  private createUIRoutes(): express.Router {
+    const router = express.Router();
+
+    // Get available components
+    router.get('/components', async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        // TODO: Integrate with actual UIManager
+        const components = [
+          {
+            id: 'line-chart',
+            type: 'chart',
+            name: 'Line Chart',
+            version: '1.0.0',
+            config: {
+              behavior: { interactive: true, realtime: true },
+              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
+            }
+          },
+          {
+            id: 'data-table',
+            type: 'table',
+            name: 'Data Table', 
+            version: '1.0.0',
+            config: {
+              behavior: { interactive: true, cacheable: true },
+              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
+            }
+          },
+          {
+            id: 'kpi-card',
+            type: 'metric',
+            name: 'KPI Card',
+            version: '1.0.0',
+            config: {
+              behavior: { realtime: true },
+              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
+            }
+          }
+        ];
+
+        const response: APIResponse = {
+          success: true,
+          data: components,
+        };
+
+        res.json(response);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    // Get available themes
+    router.get('/themes', async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const themes = [
+          {
+            id: 'modern',
+            name: 'Modern',
+            description: 'Clean, modern interface',
+            colors: {
+              primary: '#2563eb',
+              secondary: '#64748b',
+              accent: '#f59e0b'
+            }
+          }
+        ];
+
+        const response: APIResponse = {
+          success: true,
+          data: themes,
+        };
+
+        res.json(response);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    // Get dashboard templates
+    router.get('/dashboard/templates', async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const templates = [
+          {
+            id: 'template-executive',
+            name: 'Executive Dashboard',
+            description: 'High-level KPIs and metrics for executives',
+            preview: '/ui/previews/executive-dashboard.png'
+          }
+        ];
+
+        const response: APIResponse = {
+          success: true,
+          data: templates,
+        };
+
+        res.json(response);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    // Mock data endpoints for demo
+    router.get('/data/revenue', async (req: Request, res: Response) => {
+      const response: APIResponse = {
+        success: true,
+        data: {
+          current: 2450000,
+          previous: 2180000,
+          trend: 'up',
+          trendValue: 12.5
+        }
+      };
+      res.json(response);
+    });
+
+    router.get('/data/transactions', async (req: Request, res: Response) => {
+      const response: APIResponse = {
+        success: true,
+        data: {
+          rows: [
+            {
+              id: 'TXN-2024-001',
+              customer: 'Acme Corporation',
+              amount: 45250.00,
+              date: '2024-01-15',
+              status: 'Completed'
+            },
+            {
+              id: 'TXN-2024-002', 
+              customer: 'TechStart Inc.',
+              amount: 12800.00,
+              date: '2024-01-14',
+              status: 'Pending'
+            }
+          ],
+          totalCount: 25
+        }
+      };
+      res.json(response);
     });
 
     return router;

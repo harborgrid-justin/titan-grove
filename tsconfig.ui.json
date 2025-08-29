@@ -1,0 +1,62 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
+    "types": ["node", "jest"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@core/*": ["core/*"],
+      "@database/*": ["database/*"],
+      "@server/*": ["server/*"],
+      "@cache/*": ["cache/*"],
+      "@analytics/*": ["analytics/*"],
+      "@security/*": ["security/*"],
+      "@utils/*": ["utils/*"],
+      "@types/*": ["types/*"],
+      "@ui/*": ["ui/*"]
+    }
+  },
+  "include": [
+    "src/ui/**/*",
+    "src/server/**/*",
+    "src/core/**/*",
+    "src/types/**/*",
+    "src/utils/**/*",
+    "src/security/**/*",
+    "src/cache/**/*",
+    "src/database/**/*",
+    "src/analytics/**/*",
+    "src/index.ts",
+    "src/business-suite.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "src/modules/financial/business-logic/oracle-clm-index.ts",
+    "src/modules/financial/business-logic/common/BaseComplianceService.ts"
+  ],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
+}
