@@ -10,6 +10,18 @@ import { scmManager, SCMManager } from './modules/scm';
 import { projectManager, ProjectManager } from './modules/project';
 import { biManager, BIManager } from './modules/bi';
 import { assetManager, AssetManager } from './modules/assets';
+import { manufacturingManager, ManufacturingManager } from './modules/manufacturing';
+import { procurementManager, ProcurementManager } from './modules/procurement';
+import { orderManager, OrderManager } from './modules/orders';
+import { inventoryManager, InventoryManager } from './modules/inventory';
+import { qualityManager, QualityManager } from './modules/quality';
+import { serviceManager, ServiceManager } from './modules/service';
+import { maintenanceManager, MaintenanceManager } from './modules/maintenance';
+import { riskManager, RiskManager } from './modules/risk';
+import { complianceManager, ComplianceManager } from './modules/compliance';
+import { documentManager, DocumentManager } from './modules/document';
+import { workflowManager, WorkflowManager } from './modules/workflow';
+import { integrationManager, IntegrationManager } from './modules/integration';
 
 export interface TitanGroveConfig {
   database?: {
@@ -42,6 +54,18 @@ export interface TitanGroveConfig {
     project?: boolean;
     bi?: boolean;
     assets?: boolean;
+    manufacturing?: boolean;
+    procurement?: boolean;
+    orders?: boolean;
+    inventory?: boolean;
+    quality?: boolean;
+    service?: boolean;
+    maintenance?: boolean;
+    risk?: boolean;
+    compliance?: boolean;
+    document?: boolean;
+    workflow?: boolean;
+    integration?: boolean;
   };
   multiTenant?: {
     enabled: boolean;
@@ -61,6 +85,18 @@ export interface BusinessModules {
   project: ProjectManager;
   bi: BIManager;
   assets: AssetManager;
+  manufacturing: ManufacturingManager;
+  procurement: ProcurementManager;
+  orders: OrderManager;
+  inventory: InventoryManager;
+  quality: QualityManager;
+  service: ServiceManager;
+  maintenance: MaintenanceManager;
+  risk: RiskManager;
+  compliance: ComplianceManager;
+  document: DocumentManager;
+  workflow: WorkflowManager;
+  integration: IntegrationManager;
 }
 
 /**
@@ -80,6 +116,18 @@ export class TitanGrove {
   public readonly project: ProjectManager;
   public readonly bi: BIManager;
   public readonly assets: AssetManager;
+  public readonly manufacturing: ManufacturingManager;
+  public readonly procurement: ProcurementManager;
+  public readonly orders: OrderManager;
+  public readonly inventory: InventoryManager;
+  public readonly quality: QualityManager;
+  public readonly service: ServiceManager;
+  public readonly maintenance: MaintenanceManager;
+  public readonly risk: RiskManager;
+  public readonly compliance: ComplianceManager;
+  public readonly document: DocumentManager;
+  public readonly workflow: WorkflowManager;
+  public readonly integration: IntegrationManager;
 
   constructor(config: TitanGroveConfig = {}) {
     this.config = {
@@ -91,7 +139,19 @@ export class TitanGrove {
         scm: true,
         project: true,
         bi: true,
-        assets: true
+        assets: true,
+        manufacturing: true,
+        procurement: true,
+        orders: true,
+        inventory: true,
+        quality: true,
+        service: true,
+        maintenance: true,
+        risk: true,
+        compliance: true,
+        document: true,
+        workflow: true,
+        integration: true
       },
       multiTenant: { enabled: false },
       auditLogging: { enabled: true, level: 'basic' },
@@ -106,6 +166,18 @@ export class TitanGrove {
     this.project = projectManager;
     this.bi = biManager;
     this.assets = assetManager;
+    this.manufacturing = manufacturingManager;
+    this.procurement = procurementManager;
+    this.orders = orderManager;
+    this.inventory = inventoryManager;
+    this.quality = qualityManager;
+    this.service = serviceManager;
+    this.maintenance = maintenanceManager;
+    this.risk = riskManager;
+    this.compliance = complianceManager;
+    this.document = documentManager;
+    this.workflow = workflowManager;
+    this.integration = integrationManager;
   }
 
   /**
@@ -475,10 +547,22 @@ export class TitanGrove {
 
 // Export the main class and business modules
 export default TitanGrove;
-export * from './modules/financial';
-export * from './modules/hr';
-export * from './modules/crm';
-export * from './modules/scm';
-export * from './modules/project';
-export * from './modules/bi';
-export * from './modules/assets';
+export { financialManager, FinancialManager } from './modules/financial';
+export { hrManager, HRManager } from './modules/hr';
+export { crmManager, CRMManager } from './modules/crm';
+export { scmManager, SCMManager } from './modules/scm';
+export { projectManager, ProjectManager } from './modules/project';
+export { biManager, BIManager } from './modules/bi';
+export { assetManager, AssetManager } from './modules/assets';
+export { manufacturingManager, ManufacturingManager } from './modules/manufacturing';
+export { procurementManager, ProcurementManager } from './modules/procurement';
+export { orderManager, OrderManager } from './modules/orders';
+export { inventoryManager, InventoryManager } from './modules/inventory';
+export { qualityManager, QualityManager } from './modules/quality';
+export { serviceManager, ServiceManager } from './modules/service';
+export { maintenanceManager, MaintenanceManager } from './modules/maintenance';
+export { riskManager, RiskManager } from './modules/risk';
+export { complianceManager, ComplianceManager } from './modules/compliance';
+export { documentManager, DocumentManager } from './modules/document';
+export { workflowManager, WorkflowManager } from './modules/workflow';
+export { integrationManager, IntegrationManager } from './modules/integration';
