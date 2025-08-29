@@ -16,6 +16,8 @@
     "removeComments": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "types": ["node", "jest"],
     "skipLibCheck": true,
     "resolveJsonModule": true,
