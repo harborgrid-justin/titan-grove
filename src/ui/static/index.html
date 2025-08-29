@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan Grove - Next-Generation ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+          --primary: #2563eb;
+          --secondary: #64748b;
+          --accent: #f59e0b;
+          --background: #ffffff;
+          --surface: #f8fafc;
+          --text-primary: #0f172a;
+          --text-secondary: #475569;
+          --text-disabled: #94a3b8;
+          --success: #10b981;
+          --warning: #f59e0b;
+          --error: #ef4444;
+          --info: #3b82f6;
+          --font-primary: 'Inter', sans-serif;
+          --font-secondary: 'Inter', sans-serif;
+          --font-mono: 'JetBrains Mono', monospace;
+          --text-xs: 0.75rem;
+          --text-sm: 0.875rem;
+          --text-md: 1rem;
+          --text-lg: 1.125rem;
+          --text-xl: 1.25rem;
+          --text-xxl: 1.5rem;
+          --spacing-unit: 4px;
+          --spacing-0: 0px;
+          --spacing-1: 4px;
+          --spacing-2: 8px;
+          --spacing-3: 12px;
+          --spacing-4: 16px;
+          --spacing-5: 20px;
+          --spacing-6: 24px;
+          --spacing-8: 32px;
+          --spacing-10: 40px;
+          --spacing-12: 48px;
+          --spacing-14: 56px;
+          --spacing-16: 64px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        .titan-app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .titan-header {
+            background: var(--surface);
+            border-bottom: 1px solid #e2e8f0;
+            padding: var(--spacing-4) var(--spacing-6);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .titan-header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .titan-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .titan-nav {
+            display: flex;
+            gap: var(--spacing-6);
+        }
+
+        .titan-nav-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--spacing-2) var(--spacing-3);
+            border-radius: var(--spacing-1);
+            transition: all 0.2s;
+        }
+
+        .titan-nav-item:hover,
+        .titan-nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .titan-user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+        }
+
+        .titan-main {
+            flex: 1;
+            display: flex;
+        }
+
+        .titan-sidebar {
+            width: 280px;
+            background: var(--surface);
+            border-right: 1px solid #e2e8f0;
+            padding: var(--spacing-6);
+            overflow-y: auto;
+        }
+
+        .titan-content {
+            flex: 1;
+            padding: var(--spacing-6);
+            overflow-y: auto;
+        }
+
+        .titan-dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .titan-dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .titan-dashboard-title {
+            font-size: var(--text-xxl);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .titan-dashboard-actions {
+            display: flex;
+            gap: var(--spacing-3);
+        }
+
+        .titan-widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-6);
+        }
+
+        .titan-widget {
+            min-height: 200px;
+        }
+
+        .titan-section {
+            margin-bottom: var(--spacing-8);
+        }
+
+        .titan-section-title {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 var(--spacing-4) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .titan-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: var(--spacing-1);
+            font-family: var(--font-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .titan-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+        }
+
+        .titan-button-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid #d1d5db;
+        }
+
+        .titan-button-secondary:hover {
+            background: var(--surface);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .titan-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: var(--spacing-12) var(--spacing-6);
+            text-align: center;
+        }
+
+        .titan-hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 0 var(--spacing-4) 0;
+        }
+
+        .titan-hero-subtitle {
+            font-size: var(--text-xl);
+            opacity: 0.9;
+            margin: 0 0 var(--spacing-8) 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .titan-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-4);
+            padding: var(--spacing-8) var(--spacing-6);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .titan-feature-card {
+            background: var(--surface);
+            padding: var(--spacing-6);
+            border-radius: var(--spacing-3);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .titan-feature-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .titan-feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: var(--spacing-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-3);
+            color: white;
+            font-size: var(--text-xl);
+        }
+
+        .titan-feature-title {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            margin: 0 0 var(--spacing-2) 0;
+        }
+
+        .titan-feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .titan-comparison {
+            padding: var(--spacing-8) var(--spacing-6);
+            background: var(--surface);
+        }
+
+        .titan-comparison-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-8);
+        }
+
+        .titan-comparison-table {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--spacing-2);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .titan-comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .titan-comparison-table th,
+        .titan-comparison-table td {
+            padding: var(--spacing-4);
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .titan-comparison-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .titan-comparison-table tr:hover {
+            background: var(--surface);
+        }
+
+        .titan-status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            padding: var(--spacing-1) var(--spacing-2);
+            border-radius: var(--spacing-1);
+            font-size: var(--text-sm);
+            font-weight: 500;
+        }
+
+        .titan-status-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .titan-status-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .titan-status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 768px) {
+            .titan-sidebar {
+                display: none;
+            }
+
+            .titan-widget-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .titan-hero-title {
+                font-size: 2rem;
+            }
+
+            .titan-nav {
+                display: none;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="titan-app">
+        <header class="titan-header">
+            <div class="titan-header-content">
+                <div class="titan-logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                        <rect x="4" y="4" width="24" height="24" rx="6" fill="currentColor" opacity="0.1"/>
+                        <rect x="8" y="8" width="16" height="16" rx="4" fill="currentColor"/>
+                        <circle cx="16" cy="16" r="3" fill="white"/>
+                    </svg>
+                    Titan Grove
+                </div>
+                
+                <nav class="titan-nav">
+                    <a href="#dashboard" class="titan-nav-item active">Dashboard</a>
+                    <a href="#financial" class="titan-nav-item">Financial</a>
+                    <a href="#hr" class="titan-nav-item">HR</a>
+                    <a href="#crm" class="titan-nav-item">CRM</a>
+                    <a href="#scm" class="titan-nav-item">Supply Chain</a>
+                    <a href="#projects" class="titan-nav-item">Projects</a>
+                    <a href="#bi" class="titan-nav-item">Analytics</a>
+                </nav>
+                
+                <div class="titan-user-menu">
+                    <button class="titan-button titan-button-secondary">Settings</button>
+                    <button class="titan-button">Profile</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="titan-hero">
+            <h1 class="titan-hero-title">Next-Generation Enterprise Suite</h1>
+            <p class="titan-hero-subtitle">
+                Experience the power of modern ERP with real-time dashboards, intelligent automation, 
+                and seamless integrations that make Oracle EBS feel outdated.
+            </p>
+            <div>
+                <button class="titan-button" style="font-size: var(--text-lg); padding: var(--spacing-3) var(--spacing-6);">
+                    Explore Live Demo
+                </button>
+                <button class="titan-button titan-button-secondary" style="font-size: var(--text-lg); padding: var(--spacing-3) var(--spacing-6); margin-left: var(--spacing-3);">
+                    Compare with Oracle EBS
+                </button>
+            </div>
+        </div>
+
+        <div class="titan-feature-grid">
+            <div class="titan-feature-card fade-in">
+                <div class="titan-feature-icon">📊</div>
+                <h3 class="titan-feature-title">Real-time Analytics</h3>
+                <p class="titan-feature-description">
+                    Dynamic dashboards with live data updates, interactive charts, and AI-powered insights that adapt to your business needs.
+                </p>
+            </div>
+            
+            <div class="titan-feature-card fade-in" style="animation-delay: 0.1s;">
+                <div class="titan-feature-icon">⚡</div>
+                <h3 class="titan-feature-title">Lightning Performance</h3>
+                <p class="titan-feature-description">
+                    Modern architecture delivers 10x faster response times compared to Oracle EBS, with seamless mobile experience.
+                </p>
+            </div>
+            
+            <div class="titan-feature-card fade-in" style="animation-delay: 0.2s;">
+                <div class="titan-feature-icon">🎨</div>
+                <h3 class="titan-feature-title">Intuitive Interface</h3>
+                <p class="titan-feature-description">
+                    Clean, modern UI that users love. No more complex forms or outdated interfaces - just beautiful, functional design.
+                </p>
+            </div>
+            
+            <div class="titan-feature-card fade-in" style="animation-delay: 0.3s;">
+                <div class="titan-feature-icon">🔧</div>
+                <h3 class="titan-feature-title">Effortless Customization</h3>
+                <p class="titan-feature-description">
+                    Drag-and-drop dashboard builder, custom workflows, and personalized experiences without complex configuration.
+                </p>
+            </div>
+            
+            <div class="titan-feature-card fade-in" style="animation-delay: 0.4s;">
+                <div class="titan-feature-icon">💰</div>
+                <h3 class="titan-feature-title">Zero Licensing Costs</h3>
+                <p class="titan-feature-description">
+                    Open-source freedom means no per-user fees, no complex licensing models - just pure value for your business.
+                </p>
+            </div>
+            
+            <div class="titan-feature-card fade-in" style="animation-delay: 0.5s;">
+                <div class="titan-feature-icon">🚀</div>
+                <h3 class="titan-feature-title">Cloud-Native</h3>
+                <p class="titan-feature-description">
+                    Built for the cloud with Docker, Kubernetes, and modern DevOps practices. Scale effortlessly as you grow.
+                </p>
+            </div>
+        </div>
+
+        <div class="titan-comparison">
+            <h2 class="titan-comparison-title">Why Titan Grove Outperforms Oracle EBS</h2>
+            <div class="titan-comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Titan Grove</th>
+                            <th>Oracle EBS 12</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>User Interface</strong></td>
+                            <td><span class="titan-status-indicator titan-status-success">✓ Modern Web UI</span></td>
+                            <td><span class="titan-status-indicator titan-status-error">✗ Outdated Forms</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Real-time Updates</strong></td>
+                            <td><span class="titan-status-indicator titan-status-success">✓ Live Dashboards</span></td>
+                            <td><span class="titan-status-indicator titan-status-error">✗ Static Reports</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mobile Support</strong></td>
+                            <td><span class="titan-status-indicator titan-status-success">✓ Responsive Design</span></td>
+                            <td><span class="titan-status-indicator titan-status-warning">△ Limited Access</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deployment</strong></td>
+                            <td><span class="titan-status-indicator titan-status-success">✓ Docker/Kubernetes</span></td>
+                            <td><span class="titan-status-indicator titan-status-error">✗ Complex Setup</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Licensing</strong></td>
+                            <td><span class="titan-status-indicator titan-status-success">✓ Open Source (MIT)</span></td>
+                            <td><span class="titan-status-indicator titan-status-error">✗ Expensive Per-User</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Development Speed</strong></td>
+                            <td><span class="titan-status-indicator titan-status-success">✓ Rapid Changes</span></td>
+                            <td><span class="titan-status-indicator titan-status-error">✗ Slow, Complex</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <main class="titan-main" style="display: none;" id="dashboard-view">
+            <aside class="titan-sidebar slide-in-left">
+                <h3>Quick Actions</h3>
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-2); margin-bottom: var(--spacing-6);">
+                    <button class="titan-button">New Invoice</button>
+                    <button class="titan-button titan-button-secondary">Create Report</button>
+                    <button class="titan-button titan-button-secondary">Add Employee</button>
+                </div>
+
+                <h3>Recent Activities</h3>
+                <div style="font-size: var(--text-sm); color: var(--text-secondary);">
+                    <div style="padding: var(--spacing-2) 0; border-bottom: 1px solid #e2e8f0;">
+                        <strong>Invoice #12345</strong><br>
+                        Processed 2 hours ago
+                    </div>
+                    <div style="padding: var(--spacing-2) 0; border-bottom: 1px solid #e2e8f0;">
+                        <strong>New Employee</strong><br>
+                        Sarah Johnson added
+                    </div>
+                    <div style="padding: var(--spacing-2) 0;">
+                        <strong>Project Update</strong><br>
+                        Q4 Planning completed
+                    </div>
+                </div>
+            </aside>
+
+            <div class="titan-content">
+                <div class="titan-dashboard">
+                    <div class="titan-dashboard-header">
+                        <h1 class="titan-dashboard-title">Executive Dashboard</h1>
+                        <div class="titan-dashboard-actions">
+                            <button class="titan-button titan-button-secondary">Customize</button>
+                            <button class="titan-button">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="titan-section">
+                        <h2 class="titan-section-title">
+                            📈 Key Performance Indicators
+                        </h2>
+                        <div class="titan-widget-grid">
+                            <div class="titan-widget" id="revenue-kpi"></div>
+                            <div class="titan-widget" id="profit-kpi"></div>
+                            <div class="titan-widget" id="customers-kpi"></div>
+                            <div class="titan-widget" id="projects-kpi"></div>
+                        </div>
+                    </div>
+
+                    <div class="titan-section">
+                        <h2 class="titan-section-title">
+                            📊 Live Data Table
+                        </h2>
+                        <div id="data-table-widget" style="height: 400px;"></div>
+                    </div>
+
+                    <div class="titan-section">
+                        <h2 class="titan-section-title">
+                            📈 Revenue Trends
+                        </h2>
+                        <div id="chart-widget" style="height: 300px; background: var(--surface); border-radius: var(--spacing-2); display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+                            Interactive Chart Component (Chart.js would be loaded here in production)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Import the UI system (would be bundled in production)
+        // import { KPICard, DataTable, LineChart } from './ui/components';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize demo components
+            initializeDemoKPIs();
+            initializeDemoTable();
+            
+            // Add interactivity
+            setupNavigation();
+            setupAnimations();
+        });
+
+        function initializeDemoKPIs() {
+            // Revenue KPI
+            const revenueContainer = document.getElementById('revenue-kpi');
+            if (revenueContainer) {
+                createDemoKPI(revenueContainer, {
+                    title: 'Monthly Revenue',
+                    value: 2450000,
+                    format: 'currency',
+                    trend: 'up',
+                    trendValue: 12.5,
+                    target: 2500000,
+                    status: 'success'
+                });
+            }
+
+            // Profit KPI  
+            const profitContainer = document.getElementById('profit-kpi');
+            if (profitContainer) {
+                createDemoKPI(profitContainer, {
+                    title: 'Profit Margin',
+                    value: 18.7,
+                    format: 'percentage',
+                    trend: 'up',
+                    trendValue: 2.3,
+                    target: 20,
+                    status: 'warning'
+                });
+            }
+
+            // Customers KPI
+            const customersContainer = document.getElementById('customers-kpi');
+            if (customersContainer) {
+                createDemoKPI(customersContainer, {
+                    title: 'Active Customers',
+                    value: 1247,
+                    format: 'number',
+                    trend: 'up',
+                    trendValue: 8.2,
+                    target: 1500,
+                    status: 'info'
+                });
+            }
+
+            // Projects KPI
+            const projectsContainer = document.getElementById('projects-kpi');
+            if (projectsContainer) {
+                createDemoKPI(projectsContainer, {
+                    title: 'Active Projects',
+                    value: 34,
+                    format: 'number',
+                    trend: 'stable',
+                    trendValue: 0,
+                    target: 40,
+                    status: 'success'
+                });
+            }
+        }
+
+        function createDemoKPI(container, data) {
+            container.innerHTML = `
+                <div class="titan-kpi-card">
+                    <div class="titan-kpi-header">
+                        <h3 class="titan-kpi-title">${data.title}</h3>
+                        <div class="titan-kpi-status ${data.status}"></div>
+                    </div>
+                    
+                    <div class="titan-kpi-main">
+                        <div class="titan-kpi-value-container">
+                            <span class="titan-kpi-value">${formatValue(data.value, data.format)}</span>
+                            <span class="titan-kpi-unit">${data.unit || ''}</span>
+                        </div>
+                        
+                        <div class="titan-kpi-trend ${data.trend}">
+                            <span class="titan-kpi-trend-icon"></span>
+                            <span class="titan-kpi-trend-value">${data.trendValue > 0 ? '+' : ''}${data.trendValue.toFixed(1)}%</span>
+                            <span class="titan-kpi-trend-label">vs previous</span>
+                        </div>
+                    </div>
+                    
+                    <div class="titan-kpi-footer">
+                        <div class="titan-kpi-target">
+                            <span class="titan-kpi-target-label">Target</span>
+                            <span class="titan-kpi-target-value">${formatValue(data.target, data.format)}</span>
+                        </div>
+                        
+                        <div class="titan-kpi-progress">
+                            <div class="titan-kpi-progress-bar">
+                                <div class="titan-kpi-progress-fill" style="width: ${Math.min((data.value / data.target) * 100, 100)}%"></div>
+                            </div>
+                            <span class="titan-kpi-progress-text">${Math.round((data.value / data.target) * 100)}%</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function formatValue(value, format) {
+            switch (format) {
+                case 'currency':
+                    return new Intl.NumberFormat('en-US', { 
+                        style: 'currency', 
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }).format(value);
+                case 'percentage':
+                    return `${value}%`;
+                default:
+                    return new Intl.NumberFormat('en-US').format(value);
+            }
+        }
+
+        function initializeDemoTable() {
+            const tableContainer = document.getElementById('data-table-widget');
+            if (tableContainer) {
+                tableContainer.innerHTML = `
+                    <div class="titan-table-container">
+                        <div class="titan-table-header">
+                            <div class="titan-table-actions">
+                                <div class="titan-table-search">
+                                    <input type="text" placeholder="Search transactions..." class="titan-search-input">
+                                    <button class="titan-search-btn">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <path d="m21 21-4.35-4.35"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="titan-table-tools">
+                                    <button class="titan-btn titan-btn-secondary">Filter</button>
+                                    <button class="titan-btn titan-btn-secondary">Export</button>
+                                    <button class="titan-btn titan-btn-primary">Refresh</button>
+                                </div>
+                            </div>
+                            <div class="titan-table-info">
+                                <span class="titan-table-count">25 transactions</span>
+                            </div>
+                        </div>
+                        
+                        <div class="titan-table-wrapper">
+                            <table class="titan-table">
+                                <thead class="titan-table-head">
+                                    <tr>
+                                        <th><input type="checkbox"></th>
+                                        <th class="sortable">Transaction ID</th>
+                                        <th class="sortable">Customer</th>
+                                        <th class="sortable">Amount</th>
+                                        <th class="sortable">Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="titan-table-body">
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td><strong>TXN-2024-001</strong></td>
+                                        <td>Acme Corporation</td>
+                                        <td><strong>$45,250.00</strong></td>
+                                        <td>2024-01-15</td>
+                                        <td><span class="titan-status-indicator titan-status-success">Completed</span></td>
+                                        <td><button class="titan-btn titan-btn-sm">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td><strong>TXN-2024-002</strong></td>
+                                        <td>TechStart Inc.</td>
+                                        <td><strong>$12,800.00</strong></td>
+                                        <td>2024-01-14</td>
+                                        <td><span class="titan-status-indicator titan-status-warning">Pending</span></td>
+                                        <td><button class="titan-btn titan-btn-sm">View</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td><strong>TXN-2024-003</strong></td>
+                                        <td>Global Solutions</td>
+                                        <td><strong>$78,900.00</strong></td>
+                                        <td>2024-01-13</td>
+                                        <td><span class="titan-status-indicator titan-status-success">Completed</span></td>
+                                        <td><button class="titan-btn titan-btn-sm">View</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="titan-table-pagination">
+                            <div class="titan-pagination-info">
+                                Showing 1 to 3 of 25 entries
+                            </div>
+                            <div class="titan-pagination-controls">
+                                <button class="titan-btn titan-btn-sm">First</button>
+                                <button class="titan-btn titan-btn-sm">Previous</button>
+                                <span class="titan-page-numbers">
+                                    <span class="titan-page-number active">1</span>
+                                    <span class="titan-page-number">2</span>
+                                    <span class="titan-page-number">3</span>
+                                </span>
+                                <button class="titan-btn titan-btn-sm">Next</button>
+                                <button class="titan-btn titan-btn-sm">Last</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function setupNavigation() {
+            const navItems = document.querySelectorAll('.titan-nav-item');
+            const heroSection = document.querySelector('.titan-hero');
+            const featureGrid = document.querySelector('.titan-feature-grid');
+            const comparison = document.querySelector('.titan-comparison');
+            const dashboardView = document.getElementById('dashboard-view');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    if (this.getAttribute('href') === '#dashboard') {
+                        // Show dashboard view
+                        heroSection.style.display = 'block';
+                        featureGrid.style.display = 'grid';
+                        comparison.style.display = 'block';
+                        dashboardView.style.display = 'none';
+                    } else {
+                        // Show other module views (would be implemented)
+                        heroSection.style.display = 'none';
+                        featureGrid.style.display = 'none';
+                        comparison.style.display = 'none';
+                        dashboardView.style.display = 'flex';
+                    }
+                });
+            });
+
+            // Demo button to show dashboard
+            const demoButton = document.querySelector('.titan-hero .titan-button');
+            if (demoButton) {
+                demoButton.addEventListener('click', function() {
+                    heroSection.style.display = 'none';
+                    featureGrid.style.display = 'none';
+                    comparison.style.display = 'none';
+                    dashboardView.style.display = 'flex';
+                    
+                    // Update nav
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    document.querySelector('[href="#dashboard"]').classList.add('active');
+                });
+            }
+        }
+
+        function setupAnimations() {
+            // Add intersection observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in, .slide-in-left').forEach(el => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        }
+
+        // Add some interactivity to demonstrate real-time updates
+        setInterval(() => {
+            const kpiValues = document.querySelectorAll('.titan-kpi-value');
+            kpiValues.forEach(value => {
+                // Add subtle pulsing animation to show "live" data
+                value.style.animation = 'titan-pulse 2s ease-in-out';
+                setTimeout(() => {
+                    value.style.animation = '';
+                }, 2000);
+            });
+        }, 10000);
+    </script>
+</body>
+</html>
