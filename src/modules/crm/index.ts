@@ -1,109 +1,29 @@
 /**
  * Customer Relationship Management Module
- * Complete CRM functionality including lead management, sales pipeline, customer service
+ * Main orchestrator that delegates to specialized business logic services
  */
 
-export interface Customer {
-  id: string;
-  customerNumber: string;
-  name: string;
-  type: 'INDIVIDUAL' | 'COMPANY';
-  industry?: string;
-  email: string;
-  phone: string;
-  website?: string;
-  address: CRMAddress;
-  status: 'PROSPECT' | 'ACTIVE' | 'INACTIVE' | 'CHURNED';
-  assignedSalesRep?: string;
-  createdDate: Date;
-  lastContactDate?: Date;
-  totalRevenue: number;
-}
+// Export all types
+export * from './types';
 
-export interface CRMAddress {
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
+// Import business logic services
+import { crmLeadService } from './business-logic/lead-management/lead-management-service';
+import { crmCustomerService } from './business-logic/customer-management/customer-management-service';
 
-export interface Lead {
-  id: string;
-  firstName: string;
-  lastName: string;
-  company?: string;
-  email: string;
-  phone: string;
-  source: 'WEBSITE' | 'REFERRAL' | 'COLD_CALL' | 'MARKETING' | 'TRADE_SHOW' | 'OTHER';
-  status: 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'CONVERTED' | 'LOST';
-  score: number;
-  assignedTo?: string;
-  notes: string;
-  createdDate: Date;
-  lastActivityDate?: Date;
-}
-
-export interface Opportunity {
-  id: string;
-  name: string;
-  customerId: string;
-  amount: number;
-  probability: number;
-  stage: 'PROSPECTING' | 'QUALIFICATION' | 'PROPOSAL' | 'NEGOTIATION' | 'CLOSED_WON' | 'CLOSED_LOST';
-  expectedCloseDate: Date;
-  actualCloseDate?: Date;
-  ownerId: string;
-  description: string;
-  competitors: string[];
-  products: OpportunityProduct[];
-}
-
-export interface OpportunityProduct {
-  productId: string;
-  productName: string;
-  quantity: number;
-  unitPrice: number;
-  totalAmount: number;
-}
-
-export interface SupportCase {
-  id: string;
-  caseNumber: string;
-  customerId: string;
-  subject: string;
-  description: string;
-  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  status: 'OPEN' | 'IN_PROGRESS' | 'WAITING_CUSTOMER' | 'RESOLVED' | 'CLOSED';
-  assignedTo?: string;
-  createdDate: Date;
-  resolvedDate?: Date;
-  category: 'TECHNICAL' | 'BILLING' | 'GENERAL' | 'FEATURE_REQUEST';
-  resolution?: string;
-}
-
-export interface Activity {
-  id: string;
-  type: 'CALL' | 'EMAIL' | 'MEETING' | 'TASK' | 'NOTE';
-  subject: string;
-  description: string;
-  relatedTo: {
-    type: 'CUSTOMER' | 'LEAD' | 'OPPORTUNITY' | 'CASE';
-    id: string;
-  };
-  assignedTo: string;
-  dueDate?: Date;
-  completedDate?: Date;
-  status: 'PLANNED' | 'COMPLETED' | 'CANCELLED';
-}
+import type { 
+  Customer, 
+  Lead, 
+  Opportunity, 
+  SupportCase, 
+  Activity 
+} from './types';
 
 export class CRMManager {
-  /**
-   * Lead Management
-   */
+  
+  // Lead Management Methods - delegate to lead service
   async createLead(lead: Omit<Lead, 'id' | 'createdDate' | 'score'>): Promise<Lead> {
     const id = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const score = this.calculateLeadScore(lead);
+    const score = await this.calculateLeadScore(lead);
     
     const newLead: Lead = {
       ...lead,
@@ -116,7 +36,18 @@ export class CRMManager {
     return newLead;
   }
 
-  private calculateLeadScore(lead: Partial<Lead>): number {
+  async qualifyLead(leadId: string, qualificationCriteria: any): Promise<{ qualified: boolean, score: number, reasons: string[] }> {
+    return crmLeadService.qualifyLead(leadId, qualificationCriteria);
+  }
+
+  async calculateLeadScore(leadId: string): Promise<number>;
+  async calculateLeadScore(lead: Partial<Lead>): Promise<number>;
+  async calculateLeadScore(leadOrId: string | Partial<Lead>): Promise<number> {
+    if (typeof leadOrId === 'string') {
+      return crmLeadService.calculateLeadScore(leadOrId);
+    }
+    
+    const lead = leadOrId;
     let score = 0;
     
     // Score based on data completeness
@@ -135,35 +66,74 @@ export class CRMManager {
     return Math.min(score, 100);
   }
 
-  async convertLeadToCustomer(leadId: string): Promise<Customer> {
-        // Implementation would convert lead to customer
-        console.log(`Converting lead ${leadId} to customer`);
-        const customerId = `cust_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        const customerNumber = `CUST${Date.now().toString().slice(-6)}`;
-        
-        return {
-          id: customerId,
-          customerNumber,
-          name: '',
-          type: 'INDIVIDUAL',
-          email: '',
-          phone: '',
-          address: {
-            street: '',
-            city: '',
-            state: '',
-            zipCode: '',
-            country: ''
-          },
-          status: 'ACTIVE',
-          createdDate: new Date(),
-          totalRevenue: 0
-        };
+  async assignLeadToSalesRep(leadId: string, salesRepId: string, assignmentReason: string): Promise<void> {
+    return crmLeadService.assignLeadToSalesRep(leadId, salesRepId, assignmentReason);
   }
 
-  /**
-   * Opportunity Management
-   */
+  async convertLeadToCustomer(leadId: string): Promise<Customer> {
+    console.log(`Converting lead ${leadId} to customer`);
+    const customerId = `cust_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const customerNumber = `CUST${Date.now().toString().slice(-6)}`;
+    
+    return {
+      id: customerId,
+      customerNumber,
+      name: '',
+      type: 'INDIVIDUAL',
+      email: '',
+      phone: '',
+      address: {
+        street: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        country: ''
+      },
+      status: 'ACTIVE',
+      createdDate: new Date(),
+      totalRevenue: 0
+    };
+  }
+
+  async convertLeadToOpportunity(leadId: string, opportunityData: any): Promise<string> {
+    return crmLeadService.convertLeadToOpportunity(leadId, opportunityData);
+  }
+
+  // Customer Management Methods - delegate to customer service
+  async createCustomer(customer: Omit<Customer, 'id' | 'customerNumber' | 'createdDate' | 'totalRevenue'>): Promise<Customer> {
+    const id = `cust_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const customerNumber = `CUST${Date.now().toString().slice(-6)}`;
+    
+    return {
+      ...customer,
+      id,
+      customerNumber,
+      createdDate: new Date(),
+      totalRevenue: 0
+    };
+  }
+
+  async calculateCustomerHealthScore(customerId: string): Promise<any> {
+    return crmCustomerService.calculateCustomerHealthScore(customerId);
+  }
+
+  async calculateCustomerLifetimeValue(customerId: string): Promise<any> {
+    return crmCustomerService.calculateCustomerLifetimeValue(customerId);
+  }
+
+  async predictChurnRisk(customerId: string): Promise<any> {
+    return crmCustomerService.predictChurnRisk(customerId);
+  }
+
+  async identifyUpsellOpportunities(customerId: string): Promise<any> {
+    return crmCustomerService.identifyUpsellOpportunities(customerId);
+  }
+
+  async updateCustomerRevenue(customerId: string, additionalRevenue: number): Promise<void> {
+    console.log(`Adding ${additionalRevenue} to customer ${customerId} total revenue`);
+  }
+
+  // Opportunity Management Methods
   async createOpportunity(opportunity: Omit<Opportunity, 'id'>): Promise<Opportunity> {
     const id = `opp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return { ...opportunity, id };
@@ -178,29 +148,7 @@ export class CRMManager {
     return 0;
   }
 
-  /**
-   * Customer Management
-   */
-  async createCustomer(customer: Omit<Customer, 'id' | 'customerNumber' | 'createdDate' | 'totalRevenue'>): Promise<Customer> {
-    const id = `cust_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const customerNumber = `CUST${Date.now().toString().slice(-6)}`;
-    
-    return {
-      ...customer,
-      id,
-      customerNumber,
-      createdDate: new Date(),
-      totalRevenue: 0
-    };
-  }
-
-  async updateCustomerRevenue(customerId: string, additionalRevenue: number): Promise<void> {
-    console.log(`Adding ${additionalRevenue} to customer ${customerId} total revenue`);
-  }
-
-  /**
-   * Support Case Management
-   */
+  // Support Case Management Methods
   async createSupportCase(supportCase: Omit<SupportCase, 'id' | 'caseNumber' | 'createdDate'>): Promise<SupportCase> {
     const id = `case_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const caseNumber = `CASE${Date.now().toString().slice(-6)}`;
@@ -218,9 +166,7 @@ export class CRMManager {
     console.log(`Resolving case ${caseId} with resolution: ${resolution}`);
   }
 
-  /**
-   * Activity Management
-   */
+  // Activity Management Methods
   async createActivity(activity: Omit<Activity, 'id'>): Promise<Activity> {
     const id = `activity_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return { ...activity, id, status: 'PLANNED' };
@@ -230,9 +176,7 @@ export class CRMManager {
     console.log(`Completing activity ${activityId}`);
   }
 
-  /**
-   * CRM Analytics & Reporting
-   */
+  // CRM Analytics & Reporting Methods
   async getSalesPipeline(): Promise<any> {
     return {
       totalValue: 0,
@@ -273,6 +217,25 @@ export class CRMManager {
       salesCycle: 0
     };
   }
+
+  // Lead Analytics Methods
+  async getLeadSourcePerformance(): Promise<any> {
+    return crmLeadService.getLeadSourcePerformance();
+  }
+
+  async getLeadVelocityMetrics(): Promise<any> {
+    return crmLeadService.getLeadVelocityMetrics();
+  }
+
+  async generateLeadForecast(timeframeDays: number): Promise<any> {
+    return crmLeadService.generateLeadForecast(timeframeDays);
+  }
 }
 
 export const crmManager = new CRMManager();
+
+// Export business logic services for direct access if needed
+export {
+  crmLeadService,
+  crmCustomerService
+};

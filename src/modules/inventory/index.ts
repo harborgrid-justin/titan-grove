@@ -1,94 +1,25 @@
 /**
  * Inventory Management Module
- * Complete inventory control including stock tracking, warehouse management, and inventory optimization
+ * Main orchestrator that delegates to specialized business logic services
  */
 
-export interface InventoryItem {
-  id: string;
-  itemCode: string;
-  description: string;
-  category: string;
-  unitOfMeasure: string;
-  standardCost: number;
-  averageCost: number;
-  lastCost: number;
-  status: 'ACTIVE' | 'INACTIVE' | 'DISCONTINUED';
-  trackingMethod: 'STANDARD' | 'SERIALIZED' | 'LOT_BATCH';
-  reorderPoint: number;
-  maximumStock: number;
-  safetyStock: number;
-  leadTime: number; // days
-  abcClass: 'A' | 'B' | 'C';
-  createdDate: Date;
-}
+// Export all types
+export * from './types';
 
-export interface StockLevel {
-  itemId: string;
-  warehouseId: string;
-  onHandQuantity: number;
-  availableQuantity: number;
-  reservedQuantity: number;
-  allocatedQuantity: number;
-  inTransitQuantity: number;
-  backOrderQuantity: number;
-  lastCountDate?: Date;
-  lastMovementDate?: Date;
-}
+// Import business logic services
+import { inventoryReplenishmentService } from './business-logic/replenishment/replenishment-service';
 
-export interface InventoryTransaction {
-  id: string;
-  transactionNumber: string;
-  type: 'RECEIPT' | 'ISSUE' | 'TRANSFER' | 'ADJUSTMENT' | 'RESERVATION' | 'ALLOCATION';
-  itemId: string;
-  warehouseId: string;
-  quantity: number;
-  unitCost?: number;
-  referenceDocument?: string;
-  reasonCode?: string;
-  transactionDate: Date;
-  userId: string;
-  notes?: string;
-}
-
-export interface Warehouse {
-  id: string;
-  warehouseCode: string;
-  name: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-    postalCode: string;
-  };
-  type: 'DISTRIBUTION_CENTER' | 'MANUFACTURING' | 'RETAIL' | 'TRANSIT';
-  status: 'ACTIVE' | 'INACTIVE' | 'CLOSED';
-  locations: WarehouseLocation[];
-  capacity: number;
-  utilizationRate: number;
-}
-
-export interface WarehouseLocation {
-  locationCode: string;
-  description: string;
-  zone: string;
-  aisle?: string;
-  bay?: string;
-  level?: string;
-  locationType: 'RECEIVING' | 'STORAGE' | 'PICKING' | 'PACKING' | 'SHIPPING';
-  capacity: number;
-  currentItems: LocationItem[];
-}
-
-export interface LocationItem {
-  itemId: string;
-  quantity: number;
-  lotNumber?: string;
-  serialNumbers?: string[];
-  expirationDate?: Date;
-}
+import type { 
+  InventoryItem, 
+  StockLevel, 
+  InventoryTransaction, 
+  Warehouse, 
+  ReplenishmentRecommendation 
+} from './types';
 
 export class InventoryManager {
+  
+  // Core Inventory Methods
   async createInventoryItem(item: Omit<InventoryItem, 'id' | 'createdDate' | 'averageCost' | 'lastCost'>): Promise<InventoryItem> {
     const id = `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return {
@@ -125,6 +56,7 @@ export class InventoryManager {
     };
   }
 
+  // Cycle Counting Methods
   async performCycleCount(warehouseId: string, items: Array<{
     itemId: string;
     countedQuantity: number;
@@ -140,7 +72,37 @@ export class InventoryManager {
     };
   }
 
-  async generateReplenishmentPlan(warehouseId?: string): Promise<Array<{
+  // Replenishment Methods - delegate to replenishment service
+  async generateReplenishmentPlan(criteria?: {
+    warehouseId?: string;
+    itemCategory?: string;
+    abcClass?: 'A' | 'B' | 'C';
+    priority?: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+    planningHorizon?: number;
+  }): Promise<ReplenishmentRecommendation[]> {
+    return inventoryReplenishmentService.generateReplenishmentPlan(criteria || {});
+  }
+
+  async generateDemandForecast(
+    itemId: string,
+    warehouseId: string,
+    forecastMethod: 'MOVING_AVERAGE' | 'EXPONENTIAL_SMOOTHING' | 'LINEAR_REGRESSION' | 'SEASONAL_DECOMPOSITION',
+    periodsToForecast: number = 12
+  ): Promise<any[]> {
+    return inventoryReplenishmentService.generateDemandForecast(itemId, warehouseId, forecastMethod, periodsToForecast);
+  }
+
+  async optimizeInventoryPolicies(criteria: {
+    warehouseId?: string;
+    itemCategory?: string;
+    abcClass?: 'A' | 'B' | 'C';
+    targetServiceLevel?: number;
+  }): Promise<any[]> {
+    return inventoryReplenishmentService.optimizeInventoryPolicies(criteria);
+  }
+
+  // Legacy compatibility method
+  async generateReplenishmentPlanLegacy(warehouseId?: string): Promise<Array<{
     itemId: string;
     itemCode: string;
     currentStock: number;
@@ -149,8 +111,66 @@ export class InventoryManager {
     priority: 'HIGH' | 'MEDIUM' | 'LOW';
   }>> {
     console.log('Generating replenishment plan');
+    const recommendations = await this.generateReplenishmentPlan({ warehouseId });
+    
+    // Convert to legacy format
+    return recommendations.map(rec => ({
+      itemId: rec.itemId,
+      itemCode: rec.itemCode,
+      currentStock: rec.currentStock,
+      reorderPoint: rec.reorderPoint,
+      suggestedOrderQuantity: rec.suggestedOrderQuantity,
+      priority: rec.priority === 'CRITICAL' ? 'HIGH' : rec.priority as 'HIGH' | 'MEDIUM' | 'LOW'
+    }));
+  }
+
+  // Analytics Methods
+  async getInventoryAnalytics(warehouseId?: string): Promise<{
+    totalValue: number;
+    totalItems: number;
+    turnoverRate: number;
+    fillRate: number;
+    stockoutItems: number;
+    excessItems: number;
+  }> {
+    console.log(`Getting inventory analytics for warehouse ${warehouseId || 'all'}`);
+    
+    return {
+      totalValue: 2450000,
+      totalItems: 1247,
+      turnoverRate: 4.2,
+      fillRate: 96.5,
+      stockoutItems: 12,
+      excessItems: 34
+    };
+  }
+
+  async getSlowMovingItems(warehouseId: string, daysSinceLastMovement: number = 90): Promise<Array<{
+    itemId: string;
+    itemCode: string;
+    onHandQuantity: number;
+    value: number;
+    daysSinceLastMovement: number;
+  }>> {
+    console.log(`Getting slow moving items in warehouse ${warehouseId} (${daysSinceLastMovement} days)`);
+    return [];
+  }
+
+  async getExcessInventory(warehouseId: string, excessThresholdDays: number = 180): Promise<Array<{
+    itemId: string;
+    itemCode: string;
+    onHandQuantity: number;
+    excessQuantity: number;
+    excessValue: number;
+  }>> {
+    console.log(`Getting excess inventory in warehouse ${warehouseId} (${excessThresholdDays} days threshold)`);
     return [];
   }
 }
 
 export const inventoryManager = new InventoryManager();
+
+// Export business logic services for direct access if needed
+export {
+  inventoryReplenishmentService
+};
