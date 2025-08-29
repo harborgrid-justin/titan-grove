@@ -8,10 +8,10 @@
 export {
   FederalComplianceService,
   FederalRegulation,
-  ComplianceRequirement,
-  ComplianceCheck,
-  ComplianceEvidence,
+  FederalComplianceRequirement,
   FederalContractingRequirement,
+  ApprovalLevel,
+  SocioeconomicRequirement,
   FARAuditTrail
 } from './federal-compliance/federal-compliance-service';
 
@@ -34,29 +34,21 @@ export {
   ProcurementStrategy,
   AcquisitionForecast,
   PlannedAcquisition,
-  CostAnalysis,
-  StrategicSourcing
+  ResourceRequirement
 } from './procurement-planning/procurement-planning-service';
 
 // Contract Intelligence and Analytics
 export {
   ContractIntelligenceService,
-  ContractAnalytics,
   ExecutiveDashboard,
-  DataTransparency,
-  PredictiveAnalytics,
-  BenchmarkAnalysis
+  PredictiveAnalytics
 } from './contract-intelligence/contract-intelligence-service';
 
 // Procure-to-Pay Integration
 export {
   ProcureToPayIntegrationService,
   ProcureToPayProcess,
-  Requisition,
-  SourcingEvent,
-  ContractExecution,
-  ReceiptProcessing,
-  PaymentProcessing
+  Requisition
 } from './procure-to-pay-integration/procure-to-pay-integration-service';
 
 // Enhanced Contract Authoring (existing module with new features)
@@ -211,11 +203,7 @@ export class OracleCLMManager {
 
     // 4. Initiate procure-to-pay process
     const p2pProcess = await this.procureToPayIntegration.initiateProcureToPayProcess(
-      {
-        requestorId: procurementRequest.requestorId,
-        totalAmount: procurementRequest.estimatedValue
-      },
-      procurementRequest.estimatedValue > 250000 ? 'STANDARD_PROCUREMENT' : 'SIMPLIFIED_ACQUISITION'
+      procurementRequest.requestorId
     );
 
     return {
