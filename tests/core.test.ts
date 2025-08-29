@@ -78,6 +78,7 @@ describe('TitanGrove Core', () => {
           security: {
             jwt: {
               secret: 'test-secret',
+              expiresIn: '1h',
             },
           },
         },
