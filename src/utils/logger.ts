@@ -1,4 +1,4 @@
-import winston, { Logger, format } from 'winston';
+import winston, { type Logger, format } from 'winston';
 
 export function createLogger(config?: { level?: string; format?: string }): Logger {
   const logLevel = config?.level || 'info';
@@ -12,7 +12,7 @@ export function createLogger(config?: { level?: string; format?: string }): Logg
     formats.push(
       format.colorize(),
       format.simple(),
-      format.printf(({ timestamp, level, message, ...meta }) => {
+      format.printf(({ timestamp, level, message, ...meta }: any) => {
         return `${timestamp} [${level}]: ${message} ${
           Object.keys(meta).length ? JSON.stringify(meta) : ''
         }`;

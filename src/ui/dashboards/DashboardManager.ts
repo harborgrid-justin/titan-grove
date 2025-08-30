@@ -3,7 +3,7 @@
  */
 
 import { EventEmitter } from 'events';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { Dashboard, DashboardWidget, UIManagerConfig } from '../types';
 
 export class DashboardManager extends EventEmitter {

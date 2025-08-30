@@ -421,7 +421,7 @@ export class TitanGrove {
     app.use(express.json());
 
     // Health check endpoint
-    app.get('/health', async (req, res) => {
+    app.get('/health', async (req: any, res: any) => {
       try {
         const health = await this.getHealthStatus();
         res.json(health);
@@ -431,7 +431,7 @@ export class TitanGrove {
     });
 
     // System info endpoint
-    app.get('/api/info', async (req, res) => {
+    app.get('/api/info', async (req: any, res: any) => {
       try {
         const info = await this.getSystemInfo();
         res.json(info);

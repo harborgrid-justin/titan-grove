@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { DatabaseConfig, QueryResult, Transaction, HealthCheck } from '../types';
 
 export class DatabaseManager extends EventEmitter {

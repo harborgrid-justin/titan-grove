@@ -3,6 +3,17 @@
  * System integration, API management, and data synchronization
  */
 
+// Export all types (includes both existing and new comprehensive types)
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services  
+export * from './business-logic/integration-service';
+
+// Re-export existing interfaces for backward compatibility
+
 export interface IntegrationEndpoint {
   id: string;
   endpointCode: string;
