@@ -6,11 +6,14 @@
 import {
   OperationalMetrics,
   CycleTimeMetric,
-  WorkloadAnalysis,
+  WorkloadAnalysis
+} from './types';
+
+import {
   ResourceUtilization,
   QualityMetric,
   ProductivityMetric
-} from './types';
+} from '../../../../shared/types/metrics';
 
 export class OperationalMetricsService {
   /**

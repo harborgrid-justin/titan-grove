@@ -3,6 +3,8 @@
  * Core interfaces and types for inventory management system
  */
 
+import { Priority } from '../../types/common';
+
 // Core Inventory Types
 export interface InventoryItem {
   id: string;
@@ -118,7 +120,7 @@ export interface ReplenishmentRecommendation {
   reorderPoint: number;
   suggestedOrderQuantity: number;
   economicOrderQuantity: number;
-  priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  priority: Priority;
   reasonCode: string;
   projectedStockoutDate?: Date;
   supplierLeadTime: number;

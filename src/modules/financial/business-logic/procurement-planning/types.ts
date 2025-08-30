@@ -3,6 +3,8 @@
  * Type definitions for strategic procurement planning
  */
 
+import { Priority } from '../../../../types/common';
+
 export interface ProcurementStrategy {
   id: string;
   strategyName: string;
@@ -23,7 +25,7 @@ export interface StrategicObjective {
   id: string;
   objectiveName: string;
   description: string;
-  priority: 'HIGH' | 'MEDIUM' | 'LOW';
+  priority: Exclude<Priority, 'CRITICAL'>;
   targetDate: Date;
   successMetrics: string[];
   ownerOrganization: string;
@@ -95,7 +97,7 @@ export interface PlannedAcquisition {
   plannedAwardDate: Date;
   performancePeriod: string;
   acquisitionMethod: string;
-  priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  priority: Priority;
   requirementsOwner: string;
   contractingOfficer: string;
   prerequisites: string[];
