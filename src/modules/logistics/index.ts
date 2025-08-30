@@ -78,11 +78,15 @@ export {
 export { 
   LogisticsAnalyticsService, 
   logisticsAnalyticsService,
-  type LogisticsDashboard,
-  type LogisticsReport,
-  type LogisticsKPI,
   type PerformanceAnalytics
 } from './business-logic/logistics-analytics/logistics-analytics-service';
+
+// Export types from types file
+export type {
+  LogisticsDashboard,
+  LogisticsReport,
+  LogisticsKPI
+} from './types';
 
 // ================================
 // DATA ACCESS LAYER
