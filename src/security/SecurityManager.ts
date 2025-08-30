@@ -1,4 +1,4 @@
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { SecurityContext } from '../types';

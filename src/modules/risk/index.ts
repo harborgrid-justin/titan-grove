@@ -1,7 +1,16 @@
 /**
- * Risk Management Module
- * Enterprise risk assessment, mitigation, and monitoring
  */
+
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/risk-management/risk-service';
+
+// Re-export existing interfaces for backward compatibility
 
 export interface RiskAssessment {
   id: string;

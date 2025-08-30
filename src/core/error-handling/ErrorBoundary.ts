@@ -4,7 +4,7 @@
  */
 
 import { CircuitBreaker, CircuitBreakerConfig } from './CircuitBreaker';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 
 export enum ErrorSeverity {
   LOW = 'LOW',

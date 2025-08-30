@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander';
-import chalk from 'chalk';
+async function main() {
+  const { Command } = await import('commander');
+  const chalk = (await import('chalk')).default;
 
-const program = new Command();
+  const program = new Command();
 
 program
   .name('titan')
@@ -113,4 +114,7 @@ program
     }
   });
 
-program.parse(process.argv);
+  program.parse(process.argv);
+}
+
+main().catch(console.error);

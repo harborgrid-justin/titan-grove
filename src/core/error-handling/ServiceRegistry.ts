@@ -4,7 +4,7 @@
  */
 
 import { ErrorBoundary, ErrorBoundaryConfig } from './ErrorBoundary';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { EventEmitter } from 'events';
 
 export interface ServiceMetadata {

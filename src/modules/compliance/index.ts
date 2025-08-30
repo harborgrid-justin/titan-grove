@@ -3,6 +3,17 @@
  * Regulatory compliance, audit management, and policy enforcement
  */
 
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/compliance-management/compliance-service';
+
+// Re-export existing interfaces for backward compatibility
+
 export interface ComplianceFramework {
   id: string;
   frameworkCode: string;

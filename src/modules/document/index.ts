@@ -3,6 +3,17 @@
  * Enterprise document lifecycle management and collaboration platform
  */
 
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/document-management/document-service';
+
+// Re-export existing interfaces for backward compatibility
+
 export interface Document {
   id: string;
   documentNumber: string;

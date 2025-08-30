@@ -3,7 +3,7 @@
  */
 
 import { EventEmitter } from 'events';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { UIComponent } from '../types';
 
 export class ComponentRegistry extends EventEmitter {

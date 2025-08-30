@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { TitanConfig, HealthCheck } from '../types';
 import { DatabaseManager } from '../database/DatabaseManager';
 import { ServerManager } from '../server/ServerManager';

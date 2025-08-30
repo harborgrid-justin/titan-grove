@@ -4,8 +4,17 @@
  * Oracle Install Base competitor with advanced tracking capabilities
  */
 
+// Export all types (includes both existing and new types)
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/asset-management/asset-management-service';
+
 // ============================================================================
-// CORE ASSET INTERFACES
+// CORE ASSET INTERFACES (Existing - maintained for backward compatibility)
 // ============================================================================
 
 export interface Asset {

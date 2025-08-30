@@ -4,7 +4,7 @@
  */
 
 import { EventEmitter } from 'events';
-import { Logger } from 'winston';
+import type { Logger } from 'winston';
 import { ComponentRegistry } from './ComponentRegistry';
 import { ThemeManager } from './ThemeManager';
 import { DashboardManager } from '../dashboards/DashboardManager';

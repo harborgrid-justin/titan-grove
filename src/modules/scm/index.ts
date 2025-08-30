@@ -1,7 +1,16 @@
 /**
- * Supply Chain Management Module
- * Comprehensive SCM functionality including inventory, purchasing, manufacturing
  */
+
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/scm-management/scm-service';
+
+// Re-export existing interfaces for backward compatibility
 
 export interface Product {
   id: string;
