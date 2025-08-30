@@ -3,6 +3,17 @@
  * Complete order-to-cash lifecycle management including sales orders, fulfillment, and shipping
  */
 
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/orders-management/orders-service';
+
+// Re-export existing interfaces for backward compatibility
+
 // Core Order Management Interfaces
 export interface SalesOrder {
   id: string;

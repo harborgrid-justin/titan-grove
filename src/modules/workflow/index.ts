@@ -1,7 +1,16 @@
 /**
- * Workflow Management Module
- * Business process automation and workflow orchestration
  */
+
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/workflow-management/workflow-service';
+
+// Re-export existing interfaces for backward compatibility
 
 export interface WorkflowDefinition {
   id: string;

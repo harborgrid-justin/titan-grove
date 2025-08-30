@@ -4,6 +4,17 @@
  */
 
 // Core Document Types
+export interface DocumentEntity {
+  id: string;
+  name: string;
+  description: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'COMPLETED';
+  createdDate: Date;
+  modifiedDate: Date;
+  createdBy: string;
+  modifiedBy: string;
+}
+
 export interface Document {
   id: string;
   documentNumber: string;

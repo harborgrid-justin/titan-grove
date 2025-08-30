@@ -4,6 +4,17 @@
  */
 
 // Core Compliance Types
+export interface ComplianceEntity {
+  id: string;
+  name: string;
+  description: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'COMPLETED';
+  createdDate: Date;
+  modifiedDate: Date;
+  createdBy: string;
+  modifiedBy: string;
+}
+
 export interface ComplianceFramework {
   id: string;
   name: string;

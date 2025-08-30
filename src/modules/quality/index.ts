@@ -1,7 +1,16 @@
 /**
- * Quality Management Module - Enhanced
- * Quality control, compliance, and continuous improvement management
  */
+
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/quality-management/quality-service';
+
+// Re-export existing interfaces for backward compatibility
 
 export interface QualityPlan {
   id: string;

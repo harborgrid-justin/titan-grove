@@ -3,6 +3,17 @@
  * Asset maintenance, preventive maintenance, and work order management
  */
 
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/maintenance-management/maintenance-service';
+
+// Re-export existing interfaces for backward compatibility
+
 export interface MaintenanceAsset {
   id: string;
   assetNumber: string;

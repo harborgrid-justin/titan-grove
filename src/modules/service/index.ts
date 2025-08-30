@@ -1,7 +1,16 @@
 /**
- * Service Management Module
- * Customer service, field service, and support management
  */
+
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/service-management/service-service';
+
+// Re-export existing interfaces for backward compatibility
 
 export interface ServiceRequest {
   id: string;

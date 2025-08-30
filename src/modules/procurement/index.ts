@@ -3,6 +3,17 @@
  * Complete procurement lifecycle management including sourcing, purchasing, and supplier management
  */
 
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access/repositories';
+
+// Export business logic services
+export * from './business-logic/procurement-management/procurement-service';
+
+// Re-export existing interfaces for backward compatibility
+
 // Core Procurement Interfaces
 export interface Supplier {
   id: string;
