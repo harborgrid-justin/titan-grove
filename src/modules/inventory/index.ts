@@ -3,6 +3,8 @@
  * Main orchestrator that delegates to specialized business logic services
  */
 
+import { Priority } from '../../types/common';
+
 // Export all types
 export * from './types';
 
@@ -77,7 +79,7 @@ export class InventoryManager {
     warehouseId?: string;
     itemCategory?: string;
     abcClass?: 'A' | 'B' | 'C';
-    priority?: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+    priority?: Priority;
     planningHorizon?: number;
   }): Promise<ReplenishmentRecommendation[]> {
     return inventoryReplenishmentService.generateReplenishmentPlan(criteria || {});
@@ -108,7 +110,7 @@ export class InventoryManager {
     currentStock: number;
     reorderPoint: number;
     suggestedOrderQuantity: number;
-    priority: 'HIGH' | 'MEDIUM' | 'LOW';
+    priority: Exclude<Priority, 'CRITICAL'>;
   }>> {
     console.log('Generating replenishment plan');
     const recommendations = await this.generateReplenishmentPlan({ warehouseId });
@@ -120,7 +122,7 @@ export class InventoryManager {
       currentStock: rec.currentStock,
       reorderPoint: rec.reorderPoint,
       suggestedOrderQuantity: rec.suggestedOrderQuantity,
-      priority: rec.priority === 'CRITICAL' ? 'HIGH' : rec.priority as 'HIGH' | 'MEDIUM' | 'LOW'
+      priority: rec.priority === Priority.CRITICAL ? Priority.HIGH : rec.priority as Exclude<Priority, 'CRITICAL'>
     }));
   }
 

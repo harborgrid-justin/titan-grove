@@ -39,6 +39,25 @@ export enum Priority {
 }
 
 /**
+ * Common risk/impact levels
+ */
+export enum RiskLevel {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM', 
+  HIGH = 'HIGH',
+  CRITICAL = 'CRITICAL'
+}
+
+/**
+ * Common performance levels
+ */
+export enum PerformanceLevel {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH'
+}
+
+/**
  * Standard service response wrapper
  */
 export interface ServiceResponse<T = any> {

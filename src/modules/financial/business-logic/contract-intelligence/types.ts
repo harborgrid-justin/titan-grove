@@ -3,6 +3,12 @@
  * Type definitions for contract intelligence and analytics
  */
 
+import { 
+  ResourceUtilization, 
+  QualityMetric, 
+  ProductivityMetric 
+} from '../../../../shared/types/metrics';
+
 export interface ContractAnalytics {
   id: string;
   reportType: 'EXECUTIVE_DASHBOARD' | 'OPERATIONAL_METRICS' | 'COMPLIANCE_REPORT' | 'PERFORMANCE_ANALYSIS' | 'COST_ANALYSIS';
@@ -144,33 +150,6 @@ export interface WorkloadAnalysis {
   averageContractsPerOfficer: number;
   workloadDistribution: { [officerId: string]: number };
   capacityUtilization: number;
-}
-
-export interface ResourceUtilization {
-  resourceType: string;
-  allocated: number;
-  utilized: number;
-  utilizationRate: number;
-  efficiency: number;
-  bottlenecks: string[];
-}
-
-export interface QualityMetric {
-  qualityIndicator: string;
-  currentScore: number;
-  targetScore: number;
-  defectRate: number;
-  customerSatisfaction: number;
-  improvementTrend: 'IMPROVING' | 'DECLINING' | 'STABLE';
-}
-
-export interface ProductivityMetric {
-  productivityIndicator: string;
-  outputPerPeriod: number;
-  targetOutput: number;
-  efficiency: number;
-  resourceInput: number;
-  productivityRatio: number;
 }
 
 export interface StrategicInitiative {

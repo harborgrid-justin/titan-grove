@@ -3,75 +3,13 @@
  * Handles automatic replenishment, demand forecasting, and inventory optimization
  */
 
-export interface ReplenishmentRule {
-  id: string;
-  itemId: string;
-  warehouseId: string;
-  ruleType: 'REORDER_POINT' | 'MIN_MAX' | 'PERIODIC' | 'FORECAST_DRIVEN';
-  reorderPoint: number;
-  minimumStock: number;
-  maximumStock: number;
-  economicOrderQuantity: number;
-  reviewPeriodDays: number;
-  leadTimeDays: number;
-  safetyStock: number;
-  isActive: boolean;
-}
-
-export interface ReplenishmentRecommendation {
-  id: string;
-  itemId: string;
-  itemCode: string;
-  itemDescription: string;
-  warehouseId: string;
-  warehouseName: string;
-  currentStock: number;
-  projectedStock: number;
-  reorderPoint: number;
-  suggestedOrderQuantity: number;
-  economicOrderQuantity: number;
-  priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  reasonCode: string;
-  projectedStockoutDate?: Date;
-  supplierLeadTime: number;
-  estimatedCost: number;
-  annualDemand: number;
-  demandVariability: number;
-  serviceLevel: number;
-}
-
-export interface DemandForecastData {
-  itemId: string;
-  warehouseId: string;
-  forecastPeriod: Date;
-  forecastQuantity: number;
-  actualDemand?: number;
-  forecastError?: number;
-  trendFactor: number;
-  seasonalFactor: number;
-  forecastMethod: 'MOVING_AVERAGE' | 'EXPONENTIAL_SMOOTHING' | 'LINEAR_REGRESSION' | 'SEASONAL_DECOMPOSITION';
-  confidence: number;
-}
-
-export interface InventoryOptimizationResult {
-  itemId: string;
-  currentPolicy: {
-    reorderPoint: number;
-    orderQuantity: number;
-    safetyStock: number;
-  };
-  optimizedPolicy: {
-    reorderPoint: number;
-    orderQuantity: number;
-    safetyStock: number;
-  };
-  projectedImprovements: {
-    inventoryReduction: number; // percentage
-    serviceLevelImprovement: number; // percentage
-    costSavings: number; // annual amount
-  };
-  riskFactors: string[];
-}
+import { Priority } from '../../../../types/common';
+import { 
+  ReplenishmentRule,
+  ReplenishmentRecommendation,
+  DemandForecastData,
+  InventoryOptimizationResult
+} from '../../types';
 
 export class InventoryReplenishmentService {
   
@@ -82,7 +20,7 @@ export class InventoryReplenishmentService {
     warehouseId?: string;
     itemCategory?: string;
     abcClass?: 'A' | 'B' | 'C';
-    priority?: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+    priority?: Priority;
     planningHorizon?: number; // days
   }): Promise<ReplenishmentRecommendation[]> {
     console.log('Generating comprehensive replenishment plan', criteria);
@@ -99,7 +37,12 @@ export class InventoryReplenishmentService {
     
     // Sort by priority and projected stockout date
     return recommendations.sort((a, b) => {
-      const priorityOrder = { 'CRITICAL': 0, 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 };
+      const priorityOrder: Record<Priority, number> = { 
+        [Priority.CRITICAL]: 0, 
+        [Priority.HIGH]: 1, 
+        [Priority.MEDIUM]: 2, 
+        [Priority.LOW]: 3 
+      };
       const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
       
       if (priorityDiff !== 0) return priorityDiff;
@@ -277,17 +220,17 @@ export class InventoryReplenishmentService {
     reorderPoint: number,
     averageDailyDemand: number,
     leadTimeDays: number
-  ): 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' {
+  ): Priority {
     const daysOfStock = currentStock / averageDailyDemand;
     
     if (daysOfStock <= leadTimeDays) {
-      return 'CRITICAL'; // Will stockout during lead time
+      return Priority.CRITICAL; // Will stockout during lead time
     } else if (currentStock <= reorderPoint * 0.8) {
-      return 'HIGH'; // Below 80% of reorder point
+      return Priority.HIGH; // Below 80% of reorder point
     } else if (currentStock <= reorderPoint) {
-      return 'MEDIUM'; // Below reorder point
+      return Priority.MEDIUM; // Below reorder point
     } else {
-      return 'LOW'; // Above reorder point
+      return Priority.LOW; // Above reorder point
     }
   }
 

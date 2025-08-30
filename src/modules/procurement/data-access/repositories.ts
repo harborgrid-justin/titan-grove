@@ -17,12 +17,12 @@ export interface ProcurementRepository {
 export class MockProcurementRepository implements ProcurementRepository {
   private entities: ProcurementEntity[] = [];
 
-  async create(entity: Omit<ProcurementEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<ProcurementEntity> {
+  async create(entity: Omit<ProcurementEntity, 'id' | 'createdAt' | 'updatedAt'>): Promise<ProcurementEntity> {
     const newEntity: ProcurementEntity = {
       ...entity,
       id: `procurement_${Date.now()}`,
-      createdDate: new Date(),
-      modifiedDate: new Date()
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
     this.entities.push(newEntity);
     return newEntity;
@@ -41,7 +41,7 @@ export class MockProcurementRepository implements ProcurementRepository {
     this.entities[index] = {
       ...this.entities[index],
       ...updates,
-      modifiedDate: new Date()
+      updatedAt: new Date()
     };
     
     return this.entities[index];
