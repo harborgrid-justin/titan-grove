@@ -4,3 +4,4 @@
  */
 
 export * from './recommendation-generator';
+export * from './business-entity-utils';

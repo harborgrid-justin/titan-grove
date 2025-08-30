@@ -3,6 +3,9 @@
  * Comprehensive project portfolio management, resource planning, and project costing
  */
 
+import { Priority } from '../../types/common';
+import { ProjectRecommendationGenerator } from './utils/project-recommendation-generator';
+
 export interface Project {
   id: string;
   projectNumber: string;
@@ -10,7 +13,7 @@ export interface Project {
   description: string;
   type: 'INTERNAL' | 'CUSTOMER' | 'PRODUCT_DEVELOPMENT' | 'MAINTENANCE';
   status: 'PLANNING' | 'ACTIVE' | 'ON_HOLD' | 'COMPLETED' | 'CANCELLED';
-  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  priority: Priority;
   startDate: Date;
   plannedEndDate: Date;
   actualEndDate?: Date;
@@ -55,7 +58,7 @@ export interface Task {
   dueDate: Date;
   completedDate?: Date;
   status: 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED' | 'BLOCKED';
-  priority: 'LOW' | 'MEDIUM' | 'HIGH';
+  priority: Exclude<Priority, 'CRITICAL'>;
   estimatedHours: number;
   actualHours: number;
   percentComplete: number;
@@ -236,6 +239,7 @@ export interface ResourceSkill {
 }
 
 export class ProjectManager {
+  private recommendationGenerator = new ProjectRecommendationGenerator();
   /**
    * Project Billing Business Logic
    */
@@ -978,19 +982,7 @@ export class ProjectManager {
   }
 
   private generateForecastRecommendations(spi: number, cpi: number): string[] {
-    const recommendations = [];
-    
-    if (spi < 1.0) {
-      recommendations.push('Accelerate critical path activities');
-      recommendations.push('Consider adding resources to delayed tasks');
-    }
-    
-    if (cpi < 1.0) {
-      recommendations.push('Implement cost control measures');
-      recommendations.push('Review scope to identify potential reductions');
-    }
-    
-    return recommendations;
+    return this.recommendationGenerator.generateForecastRecommendations(spi, cpi);
   }
 
   async facilitateStakeholderCommunication(projectId: string): Promise<any> {
@@ -1296,22 +1288,7 @@ export class ProjectManager {
   }
 
   private generatePortfolioRecommendations(evaluations: any[]): string[] {
-    const recommendations = [];
-    const highScoreProjects = evaluations.filter(e => e.scores.overall > 75).length;
-    const lowScoreProjects = evaluations.filter(e => e.scores.overall < 50).length;
-    
-    if (highScoreProjects > 0) {
-      recommendations.push(`Prioritize ${highScoreProjects} high-scoring projects for immediate execution`);
-    }
-    
-    if (lowScoreProjects > 0) {
-      recommendations.push(`Consider deferring or canceling ${lowScoreProjects} low-scoring projects`);
-    }
-    
-    recommendations.push('Ensure portfolio balance across risk levels and strategic objectives');
-    recommendations.push('Monitor resource constraints and adjust project timelines accordingly');
-    
-    return recommendations;
+    return this.recommendationGenerator.generatePortfolioRecommendations(evaluations);
   }
 
   /**
@@ -1627,43 +1604,11 @@ export class ProjectManager {
   }
 
   private generatePerformanceRecommendations(productivity: number, satisfaction: number, utilization: number): string[] {
-    const recommendations = [];
-    
-    if (productivity < 75) {
-      recommendations.push('Provide additional training or mentoring');
-      recommendations.push('Review task complexity and assignment suitability');
-    }
-    
-    if (satisfaction < 75) {
-      recommendations.push('Conduct one-on-one feedback session');
-      recommendations.push('Review workload and work-life balance');
-    }
-    
-    if (utilization < 0.7) {
-      recommendations.push('Increase project assignments');
-      recommendations.push('Consider cross-training for additional skills');
-    } else if (utilization > 0.95) {
-      recommendations.push('Reduce workload to prevent burnout');
-      recommendations.push('Redistribute some responsibilities');
-    }
-    
-    return recommendations;
+    return this.recommendationGenerator.generateProjectPerformanceRecommendations(productivity, satisfaction, utilization);
   }
 
   private generateCostRecommendations(indicators: any): string[] {
-    const recommendations = [];
-    
-    if (indicators.costPerformanceIndex < 1.0) {
-      recommendations.push('Implement cost control measures');
-      recommendations.push('Review resource allocation efficiency');
-    }
-    
-    if (indicators.schedulePerformanceIndex < 1.0) {
-      recommendations.push('Accelerate critical path activities');
-      recommendations.push('Consider additional resources for delayed tasks');
-    }
-    
-    return recommendations;
+    return this.recommendationGenerator.generateCostRecommendations(indicators);
   }
 
   private generateStakeholderContent(projectId: string, stakeholder: any): any {
