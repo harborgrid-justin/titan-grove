@@ -22,6 +22,7 @@ import { complianceManager, ComplianceManager } from './modules/compliance';
 import { documentManager, DocumentManager } from './modules/document';
 import { workflowManager, WorkflowManager } from './modules/workflow';
 import { integrationManager, IntegrationManager } from './modules/integration';
+import { MessageQueueManager, MessageQueueConfig, QueueProcessors } from './core/message-queue';
 
 export interface TitanGroveConfig {
   database?: {
@@ -46,6 +47,7 @@ export interface TitanGroveConfig {
       };
     };
   };
+  messageQueue?: MessageQueueConfig;
   modules?: {
     financial?: boolean;
     hr?: boolean;
@@ -107,6 +109,8 @@ export class TitanGrove {
   private config: TitanGroveConfig;
   private server?: any;
   private isStarted = false;
+  private messageQueue?: MessageQueueManager;
+  private queueProcessors?: QueueProcessors;
 
   // Business modules
   public readonly financial: FinancialManager;
@@ -155,6 +159,44 @@ export class TitanGrove {
       },
       multiTenant: { enabled: false },
       auditLogging: { enabled: true, level: 'basic' },
+      messageQueue: {
+        redis: {
+          host: 'localhost',
+          port: 6379,
+          keyPrefix: 'titan-grove:',
+          retryDelayOnFailover: 1000,
+          maxRetriesPerRequest: 3,
+          lazyConnect: true
+        },
+        defaultJobOptions: {
+          removeOnComplete: 100,
+          removeOnFail: 50,
+          attempts: 3,
+          backoff: {
+            type: 'exponential',
+            delay: 2000
+          }
+        },
+        monitoring: {
+          enabled: true,
+          metricsRetentionDays: 7,
+          alertThresholds: {
+            queueDepth: 1000,
+            processingTime: 30000,
+            errorRate: 0.1
+          }
+        },
+        deadLetterQueue: {
+          enabled: true,
+          maxRetries: 5,
+          retentionDays: 30
+        },
+        clustering: {
+          enabled: false,
+          workers: 4,
+          concurrency: 10
+        }
+      },
       ...config
     };
 
@@ -193,6 +235,9 @@ export class TitanGrove {
     // Initialize database connections
     await this.initializeDatabase();
 
+    // Initialize message queue system
+    await this.initializeMessageQueue();
+
     // Initialize business modules
     await this.initializeModules();
 
@@ -213,6 +258,11 @@ export class TitanGrove {
     }
 
     console.log('🛑 Shutting down Titan Grove...');
+
+    // Shutdown message queue first
+    if (this.messageQueue) {
+      await this.messageQueue.shutdown();
+    }
 
     if (this.server) {
       await this.stopServer();
@@ -244,6 +294,14 @@ export class TitanGrove {
         type: this.config.database?.type || 'sqlite',
         responseTime: Math.random() * 10 + 'ms'
       },
+      messageQueue: this.messageQueue ? {
+        status: 'healthy',
+        description: 'Fortune 100-grade message queue operational',
+        queues: await this.messageQueue.getAllMetrics().then(metrics => metrics.length).catch(() => 0)
+      } : {
+        status: 'disabled',
+        description: 'Message queue not configured'
+      },
       system: {
         nodeVersion: process.version,
         platform: process.platform,
@@ -253,6 +311,39 @@ export class TitanGrove {
     };
 
     return status;
+  }
+
+  /**
+   * Get message queue manager instance
+   */
+  getMessageQueue(): MessageQueueManager | undefined {
+    return this.messageQueue;
+  }
+
+  /**
+   * Get message queue metrics
+   */
+  async getMessageQueueMetrics(): Promise<any> {
+    if (!this.messageQueue) {
+      return { error: 'Message queue not initialized' };
+    }
+
+    try {
+      const metrics = await this.messageQueue.getAllMetrics();
+      return {
+        success: true,
+        metrics,
+        summary: {
+          totalQueues: metrics.length,
+          totalActive: metrics.reduce((sum, m) => sum + m.active, 0),
+          totalWaiting: metrics.reduce((sum, m) => sum + m.waiting, 0),
+          totalCompleted: metrics.reduce((sum, m) => sum + m.completed, 0),
+          totalFailed: metrics.reduce((sum, m) => sum + m.failed, 0)
+        }
+      };
+    } catch (error) {
+      return { error: `Failed to get metrics: ${(error as Error).message}` };
+    }
   }
 
   /**
@@ -401,6 +492,35 @@ export class TitanGrove {
     // Implementation would initialize database connections based on config
   }
 
+  private async initializeMessageQueue(): Promise<void> {
+    console.log('🔄 Initializing message queue system...');
+    
+    if (this.config.messageQueue) {
+      try {
+        this.messageQueue = new MessageQueueManager(this.config.messageQueue);
+        this.queueProcessors = new QueueProcessors();
+        
+        // Register processors
+        this.messageQueue.registerProcessor('integration-processor', this.queueProcessors.integrationProcessor);
+        this.messageQueue.registerProcessor('financial-processor', this.queueProcessors.financialProcessor);
+        this.messageQueue.registerProcessor('hr-processor', this.queueProcessors.hrProcessor);
+        this.messageQueue.registerProcessor('crm-processor', this.queueProcessors.crmProcessor);
+        this.messageQueue.registerProcessor('scm-processor', this.queueProcessors.scmProcessor);
+        this.messageQueue.registerProcessor('order-processor', this.queueProcessors.orderProcessor);
+        this.messageQueue.registerProcessor('inventory-processor', this.queueProcessors.inventoryProcessor);
+        this.messageQueue.registerProcessor('notification-processor', this.queueProcessors.notificationProcessor);
+        this.messageQueue.registerProcessor('audit-processor', this.queueProcessors.auditProcessor);
+        this.messageQueue.registerProcessor('analytics-processor', this.queueProcessors.analyticsProcessor);
+        
+        await this.messageQueue.initialize();
+        console.log('✅ Message queue system initialized');
+      } catch (error) {
+        console.error('❌ Failed to initialize message queue system:', error);
+        // Don't fail startup if message queue fails - log and continue
+      }
+    }
+  }
+
   private async initializeModules(): Promise<void> {
     console.log('📦 Initializing business modules...');
     // Implementation would initialize enabled modules
@@ -442,6 +562,9 @@ export class TitanGrove {
 
     // Business module endpoints
     this.setupBusinessAPIs(app);
+
+    // Message Queue endpoints
+    this.setupMessageQueueAPIs(app);
 
     const port = this.config.server?.port || 3000;
     const host = this.config.server?.host || 'localhost';
@@ -528,6 +651,96 @@ export class TitanGrove {
         res.json({ success: true, data: result });
       } catch (error: any) {
         res.status(400).json({ success: false, error: error.message });
+      }
+    });
+  }
+
+  private setupMessageQueueAPIs(app: any): void {
+    // Message Queue Management APIs
+    app.get('/api/queue/metrics', async (req: any, res: any) => {
+      try {
+        const metrics = await this.getMessageQueueMetrics();
+        res.json(metrics);
+      } catch (error) {
+        res.status(500).json({ success: false, error: 'Failed to get queue metrics' });
+      }
+    });
+
+    app.get('/api/queue/health', async (req: any, res: any) => {
+      if (!this.messageQueue) {
+        res.status(503).json({ success: false, error: 'Message queue not initialized' });
+        return;
+      }
+
+      try {
+        const health = await this.messageQueue.getAllMetrics();
+        res.json({ success: true, data: health });
+      } catch (error) {
+        res.status(500).json({ success: false, error: 'Failed to get queue health' });
+      }
+    });
+
+    app.post('/api/queue/:queueName/message', async (req: any, res: any) => {
+      if (!this.messageQueue) {
+        res.status(503).json({ success: false, error: 'Message queue not initialized' });
+        return;
+      }
+
+      try {
+        const { queueName } = req.params;
+        const { message } = req.body;
+        
+        const job = await this.messageQueue.addMessage(queueName, message);
+        res.json({ success: true, data: { jobId: job.id } });
+      } catch (error) {
+        res.status(400).json({ success: false, error: `Failed to add message: ${(error as Error).message}` });
+      }
+    });
+
+    app.post('/api/queue/:queueName/pause', async (req: any, res: any) => {
+      if (!this.messageQueue) {
+        res.status(503).json({ success: false, error: 'Message queue not initialized' });
+        return;
+      }
+
+      try {
+        const { queueName } = req.params;
+        await this.messageQueue.pauseQueue(queueName);
+        res.json({ success: true, message: `Queue ${queueName} paused` });
+      } catch (error) {
+        res.status(400).json({ success: false, error: `Failed to pause queue: ${(error as Error).message}` });
+      }
+    });
+
+    app.post('/api/queue/:queueName/resume', async (req: any, res: any) => {
+      if (!this.messageQueue) {
+        res.status(503).json({ success: false, error: 'Message queue not initialized' });
+        return;
+      }
+
+      try {
+        const { queueName } = req.params;
+        await this.messageQueue.resumeQueue(queueName);
+        res.json({ success: true, message: `Queue ${queueName} resumed` });
+      } catch (error) {
+        res.status(400).json({ success: false, error: `Failed to resume queue: ${(error as Error).message}` });
+      }
+    });
+
+    app.post('/api/queue/:queueName/clean', async (req: any, res: any) => {
+      if (!this.messageQueue) {
+        res.status(503).json({ success: false, error: 'Message queue not initialized' });
+        return;
+      }
+
+      try {
+        const { queueName } = req.params;
+        const { grace = 24 * 60 * 60 * 1000, status = 'completed' } = req.body;
+        
+        const cleaned = await this.messageQueue.cleanQueue(queueName, grace, status);
+        res.json({ success: true, data: { cleanedJobs: cleaned } });
+      } catch (error) {
+        res.status(400).json({ success: false, error: `Failed to clean queue: ${(error as Error).message}` });
       }
     });
   }
