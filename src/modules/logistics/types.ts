@@ -4,6 +4,37 @@
  */
 
 // ================================
+// SUPPORTING TYPES
+// ================================
+
+export interface GeographicRegion {
+  regionId: string;
+  regionName: string;
+  countries: string[];
+  states?: string[];
+  cities?: string[];
+  postalCodes?: string[];
+}
+
+export interface ContractDetails {
+  contractId: string;
+  contractType: string;
+  startDate: Date;
+  endDate: Date;
+  terms: Record<string, any>;
+  rateStructure: Record<string, any>;
+  serviceLevel: Record<string, any>;
+}
+
+export interface IntegrationConfig {
+  apiEndpoint?: string;
+  credentials?: Record<string, any>;
+  dataFormat: 'XML' | 'JSON' | 'EDI' | 'CSV';
+  frequency: 'REAL_TIME' | 'BATCH' | 'SCHEDULED';
+  mappings: Record<string, string>;
+}
+
+// ================================
 // CORE LOGISTICS TYPES
 // ================================
 

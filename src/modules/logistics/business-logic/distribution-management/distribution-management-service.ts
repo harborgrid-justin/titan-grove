@@ -34,8 +34,8 @@ interface RiskAssessment { riskLevel: string; identifiedRisks: any[]; mitigation
 interface OptimizationObjective { objectiveType: string; weight: number; priority: number; }
 interface OptimizationConstraint { constraintType: string; description: string; parameters: Record<string, any>; }
 interface OptimizationScenario { scenarioId: string; scenarioName: string; scenarioType: string; }
-interface NetworkAnalysis { totalFacilities: number; totalCapacity: number; performanceMetrics: any; }
-interface NetworkDesign { networkId: string; facilities: any[]; routes: any[]; totalCost: number; serviceLevel: number; }
+export interface NetworkAnalysis { totalFacilities: number; totalCapacity: number; performanceMetrics: any; }
+export interface NetworkDesign { networkId: string; facilities: any[]; routes: any[]; totalCost: number; serviceLevel: number; }
 interface NetworkImpactAnalysis { costImpact: number; serviceImpact: number; riskImpact: number; }
 interface InvestmentAnalysis { totalInvestment: number; paybackPeriod: number; netPresentValue: number; }
 interface CostBenefitAnalysis { totalCosts: number; totalBenefits: number; benefitCostRatio: number; }
