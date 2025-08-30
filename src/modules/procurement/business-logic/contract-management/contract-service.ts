@@ -3,7 +3,7 @@
  * Business logic for contract lifecycle management
  */
 
-import type { 
+import { 
   Contract, 
   ContractStatus,
   ContractType,
@@ -11,7 +11,7 @@ import type {
   ProcurementSearchCriteria
 } from '../../types';
 import { contractRepository } from '../../data-access/repositories';
-import { PaginatedResponse, SearchParams } from '../../../../types/common';
+import { PaginatedResponse, SearchParams, PerformanceLevel } from '../../../../types/common';
 
 export class ContractService {
   
@@ -31,14 +31,16 @@ export class ContractService {
       status: ContractStatus.DRAFT,
       amendments: [],
       performance: {
-        overallRating: 'MEDIUM' as any,
+        overallRating: PerformanceLevel.MEDIUM,
         deliveryPerformance: 0,
-        qualityRating: 'MEDIUM' as any,
+        qualityRating: PerformanceLevel.MEDIUM,
         costSavings: { amount: 0, currency: 'USD' },
         issueCount: 0,
         lastReviewDate: new Date(),
         nextReviewDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) // 90 days from now
-      }
+      },
+      createdBy: 'system',
+      updatedBy: 'system'
     };
     
     return await contractRepository.create(contractData);
@@ -85,9 +87,9 @@ export class ContractService {
     // - Issue tracking
     
     const performance: ContractPerformance = {
-      overallRating: 'HIGH' as any,
+      overallRating: PerformanceLevel.HIGH,
       deliveryPerformance: 95.5,
-      qualityRating: 'HIGH' as any,
+      qualityRating: PerformanceLevel.HIGH,
       costSavings: { amount: 25000, currency: 'USD' },
       issueCount: 2,
       lastReviewDate: new Date(),

@@ -3,7 +3,7 @@
  * Business logic for purchase order management
  */
 
-import type { 
+import { 
   PurchaseOrder, 
   PurchaseOrderStatus,
   POType,
@@ -23,7 +23,7 @@ export class PurchaseOrderService {
     this.validatePOData(data);
     
     const poNumber = await this.generatePONumber();
-    const { subtotal, tax, total } = this.calculateTotals(data.lineItems);
+    const { subtotal, tax } = this.calculateTotals(data.lineItems);
     
     const poData = {
       ...data,
@@ -37,7 +37,9 @@ export class PurchaseOrderService {
       total: {
         amount: subtotal.amount + tax.amount + (data.shipping?.amount || 0) - (data.discount?.amount || 0),
         currency: subtotal.currency
-      }
+      },
+      createdBy: 'system',
+      updatedBy: 'system'
     };
     
     return await purchaseOrderRepository.create(poData);

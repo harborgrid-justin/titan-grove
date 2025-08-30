@@ -16,6 +16,20 @@ import {
   PerformanceLevel 
 } from '../../types/common';
 
+// Re-export common types for convenience
+export { 
+  CommonStatus, 
+  AuditFields, 
+  Address, 
+  ContactInfo, 
+  Money, 
+  Attachment,
+  ApprovalStatus,
+  Priority,
+  RiskLevel,
+  PerformanceLevel 
+};
+
 // Core Procurement Types
 export interface ProcurementEntity extends AuditFields {
   id: string;

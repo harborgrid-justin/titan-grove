@@ -3,7 +3,7 @@
  * Business logic for procurement analytics and reporting
  */
 
-import type { 
+import { 
   ProcurementAnalytics,
   CategorySpend,
   SupplierSpend,

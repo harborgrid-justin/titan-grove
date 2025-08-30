@@ -3,7 +3,7 @@
  * Database operations and data persistence for procurement management
  */
 
-import type { 
+import { 
   ProcurementEntity,
   Supplier,
   SupplierSearchCriteria,

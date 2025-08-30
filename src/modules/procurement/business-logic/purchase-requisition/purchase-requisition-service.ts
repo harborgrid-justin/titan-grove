@@ -3,7 +3,7 @@
  * Business logic for purchase requisition management
  */
 
-import type { 
+import { 
   PurchaseRequisition, 
   RequisitionStatus,
   RequisitionLineItem,
@@ -38,7 +38,9 @@ export class PurchaseRequisitionService {
       subtotal,
       tax,
       total,
-      priority: data.priority || Priority.MEDIUM
+      priority: data.priority || Priority.MEDIUM,
+      createdBy: 'system',
+      updatedBy: 'system'
     };
     
     return await purchaseRequisitionRepository.create(requisitionData);

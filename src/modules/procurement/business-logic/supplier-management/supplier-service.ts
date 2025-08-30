@@ -3,7 +3,7 @@
  * Business logic for supplier management operations
  */
 
-import type { 
+import { 
   Supplier, 
   SupplierSearchCriteria,
   SupplierStatus,
@@ -36,7 +36,9 @@ export class SupplierService {
       addresses: data.addresses || [],
       bankDetails: data.bankDetails || [],
       certifications: data.certifications || [],
-      insurancePolicies: data.insurancePolicies || []
+      insurancePolicies: data.insurancePolicies || [],
+      createdBy: 'system',
+      updatedBy: 'system'
     };
     
     return await supplierRepository.create(supplierData);

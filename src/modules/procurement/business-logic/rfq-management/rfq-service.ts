@@ -3,7 +3,7 @@
  * Business logic for Request for Quote management
  */
 
-import type { 
+import { 
   RFQ, 
   RFQStatus,
   RFQResponse,
@@ -28,7 +28,9 @@ export class RFQService {
       ...data,
       rfqNumber,
       status: RFQStatus.DRAFT,
-      responses: []
+      responses: [],
+      createdBy: 'system',
+      updatedBy: 'system'
     };
     
     return await rfqRepository.create(rfqData);
