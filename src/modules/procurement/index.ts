@@ -12,6 +12,14 @@ export * from './data-access/repositories';
 // Export business logic services
 export * from './business-logic/procurement-management/procurement-service';
 
+// Export new comprehensive service layer
+export * from './business-logic/supplier-management/supplier-service';
+export * from './business-logic/purchase-requisition/purchase-requisition-service';
+export * from './business-logic/purchase-order/purchase-order-service';
+export * from './business-logic/rfq-management/rfq-service';
+export * from './business-logic/contract-management/contract-service';
+export * from './business-logic/procurement-analytics/procurement-analytics-service';
+
 // Re-export existing interfaces for backward compatibility
 
 // Core Procurement Interfaces
