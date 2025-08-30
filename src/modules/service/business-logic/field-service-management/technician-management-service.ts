@@ -5,9 +5,7 @@
 
 import type {
   Technician,
-  TechnicianStatus,
   TechnicianSkill,
-  SkillLevel,
   Certification,
   ServiceVehicle,
   TechnicianPerformance,
@@ -18,6 +16,11 @@ import type {
   AvailabilityWindow,
   GeoLocation,
   DateRange
+} from '../../types/field-service-types';
+
+import {
+  TechnicianStatus,
+  SkillLevel
 } from '../../types/field-service-types';
 
 export class TechnicianManagementService {
