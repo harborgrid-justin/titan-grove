@@ -3,7 +3,7 @@
  * Business logic for procurement management operations
  */
 
-import type { ProcurementEntity } from '../../types';
+import { ProcurementEntity } from '../../types';
 import { procurementRepository } from '../../data-access/repositories';
 
 export class ProcurementService {
