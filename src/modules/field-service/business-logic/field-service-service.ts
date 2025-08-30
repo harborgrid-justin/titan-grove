@@ -251,7 +251,7 @@ export class FieldServiceService {
         customerSatisfactionScore: 4.3,
         utilizationRate: 0.75
       },
-      status: 'AVAILABLE',
+      status: 'ACTIVE',
       currentStatus: 'AVAILABLE',
       emergencyContact: technicianData.emergencyContact || {
         name: '',
@@ -419,7 +419,7 @@ export class FieldServiceService {
             accuracy: 0,
             timestamp: new Date()
           },
-          status: tech.currentStatus,
+          status: 'AVAILABLE', // Map to valid MobileWorkforce status
           currentWorkOrder: tech.currentAssignment?.workOrderId,
           estimatedArrival: tech.currentAssignment?.estimatedCompletion
         };
@@ -746,6 +746,7 @@ export class FieldServiceService {
     return {
       totalTechnicians: 12,
       averageUtilizationRate: 0.78,
+      utilizationRate: 0.78, // Add the missing property
       productivityScore: 0.85,
       skillsGapAnalysis: {
         'ELECTRICAL': 2,
