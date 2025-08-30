@@ -241,7 +241,7 @@ export interface ServiceTechnician {
   };
   
   // Current status
-  status: 'AVAILABLE' | 'BUSY' | 'UNAVAILABLE' | 'OFF_DUTY';
+  currentStatus: 'AVAILABLE' | 'BUSY' | 'UNAVAILABLE' | 'OFF_DUTY';
   currentLocation?: {
     coordinates: { lat: number; lng: number; };
     address: string;
@@ -259,7 +259,6 @@ export interface ServiceTechnician {
     relationship: string;
     phone: string;
   };
-  
   status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | 'TERMINATED';
   hireDate: Date;
   createdDate: Date;

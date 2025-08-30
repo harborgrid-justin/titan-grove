@@ -153,7 +153,7 @@ export class FieldServiceService {
         serialNumber: serviceRequest.assetInfo.serialNumber,
         modelNumber: serviceRequest.assetInfo.modelNumber,
         location: serviceRequest.serviceAddress.address,
-        condition: 'UNKNOWN'
+        condition: 'GOOD'
       } : undefined,
       assignedTechnician: assignmentData.technicianId ? {
         technicianId: assignmentData.technicianId,
@@ -252,6 +252,7 @@ export class FieldServiceService {
         utilizationRate: 0.75
       },
       status: 'AVAILABLE',
+      currentStatus: 'AVAILABLE',
       emergencyContact: technicianData.emergencyContact || {
         name: '',
         relationship: '',
@@ -280,7 +281,7 @@ export class FieldServiceService {
     
     // Get available technicians
     const availableTechnicians = Array.from(this.technicians.values())
-      .filter(tech => tech.status === 'AVAILABLE')
+      .filter(tech => tech.currentStatus === 'AVAILABLE')
       .map(tech => ({
         technicianId: tech.technicianId,
         location: tech.homeBase.coordinates,
@@ -418,7 +419,7 @@ export class FieldServiceService {
             accuracy: 0,
             timestamp: new Date()
           },
-          status: tech.status,
+          status: tech.currentStatus,
           currentWorkOrder: tech.currentAssignment?.workOrderId,
           estimatedArrival: tech.currentAssignment?.estimatedCompletion
         };
@@ -569,7 +570,7 @@ export class FieldServiceService {
   private async findSuggestedTechnicians(serviceRequest: ServiceRequest): Promise<ServiceTechnician[]> {
     // Find technicians with matching skills and availability
     const availableTechnicians = Array.from(this.technicians.values())
-      .filter(tech => tech.status === 'AVAILABLE')
+      .filter(tech => tech.currentStatus === 'AVAILABLE')
       .filter(tech => {
         // Check if technician has required skills
         const techSkills = tech.skills.map(skill => skill.skillName);
