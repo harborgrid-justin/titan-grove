@@ -11,7 +11,10 @@ import type {
   QuoteLineItem,
   SalesOrder,
   OrderLineItem,
-  ProductConfiguration,
+  ProductConfiguration
+} from '../../types';
+
+import {
   Priority
 } from '../../types';
 
@@ -475,7 +478,7 @@ export class PricingEngineService {
       totalDiscountPercent: Math.round(totalDiscountPercent * 100) / 100,
       appliedDiscounts,
       appliedPromotions,
-      priceBreakApplied: priceBreak,
+      priceBreakApplied: priceBreak || undefined,
       pricingTrace
     };
   }

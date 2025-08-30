@@ -7,12 +7,15 @@ import type {
   SalesOrder,
   OrderLineItem,
   Shipment,
-  ShipmentStatus,
   PackageDetail,
   PackageItem,
   ShipmentLineItem,
   OrderAllocation,
-  OrderAddress,
+  OrderAddress
+} from '../../types';
+
+import {
+  ShipmentStatus,
   Priority
 } from '../../types';
 
@@ -309,6 +312,7 @@ export class OrderFulfillmentService {
         length: number;
         width: number;
         height: number;
+        unit?: 'IN' | 'CM' | 'FT' | 'M';
       };
       trackingNumber?: string;
       carrierPackageId?: string;
@@ -329,7 +333,10 @@ export class OrderFulfillmentService {
         return {
           ...pkg,
           weight: result.actualWeight,
-          dimensions: result.actualDimensions || pkg.dimensions,
+          dimensions: result.actualDimensions ? {
+            ...result.actualDimensions,
+            unit: result.actualDimensions.unit || pkg.dimensions.unit
+          } : pkg.dimensions,
           trackingNumber: result.trackingNumber
         };
       }

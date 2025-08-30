@@ -6,12 +6,15 @@
 import type { 
   Return,
   ReturnLineItem,
-  ReturnStatus,
   ReturnApproval,
   ReturnWorkflow,
   OrderAddress,
   SalesOrder,
   Shipment
+} from '../../types';
+
+import {
+  ReturnStatus
 } from '../../types';
 
 export interface ReturnAuthorization {
@@ -126,6 +129,47 @@ export interface ReturnInspectionLineItem {
 
 export class ReturnManagementService {
   
+  /**
+   * Map return types from parameter to ReturnAuthorization types
+   */
+  private mapReturnType(returnType: 'DEFECTIVE' | 'WRONG_ITEM' | 'EXCESS' | 'CREDIT_ONLY' | 'WARRANTY' | 'GOODWILL'): 'DEFECTIVE' | 'WRONG_ITEM' | 'DAMAGED_IN_TRANSIT' | 'CUSTOMER_CHANGE_MIND' | 'WARRANTY' | 'GOODWILL' {
+    switch (returnType) {
+      case 'EXCESS':
+        return 'CUSTOMER_CHANGE_MIND';
+      case 'CREDIT_ONLY':
+        return 'CUSTOMER_CHANGE_MIND';
+      default:
+        return returnType as 'DEFECTIVE' | 'WRONG_ITEM' | 'WARRANTY' | 'GOODWILL';
+    }
+  }
+
+  /**
+   * Map disposition from auth to return line item
+   */
+  private mapDisposition(disposition?: 'RESTOCK' | 'REPAIR' | 'REPLACE' | 'SCRAP' | 'RETURN_TO_VENDOR' | 'CREDIT_ONLY'): 'RESTOCK' | 'REPAIR' | 'REPLACE' | 'SCRAP' | 'RETURN_TO_VENDOR' {
+    if (!disposition) return 'RESTOCK'; // Default disposition
+    switch (disposition) {
+      case 'CREDIT_ONLY':
+        return 'RETURN_TO_VENDOR'; // Credit only items usually returned to vendor
+      default:
+        return disposition as 'RESTOCK' | 'REPAIR' | 'REPLACE' | 'SCRAP' | 'RETURN_TO_VENDOR';
+    }
+  }
+
+  /**
+   * Map return authorization type back to Return type
+   */
+  private mapReturnTypeReverse(authType: 'DEFECTIVE' | 'WRONG_ITEM' | 'DAMAGED_IN_TRANSIT' | 'CUSTOMER_CHANGE_MIND' | 'WARRANTY' | 'GOODWILL'): 'DEFECTIVE' | 'WRONG_ITEM' | 'EXCESS' | 'CREDIT_ONLY' | 'WARRANTY' | 'GOODWILL' {
+    switch (authType) {
+      case 'DAMAGED_IN_TRANSIT':
+        return 'DEFECTIVE';
+      case 'CUSTOMER_CHANGE_MIND':
+        return 'EXCESS';
+      default:
+        return authType as 'DEFECTIVE' | 'WRONG_ITEM' | 'WARRANTY' | 'GOODWILL';
+    }
+  }
+  
   // ================================
   // RETURN AUTHORIZATION
   // ================================
@@ -199,7 +243,7 @@ export class ReturnManagementService {
       customerName: authData.customerName,
       orderId: authData.orderId,
       shipmentId: authData.shipmentId,
-      authorizationType: authData.returnType,
+      authorizationType: this.mapReturnType(authData.returnType),
       authorizationDate: new Date(),
       expirationDate,
       authorizedBy: authData.requestedBy,
@@ -317,7 +361,7 @@ export class ReturnManagementService {
       returnValue: authItem.returnValue,
       restockingFee: authItem.restockingFee,
       creditAmount: authItem.returnValue - authItem.restockingFee,
-      disposition: authItem.disposition,
+      disposition: this.mapDisposition(authItem.disposition),
       condition: 'UNKNOWN',
       defectCode: undefined,
       defectDescription: authItem.notes,
@@ -336,7 +380,7 @@ export class ReturnManagementService {
       customerId: returnAuth.customerId,
       customerName: returnAuth.customerName,
       status: ReturnStatus.REQUESTED,
-      returnType: returnAuth.authorizationType,
+      returnType: this.mapReturnTypeReverse(returnAuth.authorizationType),
       reason: returnAuth.lineItems[0]?.reason || 'General return',
       returnDate: new Date(),
       returnAddress: returnAuth.returnAddress,
@@ -451,7 +495,7 @@ export class ReturnManagementService {
     await this.updateReturnStatus(returnId, ReturnStatus.RECEIVED, receivedBy);
 
     // Schedule inspection if required
-    if (returnRecord.lineItems.some(item => item.disposition !== 'CREDIT_ONLY')) {
+    if (returnRecord.lineItems.some(item => item.disposition !== 'RETURN_TO_VENDOR')) {
       await this.scheduleReturnInspection(returnId, receiptData.warehouseId);
     }
 

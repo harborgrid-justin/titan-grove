@@ -6,15 +6,18 @@
 import type { 
   SalesOrder, 
   OrderLineItem, 
-  OrderStatus, 
-  OrderType,
-  Priority,
   OrderHold,
   OrderApproval,
   OrderWorkflow,
   OrderAddress,
-  HoldType,
   OrderMetrics
+} from '../../types';
+
+import {
+  OrderStatus, 
+  OrderType,
+  Priority,
+  HoldType
 } from '../../types';
 
 export class SalesOrderService {
@@ -153,7 +156,7 @@ export class SalesOrderService {
     if (await this.requiresCreditCheck(salesOrder)) {
       const creditCheckResult = await this.performCreditCheck(salesOrder);
       if (!creditCheckResult.passed) {
-        await this.applyOrderHold(orderId, HoldType.CREDIT, creditCheckResult.reason, orderData.createdBy);
+        await this.applyOrderHold(orderId, HoldType.CREDIT, creditCheckResult.reason || 'Credit check failed', orderData.createdBy);
       }
       salesOrder.creditCheckStatus = creditCheckResult.passed ? 'PASSED' : 'FAILED';
     }

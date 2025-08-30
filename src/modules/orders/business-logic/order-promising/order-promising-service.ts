@@ -7,7 +7,10 @@ import type {
   SalesOrder,
   OrderLineItem,
   Quote,
-  QuoteLineItem,
+  QuoteLineItem
+} from '../../types';
+
+import {
   Priority
 } from '../../types';
 
