@@ -99,6 +99,14 @@ export {
 // UNIFIED ORDER MANAGER
 // ================================
 
+// Import services for internal use in OrderManager
+import { quoteService } from './business-logic/quote-management/quote-service';
+import { salesOrderService } from './business-logic/sales-order-processing/sales-order-service';
+import { orderFulfillmentService } from './business-logic/order-fulfillment/order-fulfillment-service';
+import { returnManagementService } from './business-logic/return-management/return-management-service';
+import { pricingEngineService } from './business-logic/pricing-engine/pricing-engine-service';
+import { orderAnalyticsService } from './business-logic/order-analytics/order-analytics-service';
+
 /**
  * Unified Order Manager
  * Orchestrates all order management services providing a single interface

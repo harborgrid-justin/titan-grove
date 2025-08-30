@@ -8,7 +8,10 @@ import type {
   QuoteMetrics,
   SalesOrder,
   Quote,
-  Return,
+  Return
+} from '../../types';
+
+import {
   Priority,
   OrderStatus,
   QuoteStatus

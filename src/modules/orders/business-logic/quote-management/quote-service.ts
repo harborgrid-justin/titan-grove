@@ -6,7 +6,6 @@
 import type { 
   Quote, 
   QuoteLineItem, 
-  QuoteStatus, 
   QuoteApproval, 
   QuoteWorkflow,
   CompetitorInfo,
@@ -14,8 +13,12 @@ import type {
   PricingRule,
   ProductConfiguration,
   OrderAddress,
-  Priority,
   QuoteMetrics
+} from '../../types';
+
+import {
+  QuoteStatus,
+  Priority
 } from '../../types';
 
 export class QuoteService {
