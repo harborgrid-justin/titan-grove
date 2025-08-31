@@ -22,6 +22,7 @@ import { complianceManager, ComplianceManager } from './modules/compliance';
 import { documentManager, DocumentManager } from './modules/document';
 import { workflowManager, WorkflowManager } from './modules/workflow';
 import { integrationManager, IntegrationManager } from './modules/integration';
+import { ServiceCommandCenterService } from './modules/service-command-center';
 import { MessageQueueManager, MessageQueueConfig, QueueProcessors } from './core/message-queue';
 
 export interface TitanGroveConfig {
@@ -68,6 +69,7 @@ export interface TitanGroveConfig {
     document?: boolean;
     workflow?: boolean;
     integration?: boolean;
+    serviceCommandCenter?: boolean;
   };
   multiTenant?: {
     enabled: boolean;
@@ -99,6 +101,7 @@ export interface BusinessModules {
   document: DocumentManager;
   workflow: WorkflowManager;
   integration: IntegrationManager;
+  serviceCommandCenter: ServiceCommandCenterService;
 }
 
 /**
@@ -132,6 +135,7 @@ export class TitanGrove {
   public readonly document: DocumentManager;
   public readonly workflow: WorkflowManager;
   public readonly integration: IntegrationManager;
+  public readonly serviceCommandCenter: ServiceCommandCenterService;
 
   constructor(config: TitanGroveConfig = {}) {
     this.config = {
@@ -155,7 +159,8 @@ export class TitanGrove {
         compliance: true,
         document: true,
         workflow: true,
-        integration: true
+        integration: true,
+        serviceCommandCenter: true
       },
       multiTenant: { enabled: false },
       auditLogging: { enabled: true, level: 'basic' },
@@ -220,6 +225,7 @@ export class TitanGrove {
     this.document = documentManager;
     this.workflow = workflowManager;
     this.integration = integrationManager;
+    this.serviceCommandCenter = new ServiceCommandCenterService();
   }
 
   /**
