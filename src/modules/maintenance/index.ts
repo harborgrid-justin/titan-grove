@@ -9,128 +9,28 @@ export * from './types';
 // Export data access layer
 export * from './data-access/repositories';
 
-// Export business logic services
-export * from './business-logic/maintenance-management/maintenance-service';
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
 
-// Re-export existing interfaces for backward compatibility
+// Import business logic services
+import { maintenanceService } from './business-logic/maintenance-management/maintenance-service';
 
-export interface MaintenanceAsset {
-  id: string;
-  assetNumber: string;
-  name: string;
-  description: string;
-  category: string;
-  location: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'OUT_OF_SERVICE' | 'RETIRED';
-  criticality: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  installationDate: Date;
-  warrantyExpirationDate?: Date;
-  lastMaintenanceDate?: Date;
-  nextScheduledMaintenance?: Date;
-  manufacturer?: string;
-  model?: string;
-  serialNumber?: string;
-  specifications: Record<string, any>;
-  maintenanceHistory: MaintenanceRecord[];
-}
+import type {
+  MaintenanceAsset,
+  MaintenanceWorkOrder,
+  MaintenancePart,
+  MaintenanceRecord,
+  MaintenanceSchedule,
+  MaintenanceTechnician,
+  TechnicianSkill,
+  MaintenanceKPI
+} from './types';
 
-export interface MaintenanceWorkOrder {
-  id: string;
-  workOrderNumber: string;
-  assetId: string;
-  workOrderType: 'PREVENTIVE' | 'CORRECTIVE' | 'EMERGENCY' | 'PREDICTIVE';
-  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
-  status: 'PLANNED' | 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
-  description: string;
-  assignedTechnicianId?: string;
-  estimatedHours: number;
-  actualHours?: number;
-  scheduledDate: Date;
-  completionDate?: Date;
-  totalCost?: number;
-  partsRequired: MaintenancePart[];
-  instructions: string;
-  safetyRequirements: string[];
-  createdDate: Date;
-}
-
-export interface MaintenancePart {
-  partId: string;
-  partNumber: string;
-  description: string;
-  quantityRequired: number;
-  quantityUsed?: number;
-  unitCost: number;
-  supplier?: string;
-  availability: 'IN_STOCK' | 'ORDER_REQUIRED' | 'BACKORDERED';
-}
-
-export interface MaintenanceRecord {
-  recordId: string;
-  assetId: string;
-  workOrderId: string;
-  maintenanceType: 'PREVENTIVE' | 'CORRECTIVE' | 'EMERGENCY' | 'PREDICTIVE';
-  performedBy: string;
-  performedDate: Date;
-  hoursSpent: number;
-  partsUsed: MaintenancePart[];
-  workCompleted: string;
-  nextMaintenanceDue?: Date;
-  condition: 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR' | 'CRITICAL';
-  notes: string;
-}
-
-export interface MaintenanceSchedule {
-  scheduleId: string;
-  assetId: string;
-  maintenanceType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY' | 'HOURS_BASED' | 'CONDITION_BASED';
-  frequency: number;
-  description: string;
-  estimatedDuration: number;
-  requiredSkills: string[];
-  requiredTools: string[];
-  safetyProcedures: string[];
-  isActive: boolean;
-  nextDueDate: Date;
-  createdDate: Date;
-}
-
-export interface MaintenanceTechnician {
-  technicianId: string;
-  name: string;
-  employeeNumber: string;
-  skills: TechnicianSkill[];
-  certifications: string[];
-  availabilityStatus: 'AVAILABLE' | 'BUSY' | 'ON_LEAVE' | 'TRAINING';
-  currentWorkOrders: string[];
-  performanceMetrics: {
-    completionRate: number;
-    averageTimeToComplete: number;
-    qualityRating: number;
-  };
-}
-
-export interface TechnicianSkill {
-  skillId: string;
-  skillName: string;
-  level: 'NOVICE' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT';
-  certifiedDate?: Date;
-  expirationDate?: Date;
-}
-
-export interface MaintenanceKPI {
-  metricName: string;
-  value: number;
-  target: number;
-  unit: string;
-  period: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
-  trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
-  lastCalculated: Date;
-}
-
-export class MaintenanceManager {
+export class MaintenanceManager extends BaseManager {
+  
   async createMaintenanceAsset(asset: Omit<MaintenanceAsset, 'id' | 'maintenanceHistory'>): Promise<MaintenanceAsset> {
-    const id = `asset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const id = this.generateId('asset');
+    this.logAction('createMaintenanceAsset', { id, name: asset.name });
     return { ...asset, id, maintenanceHistory: [] };
   }
 
@@ -183,16 +83,19 @@ export class MaintenanceManager {
   }
 
   async createWorkOrder(workOrder: Omit<MaintenanceWorkOrder, 'id' | 'workOrderNumber' | 'status' | 'createdDate'>): Promise<MaintenanceWorkOrder> {
-    const id = `mwo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const workOrderNumber = `MWO${Date.now().toString().slice(-6)}`;
+    const id = this.generateId('mwo');
+    const workOrderNumber = this.generateNumericId('MWO');
     
-    return {
+    const result = {
       ...workOrder,
       id,
       workOrderNumber,
-      status: 'PLANNED',
+      status: 'PLANNED' as const,
       createdDate: new Date()
     };
+    
+    this.logAction('createWorkOrder', { id, workOrderNumber, assetId: workOrder.assetId });
+    return result;
   }
 
   async assignWorkOrder(workOrderId: string, technicianId: string): Promise<{
@@ -222,7 +125,7 @@ export class MaintenanceManager {
     condition: MaintenanceRecord['condition'];
     notes: string;
   }): Promise<MaintenanceRecord> {
-    const recordId = `rec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const recordId = this.generateId('rec');
     
     return {
       recordId,

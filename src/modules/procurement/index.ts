@@ -9,39 +9,32 @@ export * from './types';
 // Export data access layer
 export * from './data-access/repositories';
 
-// Export business logic services
-export * from './business-logic/procurement-management/procurement-service';
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
 
-// Export new comprehensive service layer
-export * from './business-logic/supplier-management/supplier-service';
-export * from './business-logic/purchase-requisition/purchase-requisition-service';
-export * from './business-logic/purchase-order/purchase-order-service';
-export * from './business-logic/rfq-management/rfq-service';
-export * from './business-logic/contract-management/contract-service';
-export * from './business-logic/procurement-analytics/procurement-analytics-service';
+// Import business logic services
+import { procurementService } from './business-logic/procurement-management/procurement-service';
+import { supplierService } from './business-logic/supplier-management/supplier-service';
+import { purchaseRequisitionService } from './business-logic/purchase-requisition/purchase-requisition-service';
+import { purchaseOrderService } from './business-logic/purchase-order/purchase-order-service';
+import { rfqService } from './business-logic/rfq-management/rfq-service';
+import { contractService } from './business-logic/contract-management/contract-service';
+import { procurementAnalyticsService } from './business-logic/procurement-analytics/procurement-analytics-service';
 
-// Re-export existing interfaces for backward compatibility
+import type {
+  Supplier,
+  PurchaseOrder,
+  PurchaseRequisition,
+  RFQ,
+  Contract
+} from './types';
 
-// Core Procurement Interfaces
-export interface Supplier {
-  id: string;
-  supplierCode: string;
-  name: string;
-  type: 'INDIVIDUAL' | 'CORPORATION' | 'GOVERNMENT' | 'NON_PROFIT';
-  category: string[];
-  status: 'ACTIVE' | 'INACTIVE' | 'BLOCKED' | 'PENDING_APPROVAL';
-  contact: SupplierContact;
-  address: SupplierAddress;
-  bankDetails: BankDetails;
-  taxInfo: TaxInfo;
-  certifications: string[];
-  performanceRating: number;
-  riskRating: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  createdDate: Date;
-  lastEvaluationDate?: Date;
+export class ProcurementManager extends BaseManager {
+  
+  // Methods will be added here - removing duplicate interfaces
+  // that should be in types.ts file
+  
 }
-
-export interface SupplierContact {
   primaryContactName: string;
   primaryContactEmail: string;
   primaryContactPhone: string;
