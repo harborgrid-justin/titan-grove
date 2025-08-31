@@ -10,6 +10,26 @@ export const TIME_CONSTANTS = {
   DAYS_PER_YEAR: 365,
 } as const;
 
+// Common business constants
+export const BUSINESS_CONSTANTS = {
+  // Standard time periods
+  STANDARD_PAYMENT_TERMS_DAYS: 30,
+  STANDARD_REVIEW_PERIOD_DAYS: 30,
+  STANDARD_RFQ_RESPONSE_DAYS: 14,
+  
+  // Performance thresholds
+  OVERALLOCATION_THRESHOLD: 0.95, // 95% capacity threshold
+  BUDGET_VARIANCE_WARNING: 0.20, // 20% over budget warning
+  
+  // Default ratios
+  OVERHEAD_RATIO_DEFAULT: 0.15, // 15% overhead
+  PREMIUM_SERVICE_MULTIPLIER: 0.15, // 15% premium
+  
+  // Quality thresholds
+  MINIMUM_CONFIDENCE_LEVEL: 0.85, // 85% minimum confidence
+  TARGET_EFFICIENCY_RATIO: 0.92, // 92% efficiency target
+} as const;
+
 // Common date utilities using centralized constants
 export const DateUtils = {
   addDays: (date: Date, days: number): Date => {

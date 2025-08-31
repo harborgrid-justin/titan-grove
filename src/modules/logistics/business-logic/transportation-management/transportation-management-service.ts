@@ -181,6 +181,9 @@ export interface CarrierBidResponse {
   status: 'SUBMITTED' | 'UNDER_REVIEW' | 'SHORTLISTED' | 'REJECTED' | 'AWARDED';
 }
 
+// Import shared utilities
+import { DateUtils } from '../../../../shared/constants';
+
 export class TransportationManagementService {
   private providers: Map<string, LogisticsProvider> = new Map();
   private transportationOrders: Map<string, TransportationOrder> = new Map();
@@ -384,8 +387,8 @@ export class TransportationManagementService {
       },
       
       issueDate: bidRequest.issueDate || new Date(),
-      responseDeadline: bidRequest.responseDeadline || new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-      implementationDate: bidRequest.implementationDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      responseDeadline: bidRequest.responseDeadline || DateUtils.addDays(new Date(), 14),
+      implementationDate: bidRequest.implementationDate || DateUtils.addDays(new Date(), 30),
       
       evaluationCriteria: bidRequest.evaluationCriteria || [
         { criterion: 'Cost', weight: 40, type: 'QUANTITATIVE' },
