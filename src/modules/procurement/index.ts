@@ -35,18 +35,6 @@ export class ProcurementManager extends BaseManager {
   // that should be in types.ts file
   
 }
-  primaryContactName: string;
-  primaryContactEmail: string;
-  primaryContactPhone: string;
-  secondaryContacts?: ContactInfo[];
-}
-
-export interface ContactInfo {
-  name: string;
-  email: string;
-  phone: string;
-  role: string;
-}
 
 export interface SupplierAddress {
   street: string;
