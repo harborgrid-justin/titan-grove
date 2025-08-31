@@ -6,6 +6,20 @@
 // Export all types
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
+// Export business logic services for direct access
+export * from './business-logic/billing/billing-service';
+export * from './business-logic/collaboration/collaboration-service';
+export * from './business-logic/costing/costing-service';
+export * from './business-logic/planning/planning-service';
+export * from './business-logic/portfolio/portfolio-service';
+export * from './business-logic/resources/resources-service';
+
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 // Import business logic services
 import { projectBillingService } from './business-logic/billing/billing-service';
 import { projectCollaborationService } from './business-logic/collaboration/collaboration-service';
@@ -25,7 +39,7 @@ import type {
   TimeSheet
 } from './types';
 
-export class ProjectManager {
+export class ProjectManager extends BaseManager {
   
   // Project Billing Methods - delegate to billing service
   async createProjectContract(contract: Omit<ProjectContract, 'id' | 'contractNumber'>): Promise<ProjectContract> {

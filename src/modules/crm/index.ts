@@ -6,6 +6,12 @@
 // Export all types
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 // Import business logic services
 import { crmLeadService } from './business-logic/lead-management/lead-management-service';
 import { crmCustomerService } from './business-logic/customer-management/customer-management-service';
@@ -18,11 +24,11 @@ import type {
   Activity 
 } from './types';
 
-export class CRMManager {
+export class CRMManager extends BaseManager {
   
   // Lead Management Methods - delegate to lead service
   async createLead(lead: Omit<Lead, 'id' | 'createdDate' | 'score'>): Promise<Lead> {
-    const id = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const id = this.generateId('lead');
     const score = await this.calculateLeadScore(lead);
     
     const newLead: Lead = {
@@ -33,6 +39,7 @@ export class CRMManager {
       status: 'NEW'
     };
     
+    this.logAction('createLead', { id, score });
     return newLead;
   }
 

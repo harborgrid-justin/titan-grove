@@ -110,6 +110,9 @@ export {
 // UNIFIED ORDER MANAGER
 // ================================
 
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 // Import services for internal use in OrderManager
 import { quoteService } from './business-logic/quote-management/quote-service';
 import { salesOrderService } from './business-logic/sales-order-processing/sales-order-service';
@@ -123,9 +126,10 @@ import { orderAnalyticsService } from './business-logic/order-analytics/order-an
  * Orchestrates all order management services providing a single interface
  * for comprehensive order-to-cash operations
  */
-export class OrderManager {
+export class OrderManager extends BaseManager {
   
   constructor() {
+    super();
     // Initialize all service dependencies
   }
 
