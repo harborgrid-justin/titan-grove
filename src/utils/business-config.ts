@@ -241,6 +241,61 @@ const businessConfigSchema = Joi.object({
       deliveryPerformance: Joi.number().min(0).max(1).default(0.90),
     }).default(),
   }).default(),
+  
+  quoteManagement: Joi.object({
+    // Quote Calculation Settings
+    defaultExpirationDays: Joi.number().default(30),
+    shippingRatePerPound: Joi.number().default(5.50),
+    mockWeightPerItem: Joi.number().default(2), // pounds per item
+    
+    // Approval Thresholds
+    approvalThresholdAmount: Joi.number().default(10000),
+    maxDiscountPercentWithoutApproval: Joi.number().min(0).max(100).default(15),
+    
+    // Tax and Fees
+    standardTaxRate: Joi.number().min(0).max(1).default(0.085), // 8.5%
+    currencyConversionRate: Joi.number().default(1.25), // USD to other currency
+  }).default(),
+  
+  orderPromising: Joi.object({
+    // Lead Time Defaults (in days)
+    manufacturingLeadTime: Joi.number().default(10),
+    procurementLeadTime: Joi.number().default(7),
+    itemLeadTime: Joi.number().default(5),
+    
+    // Shipping Times by Method (in days)
+    standardShippingTime: Joi.number().default(10),
+    expressShippingTime: Joi.number().default(7),
+    overnightShippingTime: Joi.number().default(1),
+    
+    // Buffer Days by Priority
+    lowPriorityBufferDays: Joi.number().default(3),
+    mediumPriorityBufferDays: Joi.number().default(2),
+    highPriorityBufferDays: Joi.number().default(1),
+    
+    // Confidence Levels
+    minConfidenceLevel: Joi.number().min(0).max(1).default(0.1), // 10%
+    maxConfidenceLevel: Joi.number().min(0).max(1).default(1.0), // 100%
+  }).default(),
+  
+  procurement: Joi.object({
+    // Supplier Scoring Thresholds
+    supplierQualityThreshold: Joi.number().min(0).max(100).default(70),
+    supplierDeliveryThreshold: Joi.number().min(0).max(100).default(80),
+    supplierCostThreshold: Joi.number().min(0).max(100).default(75),
+    
+    // Purchase Order Limits
+    poApprovalThreshold: Joi.number().default(5000),
+    maxPoValueWithoutApproval: Joi.number().default(50000),
+    
+    // RFQ Configuration
+    rfqResponseTimeoutDays: Joi.number().default(14),
+    minSuppliersForRfq: Joi.number().default(3),
+    
+    // Contract Management
+    contractRenewalNotificationDays: Joi.number().default(90),
+    contractValueReviewThreshold: Joi.number().default(100000),
+  }).default(),
 });
 
 // Extended configuration schema including existing + business config
@@ -655,6 +710,93 @@ export function loadBusinessConfig(): BusinessConfig {
           ? parseFloat(process.env.OA_SCOPE_COMPLETION_THRESHOLD)
           : undefined,
       },
+    },
+    quoteManagement: {
+      defaultExpirationDays: process.env.QM_DEFAULT_EXPIRATION_DAYS
+        ? parseInt(process.env.QM_DEFAULT_EXPIRATION_DAYS, 10)
+        : undefined,
+      shippingRatePerPound: process.env.QM_SHIPPING_RATE_PER_POUND
+        ? parseFloat(process.env.QM_SHIPPING_RATE_PER_POUND)
+        : undefined,
+      mockWeightPerItem: process.env.QM_MOCK_WEIGHT_PER_ITEM
+        ? parseFloat(process.env.QM_MOCK_WEIGHT_PER_ITEM)
+        : undefined,
+      approvalThresholdAmount: process.env.QM_APPROVAL_THRESHOLD_AMOUNT
+        ? parseFloat(process.env.QM_APPROVAL_THRESHOLD_AMOUNT)
+        : undefined,
+      maxDiscountPercentWithoutApproval: process.env.QM_MAX_DISCOUNT_PERCENT_WITHOUT_APPROVAL
+        ? parseFloat(process.env.QM_MAX_DISCOUNT_PERCENT_WITHOUT_APPROVAL)
+        : undefined,
+      standardTaxRate: process.env.QM_STANDARD_TAX_RATE
+        ? parseFloat(process.env.QM_STANDARD_TAX_RATE)
+        : undefined,
+      currencyConversionRate: process.env.QM_CURRENCY_CONVERSION_RATE
+        ? parseFloat(process.env.QM_CURRENCY_CONVERSION_RATE)
+        : undefined,
+    },
+    orderPromising: {
+      manufacturingLeadTime: process.env.OP_MANUFACTURING_LEAD_TIME
+        ? parseInt(process.env.OP_MANUFACTURING_LEAD_TIME, 10)
+        : undefined,
+      procurementLeadTime: process.env.OP_PROCUREMENT_LEAD_TIME
+        ? parseInt(process.env.OP_PROCUREMENT_LEAD_TIME, 10)
+        : undefined,
+      itemLeadTime: process.env.OP_ITEM_LEAD_TIME
+        ? parseInt(process.env.OP_ITEM_LEAD_TIME, 10)
+        : undefined,
+      standardShippingTime: process.env.OP_STANDARD_SHIPPING_TIME
+        ? parseInt(process.env.OP_STANDARD_SHIPPING_TIME, 10)
+        : undefined,
+      expressShippingTime: process.env.OP_EXPRESS_SHIPPING_TIME
+        ? parseInt(process.env.OP_EXPRESS_SHIPPING_TIME, 10)
+        : undefined,
+      overnightShippingTime: process.env.OP_OVERNIGHT_SHIPPING_TIME
+        ? parseInt(process.env.OP_OVERNIGHT_SHIPPING_TIME, 10)
+        : undefined,
+      lowPriorityBufferDays: process.env.OP_LOW_PRIORITY_BUFFER_DAYS
+        ? parseInt(process.env.OP_LOW_PRIORITY_BUFFER_DAYS, 10)
+        : undefined,
+      mediumPriorityBufferDays: process.env.OP_MEDIUM_PRIORITY_BUFFER_DAYS
+        ? parseInt(process.env.OP_MEDIUM_PRIORITY_BUFFER_DAYS, 10)
+        : undefined,
+      highPriorityBufferDays: process.env.OP_HIGH_PRIORITY_BUFFER_DAYS
+        ? parseInt(process.env.OP_HIGH_PRIORITY_BUFFER_DAYS, 10)
+        : undefined,
+      minConfidenceLevel: process.env.OP_MIN_CONFIDENCE_LEVEL
+        ? parseFloat(process.env.OP_MIN_CONFIDENCE_LEVEL)
+        : undefined,
+      maxConfidenceLevel: process.env.OP_MAX_CONFIDENCE_LEVEL
+        ? parseFloat(process.env.OP_MAX_CONFIDENCE_LEVEL)
+        : undefined,
+    },
+    procurement: {
+      supplierQualityThreshold: process.env.PROC_SUPPLIER_QUALITY_THRESHOLD
+        ? parseInt(process.env.PROC_SUPPLIER_QUALITY_THRESHOLD, 10)
+        : undefined,
+      supplierDeliveryThreshold: process.env.PROC_SUPPLIER_DELIVERY_THRESHOLD
+        ? parseInt(process.env.PROC_SUPPLIER_DELIVERY_THRESHOLD, 10)
+        : undefined,
+      supplierCostThreshold: process.env.PROC_SUPPLIER_COST_THRESHOLD
+        ? parseInt(process.env.PROC_SUPPLIER_COST_THRESHOLD, 10)
+        : undefined,
+      poApprovalThreshold: process.env.PROC_PO_APPROVAL_THRESHOLD
+        ? parseFloat(process.env.PROC_PO_APPROVAL_THRESHOLD)
+        : undefined,
+      maxPoValueWithoutApproval: process.env.PROC_MAX_PO_VALUE_WITHOUT_APPROVAL
+        ? parseFloat(process.env.PROC_MAX_PO_VALUE_WITHOUT_APPROVAL)
+        : undefined,
+      rfqResponseTimeoutDays: process.env.PROC_RFQ_RESPONSE_TIMEOUT_DAYS
+        ? parseInt(process.env.PROC_RFQ_RESPONSE_TIMEOUT_DAYS, 10)
+        : undefined,
+      minSuppliersForRfq: process.env.PROC_MIN_SUPPLIERS_FOR_RFQ
+        ? parseInt(process.env.PROC_MIN_SUPPLIERS_FOR_RFQ, 10)
+        : undefined,
+      contractRenewalNotificationDays: process.env.PROC_CONTRACT_RENEWAL_NOTIFICATION_DAYS
+        ? parseInt(process.env.PROC_CONTRACT_RENEWAL_NOTIFICATION_DAYS, 10)
+        : undefined,
+      contractValueReviewThreshold: process.env.PROC_CONTRACT_VALUE_REVIEW_THRESHOLD
+        ? parseFloat(process.env.PROC_CONTRACT_VALUE_REVIEW_THRESHOLD)
+        : undefined,
     },
   };
 

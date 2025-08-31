@@ -21,7 +21,11 @@ import {
   Priority
 } from '../../types';
 
+import { QuoteManagementConfig } from '../../../../types/business-config';
+
 export class QuoteService {
+  
+  constructor(private config: QuoteManagementConfig) {}
   
   // ================================
   // CORE QUOTE MANAGEMENT
@@ -60,7 +64,7 @@ export class QuoteService {
     const quoteNumber = `QT${Date.now().toString().slice(-8)}`;
     
     const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + (quoteData.expirationDays || 30));
+    expirationDate.setDate(expirationDate.getDate() + (quoteData.expirationDays || this.config.defaultExpirationDays));
     
     const validUntil = new Date(expirationDate);
     
@@ -405,13 +409,13 @@ export class QuoteService {
 
   private calculateTax(amount: number, taxExempt: boolean): number {
     if (taxExempt) return 0;
-    return amount * 0.08; // 8% tax rate - would be configurable
+    return amount * this.config.standardTaxRate;
   }
 
   private async calculateShipping(lineItems: QuoteLineItem[], shippingAddress: OrderAddress): Promise<number> {
     // Implementation would integrate with shipping calculator
-    const totalWeight = lineItems.length * 2; // Mock weight calculation
-    return totalWeight * 5.50; // Mock shipping rate
+    const totalWeight = lineItems.length * this.config.mockWeightPerItem;
+    return totalWeight * this.config.shippingRatePerPound;
   }
 
   private async getTerritoryBySalesRep(salesRepId: string): Promise<string | undefined> {
@@ -421,13 +425,13 @@ export class QuoteService {
 
   private async getExchangeRate(currency: string): Promise<number> {
     // Implementation would get current exchange rates
-    return currency === 'USD' ? 1.0 : 1.25;
+    return currency === 'USD' ? 1.0 : this.config.currencyConversionRate;
   }
 
   private requiresApproval(quote: Quote): boolean {
     // Implementation would check approval rules
-    return quote.totalAmount > 10000 || 
-           quote.lineItems.some(item => item.discountPercent > 15);
+    return quote.totalAmount > this.config.approvalThresholdAmount || 
+           quote.lineItems.some(item => item.discountPercent > this.config.maxDiscountPercentWithoutApproval);
   }
 
   private async initiateQuoteApprovalWorkflow(quoteId: string): Promise<QuoteWorkflow> {
@@ -474,4 +478,6 @@ export class QuoteService {
   }
 }
 
-export const quoteService = new QuoteService();
+import { loadBusinessConfig } from '../../../../utils/business-config';
+
+export const quoteService = new QuoteService(loadBusinessConfig().quoteManagement);

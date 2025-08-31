@@ -242,6 +242,61 @@ export interface WarehouseManagementConfig {
   };
 }
 
+export interface QuoteManagementConfig {
+  // Quote Calculation Settings
+  defaultExpirationDays: number;
+  shippingRatePerPound: number; // shipping rate per pound
+  mockWeightPerItem: number; // pounds per item for calculation
+  
+  // Approval Thresholds
+  approvalThresholdAmount: number; // dollar amount requiring approval
+  maxDiscountPercentWithoutApproval: number; // percentage
+  
+  // Tax and Fees
+  standardTaxRate: number; // percentage (e.g., 8.5% = 0.085)
+  currencyConversionRate: number; // USD to other currency rate
+}
+
+export interface OrderPromisingConfig {
+  // Lead Time Defaults (in days)
+  manufacturingLeadTime: number;
+  procurementLeadTime: number;
+  itemLeadTime: number;
+  
+  // Shipping Times by Method (in days)
+  standardShippingTime: number;
+  expressShippingTime: number;
+  overnightShippingTime: number;
+  
+  // Buffer Days by Priority
+  lowPriorityBufferDays: number;
+  mediumPriorityBufferDays: number;
+  highPriorityBufferDays: number;
+  
+  // Confidence Levels
+  minConfidenceLevel: number; // minimum confidence (0.1 = 10%)
+  maxConfidenceLevel: number; // maximum confidence (1.0 = 100%)
+}
+
+export interface ProcurementConfig {
+  // Supplier Scoring Thresholds
+  supplierQualityThreshold: number; // minimum quality score (0-100)
+  supplierDeliveryThreshold: number; // minimum delivery performance (0-100)
+  supplierCostThreshold: number; // minimum cost competitiveness (0-100)
+  
+  // Purchase Order Limits
+  poApprovalThreshold: number; // dollar amount requiring approval
+  maxPoValueWithoutApproval: number;
+  
+  // RFQ Configuration
+  rfqResponseTimeoutDays: number; // days to wait for RFQ responses
+  minSuppliersForRfq: number; // minimum suppliers required for RFQ
+  
+  // Contract Management
+  contractRenewalNotificationDays: number; // days before contract expiry
+  contractValueReviewThreshold: number; // dollar threshold for contract review
+}
+
 export interface BusinessConfig {
   configureToOrder: ConfigureToOrderConfig;
   capitalAsset: CapitalAssetConfig;
@@ -250,6 +305,9 @@ export interface BusinessConfig {
   project: ProjectConfig;
   orderAnalytics: OrderAnalyticsConfig;
   warehouseManagement: WarehouseManagementConfig;
+  quoteManagement: QuoteManagementConfig;
+  orderPromising: OrderPromisingConfig;
+  procurement: ProcurementConfig;
 }
 
 // Extended Titan Configuration including business settings
