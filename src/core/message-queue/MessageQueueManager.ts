@@ -621,4 +621,51 @@ export class MessageQueueManager extends EventEmitter {
     this.emit('alert', alert);
     this.logger.warn(`Queue alert: ${alert.message}`, { alert });
   }
+
+  /**
+   * Get overall system health status
+   */
+  async getSystemHealth(): Promise<{
+    status: 'HEALTHY' | 'DEGRADED' | 'UNHEALTHY';
+    queues: Record<string, any>;
+    uptime: number;
+    timestamp: Date;
+  }> {
+    const queues: Record<string, any> = {};
+    let overallStatus: 'HEALTHY' | 'DEGRADED' | 'UNHEALTHY' = 'HEALTHY';
+
+    for (const [name, queue] of this.queues) {
+      const waiting = await queue.getWaiting();
+      const active = await queue.getActive();
+      const completed = await queue.getCompleted();
+      const failed = await queue.getFailed();
+      
+      const queueHealth = {
+        waiting: waiting.length,
+        active: active.length, 
+        completed: completed.length,
+        failed: failed.length,
+        isPaused: await queue.isPaused()
+      };
+
+      queues[name] = queueHealth;
+
+      // Simple health check - if too many failed or waiting, degrade status
+      if (queueHealth.failed > 100 || queueHealth.waiting > 1000) {
+        if (overallStatus === 'HEALTHY') overallStatus = 'DEGRADED';
+      }
+      if (queueHealth.failed > 500 || queueHealth.waiting > 5000) {
+        overallStatus = 'UNHEALTHY';
+      }
+    }
+
+    return {
+      status: overallStatus,
+      queues,
+      uptime: Date.now() - this.startTime,
+      timestamp: new Date()
+    };
+  }
+
+  private startTime = Date.now();
 }

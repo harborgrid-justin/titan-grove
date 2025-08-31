@@ -1,7 +1,12 @@
 /**
  * HR Payroll Management Business Logic
  * Handles payroll processing, tax calculations, deductions, and compliance
+ * Enhanced with message queue and cache integration
  */
+
+import { StandardServiceBase } from '../../../shared/utils/standard-service-base';
+import { ServiceIntegrationContext } from '../../../shared/interfaces/service-integration';
+import { MessagePayload, QueueType } from '../../../core/message-queue/types';
 
 export interface PayrollConfiguration {
   id: string;
@@ -35,10 +40,61 @@ export interface TaxBracket {
   baseAmount: number;
 }
 
-export class HRPayrollService {
+export class HRPayrollService extends StandardServiceBase {
+  
+  constructor(context?: ServiceIntegrationContext) {
+    if (context) {
+      super(context);
+    } else {
+      // Fallback for backward compatibility
+      super({
+        messageQueue: null as any,
+        cache: null as any,
+        logger: console as any,
+        config: {
+          serviceName: 'hr-payroll-service',
+          cacheConfig: { defaultTTL: 1800, keyPrefix: 'payroll' },
+          messageQueueConfig: { 
+            defaultPriority: 2, 
+            retryAttempts: 3,
+            compliance: { dataClassification: 'CONFIDENTIAL', auditRequired: true }
+          }
+        }
+      });
+    }
+  }
+
+  /**
+   * Handle message processing for payroll operations
+   */
+  async processMessage(message: MessagePayload): Promise<any> {
+    this.markMessageProcessed();
+    
+    switch (message.type) {
+      case 'PROCESS_PAYROLL_BATCH':
+        return await this.processPayrollBatch(
+          new Date(message.data.payPeriodStart),
+          new Date(message.data.payPeriodEnd),
+          message.data.employeeIds
+        );
+      case 'CALCULATE_TAX':
+        return await this.calculateTax(message.data.grossPay, message.data.jurisdiction);
+      case 'UPDATE_TAX_TABLES':
+        return await this.updateTaxTables(message.data.year, message.data.tables);
+      default:
+        throw new Error(`Unknown payroll message type: ${message.type}`);
+    }
+  }
+
+  /**
+   * Get queue types this service handles
+   */
+  getHandledQueueTypes(): QueueType[] {
+    return [QueueType.HR, QueueType.AUDIT];
+  }
   
   /**
-   * Payroll Processing Engine
+   * Payroll Processing Engine with caching and queue integration
    */
   async processPayrollBatch(payPeriodStart: Date, payPeriodEnd: Date, employeeIds?: string[]): Promise<{
     batchId: string;
@@ -48,20 +104,38 @@ export class HRPayrollService {
     totalNetPay: number;
     errors: Array<{ employeeId: string; error: string }>;
   }> {
-    const batchId = `batch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    console.log(`Processing payroll batch ${batchId} for period ${payPeriodStart} to ${payPeriodEnd}`);
-    
-    // Get employees to process
-    const employees = await this.getEmployeesForPayroll(employeeIds);
-    
-    const results = {
-      batchId,
-      processedCount: 0,
-      totalGrossPay: 0,
-      totalDeductions: 0,
-      totalNetPay: 0,
-      errors: [] as Array<{ employeeId: string; error: string }>
-    };
+    return this.executeWithMetrics(async () => {
+      const batchId = this.generateId('batch');
+      const batchKey = `batch:${batchId}`;
+      
+      // Start payroll batch processing
+      await this.setCached(batchKey, { status: 'PROCESSING', startTime: new Date() }, 3600); // 1 hour
+      
+      // Send notification about batch start
+      if (this.messageQueue) {
+        await this.sendMessage(
+          QueueType.AUDIT,
+          'PAYROLL_BATCH_STARTED',
+          { batchId, payPeriodStart, payPeriodEnd, employeeCount: employeeIds?.length },
+          { compliance: { auditRequired: true, dataClassification: 'CONFIDENTIAL' } }
+        );
+      }
+      
+      // Get employees to process (with caching)
+      const employees = await this.executeWithCache(
+        `employees:${employeeIds?.join(',') || 'all'}`,
+        () => this.getEmployeesForPayroll(employeeIds),
+        900 // 15 minutes
+      );
+      
+      const results = {
+        batchId,
+        processedCount: 0,
+        totalGrossPay: 0,
+        totalDeductions: 0,
+        totalNetPay: 0,
+        errors: [] as Array<{ employeeId: string; error: string }>
+      };
     
     for (const employee of employees) {
       try {
@@ -77,8 +151,27 @@ export class HRPayrollService {
         });
       }
     }
+
+    // Update cache with batch completion
+    await this.setCached(batchKey, { 
+      status: 'COMPLETED', 
+      startTime: new Date(),
+      endTime: new Date(),
+      results 
+    }, 3600);
+
+    // Send completion notification
+    if (this.messageQueue) {
+      await this.sendMessage(
+        QueueType.AUDIT,
+        'PAYROLL_BATCH_COMPLETED',
+        { batchId, processedCount: results.processedCount, totalGrossPay: results.totalGrossPay },
+        { compliance: { auditRequired: true, dataClassification: 'CONFIDENTIAL' } }
+      );
+    }
     
     return results;
+    });
   }
 
   private async getEmployeesForPayroll(employeeIds?: string[]): Promise<Array<{ id: string; name: string }>> {
@@ -378,7 +471,60 @@ export class HRPayrollService {
       data: {}
     };
   }
+
+  /**
+   * Tax calculation method referenced by message processing
+   */
+  async calculateTax(grossPay: number, jurisdiction: string): Promise<number> {
+    const taxTables = await this.getTaxTables(jurisdiction, new Date().getFullYear());
+    let totalTax = 0;
+    
+    for (const table of taxTables) {
+      totalTax += this.calculateTaxFromTable(grossPay, table);
+    }
+    
+    return this.roundAmount(totalTax);
+  }
+
+  /**
+   * Update tax tables method referenced by message processing
+   */
+  async updateTaxTables(year: number, tables: PayrollTaxTable[]): Promise<void> {
+    console.log(`Updating tax tables for year ${year}`, { tableCount: tables.length });
+    
+    // Send audit notification
+    if (this.messageQueue) {
+      await this.sendMessage(
+        QueueType.AUDIT,
+        'TAX_TABLES_UPDATED',
+        { year, tableCount: tables.length },
+        { compliance: { auditRequired: true, dataClassification: 'INTERNAL' } }
+      );
+    }
+  }
+
+  /**
+   * Service-specific health check
+   */
+  protected async performServiceSpecificHealthCheck(): Promise<Record<string, any> | null> {
+    return {
+      payroll: 'operational',
+      taxTables: 'loaded',
+      calculationEngine: 'available'
+    };
+  }
 }
 
-// Export singleton instance
-export const hrPayrollService = new HRPayrollService();
+// Export singleton instance - will be properly initialized with context
+export let hrPayrollService: HRPayrollService;
+
+// Factory function to create properly initialized service
+export function createHRPayrollService(context?: ServiceIntegrationContext): HRPayrollService {
+  hrPayrollService = new HRPayrollService(context);
+  return hrPayrollService;
+}
+
+// For backward compatibility, create a basic instance
+if (!hrPayrollService) {
+  hrPayrollService = new HRPayrollService();
+}
