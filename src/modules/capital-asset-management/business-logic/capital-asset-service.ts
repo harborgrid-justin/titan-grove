@@ -28,6 +28,7 @@ import type {
   ImplementationMilestone,
   ApprovalRecord
 } from '../types';
+import type { CapitalAssetConfig } from '../../../types/business-config';
 
 export class CapitalAssetService {
   private capitalAssets: Map<string, CapitalAsset> = new Map();
@@ -35,6 +36,8 @@ export class CapitalAssetService {
   private proposals: Map<string, InvestmentProposal> = new Map();
   private roiAnalyses: Map<string, ROIAnalysis> = new Map();
   private budgets: Map<string, CapitalBudget> = new Map();
+
+  constructor(private config: CapitalAssetConfig) {}
   private expenditures: Map<string, CapitalExpenditure> = new Map();
   private portfolios: Map<string, InvestmentPortfolio> = new Map();
   private workflows: Map<string, ApprovalWorkflow> = new Map();
@@ -851,17 +854,17 @@ export class CapitalAssetService {
 
   private generateDefaultScenarios(): any[] {
     return [
-      { name: 'Base Case', probability: 60, assumptions: {} },
-      { name: 'Optimistic', probability: 20, assumptions: {} },
-      { name: 'Pessimistic', probability: 20, assumptions: {} }
+      { name: 'Base Case', probability: this.config.roiScenarios.baseCase.probability, assumptions: {} },
+      { name: 'Optimistic', probability: this.config.roiScenarios.optimistic.probability, assumptions: {} },
+      { name: 'Pessimistic', probability: this.config.roiScenarios.pessimistic.probability, assumptions: {} }
     ];
   }
 
   private generateAllocationRecommendations(budget: CapitalBudget): string[] {
     return [
-      'Allocate 40% to production equipment for maximum ROI',
-      'Reserve 20% for regulatory compliance investments',
-      'Consider 15% allocation for digital transformation initiatives'
+      `Allocate ${this.config.budgetAllocations.productionEquipment}% to production equipment for maximum ROI`,
+      `Reserve ${this.config.budgetAllocations.regulatoryCompliance}% for regulatory compliance investments`,
+      `Consider ${this.config.budgetAllocations.digitalTransformation}% allocation for digital transformation initiatives`
     ];
   }
 

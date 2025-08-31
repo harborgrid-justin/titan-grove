@@ -1,6 +1,7 @@
 /**
- * Example Titan Grove Configuration
- * This file demonstrates various configuration options for Titan Grove
+ * Example Titan Grove Business Configuration
+ * This file demonstrates the centralized business configuration system
+ * that replaces hard-coded variables throughout the codebase.
  */
 
 const config = {
@@ -17,20 +18,6 @@ const config = {
     // username: 'postgres',
     // password: 'password',
     // ssl: false,
-    
-    // MySQL configuration
-    // type: 'mysql',
-    // host: 'localhost',
-    // port: 3306,
-    // database: 'titan_grove',
-    // username: 'root',
-    // password: 'password',
-    
-    // MongoDB configuration
-    // type: 'mongodb',
-    // host: 'localhost',
-    // port: 27017,
-    // database: 'titan_grove',
     
     // Connection pool settings
     pool: {
@@ -75,37 +62,23 @@ const config = {
     compression: true,
   },
 
-  // Optional: Cache configuration
+  // Cache configuration
   cache: {
     type: 'memory', // 'memory', 'redis'
-    
-    // Redis configuration
-    // type: 'redis',
-    // host: 'localhost',
-    // port: 6379,
-    
     ttl: 300, // 5 minutes default TTL
     maxKeys: 1000,
   },
 
-  // Optional: Analytics configuration
+  // Analytics configuration
   analytics: {
     enabled: false,
-    
-    // Elasticsearch configuration
-    // elasticsearch: {
-    //   host: 'localhost',
-    //   port: 9200,
-    //   index: 'titan-analytics',
-    // },
-    
     metrics: {
       enabled: true,
       interval: 60000, // 1 minute
     },
   },
 
-  // Optional: Cluster configuration
+  // Cluster configuration
   cluster: {
     enabled: false,
     workers: require('os').cpus().length,
@@ -116,6 +89,154 @@ const config = {
   logging: {
     level: 'info', // 'error', 'warn', 'info', 'debug'
     format: 'simple', // 'simple', 'json'
+  },
+
+  // ================================
+  // BUSINESS CONFIGURATION
+  // Centralized business logic constants
+  // ================================
+  business: {
+    
+    // Configure-to-Order Service Configuration
+    configureToOrder: {
+      // Product Configuration Defaults
+      defaultBasePrice: 1000,                    // Replaces hard-coded: 1000
+      defaultBaseCost: 650,                      // Replaces hard-coded: 650
+      defaultCostRatio: 0.65,                    // Replaces hard-coded: 0.65
+      defaultLeadTimeBase: 14,                   // Replaces hard-coded: 14
+      
+      // Manufacturing Complexity Thresholds
+      standardComplexityMaxOptions: 3,          // Replaces hard-coded: 3
+      complexComplexityMaxOptions: 8,           // Replaces hard-coded: 8
+      
+      // Engineering Configuration
+      engineeringHourlyRate: 150,               // Replaces hard-coded: 150
+      defaultEngineeringDuration: 15,           // Replaces hard-coded: 15
+      prototypeDevelopmentDuration: 10,         // Replaces hard-coded: 10
+      productionPlanningDuration: 5,            // Replaces hard-coded: 5
+      baseProjectTimeline: 30,                  // Replaces hard-coded: 30
+      
+      // Sample lead time calculations
+      defaultSampleLeadTime: 7,                 // Replaces hard-coded: 7
+    },
+
+    // Capital Asset Management Configuration
+    capitalAsset: {
+      // ROI Analysis Scenarios
+      roiScenarios: {
+        baseCase: {
+          probability: 60,                       // Replaces hard-coded: 60%
+        },
+        optimistic: {
+          probability: 20,                       // Replaces hard-coded: 20%
+        },
+        pessimistic: {
+          probability: 20,                       // Replaces hard-coded: 20%
+        },
+      },
+      
+      // Budget Allocation Recommendations
+      budgetAllocations: {
+        productionEquipment: 40,                 // Replaces hard-coded: 40%
+        regulatoryCompliance: 20,                // Replaces hard-coded: 20%
+        digitalTransformation: 15,               // Replaces hard-coded: 15%
+      },
+      
+      // Default Analysis Parameters
+      defaultDiscountRate: 0.08,                // New: 8%
+      defaultAnalysisTimeHorizon: 5,            // New: 5 years
+    },
+
+    // Manufacturing Configuration
+    manufacturing: {
+      // BOM Management
+      defaultBomComplexity: 0.65,               // Replaces hard-coded: 0.65
+      
+      // Production Lead Times (days)
+      standardProductionLeadTime: 7,            // New configurable
+      customProductionLeadTime: 21,             // New configurable
+      
+      // Cost Management Variance Thresholds (percentages)
+      materialCostVarianceThreshold: 10,        // New: 10%
+      laborCostVarianceThreshold: 15,           // New: 15%
+    },
+
+    // Message Queue Configuration
+    messageQueue: {
+      // Redis Configuration
+      redis: {
+        host: 'localhost',                       // Replaces hard-coded
+        port: 6379,                             // Replaces hard-coded
+        keyPrefix: 'titan-grove:',              // Replaces hard-coded
+        retryDelayOnFailover: 1000,             // Replaces hard-coded: 1000
+        maxRetriesPerRequest: 3,                // Replaces hard-coded: 3
+        lazyConnect: true,
+      },
+      
+      // Job Configuration
+      defaultJobOptions: {
+        removeOnComplete: 100,                  // Replaces hard-coded: 100
+        removeOnFail: 50,                       // Replaces hard-coded: 50
+        attempts: 3,                            // Replaces hard-coded: 3
+        backoff: {
+          type: 'exponential',                  // Replaces hard-coded
+          delay: 2000,                          // Replaces hard-coded: 2000
+        },
+      },
+      
+      // Monitoring Configuration
+      monitoring: {
+        enabled: true,
+        metricsRetentionDays: 7,                // Replaces hard-coded: 7
+        alertThresholds: {
+          queueDepth: 1000,                     // Replaces hard-coded: 1000
+          processingTime: 30000,                // Replaces hard-coded: 30000
+          errorRate: 0.1,                       // Replaces hard-coded: 0.1 (10%)
+        },
+      },
+      
+      // Dead Letter Queue
+      deadLetterQueue: {
+        enabled: true,
+        maxRetries: 5,                          // Replaces hard-coded: 5
+        retentionDays: 30,                      // Replaces hard-coded: 30
+      },
+      
+      // Clustering
+      clustering: {
+        enabled: false,
+        workers: 4,                             // Replaces hard-coded: 4
+        concurrency: 10,                        // Replaces hard-coded: 10
+      },
+    },
+
+    // Project Management Configuration
+    project: {
+      // Cost Performance Indicators
+      costPerformanceThresholds: {
+        budgetVarianceAlert: 0.1,               // New: 10% variance alert
+        scheduleVarianceAlert: 0.15,            // New: 15% variance alert
+      },
+      
+      // Default Billing Rates
+      billing: {
+        defaultHourlyRate: 125,                 // New configurable
+        overtimeMultiplier: 1.5,                // New configurable
+      },
+    },
+
+    // Order Analytics Configuration
+    orderAnalytics: {
+      // Credit and Risk Analysis
+      defaultCreditUtilization: 0.65,          // Replaces hard-coded: 0.65
+      
+      // Performance Thresholds
+      performanceThresholds: {
+        scopeCompletion: 0.65,                  // Replaces hard-coded: 0.65
+        qualityScore: 0.85,                     // New: 85%
+        deliveryPerformance: 0.90,              // New: 90%
+      },
+    },
   },
 };
 

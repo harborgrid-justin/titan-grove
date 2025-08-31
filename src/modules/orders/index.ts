@@ -99,6 +99,7 @@ export {
 export {
   ConfigureToOrderService,
   configureToOrderService,
+  createConfigureToOrderService,
   type ConfigurableProduct,
   type ConfigurationModel,
   type ConfigurationSession,
