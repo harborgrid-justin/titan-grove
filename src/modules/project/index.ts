@@ -38,6 +38,8 @@ import type {
   ProjectDeliverable,
   TimeSheet
 } from './types';
+import type { ProjectConfig } from '../../types/business-config';
+import { PerformanceUtils, DateUtils, IdUtils } from '../../shared/constants';
 
 export class ProjectManager extends BaseManager {
   
@@ -168,8 +170,8 @@ export class ProjectManager extends BaseManager {
 
   // Core Project Management Methods (kept in main class for basic operations)
   async createProject(project: Omit<Project, 'id' | 'projectNumber' | 'actualCost'>): Promise<Project> {
-    const id = `proj_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const projectNumber = `PRJ${Date.now().toString().slice(-6)}`;
+    const id = IdUtils.generateProjectId();
+    const projectNumber = IdUtils.generateProjectNumber();
     
     return {
       ...project,
@@ -213,29 +215,48 @@ export class ProjectManager extends BaseManager {
   }
 
   async getProjectHealthScore(projectId: string): Promise<any> {
+    // Load config for health score calculation
+    const { loadBusinessConfig } = require('../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
+    const metrics = {
+      schedule: config.healthScoreThresholds.schedulePerformanceTarget,
+      cost: config.healthScoreThresholds.costPerformanceTarget,
+      scope: config.healthScoreThresholds.scopeCompletionTarget,
+      quality: config.healthScoreThresholds.qualityMetricsTarget,
+      risk: config.healthScoreThresholds.riskScoreThreshold,
+      satisfaction: config.healthScoreThresholds.teamSatisfactionTarget
+    };
+    
+    const overallScore = PerformanceUtils.calculateHealthScore(metrics);
+    
     return {
       projectId,
-      overallScore: 85, // 0-100 scale
+      overallScore,
       metrics: {
-        schedulePerformance: 0.95,
-        costPerformance: 1.02,
-        scopeCompletion: 0.65,
-        qualityMetrics: 0.92,
-        riskScore: 0.15,
-        teamSatisfaction: 0.88
+        schedulePerformance: metrics.schedule,
+        costPerformance: metrics.cost,
+        scopeCompletion: metrics.scope,
+        qualityMetrics: metrics.quality,
+        riskScore: metrics.risk,
+        teamSatisfaction: metrics.satisfaction
       }
     };
   }
 
   async generateProjectStatusReport(projectId: string): Promise<any> {
+    // Load config for reporting values
+    const { loadBusinessConfig } = require('../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
     return {
       projectId,
       reportDate: new Date(),
       summary: {
         overallStatus: 'ON_TRACK',
-        percentComplete: 65,
-        daysRemaining: 45,
-        budgetUtilized: 0.58
+        percentComplete: Math.round(config.healthScoreThresholds.scopeCompletionTarget * 100), // Use scope completion target
+        daysRemaining: config.reporting.reportingPeriodDays,
+        budgetUtilized: 0.58 // TODO: Calculate from actual budget data
       },
       milestones: {
         upcoming: [],
@@ -249,9 +270,13 @@ export class ProjectManager extends BaseManager {
   }
 
   async generateResourceUtilizationReport(startDate: Date, endDate: Date): Promise<any> {
+    // Load config for resource targets
+    const { loadBusinessConfig } = require('../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
     return {
       reportPeriod: { startDate, endDate },
-      overallUtilization: 78,
+      overallUtilization: config.resources.utilizationTarget,
       byResource: [],
       byProject: [],
       underutilizedResources: [],
@@ -260,33 +285,53 @@ export class ProjectManager extends BaseManager {
   }
 
   async generateProjectProfitabilityReport(projectId: string): Promise<any> {
+    // Load config for financial calculations
+    const { loadBusinessConfig } = require('../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
+    // Use configuration for financial calculations
+    const materialCost = config.financials.defaultMaterialCostPerProject;
+    const revenue = materialCost * 8; // 8x material cost for revenue
+    const laborCosts = materialCost * 4.33; // ~65000 for 15000 material
+    const equipmentCosts = materialCost * 0.2; // 20% of material cost
+    const otherCosts = materialCost * 0.133; // ~2000 for 15000 material
+    const totalCosts = laborCosts + materialCost + equipmentCosts + otherCosts;
+    const grossProfit = revenue - totalCosts;
+    
     return {
       projectId,
-      revenue: 120000,
-      totalCosts: 85000,
-      grossProfit: 35000,
-      grossMargin: 0.29,
+      revenue,
+      totalCosts,
+      grossProfit,
+      grossMargin: grossProfit / revenue,
       costBreakdown: {
-        labor: 65000,
-        materials: 15000,
-        equipment: 3000,
-        other: 2000
+        labor: laborCosts,
+        materials: materialCost,
+        equipment: equipmentCosts,
+        other: otherCosts
       },
-      profitabilityIndex: 1.41
+      profitabilityIndex: revenue / totalCosts
     };
   }
 
   async getForecastCompletion(projectId: string): Promise<any> {
+    // Load config for forecasting
+    const { loadBusinessConfig } = require('../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
+    const reportingPeriod = config.reporting.reportingPeriodDays;
+    const variance = {
+      schedule: config.reporting.scheduleVarianceDays,
+      budget: config.reporting.budgetVarianceAmount
+    };
+    
     return {
       projectId,
-      currentProgress: 65,
-      estimatedCompletionDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
-      estimatedTotalCost: 92000,
-      estimatedVariance: {
-        schedule: 5,
-        budget: 7000
-      },
-      confidence: 0.85
+      currentProgress: Math.round(config.healthScoreThresholds.scopeCompletionTarget * 100),
+      estimatedCompletionDate: DateUtils.getForecastDate(new Date(), reportingPeriod),
+      estimatedTotalCost: config.financials.defaultMaterialCostPerProject * 6.13, // ~92000 equivalent
+      estimatedVariance: variance,
+      confidence: config.reporting.forecastConfidenceDefault
     };
   }
 
@@ -294,7 +339,7 @@ export class ProjectManager extends BaseManager {
   async createTimeSheet(timeSheet: Omit<TimeSheet, 'id' | 'approved' | 'approvedBy' | 'approvedDate'>): Promise<TimeSheet> {
     return {
       ...timeSheet,
-      id: `ts_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: IdUtils.generateTimeSheetId(),
       approved: false
     };
   }
@@ -304,6 +349,7 @@ export class ProjectManager extends BaseManager {
   }
 }
 
+// Export default service instance
 export const projectManager = new ProjectManager();
 
 // Export business logic services for direct access if needed

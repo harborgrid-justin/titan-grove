@@ -12,6 +12,8 @@ import {
 } from '../../types';
 import { contractRepository } from '../../data-access/repositories';
 import { PaginatedResponse, SearchParams, PerformanceLevel } from '../../../../types/common';
+import type { ProcurementConfig } from '../../../../types/business-config';
+import { DateUtils } from '../../../../shared/constants';
 
 export class ContractService {
   
@@ -93,7 +95,7 @@ export class ContractService {
       costSavings: { amount: 25000, currency: 'USD' },
       issueCount: 2,
       lastReviewDate: new Date(),
-      nextReviewDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+      nextReviewDate: DateUtils.addDays(new Date(), 30) // Use standard 30-day review period
     };
     
     // Update contract with new performance data

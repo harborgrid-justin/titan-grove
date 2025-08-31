@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { ExtendedTitanConfig, BusinessConfig } from '../types/business-config';
 
 // Business configuration schema with production-grade defaults
@@ -227,6 +227,41 @@ const businessConfigSchema = Joi.object({
     billing: Joi.object({
       defaultHourlyRate: Joi.number().default(125),
       overtimeMultiplier: Joi.number().default(1.5),
+      standardTaxRate: Joi.number().min(0).max(1).default(0.08), // 8%
+      paymentTermsDays: Joi.number().default(30), // Net 30
+    }).default(),
+    
+    // Financial Defaults
+    financials: Joi.object({
+      defaultLaborRate: Joi.number().default(150), // hourly rate
+      defaultMaterialCostPerProject: Joi.number().default(5000),
+      overheadRatio: Joi.number().min(0).default(0.15), // 15% overhead
+      profitMarginTarget: Joi.number().min(0).default(0.29), // 29% margin
+    }).default(),
+    
+    // Performance Metrics
+    healthScoreThresholds: Joi.object({
+      schedulePerformanceTarget: Joi.number().default(0.95),
+      costPerformanceTarget: Joi.number().default(1.02),
+      scopeCompletionTarget: Joi.number().min(0).max(1).default(0.65),
+      qualityMetricsTarget: Joi.number().min(0).max(1).default(0.92),
+      riskScoreThreshold: Joi.number().min(0).max(1).default(0.15),
+      teamSatisfactionTarget: Joi.number().min(0).max(1).default(0.88),
+    }).default(),
+    
+    // Resource Management
+    resources: Joi.object({
+      utilizationTarget: Joi.number().min(0).max(100).default(78), // 78%
+      overallocationThreshold: Joi.number().min(0).max(1).default(0.95), // 95%
+      capacityBufferRatio: Joi.number().min(0).default(0.15), // 15% buffer
+    }).default(),
+    
+    // Reporting Defaults
+    reporting: Joi.object({
+      forecastConfidenceDefault: Joi.number().min(0).max(1).default(0.85),
+      reportingPeriodDays: Joi.number().default(45),
+      scheduleVarianceDays: Joi.number().default(5),
+      budgetVarianceAmount: Joi.number().default(7000),
     }).default(),
   }).default(),
   
@@ -698,6 +733,71 @@ export function loadBusinessConfig(): BusinessConfig {
       billing: {
         defaultHourlyRate: process.env.PROJ_DEFAULT_HOURLY_RATE
           ? parseInt(process.env.PROJ_DEFAULT_HOURLY_RATE, 10)
+          : undefined,
+        standardTaxRate: process.env.PROJ_STANDARD_TAX_RATE
+          ? parseFloat(process.env.PROJ_STANDARD_TAX_RATE)
+          : undefined,
+        paymentTermsDays: process.env.PROJ_PAYMENT_TERMS_DAYS
+          ? parseInt(process.env.PROJ_PAYMENT_TERMS_DAYS, 10)
+          : undefined,
+      },
+      financials: {
+        defaultLaborRate: process.env.PROJ_DEFAULT_LABOR_RATE
+          ? parseInt(process.env.PROJ_DEFAULT_LABOR_RATE, 10)
+          : undefined,
+        defaultMaterialCostPerProject: process.env.PROJ_DEFAULT_MATERIAL_COST
+          ? parseInt(process.env.PROJ_DEFAULT_MATERIAL_COST, 10)
+          : undefined,
+        overheadRatio: process.env.PROJ_OVERHEAD_RATIO
+          ? parseFloat(process.env.PROJ_OVERHEAD_RATIO)
+          : undefined,
+        profitMarginTarget: process.env.PROJ_PROFIT_MARGIN_TARGET
+          ? parseFloat(process.env.PROJ_PROFIT_MARGIN_TARGET)
+          : undefined,
+      },
+      healthScoreThresholds: {
+        schedulePerformanceTarget: process.env.PROJ_SCHEDULE_PERFORMANCE_TARGET
+          ? parseFloat(process.env.PROJ_SCHEDULE_PERFORMANCE_TARGET)
+          : undefined,
+        costPerformanceTarget: process.env.PROJ_COST_PERFORMANCE_TARGET
+          ? parseFloat(process.env.PROJ_COST_PERFORMANCE_TARGET)
+          : undefined,
+        scopeCompletionTarget: process.env.PROJ_SCOPE_COMPLETION_TARGET
+          ? parseFloat(process.env.PROJ_SCOPE_COMPLETION_TARGET)
+          : undefined,
+        qualityMetricsTarget: process.env.PROJ_QUALITY_METRICS_TARGET
+          ? parseFloat(process.env.PROJ_QUALITY_METRICS_TARGET)
+          : undefined,
+        riskScoreThreshold: process.env.PROJ_RISK_SCORE_THRESHOLD
+          ? parseFloat(process.env.PROJ_RISK_SCORE_THRESHOLD)
+          : undefined,
+        teamSatisfactionTarget: process.env.PROJ_TEAM_SATISFACTION_TARGET
+          ? parseFloat(process.env.PROJ_TEAM_SATISFACTION_TARGET)
+          : undefined,
+      },
+      resources: {
+        utilizationTarget: process.env.PROJ_UTILIZATION_TARGET
+          ? parseInt(process.env.PROJ_UTILIZATION_TARGET, 10)
+          : undefined,
+        overallocationThreshold: process.env.PROJ_OVERALLOCATION_THRESHOLD
+          ? parseFloat(process.env.PROJ_OVERALLOCATION_THRESHOLD)
+          : undefined,
+        capacityBufferRatio: process.env.PROJ_CAPACITY_BUFFER_RATIO
+          ? parseFloat(process.env.PROJ_CAPACITY_BUFFER_RATIO)
+          : undefined,
+      },
+      reporting: {
+        forecastConfidenceDefault: process.env.PROJ_FORECAST_CONFIDENCE_DEFAULT
+          ? parseFloat(process.env.PROJ_FORECAST_CONFIDENCE_DEFAULT)
+          : undefined,
+        reportingPeriodDays: process.env.PROJ_REPORTING_PERIOD_DAYS
+          ? parseInt(process.env.PROJ_REPORTING_PERIOD_DAYS, 10)
+          : undefined,
+        scheduleVarianceDays: process.env.PROJ_SCHEDULE_VARIANCE_DAYS
+          ? parseInt(process.env.PROJ_SCHEDULE_VARIANCE_DAYS, 10)
+          : undefined,
+        budgetVarianceAmount: process.env.PROJ_BUDGET_VARIANCE_AMOUNT
+          ? parseInt(process.env.PROJ_BUDGET_VARIANCE_AMOUNT, 10)
           : undefined,
       },
     },

@@ -4,6 +4,7 @@
  */
 
 import type { AnalyticsMetric } from '../../types';
+import { DateUtils } from '../../../../shared/constants';
 
 export class MetricsService {
   
@@ -124,7 +125,7 @@ export class MetricsService {
       periods,
       forecast: Array.from({ length: periods }, (_, i) => ({
         period: i + 1,
-        periodName: new Date(Date.now() + (i + 1) * 30 * 24 * 60 * 60 * 1000).toISOString().substring(0, 7),
+        periodName: DateUtils.addMonths(new Date(), i + 1).toISOString().substring(0, 7),
         value: Math.round(baseValue * (1 + Math.random() * 0.2 - 0.1)),
         confidence: Math.max(0.5, 0.95 - (i * 0.08))
       })),
@@ -214,7 +215,7 @@ export class MetricsService {
 
   async getMetricHistory(metricName: string, periods: number): Promise<any> {
     const history = Array.from({ length: periods }, (_, i) => ({
-      period: new Date(Date.now() - (periods - i) * 30 * 24 * 60 * 60 * 1000).toISOString().substring(0, 7),
+      period: DateUtils.addMonths(new Date(), -(periods - i)).toISOString().substring(0, 7),
       value: Math.random() * 100000,
       change: Math.random() * 20 - 10
     }));
