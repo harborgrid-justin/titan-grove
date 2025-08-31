@@ -11,6 +11,7 @@ import type {
   SalesOrder,
   Quote
 } from '../../types';
+import type { ConfigureToOrderConfig } from '../../../../types/business-config';
 
 export interface ConfigurableProduct {
   id: string;
@@ -122,6 +123,8 @@ export class ConfigureToOrderService {
 
   // Simple in-memory session storage for demo/testing
   private sessions = new Map<string, ConfigurationSession>();
+  
+  constructor(private config: ConfigureToOrderConfig) {}
 
   // ================================
   // CONFIGURATION MANAGEMENT
@@ -337,25 +340,25 @@ export class ConfigureToOrderService {
       engineeringPhases: [
         {
           phaseName: 'Design & Engineering',
-          duration: 15,
+          duration: this.config.defaultEngineeringDuration,
           deliverables: ['Technical drawings', 'BOM specification', 'Manufacturing routing'],
           dependencies: ['Customer approval']
         },
         {
           phaseName: 'Prototype Development',
-          duration: engineeringRequirements.prototypeRequired ? 10 : 0,
+          duration: engineeringRequirements.prototypeRequired ? this.config.prototypeDevelopmentDuration : 0,
           deliverables: ['Prototype unit', 'Test results'],
           dependencies: ['Design completion']
         },
         {
           phaseName: 'Production Planning',
-          duration: 5,
+          duration: this.config.productionPlanningDuration,
           deliverables: ['Production BOM', 'Work instructions', 'Quality plan'],
           dependencies: ['Prototype approval']
         }
       ],
-      totalEngineeringCost: engineeringRequirements.engineeringHours * 150, // $150/hour
-      projectTimeline: 30 + (engineeringRequirements.prototypeRequired ? 10 : 0)
+      totalEngineeringCost: engineeringRequirements.engineeringHours * this.config.engineeringHourlyRate,
+      projectTimeline: this.config.baseProjectTimeline + (engineeringRequirements.prototypeRequired ? this.config.prototypeDevelopmentDuration : 0)
     };
   }
 
@@ -370,8 +373,8 @@ export class ConfigureToOrderService {
       productCode: `CFG_${productId}`,
       name: 'Configurable Product',
       description: 'Mass customization product',
-      basePrice: 1000,
-      baseCost: 650,
+      basePrice: this.config.defaultBasePrice,
+      baseCost: this.config.defaultBaseCost,
       configurationType: 'BUILD_TO_ORDER',
       configurationModel: {
         id: 'model_001',
@@ -384,7 +387,7 @@ export class ConfigureToOrderService {
       },
       options: [],
       rules: [],
-      leadTimeBase: 14,
+      leadTimeBase: this.config.defaultLeadTimeBase,
       isConfigurable: true,
       status: 'ACTIVE'
     };
@@ -429,8 +432,8 @@ export class ConfigureToOrderService {
 
     for (const option of session.configuration.selectedOptions) {
       totalPrice += option.extendedPrice;
-      totalCost += option.extendedPrice * 0.65; // Assume 65% cost ratio
-      maxLeadTime = Math.max(maxLeadTime, 7); // Sample lead time calculation
+      totalCost += option.extendedPrice * this.config.defaultCostRatio;
+      maxLeadTime = Math.max(maxLeadTime, this.config.defaultSampleLeadTime);
     }
 
     session.configuration.totalPrice = totalPrice;
@@ -498,21 +501,21 @@ export class ConfigureToOrderService {
     // Base product pricing
     pricingBreakdown.push({
       component: 'Base Product',
-      price: 1000,
-      cost: 650
+      price: this.config.defaultBasePrice,
+      cost: this.config.defaultBaseCost
     });
-    totalPrice += 1000;
-    totalCost += 650;
+    totalPrice += this.config.defaultBasePrice;
+    totalCost += this.config.defaultBaseCost;
 
     // Option pricing
     for (const option of configuration.selectedOptions) {
       pricingBreakdown.push({
         component: option.optionName,
         price: option.extendedPrice,
-        cost: option.extendedPrice * 0.65
+        cost: option.extendedPrice * this.config.defaultCostRatio
       });
       totalPrice += option.extendedPrice;
-      totalCost += option.extendedPrice * 0.65;
+      totalCost += option.extendedPrice * this.config.defaultCostRatio;
     }
 
     return {
@@ -526,8 +529,8 @@ export class ConfigureToOrderService {
   private assessManufacturability(configuration: ProductConfiguration): 'STANDARD' | 'COMPLEX' | 'CUSTOM' {
     const optionCount = configuration.selectedOptions.length;
     
-    if (optionCount <= 3) return 'STANDARD';
-    if (optionCount <= 8) return 'COMPLEX';
+    if (optionCount <= this.config.standardComplexityMaxOptions) return 'STANDARD';
+    if (optionCount <= this.config.complexComplexityMaxOptions) return 'COMPLEX';
     return 'CUSTOM';
   }
 
@@ -636,4 +639,22 @@ export class ConfigureToOrderService {
 }
 
 // Export service instance
-export const configureToOrderService = new ConfigureToOrderService();
+export const configureToOrderService = new ConfigureToOrderService({
+  defaultBasePrice: 1000,
+  defaultBaseCost: 650,
+  defaultCostRatio: 0.65,
+  defaultLeadTimeBase: 14,
+  standardComplexityMaxOptions: 3,
+  complexComplexityMaxOptions: 8,
+  engineeringHourlyRate: 150,
+  defaultEngineeringDuration: 15,
+  prototypeDevelopmentDuration: 10,
+  productionPlanningDuration: 5,
+  baseProjectTimeline: 30,
+  defaultSampleLeadTime: 7,
+});
+
+// Factory function for creating service with custom configuration
+export function createConfigureToOrderService(config: ConfigureToOrderConfig): ConfigureToOrderService {
+  return new ConfigureToOrderService(config);
+}

@@ -88,6 +88,7 @@ export {
 export { 
   OrderAnalyticsService, 
   orderAnalyticsService,
+  createOrderAnalyticsService,
   type OrderAnalyticsDashboard,
   type OrderPerformanceMetrics,
   type SalesPerformanceAnalysis,
@@ -99,6 +100,7 @@ export {
 export {
   ConfigureToOrderService,
   configureToOrderService,
+  createConfigureToOrderService,
   type ConfigurableProduct,
   type ConfigurationModel,
   type ConfigurationSession,

@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { TitanGrove } from './business-suite';
-import { loadConfig } from './utils/config';
+import { loadConfig, loadExtendedConfig } from './utils/config';
 
 async function main() {
   try {

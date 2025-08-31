@@ -78,6 +78,9 @@ export interface TitanConfig {
   };
 }
 
+// Re-export business configuration types
+export * from './business-config';
+
 export interface QueryOptions {
   select?: string[] | string;
   where?: Record<string, any>;
