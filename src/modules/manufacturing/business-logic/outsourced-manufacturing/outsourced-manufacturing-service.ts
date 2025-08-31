@@ -48,7 +48,7 @@ export interface QualityAgreement {
   qualityStandards: string[];
   inspectionRequirements: InspectionRequirement[];
   defectRateLimits: { warning: number; critical: number };
-  corrective Action Plans: CorrectiveActionPlan[];
+  correctiveActionPlans: CorrectiveActionPlan[];
   auditSchedule: AuditSchedule;
   qualityMetrics: QualityMetric[];
 }

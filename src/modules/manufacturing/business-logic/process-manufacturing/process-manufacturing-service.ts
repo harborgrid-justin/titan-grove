@@ -21,6 +21,35 @@ export interface ProcessProduct {
   costModel: ProcessCostModel;
 }
 
+export interface QualityProfile {
+  qualityLevel: 'STANDARD' | 'PREMIUM' | 'PHARMACEUTICAL_GRADE';
+  criticalQualityAttributes: string[];
+  shelfLife: number;
+  stabilityRequirements: string[];
+}
+
+export interface ProcessCostModel {
+  costingMethod: 'STANDARD' | 'ACTUAL' | 'AVERAGE';
+  costElements: Array<{
+    element: string;
+    percentage: number;
+    variability: number;
+  }>;
+  costDrivers: string[];
+}
+
+export interface ProcessParameter {
+  parameterId: string;
+  parameterName: string;
+  targetValue: number;
+  actualValue: number;
+  unit: string;
+  tolerance: { min: number; max: number };
+  timestamp: Date;
+  status: 'IN_SPEC' | 'OUT_OF_SPEC' | 'WARNING';
+  operatorId: string;
+}
+
 export interface ProductFormulation {
   formulationId: string;
   version: string;

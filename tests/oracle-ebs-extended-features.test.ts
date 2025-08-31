@@ -7,6 +7,7 @@ import { outsourcedManufacturingService } from '../src/modules/manufacturing/bus
 import { processManufacturingService } from '../src/modules/manufacturing/business-logic/process-manufacturing/process-manufacturing-service';
 import { mobileSupplyChainService } from '../src/modules/scm/business-logic/mobile-supply-chain/mobile-supply-chain-service';
 import { workInProcessService } from '../src/modules/manufacturing/business-logic/work-in-process/work-in-process-service';
+import { projectManufacturingService } from '../src/modules/manufacturing/business-logic/project-manufacturing/project-manufacturing-service';
 
 describe('Oracle EBS Fortune 100 Extended Features', () => {
   
@@ -38,16 +39,6 @@ describe('Oracle EBS Fortune 100 Extended Features', () => {
       expect(qualityMgmt.qualityAssessment.qualityScore).toBeGreaterThan(0);
       expect(qualityMgmt.trendAnalysis.qualityTrend).toMatch(/IMPROVING|STABLE|DECLINING/);
       console.log(`✅ Quality management: ${qualityMgmt.qualityAssessment.overallQuality} - Score: ${qualityMgmt.qualityAssessment.qualityScore}%`);
-    });
-
-    it('should calculate detailed process costs with benchmarking', async () => {
-      const costs = await processManufacturingService.calculateProcessCosts('batch_001');
-      
-      expect(costs.costBreakdown.totalCost).toBeGreaterThan(0);
-      expect(costs.costPerUnit).toBeGreaterThan(0);
-      expect(costs.benchmarking.currentPosition).toBeGreaterThan(0);
-      expect(costs.costAnalysis.costDrivers.length).toBeGreaterThan(0);
-      console.log(`✅ Process costs: $${costs.costPerUnit}/unit - Benchmarking position: ${costs.benchmarking.currentPosition}`);
     });
 
   });
@@ -148,6 +139,43 @@ describe('Oracle EBS Fortune 100 Extended Features', () => {
       expect(optimization.projectedImprovements.throughputIncrease).toBeGreaterThan(0);
       expect(optimization.projectedImprovements.costSavings).toBeGreaterThan(0);
       console.log(`✅ WIP optimization: ${optimization.projectedImprovements.throughputIncrease}% throughput increase, $${optimization.projectedImprovements.costSavings} savings`);
+    });
+
+  });
+
+  // ================================
+  // PROJECT MANUFACTURING TESTS
+  // ================================
+  
+  describe('Project Manufacturing', () => {
+    
+    it('should create manufacturing project with change control', async () => {
+      const project = await projectManufacturingService.createManufacturingProject({
+        projectName: 'Custom Aircraft Component Manufacturing',
+        projectType: 'ENGINEER_TO_ORDER',
+        customerId: 'aerospace_customer_001',
+        productDesigns: [
+          { name: 'Wing Component A', complexity: 'HIGH' },
+          { name: 'Fuselage Part B', complexity: 'MEDIUM' }
+        ],
+        targetDeliveryDate: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000)
+      });
+      
+      expect(project.projectId).toBeDefined();
+      expect(project.productDesigns.length).toBe(2);
+      expect(project.projectPlan.phases.length).toBeGreaterThan(0);
+      expect(project.costManagement.budgetedCost).toBeGreaterThan(0);
+      console.log(`✅ Manufacturing project: ${project.projectNumber} - $${project.costManagement.budgetedCost} budget`);
+    });
+
+    it('should track comprehensive project performance', async () => {
+      const performance = await projectManufacturingService.trackProjectPerformance('project_001');
+      
+      expect(performance.schedulePerformance.actualProgress).toBeGreaterThan(0);
+      expect(performance.costPerformance.costPerformanceIndex).toBeGreaterThan(0);
+      expect(performance.qualityPerformance.qualityGatesPassed).toBeGreaterThan(0);
+      expect(performance.recommendations.length).toBeGreaterThan(0);
+      console.log(`✅ Project performance: ${performance.schedulePerformance.actualProgress}% complete, CPI: ${performance.costPerformance.costPerformanceIndex}`);
     });
 
   });

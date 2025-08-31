@@ -352,7 +352,7 @@ export class MobileSupplyChainService {
     performanceMetrics: {
       averageResponseTime: number;
       offlineUsage: number;
-      syncSuccess Rate: number;
+      syncSuccessRate: number;
       errorRate: number;
     };
   }> {

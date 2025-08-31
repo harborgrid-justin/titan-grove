@@ -16,9 +16,22 @@ export * from './business-logic/mes-discrete/discrete-manufacturing-mes-service'
 export * from './business-logic/mes-process/process-manufacturing-mes-service';
 export * from './business-logic/master-production-scheduling/master-production-scheduling-service';
 export * from './business-logic/flow-manufacturing/flow-manufacturing-service';
-export * from './business-logic/outsourced-manufacturing/outsourced-manufacturing-service';
-export * from './business-logic/process-manufacturing/process-manufacturing-service';
+export {
+  OutsourcedManufacturingService,
+  outsourcedManufacturingService,
+  type OutsourcedManufacturingContract,
+  type OutsourcedOrder,
+  type SupplierPerformance
+} from './business-logic/outsourced-manufacturing/outsourced-manufacturing-service';
+export {
+  ProcessManufacturingService,
+  processManufacturingService,
+  type ProcessProduct,
+  type ProcessManufacturingExecution,
+  type RegulatoryRequirements
+} from './business-logic/process-manufacturing/process-manufacturing-service';
 export * from './business-logic/work-in-process/work-in-process-service';
+export * from './business-logic/project-manufacturing/project-manufacturing-service';
 
 // Import services for unified manager
 import { bomManagementService } from './business-logic/bom-management/bom-management-service';
