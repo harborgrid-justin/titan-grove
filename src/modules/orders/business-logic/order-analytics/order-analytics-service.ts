@@ -17,6 +17,8 @@ import {
   QuoteStatus
 } from '../../types';
 
+import type { OrderAnalyticsConfig } from '../../../../types/business-config';
+
 export interface OrderAnalyticsDashboard {
   id: string;
   name: string;
@@ -280,6 +282,8 @@ export interface ForecastAnalysis {
 }
 
 export class OrderAnalyticsService {
+  
+  constructor(private config: OrderAnalyticsConfig) {}
   
   // ================================
   // KPI CALCULATION
@@ -549,7 +553,7 @@ export class OrderAnalyticsService {
         returnRate: 0.02,
         paymentBehavior: {
           averageDaysToPay: 28,
-          creditUtilization: 0.65,
+          creditUtilization: this.config.defaultCreditUtilization,
           paymentMethods: ['NET_30', 'CREDIT_CARD']
         },
         preferences: {
@@ -767,4 +771,16 @@ export class OrderAnalyticsService {
   }
 }
 
-export const orderAnalyticsService = new OrderAnalyticsService();
+export const orderAnalyticsService = new OrderAnalyticsService({
+  defaultCreditUtilization: 0.65,
+  performanceThresholds: {
+    scopeCompletion: 0.65,
+    qualityScore: 0.85,
+    deliveryPerformance: 0.90,
+  },
+});
+
+// Factory function for creating service with custom configuration
+export function createOrderAnalyticsService(config: OrderAnalyticsConfig): OrderAnalyticsService {
+  return new OrderAnalyticsService(config);
+}

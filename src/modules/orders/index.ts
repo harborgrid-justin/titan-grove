@@ -88,6 +88,7 @@ export {
 export { 
   OrderAnalyticsService, 
   orderAnalyticsService,
+  createOrderAnalyticsService,
   type OrderAnalyticsDashboard,
   type OrderPerformanceMetrics,
   type SalesPerformanceAnalysis,
