@@ -14,6 +14,8 @@ import {
   Priority
 } from '../../types';
 
+import { OrderPromisingConfig } from '../../../../types/business-config';
+
 export interface AvailabilityCheck {
   itemId: string;
   itemCode: string;
@@ -135,6 +137,8 @@ export interface ConsolidationOpportunity {
 }
 
 export class OrderPromisingService {
+  
+  constructor(private config: OrderPromisingConfig) {}
   
   // ================================
   // AVAILABILITY CHECKING
@@ -550,39 +554,39 @@ export class OrderPromisingService {
 
   private async getManufacturingLeadTime(itemId: string, quantity: number): Promise<number> {
     // Implementation would calculate manufacturing lead time
-    return 10;
+    return this.config.manufacturingLeadTime;
   }
 
   private async getProcurementLeadTime(itemId: string, quantity: number): Promise<number> {
     // Implementation would calculate procurement lead time
-    return 7;
+    return this.config.procurementLeadTime;
   }
 
   private async getItemLeadTime(itemId: string): Promise<number> {
     // Implementation would get standard lead time for item
-    return 5;
+    return this.config.itemLeadTime;
   }
 
   private async calculateShippingTime(shippingAddress: any, shippingMethod: string): Promise<number> {
     // Implementation would calculate shipping time based on address and method
     const shippingTimes = {
-      'OVERNIGHT': 1,
-      'EXPRESS': 2,
-      'GROUND': 5,
-      'FREIGHT': 7
+      'OVERNIGHT': this.config.overnightShippingTime,
+      'EXPRESS': this.config.expressShippingTime,
+      'GROUND': this.config.standardShippingTime,
+      'FREIGHT': this.config.standardShippingTime
     };
-    return shippingTimes[shippingMethod as keyof typeof shippingTimes] || 5;
+    return shippingTimes[shippingMethod as keyof typeof shippingTimes] || this.config.standardShippingTime;
   }
 
   private getDefaultBufferDays(priority: Priority): number {
     const bufferDays = {
-      [Priority.LOW]: 3,
-      [Priority.MEDIUM]: 2,
-      [Priority.HIGH]: 1,
+      [Priority.LOW]: this.config.lowPriorityBufferDays,
+      [Priority.MEDIUM]: this.config.mediumPriorityBufferDays,
+      [Priority.HIGH]: this.config.highPriorityBufferDays,
       [Priority.URGENT]: 0,
       [Priority.CRITICAL]: 0
     };
-    return bufferDays[priority] || 2;
+    return bufferDays[priority] || this.config.mediumPriorityBufferDays;
   }
 
   private calculateConfidence(components: PromiseDateComponent[], risks: PromiseRisk[], constraints: AvailabilityConstraint[]): number {
@@ -602,7 +606,7 @@ export class OrderPromisingService {
       }
     }
 
-    return Math.max(0.1, Math.min(1.0, confidence));
+    return Math.max(this.config.minConfidenceLevel, Math.min(this.config.maxConfidenceLevel, confidence));
   }
 
   private groupLineItemsForDelivery(lineItems: OrderLineItem[], promiseDates: PromiseDate[], options?: any): any[] {
@@ -632,4 +636,6 @@ export class OrderPromisingService {
   }
 }
 
-export const orderPromisingService = new OrderPromisingService();
+import { loadBusinessConfig } from '../../../../utils/business-config';
+
+export const orderPromisingService = new OrderPromisingService(loadBusinessConfig().orderPromising);

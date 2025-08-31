@@ -5,6 +5,8 @@
 
 import { BusinessConfig } from '../types/business-config';
 import { loadBusinessConfig } from './business-config';
+import { QuoteService } from '../modules/orders/business-logic/quote-management/quote-service';
+import { OrderPromisingService } from '../modules/orders/business-logic/order-promising/order-promising-service';
 
 // ================================
 // WAREHOUSE MANAGEMENT FACTORY
@@ -157,6 +159,69 @@ export function createManufacturingIntegrationService(config?: BusinessConfig) {
   };
 }
 
+// ================================
+// QUOTE MANAGEMENT FACTORY
+// ================================
+
+/**
+ * Creates a configurable quote management service instance
+ */
+export function createQuoteManagementService(config?: BusinessConfig) {
+  const businessConfig = config || loadBusinessConfig();
+  return new QuoteService(businessConfig.quoteManagement);
+}
+
+// ================================
+// ORDER PROMISING FACTORY
+// ================================
+
+/**
+ * Creates a configurable order promising service instance
+ */
+export function createOrderPromisingService(config?: BusinessConfig) {
+  const businessConfig = config || loadBusinessConfig();
+  return new OrderPromisingService(businessConfig.orderPromising);
+}
+
+// ================================
+// PROCUREMENT FACTORY
+// ================================
+
+/**
+ * Creates configuration helpers for procurement services
+ */
+export function createProcurementServiceConfig(config?: BusinessConfig) {
+  const businessConfig = config || loadBusinessConfig();
+  
+  return {
+    config: businessConfig.procurement,
+    
+    getSupplierScoringThresholds: () => ({
+      qualityThreshold: businessConfig.procurement.supplierQualityThreshold,
+      deliveryThreshold: businessConfig.procurement.supplierDeliveryThreshold,
+      costThreshold: businessConfig.procurement.supplierCostThreshold
+    }),
+    
+    getPurchaseOrderLimits: () => ({
+      approvalThreshold: businessConfig.procurement.poApprovalThreshold,
+      maxValueWithoutApproval: businessConfig.procurement.maxPoValueWithoutApproval
+    }),
+    
+    getRfqConfiguration: () => ({
+      responseTimeoutDays: businessConfig.procurement.rfqResponseTimeoutDays,
+      minimumSuppliers: businessConfig.procurement.minSuppliersForRfq
+    }),
+    
+    getContractManagementConfig: () => ({
+      renewalNotificationDays: businessConfig.procurement.contractRenewalNotificationDays,
+      valueReviewThreshold: businessConfig.procurement.contractValueReviewThreshold
+    })
+  };
+}
+
 // Export singleton instances
 export const warehouseManagementServiceFactory = createWarehouseManagementService();
 export const manufacturingIntegrationServiceFactory = createManufacturingIntegrationService();
+export const quoteManagementServiceFactory = createQuoteManagementService();
+export const orderPromisingServiceFactory = createOrderPromisingService();
+export const procurementServiceConfigFactory = createProcurementServiceConfig();
