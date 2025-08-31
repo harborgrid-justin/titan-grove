@@ -160,6 +160,41 @@ export interface ProjectConfig {
   billing: {
     defaultHourlyRate: number;
     overtimeMultiplier: number;
+    standardTaxRate: number; // percentage (e.g., 0.08 = 8%)
+    paymentTermsDays: number; // standard payment terms in days
+  };
+  
+  // Financial Defaults
+  financials: {
+    defaultLaborRate: number; // hourly rate for labor calculations
+    defaultMaterialCostPerProject: number; // typical material costs
+    overheadRatio: number; // overhead as ratio of total cost
+    profitMarginTarget: number; // target profit margin ratio
+  };
+  
+  // Performance Metrics
+  healthScoreThresholds: {
+    schedulePerformanceTarget: number; // 1.0 = on schedule
+    costPerformanceTarget: number; // 1.0 = on budget  
+    scopeCompletionTarget: number; // ratio target
+    qualityMetricsTarget: number; // quality ratio target
+    riskScoreThreshold: number; // maximum acceptable risk
+    teamSatisfactionTarget: number; // minimum team satisfaction
+  };
+  
+  // Resource Management
+  resources: {
+    utilizationTarget: number; // target utilization percentage
+    overallocationThreshold: number; // threshold for overallocation detection
+    capacityBufferRatio: number; // buffer for capacity planning
+  };
+  
+  // Reporting Defaults
+  reporting: {
+    forecastConfidenceDefault: number; // default confidence level
+    reportingPeriodDays: number; // default reporting period
+    scheduleVarianceDays: number; // default schedule variance
+    budgetVarianceAmount: number; // default budget variance
   };
 }
 

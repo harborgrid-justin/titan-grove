@@ -1,4 +1,6 @@
 /**
+ * Quality Management Module
+ * Comprehensive quality assurance and control functionality
  */
 
 // Export all types
@@ -9,6 +11,9 @@ export * from './data-access/repositories';
 
 // Export business logic services
 export * from './business-logic/quality-management/quality-service';
+
+// Import shared utilities
+import { DateUtils } from '../../shared/constants';
 
 // Re-export existing interfaces for backward compatibility
 
@@ -498,7 +503,7 @@ export class QualityManager {
       auditScope: scope,
       auditStandards: standards,
       auditTeam,
-      plannedDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      plannedDate: DateUtils.addDays(new Date(), 30), // Use standard 30-day planning period
       status: 'PLANNED',
       findings: [],
       nonConformances: [],

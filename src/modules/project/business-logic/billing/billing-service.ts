@@ -9,12 +9,14 @@ import type {
   ProjectContract, 
   ProjectBudget 
 } from '../../types';
+import type { ProjectConfig } from '../../../../types/business-config';
+import { IdUtils, DateUtils, FinancialUtils } from '../../../../shared/constants';
 
 export class ProjectBillingService {
   
   async createProjectContract(contract: Omit<ProjectContract, 'id' | 'contractNumber'>): Promise<ProjectContract> {
-    const id = `contract_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const contractNumber = `CON${Date.now().toString().slice(-6)}`;
+    const id = IdUtils.generateContractId();
+    const contractNumber = IdUtils.generateContractNumber();
     
     return {
       ...contract,
@@ -28,10 +30,14 @@ export class ProjectBillingService {
     billingType: ProjectInvoice['billingType'],
     billingPeriod?: { startDate: Date; endDate: Date }
   ): Promise<ProjectInvoice> {
-    const id = `inv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const invoiceNumber = `INV${Date.now().toString().slice(-6)}`;
+    const id = IdUtils.generateInvoiceId();
+    const invoiceNumber = IdUtils.generateInvoiceNumber();
     const invoiceDate = new Date();
-    const dueDate = new Date(invoiceDate.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+    
+    // Load config for payment terms
+    const { loadBusinessConfig } = require('../../../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    const dueDate = DateUtils.getPaymentDueDate(invoiceDate, config.billing.paymentTermsDays);
     
     let lineItems: ProjectInvoiceItem[] = [];
     let subtotal = 0;
@@ -53,7 +59,7 @@ export class ProjectBillingService {
     }
     
     subtotal = lineItems.reduce((sum, item) => sum + item.amount, 0);
-    const taxAmount = subtotal * 0.08; // 8% tax rate
+    const taxAmount = FinancialUtils.calculateTax(subtotal, config.billing.standardTaxRate);
     const totalAmount = subtotal + taxAmount;
     
     return {
@@ -69,7 +75,7 @@ export class ProjectBillingService {
       totalAmount,
       status: 'DRAFT',
       lineItems,
-      paymentTerms: 'Net 30'
+      paymentTerms: `Net ${config.billing.paymentTermsDays}`
     };
   }
 
@@ -77,10 +83,14 @@ export class ProjectBillingService {
     projectId: string, 
     period?: { startDate: Date; endDate: Date }
   ): Promise<ProjectInvoiceItem[]> {
+    // Load config for labor rates
+    const { loadBusinessConfig } = require('../../../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
     // In real implementation, would query timesheet data
-    const laborHours = 120;
-    const hourlyRate = 150;
-    const materialCosts = 5000;
+    const laborHours = 120; // TODO: Replace with actual timesheet data
+    const hourlyRate = config.financials.defaultLaborRate;
+    const materialCosts = config.financials.defaultMaterialCostPerProject;
     
     return [
       {
@@ -172,24 +182,37 @@ export class ProjectBillingService {
   }
 
   private async calculateMonthlyInflow(projectId: string, month: Date): Promise<number> {
+    // Load config for calculations
+    const { loadBusinessConfig } = require('../../../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
     // Would calculate expected payments for the month based on invoicing schedule
-    return 15000; // Example amount
+    return config.financials.defaultMaterialCostPerProject * 3; // Example: 3x material cost for monthly inflow
   }
 
   private async calculateMonthlyOutflow(projectId: string, month: Date): Promise<number> {
+    // Load config for calculations
+    const { loadBusinessConfig } = require('../../../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
     // Would calculate expected costs for the month
-    return 12000; // Example amount
+    const baseCost = config.financials.defaultMaterialCostPerProject;
+    return baseCost * 2.4; // Example: 2.4x material cost for monthly outflow
   }
 
   async measureProjectProfitability(projectId: string): Promise<any> {
-    const revenue = 120000;
+    // Load config for financial calculations
+    const { loadBusinessConfig } = require('../../../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
+    const revenue = config.financials.defaultMaterialCostPerProject * 24; // 24x material cost as revenue baseline
     const laborCosts = await this.calculateProjectLaborCost(projectId);
-    const materialCosts = 15000;
-    const overheadCosts = 8000;
+    const materialCosts = config.financials.defaultMaterialCostPerProject * 3; // 3x for enhanced materials
+    const overheadCosts = FinancialUtils.calculateOverhead(laborCosts + materialCosts, config.financials.overheadRatio);
     const totalCosts = laborCosts + materialCosts + overheadCosts;
     
     const grossProfit = revenue - totalCosts;
-    const grossMargin = grossProfit / revenue;
+    const grossMargin = FinancialUtils.calculateProfitMargin(revenue, totalCosts);
     const profitMargin = grossProfit / totalCosts;
     
     return {
@@ -211,10 +234,14 @@ export class ProjectBillingService {
   }
 
   async calculateProjectLaborCost(projectId: string): Promise<number> {
+    // Load config for billing rates
+    const { loadBusinessConfig } = require('../../../../utils/business-config');
+    const config = loadBusinessConfig().project;
+    
     // Would query actual timesheet data
-    // For now, return example calculation
-    const totalHours = 400;
-    const averageRate = 125;
+    // For now, return example calculation using configuration
+    const totalHours = 400; // TODO: Query from timesheet data
+    const averageRate = config.billing.defaultHourlyRate;
     return totalHours * averageRate;
   }
 
@@ -244,5 +271,5 @@ export class ProjectBillingService {
   }
 }
 
-// Export singleton instance
+// Export singleton instance with centralized configuration
 export const projectBillingService = new ProjectBillingService();

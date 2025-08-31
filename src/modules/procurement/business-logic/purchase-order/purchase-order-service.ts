@@ -11,6 +11,8 @@ import {
 } from '../../types';
 import { purchaseOrderRepository } from '../../data-access/repositories';
 import { PaginatedResponse, SearchParams } from '../../../../types/common';
+import type { QuoteManagementConfig } from '../../../../types/business-config';
+import { FinancialUtils } from '../../../../shared/constants';
 
 export class PurchaseOrderService {
   
@@ -101,7 +103,12 @@ export class PurchaseOrderService {
 
   private calculateTotals(lineItems: any[]): { subtotal: any; tax: any } {
     const subtotalAmount = lineItems.reduce((sum, item) => sum + item.totalPrice.amount, 0);
-    const taxAmount = subtotalAmount * 0.08;
+    
+    // Load config for tax calculation
+    const { loadBusinessConfig } = require('../../../../utils/business-config');
+    const config = loadBusinessConfig().quoteManagement;
+    
+    const taxAmount = FinancialUtils.calculateTax(subtotalAmount, config.standardTaxRate);
     const currency = lineItems[0]?.totalPrice?.currency || 'USD';
     
     return {

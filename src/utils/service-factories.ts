@@ -219,9 +219,30 @@ export function createProcurementServiceConfig(config?: BusinessConfig) {
   };
 }
 
+// ================================
+// PROJECT MANAGEMENT FACTORY
+// ================================
+
+/**
+ * Creates configurable project management service instances
+ */
+export function createProjectServices(config?: BusinessConfig) {
+  const businessConfig = config || loadBusinessConfig();
+  const projectConfig = businessConfig.project;
+  
+  // Import project services
+  const { createProjectBillingService } = require('../modules/project/business-logic/billing/billing-service');
+  
+  return {
+    billing: createProjectBillingService(projectConfig),
+    config: projectConfig
+  };
+}
+
 // Export singleton instances
 export const warehouseManagementServiceFactory = createWarehouseManagementService();
 export const manufacturingIntegrationServiceFactory = createManufacturingIntegrationService();
 export const quoteManagementServiceFactory = createQuoteManagementService();
 export const orderPromisingServiceFactory = createOrderPromisingService();
 export const procurementServiceConfigFactory = createProcurementServiceConfig();
+export const projectServicesFactory = createProjectServices();
