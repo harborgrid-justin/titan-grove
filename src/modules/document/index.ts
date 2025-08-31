@@ -11,6 +11,7 @@ export * from './data-access/repositories';
 
 // Export business logic services
 export * from './business-logic/document-management/document-service';
+export * from './business-logic/e-records/e-records-service';
 
 // Re-export existing interfaces for backward compatibility
 
