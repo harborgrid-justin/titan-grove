@@ -4,6 +4,8 @@
  * predictive analytics, and autonomous manufacturing systems
  */
 
+import { manufacturingIntegrationServiceFactory } from '../../../utils/service-factories';
+
 export interface IoTDevice {
   deviceId: string;
   deviceName: string;
@@ -118,7 +120,7 @@ export class Industry40Service {
           connectivity: {
             protocol: 'MQTT',
             signalStrength: 95,
-            latency: 12
+            latency: manufacturingIntegrationServiceFactory.getSensorLatencies().temperatureSensorLatency
           }
         },
         {
@@ -140,7 +142,7 @@ export class Industry40Service {
           connectivity: {
             protocol: 'OPC_UA',
             signalStrength: 88,
-            latency: 18
+            latency: manufacturingIntegrationServiceFactory.getSensorLatencies().vibrationSensorLatency
           }
         },
         {
@@ -162,7 +164,7 @@ export class Industry40Service {
           connectivity: {
             protocol: 'ETHERNET_IP',
             signalStrength: 92,
-            latency: 8
+            latency: manufacturingIntegrationServiceFactory.getSensorLatencies().pressureSensorLatency
           }
         }
       ],

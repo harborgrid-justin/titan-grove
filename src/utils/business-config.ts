@@ -62,6 +62,110 @@ const businessConfigSchema = Joi.object({
     // Cost Management
     materialCostVarianceThreshold: Joi.number().min(0).default(10), // 10%
     laborCostVarianceThreshold: Joi.number().min(0).default(15), // 15%
+    
+    // Industry 4.0 Configuration
+    industry40: Joi.object({
+      iot: Joi.object({
+        defaultSensorLatency: Joi.number().default(125), // milliseconds
+        temperatureSensorLatency: Joi.number().default(12), // milliseconds
+        vibrationSensorLatency: Joi.number().default(18), // milliseconds
+        pressureSensorLatency: Joi.number().default(8), // milliseconds
+      }).default(),
+    }).default(),
+    
+    // Supply Chain Integration
+    integration: Joi.object({
+      dataVolumes: Joi.object({
+        demandPlanningKb: Joi.number().default(1547), // KB per sync
+        productionDataKb: Joi.number().default(2847), // KB per minute
+        inventoryDataKb: Joi.number().default(256), // KB
+        maintenanceDataKb: Joi.number().default(125), // KB
+      }).default(),
+      latencies: Joi.object({
+        demandPlanningMs: Joi.number().default(150), // milliseconds
+        productionDataMs: Joi.number().default(12), // milliseconds
+        inventoryDataMs: Joi.number().default(180), // milliseconds
+        maintenanceDataMs: Joi.number().default(35), // milliseconds
+      }).default(),
+      reliability: Joi.object({
+        demandPlanningPercent: Joi.number().min(0).max(100).default(98.5), // percentage
+        productionDataPercent: Joi.number().min(0).max(100).default(98.9), // percentage
+        inventoryDataPercent: Joi.number().min(0).max(100).default(99.2), // percentage
+        maintenanceDataPercent: Joi.number().min(0).max(100).default(97.8), // percentage
+      }).default(),
+      migrationValue: Joi.object({
+        immediateValue: Joi.number().default(2500000), // Cost savings year 1
+        strategicValue: Joi.number().default(8750000), // 3-year strategic value
+        futureValue: Joi.number().default(15000000), // 5-year future value
+      }).default(),
+    }).default(),
+  }).default(),
+  
+  warehouseManagement: Joi.object({
+    // Operating Hours Configuration
+    operatingHours: Joi.object({
+      weekday: Joi.object({
+        startTime: Joi.string().default('08:00'),
+        endTime: Joi.string().default('17:00'),
+        timeZone: Joi.string().default('EST'),
+      }).default(),
+      saturday: Joi.object({
+        startTime: Joi.string().default('09:00'),
+        endTime: Joi.string().default('13:00'),
+        timeZone: Joi.string().default('EST'),
+      }).default(),
+    }).default(),
+    
+    // Shift Configuration
+    shifts: Joi.object({
+      day: Joi.object({
+        startTime: Joi.string().default('08:00'),
+        endTime: Joi.string().default('16:00'),
+        staffCount: Joi.number().default(30),
+      }).default(),
+      evening: Joi.object({
+        startTime: Joi.string().default('16:00'),
+        endTime: Joi.string().default('24:00'),
+        staffCount: Joi.number().default(15),
+      }).default(),
+      night: Joi.object({
+        startTime: Joi.string().default('00:00'),
+        endTime: Joi.string().default('08:00'),
+        staffCount: Joi.number().default(5),
+      }).default(),
+    }).default(),
+    
+    // Storage Area Defaults
+    storageAreas: Joi.object({
+      bulk: Joi.object({
+        dimensions: Joi.object({
+          length: Joi.number().default(200), // feet
+          width: Joi.number().default(100), // feet
+          height: Joi.number().default(30), // feet
+        }).default(),
+        totalPositions: Joi.number().default(1000),
+        utilizationRate: Joi.number().min(0).max(100).default(80), // percentage
+        turnoverRate: Joi.number().default(12), // times per year
+      }).default(),
+      rack: Joi.object({
+        dimensions: Joi.object({
+          length: Joi.number().default(300), // feet
+          width: Joi.number().default(150), // feet
+          height: Joi.number().default(25), // feet
+        }).default(),
+        totalPositions: Joi.number().default(2000),
+        utilizationRate: Joi.number().min(0).max(100).default(75), // percentage
+        turnoverRate: Joi.number().default(24), // times per year
+      }).default(),
+    }).default(),
+    
+    // Dock Door Configuration
+    dockDoors: Joi.object({
+      defaultCount: Joi.number().default(10),
+      doorHeight: Joi.number().default(9), // feet
+      doorWidth: Joi.number().default(8), // feet
+      levelingDockDefault: Joi.boolean().default(true),
+    }).default(),
   }).default(),
   
   messageQueue: Joi.object({
@@ -343,6 +447,174 @@ export function loadBusinessConfig(): BusinessConfig {
       defaultBomComplexity: process.env.MFG_DEFAULT_BOM_COMPLEXITY
         ? parseFloat(process.env.MFG_DEFAULT_BOM_COMPLEXITY)
         : undefined,
+      industry40: {
+        iot: {
+          defaultSensorLatency: process.env.MFG_INDUSTRY40_DEFAULT_SENSOR_LATENCY
+            ? parseInt(process.env.MFG_INDUSTRY40_DEFAULT_SENSOR_LATENCY, 10)
+            : undefined,
+          temperatureSensorLatency: process.env.MFG_INDUSTRY40_TEMPERATURE_SENSOR_LATENCY
+            ? parseInt(process.env.MFG_INDUSTRY40_TEMPERATURE_SENSOR_LATENCY, 10)
+            : undefined,
+          vibrationSensorLatency: process.env.MFG_INDUSTRY40_VIBRATION_SENSOR_LATENCY
+            ? parseInt(process.env.MFG_INDUSTRY40_VIBRATION_SENSOR_LATENCY, 10)
+            : undefined,
+          pressureSensorLatency: process.env.MFG_INDUSTRY40_PRESSURE_SENSOR_LATENCY
+            ? parseInt(process.env.MFG_INDUSTRY40_PRESSURE_SENSOR_LATENCY, 10)
+            : undefined,
+        },
+      },
+      integration: {
+        dataVolumes: {
+          demandPlanningKb: process.env.MFG_INTEGRATION_DEMAND_PLANNING_KB
+            ? parseInt(process.env.MFG_INTEGRATION_DEMAND_PLANNING_KB, 10)
+            : undefined,
+          productionDataKb: process.env.MFG_INTEGRATION_PRODUCTION_DATA_KB
+            ? parseInt(process.env.MFG_INTEGRATION_PRODUCTION_DATA_KB, 10)
+            : undefined,
+          inventoryDataKb: process.env.MFG_INTEGRATION_INVENTORY_DATA_KB
+            ? parseInt(process.env.MFG_INTEGRATION_INVENTORY_DATA_KB, 10)
+            : undefined,
+          maintenanceDataKb: process.env.MFG_INTEGRATION_MAINTENANCE_DATA_KB
+            ? parseInt(process.env.MFG_INTEGRATION_MAINTENANCE_DATA_KB, 10)
+            : undefined,
+        },
+        latencies: {
+          demandPlanningMs: process.env.MFG_INTEGRATION_DEMAND_PLANNING_MS
+            ? parseInt(process.env.MFG_INTEGRATION_DEMAND_PLANNING_MS, 10)
+            : undefined,
+          productionDataMs: process.env.MFG_INTEGRATION_PRODUCTION_DATA_MS
+            ? parseInt(process.env.MFG_INTEGRATION_PRODUCTION_DATA_MS, 10)
+            : undefined,
+          inventoryDataMs: process.env.MFG_INTEGRATION_INVENTORY_DATA_MS
+            ? parseInt(process.env.MFG_INTEGRATION_INVENTORY_DATA_MS, 10)
+            : undefined,
+          maintenanceDataMs: process.env.MFG_INTEGRATION_MAINTENANCE_DATA_MS
+            ? parseInt(process.env.MFG_INTEGRATION_MAINTENANCE_DATA_MS, 10)
+            : undefined,
+        },
+        reliability: {
+          demandPlanningPercent: process.env.MFG_INTEGRATION_DEMAND_PLANNING_RELIABILITY
+            ? parseFloat(process.env.MFG_INTEGRATION_DEMAND_PLANNING_RELIABILITY)
+            : undefined,
+          productionDataPercent: process.env.MFG_INTEGRATION_PRODUCTION_DATA_RELIABILITY
+            ? parseFloat(process.env.MFG_INTEGRATION_PRODUCTION_DATA_RELIABILITY)
+            : undefined,
+          inventoryDataPercent: process.env.MFG_INTEGRATION_INVENTORY_DATA_RELIABILITY
+            ? parseFloat(process.env.MFG_INTEGRATION_INVENTORY_DATA_RELIABILITY)
+            : undefined,
+          maintenanceDataPercent: process.env.MFG_INTEGRATION_MAINTENANCE_DATA_RELIABILITY
+            ? parseFloat(process.env.MFG_INTEGRATION_MAINTENANCE_DATA_RELIABILITY)
+            : undefined,
+        },
+        migrationValue: {
+          immediateValue: process.env.MFG_INTEGRATION_IMMEDIATE_VALUE
+            ? parseInt(process.env.MFG_INTEGRATION_IMMEDIATE_VALUE, 10)
+            : undefined,
+          strategicValue: process.env.MFG_INTEGRATION_STRATEGIC_VALUE
+            ? parseInt(process.env.MFG_INTEGRATION_STRATEGIC_VALUE, 10)
+            : undefined,
+          futureValue: process.env.MFG_INTEGRATION_FUTURE_VALUE
+            ? parseInt(process.env.MFG_INTEGRATION_FUTURE_VALUE, 10)
+            : undefined,
+        },
+      },
+    },
+    warehouseManagement: {
+      operatingHours: {
+        weekday: {
+          startTime: process.env.WM_WEEKDAY_START_TIME,
+          endTime: process.env.WM_WEEKDAY_END_TIME,
+          timeZone: process.env.WM_WEEKDAY_TIMEZONE,
+        },
+        saturday: {
+          startTime: process.env.WM_SATURDAY_START_TIME,
+          endTime: process.env.WM_SATURDAY_END_TIME,
+          timeZone: process.env.WM_SATURDAY_TIMEZONE,
+        },
+      },
+      shifts: {
+        day: {
+          startTime: process.env.WM_DAY_SHIFT_START_TIME,
+          endTime: process.env.WM_DAY_SHIFT_END_TIME,
+          staffCount: process.env.WM_DAY_SHIFT_STAFF_COUNT
+            ? parseInt(process.env.WM_DAY_SHIFT_STAFF_COUNT, 10)
+            : undefined,
+        },
+        evening: {
+          startTime: process.env.WM_EVENING_SHIFT_START_TIME,
+          endTime: process.env.WM_EVENING_SHIFT_END_TIME,
+          staffCount: process.env.WM_EVENING_SHIFT_STAFF_COUNT
+            ? parseInt(process.env.WM_EVENING_SHIFT_STAFF_COUNT, 10)
+            : undefined,
+        },
+        night: {
+          startTime: process.env.WM_NIGHT_SHIFT_START_TIME,
+          endTime: process.env.WM_NIGHT_SHIFT_END_TIME,
+          staffCount: process.env.WM_NIGHT_SHIFT_STAFF_COUNT
+            ? parseInt(process.env.WM_NIGHT_SHIFT_STAFF_COUNT, 10)
+            : undefined,
+        },
+      },
+      storageAreas: {
+        bulk: {
+          dimensions: {
+            length: process.env.WM_BULK_STORAGE_LENGTH
+              ? parseInt(process.env.WM_BULK_STORAGE_LENGTH, 10)
+              : undefined,
+            width: process.env.WM_BULK_STORAGE_WIDTH
+              ? parseInt(process.env.WM_BULK_STORAGE_WIDTH, 10)
+              : undefined,
+            height: process.env.WM_BULK_STORAGE_HEIGHT
+              ? parseInt(process.env.WM_BULK_STORAGE_HEIGHT, 10)
+              : undefined,
+          },
+          totalPositions: process.env.WM_BULK_TOTAL_POSITIONS
+            ? parseInt(process.env.WM_BULK_TOTAL_POSITIONS, 10)
+            : undefined,
+          utilizationRate: process.env.WM_BULK_UTILIZATION_RATE
+            ? parseInt(process.env.WM_BULK_UTILIZATION_RATE, 10)
+            : undefined,
+          turnoverRate: process.env.WM_BULK_TURNOVER_RATE
+            ? parseInt(process.env.WM_BULK_TURNOVER_RATE, 10)
+            : undefined,
+        },
+        rack: {
+          dimensions: {
+            length: process.env.WM_RACK_STORAGE_LENGTH
+              ? parseInt(process.env.WM_RACK_STORAGE_LENGTH, 10)
+              : undefined,
+            width: process.env.WM_RACK_STORAGE_WIDTH
+              ? parseInt(process.env.WM_RACK_STORAGE_WIDTH, 10)
+              : undefined,
+            height: process.env.WM_RACK_STORAGE_HEIGHT
+              ? parseInt(process.env.WM_RACK_STORAGE_HEIGHT, 10)
+              : undefined,
+          },
+          totalPositions: process.env.WM_RACK_TOTAL_POSITIONS
+            ? parseInt(process.env.WM_RACK_TOTAL_POSITIONS, 10)
+            : undefined,
+          utilizationRate: process.env.WM_RACK_UTILIZATION_RATE
+            ? parseInt(process.env.WM_RACK_UTILIZATION_RATE, 10)
+            : undefined,
+          turnoverRate: process.env.WM_RACK_TURNOVER_RATE
+            ? parseInt(process.env.WM_RACK_TURNOVER_RATE, 10)
+            : undefined,
+        },
+      },
+      dockDoors: {
+        defaultCount: process.env.WM_DOCK_DOOR_COUNT
+          ? parseInt(process.env.WM_DOCK_DOOR_COUNT, 10)
+          : undefined,
+        doorHeight: process.env.WM_DOCK_DOOR_HEIGHT
+          ? parseInt(process.env.WM_DOCK_DOOR_HEIGHT, 10)
+          : undefined,
+        doorWidth: process.env.WM_DOCK_DOOR_WIDTH
+          ? parseInt(process.env.WM_DOCK_DOOR_WIDTH, 10)
+          : undefined,
+        levelingDockDefault: process.env.WM_DOCK_LEVELING_DEFAULT
+          ? process.env.WM_DOCK_LEVELING_DEFAULT === 'true'
+          : undefined,
+      },
     },
     messageQueue: {
       clustering: {
