@@ -62,6 +62,43 @@ export interface ManufacturingConfig {
   // Cost Management
   materialCostVarianceThreshold: number; // percentage
   laborCostVarianceThreshold: number; // percentage
+  
+  // Industry 4.0 Configuration
+  industry40: {
+    iot: {
+      defaultSensorLatency: number; // milliseconds
+      temperatureSensorLatency: number; // milliseconds
+      vibrationSensorLatency: number; // milliseconds
+      pressureSensorLatency: number; // milliseconds
+    };
+  };
+  
+  // Supply Chain Integration
+  integration: {
+    dataVolumes: {
+      demandPlanningKb: number; // KB per sync
+      productionDataKb: number; // KB per minute
+      inventoryDataKb: number; // KB
+      maintenanceDataKb: number; // KB
+    };
+    latencies: {
+      demandPlanningMs: number; // milliseconds
+      productionDataMs: number; // milliseconds
+      inventoryDataMs: number; // milliseconds
+      maintenanceDataMs: number; // milliseconds
+    };
+    reliability: {
+      demandPlanningPercent: number; // percentage
+      productionDataPercent: number; // percentage
+      inventoryDataPercent: number; // percentage
+      maintenanceDataPercent: number; // percentage
+    };
+    migrationValue: {
+      immediateValue: number; // Cost savings year 1
+      strategicValue: number; // 3-year strategic value
+      futureValue: number; // 5-year future value
+    };
+  };
 }
 
 export interface MessageQueueConfig {
@@ -138,6 +175,73 @@ export interface OrderAnalyticsConfig {
   };
 }
 
+export interface WarehouseManagementConfig {
+  // Operating Hours Configuration
+  operatingHours: {
+    weekday: {
+      startTime: string;
+      endTime: string;
+      timeZone: string;
+    };
+    saturday: {
+      startTime: string;
+      endTime: string;
+      timeZone: string;
+    };
+  };
+  
+  // Shift Configuration
+  shifts: {
+    day: {
+      startTime: string;
+      endTime: string;
+      staffCount: number;
+    };
+    evening: {
+      startTime: string;
+      endTime: string;
+      staffCount: number;
+    };
+    night: {
+      startTime: string;
+      endTime: string;
+      staffCount: number;
+    };
+  };
+  
+  // Storage Area Defaults
+  storageAreas: {
+    bulk: {
+      dimensions: {
+        length: number; // feet
+        width: number; // feet
+        height: number; // feet
+      };
+      totalPositions: number;
+      utilizationRate: number; // percentage
+      turnoverRate: number; // times per year
+    };
+    rack: {
+      dimensions: {
+        length: number; // feet
+        width: number; // feet
+        height: number; // feet
+      };
+      totalPositions: number;
+      utilizationRate: number; // percentage
+      turnoverRate: number; // times per year
+    };
+  };
+  
+  // Dock Door Configuration
+  dockDoors: {
+    defaultCount: number;
+    doorHeight: number; // feet
+    doorWidth: number; // feet
+    levelingDockDefault: boolean;
+  };
+}
+
 export interface BusinessConfig {
   configureToOrder: ConfigureToOrderConfig;
   capitalAsset: CapitalAssetConfig;
@@ -145,6 +249,7 @@ export interface BusinessConfig {
   messageQueue: MessageQueueConfig;
   project: ProjectConfig;
   orderAnalytics: OrderAnalyticsConfig;
+  warehouseManagement: WarehouseManagementConfig;
 }
 
 // Extended Titan Configuration including business settings

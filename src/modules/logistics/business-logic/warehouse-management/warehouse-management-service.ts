@@ -26,6 +26,7 @@ import type {
   SafetyRequirement,
   StorageRequirement
 } from '../../types';
+import { warehouseManagementServiceFactory } from '../../../../utils/service-factories';
 
 export interface WarehouseFacility {
   facilityId: string;
@@ -832,92 +833,29 @@ export class WarehouseManagementService {
   // ================================
 
   private getDefaultOperatingHours(): OperatingHours {
-    const standardHours = { startTime: '08:00', endTime: '17:00', timeZone: 'EST' };
-    return {
-      monday: standardHours,
-      tuesday: standardHours,
-      wednesday: standardHours,
-      thursday: standardHours,
-      friday: standardHours,
-      saturday: { startTime: '09:00', endTime: '13:00', timeZone: 'EST' },
-      holidays: []
-    };
+    return warehouseManagementServiceFactory.getDefaultOperatingHours();
   }
 
   private getDefaultShiftPattern(): ShiftPattern[] {
-    return [
-      {
-        shiftId: 'day',
-        shiftName: 'Day Shift',
-        startTime: '08:00',
-        endTime: '16:00',
-        staffCount: 30
-      },
-      {
-        shiftId: 'evening',
-        shiftName: 'Evening Shift', 
-        startTime: '16:00',
-        endTime: '24:00',
-        staffCount: 15
-      },
-      {
-        shiftId: 'night',
-        shiftName: 'Night Shift',
-        startTime: '00:00',
-        endTime: '08:00',
-        staffCount: 5
-      }
-    ];
+    return warehouseManagementServiceFactory.getDefaultShiftPattern();
   }
 
   private createDefaultStorageAreas(facility: WarehouseFacility): StorageArea[] {
-    const totalArea = facility.totalSquareFootage;
-    
-    return [
-      {
-        areaId: 'bulk-1',
-        areaName: 'Bulk Storage Area 1',
-        areaType: 'BULK',
-        dimensions: { length: 200, width: 100, height: 30, unit: 'FT' },
-        storageType: 'PALLET',
-        totalPositions: 1000,
-        availablePositions: 800,
-        temperatureControlled: false,
-        humidityControlled: false,
-        specialRequirements: [],
-        utilizationRate: 80,
-        turnoverRate: 12,
-        status: 'ACTIVE'
-      },
-      {
-        areaId: 'rack-1',
-        areaName: 'Selective Rack Area',
-        areaType: 'RACK',
-        dimensions: { length: 300, width: 150, height: 25, unit: 'FT' },
-        storageType: 'CASE',
-        totalPositions: 2000,
-        availablePositions: 1500,
-        temperatureControlled: false,
-        humidityControlled: false,
-        specialRequirements: [],
-        utilizationRate: 75,
-        turnoverRate: 24,
-        status: 'ACTIVE'
-      }
-    ];
+    return warehouseManagementServiceFactory.getDefaultStorageAreaConfig(facility);
   }
 
   private createDefaultDockDoors(facility: WarehouseFacility): DockDoor[] {
     const doors: DockDoor[] = [];
+    const dockConfig = warehouseManagementServiceFactory.getDefaultDockDoorConfig();
     
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= dockConfig.count; i++) {
       doors.push({
         doorId: `door-${i}`,
         doorNumber: String(i),
         doorType: i <= 4 ? 'INBOUND' : i <= 8 ? 'OUTBOUND' : 'CROSS_DOCK',
-        doorHeight: 9,
-        doorWidth: 8,
-        levelingDock: true,
+        doorHeight: dockConfig.height,
+        doorWidth: dockConfig.width,
+        levelingDock: dockConfig.levelingDock,
         equipmentAvailable: ['forklift', 'pallet-jack'],
         schedule: [],
         utilizationRate: 65,

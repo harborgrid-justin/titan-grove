@@ -6,6 +6,7 @@
 import { supplyChainPlanningService } from '../advanced-supply-chain-planning/business-logic/supply-chain-planning-service';
 import { manufacturingManager } from '../manufacturing/index';
 import { scmManager } from '../scm/index';
+import { manufacturingIntegrationServiceFactory } from '../../utils/service-factories';
 
 export interface SupplyChainManufacturingSync {
   syncId: string;
@@ -629,36 +630,36 @@ export class SupplyChainManufacturingIntegrationService {
           source: 'Advanced Supply Chain Planning',
           destination: 'Manufacturing Manager',
           frequency: 'HOURLY',
-          dataVolume: 1547, // KB per sync
-          latency: 45, // milliseconds
-          reliability: 99.7
+          dataVolume: manufacturingIntegrationServiceFactory.config.integration.dataVolumes.demandPlanningKb,
+          latency: manufacturingIntegrationServiceFactory.config.integration.latencies.demandPlanningMs,
+          reliability: manufacturingIntegrationServiceFactory.config.integration.reliability.demandPlanningPercent
         },
         {
           flowName: 'IoT Sensor Data to Digital Twins',
           source: 'Industry 4.0 IoT Devices',
           destination: 'Digital Twin Management',
           frequency: 'REAL_TIME',
-          dataVolume: 2847, // KB per minute
-          latency: 12,
-          reliability: 98.9
+          dataVolume: manufacturingIntegrationServiceFactory.config.integration.dataVolumes.productionDataKb,
+          latency: manufacturingIntegrationServiceFactory.config.integration.latencies.productionDataMs,
+          reliability: manufacturingIntegrationServiceFactory.config.integration.reliability.productionDataPercent
         },
         {
           flowName: 'Lean Metrics to Supply Chain KPIs',
           source: 'Lean Manufacturing Service',
           destination: 'Supply Chain Coordination',
           frequency: 'DAILY',
-          dataVolume: 256,
-          latency: 180,
-          reliability: 99.2
+          dataVolume: manufacturingIntegrationServiceFactory.config.integration.dataVolumes.inventoryDataKb,
+          latency: manufacturingIntegrationServiceFactory.config.integration.latencies.inventoryDataMs,
+          reliability: manufacturingIntegrationServiceFactory.config.integration.reliability.inventoryDataPercent
         },
         {
           flowName: 'Predictive Maintenance to Capacity Planning',
           source: 'Predictive Maintenance System',
           destination: 'Production Scheduling',
           frequency: 'EVENT_DRIVEN',
-          dataVolume: 125,
-          latency: 35,
-          reliability: 97.8
+          dataVolume: manufacturingIntegrationServiceFactory.config.integration.dataVolumes.maintenanceDataKb,
+          latency: manufacturingIntegrationServiceFactory.config.integration.latencies.maintenanceDataMs,
+          reliability: manufacturingIntegrationServiceFactory.config.integration.reliability.maintenanceDataPercent
         }
       ],
       advancedCapabilities: {
@@ -748,9 +749,9 @@ export class SupplyChainManufacturingIntegrationService {
           'Faster implementation and customization'
         ],
         migrationValue: {
-          immediateValue: 2500000, // Cost savings year 1
-          strategicValue: 8750000, // 3-year strategic value
-          futureValue: 15000000 // 5-year future value
+          immediateValue: manufacturingIntegrationServiceFactory.config.integration.migrationValue.immediateValue,
+          strategicValue: manufacturingIntegrationServiceFactory.config.integration.migrationValue.strategicValue,
+          futureValue: manufacturingIntegrationServiceFactory.config.integration.migrationValue.futureValue
         }
       }
     };

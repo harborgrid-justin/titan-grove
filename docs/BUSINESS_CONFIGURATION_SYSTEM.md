@@ -160,16 +160,102 @@ MQ_PROCESSING_TIME_THRESHOLD=30000
 MQ_ERROR_RATE_THRESHOLD=0.1
 ```
 
+### Warehouse Management Settings
+```bash
+# Operating Hours
+WM_WEEKDAY_START_TIME=08:00
+WM_WEEKDAY_END_TIME=17:00
+WM_SATURDAY_START_TIME=09:00
+WM_SATURDAY_END_TIME=13:00
+
+# Shift Configuration
+WM_DAY_SHIFT_START_TIME=08:00
+WM_DAY_SHIFT_END_TIME=16:00
+WM_DAY_SHIFT_STAFF_COUNT=30
+
+WM_EVENING_SHIFT_START_TIME=16:00
+WM_EVENING_SHIFT_END_TIME=24:00
+WM_EVENING_SHIFT_STAFF_COUNT=15
+
+WM_NIGHT_SHIFT_START_TIME=00:00
+WM_NIGHT_SHIFT_END_TIME=08:00
+WM_NIGHT_SHIFT_STAFF_COUNT=5
+
+# Storage Area Configuration
+WM_BULK_STORAGE_LENGTH=200
+WM_BULK_STORAGE_WIDTH=100
+WM_BULK_STORAGE_HEIGHT=30
+WM_BULK_TOTAL_POSITIONS=1000
+WM_BULK_UTILIZATION_RATE=80
+WM_BULK_TURNOVER_RATE=12
+
+WM_RACK_STORAGE_LENGTH=300
+WM_RACK_STORAGE_WIDTH=150
+WM_RACK_STORAGE_HEIGHT=25
+WM_RACK_TOTAL_POSITIONS=2000
+WM_RACK_UTILIZATION_RATE=75
+WM_RACK_TURNOVER_RATE=24
+
+# Dock Door Configuration
+WM_DOCK_DOOR_COUNT=10
+WM_DOCK_DOOR_HEIGHT=9
+WM_DOCK_DOOR_WIDTH=8
+WM_DOCK_LEVELING_DEFAULT=true
+```
+
+### Manufacturing Integration Settings
+```bash
+# Industry 4.0 IoT Sensor Latencies (milliseconds)
+MFG_INDUSTRY40_DEFAULT_SENSOR_LATENCY=125
+MFG_INDUSTRY40_TEMPERATURE_SENSOR_LATENCY=12
+MFG_INDUSTRY40_VIBRATION_SENSOR_LATENCY=18
+MFG_INDUSTRY40_PRESSURE_SENSOR_LATENCY=8
+
+# Supply Chain Integration Data Volumes (KB)
+MFG_INTEGRATION_DEMAND_PLANNING_KB=1547
+MFG_INTEGRATION_PRODUCTION_DATA_KB=2847
+MFG_INTEGRATION_INVENTORY_DATA_KB=256
+MFG_INTEGRATION_MAINTENANCE_DATA_KB=125
+
+# Supply Chain Integration Latencies (milliseconds)
+MFG_INTEGRATION_DEMAND_PLANNING_MS=150
+MFG_INTEGRATION_PRODUCTION_DATA_MS=12
+MFG_INTEGRATION_INVENTORY_DATA_MS=180
+MFG_INTEGRATION_MAINTENANCE_DATA_MS=35
+
+# Supply Chain Integration Reliability (percentage)
+MFG_INTEGRATION_DEMAND_PLANNING_RELIABILITY=98.5
+MFG_INTEGRATION_PRODUCTION_DATA_RELIABILITY=98.9
+MFG_INTEGRATION_INVENTORY_DATA_RELIABILITY=99.2
+MFG_INTEGRATION_MAINTENANCE_DATA_RELIABILITY=97.8
+
+# Migration Business Value (USD)
+MFG_INTEGRATION_IMMEDIATE_VALUE=2500000
+MFG_INTEGRATION_STRATEGIC_VALUE=8750000
+MFG_INTEGRATION_FUTURE_VALUE=15000000
+```
+
 ## Service Factory Pattern
 
 Services can be created with custom configuration:
 
 ```typescript
 import { createConfigureToOrderService } from './modules/orders';
+import { createWarehouseManagementService, createManufacturingIntegrationService } from './utils/service-factories';
 import { loadBusinessConfig } from './utils/business-config';
 
 // Use default configuration
 const defaultService = configureToOrderService;
+
+// Use warehouse management factory
+const warehouseFactory = createWarehouseManagementService();
+const operatingHours = warehouseFactory.getDefaultOperatingHours();
+const shiftPattern = warehouseFactory.getDefaultShiftPattern();
+
+// Use manufacturing integration factory
+const manufacturingFactory = createManufacturingIntegrationService();
+const integrationMetrics = manufacturingFactory.getIntegrationMetrics();
+const sensorLatencies = manufacturingFactory.getSensorLatencies();
 
 // Use custom configuration
 const customConfig = loadBusinessConfig();
@@ -356,12 +442,14 @@ data:
 - [x] Core configuration system architecture
 - [x] Configure-to-Order service refactoring (all hard-coded values)
 - [x] Capital Asset Management service refactoring
+- [x] Manufacturing service configuration (Industry 4.0, Supply Chain Integration)
+- [x] Warehouse Management service configuration (operating hours, shifts, storage areas)
 - [x] Environment variable mappings and validation
+- [x] Service factory pattern implementation
 - [x] Comprehensive test suite
 - [x] Documentation and examples
 
 ### 🔄 In Progress
-- [ ] Manufacturing service configuration
 - [ ] Order Analytics service configuration
 - [ ] Message Queue service configuration
 - [ ] Project Management service configuration
