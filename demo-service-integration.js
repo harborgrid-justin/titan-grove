@@ -3,10 +3,10 @@
  * Demonstrates how to initialize and use services with message queue and cache integration
  */
 
-import { ServiceFactory } from '../src/shared/utils/service-factory';
-import { createPricingService } from '../src/modules/financial/business-logic/pricing/pricing-service';
-import { MessageQueueUtils } from '../src/core/message-queue/utils';
-import { QueueType, MessagePriority } from '../src/core/message-queue/types';
+const { ServiceFactory } = require('./src/shared/utils/service-factory');
+const { createPricingService } = require('./src/modules/financial/business-logic/pricing/pricing-service');
+const { MessageQueueUtils } = require('./src/core/message-queue/utils');
+const { QueueType, MessagePriority } = require('./src/core/message-queue/types');
 
 async function demonstrateServiceIntegration() {
   try {
@@ -151,7 +151,7 @@ async function demonstrateServiceIntegration() {
     console.log('   🎯 Message Queue System:', {
       status: systemHealth.status,
       activeQueues: Object.keys(systemHealth.queues).length,
-      totalMessages: Object.values(systemHealth.queues).reduce((sum, q: any) => sum + q.active + q.waiting, 0)
+      totalMessages: Object.values(systemHealth.queues).reduce((sum, q) => sum + q.active + q.waiting, 0)
     });
 
     const cacheHealth = await ServiceFactory.getCache().healthCheck();
@@ -185,4 +185,4 @@ if (require.main === module) {
   demonstrateServiceIntegration().catch(console.error);
 }
 
-export { demonstrateServiceIntegration };
+module.exports = { demonstrateServiceIntegration };

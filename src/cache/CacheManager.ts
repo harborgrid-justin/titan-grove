@@ -112,7 +112,9 @@ export class CacheManager extends EventEmitter {
         if (effectiveTtl) {
           entry.expires = Date.now() + (effectiveTtl * 1000);
           entry.ttl = setTimeout(() => {
-            this.client.delete(key);
+            if (this.client instanceof Map) {
+              this.client.delete(key);
+            }
           }, effectiveTtl * 1000);
         }
         
