@@ -6,6 +6,12 @@
 // Export all types
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 // Import business logic services
 import { hrPayrollService } from './business-logic/payroll-management/payroll-management-service';
 import { advancedBenefitsService } from './business-logic/advanced-benefits/advanced-benefits-service';
@@ -26,12 +32,12 @@ import type {
   TimeEntry 
 } from './types';
 
-export class HRManager {
+export class HRManager extends BaseManager {
   
   // Employee Management Methods
   async createEmployee(employee: Omit<Employee, 'id' | 'employeeNumber'>): Promise<Employee> {
-    const id = `emp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const employeeNumber = `EMP${Date.now().toString().slice(-6)}`;
+    const id = this.generateId('emp');
+    const employeeNumber = this.generateNumericId('EMP');
     
     const newEmployee: Employee = {
       ...employee,
@@ -40,6 +46,7 @@ export class HRManager {
       status: 'ACTIVE'
     };
     
+    this.logAction('createEmployee', { id, employeeNumber });
     return newEmployee;
   }
 

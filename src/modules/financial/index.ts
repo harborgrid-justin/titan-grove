@@ -4,6 +4,12 @@
  * Enhanced with Oracle Lease and Finance Management sub-modules
  */
 
+// Export all types
+export * from './types';
+
+// Export data access layer
+export * from './data-access';
+
 // Import business logic services
 import { pricingService } from './business-logic/pricing/pricing-service';
 import { subsidiesService } from './business-logic/subsidies/subsidies-service';
@@ -15,7 +21,7 @@ import { streamsService } from './business-logic/streams/streams-service';
 import { taxService } from './business-logic/tax/tax-service';
 import { billingService } from './business-logic/billing/billing-service';
 
-// Export all types from business logic services
+// Export all business logic services for direct access
 export * from './business-logic/pricing/pricing-service';
 export * from './business-logic/subsidies/subsidies-service';
 export * from './business-logic/lease-sales-quotes/lease-sales-quotes-service';
@@ -26,55 +32,22 @@ export * from './business-logic/streams/streams-service';
 export * from './business-logic/tax/tax-service';
 export * from './business-logic/billing/billing-service';
 
-export interface GeneralLedgerEntry {
-  id: string;
-  accountCode: string;
-  accountName: string;
-  debit: number;
-  credit: number;
-  description: string;
-  transactionDate: Date;
-  reference: string;
-  userId: string;
-}
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
 
-export interface Account {
-  code: string;
-  name: string;
-  type: 'ASSET' | 'LIABILITY' | 'EQUITY' | 'REVENUE' | 'EXPENSE';
-  parentCode?: string;
-  balance: number;
-  isActive: boolean;
-}
+import type { 
+  GeneralLedgerEntry,
+  Account,
+  Invoice,
+  InvoiceItem
+} from './types';
 
-export interface Invoice {
-  id: string;
-  invoiceNumber: string;
-  customerId: string;
-  customerName: string;
-  amount: number;
-  taxAmount: number;
-  totalAmount: number;
-  dueDate: Date;
-  status: 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE' | 'CANCELLED';
-  items: InvoiceItem[];
-}
-
-export interface InvoiceItem {
-  id: string;
-  description: string;
-  quantity: number;
-  unitPrice: number;
-  amount: number;
-  taxRate: number;
-}
-
-export class FinancialManager {
+export class FinancialManager extends BaseManager {
   /**
    * General Ledger Operations
    */
   async createGLEntry(entry: Omit<GeneralLedgerEntry, 'id'>): Promise<GeneralLedgerEntry> {
-    const id = `gl_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const id = this.generateId('gl');
     const glEntry: GeneralLedgerEntry = { ...entry, id };
     
     // Validate double-entry bookkeeping
@@ -82,6 +55,7 @@ export class FinancialManager {
       throw new Error('Entry must have either debit or credit, not both');
     }
     
+    this.logAction('createGLEntry', { id, accountCode: entry.accountCode });
     return glEntry;
   }
 
@@ -94,7 +68,7 @@ export class FinancialManager {
    * Accounts Receivable Operations
    */
   async createInvoice(invoice: Omit<Invoice, 'id'>): Promise<Invoice> {
-    const id = `inv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const id = this.generateId('inv');
     const newInvoice: Invoice = { ...invoice, id };
     
     // Calculate totals
@@ -105,6 +79,7 @@ export class FinancialManager {
     newInvoice.taxAmount = taxTotal;
     newInvoice.totalAmount = subtotal + taxTotal;
     
+    this.logAction('createInvoice', { id, amount: newInvoice.totalAmount });
     return newInvoice;
   }
 

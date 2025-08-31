@@ -5,3 +5,5 @@
 
 export * from './recommendation-generator';
 export * from './business-entity-utils';
+export * from './id-generator';
+export * from './base-manager';

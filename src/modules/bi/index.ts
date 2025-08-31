@@ -6,6 +6,12 @@
 // Export all types
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 // Import business logic services
 import { dashboardService } from './business-logic/dashboards/dashboard-service';
 import { dataSourcesService } from './business-logic/data-sources/data-sources-service';
@@ -23,10 +29,11 @@ import type {
   AnalyticsMetric
 } from './types';
 
-export class BIManager {
+export class BIManager extends BaseManager {
   
   // Dashboard Management Methods - delegate to dashboard service
   async createDashboard(dashboard: Omit<Dashboard, 'id' | 'createdDate' | 'lastModified'>): Promise<Dashboard> {
+    this.logAction('createDashboard', { name: dashboard.name });
     return dashboardService.createDashboard(dashboard);
   }
 

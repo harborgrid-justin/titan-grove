@@ -8,8 +8,14 @@ import { Priority } from '../../types/common';
 // Export all types
 export * from './types';
 
-// Export business logic services  
+// Export data access layer
+export * from './data-access';
+
+// Export business logic services for direct access  
 export * from './business-logic/pim-data-hub/pim-data-hub-service';
+
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
 
 // Import business logic services
 import { inventoryReplenishmentService } from './business-logic/replenishment/replenishment-service';
@@ -22,18 +28,21 @@ import type {
   ReplenishmentRecommendation 
 } from './types';
 
-export class InventoryManager {
+export class InventoryManager extends BaseManager {
   
   // Core Inventory Methods
   async createInventoryItem(item: Omit<InventoryItem, 'id' | 'createdDate' | 'averageCost' | 'lastCost'>): Promise<InventoryItem> {
-    const id = `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    return {
+    const id = this.generateId('item');
+    const result = {
       ...item,
       id,
       averageCost: item.standardCost,
       lastCost: item.standardCost,
       createdDate: new Date()
     };
+    
+    this.logAction('createInventoryItem', { id, itemCode: item.itemCode });
+    return result;
   }
 
   async getStockLevel(itemId: string, warehouseId: string): Promise<StockLevel | null> {
