@@ -8,6 +8,9 @@ import { Priority } from '../../types/common';
 // Export all types
 export * from './types';
 
+// Export business logic services  
+export * from './business-logic/pim-data-hub/pim-data-hub-service';
+
 // Import business logic services
 import { inventoryReplenishmentService } from './business-logic/replenishment/replenishment-service';
 

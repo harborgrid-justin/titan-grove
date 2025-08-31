@@ -95,6 +95,17 @@ export {
   type ForecastAnalysis
 } from './business-logic/order-analytics/order-analytics-service';
 
+// Configure-to-Order - Mass customization and configuration management
+export {
+  ConfigureToOrderService,
+  configureToOrderService,
+  type ConfigurableProduct,
+  type ConfigurationModel,
+  type ConfigurationSession,
+  type ConfigurationQuote,
+  type FeasibilityResult
+} from './business-logic/configure-to-order/configure-to-order-service';
+
 // ================================
 // UNIFIED ORDER MANAGER
 // ================================

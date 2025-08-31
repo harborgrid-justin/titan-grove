@@ -9,6 +9,7 @@ export * from './data-access/repositories';
 
 // Export business logic services
 export * from './business-logic/scm-management/scm-service';
+export * from './business-logic/mobile-supply-chain/mobile-supply-chain-service';
 export * from './supply-chain-coordination-service';
 
 // Re-export existing interfaces for backward compatibility
