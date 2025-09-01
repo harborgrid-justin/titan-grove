@@ -19,7 +19,8 @@ export * from './types';
 // Main service exports
 export {
   ServiceCommandCenterService,
-  serviceCommandCenterService
+  serviceCommandCenterService,
+  createServiceCommandCenterService
 } from './business-logic/service-command-center-service';
 
 export {

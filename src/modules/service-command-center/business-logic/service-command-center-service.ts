@@ -2,6 +2,7 @@
  * Service Command Center Service
  * Central orchestration hub for all service operations
  * Oracle EBS Service Command Center competitive implementation
+ * Enhanced with message queue and cache integration
  * 
  * Features:
  * - Unified service operations control
@@ -21,20 +22,89 @@ import type {
   OracleEBSComparison
 } from '../types';
 
+import { StandardServiceBase } from '../../../shared/utils/standard-service-base';
+import { ServiceIntegrationContext } from '../../../shared/interfaces/service-integration';
+import { MessagePayload, QueueType } from '../../../core/message-queue/types';
 import { FieldServiceService } from '../../field-service/business-logic/field-service-service';
 import { ServiceService } from '../../service/business-logic/service-management/service-service';
 
-export class ServiceCommandCenterService {
+export class ServiceCommandCenterService extends StandardServiceBase {
   private commandCenters: Map<string, ServiceCommandCenter> = new Map();
   private activeResources: Map<string, ServiceResource> = new Map();
   private integrations: Map<string, ServiceIntegration> = new Map();
   
   constructor(
+    context?: ServiceIntegrationContext,
     private fieldService?: FieldServiceService,
     private serviceManager?: ServiceService,
-    private logger?: any,
     private notificationService?: any
-  ) {}
+  ) {
+    if (context) {
+      super(context);
+    } else {
+      // Fallback for backward compatibility - will be replaced with proper initialization
+      super({
+        messageQueue: null as any,
+        cache: null as any,
+        logger: console as any,
+        config: {
+          serviceName: 'service-command-center-service',
+          cacheConfig: { defaultTTL: 300, keyPrefix: 'scc' },
+          messageQueueConfig: { 
+            defaultPriority: 1, 
+            retryAttempts: 3,
+            compliance: { dataClassification: 'INTERNAL', auditRequired: true }
+          }
+        }
+      });
+    }
+  }
+
+  // ==================== Message Queue Integration ====================
+
+  /**
+   * Handle message processing for service command center operations
+   */
+  async processMessage(message: MessagePayload): Promise<any> {
+    this.markMessageProcessed();
+    
+    switch (message.type) {
+      case 'EMERGENCY_RESPONSE':
+        return await this.coordinateEmergencyResponse(
+          message.data.commandCenterId,
+          message.data.emergency
+        );
+      case 'OPTIMIZE_DISPATCH':
+        return await this.optimizeServiceDispatch(
+          message.data.commandCenterId,
+          message.data.criteria
+        );
+      case 'EXECUTE_WORKFLOW':
+        return await this.executeServiceWorkflow(
+          message.data.workflowId,
+          message.data.triggerId,
+          message.data.context
+        );
+      case 'UPDATE_RESOURCE_STATUS':
+        return await this.updateResourceStatus(
+          message.data.resourceId,
+          message.data.status
+        );
+      case 'GENERATE_ORACLE_COMPARISON':
+        return await this.generateOracleEBSCompetitiveAnalysis(
+          message.data.commandCenterId
+        );
+      default:
+        throw new Error(`Unknown service command center message type: ${message.type}`);
+    }
+  }
+
+  /**
+   * Get queue types this service handles
+   */
+  getHandledQueueTypes(): QueueType[] {
+    return [QueueType.SERVICE_COMMAND_CENTER, QueueType.SERVICE, QueueType.MAINTENANCE, QueueType.NOTIFICATION];
+  }
 
   // ================================
   // COMMAND CENTER OPERATIONS
@@ -49,52 +119,70 @@ export class ServiceCommandCenterService {
     serviceAreas: string[];
     initialResources: Partial<ServiceResource>[];
   }): Promise<ServiceCommandCenter> {
-    const commandCenterId = `cmd_center_${Date.now()}`;
-    
-    const commandCenter: ServiceCommandCenter = {
-      commandCenterId,
-      name: config.name,
-      description: `Enterprise Service Command Center for ${config.region}`,
-      region: config.region,
-      status: 'ACTIVE',
+    return this.executeWithMetrics(async () => {
+      const commandCenterId = `cmd_center_${Date.now()}`;
       
-      // Initial operational state
-      activeServices: 0,
-      onlineResources: config.initialResources.length,
-      emergencyAlerts: 0,
-      performanceScore: 100.0,
-      
-      // Service coverage setup
-      serviceAreas: config.serviceAreas.map(area => ({
-        areaId: `area_${Date.now()}_${area}`,
-        name: area,
-        coordinates: { lat: 0, lng: 0, radius: 50 }, // Default coverage
-        coverage: 'FULL' as const,
-        responseTime: 15, // Target 15 minutes
-        activeWorkOrders: 0,
-        availableTechnicians: 0
-      })),
-      managedAssets: 0,
-      activeContracts: 0,
-      
-      createdDate: new Date(),
-      lastUpdated: new Date()
-    };
+      const commandCenter: ServiceCommandCenter = {
+        commandCenterId,
+        name: config.name,
+        description: `Enterprise Service Command Center for ${config.region}`,
+        region: config.region,
+        status: 'ACTIVE',
+        
+        // Initial operational state
+        activeServices: 0,
+        onlineResources: config.initialResources.length,
+        emergencyAlerts: 0,
+        performanceScore: 100.0,
+        
+        // Service coverage setup
+        serviceAreas: config.serviceAreas.map(area => ({
+          areaId: `area_${Date.now()}_${area}`,
+          name: area,
+          coordinates: { lat: 0, lng: 0, radius: 50 }, // Default coverage
+          coverage: 'FULL' as const,
+          responseTime: 15, // Target 15 minutes
+          activeWorkOrders: 0,
+          availableTechnicians: 0
+        })),
+        managedAssets: 0,
+        activeContracts: 0,
+        
+        createdDate: new Date(),
+        lastUpdated: new Date()
+      };
 
-    // Initialize resources
-    for (const resourceConfig of config.initialResources) {
-      await this.registerServiceResource(commandCenterId, resourceConfig);
-    }
+      // Initialize resources
+      for (const resourceConfig of config.initialResources) {
+        await this.registerServiceResource(commandCenterId, resourceConfig);
+      }
 
-    this.commandCenters.set(commandCenterId, commandCenter);
-    
-    this.logger?.info('Service Command Center initialized', { 
-      commandCenterId, 
-      region: config.region,
-      resourceCount: config.initialResources.length 
+      this.commandCenters.set(commandCenterId, commandCenter);
+      
+      // Cache the command center for fast access
+      await this.setCached(`command-center:${commandCenterId}`, commandCenter, this.getCacheTTL('command-center'));
+      
+      // Send notification about new command center
+      await this.sendMessage(
+        QueueType.NOTIFICATION,
+        'COMMAND_CENTER_INITIALIZED',
+        {
+          commandCenterId,
+          name: config.name,
+          region: config.region,
+          resourceCount: config.initialResources.length,
+          timestamp: new Date()
+        }
+      );
+      
+      this.logger.info('Service Command Center initialized', { 
+        commandCenterId, 
+        region: config.region,
+        resourceCount: config.initialResources.length 
+      });
+      
+      return commandCenter;
     });
-    
-    return commandCenter;
   }
 
   /**
@@ -104,48 +192,69 @@ export class ServiceCommandCenterService {
     commandCenterId: string, 
     resourceData: Partial<ServiceResource>
   ): Promise<ServiceResource> {
-    const resourceId = `resource_${Date.now()}`;
-    
-    const resource: ServiceResource = {
-      resourceId,
-      resourceType: resourceData.resourceType || 'TECHNICIAN',
-      name: resourceData.name || 'Unknown Resource',
-      status: 'AVAILABLE',
+    return this.executeWithMetrics(async () => {
+      const resourceId = `resource_${Date.now()}`;
       
-      // Default availability (8 hour work day)
-      availability: {
-        start: new Date(),
-        end: new Date(Date.now() + 8 * 60 * 60 * 1000), // 8 hours from now
-        capacity: 100
-      },
-      
-      skills: resourceData.skills || [],
-      certifications: resourceData.certifications || [],
-      serviceRadius: resourceData.serviceRadius || 25, // miles
-      
-      // Initialize performance metrics
-      performanceMetrics: {
-        completionRate: 95.0,
-        averageRating: 4.5,
-        responseTime: 12, // minutes
-        utilizationRate: 75.0
-      },
-      
-      currentAssignments: [],
-      scheduleConflicts: false,
-      lastUpdated: new Date()
-    };
+      const resource: ServiceResource = {
+        resourceId,
+        resourceType: resourceData.resourceType || 'TECHNICIAN',
+        name: resourceData.name || 'Unknown Resource',
+        status: 'AVAILABLE',
+        
+        // Default availability (8 hour work day)
+        availability: {
+          start: new Date(),
+          end: new Date(Date.now() + 8 * 60 * 60 * 1000), // 8 hours from now
+          capacity: 100
+        },
+        
+        skills: resourceData.skills || [],
+        certifications: resourceData.certifications || [],
+        serviceRadius: resourceData.serviceRadius || 25, // miles
+        
+        // Initialize performance metrics
+        performanceMetrics: {
+          completionRate: 95.0,
+          averageRating: 4.5,
+          responseTime: 12, // minutes
+          utilizationRate: 75.0
+        },
+        
+        currentAssignments: [],
+        scheduleConflicts: false,
+        lastUpdated: new Date()
+      };
 
-    this.activeResources.set(resourceId, resource);
-    
-    // Update command center metrics
-    const commandCenter = this.commandCenters.get(commandCenterId);
-    if (commandCenter) {
-      commandCenter.onlineResources += 1;
-      commandCenter.lastUpdated = new Date();
-    }
-    
-    return resource;
+      this.activeResources.set(resourceId, resource);
+      
+      // Cache the resource for fast access
+      await this.setCached(`resource:${resourceId}`, resource, this.getCacheTTL('resource'));
+      
+      // Update command center metrics
+      const commandCenter = this.commandCenters.get(commandCenterId);
+      if (commandCenter) {
+        commandCenter.onlineResources += 1;
+        commandCenter.lastUpdated = new Date();
+        // Cache updated command center
+        await this.setCached(`command-center:${commandCenterId}`, commandCenter, this.getCacheTTL('command-center'));
+      }
+      
+      // Send notification about new resource
+      await this.sendMessage(
+        QueueType.SERVICE,
+        'RESOURCE_REGISTERED',
+        {
+          commandCenterId,
+          resourceId,
+          resourceType: resource.resourceType,
+          resourceName: resource.name,
+          skills: resource.skills,
+          timestamp: new Date()
+        }
+      );
+      
+      return resource;
+    });
   }
 
   /**
@@ -260,75 +369,117 @@ export class ServiceCommandCenterService {
       stakeholderUpdate: boolean;
     };
   }> {
-    const commandCenter = this.commandCenters.get(commandCenterId);
-    if (!commandCenter) {
-      throw new Error(`Command center ${commandCenterId} not found`);
-    }
+    return this.executeWithMetrics(async () => {
+      const commandCenter = this.commandCenters.get(commandCenterId);
+      if (!commandCenter) {
+        throw new Error(`Command center ${commandCenterId} not found`);
+      }
 
-    // Find nearby qualified resources
-    const nearbyResources = Array.from(this.activeResources.values())
-      .filter(resource => 
-        resource.status === 'AVAILABLE' &&
-        this.hasRequiredSkills(resource, emergency.requiredSkills) &&
-        this.isWithinRadius(resource, emergency.location, 50) // 50 mile radius
-      )
-      .sort((a, b) => a.performanceMetrics.responseTime - b.performanceMetrics.responseTime);
+      // Find nearby qualified resources
+      const nearbyResources = Array.from(this.activeResources.values())
+        .filter(resource => 
+          resource.status === 'AVAILABLE' &&
+          this.hasRequiredSkills(resource, emergency.requiredSkills) &&
+          this.isWithinRadius(resource, emergency.location, 50) // 50 mile radius
+        )
+        .sort((a, b) => a.performanceMetrics.responseTime - b.performanceMetrics.responseTime);
 
-    if (nearbyResources.length === 0) {
-      throw new Error('No qualified resources available for emergency response');
-    }
+      if (nearbyResources.length === 0) {
+        throw new Error('No qualified resources available for emergency response');
+      }
 
-    // Assemble response team
-    const leadTechnician = nearbyResources[0];
-    const supportTechnicians = nearbyResources.slice(1, Math.min(3, nearbyResources.length));
+      // Assemble response team
+      const leadTechnician = nearbyResources[0];
+      const supportTechnicians = nearbyResources.slice(1, Math.min(3, nearbyResources.length));
 
-    // Calculate response time
-    const travelTime = this.calculateTravelTime(leadTechnician.currentLocation!, emergency.location);
-    const estimatedArrival = new Date(Date.now() + travelTime * 60 * 1000);
+      // Calculate response time
+      const travelTime = this.calculateTravelTime(leadTechnician.currentLocation!, emergency.location);
+      const estimatedArrival = new Date(Date.now() + travelTime * 60 * 1000);
 
-    // Define escalation plan based on severity
-    const escalationPlan = this.buildEscalationPlan(emergency.severity);
+      // Define escalation plan based on severity
+      const escalationPlan = this.buildEscalationPlan(emergency.severity);
 
-    // Assess resource reallocation impact
-    const currentAssignments = [leadTechnician, ...supportTechnicians]
-      .flatMap(resource => resource.currentAssignments);
+      // Assess resource reallocation impact
+      const currentAssignments = [leadTechnician, ...supportTechnicians]
+        .flatMap(resource => resource.currentAssignments);
 
-    const resourceReallocation = {
-      fromAssignments: currentAssignments,
-      impactAssessment: currentAssignments.length > 0 ? 
-        `${currentAssignments.length} assignments will be rescheduled` : 
-        'No assignment conflicts'
-    };
+      const resourceReallocation = {
+        fromAssignments: currentAssignments,
+        impactAssessment: currentAssignments.length > 0 ? 
+          `${currentAssignments.length} assignments will be rescheduled` : 
+          'No assignment conflicts'
+      };
 
-    // Define communication plan
-    const communicationPlan = {
-      customerNotification: true,
-      managementAlert: emergency.severity === 'HIGH' || emergency.severity === 'CRITICAL',
-      stakeholderUpdate: emergency.severity === 'CRITICAL'
-    };
+      // Define communication plan
+      const communicationPlan = {
+        customerNotification: true,
+        managementAlert: emergency.severity === 'HIGH' || emergency.severity === 'CRITICAL',
+        stakeholderUpdate: emergency.severity === 'CRITICAL'
+      };
 
-    // Update command center alert status
-    commandCenter.emergencyAlerts += 1;
-    commandCenter.lastUpdated = new Date();
+      // Update command center alert status
+      commandCenter.emergencyAlerts += 1;
+      commandCenter.lastUpdated = new Date();
+      
+      // Cache updated command center
+      await this.setCached(`command-center:${commandCenterId}`, commandCenter, this.getCacheTTL('command-center'));
 
-    this.logger?.warn('Emergency response coordinated', {
-      commandCenterId,
-      emergencyType: emergency.type,
-      severity: emergency.severity,
-      responseTeamSize: 1 + supportTechnicians.length,
-      estimatedArrival
-    });
+      // Send emergency response messages
+      await this.sendMessage(
+        QueueType.SERVICE_COMMAND_CENTER,
+        'EMERGENCY_RESPONSE_ACTIVATED',
+        {
+          commandCenterId,
+          emergencyType: emergency.type,
+          severity: emergency.severity,
+          location: emergency.location,
+          leadTechnician: leadTechnician.name,
+          responseTeamSize: 1 + supportTechnicians.length,
+          estimatedArrival,
+          timestamp: new Date()
+        },
+        { priority: 1 } // Critical priority
+      );
 
-    return {
-      responseTeam: {
-        leadTechnician,
-        supportTechnicians,
+      // Send maintenance alerts if needed
+      if (emergency.type === 'EQUIPMENT_FAILURE') {
+        await this.sendMessage(
+          QueueType.MAINTENANCE,
+          'EMERGENCY_MAINTENANCE_REQUIRED',
+          {
+            location: emergency.location,
+            description: emergency.description,
+            severity: emergency.severity,
+            assignedTeam: [leadTechnician.resourceId, ...supportTechnicians.map(t => t.resourceId)],
+            timestamp: new Date()
+          }
+        );
+      }
+
+      this.logger.warn('Emergency response coordinated', {
+        commandCenterId,
+        emergencyType: emergency.type,
+        severity: emergency.severity,
+        responseTeamSize: 1 + supportTechnicians.length,
         estimatedArrival
-      },
-      escalationPlan,
-      resourceReallocation,
-      communicationPlan
-    };
+      });
+
+      const response = {
+        responseTeam: {
+          leadTechnician,
+          supportTechnicians,
+          estimatedArrival
+        },
+        escalationPlan,
+        resourceReallocation,
+        communicationPlan
+      };
+
+      // Cache emergency response for tracking
+      await this.setCached(`emergency:${Date.now()}`, response, this.getCacheTTL('emergency'));
+
+      return response;
+    });
   }
 
   /**
@@ -443,49 +594,63 @@ export class ServiceCommandCenterService {
       warnings: number;
     };
   }> {
-    const commandCenter = this.commandCenters.get(commandCenterId);
-    if (!commandCenter) {
-      throw new Error(`Command center ${commandCenterId} not found`);
-    }
-
-    const resources = Array.from(this.activeResources.values());
-    const availableResources = resources.filter(r => r.status === 'AVAILABLE');
-    const assignedResources = resources.filter(r => r.status === 'ASSIGNED');
-    const offlineResources = resources.filter(r => r.status === 'UNAVAILABLE' || r.status === 'MAINTENANCE');
-
-    return {
-      operational: {
-        status: commandCenter.status,
-        uptime: 99.7, // High availability
-        responseTime: 45, // milliseconds
-        throughput: 1250 // operations per hour
-      },
-      resources: {
-        total: resources.length,
-        available: availableResources.length,
-        assigned: assignedResources.length,
-        offline: offlineResources.length
-      },
-      performance: {
-        kpis: {
-          averageResponseTime: resources.length > 0 ? 
-            resources.reduce((sum, r) => sum + r.performanceMetrics.responseTime, 0) / resources.length : 0,
-          firstTimeFixRate: 92.5,
-          customerSatisfaction: 4.6,
-          resourceUtilization: resources.length > 0 ?
-            resources.reduce((sum, r) => sum + r.performanceMetrics.utilizationRate, 0) / resources.length : 0
-        },
-        trends: {
-          direction: 'UP',
-          magnitude: 2.3
-        }
-      },
-      alerts: {
-        active: commandCenter.emergencyAlerts,
-        critical: Math.floor(commandCenter.emergencyAlerts * 0.3),
-        warnings: Math.floor(commandCenter.emergencyAlerts * 0.7)
+    return this.executeWithMetrics(async () => {
+      // Try to get from cache first
+      const cacheKey = `status:${commandCenterId}`;
+      const cachedStatus = await this.getCached(cacheKey);
+      if (cachedStatus) {
+        return cachedStatus;
       }
-    };
+
+      const commandCenter = this.commandCenters.get(commandCenterId);
+      if (!commandCenter) {
+        throw new Error(`Command center ${commandCenterId} not found`);
+      }
+
+      const resources = Array.from(this.activeResources.values());
+      const availableResources = resources.filter(r => r.status === 'AVAILABLE');
+      const assignedResources = resources.filter(r => r.status === 'ASSIGNED');
+      const offlineResources = resources.filter(r => r.status === 'UNAVAILABLE' || r.status === 'MAINTENANCE');
+
+      const status = {
+        operational: {
+          status: commandCenter.status,
+          uptime: 99.7, // High availability
+          responseTime: 45, // milliseconds
+          throughput: 1250 // operations per hour
+        },
+        resources: {
+          total: resources.length,
+          available: availableResources.length,
+          assigned: assignedResources.length,
+          offline: offlineResources.length
+        },
+        performance: {
+          kpis: {
+            averageResponseTime: resources.length > 0 ? 
+              resources.reduce((sum, r) => sum + r.performanceMetrics.responseTime, 0) / resources.length : 0,
+            firstTimeFixRate: 92.5,
+            customerSatisfaction: 4.6,
+            resourceUtilization: resources.length > 0 ?
+              resources.reduce((sum, r) => sum + r.performanceMetrics.utilizationRate, 0) / resources.length : 0
+          },
+          trends: {
+            direction: 'UP' as const,
+            magnitude: 2.3
+          }
+        },
+        alerts: {
+          active: commandCenter.emergencyAlerts,
+          critical: Math.floor(commandCenter.emergencyAlerts * 0.3),
+          warnings: Math.floor(commandCenter.emergencyAlerts * 0.7)
+        }
+      };
+
+      // Cache the status for fast access
+      await this.setCached(cacheKey, status, this.getCacheTTL('status'));
+
+      return status;
+    });
   }
 
   /**
@@ -551,6 +716,55 @@ export class ServiceCommandCenterService {
       totalDuration,
       success: true
     };
+  }
+
+  /**
+   * Update resource status with message queue and cache integration
+   */
+  async updateResourceStatus(
+    resourceId: string,
+    status: 'AVAILABLE' | 'ASSIGNED' | 'UNAVAILABLE' | 'MAINTENANCE'
+  ): Promise<ServiceResource> {
+    return this.executeWithMetrics(async () => {
+      const resource = this.activeResources.get(resourceId);
+      if (!resource) {
+        throw new Error(`Resource ${resourceId} not found`);
+      }
+
+      // Update resource status
+      const updatedResource = {
+        ...resource,
+        status,
+        lastUpdated: new Date()
+      };
+
+      this.activeResources.set(resourceId, updatedResource);
+
+      // Cache the updated resource
+      await this.setCached(`resource:${resourceId}`, updatedResource, this.getCacheTTL('resource'));
+
+      // Send notification about status change
+      await this.sendMessage(
+        QueueType.NOTIFICATION,
+        'RESOURCE_STATUS_CHANGED',
+        {
+          resourceId,
+          oldStatus: resource.status,
+          newStatus: status,
+          resourceName: resource.name,
+          timestamp: new Date()
+        }
+      );
+
+      this.logger.info('Resource status updated', {
+        resourceId,
+        oldStatus: resource.status,
+        newStatus: status,
+        resourceName: resource.name
+      });
+
+      return updatedResource;
+    });
   }
 
   // ================================
@@ -645,5 +859,14 @@ export class ServiceCommandCenterService {
   }
 }
 
-// Export service instance
-export const serviceCommandCenterService = new ServiceCommandCenterService();
+// Export singleton instance - will be properly initialized with context
+export let serviceCommandCenterService: ServiceCommandCenterService;
+
+// Factory function to create properly initialized service
+export function createServiceCommandCenterService(context?: ServiceIntegrationContext): ServiceCommandCenterService {
+  serviceCommandCenterService = new ServiceCommandCenterService(context);
+  return serviceCommandCenterService;
+}
+
+// Initialize basic instance for backward compatibility
+serviceCommandCenterService = new ServiceCommandCenterService();
