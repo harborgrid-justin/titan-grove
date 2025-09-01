@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-09-01T16:56:59.312Z",
+  "summary": {
+    "totalDocFiles": 24,
+    "totalSourceFiles": 308,
+    "errors": 0,
+    "warnings": 4,
+    "gaps": 28
+  },
+  "verificationResults": {}
+}

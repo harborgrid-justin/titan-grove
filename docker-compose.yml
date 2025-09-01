@@ -13,6 +13,11 @@ services:
       - DB_NAME=titan_grove
       - DB_USER=titan
       - DB_PASSWORD=password123
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=titan_grove
+      - MYSQL_USER=titan
+      - MYSQL_PASSWORD=password123
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - ELASTICSEARCH_HOST=elasticsearch
@@ -21,6 +26,7 @@ services:
       - ANALYTICS_ENABLED=true
     depends_on:
       - postgres
+      - mysql
       - redis
       - elasticsearch
     volumes:
@@ -38,6 +44,21 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-scripts:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=titan_grove
+      - MYSQL_USER=titan
+      - MYSQL_PASSWORD=password123
+      - MYSQL_ROOT_PASSWORD=rootpassword123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-scripts/mysql:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
 
   redis:
@@ -74,5 +95,6 @@ services:
 
 volumes:
   postgres_data:
+  mysql_data:
   redis_data:
   elasticsearch_data:
