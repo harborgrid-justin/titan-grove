@@ -31,9 +31,125 @@ import type {
 
 export class ProcurementManager extends BaseManager {
   
-  // Methods will be added here - removing duplicate interfaces
-  // that should be in types.ts file
-  
+  /**
+   * Supplier Management
+   */
+  async createSupplier(supplier: Omit<Supplier, 'id' | 'createdDate' | 'performanceRating' | 'riskRating'>): Promise<Supplier> {
+    const id = this.generateId('supp');
+    return {
+      ...supplier,
+      ...this.createAuditFields(),
+      id,
+      createdDate: new Date(),
+      performanceRating: 0,
+      riskRating: 'MEDIUM'
+    };
+  }
+
+  async evaluateSupplierPerformance(supplierId: string): Promise<{
+    overallRating: number;
+    qualityScore: number;
+    deliveryScore: number;
+    costScore: number;
+    serviceScore: number;
+    recommendations: string[];
+  }> {
+    // Implementation would analyze historical supplier performance
+    return {
+      overallRating: 85.5,
+      qualityScore: 88.0,
+      deliveryScore: 92.0,
+      costScore: 76.0,
+      serviceScore: 86.0,
+      recommendations: [
+        'Improve cost competitiveness through negotiation',
+        'Maintain excellent delivery performance',
+        'Continue quality improvement initiatives'
+      ]
+    };
+  }
+
+  /**
+   * Purchase Order Management
+   */
+  async createPurchaseOrder(order: Omit<PurchaseOrder, 'id' | 'orderNumber' | 'createdDate' | 'status'>): Promise<PurchaseOrder> {
+    const id = this.generateId('po');
+    const orderNumber = `PO-${this.generateNumericId()}`;
+    return {
+      ...order,
+      ...this.createAuditFields(),
+      id,
+      orderNumber,
+      createdDate: new Date(),
+      status: 'DRAFT'
+    };
+  }
+
+  async getProcurementDashboard(): Promise<{
+    totalSpend: number;
+    activeSuppliers: number;
+    pendingOrders: number;
+    costSavings: number;
+    topCategories: Array<{ category: string; spend: number }>;
+    topSuppliers: Array<{ supplierId: string; name: string; spend: number }>;
+    purchaseOrderStats: {
+      totalOrders: number;
+      averageProcessingTime: number;
+      automationRate: number;
+    };
+  }> {
+    return {
+      totalSpend: 5200000,
+      activeSuppliers: 147,
+      pendingOrders: 23,
+      costSavings: 312000,
+      topCategories: [
+        { category: 'Raw Materials', spend: 2100000 },
+        { category: 'IT Services', spend: 850000 },
+        { category: 'Facility Services', spend: 650000 }
+      ],
+      topSuppliers: [
+        { supplierId: 'supp_001', name: 'ABC Materials Corp', spend: 980000 },
+        { supplierId: 'supp_002', name: 'TechServ Solutions', spend: 720000 }
+      ],
+      purchaseOrderStats: {
+        totalOrders: 416,
+        averageProcessingTime: 2.8, // days
+        automationRate: 73.5 // percentage
+      }
+    };
+  }
+
+  async generateSpendAnalysis(
+    startDate: Date,
+    endDate: Date,
+    groupBy: 'CATEGORY' | 'SUPPLIER' | 'DEPARTMENT' | 'PROJECT'
+  ): Promise<{
+    totalSpend: number;
+    breakdown: Array<{ group: string; spend: number; percentage: number }>;
+    trends: Array<{ period: string; spend: number }>;
+    opportunities: string[];
+  }> {
+    // Implementation would analyze spending patterns and identify opportunities
+    return {
+      totalSpend: 5200000,
+      breakdown: [
+        { group: 'Raw Materials', spend: 2100000, percentage: 40.4 },
+        { group: 'IT Services', spend: 850000, percentage: 16.3 },
+        { group: 'Facility Services', spend: 650000, percentage: 12.5 }
+      ],
+      trends: [
+        { period: '2024-Q1', spend: 1200000 },
+        { period: '2024-Q2', spend: 1350000 },
+        { period: '2024-Q3', spend: 1300000 }
+      ],
+      opportunities: [
+        'Consolidate IT services with fewer suppliers for better rates',
+        'Negotiate volume discounts for raw materials',
+        'Consider long-term contracts for facility services'
+      ]
+    };
+  }
 }
 
 export interface SupplierAddress {
@@ -322,307 +438,5 @@ export interface ContractPerformance {
   nextReviewDate?: Date;
 }
 
-export class ProcurementManager {
-  /**
-   * Supplier Management
-   */
-  async createSupplier(supplier: Omit<Supplier, 'id' | 'createdDate' | 'performanceRating' | 'riskRating'>): Promise<Supplier> {
-    const id = `supp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    return {
-      ...supplier,
-      id,
-      createdDate: new Date(),
-      performanceRating: 0,
-      riskRating: 'MEDIUM'
-    };
-  }
-
-  async evaluateSupplierPerformance(supplierId: string): Promise<{
-    overallRating: number;
-    qualityScore: number;
-    deliveryScore: number;
-    costScore: number;
-    serviceScore: number;
-    recommendations: string[];
-  }> {
-    // Implementation would analyze historical supplier performance
-    return {
-      overallRating: 85.5,
-      qualityScore: 90,
-      deliveryScore: 82,
-      costScore: 88,
-      serviceScore: 85,
-      recommendations: [
-        'Improve on-time delivery performance',
-        'Maintain current quality standards',
-        'Consider long-term pricing agreements'
-      ]
-    };
-  }
-
-  async conduceSupplierRiskAssessment(supplierId: string): Promise<{
-    riskRating: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-    riskFactors: Array<{ factor: string; severity: string; mitigation: string }>;
-    overallScore: number;
-  }> {
-    // Implementation would assess financial, operational, and compliance risks
-    return {
-      riskRating: 'MEDIUM',
-      riskFactors: [
-        {
-          factor: 'Financial Stability',
-          severity: 'Medium',
-          mitigation: 'Monitor quarterly financial reports'
-        },
-        {
-          factor: 'Geographic Concentration',
-          severity: 'Low',
-          mitigation: 'Diversify supplier base'
-        }
-      ],
-      overallScore: 65
-    };
-  }
-
-  /**
-   * Purchase Requisition Management
-   */
-  async createPurchaseRequisition(requisition: Omit<PurchaseRequisition, 'id' | 'requisitionNumber' | 'status' | 'approvals' | 'createdDate' | 'lastModified'>): Promise<PurchaseRequisition> {
-    const id = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const requisitionNumber = `PR${Date.now().toString().slice(-6)}`;
-    
-    return {
-      ...requisition,
-      id,
-      requisitionNumber,
-      status: 'DRAFT',
-      approvals: [],
-      createdDate: new Date(),
-      lastModified: new Date()
-    };
-  }
-
-  async submitRequisitionForApproval(requisitionId: string): Promise<{
-    status: 'SUBMITTED' | 'ERROR';
-    nextApprover?: string;
-    estimatedApprovalTime: number; // hours
-  }> {
-    console.log(`Submitting requisition ${requisitionId} for approval`);
-    return {
-      status: 'SUBMITTED',
-      nextApprover: 'manager_123',
-      estimatedApprovalTime: 24
-    };
-  }
-
-  async approveRequisition(requisitionId: string, approverId: string, comments?: string): Promise<void> {
-    console.log(`Requisition ${requisitionId} approved by ${approverId}`);
-  }
-
-  /**
-   * Purchase Order Management
-   */
-  async createPurchaseOrder(po: Omit<PurchaseOrder, 'id' | 'poNumber' | 'status' | 'approvals' | 'revisions' | 'createdDate'>): Promise<PurchaseOrder> {
-    const id = `po_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const poNumber = `PO${Date.now().toString().slice(-6)}`;
-    
-    return {
-      ...po,
-      id,
-      poNumber,
-      status: 'DRAFT',
-      approvals: [],
-      revisions: [],
-      createdDate: new Date()
-    };
-  }
-
-  async approvePurchaseOrder(poId: string, approverId: string): Promise<void> {
-    console.log(`Purchase Order ${poId} approved by ${approverId}`);
-  }
-
-  async sendPurchaseOrder(poId: string, deliveryMethod: 'EMAIL' | 'EDI' | 'PORTAL'): Promise<{
-    status: 'SENT' | 'ERROR';
-    sentDate?: Date;
-    trackingId?: string;
-  }> {
-    console.log(`Sending Purchase Order ${poId} via ${deliveryMethod}`);
-    return {
-      status: 'SENT',
-      sentDate: new Date(),
-      trackingId: `track_${Date.now()}`
-    };
-  }
-
-  async amendPurchaseOrder(
-    poId: string,
-    changes: Partial<PurchaseOrder>,
-    reason: string,
-    amendedBy: string
-  ): Promise<PurchaseOrder> {
-    console.log(`Amending Purchase Order ${poId} - Reason: ${reason}`);
-    // Implementation would create amendment record and update PO
-    throw new Error('Amendment logic to be implemented');
-  }
-
-  /**
-   * RFQ Management
-   */
-  async createRFQ(rfq: Omit<RFQ, 'id' | 'rfqNumber' | 'status' | 'responses' | 'createdDate'>): Promise<RFQ> {
-    const id = `rfq_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const rfqNumber = `RFQ${Date.now().toString().slice(-6)}`;
-    
-    return {
-      ...rfq,
-      id,
-      rfqNumber,
-      status: 'DRAFT',
-      responses: [],
-      createdDate: new Date()
-    };
-  }
-
-  async publishRFQ(rfqId: string): Promise<{
-    status: 'PUBLISHED' | 'ERROR';
-    publishedDate?: Date;
-    invitedSuppliers: number;
-  }> {
-    console.log(`Publishing RFQ ${rfqId}`);
-    return {
-      status: 'PUBLISHED',
-      publishedDate: new Date(),
-      invitedSuppliers: 5
-    };
-  }
-
-  async evaluateRFQResponses(rfqId: string): Promise<{
-    recommendedSupplier: string;
-    evaluationScores: Array<{ supplierId: string; score: number; ranking: number }>;
-    costSavings: number;
-    analysis: string;
-  }> {
-    // Implementation would evaluate responses against criteria
-    return {
-      recommendedSupplier: 'supp_123',
-      evaluationScores: [
-        { supplierId: 'supp_123', score: 92, ranking: 1 },
-        { supplierId: 'supp_456', score: 87, ranking: 2 }
-      ],
-      costSavings: 15000,
-      analysis: 'Supplier 123 offers best value with excellent quality ratings and competitive pricing'
-    };
-  }
-
-  /**
-   * Contract Management
-   */
-  async createContract(contract: Omit<Contract, 'id' | 'contractNumber' | 'status' | 'amendments' | 'performance' | 'createdDate'>): Promise<Contract> {
-    const id = `cont_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const contractNumber = `CONT${Date.now().toString().slice(-6)}`;
-    
-    return {
-      ...contract,
-      id,
-      contractNumber,
-      status: 'DRAFT',
-      amendments: [],
-      performance: {
-        totalSpend: 0,
-        savingsAchieved: 0,
-        onTimeDeliveryRate: 0,
-        qualityRating: 0
-      },
-      createdDate: new Date()
-    };
-  }
-
-  async monitorContractPerformance(contractId: string): Promise<ContractPerformance> {
-    console.log(`Monitoring performance for contract ${contractId}`);
-    // Implementation would analyze contract performance metrics
-    return {
-      totalSpend: 250000,
-      savingsAchieved: 15000,
-      onTimeDeliveryRate: 94.5,
-      qualityRating: 87.8,
-      lastReviewDate: new Date(),
-      nextReviewDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) // 90 days
-    };
-  }
-
-  /**
-   * Procurement Analytics
-   */
-  async getProcurementDashboard(
-    startDate: Date,
-    endDate: Date
-  ): Promise<{
-    totalSpend: number;
-    costSavings: number;
-    supplierCount: number;
-    averagePoValue: number;
-    onTimeDeliveryRate: number;
-    topCategories: Array<{ category: string; spend: number }>;
-    topSuppliers: Array<{ supplierId: string; name: string; spend: number }>;
-    purchaseOrderStats: {
-      totalOrders: number;
-      averageProcessingTime: number;
-      automationRate: number;
-    };
-  }> {
-    // Implementation would calculate procurement KPIs
-    return {
-      totalSpend: 5200000,
-      costSavings: 180000,
-      supplierCount: 125,
-      averagePoValue: 12500,
-      onTimeDeliveryRate: 89.2,
-      topCategories: [
-        { category: 'Raw Materials', spend: 2100000 },
-        { category: 'IT Services', spend: 850000 },
-        { category: 'Facility Services', spend: 650000 }
-      ],
-      topSuppliers: [
-        { supplierId: 'supp_001', name: 'ABC Materials Corp', spend: 980000 },
-        { supplierId: 'supp_002', name: 'TechServ Solutions', spend: 720000 }
-      ],
-      purchaseOrderStats: {
-        totalOrders: 416,
-        averageProcessingTime: 2.8, // days
-        automationRate: 73.5 // percentage
-      }
-    };
-  }
-
-  async generateSpendAnalysis(
-    startDate: Date,
-    endDate: Date,
-    groupBy: 'CATEGORY' | 'SUPPLIER' | 'DEPARTMENT' | 'PROJECT'
-  ): Promise<{
-    totalSpend: number;
-    breakdown: Array<{ group: string; spend: number; percentage: number }>;
-    trends: Array<{ period: string; spend: number }>;
-    opportunities: string[];
-  }> {
-    // Implementation would analyze spending patterns and identify opportunities
-    return {
-      totalSpend: 5200000,
-      breakdown: [
-        { group: 'Raw Materials', spend: 2100000, percentage: 40.4 },
-        { group: 'IT Services', spend: 850000, percentage: 16.3 },
-        { group: 'Facility Services', spend: 650000, percentage: 12.5 }
-      ],
-      trends: [
-        { period: '2024-Q1', spend: 1200000 },
-        { period: '2024-Q2', spend: 1350000 },
-        { period: '2024-Q3', spend: 1300000 }
-      ],
-      opportunities: [
-        'Consolidate IT services with fewer suppliers for better rates',
-        'Negotiate volume discounts for raw materials',
-        'Consider long-term contracts for facility services'
-      ]
-    };
-  }
-}
 
 export const procurementManager = new ProcurementManager();

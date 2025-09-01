@@ -9,7 +9,7 @@ import { Priority } from '../../types/common';
 export * from './types';
 
 // Export data access layer
-export * from './data-access';
+// export * from './data-access'; // TODO: Create data-access layer
 
 // Export business logic services for direct access  
 export * from './business-logic/pim-data-hub/pim-data-hub-service';
