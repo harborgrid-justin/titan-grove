@@ -21,34 +21,56 @@ import {
   ManufacturingProductionDomainConfig 
 } from './manufacturing-production';
 
-// Import remaining domains (placeholders for now) - Simplified for now
-// import { hrManager, HRManager } from '../../modules/hr';
-// import { crmManager, CRMManager } from '../../modules/crm';
-// import { orderManager, OrderManager } from '../../modules/orders';
-// import { assetManager, AssetManager } from '../../modules/assets';
-// import { maintenanceManager, MaintenanceManager } from '../../modules/maintenance';
-// import { projectManager, ProjectManager } from '../../modules/project';
-// import { serviceManager, ServiceManager } from '../../modules/service';
-// import { biManager, BIManager } from '../../modules/bi';
-// import { integrationManager, IntegrationManager } from '../../modules/integration';
-// import { workflowManager, WorkflowManager } from '../../modules/workflow';
+import { 
+  HumanCapitalDomainManager, 
+  humanCapitalDomainManager,
+  HumanCapitalDomainConfig 
+} from './human-capital';
+
+import { 
+  CustomerSalesDomainManager, 
+  customerSalesDomainManager,
+  CustomerSalesDomainConfig 
+} from './customer-sales';
+
+import { 
+  AssetMaintenanceDomainManager, 
+  assetMaintenanceDomainManager,
+  AssetMaintenanceDomainConfig 
+} from './asset-maintenance';
+
+import { 
+  ProjectServiceDomainManager, 
+  projectServiceDomainManager,
+  ProjectServiceDomainConfig 
+} from './project-service';
+
+import { 
+  TechnologyIntegrationDomainManager, 
+  technologyIntegrationDomainManager,
+  TechnologyIntegrationDomainConfig 
+} from './technology-integration';
 
 export interface DomainConfiguration {
   financialAdministrative: FinancialAdministrativeDomainConfig;
   supplyChainOperations: SupplyChainOperationsDomainConfig;
   manufacturingProduction: ManufacturingProductionDomainConfig;
-  // Additional domain configs will be added as they're implemented
+  humanCapital: HumanCapitalDomainConfig;
+  customerSales: CustomerSalesDomainConfig;
+  assetMaintenance: AssetMaintenanceDomainConfig;
+  projectService: ProjectServiceDomainConfig;
+  technologyIntegration: TechnologyIntegrationDomainConfig;
 }
 
 export interface DomainManagers {
   financialAdministrative: FinancialAdministrativeDomainManager;
-  humanCapital: { placeholder: string }; // Placeholder structure
-  customerSales: { placeholder: string }; // Placeholder structure
+  humanCapital: HumanCapitalDomainManager;
+  customerSales: CustomerSalesDomainManager;
   supplyChainOperations: SupplyChainOperationsDomainManager;
   manufacturingProduction: ManufacturingProductionDomainManager;
-  assetMaintenance: { placeholder: string }; // Placeholder
-  projectService: { placeholder: string }; // Placeholder
-  technologyIntegration: { placeholder: string }; // Placeholder
+  assetMaintenance: AssetMaintenanceDomainManager;
+  projectService: ProjectServiceDomainManager;
+  technologyIntegration: TechnologyIntegrationDomainManager;
 }
 
 /**
@@ -236,18 +258,16 @@ export class DomainOrchestrator {
   private businessLogicRegistry: typeof CentralBusinessLogicRegistry;
 
   constructor(config?: Partial<DomainConfiguration>) {
-    // Initialize fully implemented domains
+    // Initialize all 8 domain managers
     this.domainManagers = {
       financialAdministrative: financialAdministrativeDomainManager,
       supplyChainOperations: supplyChainOperationsDomainManager,
       manufacturingProduction: manufacturingProductionDomainManager,
-      
-      // Placeholder structures for remaining domains
-      humanCapital: { placeholder: 'Human Capital Domain - To be implemented' },
-      customerSales: { placeholder: 'Customer Sales Domain - To be implemented' },
-      assetMaintenance: { placeholder: 'Asset Maintenance Domain - To be implemented' },
-      projectService: { placeholder: 'Project Service Domain - To be implemented' },
-      technologyIntegration: { placeholder: 'Technology Integration Domain - To be implemented' }
+      humanCapital: humanCapitalDomainManager,
+      customerSales: customerSalesDomainManager,
+      assetMaintenance: assetMaintenanceDomainManager,
+      projectService: projectServiceDomainManager,
+      technologyIntegration: technologyIntegrationDomainManager
     };
 
     this.businessLogicRegistry = CentralBusinessLogicRegistry;
@@ -373,7 +393,12 @@ export const domainOrchestrator = new DomainOrchestrator();
 export {
   FinancialAdministrativeDomainManager,
   SupplyChainOperationsDomainManager, 
-  ManufacturingProductionDomainManager
+  ManufacturingProductionDomainManager,
+  HumanCapitalDomainManager,
+  CustomerSalesDomainManager,
+  AssetMaintenanceDomainManager,
+  ProjectServiceDomainManager,
+  TechnologyIntegrationDomainManager
 };
 
 // Export business logic classes for testing and external use
@@ -388,3 +413,23 @@ export {
 export {
   ManufacturingProductionBusinessLogic
 } from './manufacturing-production';
+
+export {
+  HumanCapitalBusinessLogic
+} from './human-capital';
+
+export {
+  CustomerSalesBusinessLogic
+} from './customer-sales';
+
+export {
+  AssetMaintenanceBusinessLogic
+} from './asset-maintenance';
+
+export {
+  ProjectServiceBusinessLogic
+} from './project-service';
+
+export {
+  TechnologyIntegrationBusinessLogic
+} from './technology-integration';
