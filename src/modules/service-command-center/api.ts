@@ -12,7 +12,7 @@ import {
   mobileCommandService
 } from './index';
 
-const router = Router();
+const router: any = Router();
 
 // ================================
 // COMMAND CENTER OPERATIONS

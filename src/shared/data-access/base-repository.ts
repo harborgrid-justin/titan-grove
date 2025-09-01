@@ -61,5 +61,14 @@ export abstract class BaseRepositoryImpl<T extends { id: string }> implements Ba
     }
   }
 
+  // Alias methods for common naming patterns
+  async getById(id: string): Promise<T | null> {
+    return this.findById(id);
+  }
+
+  async getAll(): Promise<T[]> {
+    return this.findAll();
+  }
+
   protected abstract generateId(): string;
 }
