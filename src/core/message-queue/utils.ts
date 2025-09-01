@@ -5,6 +5,7 @@
 
 import { createHash } from 'crypto';
 import { MessagePayload, MessagePriority } from './types';
+import { MessageQueueConfig } from '../../types/business-config';
 
 export class MessageQueueUtils {
   /**
@@ -271,7 +272,8 @@ export class MessageQueueUtils {
       throughputRequirement: 'LOW' | 'MEDIUM' | 'HIGH';
       latencyRequirement: 'LOW' | 'MEDIUM' | 'HIGH';
       reliabilityRequirement: 'STANDARD' | 'HIGH' | 'CRITICAL';
-    }
+    },
+    queueConfig?: MessageQueueConfig
   ): {
     concurrency: number;
     attempts: number;
@@ -279,57 +281,73 @@ export class MessageQueueUtils {
     removeOnComplete: number;
     removeOnFail: number;
   } {
+    // Use defaults if no configuration provided
+    const dynamicConfig = queueConfig?.dynamicConfig || {
+      lowConcurrency: 5,
+      mediumConcurrency: 10,
+      highConcurrency: 20,
+      standardAttempts: 2,
+      highAttempts: 3,
+      criticalAttempts: 5,
+      standardBackoffDelay: 1000,
+      highBackoffDelay: 1500,
+      criticalBackoffDelay: 2000,
+      mediumRetention: 100,
+      highRetention: 200,
+      criticalRetention: 500,
+    };
+    
     const config = {
       concurrency: 1,
       attempts: 1,
-      backoffDelay: 1000,
-      removeOnComplete: 100,
+      backoffDelay: dynamicConfig.standardBackoffDelay,
+      removeOnComplete: dynamicConfig.mediumRetention,
       removeOnFail: 50
     };
 
     // Adjust concurrency based on throughput requirements
     switch (businessRequirements.throughputRequirement) {
       case 'HIGH':
-        config.concurrency = 20;
+        config.concurrency = dynamicConfig.highConcurrency;
         break;
       case 'MEDIUM':
-        config.concurrency = 10;
+        config.concurrency = dynamicConfig.mediumConcurrency;
         break;
       case 'LOW':
-        config.concurrency = 5;
+        config.concurrency = dynamicConfig.lowConcurrency;
         break;
     }
 
     // Adjust retry attempts based on reliability requirements
     switch (businessRequirements.reliabilityRequirement) {
       case 'CRITICAL':
-        config.attempts = 5;
-        config.backoffDelay = 2000;
-        config.removeOnFail = 200;
+        config.attempts = dynamicConfig.criticalAttempts;
+        config.backoffDelay = dynamicConfig.criticalBackoffDelay;
+        config.removeOnFail = dynamicConfig.criticalRetention;
         break;
       case 'HIGH':
-        config.attempts = 3;
-        config.backoffDelay = 1500;
-        config.removeOnFail = 100;
+        config.attempts = dynamicConfig.highAttempts;
+        config.backoffDelay = dynamicConfig.highBackoffDelay;
+        config.removeOnFail = dynamicConfig.highRetention;
         break;
       case 'STANDARD':
-        config.attempts = 2;
+        config.attempts = dynamicConfig.standardAttempts;
         break;
     }
 
     // Adjust job retention based on priority
     switch (businessRequirements.priority) {
       case 'CRITICAL':
-        config.removeOnComplete = 500;
-        config.removeOnFail = 500;
+        config.removeOnComplete = dynamicConfig.criticalRetention;
+        config.removeOnFail = dynamicConfig.criticalRetention;
         break;
       case 'HIGH':
-        config.removeOnComplete = 200;
-        config.removeOnFail = 200;
+        config.removeOnComplete = dynamicConfig.highRetention;
+        config.removeOnFail = dynamicConfig.highRetention;
         break;
       case 'MEDIUM':
-        config.removeOnComplete = 100;
-        config.removeOnFail = 100;
+        config.removeOnComplete = dynamicConfig.mediumRetention;
+        config.removeOnFail = dynamicConfig.mediumRetention;
         break;
       case 'LOW':
         config.removeOnComplete = 50;

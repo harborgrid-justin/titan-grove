@@ -214,6 +214,22 @@ const businessConfigSchema = Joi.object({
       workers: Joi.number().default(4),
       concurrency: Joi.number().default(10),
     }).default(),
+    
+    // Dynamic Configuration Values
+    dynamicConfig: Joi.object({
+      lowConcurrency: Joi.number().default(5),
+      mediumConcurrency: Joi.number().default(10),
+      highConcurrency: Joi.number().default(20),
+      standardAttempts: Joi.number().default(2),
+      highAttempts: Joi.number().default(3),
+      criticalAttempts: Joi.number().default(5),
+      standardBackoffDelay: Joi.number().default(1000),
+      highBackoffDelay: Joi.number().default(1500),
+      criticalBackoffDelay: Joi.number().default(2000),
+      mediumRetention: Joi.number().default(100),
+      highRetention: Joi.number().default(200),
+      criticalRetention: Joi.number().default(500),
+    }).default(),
   }).default(),
   
   project: Joi.object({
@@ -290,6 +306,16 @@ const businessConfigSchema = Joi.object({
     // Tax and Fees
     standardTaxRate: Joi.number().min(0).max(1).default(0.085), // 8.5%
     currencyConversionRate: Joi.number().default(1.25), // USD to other currency
+    
+    // Mock Metrics Configuration
+    mockMetrics: Joi.object({
+      conversionRate: Joi.number().min(0).max(1).default(0.32), // 32%
+      averageQuoteToCloseTime: Joi.number().default(18.5), // days
+      winRate: Joi.number().min(0).max(1).default(0.28), // 28%
+      priceLossReasonPercentage: Joi.number().min(0).max(100).default(34.8),
+      competitorLossReasonPercentage: Joi.number().min(0).max(100).default(27.3),
+      budgetLossReasonPercentage: Joi.number().min(0).max(100).default(18.2),
+    }).default(),
   }).default(),
   
   orderPromising: Joi.object({
@@ -330,6 +356,69 @@ const businessConfigSchema = Joi.object({
     // Contract Management
     contractRenewalNotificationDays: Joi.number().default(90),
     contractValueReviewThreshold: Joi.number().default(100000),
+  }).default(),
+  
+  pricingEngine: Joi.object({
+    // Mock Pricing Data
+    mockPricing: Joi.object({
+      defaultListPrice: Joi.number().default(100.00),
+      defaultMinPrice: Joi.number().default(80.00),
+      defaultCost: Joi.number().default(60.00),
+      defaultMarginPercent: Joi.number().default(40.0),
+      priceBreaks: Joi.object({
+        tier1MinQuantity: Joi.number().default(10),
+        tier1UnitPrice: Joi.number().default(95.00),
+        tier2MinQuantity: Joi.number().default(50),
+        tier2UnitPrice: Joi.number().default(90.00),
+        tier3MinQuantity: Joi.number().default(100),
+        tier3UnitPrice: Joi.number().default(85.00),
+      }).default(),
+    }).default(),
+    
+    // Pricing Rules
+    maxDiscountPercent: Joi.number().min(0).max(100).default(20), // 20% max discount
+    minMarginPercent: Joi.number().min(0).default(15), // 15% minimum margin
+    defaultMarkupMultiplier: Joi.number().default(1.67), // 67% markup from cost
+  }).default(),
+  
+  shipping: Joi.object({
+    // Carrier scoring weights
+    carrierScoring: Joi.object({
+      costWeight: Joi.number().min(0).max(1).default(0.4), // 40%
+      speedWeight: Joi.number().min(0).max(1).default(0.4), // 40%
+      reliabilityWeight: Joi.number().min(0).max(1).default(0.2), // 20%
+    }).default(),
+    
+    // Insurance and fees
+    defaultInsuranceRate: Joi.number().min(0).default(0.005), // 0.5%
+    dimensionalWeightDivisor: Joi.number().default(139),
+    
+    // Mock shipping rates
+    mockRates: Joi.object({
+      baseShippingCost: Joi.number().default(15.00),
+      expressShippingMultiplier: Joi.number().default(1.5),
+      overnightShippingMultiplier: Joi.number().default(3.0),
+    }).default(),
+  }).default(),
+  
+  forecasting: Joi.object({
+    // Forecasting parameters
+    defaultForecastPeriods: Joi.number().default(12), // 12 months
+    seasonalAmplitude: Joi.number().default(200),
+    seasonalFrequency: Joi.number().default(0.5),
+    trendGrowthRate: Joi.number().default(50),
+    
+    // Variance and confidence intervals
+    forecastVarianceBounds: Joi.object({
+      upperMultiplier: Joi.number().default(1.2), // 20% above
+      lowerMultiplier: Joi.number().default(0.8), // 20% below
+    }).default(),
+    
+    // Mock forecasting data
+    mockForecasting: Joi.object({
+      baseOrderValue: Joi.number().default(1000),
+      standardError: Joi.number().min(0).max(1).default(0.1), // 10%
+    }).default(),
   }).default(),
 });
 
@@ -728,6 +817,44 @@ export function loadBusinessConfig(): BusinessConfig {
             : undefined,
         },
       },
+      dynamicConfig: {
+        lowConcurrency: process.env.MQ_LOW_CONCURRENCY
+          ? parseInt(process.env.MQ_LOW_CONCURRENCY, 10)
+          : undefined,
+        mediumConcurrency: process.env.MQ_MEDIUM_CONCURRENCY
+          ? parseInt(process.env.MQ_MEDIUM_CONCURRENCY, 10)
+          : undefined,
+        highConcurrency: process.env.MQ_HIGH_CONCURRENCY
+          ? parseInt(process.env.MQ_HIGH_CONCURRENCY, 10)
+          : undefined,
+        standardAttempts: process.env.MQ_STANDARD_ATTEMPTS
+          ? parseInt(process.env.MQ_STANDARD_ATTEMPTS, 10)
+          : undefined,
+        highAttempts: process.env.MQ_HIGH_ATTEMPTS
+          ? parseInt(process.env.MQ_HIGH_ATTEMPTS, 10)
+          : undefined,
+        criticalAttempts: process.env.MQ_CRITICAL_ATTEMPTS
+          ? parseInt(process.env.MQ_CRITICAL_ATTEMPTS, 10)
+          : undefined,
+        standardBackoffDelay: process.env.MQ_STANDARD_BACKOFF_DELAY
+          ? parseInt(process.env.MQ_STANDARD_BACKOFF_DELAY, 10)
+          : undefined,
+        highBackoffDelay: process.env.MQ_HIGH_BACKOFF_DELAY
+          ? parseInt(process.env.MQ_HIGH_BACKOFF_DELAY, 10)
+          : undefined,
+        criticalBackoffDelay: process.env.MQ_CRITICAL_BACKOFF_DELAY
+          ? parseInt(process.env.MQ_CRITICAL_BACKOFF_DELAY, 10)
+          : undefined,
+        mediumRetention: process.env.MQ_MEDIUM_RETENTION
+          ? parseInt(process.env.MQ_MEDIUM_RETENTION, 10)
+          : undefined,
+        highRetention: process.env.MQ_HIGH_RETENTION
+          ? parseInt(process.env.MQ_HIGH_RETENTION, 10)
+          : undefined,
+        criticalRetention: process.env.MQ_CRITICAL_RETENTION
+          ? parseInt(process.env.MQ_CRITICAL_RETENTION, 10)
+          : undefined,
+      },
     },
     project: {
       billing: {
@@ -833,6 +960,26 @@ export function loadBusinessConfig(): BusinessConfig {
       currencyConversionRate: process.env.QM_CURRENCY_CONVERSION_RATE
         ? parseFloat(process.env.QM_CURRENCY_CONVERSION_RATE)
         : undefined,
+      mockMetrics: {
+        conversionRate: process.env.QM_MOCK_CONVERSION_RATE
+          ? parseFloat(process.env.QM_MOCK_CONVERSION_RATE)
+          : undefined,
+        averageQuoteToCloseTime: process.env.QM_MOCK_AVG_CLOSE_TIME
+          ? parseFloat(process.env.QM_MOCK_AVG_CLOSE_TIME)
+          : undefined,
+        winRate: process.env.QM_MOCK_WIN_RATE
+          ? parseFloat(process.env.QM_MOCK_WIN_RATE)
+          : undefined,
+        priceLossReasonPercentage: process.env.QM_MOCK_PRICE_LOSS_PERCENT
+          ? parseFloat(process.env.QM_MOCK_PRICE_LOSS_PERCENT)
+          : undefined,
+        competitorLossReasonPercentage: process.env.QM_MOCK_COMPETITOR_LOSS_PERCENT
+          ? parseFloat(process.env.QM_MOCK_COMPETITOR_LOSS_PERCENT)
+          : undefined,
+        budgetLossReasonPercentage: process.env.QM_MOCK_BUDGET_LOSS_PERCENT
+          ? parseFloat(process.env.QM_MOCK_BUDGET_LOSS_PERCENT)
+          : undefined,
+      },
     },
     orderPromising: {
       manufacturingLeadTime: process.env.OP_MANUFACTURING_LEAD_TIME
@@ -897,6 +1044,111 @@ export function loadBusinessConfig(): BusinessConfig {
       contractValueReviewThreshold: process.env.PROC_CONTRACT_VALUE_REVIEW_THRESHOLD
         ? parseFloat(process.env.PROC_CONTRACT_VALUE_REVIEW_THRESHOLD)
         : undefined,
+    },
+    pricingEngine: {
+      mockPricing: {
+        defaultListPrice: process.env.PE_MOCK_DEFAULT_LIST_PRICE
+          ? parseFloat(process.env.PE_MOCK_DEFAULT_LIST_PRICE)
+          : undefined,
+        defaultMinPrice: process.env.PE_MOCK_DEFAULT_MIN_PRICE
+          ? parseFloat(process.env.PE_MOCK_DEFAULT_MIN_PRICE)
+          : undefined,
+        defaultCost: process.env.PE_MOCK_DEFAULT_COST
+          ? parseFloat(process.env.PE_MOCK_DEFAULT_COST)
+          : undefined,
+        defaultMarginPercent: process.env.PE_MOCK_DEFAULT_MARGIN_PERCENT
+          ? parseFloat(process.env.PE_MOCK_DEFAULT_MARGIN_PERCENT)
+          : undefined,
+        priceBreaks: {
+          tier1MinQuantity: process.env.PE_MOCK_TIER1_MIN_QUANTITY
+            ? parseInt(process.env.PE_MOCK_TIER1_MIN_QUANTITY, 10)
+            : undefined,
+          tier1UnitPrice: process.env.PE_MOCK_TIER1_UNIT_PRICE
+            ? parseFloat(process.env.PE_MOCK_TIER1_UNIT_PRICE)
+            : undefined,
+          tier2MinQuantity: process.env.PE_MOCK_TIER2_MIN_QUANTITY
+            ? parseInt(process.env.PE_MOCK_TIER2_MIN_QUANTITY, 10)
+            : undefined,
+          tier2UnitPrice: process.env.PE_MOCK_TIER2_UNIT_PRICE
+            ? parseFloat(process.env.PE_MOCK_TIER2_UNIT_PRICE)
+            : undefined,
+          tier3MinQuantity: process.env.PE_MOCK_TIER3_MIN_QUANTITY
+            ? parseInt(process.env.PE_MOCK_TIER3_MIN_QUANTITY, 10)
+            : undefined,
+          tier3UnitPrice: process.env.PE_MOCK_TIER3_UNIT_PRICE
+            ? parseFloat(process.env.PE_MOCK_TIER3_UNIT_PRICE)
+            : undefined,
+        },
+      },
+      maxDiscountPercent: process.env.PE_MAX_DISCOUNT_PERCENT
+        ? parseFloat(process.env.PE_MAX_DISCOUNT_PERCENT)
+        : undefined,
+      minMarginPercent: process.env.PE_MIN_MARGIN_PERCENT
+        ? parseFloat(process.env.PE_MIN_MARGIN_PERCENT)
+        : undefined,
+      defaultMarkupMultiplier: process.env.PE_DEFAULT_MARKUP_MULTIPLIER
+        ? parseFloat(process.env.PE_DEFAULT_MARKUP_MULTIPLIER)
+        : undefined,
+    },
+    shipping: {
+      carrierScoring: {
+        costWeight: process.env.SHIP_CARRIER_COST_WEIGHT
+          ? parseFloat(process.env.SHIP_CARRIER_COST_WEIGHT)
+          : undefined,
+        speedWeight: process.env.SHIP_CARRIER_SPEED_WEIGHT
+          ? parseFloat(process.env.SHIP_CARRIER_SPEED_WEIGHT)
+          : undefined,
+        reliabilityWeight: process.env.SHIP_CARRIER_RELIABILITY_WEIGHT
+          ? parseFloat(process.env.SHIP_CARRIER_RELIABILITY_WEIGHT)
+          : undefined,
+      },
+      defaultInsuranceRate: process.env.SHIP_DEFAULT_INSURANCE_RATE
+        ? parseFloat(process.env.SHIP_DEFAULT_INSURANCE_RATE)
+        : undefined,
+      dimensionalWeightDivisor: process.env.SHIP_DIMENSIONAL_WEIGHT_DIVISOR
+        ? parseFloat(process.env.SHIP_DIMENSIONAL_WEIGHT_DIVISOR)
+        : undefined,
+      mockRates: {
+        baseShippingCost: process.env.SHIP_MOCK_BASE_COST
+          ? parseFloat(process.env.SHIP_MOCK_BASE_COST)
+          : undefined,
+        expressShippingMultiplier: process.env.SHIP_MOCK_EXPRESS_MULTIPLIER
+          ? parseFloat(process.env.SHIP_MOCK_EXPRESS_MULTIPLIER)
+          : undefined,
+        overnightShippingMultiplier: process.env.SHIP_MOCK_OVERNIGHT_MULTIPLIER
+          ? parseFloat(process.env.SHIP_MOCK_OVERNIGHT_MULTIPLIER)
+          : undefined,
+      },
+    },
+    forecasting: {
+      defaultForecastPeriods: process.env.FC_DEFAULT_PERIODS
+        ? parseInt(process.env.FC_DEFAULT_PERIODS, 10)
+        : undefined,
+      seasonalAmplitude: process.env.FC_SEASONAL_AMPLITUDE
+        ? parseFloat(process.env.FC_SEASONAL_AMPLITUDE)
+        : undefined,
+      seasonalFrequency: process.env.FC_SEASONAL_FREQUENCY
+        ? parseFloat(process.env.FC_SEASONAL_FREQUENCY)
+        : undefined,
+      trendGrowthRate: process.env.FC_TREND_GROWTH_RATE
+        ? parseFloat(process.env.FC_TREND_GROWTH_RATE)
+        : undefined,
+      forecastVarianceBounds: {
+        upperMultiplier: process.env.FC_UPPER_BOUND_MULTIPLIER
+          ? parseFloat(process.env.FC_UPPER_BOUND_MULTIPLIER)
+          : undefined,
+        lowerMultiplier: process.env.FC_LOWER_BOUND_MULTIPLIER
+          ? parseFloat(process.env.FC_LOWER_BOUND_MULTIPLIER)
+          : undefined,
+      },
+      mockForecasting: {
+        baseOrderValue: process.env.FC_MOCK_BASE_ORDER_VALUE
+          ? parseFloat(process.env.FC_MOCK_BASE_ORDER_VALUE)
+          : undefined,
+        standardError: process.env.FC_MOCK_STANDARD_ERROR
+          ? parseFloat(process.env.FC_MOCK_STANDARD_ERROR)
+          : undefined,
+      },
     },
   };
 

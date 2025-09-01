@@ -22,6 +22,7 @@ import {
 } from '../../types';
 
 import { QuoteManagementConfig } from '../../../../types/business-config';
+import { BusinessMetricsUtils } from '../../../../shared/constants';
 
 export class QuoteService {
   
@@ -324,23 +325,23 @@ export class QuoteService {
     quoteType?: string;
   }): Promise<QuoteMetrics> {
     // Implementation would query database based on criteria
-    // This is a mock implementation
+    // This is a mock implementation using centralized configuration
     
-    const mockMetrics: QuoteMetrics = {
-      totalQuotes: 156,
-      totalQuoteValue: 2450000,
-      conversionRate: 0.32,
-      averageQuoteValue: 15705.13,
-      averageQuoteToCloseTime: 18.5,
-      winRate: 0.28,
-      topLossReasons: [
-        { reason: 'Price too high', count: 23, percentage: 34.8 },
-        { reason: 'Lost to competitor', count: 18, percentage: 27.3 },
-        { reason: 'Budget constraints', count: 12, percentage: 18.2 },
-        { reason: 'Timing not right', count: 8, percentage: 12.1 },
-        { reason: 'Product not suitable', count: 5, percentage: 7.6 }
-      ]
-    };
+    // Base mock data - would typically come from database
+    const totalQuotes = 156;
+    const totalQuoteValue = 2450000;
+    
+    // Generate metrics using centralized business configuration and utilities
+    const mockMetrics = BusinessMetricsUtils.generateMockQuoteMetrics({
+      totalQuotes,
+      totalQuoteValue,
+      conversionRate: this.config.mockMetrics.conversionRate,
+      winRate: this.config.mockMetrics.winRate,
+      averageQuoteToCloseTime: this.config.mockMetrics.averageQuoteToCloseTime,
+      priceLossReasonPercentage: this.config.mockMetrics.priceLossReasonPercentage,
+      competitorLossReasonPercentage: this.config.mockMetrics.competitorLossReasonPercentage,
+      budgetLossReasonPercentage: this.config.mockMetrics.budgetLossReasonPercentage,
+    });
 
     return mockMetrics;
   }

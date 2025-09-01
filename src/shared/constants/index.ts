@@ -140,3 +140,154 @@ export const PerformanceUtils = {
     return totalCapacity > 0 ? (allocatedHours / totalCapacity) * 100 : 0;
   }
 };
+
+// Business metrics calculation utilities
+export const BusinessMetricsUtils = {
+  /**
+   * Calculate conversion rate as percentage
+   */
+  calculateConversionRate: (conversions: number, total: number): number => {
+    return total > 0 ? (conversions / total) : 0;
+  },
+
+  /**
+   * Calculate loss reason percentages from counts
+   */
+  calculateLossReasonPercentages: (lossReasons: Array<{ reason: string; count: number }>): Array<{ reason: string; count: number; percentage: number }> => {
+    const totalCount = lossReasons.reduce((sum, reason) => sum + reason.count, 0);
+    return lossReasons.map(reason => ({
+      ...reason,
+      percentage: totalCount > 0 ? FinancialUtils.roundToCents((reason.count / totalCount) * 100) : 0
+    }));
+  },
+
+  /**
+   * Generate mock quote metrics based on configuration
+   */
+  generateMockQuoteMetrics: (config: {
+    totalQuotes: number;
+    totalQuoteValue: number;
+    conversionRate: number;
+    winRate: number;
+    averageQuoteToCloseTime: number;
+    priceLossReasonPercentage: number;
+    competitorLossReasonPercentage: number;
+    budgetLossReasonPercentage: number;
+  }) => {
+    const averageQuoteValue = config.totalQuoteValue / config.totalQuotes;
+    
+    // Calculate loss reasons based on percentages
+    const totalLosses = Math.round(config.totalQuotes * (1 - config.winRate));
+    const priceLosses = Math.round(totalLosses * (config.priceLossReasonPercentage / 100));
+    const competitorLosses = Math.round(totalLosses * (config.competitorLossReasonPercentage / 100));
+    const budgetLosses = Math.round(totalLosses * (config.budgetLossReasonPercentage / 100));
+    
+    // Calculate remaining losses for other reasons
+    const remainingLosses = totalLosses - priceLosses - competitorLosses - budgetLosses;
+    const timingLosses = Math.round(remainingLosses * 0.6); // 60% of remaining
+    const productLosses = remainingLosses - timingLosses;
+    
+    return {
+      totalQuotes: config.totalQuotes,
+      totalQuoteValue: config.totalQuoteValue,
+      conversionRate: config.conversionRate,
+      averageQuoteValue: FinancialUtils.roundToCents(averageQuoteValue),
+      averageQuoteToCloseTime: config.averageQuoteToCloseTime,
+      winRate: config.winRate,
+      topLossReasons: BusinessMetricsUtils.calculateLossReasonPercentages([
+        { reason: 'Price too high', count: priceLosses },
+        { reason: 'Lost to competitor', count: competitorLosses },
+        { reason: 'Budget constraints', count: budgetLosses },
+        { reason: 'Timing not right', count: timingLosses },
+        { reason: 'Product not suitable', count: productLosses }
+      ])
+    };
+  }
+};
+
+// Shipping and logistics calculation utilities
+export const ShippingUtils = {
+  /**
+   * Calculate shipping carrier score based on weighted criteria
+   */
+  calculateCarrierScore: (
+    costScore: number, 
+    speedScore: number, 
+    reliabilityScore: number,
+    weights: { cost: number; speed: number; reliability: number } = { cost: 0.4, speed: 0.4, reliability: 0.2 }
+  ): number => {
+    return (costScore * weights.cost) + (speedScore * weights.speed) + (reliabilityScore * weights.reliability);
+  },
+
+  /**
+   * Calculate insurance cost as percentage of insured value
+   */
+  calculateInsuranceCost: (insuredValue: number, insuranceRate: number = 0.005): number => {
+    return insuredValue * insuranceRate;
+  },
+
+  /**
+   * Calculate shipping weight from dimensions and density
+   */
+  calculateDimensionalWeight: (length: number, width: number, height: number, divisor: number = 139): number => {
+    return (length * width * height) / divisor;
+  }
+};
+
+// Forecasting and analytics calculation utilities  
+export const ForecastingUtils = {
+  /**
+   * Generate forecast data with seasonal patterns and trends
+   */
+  generateForecastData: (
+    baseValue: number,
+    periods: number,
+    seasonalAmplitude: number = 200,
+    seasonalFrequency: number = 0.5,
+    trendGrowth: number = 50,
+    varianceBounds: { upper: number; lower: number } = { upper: 1.2, lower: 0.8 }
+  ): Array<{
+    period: Date;
+    forecastValue: number;
+    upperBound: number;
+    lowerBound: number;
+    variance: number;
+  }> => {
+    const forecastData = [];
+    
+    for (let i = 0; i < periods; i++) {
+      const period = new Date();
+      period.setMonth(period.getMonth() + i + 1);
+      
+      // Seasonal pattern using sine wave
+      const seasonalValue = baseValue + Math.sin(i * seasonalFrequency) * seasonalAmplitude;
+      const trend = i * trendGrowth;
+      const noise = (Math.random() - 0.5) * 100;
+      
+      const forecastValue = seasonalValue + trend + noise;
+      
+      forecastData.push({
+        period,
+        forecastValue: Math.round(forecastValue),
+        upperBound: Math.round(forecastValue * varianceBounds.upper),
+        lowerBound: Math.round(forecastValue * varianceBounds.lower),
+        variance: Math.round(Math.abs(noise))
+      });
+    }
+    
+    return forecastData;
+  },
+
+  /**
+   * Calculate confidence interval for forecast
+   */
+  calculateConfidenceInterval: (value: number, confidenceLevel: number = 0.95): { upper: number; lower: number } => {
+    const multiplier = confidenceLevel === 0.95 ? 1.96 : (confidenceLevel === 0.99 ? 2.58 : 1.645);
+    const margin = value * 0.1 * multiplier; // Assume 10% standard error
+    
+    return {
+      upper: FinancialUtils.roundToCents(value + margin),
+      lower: FinancialUtils.roundToCents(Math.max(0, value - margin))
+    };
+  }
+};

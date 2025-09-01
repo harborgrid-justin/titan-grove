@@ -147,6 +147,22 @@ export interface MessageQueueConfig {
     workers: number;
     concurrency: number;
   };
+  
+  // Dynamic Configuration Values
+  dynamicConfig: {
+    lowConcurrency: number;
+    mediumConcurrency: number;
+    highConcurrency: number;
+    standardAttempts: number;
+    highAttempts: number;
+    criticalAttempts: number;
+    standardBackoffDelay: number;
+    highBackoffDelay: number;
+    criticalBackoffDelay: number;
+    mediumRetention: number;
+    highRetention: number;
+    criticalRetention: number;
+  };
 }
 
 export interface ProjectConfig {
@@ -290,6 +306,16 @@ export interface QuoteManagementConfig {
   // Tax and Fees
   standardTaxRate: number; // percentage (e.g., 8.5% = 0.085)
   currencyConversionRate: number; // USD to other currency rate
+  
+  // Mock Metrics Configuration (for demo/testing)
+  mockMetrics: {
+    conversionRate: number; // quote to order conversion rate
+    averageQuoteToCloseTime: number; // days
+    winRate: number; // percentage as decimal
+    priceLossReasonPercentage: number; // percentage of losses due to price
+    competitorLossReasonPercentage: number; // percentage of losses to competitors
+    budgetLossReasonPercentage: number; // percentage of losses to budget constraints
+  };
 }
 
 export interface OrderPromisingConfig {
@@ -332,6 +358,69 @@ export interface ProcurementConfig {
   contractValueReviewThreshold: number; // dollar threshold for contract review
 }
 
+export interface PricingEngineConfig {
+  // Mock Pricing Data (for demo/testing)
+  mockPricing: {
+    defaultListPrice: number;
+    defaultMinPrice: number;
+    defaultCost: number;
+    defaultMarginPercent: number;
+    priceBreaks: {
+      tier1MinQuantity: number;
+      tier1UnitPrice: number;
+      tier2MinQuantity: number;
+      tier2UnitPrice: number;
+      tier3MinQuantity: number;
+      tier3UnitPrice: number;
+    };
+  };
+  
+  // Pricing Rules
+  maxDiscountPercent: number; // maximum discount allowed without approval
+  minMarginPercent: number; // minimum margin required
+  defaultMarkupMultiplier: number; // default markup from cost to price
+}
+
+export interface ShippingConfig {
+  // Carrier scoring weights
+  carrierScoring: {
+    costWeight: number; // weight for cost in carrier selection (0.4 = 40%)
+    speedWeight: number; // weight for speed in carrier selection
+    reliabilityWeight: number; // weight for reliability in carrier selection
+  };
+  
+  // Insurance and fees
+  defaultInsuranceRate: number; // insurance as percentage of insured value
+  dimensionalWeightDivisor: number; // divisor for dimensional weight calculation
+  
+  // Mock shipping rates (for demo/testing)
+  mockRates: {
+    baseShippingCost: number;
+    expressShippingMultiplier: number;
+    overnightShippingMultiplier: number;
+  };
+}
+
+export interface ForecastingConfig {
+  // Forecasting parameters
+  defaultForecastPeriods: number; // number of periods to forecast
+  seasonalAmplitude: number; // amplitude of seasonal variations
+  seasonalFrequency: number; // frequency of seasonal pattern
+  trendGrowthRate: number; // growth rate per period
+  
+  // Variance and confidence intervals
+  forecastVarianceBounds: {
+    upperMultiplier: number; // upper bound multiplier (1.2 = 20% above)
+    lowerMultiplier: number; // lower bound multiplier (0.8 = 20% below)
+  };
+  
+  // Mock forecasting data
+  mockForecasting: {
+    baseOrderValue: number; // base value for order forecasting
+    standardError: number; // standard error as percentage
+  };
+}
+
 export interface BusinessConfig {
   configureToOrder: ConfigureToOrderConfig;
   capitalAsset: CapitalAssetConfig;
@@ -343,6 +432,9 @@ export interface BusinessConfig {
   quoteManagement: QuoteManagementConfig;
   orderPromising: OrderPromisingConfig;
   procurement: ProcurementConfig;
+  pricingEngine: PricingEngineConfig;
+  shipping: ShippingConfig;
+  forecasting: ForecastingConfig;
 }
 
 // Extended Titan Configuration including business settings
