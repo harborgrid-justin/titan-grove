@@ -165,6 +165,9 @@ The system includes pre-configured settings for common business modules:
 - **SCM**: Fast cache expiry, inventory integration
 - **Manufacturing**: Real-time data, quality integration
 - **Procurement**: High priority, audit required, financial integration
+- **Service Command Center**: High priority, internal data, audit required, coordination hub
+- **Field Service**: Internal data, audit required, service coordination
+- **Maintenance**: Internal data, audit required, asset integration
 
 ## Example: Financial Service Integration
 
@@ -180,6 +183,40 @@ const pricingService = createPricingService(financialContext);
 // Use with automatic caching and audit logging
 const quote = await pricingService.calculateLeasePricing(100000, 36, 'model-1');
 // Automatically cached and audit message sent
+```
+
+## Example: Service Command Center Integration
+
+```typescript
+import { createServiceCommandCenterService } from './modules/service-command-center';
+
+// Create properly integrated service command center
+const serviceCommandCenterContext = ServiceFactory.createContext(
+  ServiceFactory.createStandardConfig('service-command-center')
+);
+const serviceCommandCenter = createServiceCommandCenterService(serviceCommandCenterContext);
+
+// Initialize with full integration capabilities
+const commandCenter = await serviceCommandCenter.initializeCommandCenter({
+  name: 'Enterprise Operations Center',
+  region: 'Global',
+  serviceAreas: ['North America', 'Europe', 'Asia Pacific'],
+  initialResources: []
+});
+// Automatically cached and notification messages sent to coordinated services
+
+// Coordinate emergency response with cross-module messaging
+const emergencyResponse = await serviceCommandCenter.coordinateEmergencyResponse(
+  commandCenter.commandCenterId,
+  {
+    type: 'EQUIPMENT_FAILURE',
+    severity: 'CRITICAL',
+    location: { lat: 40.7589, lng: -73.9851, address: 'Data Center' },
+    description: 'Critical system failure',
+    requiredSkills: ['electrical', 'emergency_response']
+  }
+);
+// Automatically coordinates with Field Service and Maintenance modules via message queue
 ```
 
 ## Configuration Options
