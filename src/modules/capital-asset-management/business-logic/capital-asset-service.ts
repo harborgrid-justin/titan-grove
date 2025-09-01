@@ -37,7 +37,6 @@ export class CapitalAssetService {
   private roiAnalyses: Map<string, ROIAnalysis> = new Map();
   private budgets: Map<string, CapitalBudget> = new Map();
 
-  constructor(private config: CapitalAssetConfig) {}
   private expenditures: Map<string, CapitalExpenditure> = new Map();
   private portfolios: Map<string, InvestmentPortfolio> = new Map();
   private workflows: Map<string, ApprovalWorkflow> = new Map();
@@ -45,6 +44,7 @@ export class CapitalAssetService {
   private acquisitions: Map<string, AssetAcquisition> = new Map();
 
   constructor(
+    private config: CapitalAssetConfig,
     private logger?: any,
     private databaseManager?: any,
     private financialService?: any,
@@ -1015,5 +1015,10 @@ export class CapitalAssetService {
   }
 }
 
-// Export singleton instance
-export const capitalAssetService = new CapitalAssetService();
+// Export singleton instance with default config
+export const capitalAssetService = new CapitalAssetService({
+  enabled: true,
+  defaultDepreciationRate: 0.1,
+  currencyCode: 'USD',
+  riskAssessmentRequired: true
+});
