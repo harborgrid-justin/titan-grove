@@ -380,6 +380,46 @@ const businessConfigSchema = Joi.object({
     minMarginPercent: Joi.number().min(0).default(15), // 15% minimum margin
     defaultMarkupMultiplier: Joi.number().default(1.67), // 67% markup from cost
   }).default(),
+  
+  shipping: Joi.object({
+    // Carrier scoring weights
+    carrierScoring: Joi.object({
+      costWeight: Joi.number().min(0).max(1).default(0.4), // 40%
+      speedWeight: Joi.number().min(0).max(1).default(0.4), // 40%
+      reliabilityWeight: Joi.number().min(0).max(1).default(0.2), // 20%
+    }).default(),
+    
+    // Insurance and fees
+    defaultInsuranceRate: Joi.number().min(0).default(0.005), // 0.5%
+    dimensionalWeightDivisor: Joi.number().default(139),
+    
+    // Mock shipping rates
+    mockRates: Joi.object({
+      baseShippingCost: Joi.number().default(15.00),
+      expressShippingMultiplier: Joi.number().default(1.5),
+      overnightShippingMultiplier: Joi.number().default(3.0),
+    }).default(),
+  }).default(),
+  
+  forecasting: Joi.object({
+    // Forecasting parameters
+    defaultForecastPeriods: Joi.number().default(12), // 12 months
+    seasonalAmplitude: Joi.number().default(200),
+    seasonalFrequency: Joi.number().default(0.5),
+    trendGrowthRate: Joi.number().default(50),
+    
+    // Variance and confidence intervals
+    forecastVarianceBounds: Joi.object({
+      upperMultiplier: Joi.number().default(1.2), // 20% above
+      lowerMultiplier: Joi.number().default(0.8), // 20% below
+    }).default(),
+    
+    // Mock forecasting data
+    mockForecasting: Joi.object({
+      baseOrderValue: Joi.number().default(1000),
+      standardError: Joi.number().min(0).max(1).default(0.1), // 10%
+    }).default(),
+  }).default(),
 });
 
 // Extended configuration schema including existing + business config
@@ -1049,6 +1089,66 @@ export function loadBusinessConfig(): BusinessConfig {
       defaultMarkupMultiplier: process.env.PE_DEFAULT_MARKUP_MULTIPLIER
         ? parseFloat(process.env.PE_DEFAULT_MARKUP_MULTIPLIER)
         : undefined,
+    },
+    shipping: {
+      carrierScoring: {
+        costWeight: process.env.SHIP_CARRIER_COST_WEIGHT
+          ? parseFloat(process.env.SHIP_CARRIER_COST_WEIGHT)
+          : undefined,
+        speedWeight: process.env.SHIP_CARRIER_SPEED_WEIGHT
+          ? parseFloat(process.env.SHIP_CARRIER_SPEED_WEIGHT)
+          : undefined,
+        reliabilityWeight: process.env.SHIP_CARRIER_RELIABILITY_WEIGHT
+          ? parseFloat(process.env.SHIP_CARRIER_RELIABILITY_WEIGHT)
+          : undefined,
+      },
+      defaultInsuranceRate: process.env.SHIP_DEFAULT_INSURANCE_RATE
+        ? parseFloat(process.env.SHIP_DEFAULT_INSURANCE_RATE)
+        : undefined,
+      dimensionalWeightDivisor: process.env.SHIP_DIMENSIONAL_WEIGHT_DIVISOR
+        ? parseFloat(process.env.SHIP_DIMENSIONAL_WEIGHT_DIVISOR)
+        : undefined,
+      mockRates: {
+        baseShippingCost: process.env.SHIP_MOCK_BASE_COST
+          ? parseFloat(process.env.SHIP_MOCK_BASE_COST)
+          : undefined,
+        expressShippingMultiplier: process.env.SHIP_MOCK_EXPRESS_MULTIPLIER
+          ? parseFloat(process.env.SHIP_MOCK_EXPRESS_MULTIPLIER)
+          : undefined,
+        overnightShippingMultiplier: process.env.SHIP_MOCK_OVERNIGHT_MULTIPLIER
+          ? parseFloat(process.env.SHIP_MOCK_OVERNIGHT_MULTIPLIER)
+          : undefined,
+      },
+    },
+    forecasting: {
+      defaultForecastPeriods: process.env.FC_DEFAULT_PERIODS
+        ? parseInt(process.env.FC_DEFAULT_PERIODS, 10)
+        : undefined,
+      seasonalAmplitude: process.env.FC_SEASONAL_AMPLITUDE
+        ? parseFloat(process.env.FC_SEASONAL_AMPLITUDE)
+        : undefined,
+      seasonalFrequency: process.env.FC_SEASONAL_FREQUENCY
+        ? parseFloat(process.env.FC_SEASONAL_FREQUENCY)
+        : undefined,
+      trendGrowthRate: process.env.FC_TREND_GROWTH_RATE
+        ? parseFloat(process.env.FC_TREND_GROWTH_RATE)
+        : undefined,
+      forecastVarianceBounds: {
+        upperMultiplier: process.env.FC_UPPER_BOUND_MULTIPLIER
+          ? parseFloat(process.env.FC_UPPER_BOUND_MULTIPLIER)
+          : undefined,
+        lowerMultiplier: process.env.FC_LOWER_BOUND_MULTIPLIER
+          ? parseFloat(process.env.FC_LOWER_BOUND_MULTIPLIER)
+          : undefined,
+      },
+      mockForecasting: {
+        baseOrderValue: process.env.FC_MOCK_BASE_ORDER_VALUE
+          ? parseFloat(process.env.FC_MOCK_BASE_ORDER_VALUE)
+          : undefined,
+        standardError: process.env.FC_MOCK_STANDARD_ERROR
+          ? parseFloat(process.env.FC_MOCK_STANDARD_ERROR)
+          : undefined,
+      },
     },
   };
 
