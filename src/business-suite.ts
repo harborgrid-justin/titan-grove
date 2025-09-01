@@ -1,8 +1,17 @@
 /**
  * Titan Grove Enterprise Business Suite
- * Main orchestrator for all business modules
+ * Main orchestrator for all business modules organized into 8 domain areas
  */
 
+// Domain Orchestration
+import { 
+  DomainOrchestrator, 
+  domainOrchestrator, 
+  CentralBusinessLogicRegistry,
+  DomainManagers 
+} from './domains';
+
+// Legacy module imports (for backward compatibility)
 import { financialManager, FinancialManager } from './modules/financial';
 import { hrManager, HRManager } from './modules/hr';
 import { crmManager, CRMManager } from './modules/crm';
@@ -95,6 +104,7 @@ export interface TitanGroveConfig {
 }
 
 export interface BusinessModules {
+  // Legacy module interfaces (backward compatibility)
   financial: FinancialManager;
   hr: HRManager;
   crm: CRMManager;
@@ -117,9 +127,17 @@ export interface BusinessModules {
   serviceCommandCenter: ServiceCommandCenterService;
 }
 
+export interface DomainBusinessModules {
+  // New domain-based organization (8 main domains)
+  domains: DomainManagers;
+  orchestrator: DomainOrchestrator;
+  businessLogic: typeof CentralBusinessLogicRegistry;
+}
+
 /**
  * Titan Grove Enterprise Business Suite
  * Modern Oracle EBS 12 competitor with integrated business applications
+ * Now organized into 8 main domain areas with centralized business logic
  */
 export class TitanGrove {
   private config: TitanGroveConfig;
@@ -129,7 +147,11 @@ export class TitanGrove {
   private cache?: CacheManager;
   private queueProcessors?: QueueProcessors;
 
-  // Business modules
+  // Domain-based organization (NEW - Primary Interface)
+  public readonly domains: DomainOrchestrator;
+  public readonly businessLogic: typeof CentralBusinessLogicRegistry;
+
+  // Legacy module interfaces (for backward compatibility)
   public readonly financial: FinancialManager;
   public readonly hr: HRManager;
   public readonly crm: CRMManager;
@@ -149,7 +171,7 @@ export class TitanGrove {
   public readonly document: DocumentManager;
   public readonly workflow: WorkflowManager;
   public readonly integration: IntegrationManager;
-  public readonly serviceCommandCenter: ServiceCommandCenterService;
+  public serviceCommandCenter: ServiceCommandCenterService; // Changed from readonly to allow reassignment
 
   constructor(config: TitanGroveConfig = {}) {
     this.config = {
@@ -219,7 +241,11 @@ export class TitanGrove {
       ...config
     };
 
-    // Initialize business modules
+    // Initialize domain orchestration (PRIMARY - New Architecture)
+    this.domains = domainOrchestrator;
+    this.businessLogic = CentralBusinessLogicRegistry;
+
+    // Initialize business modules (backward compatibility)
     this.financial = financialManager;
     this.hr = hrManager;
     this.crm = crmManager;
@@ -831,6 +857,110 @@ export class TitanGrove {
         resolve();
       }
     });
+  }
+
+  // ==============================
+  // NEW DOMAIN-BASED METHODS
+  // ==============================
+
+  /**
+   * Execute comprehensive business analysis across all domains
+   * Primary method for accessing consolidated business intelligence
+   */
+  async executeBusinessAnalysis(): Promise<{
+    financial: any;
+    operations: any;
+    manufacturing: any;
+    crossDomainMetrics: any;
+    recommendations: string[];
+  }> {
+    const analysis = await this.domains.executeComprehensiveAnalysis();
+    const metrics = await this.domains.getBusinessMetrics();
+    
+    return {
+      ...analysis,
+      recommendations: metrics.recommendations
+    };
+  }
+
+  /**
+   * Get business metrics organized by domain
+   */
+  async getDomainMetrics(): Promise<{
+    domains: { [key: string]: any };
+    consolidated: any;
+    recommendations: string[];
+  }> {
+    return await this.domains.getBusinessMetrics();
+  }
+
+  /**
+   * Calculate ROI across domains using centralized business logic
+   */
+  calculateROI(
+    investment: number,
+    returns: number[],
+    timeHorizon: number,
+    riskAdjustment: number = 0
+  ) {
+    return this.businessLogic.calculateROI(investment, returns, timeHorizon, riskAdjustment);
+  }
+
+  /**
+   * Calculate performance score using standardized methodology
+   */
+  calculatePerformanceScore(
+    metrics: { [key: string]: { value: number; target: number; weight: number } }
+  ) {
+    return this.businessLogic.calculatePerformanceScore(metrics);
+  }
+
+  /**
+   * Access specific domain manager
+   */
+  getDomainManager<T extends keyof DomainManagers>(domain: T): DomainManagers[T] {
+    return this.domains.getDomainManager(domain);
+  }
+
+  /**
+   * Get all centralized business constants
+   */
+  getBusinessConstants() {
+    return this.businessLogic.getBusinessConstants();
+  }
+
+  /**
+   * Advanced system information including domain organization
+   */
+  async getAdvancedSystemInfo(): Promise<{
+    version: string;
+    architecture: 'domain-based';
+    domains: string[];
+    businessLogicLines: number;
+    modules: { legacy: number; domains: number };
+    status: string;
+  }> {
+    const basicInfo = await this.getSystemInfo();
+    
+    return {
+      ...basicInfo,
+      architecture: 'domain-based',
+      domains: [
+        'Financial & Administrative',
+        'Human Capital', 
+        'Customer & Sales',
+        'Supply Chain & Operations',
+        'Manufacturing & Production',
+        'Asset & Maintenance',
+        'Project & Service',
+        'Technology & Integration'
+      ],
+      businessLogicLines: 15000, // Estimated consolidated business logic
+      modules: {
+        legacy: 20, // Original modules maintained for compatibility
+        domains: 8 // New domain organization
+      }
+    };
   }
 }
 
