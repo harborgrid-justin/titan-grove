@@ -210,6 +210,29 @@ export class ServiceFactory {
             auditRequired: false
           }
         }
+      },
+      'service-command-center': {
+        serviceName: 'service-command-center-service',
+        queueTypes: [QueueType.SERVICE_COMMAND_CENTER, QueueType.SERVICE, QueueType.MAINTENANCE, QueueType.NOTIFICATION],
+        cacheConfig: {
+          defaultTTL: 300, // 5 minutes
+          keyPrefix: 'scc',
+          operationTTLs: {
+            'command-center': 900,    // 15 minutes for command center data
+            'resource': 300,          // 5 minutes for resource data
+            'status': 60,             // 1 minute for status data
+            'analytics': 600,         // 10 minutes for analytics
+            'emergency': 30           // 30 seconds for emergency data
+          }
+        },
+        messageQueueConfig: {
+          defaultPriority: 1, // High priority for service command center
+          retryAttempts: 3,
+          compliance: {
+            dataClassification: 'INTERNAL',
+            auditRequired: true // Audit critical service operations
+          }
+        }
       }
     };
 

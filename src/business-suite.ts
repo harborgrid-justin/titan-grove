@@ -22,8 +22,10 @@ import { complianceManager, ComplianceManager } from './modules/compliance';
 import { documentManager, DocumentManager } from './modules/document';
 import { workflowManager, WorkflowManager } from './modules/workflow';
 import { integrationManager, IntegrationManager } from './modules/integration';
-import { ServiceCommandCenterService } from './modules/service-command-center';
+import { createServiceCommandCenterService, ServiceCommandCenterService } from './modules/service-command-center';
 import { MessageQueueManager, MessageQueueConfig, QueueProcessors } from './core/message-queue';
+import { CacheManager } from './cache/CacheManager';
+import { ServiceFactory } from './shared/utils/service-factory';
 
 export interface TitanGroveConfig {
   database?: {
@@ -49,6 +51,15 @@ export interface TitanGroveConfig {
     };
   };
   messageQueue?: MessageQueueConfig;
+  cache?: {
+    type: 'redis' | 'memory';
+    host?: string;
+    port?: number;
+    password?: string;
+    db?: number;
+    defaultTTL?: number;
+    maxSize?: number;
+  };
   modules?: {
     financial?: boolean;
     hr?: boolean;
@@ -113,6 +124,7 @@ export class TitanGrove {
   private server?: any;
   private isStarted = false;
   private messageQueue?: MessageQueueManager;
+  private cache?: CacheManager;
   private queueProcessors?: QueueProcessors;
 
   // Business modules
@@ -225,6 +237,7 @@ export class TitanGrove {
     this.document = documentManager;
     this.workflow = workflowManager;
     this.integration = integrationManager;
+    // Initialize service command center with basic instance - will be properly integrated during start()
     this.serviceCommandCenter = new ServiceCommandCenterService();
   }
 
@@ -529,7 +542,46 @@ export class TitanGrove {
 
   private async initializeModules(): Promise<void> {
     console.log('📦 Initializing business modules...');
-    // Implementation would initialize enabled modules
+    
+    // Initialize cache if not already done
+    if (!this.cache) {
+      const cacheConfig = this.config.cache || {
+        type: 'memory',
+        defaultTTL: 300,
+        maxSize: 1000
+      };
+      
+      this.cache = new CacheManager(cacheConfig, console as any);
+      await this.cache.initialize();
+      console.log('✅ Cache manager initialized');
+    }
+    
+    // Initialize ServiceFactory if it hasn't been initialized yet
+    try {
+      // Try to initialize ServiceFactory with message queue and cache
+      if (this.messageQueue && this.cache) {
+        await ServiceFactory.initialize(
+          this.config.messageQueue,
+          this.config.cache || {
+            type: 'memory',
+            defaultTTL: 300,
+            maxSize: 1000
+          },
+          { level: 'info' }
+        );
+
+        // Create properly integrated service command center
+        const serviceCommandCenterContext = ServiceFactory.createContext(
+          ServiceFactory.createStandardConfig('service-command-center')
+        );
+        this.serviceCommandCenter = createServiceCommandCenterService(serviceCommandCenterContext);
+        
+        console.log('✅ Service Command Center integrated with message queue and cache');
+      }
+    } catch (error) {
+      console.warn('⚠️ ServiceFactory initialization failed, using basic service instances:', error);
+      // Keep the basic instance already created in constructor
+    }
   }
 
   private async startServer(): Promise<void> {

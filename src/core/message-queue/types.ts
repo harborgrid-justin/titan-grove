@@ -98,6 +98,7 @@ export enum QueueType {
   INVENTORY = 'inventory',
   QUALITY = 'quality',
   SERVICE = 'service',
+  SERVICE_COMMAND_CENTER = 'service-command-center',
   MAINTENANCE = 'maintenance',
   RISK = 'risk',
   COMPLIANCE = 'compliance',
