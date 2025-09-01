@@ -23,6 +23,8 @@ import { documentManager, DocumentManager } from './modules/document';
 import { workflowManager, WorkflowManager } from './modules/workflow';
 import { integrationManager, IntegrationManager } from './modules/integration';
 import { createServiceCommandCenterService, ServiceCommandCenterService } from './modules/service-command-center';
+import { createFieldServiceService } from './modules/field-service';
+import { createMaintenanceService } from './modules/maintenance/business-logic/maintenance-management/maintenance-service';
 import { MessageQueueManager, MessageQueueConfig, QueueProcessors } from './core/message-queue';
 import { CacheManager } from './cache/CacheManager';
 import { ServiceFactory } from './shared/utils/service-factory';
@@ -570,13 +572,29 @@ export class TitanGrove {
           { level: 'info' }
         );
 
-        // Create properly integrated service command center
+        // Create properly integrated services
         const serviceCommandCenterContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('service-command-center')
         );
         this.serviceCommandCenter = createServiceCommandCenterService(serviceCommandCenterContext);
         
+        // Initialize field service with integration
+        const fieldServiceContext = ServiceFactory.createContext(
+          ServiceFactory.createStandardConfig('field-service')
+        );
+        const integratedFieldService = createFieldServiceService(fieldServiceContext);
+        
+        // Initialize maintenance service with integration
+        const maintenanceContext = ServiceFactory.createContext(
+          ServiceFactory.createStandardConfig('maintenance')
+        );
+        const integratedMaintenanceService = createMaintenanceService(maintenanceContext);
+        
         console.log('✅ Service Command Center integrated with message queue and cache');
+        console.log('✅ Field Service integrated with message queue and cache');
+        console.log('✅ Maintenance Service integrated with message queue and cache');
+        console.log('✅ All core services integrated and ready for coordination');
+        
       }
     } catch (error) {
       console.warn('⚠️ ServiceFactory initialization failed, using basic service instances:', error);

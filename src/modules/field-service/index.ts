@@ -16,7 +16,11 @@ export * from './business-logic/field-service-service';
 export * from './types';
 
 // Core field service functionality
-export { FieldServiceService, fieldServiceService } from './business-logic/field-service-service';
+export { 
+  FieldServiceService, 
+  fieldServiceService, 
+  createFieldServiceService 
+} from './business-logic/field-service-service';
 
 // Types
 export type {

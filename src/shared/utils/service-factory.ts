@@ -233,6 +233,51 @@ export class ServiceFactory {
             auditRequired: true // Audit critical service operations
           }
         }
+      },
+      'field-service': {
+        serviceName: 'field-service-service',
+        queueTypes: [QueueType.SERVICE, QueueType.MAINTENANCE, QueueType.NOTIFICATION, QueueType.ANALYTICS],
+        cacheConfig: {
+          defaultTTL: 600, // 10 minutes
+          keyPrefix: 'fs',
+          operationTTLs: {
+            'work-order': 300,        // 5 minutes for work orders
+            'technician': 900,        // 15 minutes for technician data
+            'service-request': 600,   // 10 minutes for service requests
+            'appointment': 300,       // 5 minutes for appointments
+            'contract': 1800          // 30 minutes for contracts
+          }
+        },
+        messageQueueConfig: {
+          defaultPriority: 2, // High priority for field service
+          retryAttempts: 3,
+          compliance: {
+            dataClassification: 'INTERNAL',
+            auditRequired: true
+          }
+        }
+      },
+      maintenance: {
+        serviceName: 'maintenance-service',
+        queueTypes: [QueueType.MAINTENANCE, QueueType.SERVICE, QueueType.ANALYTICS],
+        cacheConfig: {
+          defaultTTL: 600, // 10 minutes
+          keyPrefix: 'mnt',
+          operationTTLs: {
+            'maintenance': 900,       // 15 minutes for maintenance data
+            'work-order': 300,        // 5 minutes for work orders
+            'schedule': 600,          // 10 minutes for schedules
+            'asset': 1800             // 30 minutes for asset data
+          }
+        },
+        messageQueueConfig: {
+          defaultPriority: 2,
+          retryAttempts: 3,
+          compliance: {
+            dataClassification: 'INTERNAL',
+            auditRequired: true
+          }
+        }
       }
     };
 

@@ -1,6 +1,7 @@
 /**
  * Field Service Management Service
  * Oracle Field Service competitive implementation
+ * Enhanced with message queue and cache integration
  * 
  * Provides comprehensive field service management with:
  * - Advanced service request handling
@@ -25,7 +26,11 @@ import type {
   ServiceWarranty
 } from '../types';
 
-export class FieldServiceService {
+import { StandardServiceBase } from '../../../shared/utils/standard-service-base';
+import { ServiceIntegrationContext } from '../../../shared/interfaces/service-integration';
+import { MessagePayload, QueueType } from '../../../core/message-queue/types';
+
+export class FieldServiceService extends StandardServiceBase {
   private serviceRequests: Map<string, ServiceRequest> = new Map();
   private workOrders: Map<string, WorkOrder> = new Map();
   private technicians: Map<string, ServiceTechnician> = new Map();
@@ -34,11 +39,68 @@ export class FieldServiceService {
   private inventories: Map<string, FieldInventory> = new Map();
 
   constructor(
-    private logger?: any,
+    context?: ServiceIntegrationContext,
     private databaseManager?: any,
     private notificationService?: any,
     private gpsTrackingService?: any
-  ) {}
+  ) {
+    if (context) {
+      super(context);
+    } else {
+      // Fallback for backward compatibility
+      super({
+        messageQueue: null as any,
+        cache: null as any,
+        logger: console as any,
+        config: {
+          serviceName: 'field-service-service',
+          cacheConfig: { defaultTTL: 600, keyPrefix: 'fs' },
+          messageQueueConfig: { 
+            defaultPriority: 2, 
+            retryAttempts: 3,
+            compliance: { dataClassification: 'INTERNAL', auditRequired: true }
+          }
+        }
+      });
+    }
+  }
+
+  // ==================== Message Queue Integration ====================
+
+  /**
+   * Handle message processing for field service operations
+   */
+  async processMessage(message: MessagePayload): Promise<any> {
+    this.markMessageProcessed();
+    
+    switch (message.type) {
+      case 'CREATE_SERVICE_REQUEST':
+        return await this.createServiceRequest(message.data);
+      case 'CREATE_WORK_ORDER':
+        return await this.createWorkOrder(message.data);
+      case 'ASSIGN_TECHNICIAN':
+        return await this.assignTechnician(
+          message.data.workOrderId,
+          message.data.technicianId
+        );
+      case 'UPDATE_WORK_ORDER_STATUS':
+        return await this.updateWorkOrderStatus(
+          message.data.workOrderId,
+          message.data.status
+        );
+      case 'SCHEDULE_APPOINTMENT':
+        return await this.scheduleAppointment(message.data);
+      default:
+        throw new Error(`Unknown field service message type: ${message.type}`);
+    }
+  }
+
+  /**
+   * Get queue types this service handles
+   */
+  getHandledQueueTypes(): QueueType[] {
+    return [QueueType.SERVICE, QueueType.MAINTENANCE, QueueType.NOTIFICATION, QueueType.ANALYTICS];
+  }
 
   // ================================
   // SERVICE REQUEST MANAGEMENT
@@ -53,66 +115,100 @@ export class FieldServiceService {
     suggestedTechnicians: ServiceTechnician[];
     estimatedResponse: any;
   }> {
-    const requestId = requestData.requestId || `SR_${Date.now()}`;
-    
-    // Intelligent priority assignment based on request details
-    const priority = await this.calculateRequestPriority(requestData);
-    
-    // Estimate required skills based on problem description
-    const skillsRequired = await this.analyzeSkillRequirements(requestData);
+    return this.executeWithMetrics(async () => {
+      const requestId = requestData.requestId || `SR_${Date.now()}`;
+      
+      // Intelligent priority assignment based on request details
+      const priority = await this.calculateRequestPriority(requestData);
+      
+      // Estimate required skills based on problem description
+      const skillsRequired = await this.analyzeSkillRequirements(requestData);
 
-    const serviceRequest: ServiceRequest = {
-      requestId,
-      requestNumber: `SR-${requestId.substring(3)}`,
-      customerId: requestData.customerId || '',
-      customerName: requestData.customerName || '',
-      contactInfo: requestData.contactInfo || {
-        primaryContact: '',
-        phone: '',
-        email: ''
-      },
-      serviceAddress: requestData.serviceAddress || {
-        address: '',
-        coordinates: { lat: 0, lng: 0 }
-      },
-      requestType: requestData.requestType || 'REPAIR',
-      priority,
-      description: requestData.description || '',
-      problemCategory: requestData.problemCategory || 'GENERAL',
-      assetId: requestData.assetId,
-      assetInfo: requestData.assetInfo,
-      preferredSchedule: requestData.preferredSchedule || {
-        availability: 'BUSINESS_HOURS'
-      },
-      skillsRequired,
-      estimatedDuration: await this.estimateServiceDuration(requestData),
-      contractId: requestData.contractId,
-      serviceLevel: requestData.serviceLevel || 'STANDARD',
-      status: 'NEW',
-      createdBy: 'CUSTOMER_PORTAL',
-      createdDate: new Date(),
-      lastUpdated: new Date()
-    };
+      const serviceRequest: ServiceRequest = {
+        requestId,
+        requestNumber: `SR-${requestId.substring(3)}`,
+        customerId: requestData.customerId || '',
+        customerName: requestData.customerName || '',
+        contactInfo: requestData.contactInfo || {
+          primaryContact: '',
+          phone: '',
+          email: ''
+        },
+        serviceAddress: requestData.serviceAddress || {
+          address: '',
+          coordinates: { lat: 0, lng: 0 }
+        },
+        requestType: requestData.requestType || 'REPAIR',
+        priority,
+        description: requestData.description || '',
+        problemCategory: requestData.problemCategory || 'GENERAL',
+        assetId: requestData.assetId,
+        assetInfo: requestData.assetInfo,
+        preferredSchedule: requestData.preferredSchedule || {
+          availability: 'BUSINESS_HOURS'
+        },
+        skillsRequired,
+        estimatedDuration: await this.estimateServiceDuration(requestData),
+        contractId: requestData.contractId,
+        serviceLevel: requestData.serviceLevel || 'STANDARD',
+        status: 'NEW',
+        createdBy: 'CUSTOMER_PORTAL',
+        createdDate: new Date(),
+        lastUpdated: new Date()
+      };
 
-    this.serviceRequests.set(requestId, serviceRequest);
+      this.serviceRequests.set(requestId, serviceRequest);
+      
+      // Cache the service request
+      await this.setCached(`service-request:${requestId}`, serviceRequest, this.getCacheTTL('service-request'));
 
-    // Find suggested technicians
-    const suggestedTechnicians = await this.findSuggestedTechnicians(serviceRequest);
-    
-    // Calculate estimated response time
-    const estimatedResponse = await this.calculateResponseTime(serviceRequest);
+      // Find suggested technicians
+      const suggestedTechnicians = await this.findSuggestedTechnicians(serviceRequest);
+      
+      // Calculate estimated response time
+      const estimatedResponse = await this.calculateResponseTime(serviceRequest);
 
-    // Send acknowledgment notification
-    await this.sendServiceRequestAcknowledgment(serviceRequest);
+      // Send acknowledgment notification via message queue
+      await this.sendMessage(
+        QueueType.NOTIFICATION,
+        'SERVICE_REQUEST_CREATED',
+        {
+          requestId,
+          requestNumber: serviceRequest.requestNumber,
+          customerId: serviceRequest.customerId,
+          priority: serviceRequest.priority,
+          estimatedResponse,
+          timestamp: new Date()
+        }
+      );
 
-    this.logger?.info(`Service request created: ${serviceRequest.requestNumber}`);
+      // Notify service command center about new request
+      await this.sendMessage(
+        QueueType.SERVICE_COMMAND_CENTER,
+        'NEW_SERVICE_REQUEST',
+        {
+          requestId,
+          priority: serviceRequest.priority,
+          serviceType: serviceRequest.requestType,
+          location: serviceRequest.serviceAddress,
+          skillsRequired: serviceRequest.skillsRequired,
+          timestamp: new Date()
+        }
+      );
 
-    return {
-      success: true,
-      serviceRequest,
-      suggestedTechnicians,
-      estimatedResponse
-    };
+      this.logger.info(`Service request created: ${serviceRequest.requestNumber}`, {
+        requestId,
+        priority: serviceRequest.priority,
+        estimatedDuration: serviceRequest.estimatedDuration
+      });
+
+      return {
+        success: true,
+        serviceRequest,
+        suggestedTechnicians,
+        estimatedResponse
+      };
+    });
   }
 
   /**
@@ -814,5 +910,14 @@ export class FieldServiceService {
   }
 }
 
-// Export singleton instance
-export const fieldServiceService = new FieldServiceService();
+// Export singleton instance - will be properly initialized with context
+export let fieldServiceService: FieldServiceService;
+
+// Factory function to create properly initialized service
+export function createFieldServiceService(context?: ServiceIntegrationContext): FieldServiceService {
+  fieldServiceService = new FieldServiceService(context);
+  return fieldServiceService;
+}
+
+// Initialize basic instance for backward compatibility
+fieldServiceService = new FieldServiceService();
