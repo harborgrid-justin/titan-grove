@@ -18,6 +18,8 @@ import {
   Priority
 } from '../../types';
 
+import { PricingEngineConfig } from '../../../../types/business-config';
+
 export interface PriceList {
   id: string;
   name: string;
@@ -192,6 +194,8 @@ export interface PricingTraceStep {
 }
 
 export class PricingEngineService {
+  
+  constructor(private config: PricingEngineConfig) {}
   
   // ================================
   // PRICE CALCULATION
@@ -608,24 +612,38 @@ export class PricingEngineService {
     currency?: string
   ): Promise<PriceListItem | null> {
     // Implementation would query price list tables
-    // This is a mock implementation
+    // This is a mock implementation using centralized configuration
+    const mockPricing = this.config.mockPricing;
+    
     return {
       id: `pli_${itemId}`,
       priceListId: priceListId || 'default',
       itemId,
       itemCode: `ITEM_${itemId}`,
       unitOfMeasure: 'EA',
-      listPrice: 100.00,
-      minPrice: 80.00,
-      cost: 60.00,
-      margin: 40.00,
-      marginPercent: 40.0,
+      listPrice: mockPricing.defaultListPrice,
+      minPrice: mockPricing.defaultMinPrice,
+      cost: mockPricing.defaultCost,
+      margin: mockPricing.defaultListPrice - mockPricing.defaultCost,
+      marginPercent: mockPricing.defaultMarginPercent,
       effectiveDate: new Date(),
       isActive: true,
       priceBreaks: [
-        { id: 'pb1', minQuantity: 10, unitPrice: 95.00 },
-        { id: 'pb2', minQuantity: 50, unitPrice: 90.00 },
-        { id: 'pb3', minQuantity: 100, unitPrice: 85.00 }
+        { 
+          id: 'pb1', 
+          minQuantity: mockPricing.priceBreaks.tier1MinQuantity, 
+          unitPrice: mockPricing.priceBreaks.tier1UnitPrice 
+        },
+        { 
+          id: 'pb2', 
+          minQuantity: mockPricing.priceBreaks.tier2MinQuantity, 
+          unitPrice: mockPricing.priceBreaks.tier2UnitPrice 
+        },
+        { 
+          id: 'pb3', 
+          minQuantity: mockPricing.priceBreaks.tier3MinQuantity, 
+          unitPrice: mockPricing.priceBreaks.tier3UnitPrice 
+        }
       ]
     };
   }

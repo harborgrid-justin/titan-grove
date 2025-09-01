@@ -140,3 +140,67 @@ export const PerformanceUtils = {
     return totalCapacity > 0 ? (allocatedHours / totalCapacity) * 100 : 0;
   }
 };
+
+// Business metrics calculation utilities
+export const BusinessMetricsUtils = {
+  /**
+   * Calculate conversion rate as percentage
+   */
+  calculateConversionRate: (conversions: number, total: number): number => {
+    return total > 0 ? (conversions / total) : 0;
+  },
+
+  /**
+   * Calculate loss reason percentages from counts
+   */
+  calculateLossReasonPercentages: (lossReasons: Array<{ reason: string; count: number }>): Array<{ reason: string; count: number; percentage: number }> => {
+    const totalCount = lossReasons.reduce((sum, reason) => sum + reason.count, 0);
+    return lossReasons.map(reason => ({
+      ...reason,
+      percentage: totalCount > 0 ? FinancialUtils.roundToCents((reason.count / totalCount) * 100) : 0
+    }));
+  },
+
+  /**
+   * Generate mock quote metrics based on configuration
+   */
+  generateMockQuoteMetrics: (config: {
+    totalQuotes: number;
+    totalQuoteValue: number;
+    conversionRate: number;
+    winRate: number;
+    averageQuoteToCloseTime: number;
+    priceLossReasonPercentage: number;
+    competitorLossReasonPercentage: number;
+    budgetLossReasonPercentage: number;
+  }) => {
+    const averageQuoteValue = config.totalQuoteValue / config.totalQuotes;
+    
+    // Calculate loss reasons based on percentages
+    const totalLosses = Math.round(config.totalQuotes * (1 - config.winRate));
+    const priceLosses = Math.round(totalLosses * (config.priceLossReasonPercentage / 100));
+    const competitorLosses = Math.round(totalLosses * (config.competitorLossReasonPercentage / 100));
+    const budgetLosses = Math.round(totalLosses * (config.budgetLossReasonPercentage / 100));
+    
+    // Calculate remaining losses for other reasons
+    const remainingLosses = totalLosses - priceLosses - competitorLosses - budgetLosses;
+    const timingLosses = Math.round(remainingLosses * 0.6); // 60% of remaining
+    const productLosses = remainingLosses - timingLosses;
+    
+    return {
+      totalQuotes: config.totalQuotes,
+      totalQuoteValue: config.totalQuoteValue,
+      conversionRate: config.conversionRate,
+      averageQuoteValue: FinancialUtils.roundToCents(averageQuoteValue),
+      averageQuoteToCloseTime: config.averageQuoteToCloseTime,
+      winRate: config.winRate,
+      topLossReasons: BusinessMetricsUtils.calculateLossReasonPercentages([
+        { reason: 'Price too high', count: priceLosses },
+        { reason: 'Lost to competitor', count: competitorLosses },
+        { reason: 'Budget constraints', count: budgetLosses },
+        { reason: 'Timing not right', count: timingLosses },
+        { reason: 'Product not suitable', count: productLosses }
+      ])
+    };
+  }
+};

@@ -147,6 +147,22 @@ export interface MessageQueueConfig {
     workers: number;
     concurrency: number;
   };
+  
+  // Dynamic Configuration Values
+  dynamicConfig: {
+    lowConcurrency: number;
+    mediumConcurrency: number;
+    highConcurrency: number;
+    standardAttempts: number;
+    highAttempts: number;
+    criticalAttempts: number;
+    standardBackoffDelay: number;
+    highBackoffDelay: number;
+    criticalBackoffDelay: number;
+    mediumRetention: number;
+    highRetention: number;
+    criticalRetention: number;
+  };
 }
 
 export interface ProjectConfig {
@@ -290,6 +306,16 @@ export interface QuoteManagementConfig {
   // Tax and Fees
   standardTaxRate: number; // percentage (e.g., 8.5% = 0.085)
   currencyConversionRate: number; // USD to other currency rate
+  
+  // Mock Metrics Configuration (for demo/testing)
+  mockMetrics: {
+    conversionRate: number; // quote to order conversion rate
+    averageQuoteToCloseTime: number; // days
+    winRate: number; // percentage as decimal
+    priceLossReasonPercentage: number; // percentage of losses due to price
+    competitorLossReasonPercentage: number; // percentage of losses to competitors
+    budgetLossReasonPercentage: number; // percentage of losses to budget constraints
+  };
 }
 
 export interface OrderPromisingConfig {
@@ -332,6 +358,29 @@ export interface ProcurementConfig {
   contractValueReviewThreshold: number; // dollar threshold for contract review
 }
 
+export interface PricingEngineConfig {
+  // Mock Pricing Data (for demo/testing)
+  mockPricing: {
+    defaultListPrice: number;
+    defaultMinPrice: number;
+    defaultCost: number;
+    defaultMarginPercent: number;
+    priceBreaks: {
+      tier1MinQuantity: number;
+      tier1UnitPrice: number;
+      tier2MinQuantity: number;
+      tier2UnitPrice: number;
+      tier3MinQuantity: number;
+      tier3UnitPrice: number;
+    };
+  };
+  
+  // Pricing Rules
+  maxDiscountPercent: number; // maximum discount allowed without approval
+  minMarginPercent: number; // minimum margin required
+  defaultMarkupMultiplier: number; // default markup from cost to price
+}
+
 export interface BusinessConfig {
   configureToOrder: ConfigureToOrderConfig;
   capitalAsset: CapitalAssetConfig;
@@ -343,6 +392,7 @@ export interface BusinessConfig {
   quoteManagement: QuoteManagementConfig;
   orderPromising: OrderPromisingConfig;
   procurement: ProcurementConfig;
+  pricingEngine: PricingEngineConfig;
 }
 
 // Extended Titan Configuration including business settings
