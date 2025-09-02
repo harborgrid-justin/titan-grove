@@ -41,7 +41,8 @@
     "node_modules",
     "dist",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "src/ui/static/**/*.js"
   ],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
