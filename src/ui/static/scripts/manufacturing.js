@@ -647,7 +647,7 @@ class TitanManufacturingSystem {
                     } else if (index === 3) {
                         metric.textContent = newValue.toFixed(1) + ' units/hr';
                     }
-                }
+                });
                 
                 // Add visual feedback for updates
                 line.style.boxShadow = '0 0 20px rgba(37, 99, 235, 0.3)';
