@@ -30,10 +30,12 @@ After comprehensive analysis of the Titan Grove repository, this document identi
 // BEFORE
 private connection: any;
 export class ProcurementRepository extends BaseRepositoryImpl<any> {
+}
 
 // AFTER
 private connection: DatabaseConnection;
 export class ProcurementRepository extends BaseRepositoryImpl<ProcurementEntity> {
+}
 ```
 **Priority**: HIGH | **Effort**: MEDIUM | **Lines Affected**: ~2,000+
 
