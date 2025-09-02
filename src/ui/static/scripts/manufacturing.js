@@ -711,6 +711,8 @@ class TitanManufacturingSystem {
         const href = link.getAttribute('href');
         const section = href.replace('#', '');
         
+        console.log(`Navigating to manufacturing section: ${section}`);
+        
         // Remove active class from all sidebar items
         document.querySelectorAll('.nav-list-item').forEach(item => {
             item.classList.remove('active');
@@ -721,21 +723,201 @@ class TitanManufacturingSystem {
         
         // Load section content
         this.loadSectionContent(section);
+        
+        // Update page title
+        this.updatePageTitle(section);
+        
+        this.showToast(`Switched to ${this.getSectionDisplayName(section)}`, 'info');
+    }
+
+    getSectionDisplayName(section) {
+        const sectionNames = {
+            'overview': 'Production Overview',
+            'workorders': 'Work Orders',
+            'scheduling': 'Production Scheduling', 
+            'quality': 'Quality Control',
+            'maintenance': 'Equipment Maintenance',
+            'inventory': 'Inventory Management',
+            'reports': 'Reports & Analytics'
+        };
+        
+        return sectionNames[section] || section;
+    }
+
+    updatePageTitle(section) {
+        const titleElement = document.querySelector('.page-title');
+        if (titleElement) {
+            titleElement.textContent = this.getSectionDisplayName(section);
+        }
     }
 
     handleFilterChange(select) {
         const filter = select.value;
         const widget = select.closest('.manufacturing-widget');
         
+        console.log(`Filter changed to: ${filter}`);
+        
         if (widget && widget.classList.contains('work-orders-widget')) {
             this.filterWorkOrders(filter);
+        } else if (widget && widget.classList.contains('production-widget')) {
+            this.filterProductionLines(filter);
+        } else if (widget && widget.classList.contains('quality-widget')) {
+            this.filterQualityData(filter);
+        } else {
+            // Generic filtering
+            this.applyGenericFilter(filter, widget);
         }
+        
+        this.showToast(`Filter applied: ${filter}`, 'info');
+    }
+
+    filterProductionLines(filter) {
+        const productionCards = document.querySelectorAll('.production-line-card');
+        productionCards.forEach(card => {
+            const lineName = card.querySelector('.line-name')?.textContent.trim();
+            const lineStatus = card.querySelector('.line-status')?.textContent.trim();
+            
+            let shouldShow = true;
+            if (filter === 'operational') {
+                shouldShow = lineStatus === 'Operational';
+            } else if (filter === 'maintenance') {
+                shouldShow = lineStatus === 'Maintenance';
+            } else if (filter === 'offline') {
+                shouldShow = lineStatus === 'Offline';
+            }
+            
+            card.style.display = shouldShow ? '' : 'none';
+        });
+    }
+
+    filterQualityData(filter) {
+        const qualityItems = document.querySelectorAll('.quality-item');
+        qualityItems.forEach(item => {
+            const qualityRate = parseFloat(item.querySelector('.quality-rate')?.textContent || '100');
+            
+            let shouldShow = true;
+            if (filter === 'excellent') {
+                shouldShow = qualityRate >= 98;
+            } else if (filter === 'good') {
+                shouldShow = qualityRate >= 95 && qualityRate < 98;
+            } else if (filter === 'needs-improvement') {
+                shouldShow = qualityRate < 95;
+            }
+            
+            item.style.display = shouldShow ? '' : 'none';
+        });
+    }
+
+    applyGenericFilter(filter, widget) {
+        // Generic filtering for other widgets
+        const filterableItems = widget.querySelectorAll('[data-filterable]');
+        filterableItems.forEach(item => {
+            const itemValue = item.dataset.filterValue || item.textContent.toLowerCase();
+            const shouldShow = filter === 'all' || itemValue.includes(filter.toLowerCase());
+            item.style.display = shouldShow ? '' : 'none';
+        });
     }
 
     handleTimePeriodChange(select) {
         const period = select.value;
         console.log(`Time period changed to: ${period}`);
-        // Implement time period filtering logic
+        
+        // Update charts and data based on time period
+        this.updateChartsForPeriod(period);
+        this.updateMetricsForPeriod(period);
+        
+        this.showToast(`Time period changed to: ${period}`, 'info');
+    }
+
+    updateChartsForPeriod(period) {
+        // Generate data based on time period
+        const chartData = this.generateTimeBasedData(period);
+        
+        // Update production trend chart if exists
+        const productionChart = document.querySelector('#productionTrendChart');
+        if (productionChart && typeof Chart !== 'undefined') {
+            const chart = Chart.getChart(productionChart);
+            if (chart) {
+                chart.data.labels = chartData.labels;
+                chart.data.datasets[0].data = chartData.values;
+                chart.update();
+            }
+        }
+        
+        // Update efficiency chart if exists
+        const efficiencyChart = document.querySelector('#efficiencyChart');
+        if (efficiencyChart && typeof Chart !== 'undefined') {
+            const chart = Chart.getChart(efficiencyChart);
+            if (chart) {
+                chart.data.labels = chartData.labels;
+                chart.data.datasets[0].data = chartData.efficiency;
+                chart.update();
+            }
+        }
+    }
+
+    updateMetricsForPeriod(period) {
+        // Generate metrics based on time period
+        const metrics = this.generateMetricsForPeriod(period);
+        
+        // Update metric displays
+        const totalProducedEl = document.querySelector('.metric-total-produced .metric-value');
+        if (totalProducedEl) totalProducedEl.textContent = metrics.totalProduced;
+        
+        const efficiencyEl = document.querySelector('.metric-efficiency .metric-value');
+        if (efficiencyEl) efficiencyEl.textContent = metrics.avgEfficiency + '%';
+        
+        const qualityRateEl = document.querySelector('.metric-quality .metric-value');
+        if (qualityRateEl) qualityRateEl.textContent = metrics.qualityRate + '%';
+        
+        const downtimeEl = document.querySelector('.metric-downtime .metric-value');
+        if (downtimeEl) downtimeEl.textContent = metrics.downtime + ' hrs';
+    }
+
+    generateTimeBasedData(period) {
+        let labels = [];
+        let values = [];
+        let efficiency = [];
+        
+        switch (period) {
+            case 'today':
+                labels = ['6AM', '8AM', '10AM', '12PM', '2PM', '4PM', '6PM', '8PM'];
+                values = [25, 45, 38, 42, 35, 48, 41, 33];
+                efficiency = [85, 88, 92, 89, 91, 87, 89, 86];
+                break;
+            case 'week':
+                labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                values = [280, 325, 298, 315, 342, 156, 89];
+                efficiency = [88, 91, 86, 89, 93, 78, 65];
+                break;
+            case 'month':
+                labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                values = [1456, 1523, 1398, 1612];
+                efficiency = [89, 91, 87, 92];
+                break;
+            case 'quarter':
+                labels = ['Month 1', 'Month 2', 'Month 3'];
+                values = [5989, 6234, 6451];
+                efficiency = [89, 90, 92];
+                break;
+            default:
+                labels = ['Hour 1', 'Hour 2', 'Hour 3', 'Hour 4'];
+                values = [25, 30, 28, 35];
+                efficiency = [85, 88, 86, 90];
+        }
+        
+        return { labels, values, efficiency };
+    }
+
+    generateMetricsForPeriod(period) {
+        const baseMetrics = {
+            today: { totalProduced: 287, avgEfficiency: 88, qualityRate: 97, downtime: 2.5 },
+            week: { totalProduced: 1805, avgEfficiency: 86, qualityRate: 96, downtime: 18 },
+            month: { totalProduced: 5989, avgEfficiency: 89, qualityRate: 97, downtime: 45 },
+            quarter: { totalProduced: 18674, avgEfficiency: 90, qualityRate: 96, downtime: 125 }
+        };
+        
+        return baseMetrics[period] || baseMetrics.today;
     }
 
     // Business Logic Methods
@@ -1381,8 +1563,254 @@ class TitanManufacturingSystem {
 
     loadSectionContent(section) {
         console.log(`Loading manufacturing section: ${section}`);
-        // Implement section content loading
-        // This would typically load different views/interfaces for each section
+        
+        // Hide all content sections first
+        document.querySelectorAll('.manufacturing-section').forEach(sec => {
+            sec.style.display = 'none';
+            sec.classList.remove('active');
+        });
+        
+        // Show the selected section
+        const targetSection = document.querySelector(`#${section}Section`) || 
+                             document.querySelector(`[data-section="${section}"]`);
+        
+        if (targetSection) {
+            targetSection.style.display = 'block';
+            targetSection.classList.add('active');
+        } else {
+            // Create dynamic content if section doesn't exist
+            this.createDynamicSectionContent(section);
+        }
+        
+        // Load section-specific data
+        this.loadSectionData(section);
+    }
+
+    createDynamicSectionContent(section) {
+        const mainContent = document.querySelector('.manufacturing-main-content') || 
+                          document.querySelector('.main-content');
+        
+        if (!mainContent) return;
+        
+        const sectionContent = this.generateSectionContent(section);
+        
+        // Create new section element
+        const sectionEl = document.createElement('div');
+        sectionEl.id = `${section}Section`;
+        sectionEl.className = 'manufacturing-section active';
+        sectionEl.innerHTML = sectionContent;
+        
+        // Clear existing content and add new
+        mainContent.innerHTML = '';
+        mainContent.appendChild(sectionEl);
+    }
+
+    generateSectionContent(section) {
+        const sectionTemplates = {
+            'overview': this.getOverviewTemplate(),
+            'workorders': this.getWorkOrdersTemplate(),
+            'scheduling': this.getSchedulingTemplate(),
+            'quality': this.getQualityTemplate(),
+            'maintenance': this.getMaintenanceTemplate(),
+            'inventory': this.getInventoryTemplate(),
+            'reports': this.getReportsTemplate()
+        };
+        
+        return sectionTemplates[section] || this.getDefaultSectionTemplate(section);
+    }
+
+    getOverviewTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Production Overview</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Real-time Monitor</button>
+                    <button class="btn btn-secondary">Export Data</button>
+                </div>
+            </div>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h3>Total Production Today</h3>
+                    <div class="overview-value">287 units</div>
+                    <div class="overview-change positive">+12% from yesterday</div>
+                </div>
+                <div class="overview-card">
+                    <h3>Overall Efficiency</h3>
+                    <div class="overview-value">88.5%</div>
+                    <div class="overview-change neutral">Same as yesterday</div>
+                </div>
+                <div class="overview-card">
+                    <h3>Quality Rate</h3>
+                    <div class="overview-value">97.2%</div>
+                    <div class="overview-change positive">+0.8% from yesterday</div>
+                </div>
+                <div class="overview-card">
+                    <h3>Active Lines</h3>
+                    <div class="overview-value">3 of 3</div>
+                    <div class="overview-change positive">All operational</div>
+                </div>
+            </div>
+        `;
+    }
+
+    getWorkOrdersTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Work Orders Management</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary" onclick="manufacturingSystem.showNewWorkOrderModal()">New Work Order</button>
+                    <button class="btn btn-secondary">Bulk Actions</button>
+                </div>
+            </div>
+            <div class="work-orders-content">
+                <div class="filters-bar">
+                    <select class="filter-select" data-filter-type="status">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <select class="filter-select" data-filter-type="priority">
+                        <option value="all">All Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <div id="workOrdersTable"></div>
+            </div>
+        `;
+    }
+
+    getDefaultSectionTemplate(section) {
+        return `
+            <div class="section-header">
+                <h2>${this.getSectionDisplayName(section)}</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Primary Action</button>
+                    <button class="btn btn-secondary">Secondary Action</button>
+                </div>
+            </div>
+            <div class="section-content">
+                <p>This section is under development. Content for ${this.getSectionDisplayName(section)} will be available soon.</p>
+                <div class="coming-soon">
+                    <i class="fas fa-cogs fa-3x"></i>
+                    <h3>Coming Soon</h3>
+                    <p>Advanced ${section} features are being developed.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    loadSectionData(section) {
+        // Load section-specific data
+        switch (section) {
+            case 'overview':
+                this.updateRealTimeData();
+                break;
+            case 'workorders':
+                this.renderWorkOrdersTable();
+                break;
+            case 'scheduling':
+                // Load scheduling data
+                break;
+            case 'quality':
+                this.updateQualityMetrics();
+                break;
+            case 'maintenance':
+                // Load maintenance data
+                break;
+            default:
+                console.log(`No specific data loading for section: ${section}`);
+        }
+    }
+
+    // Additional template methods for other sections
+    getSchedulingTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Production Scheduling</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary" onclick="manufacturingSystem.showProductionSchedulingModal()">Open Scheduler</button>
+                </div>
+            </div>
+            <div class="scheduling-content">
+                <div class="schedule-overview">
+                    <h3>Today's Schedule</h3>
+                    <p>Click "Open Scheduler" to view and manage production schedules.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    getQualityTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Quality Control</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Quality Report</button>
+                    <button class="btn btn-warning">Alert Settings</button>
+                </div>
+            </div>
+            <div class="quality-content">
+                <div class="quality-metrics-grid">
+                    <div class="quality-card">
+                        <h3>Overall Quality Rate</h3>
+                        <div class="quality-value">97.2%</div>
+                    </div>
+                    <div class="quality-card">
+                        <h3>Defect Rate</h3>
+                        <div class="quality-value">2.8%</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    getMaintenanceTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Equipment Maintenance</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Schedule Maintenance</button>
+                    <button class="btn btn-warning">View Alerts</button>
+                </div>
+            </div>
+            <div class="maintenance-content">
+                <p>Maintenance management interface coming soon.</p>
+            </div>
+        `;
+    }
+
+    getInventoryTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Inventory Management</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Update Inventory</button>
+                    <button class="btn btn-secondary">Generate Report</button>
+                </div>
+            </div>
+            <div class="inventory-content">
+                <p>Inventory management interface coming soon.</p>
+            </div>
+        `;
+    }
+
+    getReportsTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Reports & Analytics</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Generate Report</button>
+                    <button class="btn btn-secondary">Export Data</button>
+                </div>
+            </div>
+            <div class="reports-content">
+                <p>Advanced reporting and analytics interface coming soon.</p>
+            </div>
+        `;
     }
 
     // Utility Methods
