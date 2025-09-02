@@ -8,7 +8,7 @@
 export * from './types';
 
 // Export data access layer
-// // export * from './data-access'; // TODO: Create data-access layer // TODO: Create data-access layer
+export * from './data-access';
 
 // Import business logic services
 import { pricingService } from './business-logic/pricing/pricing-service';

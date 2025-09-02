@@ -82,7 +82,7 @@ export * from './business-logic/service-management/service-service';
 // ================================
 
 // Export data access layer
-// export * from './data-access'; // TODO: Create data-access layer
+export * from './data-access';
 
 // ================================
 // ORACLE EBS COMPETITIVE SERVICE MANAGER

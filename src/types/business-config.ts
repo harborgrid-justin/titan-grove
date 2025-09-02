@@ -26,8 +26,14 @@ export interface ConfigureToOrderConfig {
 }
 
 export interface CapitalAssetConfig {
+  // Service Configuration
+  enabled?: boolean;
+  defaultDepreciationRate?: number;
+  currencyCode?: string;
+  riskAssessmentRequired?: boolean;
+  
   // ROI Analysis Defaults
-  roiScenarios: {
+  roiScenarios?: {
     baseCase: {
       probability: number;
     };
@@ -40,15 +46,15 @@ export interface CapitalAssetConfig {
   };
   
   // Budget Allocation Recommendations
-  budgetAllocations: {
+  budgetAllocations?: {
     productionEquipment: number; // percentage
     regulatoryCompliance: number; // percentage
     digitalTransformation: number; // percentage
   };
   
   // Default Analysis Parameters
-  defaultDiscountRate: number;
-  defaultAnalysisTimeHorizon: number; // years
+  defaultDiscountRate?: number;
+  defaultAnalysisTimeHorizon?: number; // years
 }
 
 export interface ManufacturingConfig {

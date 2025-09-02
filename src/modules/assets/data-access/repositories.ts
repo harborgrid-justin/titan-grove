@@ -57,6 +57,11 @@ export class AssetTransferRepository extends BaseRepositoryImpl<any> {
   protected generateId(): string {
     return `transfer_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
+
+  // Asset-specific method that matches service expectations
+  async createTransfer(transferData: any) {
+    return await this.create(transferData);
+  }
 }
 
 /**

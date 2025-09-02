@@ -7,7 +7,7 @@
 export * from './types';
 
 // Export data access layer
-// export * from './data-access'; // TODO: Create data-access layer
+export * from './data-access';
 
 // Export business logic services for direct access
 export * from './business-logic/billing/billing-service';

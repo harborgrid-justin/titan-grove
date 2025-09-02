@@ -16,6 +16,13 @@ export * from './business-logic/mes-discrete/discrete-manufacturing-mes-service'
 export * from './business-logic/mes-process/process-manufacturing-mes-service';
 export * from './business-logic/master-production-scheduling/master-production-scheduling-service';
 export * from './business-logic/flow-manufacturing/flow-manufacturing-service';
+
+// Export data access layer
+export * from './data-access';
+
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 export {
   OutsourcedManufacturingService,
   outsourcedManufacturingService,
@@ -182,7 +189,7 @@ export interface QualityDefect {
   correctiveAction?: string;
 }
 
-export class ManufacturingManager {
+export class ManufacturingManager extends BaseManager {
   // Service references for unified access
   private bomService = bomManagementService;
   private workOrderService = workOrderManagementService;

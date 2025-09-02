@@ -16,6 +16,9 @@ export * from './business-logic/service-analytics-service';
 export * from './business-logic/mobile-command-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Main service exports
 export {
   ServiceCommandCenterService,
