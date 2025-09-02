@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan Grove Enterprise Dashboard - Oracle EBS Alternative</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Enterprise</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search across all modules... (Ctrl+K)" class="global-search-input" id="globalSearch">
+                        <div class="search-suggestions" id="searchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item active" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                        <div class="nav-badge">12</div>
+                    </div>
+                    <div class="nav-item" data-module="financials">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Financials</span>
+                    </div>
+                    <div class="nav-item" data-module="supply-chain">
+                        <i class="fas fa-truck"></i>
+                        <span>Supply Chain</span>
+                        <div class="nav-badge critical">5</div>
+                    </div>
+                    <div class="nav-item" data-module="crm">
+                        <i class="fas fa-users"></i>
+                        <span>CRM</span>
+                    </div>
+                    <div class="nav-item" data-module="hr">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Human Capital</span>
+                    </div>
+                    <div class="nav-item" data-module="projects">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projects</span>
+                    </div>
+                    <div class="nav-item" data-module="analytics">
+                        <i class="fas fa-brain"></i>
+                        <span>Intelligence</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="titan-notifications">
+                    <div class="notification-bell" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">7</span>
+                    </div>
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h4>Notifications</h4>
+                            <button class="mark-all-read">Mark all read</button>
+                        </div>
+                        <div class="notification-list" id="notificationList">
+                            <!-- Notifications populated by JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="titan-user-menu">
+                    <div class="user-avatar" id="userAvatar">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="User Avatar">
+                        <div class="user-status-indicator online"></div>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-info">
+                            <div class="user-name">John Anderson</div>
+                            <div class="user-role">Chief Operating Officer</div>
+                            <div class="user-company">Acme Manufacturing Inc.</div>
+                        </div>
+                        <div class="user-menu-items">
+                            <a href="#" class="menu-item">
+                                <i class="fas fa-user-cog"></i>
+                                Profile Settings
+                            </a>
+                            <a href="#" class="menu-item">
+                                <i class="fas fa-building"></i>
+                                Company Settings
+                            </a>
+                            <a href="#" class="menu-item">
+                                <i class="fas fa-palette"></i>
+                                Appearance
+                            </a>
+                            <a href="#" class="menu-item">
+                                <i class="fas fa-question-circle"></i>
+                                Help & Support
+                            </a>
+                            <div class="menu-divider"></div>
+                            <a href="#" class="menu-item logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="titan-main-content">
+            <!-- Sidebar Navigation -->
+            <aside class="titan-sidebar" id="titanSidebar">
+                <div class="sidebar-header">
+                    <h3>Executive Dashboard</h3>
+                    <div class="sidebar-actions">
+                        <button class="sidebar-btn" title="Customize Dashboard">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <button class="sidebar-btn" title="Export Dashboard">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="sidebar-btn" title="Full Screen">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <h4>Dashboards</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item active">
+                                <a href="#executive-overview">
+                                    <i class="fas fa-chart-pie"></i>
+                                    Executive Overview
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#operational-kpis">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    Operational KPIs
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#financial-performance">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Financial Performance
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#manufacturing-metrics">
+                                    <i class="fas fa-industry"></i>
+                                    Manufacturing Metrics
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#supply-chain-status">
+                                    <i class="fas fa-truck"></i>
+                                    Supply Chain Status
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h4>Quick Actions</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item">
+                                <a href="#create-work-order">
+                                    <i class="fas fa-plus"></i>
+                                    New Work Order
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#create-purchase-order">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    New Purchase Order
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#create-invoice">
+                                    <i class="fas fa-file-invoice"></i>
+                                    Create Invoice
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#schedule-maintenance">
+                                    <i class="fas fa-wrench"></i>
+                                    Schedule Maintenance
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h4>System Status</h4>
+                        <div class="system-status">
+                            <div class="status-item">
+                                <div class="status-indicator green"></div>
+                                <span>ERP Core</span>
+                                <span class="status-value">Online</span>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-indicator green"></div>
+                                <span>Manufacturing</span>
+                                <span class="status-value">Operational</span>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-indicator yellow"></div>
+                                <span>Integration Layer</span>
+                                <span class="status-value">Monitoring</span>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-indicator green"></div>
+                                <span>Database Cluster</span>
+                                <span class="status-value">Healthy</span>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Dashboard Content -->
+            <div class="titan-dashboard-content">
+                <!-- KPI Header Row -->
+                <div class="kpi-header-row">
+                    <div class="kpi-card revenue">
+                        <div class="kpi-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="totalRevenue">$47.2M</div>
+                            <div class="kpi-label">Total Revenue (YTD)</div>
+                            <div class="kpi-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12.8%</span>
+                                <span class="change-period">vs last year</span>
+                            </div>
+                        </div>
+                        <div class="kpi-trend">
+                            <canvas id="revenueTrend" width="100" height="40"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card orders">
+                        <div class="kpi-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="totalOrders">2,847</div>
+                            <div class="kpi-label">Active Orders</div>
+                            <div class="kpi-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>8.4%</span>
+                                <span class="change-period">vs last month</span>
+                            </div>
+                        </div>
+                        <div class="kpi-trend">
+                            <canvas id="ordersTrend" width="100" height="40"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card production">
+                        <div class="kpi-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="productionEfficiency">94.2%</div>
+                            <div class="kpi-label">Production Efficiency</div>
+                            <div class="kpi-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>2.1%</span>
+                                <span class="change-period">vs target</span>
+                            </div>
+                        </div>
+                        <div class="kpi-trend">
+                            <canvas id="productionTrend" width="100" height="40"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card inventory">
+                        <div class="kpi-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="inventoryTurnover">8.7x</div>
+                            <div class="kpi-label">Inventory Turnover</div>
+                            <div class="kpi-change negative">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>1.2%</span>
+                                <span class="change-period">needs attention</span>
+                            </div>
+                        </div>
+                        <div class="kpi-trend">
+                            <canvas id="inventoryTrend" width="100" height="40"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Financial Performance Chart -->
+                    <div class="dashboard-widget financial-performance" data-widget="financial-performance">
+                        <div class="widget-header">
+                            <h3>Financial Performance</h3>
+                            <div class="widget-actions">
+                                <select class="time-period-select">
+                                    <option value="7d">Last 7 days</option>
+                                    <option value="30d" selected>Last 30 days</option>
+                                    <option value="90d">Last 90 days</option>
+                                    <option value="1y">Last year</option>
+                                </select>
+                                <button class="widget-btn" title="Export Chart">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="widget-btn" title="Full Screen">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <canvas id="financialChart" width="600" height="300"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Manufacturing Overview -->
+                    <div class="dashboard-widget manufacturing-overview" data-widget="manufacturing-overview">
+                        <div class="widget-header">
+                            <h3>Manufacturing Overview</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn active" data-view="production">Production</button>
+                                <button class="widget-btn" data-view="efficiency">Efficiency</button>
+                                <button class="widget-btn" data-view="quality">Quality</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="manufacturing-stats">
+                                <div class="stat-group">
+                                    <div class="stat-item">
+                                        <div class="stat-label">Today's Production</div>
+                                        <div class="stat-value">1,247 units</div>
+                                        <div class="stat-target">Target: 1,200</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">OEE Score</div>
+                                        <div class="stat-value">87.3%</div>
+                                        <div class="stat-target">Target: 85%</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-label">Quality Rate</div>
+                                        <div class="stat-value">99.2%</div>
+                                        <div class="stat-target">Target: 98%</div>
+                                    </div>
+                                </div>
+                                <div class="production-lines">
+                                    <h4>Production Lines Status</h4>
+                                    <div class="line-status">
+                                        <div class="line-item">
+                                            <div class="line-name">Line A - Engine Assembly</div>
+                                            <div class="line-status-indicator running"></div>
+                                            <div class="line-efficiency">94%</div>
+                                        </div>
+                                        <div class="line-item">
+                                            <div class="line-name">Line B - Transmission</div>
+                                            <div class="line-status-indicator running"></div>
+                                            <div class="line-efficiency">91%</div>
+                                        </div>
+                                        <div class="line-item">
+                                            <div class="line-name">Line C - Final Assembly</div>
+                                            <div class="line-status-indicator maintenance"></div>
+                                            <div class="line-efficiency">0%</div>
+                                        </div>
+                                        <div class="line-item">
+                                            <div class="line-name">Line D - Quality Check</div>
+                                            <div class="line-status-indicator running"></div>
+                                            <div class="line-efficiency">96%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders Table -->
+                    <div class="dashboard-widget recent-orders" data-widget="recent-orders">
+                        <div class="widget-header">
+                            <h3>Recent Orders</h3>
+                            <div class="widget-actions">
+                                <input type="text" placeholder="Search orders..." class="widget-search">
+                                <button class="widget-btn" title="View All Orders">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="data-table-container">
+                                <table class="data-table" id="recentOrdersTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Value</th>
+                                            <th>Status</th>
+                                            <th>Due Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ordersTableBody">
+                                        <!-- Populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Supply Chain Status -->
+                    <div class="dashboard-widget supply-chain-status" data-widget="supply-chain-status">
+                        <div class="widget-header">
+                            <h3>Supply Chain Status</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn alert-btn">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    5 Alerts
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="supply-chain-overview">
+                                <div class="supply-metrics">
+                                    <div class="supply-metric">
+                                        <div class="metric-icon">
+                                            <i class="fas fa-truck"></i>
+                                        </div>
+                                        <div class="metric-info">
+                                            <div class="metric-value">23</div>
+                                            <div class="metric-label">In Transit</div>
+                                        </div>
+                                    </div>
+                                    <div class="supply-metric">
+                                        <div class="metric-icon">
+                                            <i class="fas fa-warehouse"></i>
+                                        </div>
+                                        <div class="metric-info">
+                                            <div class="metric-value">847</div>
+                                            <div class="metric-label">In Stock</div>
+                                        </div>
+                                    </div>
+                                    <div class="supply-metric">
+                                        <div class="metric-icon">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="metric-info">
+                                            <div class="metric-value">12</div>
+                                            <div class="metric-label">Low Stock</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="supply-alerts">
+                                    <h4>Critical Alerts</h4>
+                                    <div class="alert-list">
+                                        <div class="alert-item critical">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                            <div class="alert-content">
+                                                <div class="alert-message">Steel Inventory Below Minimum</div>
+                                                <div class="alert-time">2 hours ago</div>
+                                            </div>
+                                        </div>
+                                        <div class="alert-item warning">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            <div class="alert-content">
+                                                <div class="alert-message">Supplier Delivery Delay - ABC Corp</div>
+                                                <div class="alert-time">4 hours ago</div>
+                                            </div>
+                                        </div>
+                                        <div class="alert-item info">
+                                            <i class="fas fa-info-circle"></i>
+                                            <div class="alert-content">
+                                                <div class="alert-message">New Purchase Order Approved</div>
+                                                <div class="alert-time">6 hours ago</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Productivity Analytics -->
+                    <div class="dashboard-widget productivity-analytics" data-widget="productivity-analytics">
+                        <div class="widget-header">
+                            <h3>Productivity Analytics</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn" title="Drill Down">
+                                    <i class="fas fa-search-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="productivity-metrics">
+                                <div class="productivity-chart">
+                                    <canvas id="productivityChart" width="300" height="200"></canvas>
+                                </div>
+                                <div class="productivity-breakdown">
+                                    <h4>Department Performance</h4>
+                                    <div class="department-list">
+                                        <div class="department-item">
+                                            <div class="dept-info">
+                                                <span class="dept-name">Manufacturing</span>
+                                                <span class="dept-score">94.2%</span>
+                                            </div>
+                                            <div class="dept-progress">
+                                                <div class="progress-bar" style="width: 94.2%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="department-item">
+                                            <div class="dept-info">
+                                                <span class="dept-name">Quality Assurance</span>
+                                                <span class="dept-score">98.7%</span>
+                                            </div>
+                                            <div class="dept-progress">
+                                                <div class="progress-bar" style="width: 98.7%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="department-item">
+                                            <div class="dept-info">
+                                                <span class="dept-name">Supply Chain</span>
+                                                <span class="dept-score">87.3%</span>
+                                            </div>
+                                            <div class="dept-progress">
+                                                <div class="progress-bar" style="width: 87.3%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="department-item">
+                                            <div class="dept-info">
+                                                <span class="dept-name">Maintenance</span>
+                                                <span class="dept-score">91.8%</span>
+                                            </div>
+                                            <div class="dept-progress">
+                                                <div class="progress-bar" style="width: 91.8%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/dashboard.js"></script>
+</body>
+</html>
