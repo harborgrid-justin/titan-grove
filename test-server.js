@@ -9,8 +9,18 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Import service API routes
+const serviceApi = require('./src/api/service-api.js');
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Serve static files from the UI directory
 app.use('/src/ui/static', express.static(path.join(__dirname, 'src/ui/static')));
+
+// API routes
+app.use('/api', serviceApi);
 
 // Serve root index.html
 app.get('/', (req, res) => {

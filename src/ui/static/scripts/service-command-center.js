@@ -317,19 +317,28 @@ class ServiceCommandCenterEngine {
     }
 
     updateKPIDisplay() {
-        // Calculate real-time metrics
-        const metrics = this.calculateKPIMetrics();
+        // Use API data if available, otherwise calculate local metrics
+        const metrics = this.currentKPIs || this.calculateKPIMetrics();
         
         // Update DOM elements
-        document.getElementById('avgResponseTime').textContent = metrics.avgResponseTime.toFixed(1);
-        document.getElementById('completionRate').textContent = `${metrics.completionRate.toFixed(1)}%`;
-        document.getElementById('resourceUtilization').textContent = `${metrics.resourceUtilization.toFixed(1)}%`;
-        document.getElementById('customerSatisfaction').textContent = metrics.customerSatisfaction.toFixed(1);
+        const avgResponseTimeEl = document.getElementById('avgResponseTime');
+        const completionRateEl = document.getElementById('completionRate'); 
+        const resourceUtilizationEl = document.getElementById('resourceUtilization');
+        const customerSatisfactionEl = document.getElementById('customerSatisfaction');
+        
+        if (avgResponseTimeEl) avgResponseTimeEl.textContent = (metrics.avgResponseTime || 0).toFixed(1);
+        if (completionRateEl) completionRateEl.textContent = `${((metrics.completionRate || 0) * 100).toFixed(1)}%`;
+        if (resourceUtilizationEl) resourceUtilizationEl.textContent = `${((metrics.technicianUtilization || metrics.resourceUtilization || 0) * 100).toFixed(1)}%`;
+        if (customerSatisfactionEl) customerSatisfactionEl.textContent = (metrics.customerSatisfaction || 0).toFixed(1);
         
         // Update header metrics
-        document.getElementById('activeResourcesCount').textContent = metrics.activeResources;
-        document.getElementById('emergencyAlertsCount').textContent = metrics.emergencyAlerts;
-        document.getElementById('systemStatus').textContent = metrics.systemStatus;
+        const activeResourcesCountEl = document.getElementById('activeResourcesCount');
+        const emergencyAlertsCountEl = document.getElementById('emergencyAlertsCount');
+        const systemStatusEl = document.getElementById('systemStatus');
+        
+        if (activeResourcesCountEl) activeResourcesCountEl.textContent = metrics.activeWorkOrders || metrics.activeResources || 0;
+        if (emergencyAlertsCountEl) emergencyAlertsCountEl.textContent = metrics.emergencyTickets || metrics.emergencyAlerts || 0;
+        if (systemStatusEl) systemStatusEl.textContent = metrics.systemStatus || 'OPERATIONAL';
     }
 
     // ==================== MAP FUNCTIONALITY ====================
@@ -570,15 +579,44 @@ class ServiceCommandCenterEngine {
     // ==================== DATA MANAGEMENT ====================
 
     async loadInitialData() {
-        // Load sample data for demonstration
-        this.loadSampleResources();
-        this.loadSampleWorkOrders();
-        this.loadSampleCommandCenters();
-        
-        // Update initial display
-        this.updateKPIDisplay();
-        this.refreshWorkOrdersList();
-        this.refreshResourcesGrid();
+        try {
+            // Load KPI data from API
+            await this.loadKPIsFromAPI();
+            
+            // Load sample data for demonstration
+            this.loadSampleResources();
+            this.loadSampleWorkOrders();
+            this.loadSampleCommandCenters();
+            
+            // Update initial display
+            this.updateKPIDisplay();
+            this.refreshWorkOrdersList();
+            this.refreshResourcesGrid();
+        } catch (error) {
+            this.logger.error('Failed to load initial data', error);
+            // Fallback to local sample data
+            this.loadSampleResources();
+            this.loadSampleWorkOrders();
+            this.loadSampleCommandCenters();
+            this.updateKPIDisplay();
+            this.refreshWorkOrdersList();
+            this.refreshResourcesGrid();
+        }
+    }
+
+    async loadKPIsFromAPI() {
+        try {
+            const response = await fetch('/api/service-command/kpis');
+            const result = await response.json();
+            
+            if (result.success) {
+                this.currentKPIs = result.data;
+                this.logger.info('Loaded KPIs from API', result.data);
+            }
+        } catch (error) {
+            this.logger.error('Failed to load KPIs from API', error);
+            throw error;
+        }
     }
 
     loadSampleResources() {
@@ -745,26 +783,66 @@ class ServiceCommandCenterEngine {
     // ==================== EVENT HANDLERS ====================
 
     async runDispatchOptimization() {
-        const commandCenter = Array.from(this.commandCenters.values())[0];
-        if (!commandCenter) return;
-
-        const result = await this.optimizeDispatch(commandCenter.commandCenterId, this.optimizationSettings);
-        this.logger.info('Dispatch optimization completed', result);
+        try {
+            const response = await fetch('/api/service-command/optimize-dispatch', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    criteria: this.optimizationSettings || {} 
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.logger.info('Dispatch optimization completed', result.data);
+                // Update UI with optimization results
+                this.displayOptimizationResults(result.data);
+                return result.data;
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            this.logger.error('Dispatch optimization failed', error);
+            throw error;
+        }
     }
 
     async activateEmergencyResponse() {
-        const emergency = {
-            type: 'EQUIPMENT_FAILURE',
-            severity: 'HIGH',
-            location: { lat: 40.7614, lng: -73.9776, address: '123 Emergency Street' },
-            description: 'Critical system failure requiring immediate attention',
-            requiredSkills: ['electrical', 'mechanical']
-        };
+        try {
+            const emergency = {
+                type: 'EQUIPMENT_FAILURE',
+                severity: 'HIGH',
+                level: 'HIGH',
+                location: { lat: 40.7614, lng: -73.9776, address: '123 Emergency Street' },
+                description: 'Critical system failure requiring immediate attention',
+                requiredSkills: ['electrical', 'mechanical']
+            };
 
-        const commandCenter = Array.from(this.commandCenters.values())[0];
-        if (!commandCenter) return;
-
-        await this.coordinateEmergency(commandCenter.commandCenterId, emergency);
+            const response = await fetch('/api/service-command/emergency-response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(emergency)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.logger.info('Emergency response activated', result.data);
+                // Update UI with emergency response details
+                this.displayEmergencyResponse(result.data);
+                return result.data;
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            this.logger.error('Emergency response activation failed', error);
+            throw error;
+        }
     }
 
     async handleMessage(type, data, options) {

@@ -185,51 +185,52 @@ class FieldServiceManagementEngine {
     // ==================== BUSINESS LOGIC OPERATIONS ====================
 
     async createWorkOrder(orderData) {
-        const workOrderId = `WO${Date.now()}`;
-        
-        const workOrder = {
-            workOrderId,
-            priority: orderData.priority || 'MEDIUM',
-            status: 'PENDING',
-            description: orderData.description,
-            customerId: orderData.customerId,
-            serviceAddress: orderData.serviceAddress,
-            requiredSkills: orderData.requiredSkills || [],
-            estimatedDuration: orderData.estimatedDuration || 120,
-            scheduledDate: orderData.scheduledDate,
-            assignedTechnicianId: null,
-            createdDate: new Date(),
-            updatedDate: new Date(),
-            serviceType: orderData.serviceType,
-            equipment: orderData.equipment,
-            parts: orderData.parts || [],
-            customerNotes: orderData.customerNotes,
-            internalNotes: orderData.internalNotes
-        };
+        try {
+            // Call backend API to create work order
+            const response = await fetch('/api/field-service/work-orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                const workOrder = result.data;
+                
+                // Store locally for quick access
+                this.workOrders.set(workOrder.id, workOrder);
+                
+                // Cache for quick access
+                this.cacheManager.set(`work-order:${workOrder.id}`, workOrder);
+                
+                // Publish message for enterprise integration
+                await this.messageQueue.publish('FIELD_SERVICE', 'WORK_ORDER_CREATED', {
+                    workOrderId: workOrder.id,
+                    priority: workOrder.priority || 'MEDIUM',
+                    customerId: workOrder.customerId,
+                    serviceType: workOrder.serviceType,
+                    timestamp: new Date()
+                });
 
-        this.workOrders.set(workOrderId, workOrder);
-        
-        // Cache for quick access
-        this.cacheManager.set(`work-order:${workOrderId}`, workOrder);
-        
-        // Publish message for enterprise integration
-        await this.messageQueue.publish('FIELD_SERVICE', 'WORK_ORDER_CREATED', {
-            workOrderId,
-            priority: workOrder.priority,
-            customerId: workOrder.customerId,
-            serviceType: workOrder.serviceType,
-            timestamp: new Date()
-        });
+                // Auto-assign if smart assignment is enabled
+                if (this.shouldAutoAssign(workOrder)) {
+                    await this.intelligentTechnicianAssignment(workOrder.id);
+                }
 
-        // Auto-assign if smart assignment is enabled
-        if (this.shouldAutoAssign(workOrder)) {
-            await this.intelligentTechnicianAssignment(workOrderId);
+                this.logger.info('Work order created', { workOrderId: workOrder.id, priority: workOrder.priority });
+                this.refreshWorkOrdersDisplay();
+                
+                return workOrder;
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            this.logger.error('Failed to create work order', error);
+            throw error;
         }
-
-        this.logger.info('Work order created', { workOrderId, priority: workOrder.priority });
-        this.refreshWorkOrdersDisplay();
-        
-        return workOrder;
     }
 
     async assignTechnician(workOrderId, technicianId) {
@@ -282,35 +283,51 @@ class FieldServiceManagementEngine {
     async optimizeSchedule(criteria) {
         this.logger.info('Starting schedule optimization', { criteria });
 
-        const pendingOrders = Array.from(this.workOrders.values())
-            .filter(order => order.status === 'PENDING');
-        
-        const availableTechnicians = Array.from(this.technicians.values())
-            .filter(tech => tech.status === 'AVAILABLE');
+        try {
+            // Call backend API for schedule optimization
+            const response = await fetch('/api/field-service/optimize-schedule', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ criteria })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                const optimizedSchedule = result.data;
+                
+                // Update UI with optimization results
+                this.displayOptimizationResults(optimizedSchedule);
 
-        // Advanced optimization algorithm
-        const optimizedSchedule = await this.calculateOptimalSchedule(
-            pendingOrders,
-            availableTechnicians,
-            criteria
-        );
+                await this.messageQueue.publish('FIELD_SERVICE', 'SCHEDULE_OPTIMIZED', {
+                    optimizationScore: optimizedSchedule.efficiency,
+                    criteria,
+                    timestamp: new Date()
+                });
 
-        // Apply optimized assignments
-        for (const assignment of optimizedSchedule.assignments) {
-            await this.assignTechnician(assignment.workOrderId, assignment.technicianId);
+                return optimizedSchedule;
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            this.logger.error('Schedule optimization failed', error);
+            throw error;
         }
+    }
 
-        // Update UI with optimization results
-        this.displayOptimizationResults(optimizedSchedule);
-
-        await this.messageQueue.publish('FIELD_SERVICE', 'SCHEDULE_OPTIMIZED', {
-            totalAssignments: optimizedSchedule.assignments.length,
-            optimizationScore: optimizedSchedule.score,
-            criteria,
-            timestamp: new Date()
-        });
-
-        return optimizedSchedule;
+    async runScheduleOptimization() {
+        try {
+            const criteria = {
+                optimizeFor: 'TRAVEL_TIME',
+                maxTravelTime: 30,
+                prioritizeSkills: true
+            };
+            await this.optimizeSchedule(criteria);
+        } catch (error) {
+            this.logger.error('Schedule optimization failed', error);
+        }
     }
 
     async updateWorkOrderStatus(workOrderId, status) {
@@ -729,19 +746,62 @@ class FieldServiceManagementEngine {
     // ==================== DATA MANAGEMENT ====================
 
     async loadInitialData() {
-        // Load sample technicians
-        this.loadSampleTechnicians();
-        
-        // Load sample work orders
-        this.loadSampleWorkOrders();
-        
-        // Load sample customers
-        this.loadSampleCustomers();
-        
-        // Update initial displays
-        this.updatePerformanceMetrics();
-        this.refreshWorkOrdersDisplay();
-        this.displayScheduleTimeline();
+        try {
+            // Load data from APIs
+            await this.loadTechniciansFromAPI();
+            await this.loadWorkOrdersFromAPI();
+            
+            // Load sample customers (keeping local for now)
+            this.loadSampleCustomers();
+            
+            // Update initial displays
+            this.updatePerformanceMetrics();
+            this.refreshWorkOrdersDisplay();
+            this.displayScheduleTimeline();
+        } catch (error) {
+            this.logger.error('Failed to load initial data', error);
+            // Fallback to sample data
+            this.loadSampleTechnicians();
+            this.loadSampleWorkOrders();
+            this.loadSampleCustomers();
+            this.updatePerformanceMetrics();
+            this.refreshWorkOrdersDisplay();
+            this.displayScheduleTimeline();
+        }
+    }
+
+    async loadTechniciansFromAPI() {
+        try {
+            const response = await fetch('/api/field-service/technicians');
+            const result = await response.json();
+            
+            if (result.success) {
+                result.data.forEach(technician => {
+                    this.technicians.set(technician.id, technician);
+                });
+                this.logger.info('Loaded technicians from API', { count: result.data.length });
+            }
+        } catch (error) {
+            this.logger.error('Failed to load technicians from API', error);
+            throw error;
+        }
+    }
+
+    async loadWorkOrdersFromAPI() {
+        try {
+            const response = await fetch('/api/field-service/work-orders');
+            const result = await response.json();
+            
+            if (result.success) {
+                result.data.forEach(workOrder => {
+                    this.workOrders.set(workOrder.id, workOrder);
+                });
+                this.logger.info('Loaded work orders from API', { count: result.data.length });
+            }
+        } catch (error) {
+            this.logger.error('Failed to load work orders from API', error);
+            throw error;
+        }
     }
 
     loadSampleTechnicians() {

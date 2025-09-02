@@ -294,65 +294,39 @@ class MaintenanceManagementEngine {
     async runPredictiveAnalysis() {
         this.logger.info('Running predictive analysis for all assets');
 
-        const predictions = [];
-        
-        for (const [assetId, asset] of this.assets) {
-            try {
-                // Get latest sensor data for the asset
-                const sensorData = await this.getLatestSensorData(assetId);
+        try {
+            // Call backend API for predictive analysis
+            const response = await fetch('/api/maintenance/predictive-analysis', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ includeAllAssets: true })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                const predictions = result.data;
                 
-                // Run failure prediction
-                const failurePrediction = await this.predictiveAnalytics.predict('failurePrediction', {
-                    assetId,
-                    sensorData,
-                    maintenanceHistory: this.getAssetMaintenanceHistory(assetId),
-                    operatingConditions: asset.operatingConditions
+                // Update predictions display
+                this.displayPredictiveAnalysisResults(predictions);
+                
+                // Publish results
+                await this.messageQueue.publish('MAINTENANCE', 'PREDICTIVE_ANALYSIS_COMPLETED', {
+                    predictions: predictions.length,
+                    highRiskAssets: predictions.filter(p => p.riskLevel === 'HIGH').length,
+                    timestamp: new Date()
                 });
 
-                // Analyze condition
-                const conditionAnalysis = await this.conditionMonitoring.analyzeCondition(assetId, sensorData);
-                
-                // Calculate health score
-                const healthScore = await this.conditionMonitoring.calculateHealthScore(assetId);
-
-                const prediction = {
-                    predictionId: `PRED${Date.now()}_${assetId}`,
-                    assetId,
-                    assetName: asset.name,
-                    failureRisk: failurePrediction.riskLevel,
-                    failureProbability: failurePrediction.probability,
-                    predictedFailureDate: failurePrediction.predictedDate,
-                    conditionScore: conditionAnalysis.score,
-                    healthScore: healthScore.overall,
-                    recommendations: this.generateMaintenanceRecommendations(failurePrediction, conditionAnalysis),
-                    timestamp: new Date(),
-                    confidence: failurePrediction.confidence
-                };
-
-                predictions.push(prediction);
-
-                // Generate alerts for high-risk assets
-                if (failurePrediction.riskLevel === 'HIGH' || failurePrediction.riskLevel === 'CRITICAL') {
-                    await this.generatePredictiveAlert(prediction);
-                }
-
-            } catch (error) {
-                this.logger.error(`Failed to run prediction for asset ${assetId}`, error);
+                return predictions;
+            } else {
+                throw new Error(result.error);
             }
+        } catch (error) {
+            this.logger.error('Predictive analysis failed', error);
+            throw error;
         }
-
-        // Update predictions display
-        this.displayPredictiveAnalysisResults(predictions);
-        
-        // Publish results
-        await this.messageQueue.publish('MAINTENANCE', 'PREDICTIVE_ANALYSIS_COMPLETED', {
-            totalAssets: this.assets.size,
-            predictions: predictions.length,
-            highRiskAssets: predictions.filter(p => p.failureRisk === 'HIGH' || p.failureRisk === 'CRITICAL').length,
-            timestamp: new Date()
-        });
-
-        return predictions;
     }
 
     async optimizeMaintenanceSchedule(criteria) {
@@ -787,19 +761,62 @@ class MaintenanceManagementEngine {
     // ==================== DATA MANAGEMENT ====================
 
     async loadInitialData() {
-        // Load sample assets
-        this.loadSampleAssets();
-        
-        // Load sample maintenance orders
-        this.loadSampleMaintenanceOrders();
-        
-        // Load sample preventive plans
-        this.loadSamplePreventivePlans();
-        
-        // Update initial displays
-        this.updateMaintenanceKPIs();
-        this.displayMaintenanceTimeline();
-        this.updateAssetHealthGrid();
+        try {
+            // Load data from APIs
+            await this.loadMaintenanceOrdersFromAPI();
+            await this.loadAssetHealthFromAPI();
+            
+            // Load sample preventive plans (keeping local for now)
+            this.loadSamplePreventivePlans();
+            
+            // Update initial displays
+            this.updateMaintenanceKPIs();
+            this.displayMaintenanceTimeline();
+            this.updateAssetHealthGrid();
+        } catch (error) {
+            this.logger.error('Failed to load initial data', error);
+            // Fallback to sample data
+            this.loadSampleAssets();
+            this.loadSampleMaintenanceOrders();
+            this.loadSamplePreventivePlans();
+            this.updateMaintenanceKPIs();
+            this.displayMaintenanceTimeline();
+            this.updateAssetHealthGrid();
+        }
+    }
+
+    async loadMaintenanceOrdersFromAPI() {
+        try {
+            const response = await fetch('/api/maintenance/orders');
+            const result = await response.json();
+            
+            if (result.success) {
+                result.data.forEach(order => {
+                    this.maintenanceOrders.set(order.id, order);
+                });
+                this.logger.info('Loaded maintenance orders from API', { count: result.data.length });
+            }
+        } catch (error) {
+            this.logger.error('Failed to load maintenance orders from API', error);
+            throw error;
+        }
+    }
+
+    async loadAssetHealthFromAPI() {
+        try {
+            const response = await fetch('/api/maintenance/assets/health');
+            const result = await response.json();
+            
+            if (result.success) {
+                result.data.forEach(asset => {
+                    this.assets.set(asset.id, asset);
+                });
+                this.logger.info('Loaded asset health from API', { count: result.data.length });
+            }
+        } catch (error) {
+            this.logger.error('Failed to load asset health from API', error);
+            throw error;
+        }
     }
 
     loadSampleAssets() {
