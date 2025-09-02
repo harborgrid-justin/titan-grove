@@ -439,4 +439,4 @@ By contributing to Titan Grove, you agree that your contributions will be licens
 
 ---
 
-Thank you for contributing to Titan Grove! Your efforts help make enterprise software better for everyone. 🚀
+Thank you for contributing to Titan Grove! Your efforts help make enterprise software better for everyone.
