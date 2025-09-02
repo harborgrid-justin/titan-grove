@@ -4,11 +4,8 @@
  * procurement planning, contract intelligence, and procure-to-pay integration
  */
 
-import { 
-  FederalComplianceService,
-  ComplianceCheck,
-  FederalContractingRequirement 
-} from '../src/modules/financial/business-logic/federal-compliance/federal-compliance-service';
+import { FederalComplianceService } from '../src/modules/financial/business-logic/federal-compliance/federal-compliance-service';
+import { ComplianceCheck, FederalContractingRequirement } from '../src/modules/financial/business-logic/federal-compliance/types';
 
 import {
   ContractingOfficerWorkflowsService,
