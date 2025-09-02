@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Management - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/supply-chain-management.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.1"></script>
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">SCM Enterprise</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search inventory, suppliers, orders..." class="global-search-input" id="scmGlobalSearch">
+                        <div class="search-suggestions" id="scmSearchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item" data-module="hr-management">
+                        <i class="fas fa-users"></i>
+                        <span>Human Resources</span>
+                    </div>
+                    <div class="nav-item" data-module="crm">
+                        <i class="fas fa-handshake"></i>
+                        <span>Customer</span>
+                    </div>
+                    <div class="nav-item active" data-module="supply-chain">
+                        <i class="fas fa-truck"></i>
+                        <span>Supply Chain</span>
+                        <div class="nav-badge critical">12</div>
+                    </div>
+                    <div class="nav-item" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                    </div>
+                    <div class="nav-item" data-module="financials">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Financials</span>
+                    </div>
+                    <div class="nav-item" data-module="project">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projects</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="scm-metrics-summary">
+                    <div class="metric-item">
+                        <span class="metric-label">On-Time Delivery</span>
+                        <span class="metric-value">97.2%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Inventory Turns</span>
+                        <span class="metric-value">8.4x</span>
+                    </div>
+                </div>
+                
+                <div class="titan-notification-center">
+                    <i class="fas fa-bell notification-icon"></i>
+                    <span class="notification-badge">12</span>
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h3>Supply Chain Alerts</h3>
+                            <button class="mark-all-read">Mark All Read</button>
+                        </div>
+                        <div class="notification-list">
+                            <div class="notification-item critical">
+                                <div class="notification-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>Critical Stock Shortage</h4>
+                                    <p>Widget Assembly Model-X below safety stock (47 units)</p>
+                                    <span class="notification-time">5 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item warning">
+                                <div class="notification-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>Delayed Shipment</h4>
+                                    <p>Supplier ABC Corp shipment delayed by 2 days</p>
+                                    <span class="notification-time">30 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>Order Fulfillment Complete</h4>
+                                    <p>Order #SO-2024-1247 shipped successfully</p>
+                                    <span class="notification-time">2 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-profile-menu">
+                    <img src="https://via.placeholder.com/40x40/059669/ffffff?text=SC" alt="Supply Chain Manager" class="profile-avatar">
+                    <div class="profile-info">
+                        <span class="profile-name">Jennifer Wilson</span>
+                        <span class="profile-role">SCM Director</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- SCM Main Content -->
+        <main class="titan-main-content">
+            <div class="titan-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">SCM Modules</h3>
+                    <ul class="sidebar-menu">
+                        <li class="menu-item active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>SCM Dashboard</span>
+                        </li>
+                        <li class="menu-item" data-section="inventory">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                            <div class="menu-badge">8,247</div>
+                        </li>
+                        <li class="menu-item" data-section="procurement">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                            <div class="menu-badge critical">5</div>
+                        </li>
+                        <li class="menu-item" data-section="suppliers">
+                            <i class="fas fa-handshake"></i>
+                            <span>Supplier Management</span>
+                            <div class="menu-badge">347</div>
+                        </li>
+                        <li class="menu-item" data-section="logistics">
+                            <i class="fas fa-truck"></i>
+                            <span>Logistics & Shipping</span>
+                        </li>
+                        <li class="menu-item" data-section="warehouses">
+                            <i class="fas fa-warehouse"></i>
+                            <span>Warehouse Operations</span>
+                            <div class="menu-badge">15</div>
+                        </li>
+                        <li class="menu-item" data-section="forecasting">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Demand Forecasting</span>
+                        </li>
+                        <li class="menu-item" data-section="planning">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Supply Planning</span>
+                        </li>
+                        <li class="menu-item" data-section="analytics">
+                            <i class="fas fa-analytics"></i>
+                            <span>SCM Analytics</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Critical Alerts</h3>
+                    <div class="critical-alerts">
+                        <div class="alert-item stockout">
+                            <div class="alert-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <p><strong>Stock Shortage</strong></p>
+                                <span>Widget Model-X: 47 units</span>
+                                <time>5 min ago</time>
+                            </div>
+                        </div>
+                        <div class="alert-item delay">
+                            <div class="alert-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="alert-content">
+                                <p><strong>Shipment Delay</strong></p>
+                                <span>ABC Corp: +2 days</span>
+                                <time>30 min ago</time>
+                            </div>
+                        </div>
+                        <div class="alert-item quality">
+                            <div class="alert-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="alert-content">
+                                <p><strong>Quality Issue</strong></p>
+                                <span>Batch #2024-1247</span>
+                                <time>1 hour ago</time>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" data-action="create-po">
+                            <i class="fas fa-plus"></i>
+                            <span>Create Purchase Order</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="receive-shipment">
+                            <i class="fas fa-truck-loading"></i>
+                            <span>Receive Shipment</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="stock-adjustment">
+                            <i class="fas fa-edit"></i>
+                            <span>Stock Adjustment</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="generate-forecast">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Generate Forecast</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCM Dashboard Section -->
+            <div class="content-section active" id="scm-dashboard">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h1 class="page-title">Supply Chain Command Center</h1>
+                        <p class="page-subtitle">Real-time visibility across global supply chain operations</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="titan-btn titan-btn-secondary" id="scmReports">
+                            <i class="fas fa-file-alt"></i>
+                            Generate Reports
+                        </button>
+                        <button class="titan-btn titan-btn-primary" id="scmSettings">
+                            <i class="fas fa-cog"></i>
+                            SCM Settings
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SCM KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card inventory-value">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+5.2%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">$12.4M</h3>
+                            <p class="kpi-label">Inventory Value</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-cube"></i>
+                                    8,247 SKUs
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-sync-alt"></i>
+                                    8.4x turnover
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card delivery-performance">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+1.8%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">97.2%</h3>
+                            <p class="kpi-label">On-Time Delivery</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    Avg: 2.3 days
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-trophy"></i>
+                                    Industry leading
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card cost-savings">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-12.3%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">$2.8M</h3>
+                            <p class="kpi-label">Cost Savings YTD</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-percentage"></i>
+                                    18.7% reduction
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-handshake"></i>
+                                    Supplier negotiation
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card supplier-performance">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+3.7%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">8.7</h3>
+                            <p class="kpi-label">Supplier Score</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    347 suppliers
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-medal"></i>
+                                    A+ rating
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supply Chain Flow Visualization -->
+                <div class="supply-chain-flow">
+                    <div class="section-header">
+                        <h2 class="section-title">Global Supply Chain Flow</h2>
+                        <div class="flow-controls">
+                            <button class="flow-toggle active" data-view="real-time">Real-time</button>
+                            <button class="flow-toggle" data-view="historical">Historical</button>
+                            <select class="region-filter" id="regionFilter">
+                                <option value="global">Global View</option>
+                                <option value="north-america">North America</option>
+                                <option value="europe">Europe</option>
+                                <option value="asia-pacific">Asia-Pacific</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-diagram">
+                        <div class="flow-stage suppliers">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Suppliers</h3>
+                                <div class="stage-count">347</div>
+                            </div>
+                            <div class="stage-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Performance</span>
+                                    <span class="metric-value">8.7/10</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">On-Time</span>
+                                    <span class="metric-value">94.8%</span>
+                                </div>
+                            </div>
+                            <div class="flow-connection">
+                                <div class="connection-line">
+                                    <div class="flow-indicator"></div>
+                                </div>
+                                <div class="connection-stats">
+                                    <span>$847K/day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-stage procurement">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Procurement</h3>
+                                <div class="stage-count">156</div>
+                            </div>
+                            <div class="stage-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">PO Value</span>
+                                    <span class="metric-value">$24.7M</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Cycle Time</span>
+                                    <span class="metric-value">4.2 days</span>
+                                </div>
+                            </div>
+                            <div class="flow-connection">
+                                <div class="connection-line">
+                                    <div class="flow-indicator"></div>
+                                </div>
+                                <div class="connection-stats">
+                                    <span>$624K/day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-stage warehousing">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Warehousing</h3>
+                                <div class="stage-count">15</div>
+                            </div>
+                            <div class="stage-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Capacity</span>
+                                    <span class="metric-value">78.3%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Accuracy</span>
+                                    <span class="metric-value">99.7%</span>
+                                </div>
+                            </div>
+                            <div class="flow-connection">
+                                <div class="connection-line">
+                                    <div class="flow-indicator"></div>
+                                </div>
+                                <div class="connection-stats">
+                                    <span>$892K/day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-stage distribution">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Distribution</h3>
+                                <div class="stage-count">847</div>
+                            </div>
+                            <div class="stage-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">On-Time</span>
+                                    <span class="metric-value">97.2%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Cost/Unit</span>
+                                    <span class="metric-value">$12.47</span>
+                                </div>
+                            </div>
+                            <div class="flow-connection">
+                                <div class="connection-line">
+                                    <div class="flow-indicator"></div>
+                                </div>
+                                <div class="connection-stats">
+                                    <span>$1.2M/day</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-stage customers">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Customers</h3>
+                                <div class="stage-count">2,847</div>
+                            </div>
+                            <div class="stage-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Satisfaction</span>
+                                    <span class="metric-value">94.7%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Retention</span>
+                                    <span class="metric-value">96.3%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Critical Issues Dashboard -->
+                <div class="issues-dashboard">
+                    <div class="section-header">
+                        <h2 class="section-title">Critical Issues & Actions</h2>
+                        <div class="issue-filters">
+                            <button class="issue-filter active" data-severity="all">All Issues</button>
+                            <button class="issue-filter" data-severity="critical">Critical</button>
+                            <button class="issue-filter" data-severity="high">High</button>
+                            <button class="issue-filter" data-severity="medium">Medium</button>
+                        </div>
+                    </div>
+                    
+                    <div class="issues-grid">
+                        <div class="issue-card critical">
+                            <div class="issue-header">
+                                <div class="issue-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="issue-meta">
+                                    <h4 class="issue-title">Critical Stock Shortage</h4>
+                                    <span class="issue-category">Inventory Management</span>
+                                </div>
+                                <div class="severity-badge critical">CRITICAL</div>
+                            </div>
+                            <p class="issue-description">Widget Assembly Model-X has fallen below safety stock levels. Current inventory: 47 units, Safety stock: 250 units.</p>
+                            <div class="issue-details">
+                                <div class="detail-metric">
+                                    <span class="metric-label">Impact:</span>
+                                    <span class="metric-value">Production halt in 3 days</span>
+                                </div>
+                                <div class="detail-metric">
+                                    <span class="metric-label">Affected Orders:</span>
+                                    <span class="metric-value">12 customer orders</span>
+                                </div>
+                            </div>
+                            <div class="issue-actions">
+                                <button class="issue-btn primary">Emergency Order</button>
+                                <button class="issue-btn secondary">Contact Supplier</button>
+                            </div>
+                        </div>
+
+                        <div class="issue-card high">
+                            <div class="issue-header">
+                                <div class="issue-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="issue-meta">
+                                    <h4 class="issue-title">Supplier Delivery Delay</h4>
+                                    <span class="issue-category">Logistics</span>
+                                </div>
+                                <div class="severity-badge high">HIGH</div>
+                            </div>
+                            <p class="issue-description">ABC Corp shipment (PO-2024-5847) delayed by 2 days due to transportation issues. May impact production schedule.</p>
+                            <div class="issue-details">
+                                <div class="detail-metric">
+                                    <span class="metric-label">Original ETA:</span>
+                                    <span class="metric-value">Dec 30, 2024</span>
+                                </div>
+                                <div class="detail-metric">
+                                    <span class="metric-label">Revised ETA:</span>
+                                    <span class="metric-value">Jan 2, 2025</span>
+                                </div>
+                            </div>
+                            <div class="issue-actions">
+                                <button class="issue-btn primary">Find Alternative</button>
+                                <button class="issue-btn secondary">Notify Production</button>
+                            </div>
+                        </div>
+
+                        <div class="issue-card medium">
+                            <div class="issue-header">
+                                <div class="issue-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="issue-meta">
+                                    <h4 class="issue-title">Forecast Variance</h4>
+                                    <span class="issue-category">Planning</span>
+                                </div>
+                                <div class="severity-badge medium">MEDIUM</div>
+                            </div>
+                            <p class="issue-description">Demand forecast for Q1 2025 shows 15% variance from historical patterns. Requires supply plan adjustment.</p>
+                            <div class="issue-details">
+                                <div class="detail-metric">
+                                    <span class="metric-label">Variance:</span>
+                                    <span class="metric-value">+15% above forecast</span>
+                                </div>
+                                <div class="detail-metric">
+                                    <span class="metric-label">Confidence:</span>
+                                    <span class="metric-value">78% accuracy</span>
+                                </div>
+                            </div>
+                            <div class="issue-actions">
+                                <button class="issue-btn primary">Adjust Plan</button>
+                                <button class="issue-btn secondary">Review Forecast</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supply Chain Analytics -->
+                <div class="analytics-section">
+                    <div class="analytics-grid">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Inventory Levels Over Time</h3>
+                                <div class="chart-controls">
+                                    <select class="time-filter" id="inventoryTimeFilter">
+                                        <option value="1w">Last Week</option>
+                                        <option value="1m" selected>Last Month</option>
+                                        <option value="3m">Last 3 Months</option>
+                                        <option value="6m">Last 6 Months</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="inventoryLevelsChart" class="analytics-chart"></canvas>
+                            </div>
+                            <div class="chart-insights">
+                                <div class="insight-item">
+                                    <span class="insight-label">Avg Level:</span>
+                                    <span class="insight-value">$12.1M</span>
+                                </div>
+                                <div class="insight-item">
+                                    <span class="insight-label">Variance:</span>
+                                    <span class="insight-value positive">-8.2%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Supplier Performance</h3>
+                                <div class="chart-controls">
+                                    <button class="view-toggle active" data-view="score">Score</button>
+                                    <button class="view-toggle" data-view="delivery">Delivery</button>
+                                    <button class="view-toggle" data-view="quality">Quality</button>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="supplierPerformanceChart" class="analytics-chart"></canvas>
+                            </div>
+                            <div class="supplier-summary">
+                                <div class="summary-item">
+                                    <span class="summary-label">Top Performer:</span>
+                                    <span class="summary-value">TechSupply Corp</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Avg Rating:</span>
+                                    <span class="summary-value">8.7/10</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container wide">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Demand vs Supply Planning</h3>
+                                <div class="chart-controls">
+                                    <button class="data-toggle active" data-type="demand">Demand</button>
+                                    <button class="data-toggle" data-type="supply">Supply</button>
+                                    <button class="data-toggle" data-type="forecast">Forecast</button>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="demandSupplyChart" class="analytics-chart"></canvas>
+                            </div>
+                            <div class="planning-summary">
+                                <div class="summary-item">
+                                    <span class="summary-label">Forecast Accuracy:</span>
+                                    <span class="summary-value">87.3%</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Fill Rate:</span>
+                                    <span class="summary-value">98.6%</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Safety Stock:</span>
+                                    <span class="summary-value">$2.1M</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Suppliers Performance -->
+                <div class="suppliers-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Top Supplier Performance</h2>
+                        <div class="section-actions">
+                            <button class="titan-btn titan-btn-secondary" id="viewAllSuppliers">
+                                View All Suppliers
+                            </button>
+                            <button class="titan-btn titan-btn-primary" id="addSupplier">
+                                <i class="fas fa-plus"></i>
+                                Add Supplier
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="suppliers-grid">
+                        <div class="supplier-card tier-1">
+                            <div class="supplier-header">
+                                <div class="supplier-info">
+                                    <h4 class="supplier-name">TechSupply Corporation</h4>
+                                    <p class="supplier-category">Electronics & Components</p>
+                                </div>
+                                <div class="supplier-rating">
+                                    <div class="rating-score">9.2</div>
+                                    <div class="rating-stars">★★★★★</div>
+                                </div>
+                            </div>
+                            <div class="supplier-metrics">
+                                <div class="metric-row">
+                                    <span class="metric-label">YTD Orders:</span>
+                                    <span class="metric-value">$4.7M (247 orders)</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">On-Time Delivery:</span>
+                                    <span class="metric-value">98.4%</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">Quality Score:</span>
+                                    <span class="metric-value">96.8%</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">Payment Terms:</span>
+                                    <span class="metric-value">Net 30</span>
+                                </div>
+                            </div>
+                            <div class="supplier-status">
+                                <span class="status-indicator preferred">Preferred Supplier</span>
+                                <span class="tier-badge tier-1">Tier 1</span>
+                            </div>
+                            <div class="supplier-actions">
+                                <button class="supplier-btn primary">View Details</button>
+                                <button class="supplier-btn secondary">New Order</button>
+                            </div>
+                        </div>
+
+                        <div class="supplier-card tier-1">
+                            <div class="supplier-header">
+                                <div class="supplier-info">
+                                    <h4 class="supplier-name">Global Manufacturing Partners</h4>
+                                    <p class="supplier-category">Raw Materials & Metals</p>
+                                </div>
+                                <div class="supplier-rating">
+                                    <div class="rating-score">8.9</div>
+                                    <div class="rating-stars">★★★★★</div>
+                                </div>
+                            </div>
+                            <div class="supplier-metrics">
+                                <div class="metric-row">
+                                    <span class="metric-label">YTD Orders:</span>
+                                    <span class="metric-value">$3.2M (189 orders)</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">On-Time Delivery:</span>
+                                    <span class="metric-value">95.7%</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">Quality Score:</span>
+                                    <span class="metric-value">94.2%</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">Payment Terms:</span>
+                                    <span class="metric-value">Net 45</span>
+                                </div>
+                            </div>
+                            <div class="supplier-status">
+                                <span class="status-indicator strategic">Strategic Partner</span>
+                                <span class="tier-badge tier-1">Tier 1</span>
+                            </div>
+                            <div class="supplier-actions">
+                                <button class="supplier-btn primary">View Details</button>
+                                <button class="supplier-btn secondary">New Order</button>
+                            </div>
+                        </div>
+
+                        <div class="supplier-card tier-2">
+                            <div class="supplier-header">
+                                <div class="supplier-info">
+                                    <h4 class="supplier-name">Quality Components Inc.</h4>
+                                    <p class="supplier-category">Precision Components</p>
+                                </div>
+                                <div class="supplier-rating">
+                                    <div class="rating-score">8.1</div>
+                                    <div class="rating-stars">★★★★☆</div>
+                                </div>
+                            </div>
+                            <div class="supplier-metrics">
+                                <div class="metric-row">
+                                    <span class="metric-label">YTD Orders:</span>
+                                    <span class="metric-value">$1.8M (156 orders)</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">On-Time Delivery:</span>
+                                    <span class="metric-value">91.3%</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">Quality Score:</span>
+                                    <span class="metric-value">89.7%</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span class="metric-label">Payment Terms:</span>
+                                    <span class="metric-value">Net 30</span>
+                                </div>
+                            </div>
+                            <div class="supplier-status">
+                                <span class="status-indicator standard">Standard Supplier</span>
+                                <span class="tier-badge tier-2">Tier 2</span>
+                            </div>
+                            <div class="supplier-actions">
+                                <button class="supplier-btn primary">View Details</button>
+                                <button class="supplier-btn secondary">Performance Review</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal Overlays -->
+        <div class="modal-overlay" id="scmModalOverlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="scmModalTitle">Supply Chain Details</h3>
+                    <button class="modal-close" id="closeScmModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-content" id="scmModalContent">
+                    <!-- Details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="scripts/supply-chain-management.js"></script>
+</body>
+</html>

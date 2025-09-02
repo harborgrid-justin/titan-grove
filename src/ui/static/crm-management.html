@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Relationship Management - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/crm-management.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">CRM Enterprise</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search customers, deals, contacts..." class="global-search-input" id="crmGlobalSearch">
+                        <div class="search-suggestions" id="crmSearchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item" data-module="hr-management">
+                        <i class="fas fa-users"></i>
+                        <span>Human Resources</span>
+                    </div>
+                    <div class="nav-item active" data-module="crm">
+                        <i class="fas fa-handshake"></i>
+                        <span>Customer</span>
+                        <div class="nav-badge">42</div>
+                    </div>
+                    <div class="nav-item" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                    </div>
+                    <div class="nav-item" data-module="financials">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Financials</span>
+                    </div>
+                    <div class="nav-item" data-module="supply-chain">
+                        <i class="fas fa-truck"></i>
+                        <span>Supply Chain</span>
+                    </div>
+                    <div class="nav-item" data-module="project">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projects</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="sales-metrics-summary">
+                    <div class="metric-item">
+                        <span class="metric-label">Monthly Revenue</span>
+                        <span class="metric-value">$4.2M</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Conversion Rate</span>
+                        <span class="metric-value">23.8%</span>
+                    </div>
+                </div>
+                
+                <div class="titan-notification-center">
+                    <i class="fas fa-bell notification-icon"></i>
+                    <span class="notification-badge">7</span>
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h3>CRM Alerts</h3>
+                            <button class="mark-all-read">Mark All Read</button>
+                        </div>
+                        <div class="notification-list">
+                            <div class="notification-item urgent">
+                                <div class="notification-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>High-Value Deal at Risk</h4>
+                                    <p>TechCorp Inc. - $2.4M deal requires immediate attention</p>
+                                    <span class="notification-time">15 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>Follow-up Reminder</h4>
+                                    <p>5 customer follow-ups scheduled for today</p>
+                                    <span class="notification-time">1 hour ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>Sales Target Achieved</h4>
+                                    <p>Q4 sales target exceeded by 12%</p>
+                                    <span class="notification-time">2 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-profile-menu">
+                    <img src="https://via.placeholder.com/40x40/2563eb/ffffff?text=SM" alt="Sales Manager" class="profile-avatar">
+                    <div class="profile-info">
+                        <span class="profile-name">Michael Brown</span>
+                        <span class="profile-role">Sales Director</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CRM Main Content -->
+        <main class="titan-main-content">
+            <div class="titan-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">CRM Modules</h3>
+                    <ul class="sidebar-menu">
+                        <li class="menu-item active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Sales Dashboard</span>
+                        </li>
+                        <li class="menu-item" data-section="pipeline">
+                            <i class="fas fa-funnel-dollar"></i>
+                            <span>Sales Pipeline</span>
+                            <div class="menu-badge">42</div>
+                        </li>
+                        <li class="menu-item" data-section="customers">
+                            <i class="fas fa-building"></i>
+                            <span>Customer Accounts</span>
+                            <div class="menu-badge">2,847</div>
+                        </li>
+                        <li class="menu-item" data-section="contacts">
+                            <i class="fas fa-address-book"></i>
+                            <span>Contact Management</span>
+                            <div class="menu-badge">8,123</div>
+                        </li>
+                        <li class="menu-item" data-section="opportunities">
+                            <i class="fas fa-bullseye"></i>
+                            <span>Opportunities</span>
+                            <div class="menu-badge critical">15</div>
+                        </li>
+                        <li class="menu-item" data-section="quotes">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Quotes & Proposals</span>
+                        </li>
+                        <li class="menu-item" data-section="campaigns">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>Marketing Campaigns</span>
+                        </li>
+                        <li class="menu-item" data-section="reports">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Sales Reports</span>
+                        </li>
+                        <li class="menu-item" data-section="automation">
+                            <i class="fas fa-robot"></i>
+                            <span>Sales Automation</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Sales Leaderboard</h3>
+                    <div class="leaderboard">
+                        <div class="leaderboard-item rank-1">
+                            <div class="rank-badge">1</div>
+                            <div class="rep-info">
+                                <div class="rep-name">Jennifer Wilson</div>
+                                <div class="rep-achievement">$847K YTD</div>
+                            </div>
+                            <div class="achievement-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                        </div>
+                        <div class="leaderboard-item rank-2">
+                            <div class="rank-badge">2</div>
+                            <div class="rep-info">
+                                <div class="rep-name">Robert Chen</div>
+                                <div class="rep-achievement">$724K YTD</div>
+                            </div>
+                            <div class="achievement-icon">
+                                <i class="fas fa-medal"></i>
+                            </div>
+                        </div>
+                        <div class="leaderboard-item rank-3">
+                            <div class="rank-badge">3</div>
+                            <div class="rep-info">
+                                <div class="rep-name">Lisa Anderson</div>
+                                <div class="rep-achievement">$698K YTD</div>
+                            </div>
+                            <div class="achievement-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Deal Alerts</h3>
+                    <div class="deal-alerts">
+                        <div class="alert-item critical">
+                            <div class="alert-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <p><strong>Deal at Risk</strong></p>
+                                <span>TechCorp - $2.4M</span>
+                                <time>15 min ago</time>
+                            </div>
+                        </div>
+                        <div class="alert-item warning">
+                            <div class="alert-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="alert-content">
+                                <p><strong>Follow-up Due</strong></p>
+                                <span>Global Systems - $890K</span>
+                                <time>2 hours ago</time>
+                            </div>
+                        </div>
+                        <div class="alert-item success">
+                            <div class="alert-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <p><strong>Deal Closed</strong></p>
+                                <span>DataFlow Corp - $1.2M</span>
+                                <time>1 day ago</time>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CRM Dashboard Section -->
+            <div class="content-section active" id="crm-dashboard">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h1 class="page-title">Sales & Customer Dashboard</h1>
+                        <p class="page-subtitle">Real-time sales performance and customer relationship insights</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="titan-btn titan-btn-secondary" id="exportCRMData">
+                            <i class="fas fa-download"></i>
+                            Export Dashboard
+                        </button>
+                        <button class="titan-btn titan-btn-primary" id="newOpportunity">
+                            <i class="fas fa-plus"></i>
+                            New Opportunity
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sales KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card revenue">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+18.7%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">$4.2M</h3>
+                            <p class="kpi-label">Monthly Revenue</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-calendar"></i>
+                                    YTD: $47.8M
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-target"></i>
+                                    Target: $48M
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card pipeline">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-funnel-dollar"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+24.3%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">$18.7M</h3>
+                            <p class="kpi-label">Pipeline Value</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-chart-line"></i>
+                                    42 active deals
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-percentage"></i>
+                                    Win rate: 23.8%
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card customers">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+7.2%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">2,847</h3>
+                            <p class="kpi-label">Active Customers</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-star"></i>
+                                    Enterprise: 387
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-user-tie"></i>
+                                    SMB: 2,460
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card satisfaction">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-smile"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+2.1%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">94.7%</h3>
+                            <p class="kpi-label">Customer Satisfaction</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-comment-dots"></i>
+                                    NPS Score: +67
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-heart"></i>
+                                    Retention: 96.3%
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Pipeline Visualization -->
+                <div class="pipeline-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Sales Pipeline Overview</h2>
+                        <div class="pipeline-controls">
+                            <select class="pipeline-filter" id="pipelineTeamFilter">
+                                <option value="all">All Teams</option>
+                                <option value="enterprise">Enterprise Sales</option>
+                                <option value="smb">SMB Sales</option>
+                                <option value="channel">Channel Partners</option>
+                            </select>
+                            <select class="pipeline-filter" id="pipelineTimeFilter">
+                                <option value="current">Current Quarter</option>
+                                <option value="next">Next Quarter</option>
+                                <option value="annual">Annual View</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pipeline-board">
+                        <div class="pipeline-stage" data-stage="lead">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Leads</h3>
+                                <div class="stage-stats">
+                                    <span class="stage-count">127</span>
+                                    <span class="stage-value">$3.2M</span>
+                                </div>
+                            </div>
+                            <div class="stage-deals" id="leadsStage">
+                                <!-- Deal cards will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="pipeline-stage" data-stage="qualified">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Qualified</h3>
+                                <div class="stage-stats">
+                                    <span class="stage-count">89</span>
+                                    <span class="stage-value">$8.7M</span>
+                                </div>
+                            </div>
+                            <div class="stage-deals" id="qualifiedStage">
+                                <!-- Deal cards will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="pipeline-stage" data-stage="proposal">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Proposal</h3>
+                                <div class="stage-stats">
+                                    <span class="stage-count">42</span>
+                                    <span class="stage-value">$12.4M</span>
+                                </div>
+                            </div>
+                            <div class="stage-deals" id="proposalStage">
+                                <!-- Deal cards will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="pipeline-stage" data-stage="negotiation">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Negotiation</h3>
+                                <div class="stage-stats">
+                                    <span class="stage-count">28</span>
+                                    <span class="stage-value">$18.7M</span>
+                                </div>
+                            </div>
+                            <div class="stage-deals" id="negotiationStage">
+                                <!-- Deal cards will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="pipeline-stage" data-stage="closed">
+                            <div class="stage-header">
+                                <h3 class="stage-title">Closed Won</h3>
+                                <div class="stage-stats">
+                                    <span class="stage-count">15</span>
+                                    <span class="stage-value">$4.2M</span>
+                                </div>
+                            </div>
+                            <div class="stage-deals" id="closedStage">
+                                <!-- Deal cards will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Analytics -->
+                <div class="analytics-section">
+                    <div class="analytics-grid">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Revenue Trend</h3>
+                                <div class="chart-controls">
+                                    <select class="time-filter" id="revenueTimeFilter">
+                                        <option value="3m">Last 3 Months</option>
+                                        <option value="6m">Last 6 Months</option>
+                                        <option value="1y" selected>Last Year</option>
+                                        <option value="2y">Last 2 Years</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="revenueTrendChart" class="analytics-chart"></canvas>
+                            </div>
+                            <div class="chart-insights">
+                                <div class="insight-item">
+                                    <span class="insight-label">Growth Rate:</span>
+                                    <span class="insight-value positive">+18.7%</span>
+                                </div>
+                                <div class="insight-item">
+                                    <span class="insight-label">Best Month:</span>
+                                    <span class="insight-value">November ($5.2M)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Customer Acquisition</h3>
+                                <div class="chart-controls">
+                                    <button class="view-toggle active" data-view="new">New Customers</button>
+                                    <button class="view-toggle" data-view="churn">Churn Rate</button>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="customerAcquisitionChart" class="analytics-chart"></canvas>
+                            </div>
+                            <div class="acquisition-metrics">
+                                <div class="metric-item">
+                                    <span class="metric-label">CAC:</span>
+                                    <span class="metric-value">$2,847</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">LTV:</span>
+                                    <span class="metric-value">$45,230</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">LTV:CAC:</span>
+                                    <span class="metric-value">15.9:1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container wide">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Sales Performance by Team</h3>
+                                <div class="chart-controls">
+                                    <button class="data-toggle active" data-type="revenue">Revenue</button>
+                                    <button class="data-toggle" data-type="deals">Deals Closed</button>
+                                    <button class="data-toggle" data-type="activities">Activities</button>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="teamPerformanceChart" class="analytics-chart"></canvas>
+                            </div>
+                            <div class="team-summary">
+                                <div class="summary-item">
+                                    <span class="summary-label">Top Performer:</span>
+                                    <span class="summary-value">Enterprise Team (+24%)</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Total Revenue:</span>
+                                    <span class="summary-value">$47.8M YTD</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Avg Deal Size:</span>
+                                    <span class="summary-value">$125,400</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Opportunities -->
+                <div class="opportunities-section">
+                    <div class="section-header">
+                        <h2 class="section-title">High-Priority Opportunities</h2>
+                        <div class="section-actions">
+                            <button class="titan-btn titan-btn-secondary" id="viewAllOpportunities">
+                                View All
+                            </button>
+                            <button class="titan-btn titan-btn-primary" id="createOpportunity">
+                                <i class="fas fa-plus"></i>
+                                Create Opportunity
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="opportunities-grid">
+                        <div class="opportunity-card high-value">
+                            <div class="opportunity-header">
+                                <div class="opportunity-meta">
+                                    <h4 class="opportunity-title">TechCorp Inc. Enterprise Platform</h4>
+                                    <p class="opportunity-company">TechCorp Inc.</p>
+                                </div>
+                                <div class="opportunity-value">$2.4M</div>
+                            </div>
+                            <div class="opportunity-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Stage:</span>
+                                    <span class="stage-badge negotiation">Negotiation</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Close Date:</span>
+                                    <span class="detail-value">Jan 15, 2025</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Probability:</span>
+                                    <span class="detail-value">75%</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Owner:</span>
+                                    <span class="detail-value">Jennifer Wilson</span>
+                                </div>
+                            </div>
+                            <div class="opportunity-actions">
+                                <button class="opportunity-btn primary">Update</button>
+                                <button class="opportunity-btn secondary">Contact</button>
+                            </div>
+                            <div class="risk-indicator high">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                High Risk - Needs Attention
+                            </div>
+                        </div>
+
+                        <div class="opportunity-card medium-value">
+                            <div class="opportunity-header">
+                                <div class="opportunity-meta">
+                                    <h4 class="opportunity-title">Global Systems Integration</h4>
+                                    <p class="opportunity-company">Global Systems Ltd.</p>
+                                </div>
+                                <div class="opportunity-value">$890K</div>
+                            </div>
+                            <div class="opportunity-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Stage:</span>
+                                    <span class="stage-badge proposal">Proposal</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Close Date:</span>
+                                    <span class="detail-value">Feb 28, 2025</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Probability:</span>
+                                    <span class="detail-value">65%</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Owner:</span>
+                                    <span class="detail-value">Robert Chen</span>
+                                </div>
+                            </div>
+                            <div class="opportunity-actions">
+                                <button class="opportunity-btn primary">Update</button>
+                                <button class="opportunity-btn secondary">Contact</button>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-card standard-value">
+                            <div class="opportunity-header">
+                                <div class="opportunity-meta">
+                                    <h4 class="opportunity-title">DataFlow Corp Expansion</h4>
+                                    <p class="opportunity-company">DataFlow Corp</p>
+                                </div>
+                                <div class="opportunity-value">$445K</div>
+                            </div>
+                            <div class="opportunity-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Stage:</span>
+                                    <span class="stage-badge qualified">Qualified</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Close Date:</span>
+                                    <span class="detail-value">Mar 15, 2025</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Probability:</span>
+                                    <span class="detail-value">45%</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Owner:</span>
+                                    <span class="detail-value">Lisa Anderson</span>
+                                </div>
+                            </div>
+                            <div class="opportunity-actions">
+                                <button class="opportunity-btn primary">Update</button>
+                                <button class="opportunity-btn secondary">Contact</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="activities-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Sales Activities</h2>
+                        <div class="activity-filters">
+                            <button class="activity-filter active" data-filter="all">All Activities</button>
+                            <button class="activity-filter" data-filter="calls">Calls</button>
+                            <button class="activity-filter" data-filter="meetings">Meetings</button>
+                            <button class="activity-filter" data-filter="emails">Emails</button>
+                        </div>
+                    </div>
+                    
+                    <div class="activities-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon call">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="activity-header">
+                                    <h4 class="activity-title">Customer Discovery Call</h4>
+                                    <span class="activity-time">2 hours ago</span>
+                                </div>
+                                <p class="activity-description">Jennifer Wilson conducted discovery call with TechCorp Inc. regarding enterprise platform requirements.</p>
+                                <div class="activity-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-building"></i>
+                                        TechCorp Inc.
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-user-tie"></i>
+                                        Jennifer Wilson
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        $2.4M opportunity
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon meeting">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="activity-header">
+                                    <h4 class="activity-title">Product Demo Completed</h4>
+                                    <span class="activity-time">5 hours ago</span>
+                                </div>
+                                <p class="activity-description">Robert Chen presented comprehensive product demo to Global Systems stakeholder team.</p>
+                                <div class="activity-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-building"></i>
+                                        Global Systems Ltd.
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-user-tie"></i>
+                                        Robert Chen
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-users"></i>
+                                        8 attendees
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon email">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="activity-header">
+                                    <h4 class="activity-title">Follow-up Email Sent</h4>
+                                    <span class="activity-time">1 day ago</span>
+                                </div>
+                                <p class="activity-description">Lisa Anderson sent detailed follow-up with ROI analysis to DataFlow Corp decision makers.</p>
+                                <div class="activity-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-building"></i>
+                                        DataFlow Corp
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-user-tie"></i>
+                                        Lisa Anderson
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-chart-line"></i>
+                                        ROI Analysis
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon won">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="activity-header">
+                                    <h4 class="activity-title">Deal Closed - Won</h4>
+                                    <span class="activity-time">2 days ago</span>
+                                </div>
+                                <p class="activity-description">Successfully closed enterprise deal with Innovation Labs for comprehensive business suite implementation.</p>
+                                <div class="activity-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-building"></i>
+                                        Innovation Labs
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-user-tie"></i>
+                                        Jennifer Wilson
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        $1.8M contract
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Pipeline Section -->
+            <div class="content-section" id="sales-pipeline">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h1 class="page-title">Sales Pipeline Management</h1>
+                        <p class="page-subtitle">Visual pipeline management with drag-and-drop deal progression</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="titan-btn titan-btn-secondary" id="pipelineSettings">
+                            <i class="fas fa-cog"></i>
+                            Pipeline Settings
+                        </button>
+                        <button class="titan-btn titan-btn-primary" id="newDeal">
+                            <i class="fas fa-plus"></i>
+                            New Deal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pipeline Metrics -->
+                <div class="pipeline-metrics">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-funnel-dollar"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h4 class="metric-value">$18.7M</h4>
+                            <p class="metric-label">Total Pipeline</p>
+                            <span class="metric-trend positive">+24.3%</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h4 class="metric-value">23.8%</h4>
+                            <p class="metric-label">Win Rate</p>
+                            <span class="metric-trend positive">+2.1%</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h4 class="metric-value">87 days</h4>
+                            <p class="metric-label">Avg Sales Cycle</p>
+                            <span class="metric-trend negative">+5 days</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h4 class="metric-value">$125K</h4>
+                            <p class="metric-label">Avg Deal Size</p>
+                            <span class="metric-trend positive">+8.2%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Pipeline Board -->
+                <div class="enhanced-pipeline-board">
+                    <!-- Pipeline stages will be populated by JavaScript -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal Overlays -->
+        <div class="modal-overlay" id="opportunityModalOverlay">
+            <div class="modal-container large">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="opportunityModalTitle">Opportunity Details</h3>
+                    <button class="modal-close" id="closeOpportunityModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-content" id="opportunityModalContent">
+                    <!-- Opportunity details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="customerModalOverlay">
+            <div class="modal-container large">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="customerModalTitle">Customer Details</h3>
+                    <button class="modal-close" id="closeCustomerModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-content" id="customerModalContent">
+                    <!-- Customer details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="scripts/crm-management.js"></script>
+</body>
+</html>
