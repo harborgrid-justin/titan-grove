@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Management System - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/asset-management.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Asset Enterprise</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search assets, locations, work orders..." class="global-search-input" id="assetGlobalSearch">
+                        <div class="search-suggestions" id="assetSearchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                    </div>
+                    <div class="nav-item" data-module="hr-management">
+                        <i class="fas fa-users"></i>
+                        <span>Human Resources</span>
+                    </div>
+                    <div class="nav-item active" data-module="asset-management">
+                        <i class="fas fa-cogs"></i>
+                        <span>Assets</span>
+                        <div class="nav-badge">24</div>
+                    </div>
+                    <div class="nav-item" data-module="financials">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Financials</span>
+                    </div>
+                    <div class="nav-item" data-module="crm">
+                        <i class="fas fa-handshake"></i>
+                        <span>Customer</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="titan-user-profile">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">John Smith</span>
+                        <span class="user-role">Asset Manager</span>
+                    </div>
+                </div>
+                <div class="titan-notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">8</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Asset Management Main Content -->
+        <main class="asset-main-content">
+            <!-- Sidebar Navigation -->
+            <aside class="asset-sidebar">
+                <div class="asset-sidebar-header">
+                    <h2 class="asset-sidebar-title">
+                        <i class="fas fa-cogs"></i>
+                        Asset Management
+                    </h2>
+                    <p class="asset-sidebar-subtitle">Equipment Lifecycle & Maintenance</p>
+                </div>
+
+                <nav class="asset-sidebar-nav">
+                    <div class="asset-nav-group">
+                        <div class="asset-nav-group-title">Overview</div>
+                        <a href="#" class="asset-nav-item active" data-view="dashboard">
+                            <i class="fas fa-chart-pie asset-nav-icon"></i>
+                            <span>Dashboard</span>
+                            <span class="asset-nav-count">24</span>
+                        </a>
+                        <a href="#" class="asset-nav-item" data-view="assets">
+                            <i class="fas fa-boxes asset-nav-icon"></i>
+                            <span>Asset Registry</span>
+                            <span class="asset-nav-count">1,247</span>
+                        </a>
+                        <a href="#" class="asset-nav-item" data-view="locations">
+                            <i class="fas fa-map-marker-alt asset-nav-icon"></i>
+                            <span>Locations</span>
+                            <span class="asset-nav-count">42</span>
+                        </a>
+                    </div>
+
+                    <div class="asset-nav-group">
+                        <div class="asset-nav-group-title">Maintenance</div>
+                        <a href="#" class="asset-nav-item" data-view="work-orders">
+                            <i class="fas fa-tools asset-nav-icon"></i>
+                            <span>Work Orders</span>
+                            <span class="asset-nav-count">89</span>
+                        </a>
+                        <a href="#" class="asset-nav-item" data-view="preventive">
+                            <i class="fas fa-calendar-check asset-nav-icon"></i>
+                            <span>Preventive</span>
+                            <span class="asset-nav-count">156</span>
+                        </a>
+                        <a href="#" class="asset-nav-item" data-view="inspections">
+                            <i class="fas fa-clipboard-check asset-nav-icon"></i>
+                            <span>Inspections</span>
+                            <span class="asset-nav-count">34</span>
+                        </a>
+                    </div>
+
+                    <div class="asset-nav-group">
+                        <div class="asset-nav-group-title">Analytics</div>
+                        <a href="#" class="asset-nav-item" data-view="performance">
+                            <i class="fas fa-chart-line asset-nav-icon"></i>
+                            <span>Performance</span>
+                        </a>
+                        <a href="#" class="asset-nav-item" data-view="costs">
+                            <i class="fas fa-dollar-sign asset-nav-icon"></i>
+                            <span>Cost Analysis</span>
+                        </a>
+                        <a href="#" class="asset-nav-item" data-view="reports">
+                            <i class="fas fa-file-alt asset-nav-icon"></i>
+                            <span>Reports</span>
+                        </a>
+                    </div>
+
+                    <div class="asset-nav-group">
+                        <div class="asset-nav-group-title">Configuration</div>
+                        <a href="#" class="asset-nav-item" data-view="categories">
+                            <i class="fas fa-tags asset-nav-icon"></i>
+                            <span>Categories</span>
+                        </a>
+                        <a href="#" class="asset-nav-item" data-view="vendors">
+                            <i class="fas fa-building asset-nav-icon"></i>
+                            <span>Vendors</span>
+                        </a>
+                        <a href="#" class="asset-nav-item" data-view="settings">
+                            <i class="fas fa-cog asset-nav-icon"></i>
+                            <span>Settings</span>
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Quick Actions Panel -->
+                <div class="asset-quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-action-grid">
+                        <button class="quick-action-btn" data-action="create-asset">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Asset</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="create-work-order">
+                            <i class="fas fa-wrench"></i>
+                            <span>Work Order</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="scan-qr">
+                            <i class="fas fa-qrcode"></i>
+                            <span>Scan QR</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="bulk-update">
+                            <i class="fas fa-upload"></i>
+                            <span>Bulk Update</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="asset-content">
+                <!-- Dashboard View -->
+                <div id="asset-view-dashboard" class="asset-view active">
+                    <div class="asset-content-header">
+                        <div class="content-header-left">
+                            <h1 class="asset-content-title">Asset Management Dashboard</h1>
+                            <p class="asset-content-subtitle">Real-time overview of your asset portfolio</p>
+                        </div>
+                        <div class="content-header-right">
+                            <div class="dashboard-filters">
+                                <select class="asset-filter-select" id="timeRangeFilter">
+                                    <option value="7d">Last 7 Days</option>
+                                    <option value="30d" selected>Last 30 Days</option>
+                                    <option value="90d">Last 90 Days</option>
+                                    <option value="1y">Last Year</option>
+                                </select>
+                                <button class="asset-btn asset-btn-primary" id="refreshDashboard">
+                                    <i class="fas fa-sync-alt"></i>
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KPI Overview Cards -->
+                    <div class="asset-kpi-grid">
+                        <div class="asset-kpi-card">
+                            <div class="kpi-header">
+                                <div class="kpi-icon total-assets">
+                                    <i class="fas fa-boxes"></i>
+                                </div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+5.2%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h3 class="kpi-value" id="totalAssetsKPI">1,247</h3>
+                                <p class="kpi-label">Total Assets</p>
+                                <div class="kpi-sublabel">Active: 1,189 • Retired: 58</div>
+                            </div>
+                        </div>
+
+                        <div class="asset-kpi-card">
+                            <div class="kpi-header">
+                                <div class="kpi-icon asset-value">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+12.8%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h3 class="kpi-value" id="assetValueKPI">$24.6M</h3>
+                                <p class="kpi-label">Total Asset Value</p>
+                                <div class="kpi-sublabel">Depreciated: $18.2M</div>
+                            </div>
+                        </div>
+
+                        <div class="asset-kpi-card">
+                            <div class="kpi-header">
+                                <div class="kpi-icon maintenance-cost">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="kpi-trend negative">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>-8.4%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h3 class="kpi-value" id="maintenanceCostKPI">$186K</h3>
+                                <p class="kpi-label">Monthly Maintenance</p>
+                                <div class="kpi-sublabel">Budget: $220K</div>
+                            </div>
+                        </div>
+
+                        <div class="asset-kpi-card">
+                            <div class="kpi-header">
+                                <div class="kpi-icon uptime">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+2.1%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h3 class="kpi-value" id="uptimeKPI">94.7%</h3>
+                                <p class="kpi-label">Overall Uptime</p>
+                                <div class="kpi-sublabel">Target: 95%</div>
+                            </div>
+                        </div>
+
+                        <div class="asset-kpi-card">
+                            <div class="kpi-header">
+                                <div class="kpi-icon work-orders">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <div class="kpi-trend neutral">
+                                    <i class="fas fa-minus"></i>
+                                    <span>0%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h3 class="kpi-value" id="workOrdersKPI">89</h3>
+                                <p class="kpi-label">Open Work Orders</p>
+                                <div class="kpi-sublabel">Critical: 12</div>
+                            </div>
+                        </div>
+
+                        <div class="asset-kpi-card">
+                            <div class="kpi-header">
+                                <div class="kpi-icon compliance">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="kpi-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+1.5%</span>
+                                </div>
+                            </div>
+                            <div class="kpi-content">
+                                <h3 class="kpi-value" id="complianceKPI">97.2%</h3>
+                                <p class="kpi-label">Compliance Rate</p>
+                                <div class="kpi-sublabel">Overdue: 34 items</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts and Analytics Section -->
+                    <div class="asset-analytics-grid">
+                        <div class="asset-analytics-card large">
+                            <div class="analytics-card-header">
+                                <h3>Asset Performance Trends</h3>
+                                <div class="analytics-controls">
+                                    <div class="metric-toggles">
+                                        <button class="metric-toggle active" data-metric="uptime">Uptime</button>
+                                        <button class="metric-toggle" data-metric="maintenance">Maintenance</button>
+                                        <button class="metric-toggle" data-metric="costs">Costs</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="analytics-card-body">
+                                <canvas id="performanceTrendChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="asset-analytics-card">
+                            <div class="analytics-card-header">
+                                <h3>Asset Categories</h3>
+                                <div class="analytics-legend" id="categoryLegend"></div>
+                            </div>
+                            <div class="analytics-card-body">
+                                <canvas id="assetCategoryChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="asset-analytics-card">
+                            <div class="analytics-card-header">
+                                <h3>Work Order Status</h3>
+                                <div class="wo-status-summary">
+                                    <div class="status-item">
+                                        <span class="status-dot open"></span>
+                                        <span>Open: 45</span>
+                                    </div>
+                                    <div class="status-item">
+                                        <span class="status-dot in-progress"></span>
+                                        <span>In Progress: 32</span>
+                                    </div>
+                                    <div class="status-item">
+                                        <span class="status-dot completed"></span>
+                                        <span>Completed: 12</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="analytics-card-body">
+                                <canvas id="workOrderChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="asset-analytics-card">
+                            <div class="analytics-card-header">
+                                <h3>Maintenance Costs by Category</h3>
+                                <div class="cost-period-selector">
+                                    <select id="costPeriodSelect">
+                                        <option value="month">This Month</option>
+                                        <option value="quarter">This Quarter</option>
+                                        <option value="year">This Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="analytics-card-body">
+                                <canvas id="maintenanceCostChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Critical Alerts and Recent Activity -->
+                    <div class="asset-dashboard-bottom">
+                        <div class="critical-alerts-section">
+                            <div class="section-header">
+                                <h3>Critical Alerts</h3>
+                                <button class="view-all-btn">View All</button>
+                            </div>
+                            <div class="alerts-list" id="criticalAlertsList">
+                                <div class="alert-item critical">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Compressor Unit C-101 Temperature Critical</div>
+                                        <div class="alert-details">Temperature: 95°C (Max: 85°C) • Location: Production Line A</div>
+                                        <div class="alert-timestamp">5 minutes ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-action-btn">Acknowledge</button>
+                                        <button class="alert-action-btn primary">Create Work Order</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert-item warning">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Preventive Maintenance Overdue</div>
+                                        <div class="alert-details">Pump P-205 PM scheduled for 3 days ago • Next: Oil change & inspection</div>
+                                        <div class="alert-timestamp">23 minutes ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-action-btn">Schedule</button>
+                                        <button class="alert-action-btn">Extend</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert-item info">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">New Asset Registration Required</div>
+                                        <div class="alert-details">Motor M-308 installed yesterday requires registration and QR code generation</div>
+                                        <div class="alert-timestamp">1 hour ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-action-btn primary">Register Asset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recent-activity-section">
+                            <div class="section-header">
+                                <h3>Recent Activity</h3>
+                                <button class="view-all-btn">View All</button>
+                            </div>
+                            <div class="activity-timeline" id="activityTimeline">
+                                <div class="activity-item">
+                                    <div class="activity-time">10:30 AM</div>
+                                    <div class="activity-icon completed">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Work Order #WO-2024-0892 Completed</div>
+                                        <div class="activity-details">Conveyor Belt B-12 maintenance completed by Mike Johnson</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item">
+                                    <div class="activity-time">9:45 AM</div>
+                                    <div class="activity-icon created">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">New Asset Added</div>
+                                        <div class="activity-details">Industrial Robot R-401 registered in Assembly Line C</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item">
+                                    <div class="activity-time">9:15 AM</div>
+                                    <div class="activity-icon inspection">
+                                        <i class="fas fa-clipboard-check"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Inspection Completed</div>
+                                        <div class="activity-details">Safety inspection for Crane C-301 passed with no issues</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item">
+                                    <div class="activity-time">8:30 AM</div>
+                                    <div class="activity-icon maintenance">
+                                        <i class="fas fa-tools"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Preventive Maintenance Scheduled</div>
+                                        <div class="activity-details">HVAC System H-101 scheduled for quarterly maintenance</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asset Registry View -->
+                <div id="asset-view-assets" class="asset-view">
+                    <div class="asset-content-header">
+                        <div class="content-header-left">
+                            <h1 class="asset-content-title">Asset Registry</h1>
+                            <p class="asset-content-subtitle">Comprehensive asset database and tracking</p>
+                        </div>
+                        <div class="content-header-right">
+                            <button class="asset-btn asset-btn-secondary" id="exportAssets">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                            <button class="asset-btn asset-btn-primary" id="addAsset">
+                                <i class="fas fa-plus"></i>
+                                Add Asset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Asset Filters and Search -->
+                    <div class="asset-filters-bar">
+                        <div class="search-section">
+                            <div class="search-input-container">
+                                <i class="fas fa-search"></i>
+                                <input type="text" class="asset-search-input" placeholder="Search by asset name, ID, or location...">
+                            </div>
+                        </div>
+                        <div class="filter-section">
+                            <select class="asset-filter-select" id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="machinery">Machinery</option>
+                                <option value="vehicles">Vehicles</option>
+                                <option value="it-equipment">IT Equipment</option>
+                                <option value="tools">Tools</option>
+                                <option value="furniture">Furniture</option>
+                            </select>
+                            <select class="asset-filter-select" id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="maintenance">Under Maintenance</option>
+                                <option value="retired">Retired</option>
+                            </select>
+                            <select class="asset-filter-select" id="locationFilter">
+                                <option value="">All Locations</option>
+                                <option value="production-a">Production Line A</option>
+                                <option value="production-b">Production Line B</option>
+                                <option value="warehouse">Warehouse</option>
+                                <option value="office">Office Building</option>
+                            </select>
+                        </div>
+                        <div class="view-toggle-section">
+                            <div class="view-toggle">
+                                <button class="view-toggle-btn active" data-view="table">
+                                    <i class="fas fa-table"></i>
+                                </button>
+                                <button class="view-toggle-btn" data-view="cards">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                                <button class="view-toggle-btn" data-view="map">
+                                    <i class="fas fa-map"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Asset Table View -->
+                    <div class="asset-table-container">
+                        <table class="asset-table" id="assetTable">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="id">
+                                        Asset ID <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="name">
+                                        Name <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="category">
+                                        Category <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="location">
+                                        Location <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="status">
+                                        Status <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="condition">
+                                        Condition <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="lastMaintenance">
+                                        Last Maintenance <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="value">
+                                        Value <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="assetTableBody">
+                                <!-- Asset rows will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="asset-pagination">
+                        <div class="pagination-info">
+                            Showing <span id="paginationStart">1</span> to <span id="paginationEnd">50</span> of <span id="paginationTotal">1,247</span> assets
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn" id="prevPage" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                                Previous
+                            </button>
+                            <div class="pagination-numbers" id="paginationNumbers">
+                                <button class="pagination-number active">1</button>
+                                <button class="pagination-number">2</button>
+                                <button class="pagination-number">3</button>
+                                <span class="pagination-ellipsis">...</span>
+                                <button class="pagination-number">25</button>
+                            </div>
+                            <button class="pagination-btn" id="nextPage">
+                                Next
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work Orders View -->
+                <div id="asset-view-work-orders" class="asset-view">
+                    <div class="asset-content-header">
+                        <div class="content-header-left">
+                            <h1 class="asset-content-title">Work Orders</h1>
+                            <p class="asset-content-subtitle">Maintenance and repair work order management</p>
+                        </div>
+                        <div class="content-header-right">
+                            <button class="asset-btn asset-btn-secondary" id="scheduleMaintenanceBtn">
+                                <i class="fas fa-calendar-plus"></i>
+                                Schedule Maintenance
+                            </button>
+                            <button class="asset-btn asset-btn-primary" id="createWorkOrderBtn">
+                                <i class="fas fa-plus"></i>
+                                Create Work Order
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Work Order Status Overview -->
+                    <div class="work-order-overview">
+                        <div class="wo-status-card">
+                            <div class="wo-status-header">
+                                <div class="wo-status-icon pending">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <h3>Pending</h3>
+                            </div>
+                            <div class="wo-status-count">45</div>
+                            <div class="wo-status-details">Awaiting approval</div>
+                        </div>
+
+                        <div class="wo-status-card">
+                            <div class="wo-status-header">
+                                <div class="wo-status-icon in-progress">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <h3>In Progress</h3>
+                            </div>
+                            <div class="wo-status-count">32</div>
+                            <div class="wo-status-details">Active work orders</div>
+                        </div>
+
+                        <div class="wo-status-card">
+                            <div class="wo-status-header">
+                                <div class="wo-status-icon completed">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <h3>Completed</h3>
+                            </div>
+                            <div class="wo-status-count">12</div>
+                            <div class="wo-status-details">This week</div>
+                        </div>
+
+                        <div class="wo-status-card">
+                            <div class="wo-status-header">
+                                <div class="wo-status-icon overdue">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <h3>Overdue</h3>
+                            </div>
+                            <div class="wo-status-count">8</div>
+                            <div class="wo-status-details">Requires attention</div>
+                        </div>
+                    </div>
+
+                    <!-- Work Order List -->
+                    <div class="work-order-list-container">
+                        <div class="work-order-filters">
+                            <select class="asset-filter-select" id="woStatusFilter">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <select class="asset-filter-select" id="woPriorityFilter">
+                                <option value="">All Priority</option>
+                                <option value="critical">Critical</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                            <select class="asset-filter-select" id="woTypeFilter">
+                                <option value="">All Types</option>
+                                <option value="corrective">Corrective</option>
+                                <option value="preventive">Preventive</option>
+                                <option value="emergency">Emergency</option>
+                                <option value="inspection">Inspection</option>
+                            </select>
+                        </div>
+
+                        <div class="work-order-list" id="workOrderList">
+                            <!-- Work order items will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Asset Creation Modal -->
+    <div class="asset-modal-overlay" id="assetModal">
+        <div class="asset-modal">
+            <div class="asset-modal-header">
+                <h2 class="asset-modal-title">Add New Asset</h2>
+                <button class="asset-modal-close">&times;</button>
+            </div>
+            <div class="asset-modal-body">
+                <form id="assetForm" class="asset-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Asset ID</label>
+                            <input type="text" class="form-input" name="assetId" placeholder="Auto-generated" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Asset Name *</label>
+                            <input type="text" class="form-input" name="assetName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Category *</label>
+                            <select class="form-select" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="machinery">Machinery</option>
+                                <option value="vehicles">Vehicles</option>
+                                <option value="it-equipment">IT Equipment</option>
+                                <option value="tools">Tools</option>
+                                <option value="furniture">Furniture</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location *</label>
+                            <select class="form-select" name="location" required>
+                                <option value="">Select Location</option>
+                                <option value="production-a">Production Line A</option>
+                                <option value="production-b">Production Line B</option>
+                                <option value="warehouse">Warehouse</option>
+                                <option value="office">Office Building</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Manufacturer</label>
+                            <input type="text" class="form-input" name="manufacturer">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Model</label>
+                            <input type="text" class="form-input" name="model">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Serial Number</label>
+                            <input type="text" class="form-input" name="serialNumber">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Purchase Date</label>
+                            <input type="date" class="form-input" name="purchaseDate">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Purchase Cost</label>
+                            <input type="number" class="form-input" name="purchaseCost" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Warranty Expiry</label>
+                            <input type="date" class="form-input" name="warrantyExpiry">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" name="description" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Criticality</label>
+                            <select class="form-select" name="criticality">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                                <option value="critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" name="status">
+                                <option value="active" selected>Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="maintenance">Under Maintenance</option>
+                                <option value="retired">Retired</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="asset-modal-footer">
+                <button type="button" class="asset-btn asset-btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" form="assetForm" class="asset-btn asset-btn-primary">Create Asset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Work Order Creation Modal -->
+    <div class="asset-modal-overlay" id="workOrderModal">
+        <div class="asset-modal large">
+            <div class="asset-modal-header">
+                <h2 class="asset-modal-title">Create Work Order</h2>
+                <button class="asset-modal-close">&times;</button>
+            </div>
+            <div class="asset-modal-body">
+                <form id="workOrderForm" class="asset-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Work Order ID</label>
+                            <input type="text" class="form-input" name="workOrderId" placeholder="Auto-generated" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Priority *</label>
+                            <select class="form-select" name="priority" required>
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                                <option value="critical">Critical</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Asset *</label>
+                            <select class="form-select" name="assetId" required>
+                                <option value="">Select Asset</option>
+                                <!-- Options populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Work Order Type *</label>
+                            <select class="form-select" name="type" required>
+                                <option value="corrective">Corrective Maintenance</option>
+                                <option value="preventive">Preventive Maintenance</option>
+                                <option value="emergency">Emergency Repair</option>
+                                <option value="inspection">Inspection</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Title *</label>
+                        <input type="text" class="form-input" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description *</label>
+                        <textarea class="form-textarea" name="description" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Assigned To</label>
+                            <select class="form-select" name="assignedTo">
+                                <option value="">Select Technician</option>
+                                <option value="john.doe">John Doe - Mechanic</option>
+                                <option value="jane.smith">Jane Smith - Electrician</option>
+                                <option value="mike.johnson">Mike Johnson - HVAC Tech</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Due Date</label>
+                            <input type="datetime-local" class="form-input" name="dueDate">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Estimated Hours</label>
+                            <input type="number" class="form-input" name="estimatedHours" step="0.5" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estimated Cost</label>
+                            <input type="number" class="form-input" name="estimatedCost" step="0.01" min="0">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="asset-modal-footer">
+                <button type="button" class="asset-btn asset-btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" form="workOrderForm" class="asset-btn asset-btn-primary">Create Work Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Scanner Modal -->
+    <div class="asset-modal-overlay" id="qrScannerModal">
+        <div class="asset-modal">
+            <div class="asset-modal-header">
+                <h2 class="asset-modal-title">Scan Asset QR Code</h2>
+                <button class="asset-modal-close">&times;</button>
+            </div>
+            <div class="asset-modal-body">
+                <div class="qr-scanner-container">
+                    <div class="scanner-viewport">
+                        <div class="scanner-overlay">
+                            <div class="scanner-frame"></div>
+                        </div>
+                        <canvas id="qrScannerCanvas"></canvas>
+                    </div>
+                    <div class="scanner-instructions">
+                        <p>Position the QR code within the frame to scan</p>
+                        <button class="asset-btn asset-btn-secondary" id="toggleCamera">Switch Camera</button>
+                    </div>
+                </div>
+                <div class="scan-result" id="scanResult" style="display: none;">
+                    <h3>Asset Found</h3>
+                    <div class="scanned-asset-info">
+                        <!-- Asset information will be displayed here -->
+                    </div>
+                </div>
+            </div>
+            <div class="asset-modal-footer">
+                <button type="button" class="asset-btn asset-btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/asset-management.js"></script>
+</body>
+</html>
