@@ -212,18 +212,25 @@ class FieldServiceManagementEngine {
                     priority: workOrder.priority || 'MEDIUM',
                     customerId: workOrder.customerId,
                     serviceType: workOrder.serviceType,
-            timestamp: new Date()
-        });
+                    timestamp: new Date()
+                });
 
-        // Auto-assign if smart assignment is enabled
-        if (this.shouldAutoAssign(workOrder)) {
-            await this.intelligentTechnicianAssignment(workOrderId);
+                // Auto-assign if smart assignment is enabled
+                if (this.shouldAutoAssign(workOrder)) {
+                    await this.intelligentTechnicianAssignment(workOrder.id);
+                }
+
+                this.logger.info('Work order created', { workOrderId: workOrder.id, priority: workOrder.priority });
+                this.refreshWorkOrdersDisplay();
+                
+                return workOrder;
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            this.logger.error('Failed to create work order', error);
+            throw error;
         }
-
-        this.logger.info('Work order created', { workOrderId, priority: workOrder.priority });
-        this.refreshWorkOrdersDisplay();
-        
-        return workOrder;
     }
 
     async assignTechnician(workOrderId, technicianId) {
@@ -307,6 +314,19 @@ class FieldServiceManagementEngine {
         } catch (error) {
             this.logger.error('Schedule optimization failed', error);
             throw error;
+        }
+    }
+
+    async runScheduleOptimization() {
+        try {
+            const criteria = {
+                optimizeFor: 'TRAVEL_TIME',
+                maxTravelTime: 30,
+                prioritizeSkills: true
+            };
+            await this.optimizeSchedule(criteria);
+        } catch (error) {
+            this.logger.error('Schedule optimization failed', error);
         }
     }
 

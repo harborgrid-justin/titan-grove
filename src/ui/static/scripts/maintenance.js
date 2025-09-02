@@ -315,11 +315,18 @@ class MaintenanceManagementEngine {
                 // Publish results
                 await this.messageQueue.publish('MAINTENANCE', 'PREDICTIVE_ANALYSIS_COMPLETED', {
                     predictions: predictions.length,
-            highRiskAssets: predictions.filter(p => p.failureRisk === 'HIGH' || p.failureRisk === 'CRITICAL').length,
-            timestamp: new Date()
-        });
+                    highRiskAssets: predictions.filter(p => p.riskLevel === 'HIGH').length,
+                    timestamp: new Date()
+                });
 
-        return predictions;
+                return predictions;
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            this.logger.error('Predictive analysis failed', error);
+            throw error;
+        }
     }
 
     async optimizeMaintenanceSchedule(criteria) {
