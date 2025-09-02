@@ -1,0 +1,1 @@
+export { SupplyChain as default } from './modules';
