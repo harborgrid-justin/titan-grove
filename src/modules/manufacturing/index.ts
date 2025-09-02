@@ -16,6 +16,10 @@ export * from './business-logic/mes-discrete/discrete-manufacturing-mes-service'
 export * from './business-logic/mes-process/process-manufacturing-mes-service';
 export * from './business-logic/master-production-scheduling/master-production-scheduling-service';
 export * from './business-logic/flow-manufacturing/flow-manufacturing-service';
+
+// Export data access layer
+export * from './data-access';
+
 export {
   OutsourcedManufacturingService,
   outsourcedManufacturingService,

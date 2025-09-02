@@ -15,6 +15,9 @@
 export * from './business-logic/field-service-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Core field service functionality
 export { 
   FieldServiceService, 

@@ -15,6 +15,9 @@
 export * from './business-logic/real-estate-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Core real estate management functionality
 export { RealEstateService, realEstateService } from './business-logic/real-estate-service';
 

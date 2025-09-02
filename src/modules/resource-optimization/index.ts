@@ -15,6 +15,9 @@
 export * from './business-logic/resource-optimization-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Core resource optimization functionality
 export { ResourceOptimizationService, resourceOptimizationService } from './business-logic/resource-optimization-service';
 

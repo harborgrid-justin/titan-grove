@@ -15,6 +15,9 @@
 export * from './business-logic/equipment-cost-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Core equipment cost analysis functionality
 export { EquipmentCostService, equipmentCostService } from './business-logic/equipment-cost-service';
 

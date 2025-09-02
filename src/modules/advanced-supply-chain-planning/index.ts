@@ -14,6 +14,9 @@
 export * from './business-logic/supply-chain-planning-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Core supply chain planning functionality
 export { SupplyChainPlanningService, supplyChainPlanningService } from './business-logic/supply-chain-planning-service';
 

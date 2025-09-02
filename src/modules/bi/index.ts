@@ -7,7 +7,7 @@
 export * from './types';
 
 // Export data access layer
-// export * from './data-access'; // TODO: Create data-access layer
+export * from './data-access';
 
 // Import shared utilities
 import { BaseManager } from '../../shared/utils/base-manager';

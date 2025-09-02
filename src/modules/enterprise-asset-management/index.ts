@@ -15,6 +15,9 @@
 export * from './business-logic/asset-management-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Core asset management functionality
 export { AssetManagementService, assetManagementService } from './business-logic/asset-management-service';
 

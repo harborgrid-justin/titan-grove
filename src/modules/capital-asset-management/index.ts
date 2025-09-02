@@ -14,6 +14,9 @@
 export * from './business-logic/capital-asset-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Core capital asset management functionality
 export { CapitalAssetService, capitalAssetService } from './business-logic/capital-asset-service';
 

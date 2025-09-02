@@ -14,6 +14,9 @@
 export * from './business-logic/rental-management-service';
 export * from './types';
 
+// Export data access layer
+export * from './data-access';
+
 // Core rental management functionality
 export { RentalManagementService, rentalManagementService } from './business-logic/rental-management-service';
 
