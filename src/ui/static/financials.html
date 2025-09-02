@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Management Suite - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/financials.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Financials</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search financial data, accounts, transactions..." class="global-search-input" id="globalSearch">
+                        <div class="search-suggestions" id="searchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                    </div>
+                    <div class="nav-item active" data-module="financials">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Financials</span>
+                    </div>
+                    <div class="nav-item" data-module="supply-chain">
+                        <i class="fas fa-truck"></i>
+                        <span>Supply Chain</span>
+                        <div class="nav-badge critical">5</div>
+                    </div>
+                    <div class="nav-item" data-module="crm">
+                        <i class="fas fa-users"></i>
+                        <span>CRM</span>
+                    </div>
+                    <div class="nav-item" data-module="hr">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Human Capital</span>
+                    </div>
+                    <div class="nav-item" data-module="projects">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projects</span>
+                    </div>
+                    <div class="nav-item" data-module="analytics">
+                        <i class="fas fa-brain"></i>
+                        <span>Intelligence</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="titan-notifications">
+                    <div class="notification-bell" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">4</span>
+                    </div>
+                </div>
+                
+                <div class="titan-user-menu">
+                    <div class="user-avatar" id="userAvatar">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="User Avatar">
+                        <div class="user-status-indicator online"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="titan-main-content">
+            <!-- Financial Sidebar -->
+            <aside class="titan-sidebar financial-sidebar">
+                <div class="sidebar-header">
+                    <h3>Financial Management</h3>
+                    <div class="sidebar-actions">
+                        <button class="sidebar-btn" title="New Transaction">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="sidebar-btn" title="Generate Reports">
+                            <i class="fas fa-file-alt"></i>
+                        </button>
+                        <button class="sidebar-btn" title="Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <h4>General Ledger</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item active">
+                                <a href="#financial-overview">
+                                    <i class="fas fa-chart-pie"></i>
+                                    Financial Overview
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#chart-of-accounts">
+                                    <i class="fas fa-list"></i>
+                                    Chart of Accounts
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#journal-entries">
+                                    <i class="fas fa-book"></i>
+                                    Journal Entries
+                                    <span class="nav-badge">23</span>
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#trial-balance">
+                                    <i class="fas fa-balance-scale"></i>
+                                    Trial Balance
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#consolidation">
+                                    <i class="fas fa-layer-group"></i>
+                                    Consolidation
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h4>Accounts Payable</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item">
+                                <a href="#vendor-management">
+                                    <i class="fas fa-building"></i>
+                                    Vendor Management
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#purchase-orders">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Purchase Orders
+                                    <span class="nav-badge">47</span>
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#invoices-payable">
+                                    <i class="fas fa-file-invoice"></i>
+                                    Invoices Payable
+                                    <span class="nav-badge critical">12</span>
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#payment-processing">
+                                    <i class="fas fa-credit-card"></i>
+                                    Payment Processing
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h4>Accounts Receivable</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item">
+                                <a href="#customer-management">
+                                    <i class="fas fa-users"></i>
+                                    Customer Management
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#sales-orders">
+                                    <i class="fas fa-clipboard-list"></i>
+                                    Sales Orders
+                                    <span class="nav-badge">89</span>
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#invoices-receivable">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    Invoices Receivable
+                                    <span class="nav-badge">156</span>
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#collections">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    Collections
+                                    <span class="nav-badge critical">8</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h4>Fixed Assets</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item">
+                                <a href="#asset-register">
+                                    <i class="fas fa-warehouse"></i>
+                                    Asset Register
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#depreciation">
+                                    <i class="fas fa-chart-line-down"></i>
+                                    Depreciation
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#asset-maintenance">
+                                    <i class="fas fa-tools"></i>
+                                    Asset Maintenance
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h4>Financial Health</h4>
+                        <div class="financial-health-summary">
+                            <div class="health-item">
+                                <div class="health-label">Cash Flow</div>
+                                <div class="health-value positive">+$2.4M</div>
+                                <div class="health-indicator positive"></div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-label">Working Capital</div>
+                                <div class="health-value positive">$18.7M</div>
+                                <div class="health-indicator positive"></div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-label">Debt Ratio</div>
+                                <div class="health-value neutral">32.4%</div>
+                                <div class="health-indicator neutral"></div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-label">ROI</div>
+                                <div class="health-value positive">14.8%</div>
+                                <div class="health-indicator positive"></div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Financial Content -->
+            <div class="financial-content">
+                <!-- Financial KPI Header -->
+                <div class="financial-kpi-header">
+                    <div class="financial-kpi-card revenue">
+                        <div class="kpi-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="totalRevenue">$47.2M</div>
+                            <div class="kpi-label">Total Revenue (YTD)</div>
+                            <div class="kpi-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12.8%</span>
+                                <span class="change-period">vs last year</span>
+                            </div>
+                        </div>
+                        <div class="kpi-trend">
+                            <canvas id="revenueTrendChart" width="120" height="50"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="financial-kpi-card profit">
+                        <div class="kpi-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="netProfit">$8.4M</div>
+                            <div class="kpi-label">Net Profit (YTD)</div>
+                            <div class="kpi-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>18.6%</span>
+                                <span class="change-period">vs last year</span>
+                            </div>
+                        </div>
+                        <div class="profit-margin-display">
+                            <div class="margin-label">Profit Margin</div>
+                            <div class="margin-value">17.8%</div>
+                        </div>
+                    </div>
+
+                    <div class="financial-kpi-card cash-flow">
+                        <div class="kpi-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="cashFlow">+$2.4M</div>
+                            <div class="kpi-label">Operating Cash Flow</div>
+                            <div class="kpi-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>9.2%</span>
+                                <span class="change-period">this month</span>
+                            </div>
+                        </div>
+                        <div class="cash-position">
+                            <div class="cash-label">Cash Position</div>
+                            <div class="cash-value">$24.6M</div>
+                        </div>
+                    </div>
+
+                    <div class="financial-kpi-card ar-turnover">
+                        <div class="kpi-icon">
+                            <i class="fas fa-sync"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="arTurnover">8.4x</div>
+                            <div class="kpi-label">A/R Turnover Ratio</div>
+                            <div class="kpi-change neutral">
+                                <i class="fas fa-minus"></i>
+                                <span>0.3%</span>
+                                <span class="change-period">vs target</span>
+                            </div>
+                        </div>
+                        <div class="dso-display">
+                            <div class="dso-label">DSO</div>
+                            <div class="dso-value">43 days</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Dashboard Grid -->
+                <div class="financial-dashboard-grid">
+                    <!-- P&L Statement Widget -->
+                    <div class="financial-widget pl-statement">
+                        <div class="widget-header">
+                            <h3>Profit & Loss Statement</h3>
+                            <div class="widget-actions">
+                                <select class="period-select">
+                                    <option value="ytd" selected>Year to Date</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="custom">Custom Period</option>
+                                </select>
+                                <button class="widget-btn">
+                                    <i class="fas fa-download"></i>
+                                    Export
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="pl-statement-table">
+                                <table class="financial-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Account</th>
+                                            <th>Current Period</th>
+                                            <th>Prior Period</th>
+                                            <th>Variance</th>
+                                            <th>% Change</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="plStatementBody">
+                                        <tr class="revenue-section">
+                                            <td><strong>REVENUE</strong></td>
+                                            <td><strong>$47,245,000</strong></td>
+                                            <td><strong>$41,890,000</strong></td>
+                                            <td class="positive"><strong>+$5,355,000</strong></td>
+                                            <td class="positive"><strong>+12.8%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;Product Sales</td>
+                                            <td>$42,180,000</td>
+                                            <td>$37,650,000</td>
+                                            <td class="positive">+$4,530,000</td>
+                                            <td class="positive">+12.0%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;Service Revenue</td>
+                                            <td>$3,890,000</td>
+                                            <td>$3,240,000</td>
+                                            <td class="positive">+$650,000</td>
+                                            <td class="positive">+20.1%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;Other Revenue</td>
+                                            <td>$1,175,000</td>
+                                            <td>$1,000,000</td>
+                                            <td class="positive">+$175,000</td>
+                                            <td class="positive">+17.5%</td>
+                                        </tr>
+                                        <tr class="expense-section">
+                                            <td><strong>COST OF GOODS SOLD</strong></td>
+                                            <td><strong>$28,347,000</strong></td>
+                                            <td><strong>$25,134,000</strong></td>
+                                            <td class="negative"><strong>+$3,213,000</strong></td>
+                                            <td class="negative"><strong>+12.8%</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;Materials</td>
+                                            <td>$18,920,000</td>
+                                            <td>$16,780,000</td>
+                                            <td class="negative">+$2,140,000</td>
+                                            <td class="negative">+12.8%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;Labor</td>
+                                            <td>$6,847,000</td>
+                                            <td>$6,134,000</td>
+                                            <td class="negative">+$713,000</td>
+                                            <td class="negative">+11.6%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;&nbsp;Manufacturing Overhead</td>
+                                            <td>$2,580,000</td>
+                                            <td>$2,220,000</td>
+                                            <td class="negative">+$360,000</td>
+                                            <td class="negative">+16.2%</td>
+                                        </tr>
+                                        <tr class="gross-profit">
+                                            <td><strong>GROSS PROFIT</strong></td>
+                                            <td><strong>$18,898,000</strong></td>
+                                            <td><strong>$16,756,000</strong></td>
+                                            <td class="positive"><strong>+$2,142,000</strong></td>
+                                            <td class="positive"><strong>+12.8%</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Balance Sheet Summary -->
+                    <div class="financial-widget balance-sheet">
+                        <div class="widget-header">
+                            <h3>Balance Sheet Summary</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn active" data-view="summary">Summary</button>
+                                <button class="widget-btn" data-view="detailed">Detailed</button>
+                                <button class="widget-btn" data-view="comparative">Comparative</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="balance-sheet-sections">
+                                <div class="bs-section assets">
+                                    <h4>Assets</h4>
+                                    <div class="bs-items">
+                                        <div class="bs-item">
+                                            <div class="bs-item-header">
+                                                <span class="bs-item-name">Current Assets</span>
+                                                <span class="bs-item-value">$34.8M</span>
+                                            </div>
+                                            <div class="bs-subitems">
+                                                <div class="bs-subitem">
+                                                    <span>Cash & Cash Equivalents</span>
+                                                    <span>$24.6M</span>
+                                                </div>
+                                                <div class="bs-subitem">
+                                                    <span>Accounts Receivable</span>
+                                                    <span>$6.8M</span>
+                                                </div>
+                                                <div class="bs-subitem">
+                                                    <span>Inventory</span>
+                                                    <span>$3.4M</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bs-item">
+                                            <div class="bs-item-header">
+                                                <span class="bs-item-name">Fixed Assets</span>
+                                                <span class="bs-item-value">$68.2M</span>
+                                            </div>
+                                            <div class="bs-subitems">
+                                                <div class="bs-subitem">
+                                                    <span>Property, Plant & Equipment</span>
+                                                    <span>$58.9M</span>
+                                                </div>
+                                                <div class="bs-subitem">
+                                                    <span>Accumulated Depreciation</span>
+                                                    <span>($12.4M)</span>
+                                                </div>
+                                                <div class="bs-subitem">
+                                                    <span>Intangible Assets</span>
+                                                    <span>$21.7M</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bs-total">
+                                            <span>Total Assets</span>
+                                            <span class="total-value">$103.0M</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bs-section liabilities">
+                                    <h4>Liabilities</h4>
+                                    <div class="bs-items">
+                                        <div class="bs-item">
+                                            <div class="bs-item-header">
+                                                <span class="bs-item-name">Current Liabilities</span>
+                                                <span class="bs-item-value">$16.1M</span>
+                                            </div>
+                                            <div class="bs-subitems">
+                                                <div class="bs-subitem">
+                                                    <span>Accounts Payable</span>
+                                                    <span>$8.4M</span>
+                                                </div>
+                                                <div class="bs-subitem">
+                                                    <span>Short-term Debt</span>
+                                                    <span>$4.2M</span>
+                                                </div>
+                                                <div class="bs-subitem">
+                                                    <span>Accrued Expenses</span>
+                                                    <span>$3.5M</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bs-item">
+                                            <div class="bs-item-header">
+                                                <span class="bs-item-name">Long-term Liabilities</span>
+                                                <span class="bs-item-value">$17.3M</span>
+                                            </div>
+                                            <div class="bs-subitems">
+                                                <div class="bs-subitem">
+                                                    <span>Long-term Debt</span>
+                                                    <span>$15.8M</span>
+                                                </div>
+                                                <div class="bs-subitem">
+                                                    <span>Deferred Tax Liability</span>
+                                                    <span>$1.5M</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bs-total">
+                                            <span>Total Liabilities</span>
+                                            <span class="total-value">$33.4M</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bs-section equity">
+                                    <h4>Equity</h4>
+                                    <div class="bs-items">
+                                        <div class="bs-item">
+                                            <div class="bs-subitems">
+                                                <div class="bs-subitem">
+                                                    <span>Share Capital</span>
+                                                    <span>$45.0M</span>
+                                                </div>
+                                                <div class="bs-subitem">
+                                                    <span>Retained Earnings</span>
+                                                    <span>$24.6M</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bs-total">
+                                            <span>Total Equity</span>
+                                            <span class="total-value">$69.6M</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cash Flow Statement -->
+                    <div class="financial-widget cash-flow-statement">
+                        <div class="widget-header">
+                            <h3>Cash Flow Statement</h3>
+                            <div class="widget-actions">
+                                <select class="period-select">
+                                    <option value="monthly" selected>Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="ytd">Year to Date</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="cash-flow-chart">
+                                <canvas id="cashFlowChart" width="400" height="250"></canvas>
+                            </div>
+                            <div class="cash-flow-summary">
+                                <div class="cf-category">
+                                    <div class="cf-category-header">
+                                        <h5>Operating Activities</h5>
+                                        <span class="cf-amount positive">+$2,840,000</span>
+                                    </div>
+                                    <div class="cf-items">
+                                        <div class="cf-item">
+                                            <span>Net Income</span>
+                                            <span class="positive">+$8,400,000</span>
+                                        </div>
+                                        <div class="cf-item">
+                                            <span>Depreciation</span>
+                                            <span class="positive">+$1,240,000</span>
+                                        </div>
+                                        <div class="cf-item">
+                                            <span>Working Capital Changes</span>
+                                            <span class="negative">-$6,800,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="cf-category">
+                                    <div class="cf-category-header">
+                                        <h5>Investing Activities</h5>
+                                        <span class="cf-amount negative">-$1,680,000</span>
+                                    </div>
+                                    <div class="cf-items">
+                                        <div class="cf-item">
+                                            <span>Capital Expenditures</span>
+                                            <span class="negative">-$2,100,000</span>
+                                        </div>
+                                        <div class="cf-item">
+                                            <span>Asset Disposals</span>
+                                            <span class="positive">+$420,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="cf-category">
+                                    <div class="cf-category-header">
+                                        <h5>Financing Activities</h5>
+                                        <span class="cf-amount negative">-$780,000</span>
+                                    </div>
+                                    <div class="cf-items">
+                                        <div class="cf-item">
+                                            <span>Debt Payments</span>
+                                            <span class="negative">-$1,200,000</span>
+                                        </div>
+                                        <div class="cf-item">
+                                            <span>Dividends Paid</span>
+                                            <span class="negative">-$580,000</span>
+                                        </div>
+                                        <div class="cf-item">
+                                            <span>Share Repurchase</span>
+                                            <span class="positive">+$1,000,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="cf-net-change">
+                                    <div class="cf-category-header">
+                                        <h5>Net Change in Cash</h5>
+                                        <span class="cf-amount positive">+$380,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accounts Receivable Aging -->
+                    <div class="financial-widget ar-aging">
+                        <div class="widget-header">
+                            <h3>Accounts Receivable Aging</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn">
+                                    <i class="fas fa-envelope"></i>
+                                    Send Statements
+                                </button>
+                                <button class="widget-btn alert-btn">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    8 Overdue
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="ar-aging-summary">
+                                <div class="aging-bucket current">
+                                    <div class="bucket-label">Current</div>
+                                    <div class="bucket-amount">$4,280,000</div>
+                                    <div class="bucket-percentage">63%</div>
+                                </div>
+                                <div class="aging-bucket days-30">
+                                    <div class="bucket-label">1-30 Days</div>
+                                    <div class="bucket-amount">$1,650,000</div>
+                                    <div class="bucket-percentage">24%</div>
+                                </div>
+                                <div class="aging-bucket days-60">
+                                    <div class="bucket-label">31-60 Days</div>
+                                    <div class="bucket-amount">$580,000</div>
+                                    <div class="bucket-percentage">9%</div>
+                                </div>
+                                <div class="aging-bucket days-90">
+                                    <div class="bucket-label">61-90 Days</div>
+                                    <div class="bucket-amount">$190,000</div>
+                                    <div class="bucket-percentage">3%</div>
+                                </div>
+                                <div class="aging-bucket overdue">
+                                    <div class="bucket-label">90+ Days</div>
+                                    <div class="bucket-amount">$100,000</div>
+                                    <div class="bucket-percentage">1%</div>
+                                </div>
+                            </div>
+                            
+                            <div class="ar-aging-chart">
+                                <canvas id="arAgingChart" width="300" height="200"></canvas>
+                            </div>
+                            
+                            <div class="overdue-customers">
+                                <h4>Top Overdue Customers</h4>
+                                <div class="overdue-list">
+                                    <div class="overdue-item critical">
+                                        <div class="customer-info">
+                                            <div class="customer-name">ABC Manufacturing Co.</div>
+                                            <div class="customer-details">Invoice #INV-2024-0847 • 95 days overdue</div>
+                                        </div>
+                                        <div class="overdue-amount">$45,800</div>
+                                    </div>
+                                    <div class="overdue-item warning">
+                                        <div class="customer-info">
+                                            <div class="customer-name">TechCorp Solutions</div>
+                                            <div class="customer-details">Invoice #INV-2024-0921 • 67 days overdue</div>
+                                        </div>
+                                        <div class="overdue-amount">$28,400</div>
+                                    </div>
+                                    <div class="overdue-item warning">
+                                        <div class="customer-info">
+                                            <div class="customer-name">Global Industries Ltd.</div>
+                                            <div class="customer-details">Invoice #INV-2024-0756 • 45 days overdue</div>
+                                        </div>
+                                        <div class="overdue-amount">$19,200</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget vs Actual -->
+                    <div class="financial-widget budget-actual">
+                        <div class="widget-header">
+                            <h3>Budget vs Actual Performance</h3>
+                            <div class="widget-actions">
+                                <select class="department-select">
+                                    <option value="all" selected>All Departments</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="sales">Sales & Marketing</option>
+                                    <option value="admin">Administration</option>
+                                    <option value="rd">R&D</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="budget-performance-chart">
+                                <canvas id="budgetActualChart" width="500" height="300"></canvas>
+                            </div>
+                            <div class="budget-variance-table">
+                                <table class="variance-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Budget</th>
+                                            <th>Actual</th>
+                                            <th>Variance</th>
+                                            <th>% Variance</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Revenue</td>
+                                            <td>$45,000,000</td>
+                                            <td>$47,245,000</td>
+                                            <td class="positive">+$2,245,000</td>
+                                            <td class="positive">+5.0%</td>
+                                            <td><span class="status-badge success">Above Target</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cost of Sales</td>
+                                            <td>$27,000,000</td>
+                                            <td>$28,347,000</td>
+                                            <td class="negative">+$1,347,000</td>
+                                            <td class="negative">+5.0%</td>
+                                            <td><span class="status-badge warning">Over Budget</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Operating Expenses</td>
+                                            <td>$12,500,000</td>
+                                            <td>$11,890,000</td>
+                                            <td class="positive">-$610,000</td>
+                                            <td class="positive">-4.9%</td>
+                                            <td><span class="status-badge success">Under Budget</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marketing</td>
+                                            <td>$2,800,000</td>
+                                            <td>$3,240,000</td>
+                                            <td class="negative">+$440,000</td>
+                                            <td class="negative">+15.7%</td>
+                                            <td><span class="status-badge error">Significantly Over</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>R&D</td>
+                                            <td>$3,200,000</td>
+                                            <td>$2,980,000</td>
+                                            <td class="positive">-$220,000</td>
+                                            <td class="positive">-6.9%</td>
+                                            <td><span class="status-badge success">Under Budget</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Financial Ratios -->
+                    <div class="financial-widget financial-ratios">
+                        <div class="widget-header">
+                            <h3>Key Financial Ratios</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn">
+                                    <i class="fas fa-chart-bar"></i>
+                                    Trend Analysis
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="ratios-grid">
+                                <div class="ratio-category">
+                                    <h4>Liquidity Ratios</h4>
+                                    <div class="ratio-items">
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Current Ratio</div>
+                                            <div class="ratio-value good">2.16</div>
+                                            <div class="ratio-benchmark">Benchmark: 2.0</div>
+                                        </div>
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Quick Ratio</div>
+                                            <div class="ratio-value good">1.95</div>
+                                            <div class="ratio-benchmark">Benchmark: 1.5</div>
+                                        </div>
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Cash Ratio</div>
+                                            <div class="ratio-value excellent">1.53</div>
+                                            <div class="ratio-benchmark">Benchmark: 0.5</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="ratio-category">
+                                    <h4>Profitability Ratios</h4>
+                                    <div class="ratio-items">
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Gross Margin</div>
+                                            <div class="ratio-value good">40.0%</div>
+                                            <div class="ratio-benchmark">Benchmark: 35%</div>
+                                        </div>
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Net Margin</div>
+                                            <div class="ratio-value excellent">17.8%</div>
+                                            <div class="ratio-benchmark">Benchmark: 15%</div>
+                                        </div>
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">ROE</div>
+                                            <div class="ratio-value good">12.1%</div>
+                                            <div class="ratio-benchmark">Benchmark: 10%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="ratio-category">
+                                    <h4>Efficiency Ratios</h4>
+                                    <div class="ratio-items">
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Asset Turnover</div>
+                                            <div class="ratio-value fair">0.46</div>
+                                            <div class="ratio-benchmark">Benchmark: 0.5</div>
+                                        </div>
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Inventory Turnover</div>
+                                            <div class="ratio-value excellent">13.9x</div>
+                                            <div class="ratio-benchmark">Benchmark: 12x</div>
+                                        </div>
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">DSO</div>
+                                            <div class="ratio-value good">43 days</div>
+                                            <div class="ratio-benchmark">Benchmark: 45 days</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="ratio-category">
+                                    <h4>Leverage Ratios</h4>
+                                    <div class="ratio-items">
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Debt-to-Equity</div>
+                                            <div class="ratio-value good">0.48</div>
+                                            <div class="ratio-benchmark">Benchmark: < 0.6</div>
+                                        </div>
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Debt Ratio</div>
+                                            <div class="ratio-value good">32.4%</div>
+                                            <div class="ratio-benchmark">Benchmark: < 40%</div>
+                                        </div>
+                                        <div class="ratio-item">
+                                            <div class="ratio-name">Interest Coverage</div>
+                                            <div class="ratio-value excellent">14.2x</div>
+                                            <div class="ratio-benchmark">Benchmark: > 5x</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/financials.js"></script>
+</body>
+</html>

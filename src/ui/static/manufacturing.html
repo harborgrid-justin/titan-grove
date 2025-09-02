@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing Excellence System - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/manufacturing.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Include the same header as dashboard -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Manufacturing</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search manufacturing operations..." class="global-search-input" id="globalSearch">
+                        <div class="search-suggestions" id="searchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item active" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                        <div class="nav-badge">12</div>
+                    </div>
+                    <div class="nav-item" data-module="financials">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Financials</span>
+                    </div>
+                    <div class="nav-item" data-module="supply-chain">
+                        <i class="fas fa-truck"></i>
+                        <span>Supply Chain</span>
+                    </div>
+                    <div class="nav-item" data-module="crm">
+                        <i class="fas fa-users"></i>
+                        <span>CRM</span>
+                    </div>
+                    <div class="nav-item" data-module="hr">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Human Capital</span>
+                    </div>
+                    <div class="nav-item" data-module="projects">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projects</span>
+                    </div>
+                    <div class="nav-item" data-module="analytics">
+                        <i class="fas fa-brain"></i>
+                        <span>Intelligence</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="titan-notifications">
+                    <div class="notification-bell" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">7</span>
+                    </div>
+                </div>
+                
+                <div class="titan-user-menu">
+                    <div class="user-avatar" id="userAvatar">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="User Avatar">
+                        <div class="user-status-indicator online"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="titan-main-content">
+            <!-- Manufacturing Sidebar -->
+            <aside class="titan-sidebar manufacturing-sidebar">
+                <div class="sidebar-header">
+                    <h3>Manufacturing Excellence</h3>
+                    <div class="sidebar-actions">
+                        <button class="sidebar-btn" title="Create Work Order">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="sidebar-btn" title="Export Reports">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="sidebar-btn" title="Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <h4>Production</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item active">
+                                <a href="#production-overview">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    Production Overview
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#work-orders">
+                                    <i class="fas fa-clipboard-list"></i>
+                                    Work Orders
+                                    <span class="nav-badge">47</span>
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#production-lines">
+                                    <i class="fas fa-industry"></i>
+                                    Production Lines
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#scheduling">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Production Scheduling
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#mes-integration">
+                                    <i class="fas fa-network-wired"></i>
+                                    MES Integration
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h4>Quality Management</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item">
+                                <a href="#quality-control">
+                                    <i class="fas fa-check-circle"></i>
+                                    Quality Control
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#inspections">
+                                    <i class="fas fa-search"></i>
+                                    Inspections
+                                    <span class="nav-badge">8</span>
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#spc-charts">
+                                    <i class="fas fa-chart-line"></i>
+                                    SPC Charts
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#corrective-actions">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Corrective Actions
+                                    <span class="nav-badge critical">3</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h4>Equipment & Maintenance</h4>
+                        <ul class="nav-list">
+                            <li class="nav-list-item">
+                                <a href="#equipment-status">
+                                    <i class="fas fa-cogs"></i>
+                                    Equipment Status
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#maintenance-schedule">
+                                    <i class="fas fa-wrench"></i>
+                                    Maintenance Schedule
+                                </a>
+                            </li>
+                            <li class="nav-list-item">
+                                <a href="#oee-analysis">
+                                    <i class="fas fa-chart-bar"></i>
+                                    OEE Analysis
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h4>Plant Performance</h4>
+                        <div class="performance-summary">
+                            <div class="performance-item">
+                                <div class="performance-label">Overall OEE</div>
+                                <div class="performance-value success">87.3%</div>
+                            </div>
+                            <div class="performance-item">
+                                <div class="performance-label">Quality Rate</div>
+                                <div class="performance-value success">99.2%</div>
+                            </div>
+                            <div class="performance-item">
+                                <div class="performance-label">On-time Delivery</div>
+                                <div class="performance-value warning">94.7%</div>
+                            </div>
+                            <div class="performance-item">
+                                <div class="performance-label">Cost per Unit</div>
+                                <div class="performance-value">$247.82</div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Manufacturing Content -->
+            <div class="manufacturing-content">
+                <!-- Manufacturing KPI Header -->
+                <div class="manufacturing-kpi-header">
+                    <div class="manufacturing-kpi-card production-output">
+                        <div class="kpi-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="todayProduction">1,247</div>
+                            <div class="kpi-label">Units Produced Today</div>
+                            <div class="kpi-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>3.8%</span>
+                                <span class="change-period">vs yesterday</span>
+                            </div>
+                        </div>
+                        <div class="kpi-chart">
+                            <canvas id="productionChart" width="120" height="50"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="manufacturing-kpi-card oee-score">
+                        <div class="kpi-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="oeeScore">87.3%</div>
+                            <div class="kpi-label">Overall Equipment Effectiveness</div>
+                            <div class="kpi-breakdown">
+                                <span>Availability: 92.1%</span>
+                                <span>Performance: 95.8%</span>
+                                <span>Quality: 99.2%</span>
+                            </div>
+                        </div>
+                        <div class="oee-gauge">
+                            <canvas id="oeeGauge" width="80" height="80"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="manufacturing-kpi-card cycle-time">
+                        <div class="kpi-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="cycleTime">14.2</div>
+                            <div class="kpi-label">Average Cycle Time (minutes)</div>
+                            <div class="kpi-change negative">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>2.1%</span>
+                                <span class="change-period">improvement</span>
+                            </div>
+                        </div>
+                        <div class="cycle-time-chart">
+                            <canvas id="cycleTimeChart" width="120" height="50"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="manufacturing-kpi-card throughput">
+                        <div class="kpi-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="throughputRate">87.8</div>
+                            <div class="kpi-label">Throughput Rate (units/hour)</div>
+                            <div class="kpi-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>5.2%</span>
+                                <span class="change-period">vs target</span>
+                            </div>
+                        </div>
+                        <div class="throughput-indicator">
+                            <div class="indicator-bar">
+                                <div class="indicator-fill" style="width: 87.8%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manufacturing Dashboard Grid -->
+                <div class="manufacturing-dashboard-grid">
+                    <!-- Production Lines Status -->
+                    <div class="manufacturing-widget production-lines-status">
+                        <div class="widget-header">
+                            <h3>Production Lines Real-Time Status</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn active" data-view="status">Status</button>
+                                <button class="widget-btn" data-view="performance">Performance</button>
+                                <button class="widget-btn" data-view="maintenance">Maintenance</button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="production-lines-grid">
+                                <div class="production-line-card">
+                                    <div class="line-header">
+                                        <div class="line-name">Line A - Engine Assembly</div>
+                                        <div class="line-status running">
+                                            <div class="status-indicator"></div>
+                                            <span>Running</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <div class="metric">
+                                            <div class="metric-label">Output</div>
+                                            <div class="metric-value">342 units</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Efficiency</div>
+                                            <div class="metric-value">94.2%</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Quality</div>
+                                            <div class="metric-value">99.8%</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Speed</div>
+                                            <div class="metric-value">24.1 units/hr</div>
+                                        </div>
+                                    </div>
+                                    <div class="line-chart">
+                                        <canvas id="lineAChart" width="300" height="80"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="production-line-card">
+                                    <div class="line-header">
+                                        <div class="line-name">Line B - Transmission</div>
+                                        <div class="line-status running">
+                                            <div class="status-indicator"></div>
+                                            <span>Running</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <div class="metric">
+                                            <div class="metric-label">Output</div>
+                                            <div class="metric-value">278 units</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Efficiency</div>
+                                            <div class="metric-value">91.7%</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Quality</div>
+                                            <div class="metric-value">98.9%</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Speed</div>
+                                            <div class="metric-value">19.5 units/hr</div>
+                                        </div>
+                                    </div>
+                                    <div class="line-chart">
+                                        <canvas id="lineBChart" width="300" height="80"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="production-line-card maintenance">
+                                    <div class="line-header">
+                                        <div class="line-name">Line C - Final Assembly</div>
+                                        <div class="line-status maintenance">
+                                            <div class="status-indicator"></div>
+                                            <span>Maintenance</span>
+                                        </div>
+                                    </div>
+                                    <div class="maintenance-info">
+                                        <div class="maintenance-type">
+                                            <i class="fas fa-wrench"></i>
+                                            Scheduled Maintenance
+                                        </div>
+                                        <div class="maintenance-duration">
+                                            Est. Completion: 2:30 PM
+                                        </div>
+                                        <div class="maintenance-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress-fill" style="width: 65%"></div>
+                                            </div>
+                                            <span>65% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="production-line-card">
+                                    <div class="line-header">
+                                        <div class="line-name">Line D - Quality Check</div>
+                                        <div class="line-status running">
+                                            <div class="status-indicator"></div>
+                                            <span>Running</span>
+                                        </div>
+                                    </div>
+                                    <div class="line-metrics">
+                                        <div class="metric">
+                                            <div class="metric-label">Inspected</div>
+                                            <div class="metric-value">627 units</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Pass Rate</div>
+                                            <div class="metric-value">99.2%</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Defects</div>
+                                            <div class="metric-value">5 units</div>
+                                        </div>
+                                        <div class="metric">
+                                            <div class="metric-label">Rate</div>
+                                            <div class="metric-value">43.9 units/hr</div>
+                                        </div>
+                                    </div>
+                                    <div class="line-chart">
+                                        <canvas id="lineDChart" width="300" height="80"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Work Orders Management -->
+                    <div class="manufacturing-widget work-orders-widget">
+                        <div class="widget-header">
+                            <h3>Active Work Orders</h3>
+                            <div class="widget-actions">
+                                <select class="filter-select">
+                                    <option value="all">All Orders</option>
+                                    <option value="active">Active</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="delayed">Delayed</option>
+                                </select>
+                                <button class="widget-btn primary">
+                                    <i class="fas fa-plus"></i>
+                                    New Work Order
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="work-orders-table-container">
+                                <table class="work-orders-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Progress</th>
+                                            <th>Priority</th>
+                                            <th>Due Date</th>
+                                            <th>Line</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="workOrdersTableBody">
+                                        <!-- Work orders data populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Metrics Dashboard -->
+                    <div class="manufacturing-widget quality-metrics">
+                        <div class="widget-header">
+                            <h3>Quality Performance</h3>
+                            <div class="widget-actions">
+                                <select class="time-period-select">
+                                    <option value="today">Today</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="quality-overview">
+                                <div class="quality-score-card">
+                                    <div class="score-display">
+                                        <div class="score-value">99.2%</div>
+                                        <div class="score-label">Overall Quality Score</div>
+                                    </div>
+                                    <div class="score-trend">
+                                        <canvas id="qualityTrendChart" width="120" height="60"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div class="quality-metrics-grid">
+                                    <div class="quality-metric">
+                                        <div class="metric-header">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>First Pass Yield</span>
+                                        </div>
+                                        <div class="metric-value">97.8%</div>
+                                        <div class="metric-change positive">+1.2%</div>
+                                    </div>
+                                    
+                                    <div class="quality-metric">
+                                        <div class="metric-header">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            <span>Defect Rate</span>
+                                        </div>
+                                        <div class="metric-value">0.8%</div>
+                                        <div class="metric-change negative">-0.3%</div>
+                                    </div>
+                                    
+                                    <div class="quality-metric">
+                                        <div class="metric-header">
+                                            <i class="fas fa-redo"></i>
+                                            <span>Rework Rate</span>
+                                        </div>
+                                        <div class="metric-value">1.4%</div>
+                                        <div class="metric-change negative">-0.5%</div>
+                                    </div>
+                                    
+                                    <div class="quality-metric">
+                                        <div class="metric-header">
+                                            <i class="fas fa-ban"></i>
+                                            <span>Scrap Rate</span>
+                                        </div>
+                                        <div class="metric-value">0.6%</div>
+                                        <div class="metric-change negative">-0.2%</div>
+                                    </div>
+                                </div>
+
+                                <div class="recent-quality-issues">
+                                    <h4>Recent Quality Issues</h4>
+                                    <div class="quality-issues-list">
+                                        <div class="quality-issue critical">
+                                            <div class="issue-info">
+                                                <div class="issue-title">Dimensional Variation - Line B</div>
+                                                <div class="issue-details">Part #TB-4847 - Tolerance exceeded</div>
+                                                <div class="issue-time">2 hours ago</div>
+                                            </div>
+                                            <div class="issue-status">
+                                                <span class="status-badge error">Open</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="quality-issue warning">
+                                            <div class="issue-info">
+                                                <div class="issue-title">Surface Finish - Line D</div>
+                                                <div class="issue-details">Part #EN-2341 - Minor surface defects</div>
+                                                <div class="issue-time">4 hours ago</div>
+                                            </div>
+                                            <div class="issue-status">
+                                                <span class="status-badge warning">Investigating</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="quality-issue resolved">
+                                            <div class="issue-info">
+                                                <div class="issue-title">Material Hardness - Line A</div>
+                                                <div class="issue-details">Part #EG-1123 - Heat treatment issue</div>
+                                                <div class="issue-time">6 hours ago</div>
+                                            </div>
+                                            <div class="issue-status">
+                                                <span class="status-badge success">Resolved</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Equipment Status & Maintenance -->
+                    <div class="manufacturing-widget equipment-status">
+                        <div class="widget-header">
+                            <h3>Equipment Status & Maintenance</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn alert-btn">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    3 Alerts
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="equipment-overview">
+                                <div class="equipment-summary">
+                                    <div class="summary-item">
+                                        <div class="summary-icon operational">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="summary-info">
+                                            <div class="summary-value">23</div>
+                                            <div class="summary-label">Operational</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="summary-item">
+                                        <div class="summary-icon maintenance">
+                                            <i class="fas fa-wrench"></i>
+                                        </div>
+                                        <div class="summary-info">
+                                            <div class="summary-value">3</div>
+                                            <div class="summary-label">In Maintenance</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="summary-item">
+                                        <div class="summary-icon alert">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="summary-info">
+                                            <div class="summary-value">2</div>
+                                            <div class="summary-label">Need Attention</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="maintenance-schedule">
+                                    <h4>Upcoming Maintenance</h4>
+                                    <div class="maintenance-items">
+                                        <div class="maintenance-item">
+                                            <div class="maintenance-equipment">
+                                                <i class="fas fa-cog"></i>
+                                                <div class="equipment-info">
+                                                    <div class="equipment-name">CNC Milling Machine #3</div>
+                                                    <div class="equipment-location">Production Line A</div>
+                                                </div>
+                                            </div>
+                                            <div class="maintenance-details">
+                                                <div class="maintenance-type">Preventive</div>
+                                                <div class="maintenance-date">Feb 28, 2024</div>
+                                                <div class="maintenance-duration">4 hours</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="maintenance-item urgent">
+                                            <div class="maintenance-equipment">
+                                                <i class="fas fa-cog"></i>
+                                                <div class="equipment-info">
+                                                    <div class="equipment-name">Hydraulic Press #1</div>
+                                                    <div class="equipment-location">Production Line B</div>
+                                                </div>
+                                            </div>
+                                            <div class="maintenance-details">
+                                                <div class="maintenance-type">Corrective</div>
+                                                <div class="maintenance-date">Today</div>
+                                                <div class="maintenance-duration">2 hours</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="maintenance-item">
+                                            <div class="maintenance-equipment">
+                                                <i class="fas fa-cog"></i>
+                                                <div class="equipment-info">
+                                                    <div class="equipment-name">Conveyor System #2</div>
+                                                    <div class="equipment-location">Final Assembly</div>
+                                                </div>
+                                            </div>
+                                            <div class="maintenance-details">
+                                                <div class="maintenance-type">Calibration</div>
+                                                <div class="maintenance-date">Mar 2, 2024</div>
+                                                <div class="maintenance-duration">1 hour</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Production Planning & Scheduling */
+                    <div class="manufacturing-widget production-planning">
+                        <div class="widget-header">
+                            <h3>Production Planning & Scheduling</h3>
+                            <div class="widget-actions">
+                                <button class="widget-btn">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    Schedule Production
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="planning-overview">
+                                <div class="capacity-utilization">
+                                    <h4>Capacity Utilization - This Week</h4>
+                                    <div class="capacity-chart">
+                                        <canvas id="capacityChart" width="400" height="200"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div class="production-forecast">
+                                    <h4>7-Day Production Forecast</h4>
+                                    <div class="forecast-items">
+                                        <div class="forecast-item">
+                                            <div class="forecast-date">Today</div>
+                                            <div class="forecast-target">1,200</div>
+                                            <div class="forecast-actual">1,247</div>
+                                            <div class="forecast-variance positive">+3.9%</div>
+                                        </div>
+                                        <div class="forecast-item">
+                                            <div class="forecast-date">Tomorrow</div>
+                                            <div class="forecast-target">1,180</div>
+                                            <div class="forecast-actual">--</div>
+                                            <div class="forecast-variance">--</div>
+                                        </div>
+                                        <div class="forecast-item">
+                                            <div class="forecast-date">Feb 28</div>
+                                            <div class="forecast-target">1,350</div>
+                                            <div class="forecast-actual">--</div>
+                                            <div class="forecast-variance">--</div>
+                                        </div>
+                                        <div class="forecast-item">
+                                            <div class="forecast-date">Mar 1</div>
+                                            <div class="forecast-target">1,280</div>
+                                            <div class="forecast-actual">--</div>
+                                            <div class="forecast-variance">--</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/manufacturing.js"></script>
+</body>
+</html>
