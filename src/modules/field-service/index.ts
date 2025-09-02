@@ -18,6 +18,12 @@ export * from './types';
 // Export data access layer
 export * from './data-access';
 
+// Import shared utilities  
+import { BaseManager } from '../../shared/utils/base-manager';
+
+// Import business logic services
+import { fieldServiceService } from './business-logic/field-service-service';
+
 // Core field service functionality
 export { 
   FieldServiceService, 
@@ -40,3 +46,73 @@ export type {
   DispatchOptimization,
   ServiceWarranty
 } from './types';
+
+/**
+ * Field Service Manager
+ * Provides unified interface for all field service management operations
+ */
+export class FieldServiceManager extends BaseManager {
+  /**
+   * Create a new service request
+   */
+  async createServiceRequest(requestData: any): Promise<any> {
+    const id = this.generateId('sr');
+    const serviceRequest = {
+      id,
+      ...requestData,
+      createdAt: new Date(),
+      status: 'OPEN'
+    };
+    this.logAction('createServiceRequest', { id });
+    return serviceRequest;
+  }
+
+  /**
+   * Get service request by ID
+   */
+  async getServiceRequest(requestId: string): Promise<any> {
+    this.logAction('getServiceRequest', { requestId });
+    // Implementation would retrieve from data store
+    return { id: requestId, status: 'OPEN', createdAt: new Date() };
+  }
+
+  /**
+   * Update service request
+   */
+  async updateServiceRequest(requestId: string, updates: any): Promise<any> {
+    this.logAction('updateServiceRequest', { requestId, updates });
+    return { id: requestId, ...updates, updatedAt: new Date() };
+  }
+
+  /**
+   * Delete service request
+   */
+  async deleteServiceRequest(requestId: string): Promise<void> {
+    this.logAction('deleteServiceRequest', { requestId });
+    // Implementation would delete from data store
+  }
+
+  /**
+   * List service requests
+   */
+  async listServiceRequests(criteria?: any): Promise<any[]> {
+    this.logAction('listServiceRequests', criteria);
+    return [];
+  }
+
+  /**
+   * Create work order from service request
+   */
+  async createWorkOrder(serviceRequestId: string, workOrderData: any): Promise<any> {
+    return await fieldServiceService.createWorkOrder(serviceRequestId, workOrderData);
+  }
+
+  /**
+   * Schedule service appointment
+   */
+  async scheduleServiceAppointment(workOrderId: string, appointmentData: any): Promise<any> {
+    return await fieldServiceService.scheduleServiceAppointment(workOrderId, appointmentData);
+  }
+}
+
+export const fieldServiceManager = new FieldServiceManager();
