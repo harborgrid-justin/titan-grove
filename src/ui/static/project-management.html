@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management Suite - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/project-management.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gantt-chart-d3@1.0.2/dist/gantt-chart-d3.min.js"></script>
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">PM Enterprise</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search projects, tasks, resources..." class="global-search-input" id="pmGlobalSearch">
+                        <div class="search-suggestions" id="pmSearchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item" data-module="hr-management">
+                        <i class="fas fa-users"></i>
+                        <span>Human Resources</span>
+                    </div>
+                    <div class="nav-item" data-module="crm">
+                        <i class="fas fa-handshake"></i>
+                        <span>Customer</span>
+                    </div>
+                    <div class="nav-item" data-module="supply-chain">
+                        <i class="fas fa-truck"></i>
+                        <span>Supply Chain</span>
+                    </div>
+                    <div class="nav-item active" data-module="project">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projects</span>
+                        <div class="nav-badge">47</div>
+                    </div>
+                    <div class="nav-item" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                    </div>
+                    <div class="nav-item" data-module="financials">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Financials</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="pm-metrics-summary">
+                    <div class="metric-item">
+                        <span class="metric-label">Active Projects</span>
+                        <span class="metric-value">47</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">On Schedule</span>
+                        <span class="metric-value">89%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Budget Utilization</span>
+                        <span class="metric-value">76%</span>
+                    </div>
+                </div>
+                
+                <div class="titan-notification-center">
+                    <i class="fas fa-bell notification-icon"></i>
+                    <span class="notification-badge">9</span>
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h3>Project Alerts</h3>
+                            <button class="mark-all-read">Mark All Read</button>
+                        </div>
+                        <div class="notification-list">
+                            <div class="notification-item urgent">
+                                <div class="notification-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>Project Behind Schedule</h4>
+                                    <p>Enterprise Platform Migration is 5 days behind schedule</p>
+                                    <span class="notification-time">1 hour ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>Budget Variance Alert</h4>
+                                    <p>CRM Implementation project exceeding budget by 8%</p>
+                                    <span class="notification-time">3 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h4>Milestone Completed</h4>
+                                    <p>Database Migration Phase 1 completed successfully</p>
+                                    <span class="notification-time">1 day ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-profile-menu">
+                    <img src="https://via.placeholder.com/40x40/7c3aed/ffffff?text=PM" alt="Project Manager" class="profile-avatar">
+                    <div class="profile-info">
+                        <span class="profile-name">David Wilson</span>
+                        <span class="profile-role">PM Director</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- PM Main Content -->
+        <main class="titan-main-content">
+            <div class="titan-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">PM Modules</h3>
+                    <ul class="sidebar-menu">
+                        <li class="menu-item active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>PM Dashboard</span>
+                        </li>
+                        <li class="menu-item" data-section="portfolio">
+                            <i class="fas fa-folder-open"></i>
+                            <span>Project Portfolio</span>
+                            <div class="menu-badge">47</div>
+                        </li>
+                        <li class="menu-item" data-section="gantt">
+                            <i class="fas fa-chart-gantt"></i>
+                            <span>Gantt Planning</span>
+                        </li>
+                        <li class="menu-item" data-section="resources">
+                            <i class="fas fa-users-cog"></i>
+                            <span>Resource Management</span>
+                            <div class="menu-badge critical">3</div>
+                        </li>
+                        <li class="menu-item" data-section="timesheets">
+                            <i class="fas fa-clock"></i>
+                            <span>Time Tracking</span>
+                        </li>
+                        <li class="menu-item" data-section="budgets">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Budget Control</span>
+                            <div class="menu-badge warning">2</div>
+                        </li>
+                        <li class="menu-item" data-section="collaboration">
+                            <i class="fas fa-comments"></i>
+                            <span>Team Collaboration</span>
+                        </li>
+                        <li class="menu-item" data-section="reports">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Project Reports</span>
+                        </li>
+                        <li class="menu-item" data-section="templates">
+                            <i class="fas fa-copy"></i>
+                            <span>Templates</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Project Priorities</h3>
+                    <div class="priority-projects">
+                        <div class="priority-item critical">
+                            <div class="priority-indicator critical"></div>
+                            <div class="priority-content">
+                                <p class="priority-name">Platform Migration</p>
+                                <span class="priority-deadline">5 days overdue</span>
+                            </div>
+                        </div>
+                        <div class="priority-item high">
+                            <div class="priority-indicator high"></div>
+                            <div class="priority-content">
+                                <p class="priority-name">CRM Implementation</p>
+                                <span class="priority-deadline">Due Jan 15</span>
+                            </div>
+                        </div>
+                        <div class="priority-item medium">
+                            <div class="priority-indicator medium"></div>
+                            <div class="priority-content">
+                                <p class="priority-name">Security Upgrade</p>
+                                <span class="priority-deadline">Due Feb 1</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Team Capacity</h3>
+                    <div class="team-capacity">
+                        <div class="capacity-item">
+                            <div class="capacity-header">
+                                <span class="team-name">Engineering</span>
+                                <span class="capacity-percentage">87%</span>
+                            </div>
+                            <div class="capacity-bar">
+                                <div class="capacity-fill" style="width: 87%"></div>
+                            </div>
+                        </div>
+                        <div class="capacity-item">
+                            <div class="capacity-header">
+                                <span class="team-name">Design</span>
+                                <span class="capacity-percentage">92%</span>
+                            </div>
+                            <div class="capacity-bar">
+                                <div class="capacity-fill" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div class="capacity-item">
+                            <div class="capacity-header">
+                                <span class="team-name">QA</span>
+                                <span class="capacity-percentage">76%</span>
+                            </div>
+                            <div class="capacity-bar">
+                                <div class="capacity-fill" style="width: 76%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" data-action="new-project">
+                            <i class="fas fa-plus"></i>
+                            <span>New Project</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="log-time">
+                            <i class="fas fa-clock"></i>
+                            <span>Log Time</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="create-task">
+                            <i class="fas fa-tasks"></i>
+                            <span>Create Task</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="generate-report">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Generate Report</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PM Dashboard Section -->
+            <div class="content-section active" id="pm-dashboard">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h1 class="page-title">Project Management Command Center</h1>
+                        <p class="page-subtitle">Enterprise project portfolio oversight and resource optimization</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="titan-btn titan-btn-secondary" id="exportPMData">
+                            <i class="fas fa-download"></i>
+                            Export Portfolio
+                        </button>
+                        <button class="titan-btn titan-btn-primary" id="newProject">
+                            <i class="fas fa-plus"></i>
+                            New Project
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PM KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card active-projects">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+12%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">47</h3>
+                            <p class="kpi-label">Active Projects</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-play"></i>
+                                    In Progress: 42
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-pause"></i>
+                                    On Hold: 5
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card budget-performance">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-4.2%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">$18.7M</h3>
+                            <p class="kpi-label">Total Budget</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-chart-pie"></i>
+                                    Utilized: 76%
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Over budget: 3
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card schedule-performance">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+5.8%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">89%</h3>
+                            <p class="kpi-label">On Schedule</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    Delayed: 5 projects
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-rocket"></i>
+                                    Early: 8 projects
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card resource-utilization">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <div class="kpi-trend negative">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+8.3%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">84%</h3>
+                            <p class="kpi-label">Resource Utilization</p>
+                            <div class="kpi-details">
+                                <span class="detail-item">
+                                    <i class="fas fa-user-clock"></i>
+                                    Available: 247 hrs
+                                </span>
+                                <span class="detail-item">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    Overallocated: 3 people
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Portfolio Overview -->
+                <div class="portfolio-overview">
+                    <div class="section-header">
+                        <h2 class="section-title">Project Portfolio Overview</h2>
+                        <div class="portfolio-controls">
+                            <select class="filter-select" id="portfolioStatusFilter">
+                                <option value="all">All Projects</option>
+                                <option value="active">Active Only</option>
+                                <option value="critical">Critical Projects</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <select class="filter-select" id="portfolioTypeFilter">
+                                <option value="all">All Types</option>
+                                <option value="development">Development</option>
+                                <option value="infrastructure">Infrastructure</option>
+                                <option value="business">Business Process</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="portfolio-grid">
+                        <div class="project-card critical">
+                            <div class="project-header">
+                                <div class="project-meta">
+                                    <h4 class="project-title">Enterprise Platform Migration</h4>
+                                    <p class="project-type">Infrastructure</p>
+                                </div>
+                                <div class="project-status critical">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Behind Schedule
+                                </div>
+                            </div>
+                            <div class="project-progress">
+                                <div class="progress-header">
+                                    <span class="progress-label">Progress</span>
+                                    <span class="progress-percentage">67%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 67%"></div>
+                                </div>
+                            </div>
+                            <div class="project-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Budget:</span>
+                                    <span class="detail-value">$2.4M / $2.8M</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Timeline:</span>
+                                    <span class="detail-value">Dec 25 - Mar 15</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Team Size:</span>
+                                    <span class="detail-value">15 members</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">PM:</span>
+                                    <span class="detail-value">David Wilson</span>
+                                </div>
+                            </div>
+                            <div class="project-actions">
+                                <button class="project-btn primary">View Project</button>
+                                <button class="project-btn secondary">Update Status</button>
+                            </div>
+                        </div>
+
+                        <div class="project-card on-track">
+                            <div class="project-header">
+                                <div class="project-meta">
+                                    <h4 class="project-title">CRM Implementation Phase 2</h4>
+                                    <p class="project-type">Business Process</p>
+                                </div>
+                                <div class="project-status on-track">
+                                    <i class="fas fa-check-circle"></i>
+                                    On Track
+                                </div>
+                            </div>
+                            <div class="project-progress">
+                                <div class="progress-header">
+                                    <span class="progress-label">Progress</span>
+                                    <span class="progress-percentage">43%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 43%"></div>
+                                </div>
+                            </div>
+                            <div class="project-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Budget:</span>
+                                    <span class="detail-value">$847K / $950K</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Timeline:</span>
+                                    <span class="detail-value">Jan 8 - Apr 30</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Team Size:</span>
+                                    <span class="detail-value">8 members</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">PM:</span>
+                                    <span class="detail-value">Jennifer Martinez</span>
+                                </div>
+                            </div>
+                            <div class="project-actions">
+                                <button class="project-btn primary">View Project</button>
+                                <button class="project-btn secondary">Update Status</button>
+                            </div>
+                        </div>
+
+                        <div class="project-card ahead">
+                            <div class="project-header">
+                                <div class="project-meta">
+                                    <h4 class="project-title">Security Framework Upgrade</h4>
+                                    <p class="project-type">Infrastructure</p>
+                                </div>
+                                <div class="project-status ahead">
+                                    <i class="fas fa-rocket"></i>
+                                    Ahead of Schedule
+                                </div>
+                            </div>
+                            <div class="project-progress">
+                                <div class="progress-header">
+                                    <span class="progress-label">Progress</span>
+                                    <span class="progress-percentage">78%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill ahead" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            <div class="project-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Budget:</span>
+                                    <span class="detail-value">$324K / $450K</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Timeline:</span>
+                                    <span class="detail-value">Nov 1 - Feb 15</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Team Size:</span>
+                                    <span class="detail-value">6 members</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">PM:</span>
+                                    <span class="detail-value">Robert Anderson</span>
+                                </div>
+                            </div>
+                            <div class="project-actions">
+                                <button class="project-btn primary">View Project</button>
+                                <button class="project-btn secondary">Update Status</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gantt Chart Section -->
+                <div class="gantt-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Master Project Timeline</h2>
+                        <div class="gantt-controls">
+                            <select class="time-view" id="ganttTimeView">
+                                <option value="month">Monthly View</option>
+                                <option value="quarter" selected>Quarterly View</option>
+                                <option value="year">Annual View</option>
+                            </select>
+                            <button class="view-toggle active" data-view="projects">Projects</button>
+                            <button class="view-toggle" data-view="resources">Resources</button>
+                            <button class="titan-btn titan-btn-secondary" id="exportGantt">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="gantt-container">
+                        <div class="gantt-chart" id="ganttChart">
+                            <!-- Gantt chart will be rendered here by JavaScript -->
+                            <div class="gantt-placeholder">
+                                <div class="gantt-timeline">
+                                    <div class="timeline-header">
+                                        <div class="timeline-month">January 2025</div>
+                                        <div class="timeline-month">February 2025</div>
+                                        <div class="timeline-month">March 2025</div>
+                                        <div class="timeline-month">April 2025</div>
+                                    </div>
+                                    <div class="timeline-projects">
+                                        <div class="project-row">
+                                            <div class="project-label">Platform Migration</div>
+                                            <div class="project-timeline">
+                                                <div class="project-bar critical" style="left: 0%; width: 45%;">
+                                                    <span class="bar-label">67% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="project-row">
+                                            <div class="project-label">CRM Implementation</div>
+                                            <div class="project-timeline">
+                                                <div class="project-bar on-track" style="left: 15%; width: 65%;">
+                                                    <span class="bar-label">43% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="project-row">
+                                            <div class="project-label">Security Upgrade</div>
+                                            <div class="project-timeline">
+                                                <div class="project-bar ahead" style="left: 10%; width: 40%;">
+                                                    <span class="bar-label">78% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="project-row">
+                                            <div class="project-label">Mobile App Development</div>
+                                            <div class="project-timeline">
+                                                <div class="project-bar on-track" style="left: 25%; width: 50%;">
+                                                    <span class="bar-label">32% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="project-row">
+                                            <div class="project-label">Data Analytics Platform</div>
+                                            <div class="project-timeline">
+                                                <div class="project-bar on-track" style="left: 35%; width: 45%;">
+                                                    <span class="bar-label">18% Complete</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource Allocation Matrix -->
+                <div class="resource-allocation">
+                    <div class="section-header">
+                        <h2 class="section-title">Resource Allocation Matrix</h2>
+                        <div class="allocation-controls">
+                            <select class="team-filter" id="teamFilter">
+                                <option value="all">All Teams</option>
+                                <option value="engineering">Engineering</option>
+                                <option value="design">Design</option>
+                                <option value="qa">Quality Assurance</option>
+                                <option value="devops">DevOps</option>
+                            </select>
+                            <button class="allocation-toggle active" data-view="utilization">Utilization</button>
+                            <button class="allocation-toggle" data-view="availability">Availability</button>
+                        </div>
+                    </div>
+                    
+                    <div class="allocation-grid">
+                        <div class="resource-card">
+                            <div class="resource-header">
+                                <div class="resource-info">
+                                    <h4 class="resource-name">Engineering Team</h4>
+                                    <p class="resource-count">24 members</p>
+                                </div>
+                                <div class="utilization-indicator">
+                                    <span class="utilization-percentage">87%</span>
+                                    <div class="utilization-status high">High</div>
+                                </div>
+                            </div>
+                            <div class="allocation-breakdown">
+                                <div class="allocation-item">
+                                    <span class="allocation-project">Platform Migration</span>
+                                    <span class="allocation-hours">45%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill critical" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <span class="allocation-project">CRM Implementation</span>
+                                    <span class="allocation-hours">25%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill normal" style="width: 25%"></div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <span class="allocation-project">Security Upgrade</span>
+                                    <span class="allocation-hours">17%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill normal" style="width: 17%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-btn primary">Manage Allocation</button>
+                                <button class="resource-btn secondary">View Capacity</button>
+                            </div>
+                        </div>
+
+                        <div class="resource-card">
+                            <div class="resource-header">
+                                <div class="resource-info">
+                                    <h4 class="resource-name">Design Team</h4>
+                                    <p class="resource-count">12 members</p>
+                                </div>
+                                <div class="utilization-indicator">
+                                    <span class="utilization-percentage">92%</span>
+                                    <div class="utilization-status critical">Critical</div>
+                                </div>
+                            </div>
+                            <div class="allocation-breakdown">
+                                <div class="allocation-item">
+                                    <span class="allocation-project">Mobile App Development</span>
+                                    <span class="allocation-hours">55%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill critical" style="width: 55%"></div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <span class="allocation-project">CRM Implementation</span>
+                                    <span class="allocation-hours">30%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill warning" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <span class="allocation-project">Brand Refresh</span>
+                                    <span class="allocation-hours">7%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill normal" style="width: 7%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-btn primary">Rebalance Load</button>
+                                <button class="resource-btn secondary">View Schedule</button>
+                            </div>
+                        </div>
+
+                        <div class="resource-card">
+                            <div class="resource-header">
+                                <div class="resource-info">
+                                    <h4 class="resource-name">QA Team</h4>
+                                    <p class="resource-count">8 members</p>
+                                </div>
+                                <div class="utilization-indicator">
+                                    <span class="utilization-percentage">76%</span>
+                                    <div class="utilization-status normal">Normal</div>
+                                </div>
+                            </div>
+                            <div class="allocation-breakdown">
+                                <div class="allocation-item">
+                                    <span class="allocation-project">Platform Migration</span>
+                                    <span class="allocation-hours">35%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill normal" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <span class="allocation-project">Security Testing</span>
+                                    <span class="allocation-hours">28%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill normal" style="width: 28%"></div>
+                                    </div>
+                                </div>
+                                <div class="allocation-item">
+                                    <span class="allocation-project">Mobile App QA</span>
+                                    <span class="allocation-hours">13%</span>
+                                    <div class="allocation-bar">
+                                        <div class="allocation-fill normal" style="width: 13%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="resource-actions">
+                                <button class="resource-btn primary">View Details</button>
+                                <button class="resource-btn secondary">Plan Testing</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Analytics -->
+                <div class="analytics-section">
+                    <div class="analytics-grid">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Project Completion Velocity</h3>
+                                <div class="chart-controls">
+                                    <select class="time-filter" id="velocityTimeFilter">
+                                        <option value="1m">Last Month</option>
+                                        <option value="3m" selected>Last 3 Months</option>
+                                        <option value="6m">Last 6 Months</option>
+                                        <option value="1y">Last Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="projectVelocityChart" class="analytics-chart"></canvas>
+                            </div>
+                            <div class="chart-insights">
+                                <div class="insight-item">
+                                    <span class="insight-label">Avg Velocity:</span>
+                                    <span class="insight-value">3.2 projects/month</span>
+                                </div>
+                                <div class="insight-item">
+                                    <span class="insight-label">Trend:</span>
+                                    <span class="insight-value positive">+12% improving</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Budget vs Actual Spending</h3>
+                                <div class="chart-controls">
+                                    <button class="view-toggle active" data-view="monthly">Monthly</button>
+                                    <button class="view-toggle" data-view="cumulative">Cumulative</button>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="budgetAnalysisChart" class="analytics-chart"></canvas>
+                            </div>
+                            <div class="budget-summary">
+                                <div class="summary-item">
+                                    <span class="summary-label">Budget Variance:</span>
+                                    <span class="summary-value negative">+4.2% over</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Forecast:</span>
+                                    <span class="summary-value">$19.2M total</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container wide">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Resource Utilization Heatmap</h3>
+                                <div class="chart-controls">
+                                    <button class="data-toggle active" data-type="current">Current Quarter</button>
+                                    <button class="data-toggle" data-type="forecast">Next Quarter</button>
+                                </div>
+                            </div>
+                            <div class="heatmap-container">
+                                <div class="heatmap-grid" id="resourceHeatmap">
+                                    <!-- Heatmap will be populated by JavaScript -->
+                                </div>
+                                <div class="heatmap-legend">
+                                    <span class="legend-label">Resource Utilization:</span>
+                                    <div class="legend-scale">
+                                        <div class="legend-item">
+                                            <div class="legend-color low"></div>
+                                            <span>0-40%</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="legend-color medium"></div>
+                                            <span>41-70%</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="legend-color high"></div>
+                                            <span>71-90%</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <div class="legend-color critical"></div>
+                                            <span>91-100%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Project Activities -->
+                <div class="activities-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Project Activities</h2>
+                        <div class="activity-filters">
+                            <button class="activity-filter active" data-filter="all">All Activities</button>
+                            <button class="activity-filter" data-filter="milestones">Milestones</button>
+                            <button class="activity-filter" data-filter="issues">Issues</button>
+                            <button class="activity-filter" data-filter="updates">Updates</button>
+                        </div>
+                    </div>
+                    
+                    <div class="activities-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon milestone">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="activity-header">
+                                    <h4 class="activity-title">Milestone Completed: Database Migration</h4>
+                                    <span class="activity-time">2 hours ago</span>
+                                </div>
+                                <p class="activity-description">Successfully completed Phase 1 of database migration for Platform Migration project. All data integrity tests passed.</p>
+                                <div class="activity-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-project-diagram"></i>
+                                        Platform Migration
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-user-tie"></i>
+                                        David Wilson
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-clock"></i>
+                                        3 days ahead of schedule
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon issue">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="activity-header">
+                                    <h4 class="activity-title">Critical Issue Identified</h4>
+                                    <span class="activity-time">4 hours ago</span>
+                                </div>
+                                <p class="activity-description">Performance bottleneck identified in CRM Implementation. Database query optimization required.</p>
+                                <div class="activity-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-project-diagram"></i>
+                                        CRM Implementation
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-user-tie"></i>
+                                        Jennifer Martinez
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        High Priority
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon update">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="activity-header">
+                                    <h4 class="activity-title">Budget Reallocation Approved</h4>
+                                    <span class="activity-time">1 day ago</span>
+                                </div>
+                                <p class="activity-description">Additional $120K approved for Security Framework Upgrade to accelerate timeline and add enhanced features.</p>
+                                <div class="activity-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-project-diagram"></i>
+                                        Security Framework
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-user-tie"></i>
+                                        Robert Anderson
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        +$120K budget
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon success">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="activity-header">
+                                    <h4 class="activity-title">Project Delivered Successfully</h4>
+                                    <span class="activity-time">3 days ago</span>
+                                </div>
+                                <p class="activity-description">HR System Enhancement project completed on time and under budget. All acceptance criteria met.</p>
+                                <div class="activity-meta">
+                                    <span class="meta-item">
+                                        <i class="fas fa-project-diagram"></i>
+                                        HR System Enhancement
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-user-tie"></i>
+                                        Lisa Chen
+                                    </span>
+                                    <span class="meta-item">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        $45K under budget
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Portfolio Section -->
+            <div class="content-section" id="project-portfolio">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h1 class="page-title">Project Portfolio Management</h1>
+                        <p class="page-subtitle">Comprehensive project oversight with advanced analytics and resource optimization</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="titan-btn titan-btn-secondary" id="portfolioReports">
+                            <i class="fas fa-chart-bar"></i>
+                            Portfolio Reports
+                        </button>
+                        <button class="titan-btn titan-btn-primary" id="createProject">
+                            <i class="fas fa-plus"></i>
+                            Create Project
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Portfolio Summary Cards -->
+                <div class="portfolio-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4 class="summary-value">$18.7M</h4>
+                            <p class="summary-label">Total Portfolio Value</p>
+                            <span class="summary-trend positive">+12.5% vs last quarter</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4 class="summary-value">89%</h4>
+                            <p class="summary-label">Schedule Performance</p>
+                            <span class="summary-trend positive">+5.8% improvement</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4 class="summary-value">76%</h4>
+                            <p class="summary-label">Budget Utilization</p>
+                            <span class="summary-trend negative">+4.2% variance</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h4 class="summary-value">247</h4>
+                            <p class="summary-label">Team Members</p>
+                            <span class="summary-trend positive">84% utilization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Project Table -->
+                <div class="project-table-section">
+                    <div class="table-toolbar">
+                        <div class="search-section">
+                            <div class="search-input-group">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" class="search-input" placeholder="Search projects..." id="projectSearch">
+                            </div>
+                        </div>
+                        <div class="filter-section">
+                            <select class="filter-select" id="statusFilter">
+                                <option value="">All Statuses</option>
+                                <option value="active">Active</option>
+                                <option value="on-hold">On Hold</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                            <select class="filter-select" id="priorityFilter">
+                                <option value="">All Priorities</option>
+                                <option value="critical">Critical</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        <div class="view-controls">
+                            <button class="view-btn active" data-view="list">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button class="view-btn" data-view="kanban">
+                                <i class="fas fa-columns"></i>
+                            </button>
+                            <button class="view-btn" data-view="calendar">
+                                <i class="fas fa-calendar"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="project-table-container">
+                        <table class="project-table" id="projectTable">
+                            <thead>
+                                <tr>
+                                    <th class="checkbox-column">
+                                        <input type="checkbox" class="select-all-checkbox">
+                                    </th>
+                                    <th class="sortable" data-column="name">
+                                        Project Name
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="status">
+                                        Status
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="progress">
+                                        Progress
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="budget">
+                                        Budget
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="deadline">
+                                        Deadline
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="sortable" data-column="manager">
+                                        Project Manager
+                                        <i class="fas fa-sort sort-icon"></i>
+                                    </th>
+                                    <th class="actions-column">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projectTableBody">
+                                <!-- Project rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal Overlays -->
+        <div class="modal-overlay" id="projectModalOverlay">
+            <div class="modal-container large">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="projectModalTitle">Project Details</h3>
+                    <button class="modal-close" id="closeProjectModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-content" id="projectModalContent">
+                    <!-- Project details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="scripts/project-management.js"></script>
+</body>
+</html>

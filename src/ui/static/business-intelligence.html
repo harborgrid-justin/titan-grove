@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Intelligence & Analytics - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/business-intelligence.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">BI Enterprise</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search reports, KPIs, data sources..." class="global-search-input" id="biGlobalSearch">
+                        <div class="search-suggestions" id="biSearchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item" data-module="hr-management">
+                        <i class="fas fa-users"></i>
+                        <span>Human Resources</span>
+                    </div>
+                    <div class="nav-item" data-module="crm">
+                        <i class="fas fa-handshake"></i>
+                        <span>Customer</span>
+                    </div>
+                    <div class="nav-item" data-module="supply-chain">
+                        <i class="fas fa-truck"></i>
+                        <span>Supply Chain</span>
+                    </div>
+                    <div class="nav-item" data-module="project">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Projects</span>
+                    </div>
+                    <div class="nav-item active" data-module="bi">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="nav-item" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                    </div>
+                    <div class="nav-item" data-module="financials">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Financials</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="bi-metrics-summary">
+                    <div class="metric-item">
+                        <span class="metric-label">Data Sources</span>
+                        <span class="metric-value">47</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Reports</span>
+                        <span class="metric-value">234</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Refresh Rate</span>
+                        <span class="metric-value">Real-time</span>
+                    </div>
+                </div>
+                
+                <div class="titan-notification-center">
+                    <i class="fas fa-bell notification-icon"></i>
+                    <span class="notification-badge">5</span>
+                </div>
+                
+                <div class="user-profile-menu">
+                    <img src="https://via.placeholder.com/40x40/3b82f6/ffffff?text=BI" alt="BI Manager" class="profile-avatar">
+                    <div class="profile-info">
+                        <span class="profile-name">Michael Chen</span>
+                        <span class="profile-role">BI Director</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- BI Main Content -->
+        <main class="titan-main-content">
+            <div class="titan-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">BI Modules</h3>
+                    <ul class="sidebar-menu">
+                        <li class="menu-item active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Executive Dashboard</span>
+                        </li>
+                        <li class="menu-item" data-section="reports">
+                            <i class="fas fa-file-chart-line"></i>
+                            <span>Report Builder</span>
+                            <div class="menu-badge">234</div>
+                        </li>
+                        <li class="menu-item" data-section="analytics">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Advanced Analytics</span>
+                        </li>
+                        <li class="menu-item" data-section="data-sources">
+                            <i class="fas fa-database"></i>
+                            <span>Data Sources</span>
+                            <div class="menu-badge">47</div>
+                        </li>
+                        <li class="menu-item" data-section="kpis">
+                            <i class="fas fa-bullseye"></i>
+                            <span>KPI Management</span>
+                        </li>
+                        <li class="menu-item" data-section="predictive">
+                            <i class="fas fa-brain"></i>
+                            <span>Predictive Models</span>
+                        </li>
+                        <li class="menu-item" data-section="alerts">
+                            <i class="fas fa-bell"></i>
+                            <span>Alert Management</span>
+                        </li>
+                        <li class="menu-item" data-section="governance">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Data Governance</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Key Metrics</h3>
+                    <div class="key-metrics">
+                        <div class="metric-widget">
+                            <div class="widget-header">
+                                <span class="widget-title">Revenue</span>
+                                <i class="fas fa-dollar-sign widget-icon"></i>
+                            </div>
+                            <div class="widget-value">$4.2M</div>
+                            <div class="widget-trend positive">+18.7%</div>
+                        </div>
+                        <div class="metric-widget">
+                            <div class="widget-header">
+                                <span class="widget-title">Efficiency</span>
+                                <i class="fas fa-tachometer-alt widget-icon"></i>
+                            </div>
+                            <div class="widget-value">89.4%</div>
+                            <div class="widget-trend positive">+3.2%</div>
+                        </div>
+                        <div class="metric-widget">
+                            <div class="widget-header">
+                                <span class="widget-title">Quality</span>
+                                <i class="fas fa-star widget-icon"></i>
+                            </div>
+                            <div class="widget-value">96.8%</div>
+                            <div class="widget-trend positive">+2.1%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Recent Reports</h3>
+                    <div class="recent-reports">
+                        <div class="report-item">
+                            <div class="report-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="report-content">
+                                <p class="report-name">Q4 Performance Summary</p>
+                                <span class="report-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="report-item">
+                            <div class="report-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="report-content">
+                                <p class="report-name">Customer Analytics</p>
+                                <span class="report-time">1 day ago</span>
+                            </div>
+                        </div>
+                        <div class="report-item">
+                            <div class="report-icon">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <div class="report-content">
+                                <p class="report-name">Manufacturing KPIs</p>
+                                <span class="report-time">2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BI Dashboard Section -->
+            <div class="content-section active" id="bi-dashboard">
+                <div class="content-header">
+                    <div class="header-left">
+                        <h1 class="page-title">Executive Business Intelligence</h1>
+                        <p class="page-subtitle">Real-time enterprise analytics with predictive insights and data governance</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="titan-btn titan-btn-secondary" id="customizeDashboard">
+                            <i class="fas fa-edit"></i>
+                            Customize Dashboard
+                        </button>
+                        <button class="titan-btn titan-btn-primary" id="createReport">
+                            <i class="fas fa-plus"></i>
+                            Create Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Executive KPI Grid -->
+                <div class="executive-kpis">
+                    <div class="kpi-card revenue-performance">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+18.7%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">$47.8M</h3>
+                            <p class="kpi-label">Annual Revenue</p>
+                            <div class="kpi-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Q4 Target:</span>
+                                    <span class="breakdown-value">$12M</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Q4 Actual:</span>
+                                    <span class="breakdown-value">$13.4M</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card operational-efficiency">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+3.2%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">89.4%</h3>
+                            <p class="kpi-label">Operational Efficiency</p>
+                            <div class="kpi-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Manufacturing:</span>
+                                    <span class="breakdown-value">92.1%</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Supply Chain:</span>
+                                    <span class="breakdown-value">87.8%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card customer-satisfaction">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-smile"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+2.1%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">96.8%</h3>
+                            <p class="kpi-label">Customer Satisfaction</p>
+                            <div class="kpi-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">NPS Score:</span>
+                                    <span class="breakdown-value">+72</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">CSAT:</span>
+                                    <span class="breakdown-value">4.8/5.0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card financial-health">
+                        <div class="kpi-header">
+                            <div class="kpi-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+7.4%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">A+</h3>
+                            <p class="kpi-label">Financial Health</p>
+                            <div class="kpi-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Cash Flow:</span>
+                                    <span class="breakdown-value">$8.4M</span>
+                                </div>
+                                <div class="breakdown-item">
+                                    <span class="breakdown-label">Profit Margin:</span>
+                                    <span class="breakdown-value">23.7%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Analytics Dashboard -->
+                <div class="advanced-analytics">
+                    <div class="analytics-header">
+                        <h2 class="section-title">Advanced Enterprise Analytics</h2>
+                        <div class="analytics-controls">
+                            <select class="time-range" id="analyticsTimeRange">
+                                <option value="7d">Last 7 Days</option>
+                                <option value="30d">Last 30 Days</option>
+                                <option value="90d" selected>Last 90 Days</option>
+                                <option value="1y">Last Year</option>
+                            </select>
+                            <button class="refresh-btn" id="refreshAnalytics">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-grid">
+                        <!-- Revenue Analysis -->
+                        <div class="analytics-panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title">Revenue Analysis & Forecasting</h3>
+                                <div class="panel-controls">
+                                    <button class="panel-toggle active" data-view="trend">Trend</button>
+                                    <button class="panel-toggle" data-view="forecast">Forecast</button>
+                                    <button class="panel-toggle" data-view="breakdown">Breakdown</button>
+                                </div>
+                            </div>
+                            <div class="panel-content">
+                                <div class="chart-container">
+                                    <canvas id="revenueAnalysisChart" class="analytics-chart"></canvas>
+                                </div>
+                                <div class="analytics-insights">
+                                    <div class="insight-card">
+                                        <div class="insight-icon revenue">
+                                            <i class="fas fa-trending-up"></i>
+                                        </div>
+                                        <div class="insight-content">
+                                            <h4 class="insight-value">$52.4M</h4>
+                                            <p class="insight-label">Projected Annual</p>
+                                            <span class="insight-confidence">94% confidence</span>
+                                        </div>
+                                    </div>
+                                    <div class="insight-card">
+                                        <div class="insight-icon growth">
+                                            <i class="fas fa-rocket"></i>
+                                        </div>
+                                        <div class="insight-content">
+                                            <h4 class="insight-value">+18.7%</h4>
+                                            <p class="insight-label">YoY Growth</p>
+                                            <span class="insight-confidence">Above target</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Operational Excellence -->
+                        <div class="analytics-panel">
+                            <div class="panel-header">
+                                <h3 class="panel-title">Operational Excellence Index</h3>
+                                <div class="panel-controls">
+                                    <button class="panel-toggle active" data-view="overall">Overall</button>
+                                    <button class="panel-toggle" data-view="departments">Departments</button>
+                                </div>
+                            </div>
+                            <div class="panel-content">
+                                <div class="excellence-score">
+                                    <div class="score-circle">
+                                        <svg viewBox="0 0 120 120" class="score-svg">
+                                            <circle cx="60" cy="60" r="50" fill="none" stroke="#f1f5f9" stroke-width="8"/>
+                                            <circle cx="60" cy="60" r="50" fill="none" stroke="#10b981" stroke-width="8" 
+                                                    stroke-dasharray="314" stroke-dashoffset="62" stroke-linecap="round"/>
+                                        </svg>
+                                        <div class="score-content">
+                                            <div class="score-value">89.4</div>
+                                            <div class="score-label">Excellence Score</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="excellence-breakdown">
+                                    <div class="breakdown-metric">
+                                        <div class="metric-header">
+                                            <span class="metric-name">Quality</span>
+                                            <span class="metric-score">94.2%</span>
+                                        </div>
+                                        <div class="metric-bar">
+                                            <div class="metric-fill" style="width: 94.2%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="breakdown-metric">
+                                        <div class="metric-header">
+                                            <span class="metric-name">Efficiency</span>
+                                            <span class="metric-score">87.6%</span>
+                                        </div>
+                                        <div class="metric-bar">
+                                            <div class="metric-fill" style="width: 87.6%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="breakdown-metric">
+                                        <div class="metric-header">
+                                            <span class="metric-name">Innovation</span>
+                                            <span class="metric-score">91.8%</span>
+                                        </div>
+                                        <div class="metric-bar">
+                                            <div class="metric-fill" style="width: 91.8%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="breakdown-metric">
+                                        <div class="metric-header">
+                                            <span class="metric-name">Customer Focus</span>
+                                            <span class="metric-score">96.3%</span>
+                                        </div>
+                                        <div class="metric-bar">
+                                            <div class="metric-fill" style="width: 96.3%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Predictive Analytics -->
+                        <div class="analytics-panel wide">
+                            <div class="panel-header">
+                                <h3 class="panel-title">Predictive Business Intelligence</h3>
+                                <div class="panel-controls">
+                                    <button class="panel-toggle active" data-view="forecasts">Forecasts</button>
+                                    <button class="panel-toggle" data-view="trends">Trends</button>
+                                    <button class="panel-toggle" data-view="risks">Risk Analysis</button>
+                                </div>
+                            </div>
+                            <div class="panel-content">
+                                <div class="prediction-grid">
+                                    <div class="prediction-card">
+                                        <div class="prediction-header">
+                                            <h4 class="prediction-title">Revenue Forecast</h4>
+                                            <div class="confidence-badge high">94% Confidence</div>
+                                        </div>
+                                        <div class="prediction-content">
+                                            <div class="prediction-chart">
+                                                <canvas id="revenueForecastChart"></canvas>
+                                            </div>
+                                            <div class="prediction-insights">
+                                                <div class="insight-item">
+                                                    <span class="insight-label">Next Quarter:</span>
+                                                    <span class="insight-value">$13.8M ± $0.4M</span>
+                                                </div>
+                                                <div class="insight-item">
+                                                    <span class="insight-label">Growth Rate:</span>
+                                                    <span class="insight-value positive">+15.2% projected</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prediction-card">
+                                        <div class="prediction-header">
+                                            <h4 class="prediction-title">Demand Prediction</h4>
+                                            <div class="confidence-badge medium">87% Confidence</div>
+                                        </div>
+                                        <div class="prediction-content">
+                                            <div class="prediction-chart">
+                                                <canvas id="demandForecastChart"></canvas>
+                                            </div>
+                                            <div class="prediction-insights">
+                                                <div class="insight-item">
+                                                    <span class="insight-label">Peak Demand:</span>
+                                                    <span class="insight-value">March 2025</span>
+                                                </div>
+                                                <div class="insight-item">
+                                                    <span class="insight-label">Volume Increase:</span>
+                                                    <span class="insight-value positive">+23% expected</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="prediction-card">
+                                        <div class="prediction-header">
+                                            <h4 class="prediction-title">Risk Assessment</h4>
+                                            <div class="confidence-badge low">72% Confidence</div>
+                                        </div>
+                                        <div class="prediction-content">
+                                            <div class="risk-indicators">
+                                                <div class="risk-item low">
+                                                    <div class="risk-icon">
+                                                        <i class="fas fa-shield-alt"></i>
+                                                    </div>
+                                                    <div class="risk-content">
+                                                        <h5>Market Risk</h5>
+                                                        <span class="risk-level">Low (12%)</span>
+                                                    </div>
+                                                </div>
+                                                <div class="risk-item medium">
+                                                    <div class="risk-icon">
+                                                        <i class="fas fa-exclamation-triangle"></i>
+                                                    </div>
+                                                    <div class="risk-content">
+                                                        <h5>Supply Chain Risk</h5>
+                                                        <span class="risk-level">Medium (34%)</span>
+                                                    </div>
+                                                </div>
+                                                <div class="risk-item high">
+                                                    <div class="risk-icon">
+                                                        <i class="fas fa-users"></i>
+                                                    </div>
+                                                    <div class="risk-content">
+                                                        <h5>Resource Risk</h5>
+                                                        <span class="risk-level">High (67%)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Data Pipeline -->
+                <div class="data-pipeline-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Real-time Data Pipeline Status</h2>
+                        <div class="pipeline-controls">
+                            <button class="pipeline-toggle active" data-view="flow">Data Flow</button>
+                            <button class="pipeline-toggle" data-view="health">Health</button>
+                            <button class="pipeline-toggle" data-view="performance">Performance</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pipeline-visualization">
+                        <div class="data-source active" data-source="erp">
+                            <div class="source-header">
+                                <div class="source-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <h4 class="source-name">ERP Systems</h4>
+                            </div>
+                            <div class="source-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Records/min:</span>
+                                    <span class="metric-value">1,247</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Latency:</span>
+                                    <span class="metric-value">0.3ms</span>
+                                </div>
+                            </div>
+                            <div class="data-flow-connection">
+                                <div class="flow-line">
+                                    <div class="flow-particles"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="data-processor">
+                            <div class="processor-header">
+                                <div class="processor-icon">
+                                    <i class="fas fa-microchip"></i>
+                                </div>
+                                <h4 class="processor-name">Analytics Engine</h4>
+                            </div>
+                            <div class="processor-status">
+                                <div class="status-indicator online">
+                                    <div class="status-dot"></div>
+                                    <span>Online</span>
+                                </div>
+                                <div class="processing-load">
+                                    <span class="load-label">CPU:</span>
+                                    <div class="load-bar">
+                                        <div class="load-fill" style="width: 67%"></div>
+                                    </div>
+                                    <span class="load-value">67%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="data-destination active" data-destination="dashboards">
+                            <div class="destination-header">
+                                <div class="destination-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h4 class="destination-name">Live Dashboards</h4>
+                            </div>
+                            <div class="destination-metrics">
+                                <div class="metric">
+                                    <span class="metric-label">Updates/sec:</span>
+                                    <span class="metric-value">47</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Viewers:</span>
+                                    <span class="metric-value">127</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cross-Module Performance Matrix -->
+                <div class="performance-matrix">
+                    <div class="section-header">
+                        <h2 class="section-title">Cross-Module Performance Matrix</h2>
+                        <div class="matrix-controls">
+                            <select class="metric-selector" id="matrixMetric">
+                                <option value="efficiency">Efficiency</option>
+                                <option value="quality">Quality</option>
+                                <option value="cost">Cost Performance</option>
+                                <option value="time">Time Performance</option>
+                            </select>
+                            <button class="matrix-view active" data-view="heatmap">Heatmap</button>
+                            <button class="matrix-view" data-view="trends">Trends</button>
+                        </div>
+                    </div>
+                    
+                    <div class="matrix-grid">
+                        <div class="matrix-row">
+                            <div class="module-label">Manufacturing</div>
+                            <div class="performance-cell excellent" data-value="94.2">94.2%</div>
+                            <div class="performance-cell good" data-value="89.7">89.7%</div>
+                            <div class="performance-cell excellent" data-value="96.1">96.1%</div>
+                            <div class="performance-cell good" data-value="87.4">87.4%</div>
+                        </div>
+                        <div class="matrix-row">
+                            <div class="module-label">Supply Chain</div>
+                            <div class="performance-cell good" data-value="87.8">87.8%</div>
+                            <div class="performance-cell excellent" data-value="97.2">97.2%</div>
+                            <div class="performance-cell good" data-value="89.3">89.3%</div>
+                            <div class="performance-cell excellent" data-value="94.6">94.6%</div>
+                        </div>
+                        <div class="matrix-row">
+                            <div class="module-label">Sales & CRM</div>
+                            <div class="performance-cell excellent" data-value="92.4">92.4%</div>
+                            <div class="performance-cell excellent" data-value="96.8">96.8%</div>
+                            <div class="performance-cell good" data-value="88.2">88.2%</div>
+                            <div class="performance-cell good" data-value="89.1">89.1%</div>
+                        </div>
+                        <div class="matrix-row">
+                            <div class="module-label">Human Resources</div>
+                            <div class="performance-cell good" data-value="86.3">86.3%</div>
+                            <div class="performance-cell excellent" data-value="94.7">94.7%</div>
+                            <div class="performance-cell excellent" data-value="91.5">91.5%</div>
+                            <div class="performance-cell excellent" data-value="93.8">93.8%</div>
+                        </div>
+                        <div class="matrix-row">
+                            <div class="module-label">Financial</div>
+                            <div class="performance-cell excellent" data-value="95.7">95.7%</div>
+                            <div class="performance-cell good" data-value="88.9">88.9%</div>
+                            <div class="performance-cell excellent" data-value="97.1">97.1%</div>
+                            <div class="performance-cell good" data-value="86.2">86.2%</div>
+                        </div>
+                        <div class="matrix-row">
+                            <div class="module-label">Project Management</div>
+                            <div class="performance-cell good" data-value="89.0">89.0%</div>
+                            <div class="performance-cell good" data-value="87.2">87.2%</div>
+                            <div class="performance-cell good" data-value="88.5">88.5%</div>
+                            <div class="performance-cell excellent" data-value="92.7">92.7%</div>
+                        </div>
+                    </div>
+                    <div class="matrix-legend">
+                        <div class="legend-item">
+                            <div class="legend-color excellent"></div>
+                            <span>Excellent (90-100%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color good"></div>
+                            <span>Good (80-89%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color needs-improvement"></div>
+                            <span>Needs Improvement (60-79%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color poor"></div>
+                            <span>Poor (&lt;60%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI-Powered Insights -->
+                <div class="ai-insights-section">
+                    <div class="section-header">
+                        <h2 class="section-title">AI-Powered Business Insights</h2>
+                        <div class="insights-controls">
+                            <button class="insight-category active" data-category="opportunities">Opportunities</button>
+                            <button class="insight-category" data-category="risks">Risks</button>
+                            <button class="insight-category" data-category="optimizations">Optimizations</button>
+                        </div>
+                    </div>
+                    
+                    <div class="insights-grid">
+                        <div class="insight-panel opportunity">
+                            <div class="insight-header">
+                                <div class="insight-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="insight-meta">
+                                    <h4 class="insight-title">Revenue Growth Opportunity</h4>
+                                    <span class="insight-impact">+$2.4M potential</span>
+                                </div>
+                                <div class="confidence-indicator high">
+                                    <span>92% confidence</span>
+                                </div>
+                            </div>
+                            <p class="insight-description">
+                                Analysis suggests expanding enterprise sales team by 3 members could increase quarterly revenue by $2.4M based on current conversion rates and pipeline velocity.
+                            </p>
+                            <div class="insight-actions">
+                                <button class="insight-btn primary">Implement Recommendation</button>
+                                <button class="insight-btn secondary">View Analysis</button>
+                            </div>
+                        </div>
+
+                        <div class="insight-panel optimization">
+                            <div class="insight-header">
+                                <div class="insight-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="insight-meta">
+                                    <h4 class="insight-title">Supply Chain Optimization</h4>
+                                    <span class="insight-impact">-$840K cost reduction</span>
+                                </div>
+                                <div class="confidence-indicator high">
+                                    <span>89% confidence</span>
+                                </div>
+                            </div>
+                            <p class="insight-description">
+                                Consolidating suppliers for electronic components and renegotiating contracts could reduce annual procurement costs by $840K while maintaining quality standards.
+                            </p>
+                            <div class="insight-actions">
+                                <button class="insight-btn primary">Start Analysis</button>
+                                <button class="insight-btn secondary">Supplier Review</button>
+                            </div>
+                        </div>
+
+                        <div class="insight-panel risk">
+                            <div class="insight-header">
+                                <div class="insight-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="insight-meta">
+                                    <h4 class="insight-title">Resource Allocation Risk</h4>
+                                    <span class="insight-impact">Project delay risk</span>
+                                </div>
+                                <div class="confidence-indicator medium">
+                                    <span>76% confidence</span>
+                                </div>
+                            </div>
+                            <p class="insight-description">
+                                Current resource allocation patterns indicate 34% probability of project delays in Q1 2025. Recommend rebalancing engineering resources across active projects.
+                            </p>
+                            <div class="insight-actions">
+                                <button class="insight-btn primary">Rebalance Resources</button>
+                                <button class="insight-btn secondary">Risk Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal Overlays -->
+        <div class="modal-overlay" id="biModalOverlay">
+            <div class="modal-container extra-large">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="biModalTitle">Business Intelligence Details</h3>
+                    <button class="modal-close" id="closeBiModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-content" id="biModalContent">
+                    <!-- BI details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="scripts/business-intelligence.js"></script>
+</body>
+</html>
