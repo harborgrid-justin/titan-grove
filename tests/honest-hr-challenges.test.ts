@@ -16,6 +16,7 @@ import { CompensationService } from '../src/modules/hr/business-logic/compensati
 import { BenefitsService } from '../src/modules/hr/business-logic/advanced-benefits/advanced-benefits-service';
 import { LaborDistributionService } from '../src/modules/hr/business-logic/labor-distribution/labor-distribution-service';
 import { PerformanceService } from '../src/modules/hr/business-logic/performance-management/performance-service';
+import { initService } from './test-helpers';
 
 describe('Honest HR Business Logic Challenges', () => {
   let payrollService: PayrollService;
@@ -25,31 +26,11 @@ describe('Honest HR Business Logic Challenges', () => {
   let performanceService: PerformanceService;
 
   beforeEach(() => {
-    try {
-      payrollService = new PayrollService();
-    } catch (e) {
-      console.log('PayrollService not available:', e.message);
-    }
-    try {
-      compensationService = new CompensationService();
-    } catch (e) {
-      console.log('CompensationService not available:', e.message);
-    }
-    try {
-      benefitsService = new BenefitsService();
-    } catch (e) {
-      console.log('BenefitsService not available:', e.message);
-    }
-    try {
-      laborDistributionService = new LaborDistributionService();
-    } catch (e) {
-      console.log('LaborDistributionService not available:', e.message);
-    }
-    try {
-      performanceService = new PerformanceService();
-    } catch (e) {
-      console.log('PerformanceService not available:', e.message);
-    }
+    payrollService = initService(PayrollService, 'PayrollService');
+    compensationService = initService(CompensationService, 'CompensationService');
+    benefitsService = initService(BenefitsService, 'BenefitsService');
+    laborDistributionService = initService(LaborDistributionService, 'LaborDistributionService');
+    performanceService = initService(PerformanceService, 'PerformanceService');
   });
 
   describe('Payroll Calculations - Real Tax and Deduction Logic', () => {

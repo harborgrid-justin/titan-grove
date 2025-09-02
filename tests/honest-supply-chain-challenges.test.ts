@@ -15,6 +15,7 @@ import { DemandPlanningService } from '../src/modules/scm/business-logic/demand-
 import { InventoryOptimizationService } from '../src/modules/scm/business-logic/inventory-optimization/inventory-optimization-service';
 import { SupplierManagementService } from '../src/modules/scm/business-logic/supplier-management/supplier-management-service';
 import { ProcurementService } from '../src/modules/procurement/business-logic/procurement-service';
+import { initService } from './test-helpers';
 
 describe('Honest Supply Chain Management Challenges', () => {
   let demandPlanningService: DemandPlanningService;
@@ -23,26 +24,10 @@ describe('Honest Supply Chain Management Challenges', () => {
   let procurementService: ProcurementService;
 
   beforeEach(() => {
-    try {
-      demandPlanningService = new DemandPlanningService();
-    } catch (e) {
-      console.log('DemandPlanningService not available:', e.message);
-    }
-    try {
-      inventoryOptimizationService = new InventoryOptimizationService();
-    } catch (e) {
-      console.log('InventoryOptimizationService not available:', e.message);
-    }
-    try {
-      supplierManagementService = new SupplierManagementService();
-    } catch (e) {
-      console.log('SupplierManagementService not available:', e.message);
-    }
-    try {
-      procurementService = new ProcurementService();
-    } catch (e) {
-      console.log('ProcurementService not available:', e.message);
-    }
+    demandPlanningService = initService(DemandPlanningService, 'DemandPlanningService');
+    inventoryOptimizationService = initService(InventoryOptimizationService, 'InventoryOptimizationService');
+    supplierManagementService = initService(SupplierManagementService, 'SupplierManagementService');
+    procurementService = initService(ProcurementService, 'ProcurementService');
   });
 
   describe('Demand Planning - Real Forecasting Algorithm Tests', () => {

@@ -80,10 +80,7 @@ describe('Honest vs Superficial Testing Demonstration', () => {
       };
 
       // Step 1: Calculate overhead
-      const overhead = FinancialUtils.calculateOverhead(
-        projectScenario.baseCost, 
-        projectScenario.overheadRate
-      );
+      const overhead = FinancialUtils.calculateOverhead(projectScenario.baseCost, projectScenario.overheadRate);
       expect(overhead).toBe(7500); // 15% of 50K
 
       // Step 2: Calculate tax on total with overhead
