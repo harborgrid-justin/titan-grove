@@ -11,6 +11,7 @@ import type {
   ServiceRecommendation,
   OracleEBSComparison
 } from '../types';
+import { SERVICE_ANALYTICS_CONSTANTS, ServiceAnalyticsUtils } from '../../../shared/constants';
 
 export class ServiceAnalyticsService {
   private analytics: Map<string, ServiceAnalytics> = new Map();
@@ -86,28 +87,7 @@ export class ServiceAnalyticsService {
     period: { start: Date; end: Date; }
   ): Promise<ServiceMetrics> {
     // In real implementation, this would query actual operational data
-    const metrics: ServiceMetrics = {
-      // Volume metrics
-      totalServiceRequests: 1247,
-      completedWorkOrders: 1183,
-      averageResolutionTime: 4.7, // hours
-      
-      // Quality metrics
-      firstTimeFixRate: 89.3, // percentage
-      customerSatisfaction: 4.7, // 1-5 scale
-      escalationRate: 2.1, // percentage
-      
-      // Resource metrics
-      resourceUtilization: 78.9, // percentage
-      techniciansActive: 45,
-      equipmentUtilization: 84.2, // percentage
-      
-      // Financial metrics
-      totalServiceRevenue: 2847000,
-      serviceCosts: 2005000,
-      profitMargin: 29.6, // percentage
-      costPerServiceCall: 1694
-    };
+    const metrics: ServiceMetrics = ServiceAnalyticsUtils.generateMockServiceMetrics();
 
     return metrics;
   }
@@ -198,64 +178,16 @@ export class ServiceAnalyticsService {
 
     for (const insight of highImpactInsights) {
       if (insight.type === 'OPPORTUNITY') {
-        recommendations.push({
-          recommendationId: `rec_${Date.now()}_${insight.insightId}`,
-          type: 'QUALITY_ENHANCEMENT',
-          title: 'Implement Advanced Diagnostic Tools',
-          description: 'Deploy AI-powered diagnostic tools to improve first-time fix rates and reduce repeat service calls.',
-          estimatedImpact: {
-            qualityImprovement: 8.5, // percentage points
-            costSavings: 125000, // annual
-            customerSatisfactionGain: 0.3 // rating points
-          },
-          implementationEffort: 'MEDIUM',
-          timeToImplement: 45, // days
-          requiredResources: ['IT Team', 'Training Team', 'Field Technicians'],
-          status: 'NEW',
-          priority: 'HIGH',
-          category: 'Quality Improvement'
-        });
+        recommendations.push(ServiceAnalyticsUtils.generateRecommendation('QUALITY_ENHANCEMENT', insight.insightId));
       }
       
       if (insight.type === 'RISK' && insight.title.includes('Resource Utilization')) {
-        recommendations.push({
-          recommendationId: `rec_${Date.now()}_${insight.insightId}`,
-          type: 'RESOURCE_OPTIMIZATION',
-          title: 'Expand Service Team Capacity',
-          description: 'Add 6 additional field technicians to reduce utilization from current 78.9% to optimal 75%.',
-          estimatedImpact: {
-            timeReduction: 25, // percentage
-            costSavings: 85000, // from improved efficiency
-            customerSatisfactionGain: 0.2
-          },
-          implementationEffort: 'HIGH',
-          timeToImplement: 60, // days
-          requiredResources: ['HR Team', 'Training Budget', 'Equipment'],
-          status: 'NEW',
-          priority: 'HIGH',
-          category: 'Resource Management'
-        });
+        recommendations.push(ServiceAnalyticsUtils.generateRecommendation('RESOURCE_OPTIMIZATION', insight.insightId));
       }
     }
 
     // Add standard optimization recommendations
-    recommendations.push({
-      recommendationId: `rec_${Date.now()}_standard`,
-      type: 'PROCESS_IMPROVEMENT',
-      title: 'Implement Mobile-First Service Workflows',
-      description: 'Transition to mobile-first service workflows to reduce paperwork and improve field efficiency.',
-      estimatedImpact: {
-        timeReduction: 20, // percentage
-        costSavings: 200000, // annual
-        qualityImprovement: 5
-      },
-      implementationEffort: 'MEDIUM',
-      timeToImplement: 30,
-      requiredResources: ['Mobile Development Team', 'Training Team'],
-      status: 'NEW',
-      priority: 'MEDIUM',
-      category: 'Digital Transformation'
-    });
+    recommendations.push(ServiceAnalyticsUtils.generateRecommendation('PROCESS_IMPROVEMENT'));
 
     return recommendations;
   }
@@ -267,86 +199,65 @@ export class ServiceAnalyticsService {
     const comparisonId = `oracle_service_compare_${Date.now()}`;
     
     const featureComparison = [
-      {
-        feature: 'Real-time Service Dashboard',
-        oracleEBSRating: 5.5,
-        titanGroveRating: 9.4,
-        advantage: 3.9,
-        notes: 'Live reactive dashboard vs static report-based interface'
-      },
-      {
-        feature: 'Mobile Command Center',
-        oracleEBSRating: 4.0,
-        titanGroveRating: 9.2,
-        advantage: 5.2,
-        notes: 'Native mobile command center vs no mobile capability'
-      },
-      {
-        feature: 'Intelligent Dispatch Optimization',
-        oracleEBSRating: 6.5,
-        titanGroveRating: 9.1,
-        advantage: 2.6,
-        notes: 'AI-powered optimization vs basic scheduling'
-      },
-      {
-        feature: 'Predictive Service Analytics',
-        oracleEBSRating: 5.0,
-        titanGroveRating: 8.9,
-        advantage: 3.9,
-        notes: 'ML-based predictions vs historical reporting'
-      },
-      {
-        feature: 'Emergency Response Coordination',
-        oracleEBSRating: 7.0,
-        titanGroveRating: 9.3,
-        advantage: 2.3,
-        notes: 'Automated response protocols vs manual processes'
-      },
-      {
-        feature: 'Service Resource Management',
-        oracleEBSRating: 6.8,
-        titanGroveRating: 9.0,
-        advantage: 2.2,
-        notes: 'Dynamic resource allocation vs static assignments'
-      },
-      {
-        feature: 'Customer Service Portal Integration',
-        oracleEBSRating: 6.0,
-        titanGroveRating: 8.8,
-        advantage: 2.8,
-        notes: 'Modern web portal vs basic customer interface'
-      },
-      {
-        feature: 'Service Performance Analytics',
-        oracleEBSRating: 7.2,
-        titanGroveRating: 9.2,
-        advantage: 2.0,
-        notes: 'Real-time analytics vs batch reports'
-      }
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Real-time Service Dashboard',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_DASHBOARD_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_DASHBOARD_RATING,
+        'Live reactive dashboard vs static report-based interface'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Mobile Command Center',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_MOBILE_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_MOBILE_RATING,
+        'Native mobile command center vs no mobile capability'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Intelligent Dispatch Optimization',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_OPTIMIZATION_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_OPTIMIZATION_RATING,
+        'AI-powered optimization vs basic scheduling'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Predictive Service Analytics',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_ANALYTICS_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_ANALYTICS_RATING,
+        'ML-based predictions vs historical reporting'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Emergency Response Coordination',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_EMERGENCY_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_EMERGENCY_RATING,
+        'Automated response protocols vs manual processes'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Service Resource Management',
+        6.8, // This wasn't in our original constants, keeping as-is
+        9.0, // This wasn't in our original constants, keeping as-is
+        'Dynamic resource allocation vs static assignments'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Customer Service Portal Integration',
+        6.0, // This wasn't in our original constants, keeping as-is
+        8.8, // This wasn't in our original constants, keeping as-is
+        'Modern web portal vs basic customer interface'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Service Performance Analytics',
+        7.2, // This wasn't in our original constants, keeping as-is
+        9.2, // This wasn't in our original constants, keeping as-is
+        'Real-time analytics vs batch reports'
+      )
     ];
 
-    const overallOracle = featureComparison.reduce((sum, f) => sum + f.oracleEBSRating, 0) / featureComparison.length;
-    const overallTitanGrove = featureComparison.reduce((sum, f) => sum + f.titanGroveRating, 0) / featureComparison.length;
+    const overallRating = ServiceAnalyticsUtils.calculateCompetitiveAdvantage(featureComparison);
 
     return {
       comparisonId,
       comparisonDate: new Date(),
       featureComparison,
-      overallRating: {
-        oracle: overallOracle,
-        titanGrove: overallTitanGrove,
-        competitiveAdvantage: overallTitanGrove - overallOracle
-      },
-      businessValue: {
-        costSavings: 1850000, // Annual savings vs Oracle licensing and implementation
-        efficiencyGains: 32.5, // Percentage improvement in service operations
-        revenueIncrease: 275000, // Additional revenue from improved service quality
-        riskReduction: 45.0 // Percentage reduction in service-related risks
-      },
-      migrationComplexity: 'MEDIUM',
-      migrationTimeframe: 6, // months for full migration
-      migrationCosts: 450000,
-      expectedROI: 10 // months to payback
+      overallRating,
+      businessValue: ServiceAnalyticsUtils.getOracleEBSBusinessValue(),
+      ...ServiceAnalyticsUtils.getOracleEBSMigrationMetrics()
     };
   }
 

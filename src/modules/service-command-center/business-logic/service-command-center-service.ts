@@ -27,6 +27,7 @@ import { ServiceIntegrationContext } from '../../../shared/interfaces/service-in
 import { MessagePayload, QueueType } from '../../../core/message-queue/types';
 import { FieldServiceService } from '../../field-service/business-logic/field-service-service';
 import { ServiceService } from '../../service/business-logic/service-management/service-service';
+import { SERVICE_ANALYTICS_CONSTANTS, ServiceAnalyticsUtils } from '../../../shared/constants';
 
 export class ServiceCommandCenterService extends StandardServiceBase {
   private commandCenters: Map<string, ServiceCommandCenter> = new Map();
@@ -489,72 +490,53 @@ export class ServiceCommandCenterService extends StandardServiceBase {
     const comparisonId = `oracle_compare_${Date.now()}`;
     
     const featureComparison = [
-      {
-        feature: 'Real-time Service Operations Dashboard',
-        oracleEBSRating: 6.0,
-        titanGroveRating: 9.5,
-        advantage: 3.5,
-        notes: 'Modern reactive UI vs legacy forms-based interface'
-      },
-      {
-        feature: 'Mobile Field Service Management',
-        oracleEBSRating: 5.5,
-        titanGroveRating: 9.2,
-        advantage: 3.7,
-        notes: 'Native mobile apps vs limited mobile access'
-      },
-      {
-        feature: 'Intelligent Resource Optimization',
-        oracleEBSRating: 7.0,
-        titanGroveRating: 9.4,
-        advantage: 2.4,
-        notes: 'AI-powered optimization vs rule-based scheduling'
-      },
-      {
-        feature: 'Emergency Response Coordination',
-        oracleEBSRating: 6.5,
-        titanGroveRating: 9.3,
-        advantage: 2.8,
-        notes: 'Automated response workflows vs manual coordination'
-      },
-      {
-        feature: 'Service Analytics and Reporting',
-        oracleEBSRating: 7.5,
-        titanGroveRating: 9.1,
-        advantage: 1.6,
-        notes: 'Real-time analytics vs batch reporting'
-      },
-      {
-        feature: 'Integration Capabilities',
-        oracleEBSRating: 6.0,
-        titanGroveRating: 9.6,
-        advantage: 3.6,
-        notes: 'RESTful APIs vs proprietary protocols'
-      }
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Real-time Service Operations Dashboard',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_DASHBOARD_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_DASHBOARD_RATING,
+        'Modern reactive UI vs legacy forms-based interface'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Mobile Field Service Management',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_MOBILE_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_MOBILE_RATING,
+        'Native mobile apps vs limited mobile access'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Intelligent Resource Optimization',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_OPTIMIZATION_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_OPTIMIZATION_RATING,
+        'AI-powered optimization vs rule-based scheduling'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Emergency Response Coordination',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_EMERGENCY_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_EMERGENCY_RATING,
+        'Automated response workflows vs manual coordination'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Service Analytics and Reporting',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_ANALYTICS_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_ANALYTICS_RATING,
+        'Real-time analytics vs batch reporting'
+      ),
+      ServiceAnalyticsUtils.generateOracleComparisonFeature(
+        'Integration Capabilities',
+        SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_INTEGRATION_RATING,
+        SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_INTEGRATION_RATING,
+        'RESTful APIs vs proprietary protocols'
+      )
     ];
 
-    const overallOracle = featureComparison.reduce((sum, f) => sum + f.oracleEBSRating, 0) / featureComparison.length;
-    const overallTitanGrove = featureComparison.reduce((sum, f) => sum + f.titanGroveRating, 0) / featureComparison.length;
+    const overallRating = ServiceAnalyticsUtils.calculateCompetitiveAdvantage(featureComparison);
 
     const comparison: OracleEBSComparison = {
       comparisonId,
       comparisonDate: new Date(),
       featureComparison,
-      overallRating: {
-        oracle: overallOracle,
-        titanGrove: overallTitanGrove,
-        competitiveAdvantage: overallTitanGrove - overallOracle
-      },
-      businessValue: {
-        costSavings: 2850000, // Annual savings from licensing and operational efficiency
-        efficiencyGains: 35.5, // Percentage improvement
-        revenueIncrease: 450000, // Additional revenue from improved service
-        riskReduction: 65.0 // Percentage risk reduction
-      },
-      migrationComplexity: 'MEDIUM',
-      migrationTimeframe: 8, // months
-      migrationCosts: 750000,
-      expectedROI: 14 // months to payback
+      overallRating,
+      businessValue: ServiceAnalyticsUtils.getOracleEBSBusinessValue(),
+      ...ServiceAnalyticsUtils.getOracleEBSMigrationMetrics()
     };
 
     return comparison;
