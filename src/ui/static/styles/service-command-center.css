@@ -1,7 +1,6 @@
 /* Service Command Center Styles */
 
-/* Import base styles */
-@import 'base.css';
+/* Base variables and styles */
 
 :root {
     /* Service Command Center specific colors */
@@ -786,4 +785,298 @@
     .emergency-btn {
         justify-content: center;
     }
+}
+
+/* ==================== NOTIFICATION STYLES ==================== */
+
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.notification {
+    pointer-events: auto;
+    background: var(--scc-card-bg);
+    border: 1px solid var(--scc-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    min-width: 300px;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+}
+
+.notification-icon {
+    flex-shrink: 0;
+    font-size: 18px;
+}
+
+.notification-message {
+    flex: 1;
+    color: var(--scc-text-primary);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--scc-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--scc-text-primary);
+}
+
+/* Notification types */
+.notification-success {
+    border-left: 4px solid var(--scc-success);
+}
+
+.notification-success .notification-icon {
+    color: var(--scc-success);
+}
+
+.notification-error {
+    border-left: 4px solid var(--scc-emergency);
+}
+
+.notification-error .notification-icon {
+    color: var(--scc-emergency);
+}
+
+.notification-warning {
+    border-left: 4px solid var(--scc-warning);
+}
+
+.notification-warning .notification-icon {
+    color: var(--scc-warning);
+}
+
+.notification-emergency {
+    border-left: 4px solid var(--scc-emergency);
+    background: rgba(234, 67, 53, 0.1);
+    animation: pulseEmergency 0.5s ease-in-out infinite alternate;
+}
+
+.notification-emergency .notification-icon {
+    color: var(--scc-emergency);
+}
+
+.notification-info {
+    border-left: 4px solid var(--scc-info);
+}
+
+.notification-info .notification-icon {
+    color: var(--scc-info);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulseEmergency {
+    from {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    to {
+        box-shadow: 0 4px 12px rgba(234, 67, 53, 0.5);
+    }
+}
+
+/* ==================== OPTIMIZATION RESULTS STYLES ==================== */
+
+.optimization-results {
+    background: var(--scc-card-bg);
+    border: 1px solid var(--scc-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.optimization-results h4 {
+    color: var(--scc-text-primary);
+    margin: 0 0 16px 0;
+    font-size: 18px;
+}
+
+.results-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+}
+
+.result-label {
+    color: var(--scc-text-secondary);
+    font-size: 14px;
+}
+
+.result-value {
+    color: var(--scc-primary);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.optimized-assignments h5 {
+    color: var(--scc-text-primary);
+    margin: 0 0 12px 0;
+    font-size: 16px;
+}
+
+.assignment-item {
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    margin-bottom: 6px;
+    color: var(--scc-text-primary);
+    font-size: 14px;
+}
+
+/* ==================== EMERGENCY RESPONSE STYLES ==================== */
+
+.emergency-entry {
+    background: var(--scc-card-bg);
+    border: 1px solid var(--scc-border);
+    border-left: 4px solid var(--scc-emergency);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.emergency-timestamp {
+    color: var(--scc-text-secondary);
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.emergency-details {
+    color: var(--scc-text-primary);
+}
+
+.emergency-details strong {
+    color: var(--scc-emergency);
+    font-size: 16px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.emergency-details p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+/* ==================== WORK ORDER LIST STYLES ==================== */
+
+.work-order-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: var(--scc-card-bg);
+    border: 1px solid var(--scc-border);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.work-order-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--scc-primary);
+}
+
+.order-priority {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-right: 12px;
+}
+
+.order-priority.priority-high {
+    background: rgba(234, 67, 53, 0.2);
+    color: var(--scc-emergency);
+}
+
+.order-priority.priority-medium {
+    background: rgba(251, 188, 5, 0.2);
+    color: var(--scc-warning);
+}
+
+.order-priority.priority-low {
+    background: rgba(15, 157, 88, 0.2);
+    color: var(--scc-success);
+}
+
+.order-details {
+    flex: 1;
+}
+
+.order-title {
+    color: var(--scc-text-primary);
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.order-customer,
+.order-technician {
+    color: var(--scc-text-secondary);
+    font-size: 12px;
+}
+
+.order-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.order-status.status-assigned {
+    background: rgba(66, 133, 244, 0.2);
+    color: var(--scc-info);
+}
+
+.order-status.status-in-progress {
+    background: rgba(251, 188, 5, 0.2);
+    color: var(--scc-warning);
+}
+
+.order-status.status-scheduled {
+    background: rgba(15, 157, 88, 0.2);
+    color: var(--scc-success);
+}
 }

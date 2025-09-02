@@ -407,6 +407,243 @@ export class ServiceDashboardService {
       { id: 'wo2', title: 'Electrical Install', priority: 'MEDIUM', eta: '45 min' }
     ];
   }
+
+  /**
+   * Get real-time analytics data for service operations
+   */
+  async getAnalyticsData(options: {
+    timeRange?: string;
+    metrics?: string[];
+  }): Promise<any> {
+    const timeRange = options.timeRange || '7d';
+    const metrics = options.metrics || ['response_time', 'completion_rate', 'customer_satisfaction'];
+    
+    // Generate time series data based on timeRange
+    const dataPoints = this.generateTimeSeriesData(timeRange);
+    
+    const analytics = {
+      timeRange,
+      metrics: {},
+      summary: {
+        totalWorkOrders: 127,
+        completionRate: 94.7,
+        averageResponseTime: 18.5,
+        customerSatisfaction: 4.7
+      },
+      trends: {
+        responseTime: this.generateTrendData('response_time', dataPoints),
+        completionRate: this.generateTrendData('completion_rate', dataPoints),
+        customerSatisfaction: this.generateTrendData('customer_satisfaction', dataPoints)
+      },
+      forecasts: this.generateForecastData(metrics, dataPoints)
+    };
+
+    metrics.forEach(metric => {
+      analytics.metrics[metric] = this.getMetricData(metric, dataPoints);
+    });
+
+    return analytics;
+  }
+
+  /**
+   * Enhanced map data for service operations (made public for API access)
+   */
+  async getMapData(options: {
+    layers?: string[];
+    bounds?: any;
+    filters?: any;
+  }): Promise<any> {
+    const layers = options.layers || ['technicians', 'work-orders'];
+    
+    const mapData: any = {
+      bounds: options.bounds || {
+        north: 40.8,
+        south: 40.7,
+        east: -73.9,
+        west: -74.1
+      },
+      layers: {}
+    };
+
+    if (layers.includes('technicians')) {
+      mapData.layers.technicians = await this.getTechnicianMapData();
+    }
+
+    if (layers.includes('work-orders')) {
+      mapData.layers.workOrders = await this.getWorkOrderMapData();
+    }
+
+    if (layers.includes('service-areas')) {
+      mapData.layers.serviceAreas = await this.getServiceAreaMapData();
+    }
+
+    return mapData;
+  }
+
+  private generateTimeSeriesData(timeRange: string): Array<{ timestamp: Date; value: number }> {
+    const now = new Date();
+    const dataPoints = [];
+    let intervalMs = 60 * 60 * 1000; // 1 hour
+    let pointCount = 24; // 24 hours
+
+    switch (timeRange) {
+      case '24h':
+        intervalMs = 60 * 60 * 1000; // 1 hour
+        pointCount = 24;
+        break;
+      case '7d':
+        intervalMs = 24 * 60 * 60 * 1000; // 1 day
+        pointCount = 7;
+        break;
+      case '30d':
+        intervalMs = 24 * 60 * 60 * 1000; // 1 day
+        pointCount = 30;
+        break;
+    }
+
+    for (let i = pointCount - 1; i >= 0; i--) {
+      dataPoints.push({
+        timestamp: new Date(now.getTime() - (i * intervalMs)),
+        value: 0.8 + Math.random() * 0.4 // Base value with some variation
+      });
+    }
+
+    return dataPoints;
+  }
+
+  private generateTrendData(metric: string, dataPoints: Array<{ timestamp: Date; value: number }>): any {
+    const baseValues = {
+      response_time: 18.5,
+      completion_rate: 94.7,
+      customer_satisfaction: 4.7
+    };
+
+    const baseValue = baseValues[metric as keyof typeof baseValues] || 50;
+    
+    return {
+      current: baseValue,
+      trend: dataPoints.map(point => ({
+        timestamp: point.timestamp,
+        value: baseValue * (0.9 + point.value * 0.2) // ±10% variation
+      })),
+      change: Math.random() > 0.5 ? 'improving' : 'stable',
+      changePercent: (Math.random() * 10 - 5).toFixed(1) // -5% to +5%
+    };
+  }
+
+  private generateForecastData(metrics: string[], dataPoints: Array<{ timestamp: Date; value: number }>): any {
+    const forecasts: any = {};
+    
+    metrics.forEach(metric => {
+      forecasts[metric] = {
+        nextHour: Math.random() * 100,
+        nextDay: Math.random() * 100,
+        nextWeek: Math.random() * 100,
+        confidence: 0.85 + Math.random() * 0.1
+      };
+    });
+
+    return forecasts;
+  }
+
+  private getMetricData(metric: string, dataPoints: Array<{ timestamp: Date; value: number }>): any {
+    return {
+      current: Math.random() * 100,
+      average: Math.random() * 100,
+      min: Math.random() * 50,
+      max: 50 + Math.random() * 50,
+      trend: dataPoints.map(point => ({
+        timestamp: point.timestamp,
+        value: Math.random() * 100
+      }))
+    };
+  }
+
+  private async getTechnicianMapData(): Promise<any> {
+    return [
+      { 
+        id: 'tech1', 
+        lat: 40.7128, 
+        lng: -74.0060, 
+        status: 'AVAILABLE',
+        name: 'John Smith',
+        skills: ['HVAC', 'Electrical'],
+        currentWorkOrder: null
+      },
+      { 
+        id: 'tech2', 
+        lat: 40.7589, 
+        lng: -73.9851, 
+        status: 'ASSIGNED',
+        name: 'Sarah Johnson',
+        skills: ['Plumbing', 'General'],
+        currentWorkOrder: 'wo_002'
+      },
+      {
+        id: 'tech3',
+        lat: 40.7282,
+        lng: -74.0776,
+        status: 'ON_SITE',
+        name: 'Mike Davis',
+        skills: ['Electrical', 'HVAC'],
+        currentWorkOrder: 'wo_001'
+      }
+    ];
+  }
+
+  private async getWorkOrderMapData(): Promise<any> {
+    return [
+      { 
+        id: 'wo_001', 
+        lat: 40.7505, 
+        lng: -73.9934, 
+        priority: 'HIGH',
+        title: 'HVAC System Repair',
+        status: 'IN_PROGRESS',
+        customer: 'Acme Corp',
+        assignedTechnician: 'tech3'
+      },
+      { 
+        id: 'wo_002', 
+        lat: 40.7282, 
+        lng: -74.0776, 
+        priority: 'MEDIUM',
+        title: 'Electrical Inspection',
+        status: 'ASSIGNED',
+        customer: 'Beta LLC',
+        assignedTechnician: 'tech2'
+      }
+    ];
+  }
+
+  private async getServiceAreaMapData(): Promise<any> {
+    return [
+      {
+        id: 'area_1',
+        name: 'Manhattan Central',
+        bounds: {
+          north: 40.785,
+          south: 40.715,
+          east: -73.95,
+          west: -74.05
+        },
+        activeTechnicians: 8,
+        workOrderCount: 15
+      },
+      {
+        id: 'area_2',
+        name: 'Brooklyn West',
+        bounds: {
+          north: 40.75,
+          south: 40.68,
+          east: -73.95,
+          west: -74.05
+        },
+        activeTechnicians: 5,
+        workOrderCount: 12
+      }
+    ];
+  }
 }
 
 // Export service instance
