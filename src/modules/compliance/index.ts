@@ -9,6 +9,9 @@ export * from './types';
 // Export data access layer
 export * from './data-access/repositories';
 
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 // Export business logic services
 export * from './business-logic/compliance-management/compliance-service';
 
@@ -108,7 +111,7 @@ export interface ComplianceReport {
   approvedDate?: Date;
 }
 
-export class ComplianceManager {
+export class ComplianceManager extends BaseManager {
   async createComplianceFramework(framework: Omit<ComplianceFramework, 'id' | 'lastUpdated'>): Promise<ComplianceFramework> {
     const id = `cf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return {

@@ -95,6 +95,9 @@ export type {
 export * from './data-access/repositories';
 export * from './data-access/models';
 
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 // ================================
 // UNIFIED LOGISTICS MANAGER
 // ================================
@@ -123,7 +126,7 @@ import type {
  * Orchestrates all logistics services providing a single interface for comprehensive logistics operations
  * Competitive with Oracle EBS Logistics and Transportation Management
  */
-export class LogisticsManager {
+export class LogisticsManager extends BaseManager {
   constructor(
     private logger?: any,
     private databaseManager?: any,

@@ -9,6 +9,9 @@ export * from './types';
 // Export data access layer
 export * from './data-access/repositories';
 
+// Import shared utilities
+import { BaseManager } from '../../shared/utils/base-manager';
+
 // Export business logic services
 export * from './business-logic/document-management/document-service';
 export * from './business-logic/e-records/e-records-service';
@@ -138,7 +141,7 @@ export interface DocumentAuditLog {
   details?: Record<string, any>;
 }
 
-export class DocumentManager {
+export class DocumentManager extends BaseManager {
   async createDocument(document: Omit<Document, 'id' | 'documentNumber' | 'version' | 'status' | 'createdDate' | 'lastModified'>): Promise<Document> {
     const id = `doc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const documentNumber = `DOC${Date.now().toString().slice(-8)}`;
