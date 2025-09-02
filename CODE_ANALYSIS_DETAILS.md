@@ -26,6 +26,7 @@ export class DatabaseManager extends EventEmitter {
 
 // src/modules/procurement/data-access/repositories.ts
 export class ProcurementRepository extends BaseRepositoryImpl<any> { // ❌ Generic any
+}
 ```
 
 **Proposed Solution:**
@@ -51,6 +52,7 @@ interface ProcurementEntity {
 }
 
 export class ProcurementRepository extends BaseRepositoryImpl<ProcurementEntity> { // ✅ Typed
+}
 ```
 
 ### **Opportunity #4: Centralize Magic Numbers and Rates**
