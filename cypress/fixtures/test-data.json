@@ -1,0 +1,139 @@
+{
+  "testData": {
+    "users": {
+      "admin": {
+        "username": "admin@titangrove.com",
+        "password": "TitanAdmin123!",
+        "role": "Administrator"
+      },
+      "manager": {
+        "username": "manager@titangrove.com", 
+        "password": "TitanManager123!",
+        "role": "Manager"
+      },
+      "employee": {
+        "username": "employee@titangrove.com",
+        "password": "TitanEmployee123!",
+        "role": "Employee"
+      }
+    },
+    "modules": [
+      {
+        "name": "dashboard",
+        "file": "dashboard.html",
+        "title": "Executive Dashboard"
+      },
+      {
+        "name": "manufacturing",
+        "file": "manufacturing.html", 
+        "title": "Manufacturing Excellence"
+      },
+      {
+        "name": "financials",
+        "file": "financials.html",
+        "title": "Financial Management"
+      },
+      {
+        "name": "supply-chain",
+        "file": "supply-chain-management.html",
+        "title": "Supply Chain Management"
+      },
+      {
+        "name": "crm",
+        "file": "crm-management.html",
+        "title": "Customer Relationship Management"
+      },
+      {
+        "name": "hr",
+        "file": "hr-management.html",
+        "title": "Human Resources"
+      },
+      {
+        "name": "projects",
+        "file": "project-management.html",
+        "title": "Project Management"
+      },
+      {
+        "name": "analytics",
+        "file": "business-intelligence.html",
+        "title": "Business Intelligence"
+      },
+      {
+        "name": "assets",
+        "file": "asset-management.html",
+        "title": "Asset Management"
+      },
+      {
+        "name": "compliance",
+        "file": "compliance.html",
+        "title": "Compliance Management"
+      },
+      {
+        "name": "setup",
+        "file": "setup.html",
+        "title": "Setup Wizard"
+      }
+    ],
+    "sampleData": {
+      "searchQueries": [
+        "revenue",
+        "work order", 
+        "invoice",
+        "customer",
+        "employee",
+        "project",
+        "report",
+        "dashboard"
+      ],
+      "formData": {
+        "employee": {
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "john.doe@company.com",
+          "phone": "555-0123",
+          "department": "Engineering"
+        },
+        "customer": {
+          "name": "Acme Corporation",
+          "email": "contact@acme.com",
+          "phone": "555-0456",
+          "address": "123 Business St"
+        },
+        "workOrder": {
+          "number": "WO-2024-001",
+          "description": "Routine maintenance",
+          "priority": "Medium",
+          "assignee": "Tech Team"
+        },
+        "invoice": {
+          "number": "INV-2024-001",
+          "amount": "1000.00",
+          "dueDate": "2024-12-31",
+          "customer": "Acme Corporation"
+        }
+      }
+    },
+    "viewports": [
+      {
+        "name": "Mobile",
+        "width": 375,
+        "height": 667
+      },
+      {
+        "name": "Tablet", 
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "name": "Desktop",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "name": "Large Desktop",
+        "width": 1920,
+        "height": 1080
+      }
+    ]
+  }
+}
