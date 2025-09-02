@@ -57,9 +57,12 @@ describe('Honest Manufacturing Implementation Challenges', () => {
           
         } else {
           console.log('Work Order Creation Error:', result.error.message);
+          expect(result.success).toBe(true); // Should succeed with valid input
         }
       } catch (error) {
-        fail(`Work order creation should handle all scenarios: ${error}`);
+        console.error('Work order creation error:', error);
+        expect(mesService).toBeDefined(); // Service should be available
+        expect(error).toBeUndefined(); // Should not throw unexpected errors
       }
     });
 
