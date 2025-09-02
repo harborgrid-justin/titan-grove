@@ -1,0 +1,909 @@
+/* Manufacturing Excellence System Styles */
+/* Extends dashboard.css with manufacturing-specific components */
+
+/* Manufacturing Sidebar Extensions */
+.manufacturing-sidebar {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.manufacturing-sidebar .sidebar-header {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: var(--text-inverse);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.manufacturing-sidebar .sidebar-header h3 {
+  color: var(--text-inverse);
+}
+
+.manufacturing-sidebar .sidebar-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-inverse);
+}
+
+.manufacturing-sidebar .sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Performance Summary */
+.performance-summary {
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.performance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--background-secondary);
+}
+
+.performance-item:last-child {
+  border-bottom: none;
+}
+
+.performance-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.performance-value {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.performance-value.success {
+  color: var(--success);
+}
+
+.performance-value.warning {
+  color: var(--warning);
+}
+
+.performance-value.error {
+  color: var(--error);
+}
+
+/* Manufacturing Content Layout */
+.manufacturing-content {
+  flex: 1;
+  padding: var(--space-6);
+  overflow-x: auto;
+  background: var(--background);
+}
+
+/* Manufacturing KPI Header */
+.manufacturing-kpi-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.manufacturing-kpi-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--background-secondary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.manufacturing-kpi-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.manufacturing-kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.manufacturing-kpi-card.production-output::before {
+  background: linear-gradient(90deg, var(--success), var(--success-light));
+}
+
+.manufacturing-kpi-card.oee-score::before {
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+.manufacturing-kpi-card.cycle-time::before {
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+}
+
+.manufacturing-kpi-card.throughput::before {
+  background: linear-gradient(90deg, var(--info), var(--info-light));
+}
+
+.manufacturing-kpi-card .kpi-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.manufacturing-kpi-card .kpi-breakdown span {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.kpi-chart {
+  width: 120px;
+  height: 50px;
+}
+
+.oee-gauge {
+  width: 80px;
+  height: 80px;
+  position: relative;
+}
+
+.cycle-time-chart {
+  width: 120px;
+  height: 50px;
+}
+
+.throughput-indicator {
+  width: 100px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.indicator-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--background-secondary);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.indicator-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--info), var(--info-light));
+  border-radius: var(--radius);
+  transition: width var(--transition-slow);
+}
+
+/* Manufacturing Dashboard Grid */
+.manufacturing-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+  gap: var(--space-6);
+  grid-auto-rows: min-content;
+}
+
+/* Manufacturing Widget */
+.manufacturing-widget {
+  background: var(--surface);
+  border: 1px solid var(--background-secondary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.manufacturing-widget:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.manufacturing-widget.production-lines-status {
+  grid-column: 1 / -1;
+}
+
+/* Production Lines Status */
+.production-lines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--space-6);
+}
+
+.production-line-card {
+  background: var(--surface-elevated);
+  border: 1px solid var(--background-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: all var(--transition-fast);
+}
+
+.production-line-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.production-line-card.maintenance {
+  background: linear-gradient(135deg, var(--warning-bg), rgba(245, 158, 11, 0.05));
+  border-color: var(--warning);
+}
+
+.line-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.line-name {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.line-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.line-status.running {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.line-status.maintenance {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.line-status.stopped {
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+.line-status .status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.line-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.line-metrics .metric {
+  text-align: center;
+}
+
+.line-metrics .metric-label {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+.line-metrics .metric-value {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.line-chart {
+  height: 80px;
+}
+
+/* Maintenance Info */
+.maintenance-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.maintenance-type {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--warning);
+}
+
+.maintenance-duration {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.maintenance-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--background-secondary);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--warning), var(--warning-light));
+  border-radius: var(--radius);
+  transition: width var(--transition-slow);
+}
+
+.maintenance-progress span {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Work Orders Table */
+.work-orders-table-container {
+  overflow-x: auto;
+}
+
+.work-orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.work-orders-table th {
+  background: var(--surface-elevated);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--background-secondary);
+  white-space: nowrap;
+}
+
+.work-orders-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--background-secondary);
+  white-space: nowrap;
+}
+
+.work-orders-table tbody tr:hover {
+  background: var(--surface-elevated);
+}
+
+.progress-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.progress-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.priority-badge {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.priority-badge.high {
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+.priority-badge.medium {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.priority-badge.low {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+/* Quality Metrics */
+.quality-overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.quality-score-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-5);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--success);
+}
+
+.score-display {
+  text-align: center;
+}
+
+.score-value {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--success);
+  line-height: 1;
+}
+
+.score-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-2);
+}
+
+.score-trend {
+  width: 120px;
+  height: 60px;
+}
+
+.quality-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.quality-metric {
+  padding: var(--space-4);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary);
+}
+
+.quality-metric .metric-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.quality-metric .metric-header i {
+  color: var(--primary);
+}
+
+.quality-metric .metric-header span {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.quality-metric .metric-value {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.quality-metric .metric-change {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.quality-metric .metric-change.positive {
+  color: var(--success);
+}
+
+.quality-metric .metric-change.negative {
+  color: var(--error);
+}
+
+/* Recent Quality Issues */
+.recent-quality-issues h4 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.quality-issues-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.quality-issue {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid transparent;
+}
+
+.quality-issue.critical {
+  background: var(--error-bg);
+  border-left-color: var(--error);
+}
+
+.quality-issue.warning {
+  background: var(--warning-bg);
+  border-left-color: var(--warning);
+}
+
+.quality-issue.resolved {
+  background: var(--success-bg);
+  border-left-color: var(--success);
+}
+
+.issue-info {
+  flex: 1;
+}
+
+.issue-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.issue-details {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.issue-time {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.issue-status {
+  margin-left: var(--space-4);
+}
+
+/* Equipment Status */
+.equipment-overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.equipment-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-4);
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-xl);
+}
+
+.summary-icon.operational {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.summary-icon.maintenance {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.summary-icon.alert {
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+.summary-info {
+  text-align: left;
+}
+
+.summary-value {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.summary-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+/* Maintenance Schedule */
+.maintenance-schedule h4 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.maintenance-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.maintenance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--background-secondary);
+  transition: all var(--transition-fast);
+}
+
+.maintenance-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.maintenance-item.urgent {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.maintenance-equipment {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.maintenance-equipment i {
+  font-size: var(--text-xl);
+  color: var(--primary);
+}
+
+.maintenance-item.urgent .maintenance-equipment i {
+  color: var(--error);
+}
+
+.equipment-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.equipment-name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.equipment-location {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.maintenance-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.maintenance-type {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--primary);
+  padding: var(--space-1) var(--space-2);
+  background: var(--info-bg);
+  border-radius: var(--radius);
+}
+
+.maintenance-item.urgent .maintenance-type {
+  color: var(--error);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.maintenance-date {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.maintenance-duration {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* Production Planning */
+.planning-overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.capacity-utilization h4,
+.production-forecast h4 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.capacity-chart {
+  height: 200px;
+}
+
+.forecast-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.forecast-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.forecast-date {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.forecast-target,
+.forecast-actual {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.forecast-actual {
+  color: var(--text-primary);
+}
+
+.forecast-variance {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-tertiary);
+}
+
+.forecast-variance.positive {
+  color: var(--success);
+}
+
+.forecast-variance.negative {
+  color: var(--error);
+}
+
+/* Form Controls */
+.filter-select {
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--background-secondary);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  min-width: 150px;
+}
+
+.widget-btn.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-inverse);
+}
+
+.widget-btn.primary:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .manufacturing-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .production-lines-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .manufacturing-kpi-header {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  
+  .quality-metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .manufacturing-content {
+    padding: var(--space-4);
+  }
+  
+  .manufacturing-kpi-header {
+    grid-template-columns: 1fr;
+  }
+  
+  .manufacturing-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .production-lines-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .line-metrics {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+  
+  .equipment-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .forecast-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .manufacturing-kpi-card {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-4);
+  }
+  
+  .line-metrics {
+    grid-template-columns: 1fr;
+  }
+  
+  .maintenance-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  
+  .maintenance-details {
+    align-items: flex-start;
+  }
+  
+  .forecast-items {
+    grid-template-columns: 1fr;
+  }
+}
