@@ -1,0 +1,561 @@
+/* Field Service Management Styles */
+
+/* Import base styles */
+@import 'base.css';
+
+:root {
+    /* Field Service specific colors */
+    --field-primary: #2563eb;
+    --field-secondary: #16a34a;
+    --field-warning: #f59e0b;
+    --field-error: #dc2626;
+    --field-info: #0ea5e9;
+    --field-success: #059669;
+    --field-dark-bg: #1e293b;
+    --field-card-bg: #334155;
+    --field-border: #475569;
+    --field-text-primary: #f1f5f9;
+    --field-text-secondary: #94a3b8;
+}
+
+/* Field Service Navigation */
+.field-service-nav {
+    background: var(--field-dark-bg);
+    border-bottom: 1px solid var(--field-border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 60px;
+    overflow-x: auto;
+}
+
+.field-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    color: var(--field-text-secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.field-nav-item:hover {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--field-primary);
+}
+
+.field-nav-item.active {
+    background: var(--field-primary);
+    color: white;
+}
+
+/* Field Service Content */
+.field-service-content-container {
+    flex: 1;
+    padding: 2rem;
+    background: var(--bg-primary);
+    overflow-y: auto;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+/* Header Metrics */
+.field-service-metrics {
+    display: flex;
+    gap: 2rem;
+    margin-right: 2rem;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    color: var(--field-text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.metric-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--field-text-primary);
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-right: 1rem;
+}
+
+.quick-action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--field-primary);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.quick-action-btn:hover {
+    background: #1d4ed8;
+    transform: scale(1.05);
+}
+
+/* Dashboard Grid */
+.field-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 2rem;
+    grid-template-areas: 
+        "performance-kpis field-map"
+        "todays-schedule work-orders-queue"
+        "todays-schedule work-orders-queue";
+}
+
+.performance-kpis {
+    grid-area: performance-kpis;
+}
+
+.field-map-section {
+    grid-area: field-map;
+}
+
+.todays-schedule {
+    grid-area: todays-schedule;
+}
+
+.work-orders-queue {
+    grid-area: work-orders-queue;
+}
+
+/* Dashboard Sections */
+.dashboard-section {
+    background: var(--field-card-bg);
+    border: 1px solid var(--field-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.dashboard-section h3 {
+    color: var(--field-text-primary);
+    margin: 0 0 1.5rem 0;
+    font-size: 1.2rem;
+}
+
+/* Performance KPIs */
+.kpis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.kpi-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 8px;
+}
+
+.kpi-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.response-time .kpi-icon {
+    background: linear-gradient(135deg, var(--field-primary), #1d4ed8);
+}
+
+.first-time-fix .kpi-icon {
+    background: linear-gradient(135deg, var(--field-success), #047857);
+}
+
+.technician-utilization .kpi-icon {
+    background: linear-gradient(135deg, var(--field-warning), #d97706);
+}
+
+.customer-satisfaction .kpi-icon {
+    background: linear-gradient(135deg, var(--field-secondary), #15803d);
+}
+
+.kpi-content {
+    flex: 1;
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--field-text-primary);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.kpi-label {
+    font-size: 0.8rem;
+    color: var(--field-text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.kpi-trend {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.kpi-trend.positive {
+    color: var(--field-success);
+}
+
+.kpi-trend.negative {
+    color: var(--field-error);
+}
+
+.kpi-trend.stable {
+    color: var(--field-text-secondary);
+}
+
+/* Section Headers */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h3 {
+    margin: 0;
+}
+
+/* Map Controls */
+.map-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.map-toggle {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--field-border);
+    background: transparent;
+    color: var(--field-text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.map-toggle:hover,
+.map-toggle.active {
+    background: var(--field-primary);
+    color: white;
+    border-color: var(--field-primary);
+}
+
+.field-map {
+    height: 300px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+/* Schedule Timeline */
+.schedule-timeline {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.schedule-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--field-border);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.schedule-item:hover {
+    background: rgba(37, 99, 235, 0.05);
+}
+
+.schedule-time {
+    font-weight: 600;
+    color: var(--field-primary);
+    font-size: 0.9rem;
+    min-width: 80px;
+}
+
+.schedule-content {
+    flex: 1;
+}
+
+.schedule-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.work-order-id {
+    font-weight: 600;
+    color: var(--field-text-primary);
+}
+
+.priority-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.priority-indicator.critical {
+    background: var(--field-error);
+}
+
+.priority-indicator.high {
+    background: #f59e0b;
+}
+
+.priority-indicator.medium {
+    background: var(--field-warning);
+}
+
+.priority-indicator.low {
+    background: var(--field-success);
+}
+
+.schedule-description {
+    color: var(--field-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.schedule-technician {
+    color: var(--field-text-secondary);
+    font-size: 0.8rem;
+}
+
+.schedule-actions button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.start-work-btn {
+    background: var(--field-success);
+    color: white;
+}
+
+.complete-work-order-btn {
+    background: var(--field-primary);
+    color: white;
+}
+
+/* Work Orders Queue */
+.work-orders-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.work-order-item {
+    padding: 1rem;
+    border: 1px solid var(--field-border);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.work-order-item:hover {
+    background: rgba(37, 99, 235, 0.05);
+    border-color: var(--field-primary);
+}
+
+.work-order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.priority-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.priority-badge.critical {
+    background: rgba(220, 38, 38, 0.2);
+    color: var(--field-error);
+}
+
+.priority-badge.high {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.priority-badge.medium {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--field-warning);
+}
+
+.priority-badge.low {
+    background: rgba(5, 150, 105, 0.2);
+    color: var(--field-success);
+}
+
+.work-order-description {
+    color: var(--field-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.work-order-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--field-text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.work-order-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.assign-technician-btn {
+    padding: 0.5rem 1rem;
+    background: var(--field-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.assign-technician-btn:hover {
+    background: #1d4ed8;
+}
+
+.assigned-tech {
+    font-size: 0.8rem;
+    color: var(--field-success);
+    font-style: italic;
+}
+
+/* Filters and Controls */
+.queue-filters,
+.schedule-actions,
+.table-filters {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.priority-filter,
+.status-filter,
+.technician-filter,
+.filter-select {
+    padding: 0.5rem;
+    background: var(--field-card-bg);
+    border: 1px solid var(--field-border);
+    color: var(--field-text-primary);
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.schedule-btn {
+    padding: 0.5rem 1rem;
+    background: var(--field-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .field-dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "performance-kpis"
+            "field-map"
+            "todays-schedule"
+            "work-orders-queue";
+    }
+}
+
+@media (max-width: 768px) {
+    .field-service-nav {
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+    
+    .field-service-content-container {
+        padding: 1rem;
+    }
+    
+    .kpis-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .field-service-metrics {
+        display: none; /* Hide on mobile to save space */
+    }
+    
+    .schedule-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .work-order-meta {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
