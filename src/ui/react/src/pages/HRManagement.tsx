@@ -1,0 +1,1 @@
+export { HRManagement as default } from './modules';

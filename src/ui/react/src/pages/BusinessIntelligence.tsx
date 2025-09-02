@@ -1,0 +1,1 @@
+export { BusinessIntelligence as default } from './modules';
