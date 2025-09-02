@@ -30,6 +30,64 @@ export const BUSINESS_CONSTANTS = {
   TARGET_EFFICIENCY_RATIO: 0.92, // 92% efficiency target
 } as const;
 
+// Service Analytics Constants
+export const SERVICE_ANALYTICS_CONSTANTS = {
+  // Service Recommendation Impact Values
+  QUALITY_IMPROVEMENT_TARGET: 8.5, // percentage points
+  COST_SAVINGS_DIAGNOSTIC_TOOLS: 125000, // annual savings
+  COST_SAVINGS_RESOURCE_OPTIMIZATION: 85000, // from improved efficiency
+  COST_SAVINGS_MOBILE_WORKFLOWS: 200000, // annual savings
+  
+  // Implementation Timelines (days)
+  IMPLEMENTATION_TIME_DIAGNOSTIC_TOOLS: 45,
+  IMPLEMENTATION_TIME_RESOURCE_EXPANSION: 60,
+  IMPLEMENTATION_TIME_MOBILE_WORKFLOWS: 30,
+  
+  // Performance Thresholds
+  RESOURCE_UTILIZATION_CURRENT: 78.9, // current percentage
+  RESOURCE_UTILIZATION_OPTIMAL: 75.0, // target percentage
+  TIME_REDUCTION_TARGET: 25, // percentage improvement
+  CUSTOMER_SATISFACTION_GAIN: 0.3, // rating points
+  
+  // Oracle EBS Competitive Ratings
+  ORACLE_EBS_DASHBOARD_RATING: 6.0,
+  ORACLE_EBS_MOBILE_RATING: 5.5,
+  ORACLE_EBS_OPTIMIZATION_RATING: 7.0,
+  ORACLE_EBS_EMERGENCY_RATING: 6.5,
+  ORACLE_EBS_ANALYTICS_RATING: 7.5,
+  ORACLE_EBS_INTEGRATION_RATING: 6.0,
+  
+  TITAN_GROVE_DASHBOARD_RATING: 9.5,
+  TITAN_GROVE_MOBILE_RATING: 9.2,
+  TITAN_GROVE_OPTIMIZATION_RATING: 9.4,
+  TITAN_GROVE_EMERGENCY_RATING: 9.3,
+  TITAN_GROVE_ANALYTICS_RATING: 9.1,
+  TITAN_GROVE_INTEGRATION_RATING: 9.6,
+  
+  // Business Value Metrics
+  ORACLE_COMPETITIVE_COST_SAVINGS: 2850000, // Annual savings
+  ORACLE_COMPETITIVE_EFFICIENCY_GAINS: 35.5, // Percentage improvement
+  ORACLE_COMPETITIVE_REVENUE_INCREASE: 450000, // Additional revenue
+  ORACLE_COMPETITIVE_RISK_REDUCTION: 65.0, // Percentage risk reduction
+  ORACLE_COMPETITIVE_MIGRATION_COSTS: 750000,
+  ORACLE_COMPETITIVE_ROI_MONTHS: 14, // months to payback
+  
+  // Service Metrics Mock Data (for development/demo)
+  MOCK_TOTAL_SERVICE_REQUESTS: 1247,
+  MOCK_COMPLETED_WORK_ORDERS: 1183,
+  MOCK_AVERAGE_RESOLUTION_TIME: 4.7, // hours
+  MOCK_FIRST_TIME_FIX_RATE: 89.3, // percentage
+  MOCK_CUSTOMER_SATISFACTION: 4.7, // 1-5 scale
+  MOCK_ESCALATION_RATE: 2.1, // percentage
+  MOCK_RESOURCE_UTILIZATION: 78.9, // percentage (this duplicates existing constant, use existing one)
+  MOCK_TECHNICIANS_ACTIVE: 45,
+  MOCK_EQUIPMENT_UTILIZATION: 84.2, // percentage
+  MOCK_TOTAL_SERVICE_REVENUE: 2847000,
+  MOCK_SERVICE_COSTS: 2005000,
+  MOCK_PROFIT_MARGIN: 29.6, // percentage
+  MOCK_COST_PER_SERVICE_CALL: 1694,
+} as const;
+
 // Common date utilities using centralized constants
 export const DateUtils = {
   addDays: (date: Date, days: number): Date => {
@@ -290,4 +348,155 @@ export const ForecastingUtils = {
       lower: FinancialUtils.roundToCents(Math.max(0, value - margin))
     };
   }
+};
+
+// Service Analytics Utilities
+export const ServiceAnalyticsUtils = {
+  /**
+   * Generate standardized service recommendation
+   */
+  generateRecommendation: (
+    type: 'QUALITY_ENHANCEMENT' | 'RESOURCE_OPTIMIZATION' | 'PROCESS_IMPROVEMENT',
+    insightId?: string
+  ) => {
+    const baseId = `rec_${Date.now()}${insightId ? `_${insightId}` : '_standard'}`;
+    
+    switch (type) {
+      case 'QUALITY_ENHANCEMENT':
+        return {
+          recommendationId: baseId,
+          type,
+          title: 'Implement Advanced Diagnostic Tools',
+          description: 'Deploy AI-powered diagnostic tools to improve first-time fix rates and reduce repeat service calls.',
+          estimatedImpact: {
+            qualityImprovement: SERVICE_ANALYTICS_CONSTANTS.QUALITY_IMPROVEMENT_TARGET,
+            costSavings: SERVICE_ANALYTICS_CONSTANTS.COST_SAVINGS_DIAGNOSTIC_TOOLS,
+            customerSatisfactionGain: SERVICE_ANALYTICS_CONSTANTS.CUSTOMER_SATISFACTION_GAIN
+          },
+          implementationEffort: 'MEDIUM' as const,
+          timeToImplement: SERVICE_ANALYTICS_CONSTANTS.IMPLEMENTATION_TIME_DIAGNOSTIC_TOOLS,
+          requiredResources: ['IT Team', 'Training Team', 'Field Technicians'],
+          status: 'NEW' as const,
+          priority: 'HIGH' as const,
+          category: 'Quality Improvement'
+        };
+      
+      case 'RESOURCE_OPTIMIZATION':
+        return {
+          recommendationId: baseId,
+          type,
+          title: 'Expand Service Team Capacity',
+          description: `Add additional field technicians to reduce utilization from current ${SERVICE_ANALYTICS_CONSTANTS.RESOURCE_UTILIZATION_CURRENT}% to optimal ${SERVICE_ANALYTICS_CONSTANTS.RESOURCE_UTILIZATION_OPTIMAL}%.`,
+          estimatedImpact: {
+            timeReduction: SERVICE_ANALYTICS_CONSTANTS.TIME_REDUCTION_TARGET,
+            costSavings: SERVICE_ANALYTICS_CONSTANTS.COST_SAVINGS_RESOURCE_OPTIMIZATION,
+            customerSatisfactionGain: SERVICE_ANALYTICS_CONSTANTS.CUSTOMER_SATISFACTION_GAIN - 0.1 // Slightly lower gain
+          },
+          implementationEffort: 'HIGH' as const,
+          timeToImplement: SERVICE_ANALYTICS_CONSTANTS.IMPLEMENTATION_TIME_RESOURCE_EXPANSION,
+          requiredResources: ['HR Team', 'Training Budget', 'Equipment'],
+          status: 'NEW' as const,
+          priority: 'HIGH' as const,
+          category: 'Resource Management'
+        };
+      
+      case 'PROCESS_IMPROVEMENT':
+        return {
+          recommendationId: baseId,
+          type,
+          title: 'Implement Mobile-First Service Workflows',
+          description: 'Transition to mobile-first service workflows to reduce paperwork and improve field efficiency.',
+          estimatedImpact: {
+            timeReduction: SERVICE_ANALYTICS_CONSTANTS.TIME_REDUCTION_TARGET - 5, // 20%
+            costSavings: SERVICE_ANALYTICS_CONSTANTS.COST_SAVINGS_MOBILE_WORKFLOWS,
+            qualityImprovement: 5
+          },
+          implementationEffort: 'MEDIUM' as const,
+          timeToImplement: SERVICE_ANALYTICS_CONSTANTS.IMPLEMENTATION_TIME_MOBILE_WORKFLOWS,
+          requiredResources: ['Mobile Development Team', 'Training Team'],
+          status: 'NEW' as const,
+          priority: 'MEDIUM' as const,
+          category: 'Digital Transformation'
+        };
+    }
+  },
+
+  /**
+   * Generate Oracle EBS competitive comparison feature
+   */
+  generateOracleComparisonFeature: (
+    feature: string,
+    oracleRating: number,
+    titanGroveRating: number,
+    notes: string
+  ) => ({
+    feature,
+    oracleEBSRating: oracleRating,
+    titanGroveRating,
+    advantage: titanGroveRating - oracleRating,
+    notes
+  }),
+
+  /**
+   * Calculate overall competitive advantage
+   */
+  calculateCompetitiveAdvantage: (featureComparisons: Array<{
+    oracleEBSRating: number;
+    titanGroveRating: number;
+  }>) => {
+    const oracleAverage = featureComparisons.reduce((sum, f) => sum + f.oracleEBSRating, 0) / featureComparisons.length;
+    const titanGroveAverage = featureComparisons.reduce((sum, f) => sum + f.titanGroveRating, 0) / featureComparisons.length;
+    
+    return {
+      oracle: FinancialUtils.roundToCents(oracleAverage),
+      titanGrove: FinancialUtils.roundToCents(titanGroveAverage),
+      competitiveAdvantage: FinancialUtils.roundToCents(titanGroveAverage - oracleAverage)
+    };
+  },
+
+  /**
+   * Generate standardized Oracle EBS business value metrics
+   */
+  getOracleEBSBusinessValue: () => ({
+    costSavings: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_COST_SAVINGS,
+    efficiencyGains: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_EFFICIENCY_GAINS,
+    revenueIncrease: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_REVENUE_INCREASE,
+    riskReduction: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_RISK_REDUCTION
+  }),
+
+  /**
+   * Get standardized Oracle EBS migration metrics
+   */
+  getOracleEBSMigrationMetrics: () => ({
+    migrationComplexity: 'MEDIUM' as const,
+    migrationTimeframe: 8, // months
+    migrationCosts: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_MIGRATION_COSTS,
+    expectedROI: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_ROI_MONTHS
+  }),
+
+  /**
+   * Generate mock service metrics for development/demo purposes
+   */
+  generateMockServiceMetrics: () => ({
+    // Volume metrics
+    totalServiceRequests: SERVICE_ANALYTICS_CONSTANTS.MOCK_TOTAL_SERVICE_REQUESTS,
+    completedWorkOrders: SERVICE_ANALYTICS_CONSTANTS.MOCK_COMPLETED_WORK_ORDERS,
+    averageResolutionTime: SERVICE_ANALYTICS_CONSTANTS.MOCK_AVERAGE_RESOLUTION_TIME,
+    
+    // Quality metrics
+    firstTimeFixRate: SERVICE_ANALYTICS_CONSTANTS.MOCK_FIRST_TIME_FIX_RATE,
+    customerSatisfaction: SERVICE_ANALYTICS_CONSTANTS.MOCK_CUSTOMER_SATISFACTION,
+    escalationRate: SERVICE_ANALYTICS_CONSTANTS.MOCK_ESCALATION_RATE,
+    
+    // Resource metrics
+    resourceUtilization: SERVICE_ANALYTICS_CONSTANTS.RESOURCE_UTILIZATION_CURRENT,
+    techniciansActive: SERVICE_ANALYTICS_CONSTANTS.MOCK_TECHNICIANS_ACTIVE,
+    equipmentUtilization: SERVICE_ANALYTICS_CONSTANTS.MOCK_EQUIPMENT_UTILIZATION,
+    
+    // Financial metrics
+    totalServiceRevenue: SERVICE_ANALYTICS_CONSTANTS.MOCK_TOTAL_SERVICE_REVENUE,
+    serviceCosts: SERVICE_ANALYTICS_CONSTANTS.MOCK_SERVICE_COSTS,
+    profitMargin: SERVICE_ANALYTICS_CONSTANTS.MOCK_PROFIT_MARGIN,
+    costPerServiceCall: SERVICE_ANALYTICS_CONSTANTS.MOCK_COST_PER_SERVICE_CALL
+  })
 };
