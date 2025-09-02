@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Records & Compliance Suite - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/compliance.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Compliance</span>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item active" data-module="compliance">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Compliance</span>
+                    </div>
+                    <div class="nav-item" data-module="asset-management">
+                        <i class="fas fa-cogs"></i>
+                        <span>Assets</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <div class="titan-user-profile">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">Compliance Officer</span>
+                        <span class="user-role">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="compliance-main-content">
+            <!-- Compliance Dashboard -->
+            <div class="compliance-dashboard">
+                <div class="dashboard-header">
+                    <h1>E-Records & Compliance Suite</h1>
+                    <p>Digital signatures, audit trails, and document management</p>
+                </div>
+
+                <!-- Compliance KPIs -->
+                <div class="compliance-kpi-grid">
+                    <div class="compliance-kpi-card">
+                        <div class="kpi-icon compliance-rate">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">97.2%</h3>
+                            <p class="kpi-label">Compliance Rate</p>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+2.1%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="compliance-kpi-card">
+                        <div class="kpi-icon audit-trail">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">15,847</h3>
+                            <p class="kpi-label">Audit Trail Records</p>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+15.3%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="compliance-kpi-card">
+                        <div class="kpi-icon digital-signatures">
+                            <i class="fas fa-signature"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">2,348</h3>
+                            <p class="kpi-label">Digital Signatures</p>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+8.7%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="compliance-kpi-card">
+                        <div class="kpi-icon document-retention">
+                            <i class="fas fa-archive"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <h3 class="kpi-value">99.8%</h3>
+                            <p class="kpi-label">Document Retention</p>
+                            <div class="kpi-trend neutral">
+                                <i class="fas fa-minus"></i>
+                                <span>0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compliance Modules -->
+                <div class="compliance-modules-grid">
+                    <div class="compliance-module-card">
+                        <div class="module-header">
+                            <h3>Document Management</h3>
+                            <div class="module-status active">Active</div>
+                        </div>
+                        <div class="module-content">
+                            <p>Secure document storage and version control with automated retention policies</p>
+                            <div class="module-stats">
+                                <div class="stat">
+                                    <span class="stat-value">47,392</span>
+                                    <span class="stat-label">Documents</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">98.7%</span>
+                                    <span class="stat-label">Compliance</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module-actions">
+                            <button class="btn btn-primary">Manage Documents</button>
+                        </div>
+                    </div>
+
+                    <div class="compliance-module-card">
+                        <div class="module-header">
+                            <h3>Digital Signatures</h3>
+                            <div class="module-status active">Active</div>
+                        </div>
+                        <div class="module-content">
+                            <p>Electronic signature workflows with PKI infrastructure and non-repudiation</p>
+                            <div class="module-stats">
+                                <div class="stat">
+                                    <span class="stat-value">2,348</span>
+                                    <span class="stat-label">Signatures</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">100%</span>
+                                    <span class="stat-label">Valid</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module-actions">
+                            <button class="btn btn-primary">Sign Documents</button>
+                        </div>
+                    </div>
+
+                    <div class="compliance-module-card">
+                        <div class="module-header">
+                            <h3>Audit Trail</h3>
+                            <div class="module-status active">Active</div>
+                        </div>
+                        <div class="module-content">
+                            <p>Comprehensive audit logging with tamper-proof records and forensic analysis</p>
+                            <div class="module-stats">
+                                <div class="stat">
+                                    <span class="stat-value">15,847</span>
+                                    <span class="stat-label">Log Entries</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">0</span>
+                                    <span class="stat-label">Violations</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module-actions">
+                            <button class="btn btn-primary">View Audit Logs</button>
+                        </div>
+                    </div>
+
+                    <div class="compliance-module-card">
+                        <div class="module-header">
+                            <h3>Regulatory Reporting</h3>
+                            <div class="module-status active">Active</div>
+                        </div>
+                        <div class="module-content">
+                            <p>Automated regulatory reporting with SOX, GDPR, and industry-specific compliance</p>
+                            <div class="module-stats">
+                                <div class="stat">
+                                    <span class="stat-value">127</span>
+                                    <span class="stat-label">Reports</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">On Time</span>
+                                    <span class="stat-label">Delivery</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module-actions">
+                            <button class="btn btn-primary">Generate Reports</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-compliance-activity">
+                    <h2>Recent Compliance Activity</h2>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon signature">
+                                <i class="fas fa-signature"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Financial Statement Signed</div>
+                                <div class="activity-details">Q4 2024 financial statement digitally signed by CFO</div>
+                                <div class="activity-timestamp">2 hours ago</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon audit">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Audit Log Export</div>
+                                <div class="activity-details">Compliance team exported 30-day audit trail for review</div>
+                                <div class="activity-timestamp">4 hours ago</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon document">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Policy Update</div>
+                                <div class="activity-details">Data retention policy updated for GDPR compliance</div>
+                                <div class="activity-timestamp">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="scripts/compliance.js"></script>
+</body>
+</html>
