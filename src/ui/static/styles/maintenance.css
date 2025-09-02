@@ -1,0 +1,844 @@
+/* Maintenance Management Styles */
+
+/* Import base styles */
+@import 'base.css';
+
+:root {
+    /* Maintenance specific colors */
+    --maintenance-primary: #7c3aed;
+    --maintenance-secondary: #059669;
+    --maintenance-warning: #f59e0b;
+    --maintenance-error: #dc2626;
+    --maintenance-info: #0ea5e9;
+    --maintenance-success: #10b981;
+    --maintenance-dark-bg: #1e1b3b;
+    --maintenance-card-bg: #2d2a54;
+    --maintenance-border: #4c4876;
+    --maintenance-text-primary: #f8fafc;
+    --maintenance-text-secondary: #a78bfa;
+    /* Health status colors */
+    --health-excellent: #10b981;
+    --health-good: #3b82f6;
+    --health-warning: #f59e0b;
+    --health-critical: #dc2626;
+}
+
+/* Maintenance Navigation */
+.maintenance-nav {
+    background: var(--maintenance-dark-bg);
+    border-bottom: 1px solid var(--maintenance-border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 60px;
+    overflow-x: auto;
+}
+
+.maintenance-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    color: var(--maintenance-text-secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.maintenance-nav-item:hover {
+    background: rgba(124, 58, 237, 0.1);
+    color: var(--maintenance-primary);
+}
+
+.maintenance-nav-item.active {
+    background: var(--maintenance-primary);
+    color: white;
+}
+
+/* Maintenance Content */
+.maintenance-content-container {
+    flex: 1;
+    padding: 2rem;
+    background: var(--bg-primary);
+    overflow-y: auto;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+/* Header Metrics */
+.maintenance-metrics {
+    display: flex;
+    gap: 2rem;
+    margin-right: 2rem;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    color: var(--maintenance-text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.metric-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--maintenance-text-primary);
+}
+
+.metric-value.critical {
+    color: var(--maintenance-error);
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-right: 1rem;
+}
+
+.quick-action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--maintenance-primary);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.quick-action-btn:hover {
+    background: #6d28d9;
+    transform: scale(1.05);
+}
+
+/* Dashboard Grid */
+.maintenance-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 2rem;
+    grid-template-areas: 
+        "maintenance-kpis asset-health-monitor"
+        "maintenance-schedule predictive-analytics";
+}
+
+.maintenance-kpis {
+    grid-area: maintenance-kpis;
+}
+
+.asset-health-monitor {
+    grid-area: asset-health-monitor;
+}
+
+.maintenance-schedule {
+    grid-area: maintenance-schedule;
+}
+
+.predictive-analytics {
+    grid-area: predictive-analytics;
+}
+
+/* Dashboard Sections */
+.dashboard-section {
+    background: var(--maintenance-card-bg);
+    border: 1px solid var(--maintenance-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.dashboard-section h3 {
+    color: var(--maintenance-text-primary);
+    margin: 0 0 1.5rem 0;
+    font-size: 1.2rem;
+}
+
+/* Maintenance KPIs */
+.kpis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.kpi-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(124, 58, 237, 0.1);
+    border-radius: 8px;
+}
+
+.kpi-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.asset-uptime .kpi-icon {
+    background: linear-gradient(135deg, var(--maintenance-primary), #6d28d9);
+}
+
+.mttr .kpi-icon {
+    background: linear-gradient(135deg, var(--maintenance-success), #047857);
+}
+
+.planned-maintenance .kpi-icon {
+    background: linear-gradient(135deg, var(--maintenance-info), #0369a1);
+}
+
+.maintenance-cost .kpi-icon {
+    background: linear-gradient(135deg, var(--maintenance-warning), #d97706);
+}
+
+.kpi-content {
+    flex: 1;
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--maintenance-text-primary);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.kpi-label {
+    font-size: 0.8rem;
+    color: var(--maintenance-text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.kpi-trend {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.kpi-trend.positive {
+    color: var(--maintenance-success);
+}
+
+.kpi-trend.negative {
+    color: var(--maintenance-error);
+}
+
+.kpi-trend.stable {
+    color: var(--maintenance-text-secondary);
+}
+
+/* Section Headers */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h3 {
+    margin: 0;
+}
+
+/* Asset Health Monitor */
+.health-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.health-filter {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--maintenance-border);
+    background: transparent;
+    color: var(--maintenance-text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.health-filter:hover,
+.health-filter.active {
+    background: var(--maintenance-primary);
+    color: white;
+    border-color: var(--maintenance-primary);
+}
+
+.asset-health-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.asset-health-card {
+    background: rgba(124, 58, 237, 0.05);
+    border: 1px solid var(--maintenance-border);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.asset-health-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.asset-health-card.excellent {
+    border-left: 4px solid var(--health-excellent);
+}
+
+.asset-health-card.good {
+    border-left: 4px solid var(--health-good);
+}
+
+.asset-health-card.warning {
+    border-left: 4px solid var(--health-warning);
+}
+
+.asset-health-card.critical {
+    border-left: 4px solid var(--health-critical);
+}
+
+.health-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.asset-info .asset-name {
+    font-weight: 600;
+    color: var(--maintenance-text-primary);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.asset-info .asset-type {
+    font-size: 0.8rem;
+    color: var(--maintenance-text-secondary);
+}
+
+.health-score {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.health-score.excellent {
+    color: var(--health-excellent);
+}
+
+.health-score.good {
+    color: var(--health-good);
+}
+
+.health-score.warning {
+    color: var(--health-warning);
+}
+
+.health-score.critical {
+    color: var(--health-critical);
+}
+
+.health-indicators {
+    margin-bottom: 1rem;
+}
+
+.health-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.indicator-label {
+    font-size: 0.8rem;
+    color: var(--maintenance-text-secondary);
+    min-width: 80px;
+}
+
+.indicator-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(124, 58, 237, 0.2);
+    border-radius: 3px;
+    margin-left: 0.5rem;
+    overflow: hidden;
+}
+
+.indicator-fill {
+    height: 100%;
+    background: var(--maintenance-primary);
+    transition: width 0.3s ease;
+}
+
+.health-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.health-action-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--maintenance-border);
+    background: transparent;
+    color: var(--maintenance-text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.health-action-btn:hover {
+    background: var(--maintenance-primary);
+    color: white;
+    border-color: var(--maintenance-primary);
+}
+
+.last-maintenance {
+    font-size: 0.75rem;
+    color: var(--maintenance-text-secondary);
+    text-align: center;
+}
+
+/* Maintenance Timeline */
+.maintenance-timeline {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.maintenance-timeline-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--maintenance-border);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.maintenance-timeline-item:hover {
+    background: rgba(124, 58, 237, 0.05);
+}
+
+.maintenance-timeline-item.preventive {
+    border-left: 4px solid var(--maintenance-success);
+}
+
+.maintenance-timeline-item.corrective {
+    border-left: 4px solid var(--maintenance-warning);
+}
+
+.maintenance-timeline-item.predictive {
+    border-left: 4px solid var(--maintenance-primary);
+}
+
+.maintenance-timeline-item.emergency {
+    border-left: 4px solid var(--maintenance-error);
+}
+
+.timeline-time {
+    font-weight: 600;
+    color: var(--maintenance-primary);
+    font-size: 0.9rem;
+    min-width: 80px;
+}
+
+.timeline-content {
+    flex: 1;
+}
+
+.timeline-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.order-id {
+    font-weight: 600;
+    color: var(--maintenance-text-primary);
+}
+
+.order-type {
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.order-type.preventive {
+    background: rgba(5, 150, 105, 0.2);
+    color: var(--maintenance-success);
+}
+
+.order-type.corrective {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--maintenance-warning);
+}
+
+.order-type.predictive {
+    background: rgba(124, 58, 237, 0.2);
+    color: var(--maintenance-primary);
+}
+
+.order-type.emergency {
+    background: rgba(220, 38, 38, 0.2);
+    color: var(--maintenance-error);
+}
+
+.priority-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.priority-indicator.critical {
+    background: var(--maintenance-error);
+}
+
+.priority-indicator.high {
+    background: var(--maintenance-warning);
+}
+
+.priority-indicator.medium {
+    background: var(--maintenance-info);
+}
+
+.priority-indicator.low {
+    background: var(--maintenance-success);
+}
+
+.timeline-description {
+    color: var(--maintenance-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.timeline-asset,
+.timeline-technicians {
+    color: var(--maintenance-text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.timeline-actions button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.start-maintenance-btn {
+    background: var(--maintenance-success);
+    color: white;
+}
+
+.complete-maintenance-btn {
+    background: var(--maintenance-primary);
+    color: white;
+}
+
+/* Predictive Analytics */
+.predictions-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.predictions-summary {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--maintenance-border);
+}
+
+.predictions-summary h4 {
+    color: var(--maintenance-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.summary-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value.critical {
+    color: var(--maintenance-error);
+}
+
+.stat-value.high {
+    color: var(--maintenance-warning);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--maintenance-text-secondary);
+}
+
+.predictions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.prediction-card {
+    padding: 1rem;
+    border: 1px solid var(--maintenance-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.prediction-card:hover {
+    background: rgba(124, 58, 237, 0.05);
+}
+
+.prediction-card.critical {
+    border-left: 4px solid var(--maintenance-error);
+}
+
+.prediction-card.high {
+    border-left: 4px solid var(--maintenance-warning);
+}
+
+.prediction-card.medium {
+    border-left: 4px solid var(--maintenance-info);
+}
+
+.prediction-card.low {
+    border-left: 4px solid var(--maintenance-success);
+}
+
+.prediction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.asset-name {
+    font-weight: 600;
+    color: var(--maintenance-text-primary);
+}
+
+.risk-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.risk-badge.critical {
+    background: rgba(220, 38, 38, 0.2);
+    color: var(--maintenance-error);
+}
+
+.risk-badge.high {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--maintenance-warning);
+}
+
+.prediction-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.prediction-metric {
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--maintenance-text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.metric-value {
+    display: block;
+    font-weight: 600;
+    color: var(--maintenance-text-primary);
+}
+
+.prediction-recommendations {
+    margin-top: 0.5rem;
+}
+
+.recommendation {
+    font-size: 0.8rem;
+    color: var(--maintenance-text-secondary);
+    margin-bottom: 0.25rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.recommendation:before {
+    content: "•";
+    color: var(--maintenance-primary);
+    position: absolute;
+    left: 0;
+}
+
+/* Filters and Controls */
+.schedule-controls,
+.analytics-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.schedule-btn,
+.analytics-btn {
+    padding: 0.5rem 1rem;
+    background: var(--maintenance-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.date-filter,
+.filter-select {
+    padding: 0.5rem;
+    background: var(--maintenance-card-bg);
+    border: 1px solid var(--maintenance-border);
+    color: var(--maintenance-text-primary);
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+/* Work Orders Interface */
+.work-orders-interface {
+    margin-top: 1.5rem;
+}
+
+.work-orders-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--maintenance-card-bg);
+    border: 1px solid var(--maintenance-border);
+    color: var(--maintenance-text-primary);
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.search-input::placeholder {
+    color: var(--maintenance-text-secondary);
+}
+
+.work-orders-table {
+    background: var(--maintenance-card-bg);
+    border: 1px solid var(--maintenance-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .maintenance-dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "maintenance-kpis"
+            "asset-health-monitor"
+            "maintenance-schedule"
+            "predictive-analytics";
+    }
+}
+
+@media (max-width: 768px) {
+    .maintenance-nav {
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+    
+    .maintenance-content-container {
+        padding: 1rem;
+    }
+    
+    .kpis-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .maintenance-metrics {
+        display: none;
+    }
+    
+    .asset-health-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .maintenance-timeline-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .prediction-details {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+    
+    .work-orders-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Command Center - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/service-command-center.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Service Command</span>
+                </div>
+                <div class="titan-global-search">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search work orders, technicians, locations..." class="global-search-input" id="serviceGlobalSearch">
+                        <div class="search-suggestions" id="serviceSearchSuggestions"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="titan-header-center">
+                <nav class="titan-main-navigation">
+                    <div class="nav-item" data-module="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Executive</span>
+                    </div>
+                    <div class="nav-item" data-module="manufacturing">
+                        <i class="fas fa-industry"></i>
+                        <span>Manufacturing</span>
+                    </div>
+                    <div class="nav-item active" data-module="service-command-center">
+                        <i class="fas fa-satellite-dish"></i>
+                        <span>Service Command</span>
+                        <div class="nav-badge emergency">3</div>
+                    </div>
+                    <div class="nav-item" data-module="field-service">
+                        <i class="fas fa-tools"></i>
+                        <span>Field Service</span>
+                    </div>
+                    <div class="nav-item" data-module="maintenance">
+                        <i class="fas fa-cogs"></i>
+                        <span>Maintenance</span>
+                    </div>
+                    <div class="nav-item" data-module="asset-management">
+                        <i class="fas fa-cubes"></i>
+                        <span>Assets</span>
+                    </div>
+                    <div class="nav-item" data-module="hr-management">
+                        <i class="fas fa-users"></i>
+                        <span>HR</span>
+                    </div>
+                    <div class="nav-item" data-module="bi">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </div>
+                </nav>
+            </div>
+            
+            <div class="titan-header-right">
+                <!-- Command Center Metrics -->
+                <div class="command-center-metrics">
+                    <div class="metric active-resources">
+                        <span class="metric-label">Active Resources</span>
+                        <span class="metric-value" id="activeResourcesCount">24</span>
+                    </div>
+                    <div class="metric emergency-alerts">
+                        <span class="metric-label">Emergency Alerts</span>
+                        <span class="metric-value critical" id="emergencyAlertsCount">3</span>
+                    </div>
+                    <div class="metric system-status">
+                        <span class="metric-label">System Status</span>
+                        <span class="metric-value operational" id="systemStatus">Operational</span>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="titan-notification-center">
+                    <button class="notification-icon" id="notificationToggle">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count" id="notificationCount">8</span>
+                    </button>
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <!-- Notifications will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- User Profile -->
+                <div class="user-profile-menu">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-info">
+                        <span class="profile-name">Service Commander</span>
+                        <span class="profile-role">Operations Manager</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="titan-content-area">
+            <!-- Service Command Center Navigation -->
+            <nav class="service-command-nav">
+                <div class="service-nav-item active" data-view="overview">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Command Overview</span>
+                </div>
+                <div class="service-nav-item" data-view="dispatch">
+                    <i class="fas fa-route"></i>
+                    <span>Dispatch Center</span>
+                </div>
+                <div class="service-nav-item" data-view="resources">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Resource Management</span>
+                </div>
+                <div class="service-nav-item" data-view="emergency">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Emergency Response</span>
+                </div>
+                <div class="service-nav-item" data-view="analytics">
+                    <i class="fas fa-analytics"></i>
+                    <span>Service Analytics</span>
+                </div>
+                <div class="service-nav-item" data-view="workflows">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Workflows</span>
+                </div>
+            </nav>
+
+            <!-- Content Sections -->
+            <div class="service-content-container">
+                <!-- Command Overview -->
+                <div class="content-section active" id="command-overview">
+                    <div class="content-header">
+                        <div class="header-left">
+                            <h1 class="page-title">Service Command Center</h1>
+                            <p class="page-subtitle">Central coordination hub for all service operations with real-time monitoring and intelligent dispatch</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="titan-btn titan-btn-secondary" id="optimizeDispatch">
+                                <i class="fas fa-magic"></i>
+                                Optimize Dispatch
+                            </button>
+                            <button class="titan-btn titan-btn-emergency" id="emergencyResponse">
+                                <i class="fas fa-bolt"></i>
+                                Emergency Response
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Dashboard -->
+                    <div class="command-dashboard">
+                        <!-- KPI Grid -->
+                        <div class="kpi-grid">
+                            <div class="kpi-card response-time">
+                                <div class="kpi-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="kpi-content">
+                                    <div class="kpi-value" id="avgResponseTime">12.3</div>
+                                    <div class="kpi-label">Avg Response Time (min)</div>
+                                    <div class="kpi-trend positive">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span>2.4% improvement</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="kpi-card completion-rate">
+                                <div class="kpi-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="kpi-content">
+                                    <div class="kpi-value" id="completionRate">94.8%</div>
+                                    <div class="kpi-label">First-Time Fix Rate</div>
+                                    <div class="kpi-trend positive">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>1.2% improvement</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="kpi-card resource-utilization">
+                                <div class="kpi-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="kpi-content">
+                                    <div class="kpi-value" id="resourceUtilization">78.5%</div>
+                                    <div class="kpi-label">Resource Utilization</div>
+                                    <div class="kpi-trend stable">
+                                        <i class="fas fa-minus"></i>
+                                        <span>Optimal range</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="kpi-card customer-satisfaction">
+                                <div class="kpi-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="kpi-content">
+                                    <div class="kpi-value" id="customerSatisfaction">4.7</div>
+                                    <div class="kpi-label">Customer Satisfaction</div>
+                                    <div class="kpi-trend positive">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>0.3 rating increase</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Dispatch Map and Work Orders -->
+                        <div class="dashboard-main-content">
+                            <div class="dispatch-map-container">
+                                <div class="map-header">
+                                    <h3>Live Service Area Map</h3>
+                                    <div class="map-controls">
+                                        <button class="map-control-btn active" data-layer="technicians">
+                                            <i class="fas fa-user-hard-hat"></i>
+                                            Technicians
+                                        </button>
+                                        <button class="map-control-btn" data-layer="work-orders">
+                                            <i class="fas fa-wrench"></i>
+                                            Work Orders
+                                        </button>
+                                        <button class="map-control-btn" data-layer="traffic">
+                                            <i class="fas fa-road"></i>
+                                            Traffic
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="dispatchMap" class="dispatch-map"></div>
+                            </div>
+
+                            <div class="work-orders-panel">
+                                <div class="panel-header">
+                                    <h3>Active Work Orders</h3>
+                                    <div class="panel-actions">
+                                        <button class="panel-btn" id="createWorkOrder">
+                                            <i class="fas fa-plus"></i>
+                                            New Order
+                                        </button>
+                                        <select class="priority-filter" id="workOrderFilter">
+                                            <option value="all">All Priorities</option>
+                                            <option value="critical">Critical</option>
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="low">Low</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="work-orders-list" id="workOrdersList">
+                                    <!-- Work orders will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dispatch Center -->
+                <div class="content-section" id="dispatch-center">
+                    <div class="content-header">
+                        <h2>Intelligent Dispatch Center</h2>
+                        <div class="header-actions">
+                            <button class="titan-btn titan-btn-secondary" id="optimizationSettings">
+                                <i class="fas fa-cog"></i>
+                                Optimization Settings
+                            </button>
+                            <button class="titan-btn titan-btn-primary" id="runOptimization">
+                                <i class="fas fa-magic"></i>
+                                Run Optimization
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="dispatch-controls">
+                        <div class="optimization-criteria">
+                            <h4>Optimization Criteria</h4>
+                            <div class="criteria-options">
+                                <label class="radio-option">
+                                    <input type="radio" name="optimization" value="response-time" checked>
+                                    <span>Minimize Response Time</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="optimization" value="cost">
+                                    <span>Cost Optimization</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="optimization" value="quality">
+                                    <span>Quality First</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="optimization" value="balanced">
+                                    <span>Balanced Approach</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="dispatch-results" id="dispatchResults">
+                            <!-- Optimization results will be shown here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource Management -->
+                <div class="content-section" id="resource-management">
+                    <div class="content-header">
+                        <h2>Service Resource Management</h2>
+                        <div class="header-actions">
+                            <button class="titan-btn titan-btn-secondary" id="addResource">
+                                <i class="fas fa-user-plus"></i>
+                                Add Resource
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="resources-grid" id="resourcesGrid">
+                        <!-- Resources will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Emergency Response -->
+                <div class="content-section" id="emergency-response">
+                    <div class="content-header">
+                        <h2>Emergency Response Coordination</h2>
+                        <div class="emergency-status">
+                            <span class="status-indicator operational"></span>
+                            <span>System Operational - Ready for Emergency Response</span>
+                        </div>
+                    </div>
+
+                    <div class="emergency-dashboard">
+                        <div class="emergency-actions">
+                            <button class="emergency-btn critical" id="declareEmergency">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Declare Emergency
+                            </button>
+                            <button class="emergency-btn high" id="activateResponse">
+                                <i class="fas fa-bolt"></i>
+                                Activate Response Team
+                            </button>
+                        </div>
+
+                        <div class="emergency-log" id="emergencyLog">
+                            <!-- Emergency events will be shown here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Analytics -->
+                <div class="content-section" id="service-analytics">
+                    <div class="content-header">
+                        <h2>Service Performance Analytics</h2>
+                    </div>
+
+                    <div class="analytics-dashboard">
+                        <div class="analytics-chart-container">
+                            <canvas id="performanceTrendsChart"></canvas>
+                        </div>
+                        <div class="analytics-insights" id="analyticsInsights">
+                            <!-- AI-driven insights will be shown here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workflow Management -->
+                <div class="content-section" id="workflow-management">
+                    <div class="content-header">
+                        <h2>Service Workflow Automation</h2>
+                        <div class="header-actions">
+                            <button class="titan-btn titan-btn-primary" id="createWorkflow">
+                                <i class="fas fa-plus"></i>
+                                Create Workflow
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="workflows-container" id="workflowsContainer">
+                        <!-- Workflows will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal Overlays -->
+        <div class="modal-overlay" id="serviceModalOverlay">
+            <div class="modal-container large">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="serviceModalTitle">Service Details</h3>
+                    <button class="modal-close" id="closeServiceModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-content" id="serviceModalContent">
+                    <!-- Service details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="scripts/service-command-center.js"></script>
+</body>
+</html>
