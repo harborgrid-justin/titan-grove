@@ -506,6 +506,42 @@ class TitanManufacturingSystem {
         };
     }
 
+    // Utility Methods
+    showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `manufacturing-toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="toast-content">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+            <button class="toast-close">&times;</button>
+        `;
+        
+        // Add to page
+        document.body.appendChild(toast);
+        
+        // Auto remove after 4 seconds
+        setTimeout(() => {
+            toast.classList.add('fade-out');
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        }, 4000);
+        
+        // Manual close
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            toast.classList.add('fade-out');
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    document.body.removeChild(toast);
+                }
+            }, 300);
+        });
+    }
+
     async initializeQualitySystem() {
         this.qualityMetrics = {
             overallScore: 99.2,
@@ -675,6 +711,8 @@ class TitanManufacturingSystem {
         const href = link.getAttribute('href');
         const section = href.replace('#', '');
         
+        console.log(`Navigating to manufacturing section: ${section}`);
+        
         // Remove active class from all sidebar items
         document.querySelectorAll('.nav-list-item').forEach(item => {
             item.classList.remove('active');
@@ -685,38 +723,594 @@ class TitanManufacturingSystem {
         
         // Load section content
         this.loadSectionContent(section);
+        
+        // Update page title
+        this.updatePageTitle(section);
+        
+        this.showToast(`Switched to ${this.getSectionDisplayName(section)}`, 'info');
+    }
+
+    getSectionDisplayName(section) {
+        const sectionNames = {
+            'overview': 'Production Overview',
+            'workorders': 'Work Orders',
+            'scheduling': 'Production Scheduling', 
+            'quality': 'Quality Control',
+            'maintenance': 'Equipment Maintenance',
+            'inventory': 'Inventory Management',
+            'reports': 'Reports & Analytics'
+        };
+        
+        return sectionNames[section] || section;
+    }
+
+    updatePageTitle(section) {
+        const titleElement = document.querySelector('.page-title');
+        if (titleElement) {
+            titleElement.textContent = this.getSectionDisplayName(section);
+        }
     }
 
     handleFilterChange(select) {
         const filter = select.value;
         const widget = select.closest('.manufacturing-widget');
         
+        console.log(`Filter changed to: ${filter}`);
+        
         if (widget && widget.classList.contains('work-orders-widget')) {
             this.filterWorkOrders(filter);
+        } else if (widget && widget.classList.contains('production-widget')) {
+            this.filterProductionLines(filter);
+        } else if (widget && widget.classList.contains('quality-widget')) {
+            this.filterQualityData(filter);
+        } else {
+            // Generic filtering
+            this.applyGenericFilter(filter, widget);
         }
+        
+        this.showToast(`Filter applied: ${filter}`, 'info');
+    }
+
+    filterProductionLines(filter) {
+        const productionCards = document.querySelectorAll('.production-line-card');
+        productionCards.forEach(card => {
+            const lineName = card.querySelector('.line-name')?.textContent.trim();
+            const lineStatus = card.querySelector('.line-status')?.textContent.trim();
+            
+            let shouldShow = true;
+            if (filter === 'operational') {
+                shouldShow = lineStatus === 'Operational';
+            } else if (filter === 'maintenance') {
+                shouldShow = lineStatus === 'Maintenance';
+            } else if (filter === 'offline') {
+                shouldShow = lineStatus === 'Offline';
+            }
+            
+            card.style.display = shouldShow ? '' : 'none';
+        });
+    }
+
+    filterQualityData(filter) {
+        const qualityItems = document.querySelectorAll('.quality-item');
+        qualityItems.forEach(item => {
+            const qualityRate = parseFloat(item.querySelector('.quality-rate')?.textContent || '100');
+            
+            let shouldShow = true;
+            if (filter === 'excellent') {
+                shouldShow = qualityRate >= 98;
+            } else if (filter === 'good') {
+                shouldShow = qualityRate >= 95 && qualityRate < 98;
+            } else if (filter === 'needs-improvement') {
+                shouldShow = qualityRate < 95;
+            }
+            
+            item.style.display = shouldShow ? '' : 'none';
+        });
+    }
+
+    applyGenericFilter(filter, widget) {
+        // Generic filtering for other widgets
+        const filterableItems = widget.querySelectorAll('[data-filterable]');
+        filterableItems.forEach(item => {
+            const itemValue = item.dataset.filterValue || item.textContent.toLowerCase();
+            const shouldShow = filter === 'all' || itemValue.includes(filter.toLowerCase());
+            item.style.display = shouldShow ? '' : 'none';
+        });
     }
 
     handleTimePeriodChange(select) {
         const period = select.value;
         console.log(`Time period changed to: ${period}`);
-        // Implement time period filtering logic
+        
+        // Update charts and data based on time period
+        this.updateChartsForPeriod(period);
+        this.updateMetricsForPeriod(period);
+        
+        this.showToast(`Time period changed to: ${period}`, 'info');
+    }
+
+    updateChartsForPeriod(period) {
+        // Generate data based on time period
+        const chartData = this.generateTimeBasedData(period);
+        
+        // Update production trend chart if exists
+        const productionChart = document.querySelector('#productionTrendChart');
+        if (productionChart && typeof Chart !== 'undefined') {
+            const chart = Chart.getChart(productionChart);
+            if (chart) {
+                chart.data.labels = chartData.labels;
+                chart.data.datasets[0].data = chartData.values;
+                chart.update();
+            }
+        }
+        
+        // Update efficiency chart if exists
+        const efficiencyChart = document.querySelector('#efficiencyChart');
+        if (efficiencyChart && typeof Chart !== 'undefined') {
+            const chart = Chart.getChart(efficiencyChart);
+            if (chart) {
+                chart.data.labels = chartData.labels;
+                chart.data.datasets[0].data = chartData.efficiency;
+                chart.update();
+            }
+        }
+    }
+
+    updateMetricsForPeriod(period) {
+        // Generate metrics based on time period
+        const metrics = this.generateMetricsForPeriod(period);
+        
+        // Update metric displays
+        const totalProducedEl = document.querySelector('.metric-total-produced .metric-value');
+        if (totalProducedEl) totalProducedEl.textContent = metrics.totalProduced;
+        
+        const efficiencyEl = document.querySelector('.metric-efficiency .metric-value');
+        if (efficiencyEl) efficiencyEl.textContent = metrics.avgEfficiency + '%';
+        
+        const qualityRateEl = document.querySelector('.metric-quality .metric-value');
+        if (qualityRateEl) qualityRateEl.textContent = metrics.qualityRate + '%';
+        
+        const downtimeEl = document.querySelector('.metric-downtime .metric-value');
+        if (downtimeEl) downtimeEl.textContent = metrics.downtime + ' hrs';
+    }
+
+    generateTimeBasedData(period) {
+        let labels = [];
+        let values = [];
+        let efficiency = [];
+        
+        switch (period) {
+            case 'today':
+                labels = ['6AM', '8AM', '10AM', '12PM', '2PM', '4PM', '6PM', '8PM'];
+                values = [25, 45, 38, 42, 35, 48, 41, 33];
+                efficiency = [85, 88, 92, 89, 91, 87, 89, 86];
+                break;
+            case 'week':
+                labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                values = [280, 325, 298, 315, 342, 156, 89];
+                efficiency = [88, 91, 86, 89, 93, 78, 65];
+                break;
+            case 'month':
+                labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                values = [1456, 1523, 1398, 1612];
+                efficiency = [89, 91, 87, 92];
+                break;
+            case 'quarter':
+                labels = ['Month 1', 'Month 2', 'Month 3'];
+                values = [5989, 6234, 6451];
+                efficiency = [89, 90, 92];
+                break;
+            default:
+                labels = ['Hour 1', 'Hour 2', 'Hour 3', 'Hour 4'];
+                values = [25, 30, 28, 35];
+                efficiency = [85, 88, 86, 90];
+        }
+        
+        return { labels, values, efficiency };
+    }
+
+    generateMetricsForPeriod(period) {
+        const baseMetrics = {
+            today: { totalProduced: 287, avgEfficiency: 88, qualityRate: 97, downtime: 2.5 },
+            week: { totalProduced: 1805, avgEfficiency: 86, qualityRate: 96, downtime: 18 },
+            month: { totalProduced: 5989, avgEfficiency: 89, qualityRate: 97, downtime: 45 },
+            quarter: { totalProduced: 18674, avgEfficiency: 90, qualityRate: 96, downtime: 125 }
+        };
+        
+        return baseMetrics[period] || baseMetrics.today;
     }
 
     // Business Logic Methods
     showNewWorkOrderModal() {
         console.log('Opening New Work Order modal...');
-        // Implement work order creation modal
+        
+        // Create and show modal for new work order
+        const modal = document.createElement('div');
+        modal.className = 'manufacturing-modal-overlay';
+        modal.innerHTML = `
+            <div class="manufacturing-modal">
+                <div class="modal-header">
+                    <h3>Create New Work Order</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="workOrderForm">
+                        <div class="form-group">
+                            <label>Work Order Number</label>
+                            <input type="text" name="orderNumber" value="WO-${Date.now()}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Product</label>
+                            <select name="product" required>
+                                <option value="">Select Product</option>
+                                <option value="Widget A">Widget A</option>
+                                <option value="Component B">Component B</option>
+                                <option value="Assembly C">Assembly C</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" name="quantity" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Production Line</label>
+                            <select name="productionLine" required>
+                                <option value="">Select Line</option>
+                                <option value="Line 1">Production Line 1</option>
+                                <option value="Line 2">Production Line 2</option>
+                                <option value="Line 3">Production Line 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <input type="date" name="dueDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select name="priority">
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Create Work Order</button>
+                            <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Handle modal close
+        modal.addEventListener('click', (e) => {
+            if (e.target.matches('.modal-close') || e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+        
+        // Handle form submission
+        modal.querySelector('#workOrderForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const workOrderData = Object.fromEntries(formData);
+            console.log('Creating work order:', workOrderData);
+            
+            // Add to work orders list (if exists)
+            if (this.workOrders) {
+                this.workOrders.push({
+                    ...workOrderData,
+                    id: 'wo-' + Date.now(),
+                    status: 'Pending',
+                    createdDate: new Date().toLocaleDateString()
+                });
+                this.renderWorkOrdersTable();
+            }
+            
+            document.body.removeChild(modal);
+            this.showToast('Work order created successfully', 'success');
+        });
     }
 
     showProductionSchedulingModal() {
         console.log('Opening Production Scheduling modal...');
-        // Implement production scheduling interface
+        
+        // Create and show production scheduling modal
+        const modal = document.createElement('div');
+        modal.className = 'manufacturing-modal-overlay';
+        modal.innerHTML = `
+            <div class="manufacturing-modal large">
+                <div class="modal-header">
+                    <h3>Production Scheduling</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="scheduling-container">
+                        <div class="schedule-filters">
+                            <div class="filter-group">
+                                <label>Production Line</label>
+                                <select id="scheduleLineFilter">
+                                    <option value="all">All Lines</option>
+                                    <option value="Line 1">Production Line 1</option>
+                                    <option value="Line 2">Production Line 2</option>
+                                    <option value="Line 3">Production Line 3</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Date Range</label>
+                                <input type="date" id="scheduleStartDate">
+                                <span>to</span>
+                                <input type="date" id="scheduleEndDate">
+                            </div>
+                            <button class="btn btn-primary" id="loadSchedule">Load Schedule</button>
+                        </div>
+                        
+                        <div class="schedule-timeline">
+                            <div class="timeline-header">
+                                <div class="timeline-dates">
+                                    <div class="date-column">Mon 9/2</div>
+                                    <div class="date-column">Tue 9/3</div>
+                                    <div class="date-column">Wed 9/4</div>
+                                    <div class="date-column">Thu 9/5</div>
+                                    <div class="date-column">Fri 9/6</div>
+                                </div>
+                            </div>
+                            <div class="timeline-body">
+                                <div class="production-line">
+                                    <div class="line-label">Line 1</div>
+                                    <div class="schedule-slots">
+                                        <div class="schedule-item" style="width: 40%; left: 10%;">
+                                            <span>WO-001: Widget A (100 units)</span>
+                                        </div>
+                                        <div class="schedule-item" style="width: 30%; left: 55%;">
+                                            <span>WO-002: Component B (50 units)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="production-line">
+                                    <div class="line-label">Line 2</div>
+                                    <div class="schedule-slots">
+                                        <div class="schedule-item" style="width: 60%; left: 20%;">
+                                            <span>WO-003: Assembly C (200 units)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="production-line">
+                                    <div class="line-label">Line 3</div>
+                                    <div class="schedule-slots">
+                                        <div class="schedule-item" style="width: 35%; left: 0%;">
+                                            <span>WO-004: Widget A (75 units)</span>
+                                        </div>
+                                        <div class="schedule-item" style="width: 25%; left: 70%;">
+                                            <span>WO-005: Component B (30 units)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-actions">
+                            <button class="btn btn-success">Save Schedule</button>
+                            <button class="btn btn-warning">Auto-Schedule</button>
+                            <button class="btn btn-info">Export Schedule</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Set default dates
+        const today = new Date();
+        const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+        modal.querySelector('#scheduleStartDate').value = today.toISOString().split('T')[0];
+        modal.querySelector('#scheduleEndDate').value = nextWeek.toISOString().split('T')[0];
+        
+        // Handle modal close
+        modal.addEventListener('click', (e) => {
+            if (e.target.matches('.modal-close') || e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+        
+        // Handle schedule loading
+        modal.querySelector('#loadSchedule').addEventListener('click', () => {
+            this.showToast('Schedule loaded successfully', 'success');
+        });
+        
+        // Make schedule items draggable
+        modal.querySelectorAll('.schedule-item').forEach(item => {
+            item.draggable = true;
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', e.target.textContent);
+            });
+        });
     }
 
     showLineDetails(lineCard) {
         const lineName = lineCard.querySelector('.line-name').textContent;
         console.log(`Showing details for ${lineName}`);
-        // Implement line detail view
+        
+        // Create and show line details modal
+        const modal = document.createElement('div');
+        modal.className = 'manufacturing-modal-overlay';
+        modal.innerHTML = `
+            <div class="manufacturing-modal large">
+                <div class="modal-header">
+                    <h3>${lineName} - Production Line Details</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="line-details-container">
+                        <div class="line-overview">
+                            <div class="overview-grid">
+                                <div class="overview-card">
+                                    <h4>Current Status</h4>
+                                    <span class="status-badge operational">Operational</span>
+                                </div>
+                                <div class="overview-card">
+                                    <h4>Efficiency</h4>
+                                    <span class="metric-value">87.5%</span>
+                                </div>
+                                <div class="overview-card">
+                                    <h4>Output Today</h4>
+                                    <span class="metric-value">142 units</span>
+                                </div>
+                                <div class="overview-card">
+                                    <h4>Target</h4>
+                                    <span class="metric-value">160 units</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="line-tabs">
+                            <button class="tab-btn active" data-tab="performance">Performance</button>
+                            <button class="tab-btn" data-tab="equipment">Equipment</button>
+                            <button class="tab-btn" data-tab="quality">Quality</button>
+                            <button class="tab-btn" data-tab="maintenance">Maintenance</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div class="tab-panel active" id="performance">
+                                <div class="performance-metrics">
+                                    <canvas id="linePerformanceChart" width="400" height="200"></canvas>
+                                </div>
+                                <div class="performance-summary">
+                                    <h4>Performance Summary</h4>
+                                    <ul>
+                                        <li>Average cycle time: 12.3 seconds</li>
+                                        <li>Downtime today: 45 minutes</li>
+                                        <li>Quality rate: 96.8%</li>
+                                        <li>OEE (Overall Equipment Effectiveness): 84.2%</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-panel" id="equipment">
+                                <div class="equipment-list">
+                                    <div class="equipment-item">
+                                        <span class="equipment-name">Conveyor Belt A1</span>
+                                        <span class="equipment-status operational">Running</span>
+                                        <span class="equipment-temp">Normal (68°F)</span>
+                                    </div>
+                                    <div class="equipment-item">
+                                        <span class="equipment-name">Assembly Robot R2</span>
+                                        <span class="equipment-status operational">Running</span>
+                                        <span class="equipment-temp">Normal (72°F)</span>
+                                    </div>
+                                    <div class="equipment-item">
+                                        <span class="equipment-name">Quality Scanner Q1</span>
+                                        <span class="equipment-status warning">Maintenance Due</span>
+                                        <span class="equipment-temp">Normal (70°F)</span>
+                                    </div>
+                                    <div class="equipment-item">
+                                        <span class="equipment-name">Packaging Unit P1</span>
+                                        <span class="equipment-status operational">Running</span>
+                                        <span class="equipment-temp">Normal (69°F)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-panel" id="quality">
+                                <div class="quality-metrics">
+                                    <div class="quality-stat">
+                                        <h4>Defect Rate</h4>
+                                        <span class="stat-value">3.2%</span>
+                                        <span class="stat-trend positive">↓ 0.5%</span>
+                                    </div>
+                                    <div class="quality-stat">
+                                        <h4>First Pass Yield</h4>
+                                        <span class="stat-value">96.8%</span>
+                                        <span class="stat-trend positive">↑ 1.2%</span>
+                                    </div>
+                                    <div class="quality-stat">
+                                        <h4>Rework Rate</h4>
+                                        <span class="stat-value">2.1%</span>
+                                        <span class="stat-trend positive">↓ 0.3%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-panel" id="maintenance">
+                                <div class="maintenance-schedule">
+                                    <h4>Upcoming Maintenance</h4>
+                                    <div class="maintenance-item">
+                                        <span class="maintenance-type">Preventive</span>
+                                        <span class="maintenance-equipment">Quality Scanner Q1</span>
+                                        <span class="maintenance-date">Oct 15, 2024</span>
+                                    </div>
+                                    <div class="maintenance-item">
+                                        <span class="maintenance-type">Calibration</span>
+                                        <span class="maintenance-equipment">Assembly Robot R2</span>
+                                        <span class="maintenance-date">Oct 22, 2024</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="line-actions">
+                            <button class="btn btn-warning">Emergency Stop</button>
+                            <button class="btn btn-primary">Adjust Speed</button>
+                            <button class="btn btn-success">Export Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Handle modal close
+        modal.addEventListener('click', (e) => {
+            if (e.target.matches('.modal-close') || e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+        
+        // Handle tab switching
+        modal.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabId = e.target.dataset.tab;
+                
+                // Remove active classes
+                modal.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                modal.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                
+                // Add active classes
+                e.target.classList.add('active');
+                modal.querySelector(`#${tabId}`).classList.add('active');
+            });
+        });
+        
+        // Initialize performance chart (if Chart.js is available)
+        if (typeof Chart !== 'undefined') {
+            const ctx = modal.querySelector('#linePerformanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['6AM', '8AM', '10AM', '12PM', '2PM', '4PM'],
+                    datasets: [{
+                        label: 'Units Produced',
+                        data: [25, 45, 38, 42, 35, 28],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
     }
 
     viewWorkOrder(orderId) {
@@ -775,18 +1369,448 @@ class TitanManufacturingSystem {
     exportManufacturingData(widget) {
         const widgetType = widget.dataset.widget || widget.className;
         console.log(`Exporting manufacturing data for: ${widgetType}`);
-        // Implement export functionality
+        
+        // Determine export type based on widget
+        let exportData, filename;
+        
+        if (widgetType.includes('production-overview')) {
+            exportData = this.generateProductionReport();
+            filename = 'production-overview.csv';
+        } else if (widgetType.includes('efficiency')) {
+            exportData = this.generateEfficiencyReport();
+            filename = 'efficiency-metrics.csv';
+        } else if (widgetType.includes('quality')) {
+            exportData = this.generateQualityReport();
+            filename = 'quality-metrics.csv';
+        } else {
+            exportData = this.generateGeneralReport();
+            filename = 'manufacturing-data.csv';
+        }
+        
+        // Create and download CSV
+        this.downloadCSV(exportData, filename);
+        this.showToast(`Exported ${filename} successfully`, 'success');
+    }
+
+    generateProductionReport() {
+        return [
+            ['Production Line', 'Units Produced', 'Target', 'Efficiency', 'Status'],
+            ['Line 1', '142', '160', '88.8%', 'Operational'],
+            ['Line 2', '95', '120', '79.2%', 'Maintenance'],
+            ['Line 3', '178', '180', '98.9%', 'Operational']
+        ];
+    }
+
+    generateEfficiencyReport() {
+        return [
+            ['Time', 'Line 1', 'Line 2', 'Line 3', 'Average'],
+            ['8:00 AM', '85%', '92%', '88%', '88.3%'],
+            ['10:00 AM', '88%', '89%', '91%', '89.3%'],
+            ['12:00 PM', '92%', '87%', '94%', '91.0%'],
+            ['2:00 PM', '89%', '85%', '96%', '90.0%'],
+            ['4:00 PM', '91%', '88%', '93%', '90.7%']
+        ];
+    }
+
+    generateQualityReport() {
+        return [
+            ['Product', 'Total Produced', 'Defects', 'Quality Rate', 'Rework'],
+            ['Widget A', '250', '8', '96.8%', '3'],
+            ['Component B', '180', '5', '97.2%', '2'],
+            ['Assembly C', '120', '4', '96.7%', '2']
+        ];
+    }
+
+    generateGeneralReport() {
+        return [
+            ['Metric', 'Value', 'Target', 'Status'],
+            ['Overall Efficiency', '89.2%', '90%', 'Below Target'],
+            ['Quality Rate', '96.9%', '95%', 'Above Target'],
+            ['Downtime', '2.5 hours', '2 hours', 'Above Target'],
+            ['Units Produced', '415', '460', 'Below Target']
+        ];
+    }
+
+    downloadCSV(data, filename) {
+        const csvContent = data.map(row => row.join(',')).join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
     }
 
     showAlertDetails() {
         console.log('Showing equipment alert details...');
-        // Implement alert detail modal
+        
+        // Create alert details modal
+        const modal = document.createElement('div');
+        modal.className = 'manufacturing-modal-overlay';
+        modal.innerHTML = `
+            <div class="manufacturing-modal">
+                <div class="modal-header">
+                    <h3>Equipment Alert Details</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert-details">
+                        <div class="alert-summary">
+                            <div class="alert-icon critical">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="alert-info">
+                                <h4>High Temperature Warning</h4>
+                                <p>Equipment: Assembly Robot R2 - Line 1</p>
+                                <p>Detected: ${new Date().toLocaleString()}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-metrics">
+                            <div class="metric-card">
+                                <h5>Current Temperature</h5>
+                                <span class="metric-value critical">85°F</span>
+                                <span class="metric-threshold">Threshold: 80°F</span>
+                            </div>
+                            <div class="metric-card">
+                                <h5>Operating Hours</h5>
+                                <span class="metric-value">127.5</span>
+                                <span class="metric-threshold">Since Last Maintenance</span>
+                            </div>
+                            <div class="metric-card">
+                                <h5>Performance Impact</h5>
+                                <span class="metric-value warning">-12%</span>
+                                <span class="metric-threshold">Efficiency Loss</span>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-recommendations">
+                            <h4>Recommended Actions</h4>
+                            <ul>
+                                <li>Reduce operational speed by 15%</li>
+                                <li>Increase cooling system ventilation</li>
+                                <li>Schedule preventive maintenance within 24 hours</li>
+                                <li>Monitor temperature every 15 minutes</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="alert-history">
+                            <h4>Recent History</h4>
+                            <div class="history-item">
+                                <span class="history-time">2 hours ago</span>
+                                <span class="history-event">Temperature reached 82°F</span>
+                            </div>
+                            <div class="history-item">
+                                <span class="history-time">4 hours ago</span>
+                                <span class="history-event">Performance dropped to 88%</span>
+                            </div>
+                            <div class="history-item">
+                                <span class="history-time">1 day ago</span>
+                                <span class="history-event">Last maintenance completed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-actions">
+                            <button class="btn btn-danger">Emergency Stop</button>
+                            <button class="btn btn-warning">Reduce Speed</button>
+                            <button class="btn btn-primary">Schedule Maintenance</button>
+                            <button class="btn btn-success">Acknowledge Alert</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Handle modal close
+        modal.addEventListener('click', (e) => {
+            if (e.target.matches('.modal-close') || e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+        
+        // Handle action buttons
+        modal.querySelector('.alert-actions').addEventListener('click', (e) => {
+            if (e.target.matches('button')) {
+                const action = e.target.textContent.trim();
+                this.handleAlertAction(action);
+                
+                if (action === 'Acknowledge Alert') {
+                    document.body.removeChild(modal);
+                }
+            }
+        });
+    }
+
+    handleAlertAction(action) {
+        switch (action) {
+            case 'Emergency Stop':
+                this.showToast('Emergency stop initiated - Line 1 stopped', 'warning');
+                break;
+            case 'Reduce Speed':
+                this.showToast('Production speed reduced by 15%', 'info');
+                break;
+            case 'Schedule Maintenance':
+                this.showToast('Maintenance scheduled for tomorrow 8:00 AM', 'success');
+                break;
+            case 'Acknowledge Alert':
+                this.showToast('Alert acknowledged and logged', 'success');
+                break;
+        }
     }
 
     loadSectionContent(section) {
         console.log(`Loading manufacturing section: ${section}`);
-        // Implement section content loading
-        // This would typically load different views/interfaces for each section
+        
+        // Hide all content sections first
+        document.querySelectorAll('.manufacturing-section').forEach(sec => {
+            sec.style.display = 'none';
+            sec.classList.remove('active');
+        });
+        
+        // Show the selected section
+        const targetSection = document.querySelector(`#${section}Section`) || 
+                             document.querySelector(`[data-section="${section}"]`);
+        
+        if (targetSection) {
+            targetSection.style.display = 'block';
+            targetSection.classList.add('active');
+        } else {
+            // Create dynamic content if section doesn't exist
+            this.createDynamicSectionContent(section);
+        }
+        
+        // Load section-specific data
+        this.loadSectionData(section);
+    }
+
+    createDynamicSectionContent(section) {
+        const mainContent = document.querySelector('.manufacturing-main-content') || 
+                          document.querySelector('.main-content');
+        
+        if (!mainContent) return;
+        
+        const sectionContent = this.generateSectionContent(section);
+        
+        // Create new section element
+        const sectionEl = document.createElement('div');
+        sectionEl.id = `${section}Section`;
+        sectionEl.className = 'manufacturing-section active';
+        sectionEl.innerHTML = sectionContent;
+        
+        // Clear existing content and add new
+        mainContent.innerHTML = '';
+        mainContent.appendChild(sectionEl);
+    }
+
+    generateSectionContent(section) {
+        const sectionTemplates = {
+            'overview': this.getOverviewTemplate(),
+            'workorders': this.getWorkOrdersTemplate(),
+            'scheduling': this.getSchedulingTemplate(),
+            'quality': this.getQualityTemplate(),
+            'maintenance': this.getMaintenanceTemplate(),
+            'inventory': this.getInventoryTemplate(),
+            'reports': this.getReportsTemplate()
+        };
+        
+        return sectionTemplates[section] || this.getDefaultSectionTemplate(section);
+    }
+
+    getOverviewTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Production Overview</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Real-time Monitor</button>
+                    <button class="btn btn-secondary">Export Data</button>
+                </div>
+            </div>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h3>Total Production Today</h3>
+                    <div class="overview-value">287 units</div>
+                    <div class="overview-change positive">+12% from yesterday</div>
+                </div>
+                <div class="overview-card">
+                    <h3>Overall Efficiency</h3>
+                    <div class="overview-value">88.5%</div>
+                    <div class="overview-change neutral">Same as yesterday</div>
+                </div>
+                <div class="overview-card">
+                    <h3>Quality Rate</h3>
+                    <div class="overview-value">97.2%</div>
+                    <div class="overview-change positive">+0.8% from yesterday</div>
+                </div>
+                <div class="overview-card">
+                    <h3>Active Lines</h3>
+                    <div class="overview-value">3 of 3</div>
+                    <div class="overview-change positive">All operational</div>
+                </div>
+            </div>
+        `;
+    }
+
+    getWorkOrdersTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Work Orders Management</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary" onclick="manufacturingSystem.showNewWorkOrderModal()">New Work Order</button>
+                    <button class="btn btn-secondary">Bulk Actions</button>
+                </div>
+            </div>
+            <div class="work-orders-content">
+                <div class="filters-bar">
+                    <select class="filter-select" data-filter-type="status">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <select class="filter-select" data-filter-type="priority">
+                        <option value="all">All Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <div id="workOrdersTable"></div>
+            </div>
+        `;
+    }
+
+    getDefaultSectionTemplate(section) {
+        return `
+            <div class="section-header">
+                <h2>${this.getSectionDisplayName(section)}</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Primary Action</button>
+                    <button class="btn btn-secondary">Secondary Action</button>
+                </div>
+            </div>
+            <div class="section-content">
+                <p>This section is under development. Content for ${this.getSectionDisplayName(section)} will be available soon.</p>
+                <div class="coming-soon">
+                    <i class="fas fa-cogs fa-3x"></i>
+                    <h3>Coming Soon</h3>
+                    <p>Advanced ${section} features are being developed.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    loadSectionData(section) {
+        // Load section-specific data
+        switch (section) {
+            case 'overview':
+                this.updateRealTimeData();
+                break;
+            case 'workorders':
+                this.renderWorkOrdersTable();
+                break;
+            case 'scheduling':
+                // Load scheduling data
+                break;
+            case 'quality':
+                this.updateQualityMetrics();
+                break;
+            case 'maintenance':
+                // Load maintenance data
+                break;
+            default:
+                console.log(`No specific data loading for section: ${section}`);
+        }
+    }
+
+    // Additional template methods for other sections
+    getSchedulingTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Production Scheduling</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary" onclick="manufacturingSystem.showProductionSchedulingModal()">Open Scheduler</button>
+                </div>
+            </div>
+            <div class="scheduling-content">
+                <div class="schedule-overview">
+                    <h3>Today's Schedule</h3>
+                    <p>Click "Open Scheduler" to view and manage production schedules.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    getQualityTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Quality Control</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Quality Report</button>
+                    <button class="btn btn-warning">Alert Settings</button>
+                </div>
+            </div>
+            <div class="quality-content">
+                <div class="quality-metrics-grid">
+                    <div class="quality-card">
+                        <h3>Overall Quality Rate</h3>
+                        <div class="quality-value">97.2%</div>
+                    </div>
+                    <div class="quality-card">
+                        <h3>Defect Rate</h3>
+                        <div class="quality-value">2.8%</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    getMaintenanceTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Equipment Maintenance</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Schedule Maintenance</button>
+                    <button class="btn btn-warning">View Alerts</button>
+                </div>
+            </div>
+            <div class="maintenance-content">
+                <p>Maintenance management interface coming soon.</p>
+            </div>
+        `;
+    }
+
+    getInventoryTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Inventory Management</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Update Inventory</button>
+                    <button class="btn btn-secondary">Generate Report</button>
+                </div>
+            </div>
+            <div class="inventory-content">
+                <p>Inventory management interface coming soon.</p>
+            </div>
+        `;
+    }
+
+    getReportsTemplate() {
+        return `
+            <div class="section-header">
+                <h2>Reports & Analytics</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary">Generate Report</button>
+                    <button class="btn btn-secondary">Export Data</button>
+                </div>
+            </div>
+            <div class="reports-content">
+                <p>Advanced reporting and analytics interface coming soon.</p>
+            </div>
+        `;
     }
 
     // Utility Methods
