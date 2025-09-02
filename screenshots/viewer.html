@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan Grove GUI Screenshots Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2563eb;
+            text-align: center;
+        }
+        .page-section {
+            margin: 30px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .page-header {
+            background: #2563eb;
+            color: white;
+            padding: 15px;
+        }
+        .page-title {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .page-description {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+        .screenshots {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .screenshot-container {
+            text-align: center;
+        }
+        .screenshot-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .screenshot {
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .screenshot:hover {
+            transform: scale(1.05);
+        }
+        @media (max-width: 768px) {
+            .screenshots {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏢 Titan Grove GUI Screenshots</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 40px;">
+            Visual documentation of all GUI pages in desktop and mobile views
+        </p>
+        
+        <div class="page-section">
+            <div class="page-header">
+                <h2 class="page-title">Main Landing Page - Titan Grove ERP</h2>
+                <p class="page-description">Main entry point showing enterprise performance metrics and navigation</p>
+            </div>
+            <div class="screenshots">
+                <div class="screenshot-container">
+                    <div class="screenshot-label">Desktop View (1920x1080)</div>
+                    <img src="desktop/index-desktop.png" alt="Index Desktop" class="screenshot">
+                </div>
+                <div class="screenshot-container">
+                    <div class="screenshot-label">Mobile View (375x812)</div>
+                    <img src="mobile/index-mobile.png" alt="Index Mobile" class="screenshot">
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-section">
+            <div class="page-header">
+                <h2 class="page-title">Executive Dashboard</h2>
+                <p class="page-description">High-level KPIs and strategic metrics for executives</p>
+            </div>
+            <div class="screenshots">
+                <div class="screenshot-container">
+                    <div class="screenshot-label">Desktop View (1920x1080)</div>
+                    <img src="desktop/dashboard-desktop.png" alt="Dashboard Desktop" class="screenshot">
+                </div>
+                <div class="screenshot-container">
+                    <div class="screenshot-label">Mobile View (375x812)</div>
+                    <img src="mobile/dashboard-mobile.png" alt="Dashboard Mobile" class="screenshot">
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-section">
+            <div class="page-header">
+                <h2 class="page-title">Manufacturing Operations</h2>
+                <p class="page-description">Production oversight, work orders, and manufacturing intelligence</p>
+            </div>
+            <div class="screenshots">
+                <div class="screenshot-container">
+                    <div class="screenshot-label">Desktop View (1920x1080)</div>
+                    <img src="desktop/manufacturing-desktop.png" alt="Manufacturing Desktop" class="screenshot">
+                </div>
+                <div class="screenshot-container">
+                    <div class="screenshot-label">Mobile View (375x812)</div>
+                    <img src="mobile/manufacturing-mobile.png" alt="Manufacturing Mobile" class="screenshot">
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-section">
+            <div class="page-header">
+                <h2 class="page-title">Project Management Command Center</h2>
+                <p class="page-description">Enterprise project portfolio oversight and resource optimization</p>
+            </div>
+            <div class="screenshots">
+                <div class="screenshot-container">
+                    <div class="screenshot-label">Desktop View (1920x1080)</div>
+                    <img src="desktop/project-management-desktop.png" alt="Project Management Desktop" class="screenshot">
+                </div>
+                <div class="screenshot-container">
+                    <div class="screenshot-label">Mobile View (375x812)</div>
+                    <img src="mobile/project-management-mobile.png" alt="Project Management Mobile" class="screenshot">
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+        // Add click to zoom functionality
+        document.querySelectorAll('.screenshot').forEach(img => {
+            img.addEventListener('click', function() {
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                    cursor: pointer;
+                `;
+                
+                const zoomedImg = document.createElement('img');
+                zoomedImg.src = this.src;
+                zoomedImg.style.cssText = 'max-width: 95%; max-height: 95%; object-fit: contain;';
+                
+                overlay.appendChild(zoomedImg);
+                document.body.appendChild(overlay);
+                
+                overlay.addEventListener('click', () => {
+                    document.body.removeChild(overlay);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

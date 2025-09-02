@@ -22,6 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files for UI
 app.use('/ui', express.static('src/ui/static'));
 
+// Serve screenshots
+app.use('/screenshots', express.static('screenshots'));
+
 // Serve main UI application
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../src/ui/static/index.html'));
