@@ -49,22 +49,22 @@ class TitanGroveSetupCLI {
         
         switch (type) {
             case 'success':
-                prefix = `${this.colors.green}✅ [SUCCESS]${this.colors.reset}`;
+                prefix = `${this.colors.green}[SUCCESS]${this.colors.reset}`;
                 break;
             case 'error':
-                prefix = `${this.colors.red}❌ [ERROR]${this.colors.reset}`;
+                prefix = `${this.colors.red}[ERROR]${this.colors.reset}`;
                 break;
             case 'warning':
-                prefix = `${this.colors.yellow}⚠️  [WARNING]${this.colors.reset}`;
+                prefix = `${this.colors.yellow}[WARNING]${this.colors.reset}`;
                 break;
             case 'info':
-                prefix = `${this.colors.blue}ℹ️  [INFO]${this.colors.reset}`;
+                prefix = `${this.colors.blue}[INFO]${this.colors.reset}`;
                 break;
             case 'step':
-                prefix = `${this.colors.cyan}🔄 [STEP]${this.colors.reset}`;
+                prefix = `${this.colors.cyan}[STEP]${this.colors.reset}`;
                 break;
             case 'competitive':
-                prefix = `${this.colors.magenta}🏆 [COMPETITIVE]${this.colors.reset}`;
+                prefix = `${this.colors.magenta}[COMPETITIVE]${this.colors.reset}`;
                 break;
         }
         
@@ -73,7 +73,7 @@ class TitanGroveSetupCLI {
 
     async question(prompt) {
         return new Promise((resolve) => {
-            this.rl.question(`${this.colors.cyan}❓ ${prompt}${this.colors.reset} `, resolve);
+            this.rl.question(`${this.colors.cyan}${prompt}${this.colors.reset} `, resolve);
         });
     }
 
@@ -327,7 +327,7 @@ ${this.colors.bright}${this.colors.magenta}╔═══════════�
 ║                    ORACLE EBS COMPETITIVE ANALYSIS SUMMARY                  ║
 ╚══════════════════════════════════════════════════════════════════════════════╝${this.colors.reset}
 
-${this.colors.competitive}🏆 OVERALL COMPETITIVE RATING: 9.3/10 (SUPERIOR to Oracle EBS)${this.colors.reset}
+${this.colors.competitive}OVERALL COMPETITIVE RATING: 9.3/10 (SUPERIOR to Oracle EBS)${this.colors.reset}
 
 ${this.colors.bright}Enterprise Capabilities Comparison:${this.colors.reset}
 `);
@@ -349,12 +349,12 @@ ${this.colors.bright}Enterprise Capabilities Comparison:${this.colors.reset}
         });
         
         console.log(`${this.colors.bright}${this.colors.green}Fortune 100 Business Value Delivered:${this.colors.reset}
-${this.colors.green}💰 $4.8M+ Annual Cost Savings through integrated operations
-📈 35%+ Efficiency Gains across supply chain and manufacturing  
-⚡ 25%+ Cycle Time Reduction through flow manufacturing
-🎯 40%+ Quality Improvements through integrated quality systems
-💡 60-75% Lower Total Cost of Ownership vs Oracle EBS licensing
-📱 90%+ User Adoption with modern mobile applications${this.colors.reset}
+${this.colors.green}$4.8M+ Annual Cost Savings through integrated operations
+35%+ Efficiency Gains across supply chain and manufacturing  
+25%+ Cycle Time Reduction through flow manufacturing
+40%+ Quality Improvements through integrated quality systems
+60-75% Lower Total Cost of Ownership vs Oracle EBS licensing
+90%+ User Adoption with modern mobile applications${this.colors.reset}
         `);
     }
 

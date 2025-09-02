@@ -44,19 +44,19 @@ class ServiceCommandCenterDemo {
   }
 
   async showRealTimeDashboard(commandCenter) {
-    console.log('📊 REAL-TIME SERVICE OPERATIONS DASHBOARD');
+    console.log('REAL-TIME SERVICE OPERATIONS DASHBOARD');
     console.log('========================================\n');
     
     console.log(`🏢 Command Center: ${commandCenter.name}`);
     console.log(`📍 Region: ${commandCenter.region}`);
     console.log(`🔄 Status: ${commandCenter.status} (Score: ${commandCenter.performanceScore}/100)\n`);
     
-    console.log('📈 LIVE SERVICE METRICS:');
-    console.log(`   🔧 Active Work Orders: ${commandCenter.activeServices}`);
+    console.log('LIVE SERVICE METRICS:');
+    console.log(`   Active Work Orders: ${commandCenter.activeServices}`);
     console.log(`   👥 Online Resources: ${commandCenter.onlineResources}`);
-    console.log(`   🚨 Emergency Alerts: ${commandCenter.emergencyAlerts}`);
+    console.log(`   Emergency Alerts: ${commandCenter.emergencyAlerts}`);
     console.log(`   🏗️ Managed Assets: ${commandCenter.managedAssets.toLocaleString()}`);
-    console.log(`   📋 Active Contracts: ${commandCenter.activeContracts}\n`);
+    console.log(`   Active Contracts: ${commandCenter.activeContracts}\n`);
 
     console.log('🌍 SERVICE AREA COVERAGE:');
     commandCenter.serviceAreas.forEach(area => {
@@ -87,7 +87,7 @@ class ServiceCommandCenterDemo {
       }
     };
 
-    console.log('📊 FEATURE COMPARISON:');
+    console.log('FEATURE COMPARISON:');
     comparison.features.forEach(feature => {
       const bar = '█'.repeat(Math.floor(feature.titanGrove));
       console.log(`   ${feature.name}:`);
@@ -103,27 +103,27 @@ class ServiceCommandCenterDemo {
 
     console.log('💰 BUSINESS VALUE DELIVERED:');
     console.log(`   💵 Annual Cost Savings: $${comparison.businessValue.costSavings.toLocaleString()}`);
-    console.log(`   📈 Efficiency Gains: ${comparison.businessValue.efficiencyGains}%`);
+    console.log(`   Efficiency Gains: ${comparison.businessValue.efficiencyGains}%`);
     console.log(`   💡 Revenue Increase: $${comparison.businessValue.revenueIncrease.toLocaleString()}`);
     console.log(`   🛡️ Risk Reduction: ${comparison.businessValue.riskReduction}%\n`);
   }
 
   async showMobileCapabilities() {
-    console.log('📱 MOBILE COMMAND CENTER CAPABILITIES');
+    console.log('MOBILE COMMAND CENTER CAPABILITIES');
     console.log('====================================\n');
 
     const mobileFeatures = [
       '📍 Real-time GPS tracking and resource location',
-      '🚨 Emergency dispatch with automated response',
-      '📊 Live service metrics and performance monitoring',
-      '💾 Offline operation with intelligent synchronization',
-      '📋 Work order management with digital signatures',
-      '🔍 Asset search and service history access',
-      '📞 Integrated communication with customers and team',
-      '📈 Field performance analytics and optimization'
+      'Emergency dispatch with automated response',
+      'Live service metrics and performance monitoring',
+      'Offline operation with intelligent synchronization',
+      'Work order management with digital signatures',
+      'Asset search and service history access',
+      'Integrated communication with customers and team',
+      'Field performance analytics and optimization'
     ];
 
-    console.log('🌟 MOBILE FEATURES:');
+    console.log('MOBILE FEATURES:');
     mobileFeatures.forEach(feature => console.log(`   ${feature}`));
     console.log('');
 
@@ -133,7 +133,7 @@ class ServiceCommandCenterDemo {
       { name: 'Web', capabilities: ['Browser Notifications', 'Web Share', 'PWA Support'] }
     ];
 
-    console.log('🔧 PLATFORM-SPECIFIC CAPABILITIES:');
+    console.log('PLATFORM-SPECIFIC CAPABILITIES:');
     platforms.forEach(platform => {
       console.log(`   ${platform.name}: ${platform.capabilities.join(', ')}`);
     });
@@ -141,7 +141,7 @@ class ServiceCommandCenterDemo {
   }
 
   async showPredictiveInsights() {
-    console.log('🔮 PREDICTIVE SERVICE INTELLIGENCE');
+    console.log('PREDICTIVE SERVICE INTELLIGENCE');
     console.log('=================================\n');
 
     // Simulate ML predictions
@@ -162,7 +162,7 @@ class ServiceCommandCenterDemo {
       }
     };
 
-    console.log('📈 WORKLOAD FORECAST (Next 7 Days):');
+    console.log('WORKLOAD FORECAST (Next 7 Days):');
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     predictions.workloadForecast.next7Days.forEach((workload, i) => {
       const bar = '▓'.repeat(Math.floor(workload / 5));
@@ -183,7 +183,7 @@ class ServiceCommandCenterDemo {
   }
 
   async showEmergencyResponse() {
-    console.log('🚨 EMERGENCY RESPONSE SIMULATION');
+    console.log('EMERGENCY RESPONSE SIMULATION');
     console.log('================================\n');
 
     console.log('⚡ SCENARIO: Critical Equipment Failure at Fortune 100 Facility');
@@ -200,21 +200,21 @@ class ServiceCommandCenterDemo {
     console.log('   ✅ Escalation plan activated\n');
 
     console.log('👥 RESPONSE TEAM DEPLOYED:');
-    console.log('   🔧 Lead: Mike Johnson (HVAC Emergency Specialist)');
-    console.log('   🔧 Support: Sarah Davis (Electrical Systems)');
-    console.log('   🔧 Support: Tom Wilson (Facilities Management)');
+    console.log('   Lead: Mike Johnson (HVAC Emergency Specialist)');
+    console.log('   Support: Sarah Davis (Electrical Systems)');
+    console.log('   Support: Tom Wilson (Facilities Management)');
     console.log('   📍 ETA: 12 minutes (GPS tracked)\n');
 
-    console.log('📞 ESCALATION CONTACTS:');
+    console.log('ESCALATION CONTACTS:');
     console.log('   Level 1 (15 min): Operations Supervisor');
     console.log('   Level 2 (30 min): Service Director');
     console.log('   Level 3 (60 min): VP of Operations\n');
 
-    console.log('📊 REAL-TIME COORDINATION:');
+    console.log('REAL-TIME COORDINATION:');
     console.log('   🚛 Mobile command unit dispatched');
-    console.log('   🔧 Backup cooling units being sourced');
-    console.log('   📱 Customer portal updated with live status');
-    console.log('   📈 SLA monitoring activated\n');
+    console.log('   Backup cooling units being sourced');
+    console.log('   Customer portal updated with live status');
+    console.log('   SLA monitoring activated\n');
   }
 }
 
@@ -230,11 +230,11 @@ async function runInteractiveDemo() {
   while (true) {
     console.log('\n🚀 SERVICE COMMAND CENTER DEMO MENU');
     console.log('==================================');
-    console.log('1. 📊 Real-time Operations Dashboard');
+    console.log('1. Real-time Operations Dashboard');
     console.log('2. 🏆 Oracle EBS Competitive Comparison');
-    console.log('3. 📱 Mobile Command Center Features');
-    console.log('4. 🔮 Predictive Service Intelligence');
-    console.log('5. 🚨 Emergency Response Simulation');
+    console.log('3. Mobile Command Center Features');
+    console.log('4. Predictive Service Intelligence');
+    console.log('5. Emergency Response Simulation');
     console.log('6. ❌ Exit Demo\n');
 
     const choice = await new Promise(resolve => {

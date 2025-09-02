@@ -1,18 +1,18 @@
-# Logistics Management Module 🚛
+# Logistics Management Module LOGISTICS
 
 ## Overview
 The Logistics Management Module provides comprehensive Oracle EBS competitive logistics capabilities for managing end-to-end supply chain operations. This module covers transportation management, warehouse operations, route optimization, distribution management, freight operations, and logistics analytics.
 
 ## Key Features
 
-### 🚚 **Transportation Management**
+### TRANSPORT - **Transportation Management**
 - **Multi-modal Transportation Planning** - Support for LTL, FTL, parcel, air, and ocean transportation
 - **Carrier Management** - Comprehensive carrier onboarding, performance tracking, and contract management
 - **Transportation Execution** - Order creation, carrier selection, and shipment tracking
 - **Bid Management** - Automated carrier bidding process with evaluation and award capabilities
 - **Performance Analytics** - Real-time transportation KPIs and carrier performance metrics
 
-### 🏭 **Warehouse Management**
+### WAREHOUSE - **Warehouse Management**
 - **Advanced Warehouse Operations** - Receiving, put-away, picking, packing, and shipping operations
 - **Wave Management** - Intelligent wave planning and execution for optimal picking efficiency
 - **Slotting Optimization** - AI-driven product placement optimization to minimize travel time
@@ -20,14 +20,14 @@ The Logistics Management Module provides comprehensive Oracle EBS competitive lo
 - **Labor Management** - Productivity tracking, performance analytics, and workforce optimization
 - **Cross-docking Operations** - Streamlined cross-dock operations for fast-moving inventory
 
-### 🗺️ **Route Optimization**
+### ROUTING - **Route Optimization**
 - **Advanced Routing Algorithms** - Multiple optimization engines (Genetic Algorithm, Simulated Annealing, Tabu Search)
 - **Vehicle Routing Problem (VRP)** - Complex VRP solving with capacity, time window, and driver hour constraints
 - **Dynamic Route Optimization** - Real-time route re-optimization based on traffic and exceptions
 - **Load Optimization** - 3D bin packing and load consolidation algorithms
 - **Multi-objective Optimization** - Simultaneous optimization for distance, time, cost, and service level
 
-### 🌐 **Distribution Management**
+### DISTRIBUTION - **Distribution Management**
 - **Network Design** - Strategic distribution network design and optimization
 - **Fulfillment Strategy** - Intelligent order fulfillment rules and allocation strategies
 - **Supply Chain Visibility** - End-to-end supply chain control tower with real-time tracking

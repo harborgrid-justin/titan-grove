@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-09-01T16:56:59.312Z",
+  "timestamp": "2025-09-02T00:06:01.323Z",
   "summary": {
-    "totalDocFiles": 24,
-    "totalSourceFiles": 308,
+    "totalDocFiles": 27,
+    "totalSourceFiles": 343,
     "errors": 0,
-    "warnings": 4,
-    "gaps": 28
+    "warnings": 3,
+    "gaps": 23
   },
   "verificationResults": {}
 }
