@@ -11,9 +11,20 @@ interface DataTableProps {
   data: any[];
   searchable?: boolean;
   paginated?: boolean;
+  onEdit?: (item: any) => void;
+  onDelete?: (item: any) => void;
+  onView?: (item: any) => void;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ columns, data, searchable = false, paginated = false }) => {
+const DataTable: React.FC<DataTableProps> = ({ 
+  columns, 
+  data, 
+  searchable = false, 
+  paginated = false,
+  onEdit,
+  onDelete,
+  onView 
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
@@ -69,9 +80,45 @@ const DataTable: React.FC<DataTableProps> = ({ columns, data, searchable = false
         );
       case 'actions':
         return (
-          <button className="titan-btn titan-btn-sm">
-            View Details
-          </button>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            {onView && (
+              <button 
+                className="titan-btn titan-btn-sm"
+                onClick={() => onView(row)}
+                style={{ padding: '4px 8px', fontSize: '12px' }}
+              >
+                View
+              </button>
+            )}
+            {onEdit && (
+              <button 
+                className="titan-btn titan-btn-sm"
+                onClick={() => onEdit(row)}
+                style={{ 
+                  padding: '4px 8px', 
+                  fontSize: '12px',
+                  background: 'var(--warning)',
+                  color: 'white'
+                }}
+              >
+                Edit
+              </button>
+            )}
+            {onDelete && (
+              <button 
+                className="titan-btn titan-btn-sm"
+                onClick={() => onDelete(row)}
+                style={{ 
+                  padding: '4px 8px', 
+                  fontSize: '12px',
+                  background: 'var(--error)',
+                  color: 'white'
+                }}
+              >
+                Delete
+              </button>
+            )}
+          </div>
         );
       case 'currency':
         return <strong>{row[column.key]}</strong>;
