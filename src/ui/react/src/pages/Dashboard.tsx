@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import KPIWidget from '../components/KPIWidget';
 import Sidebar from '../components/Sidebar';
 import DataTable from '../components/DataTable';
+import WorkOrderModal from '../components/WorkOrderModal';
+import { useWorkOrders, useRealtimeKPIs } from '../hooks/useApi';
+import { WorkOrder } from '../services/apiService';
 
 const Dashboard: React.FC = () => {
+  // Static KPI data enhanced with real-time data
   const [kpiData, setKpiData] = useState([
     { title: 'Total Revenue', value: '$24.5M', change: '+12.5%', trend: 'positive', format: 'currency' },
     { title: 'Active Orders', value: '1,247', change: '+8.2%', trend: 'positive', format: 'number' },
@@ -13,44 +17,37 @@ const Dashboard: React.FC = () => {
     { title: 'On-Time Delivery', value: '96.8%', change: '-1.2%', trend: 'negative', format: 'percentage' }
   ]);
 
-  const [recentOrders] = useState([
-    {
-      id: 'WO-2024-001',
-      product: 'Custom Engine Config-A47',
-      facility: 'Detroit Plant #1',
-      value: '$1,245,000',
-      date: '2024-02-15',
-      status: 'In Production',
-      statusClass: 'success'
-    },
-    {
-      id: 'WO-2024-002',
-      product: 'Process Batch-B832',
-      facility: 'Texas Facility #3',
-      value: '$892,400',
-      date: '2024-02-18',
-      status: 'Setup',
-      statusClass: 'warning'
-    },
-    {
-      id: 'WO-2024-003',
-      product: 'Assembly Line-C194',
-      facility: 'California Plant #2',
-      value: '$2,156,800',
-      date: '2024-02-20',
-      status: 'Quality Check',
-      statusClass: 'success'
-    },
-    {
-      id: 'WO-2024-004',
-      product: 'Precision Component-D47',
-      facility: 'Ohio Manufacturing',
-      value: '$674,200',
-      date: '2024-02-22',
-      status: 'Pending',
-      statusClass: 'warning'
-    }
-  ]);
+  // Fetch real work orders from backend
+  const { 
+    workOrders, 
+    loading: ordersLoading, 
+    error: ordersError, 
+    refetch: refetchOrders,
+    createWorkOrder,
+    updateWorkOrder,
+    deleteWorkOrder,
+    actionLoading
+  } = useWorkOrders();
+  
+  // Connect to real-time KPI updates
+  const { kpiData: realtimeKpis, connected: kpiConnected, error: kpiError } = useRealtimeKPIs();
+
+  // Modal state for CRUD operations
+  const [showModal, setShowModal] = useState(false);
+  const [editingWorkOrder, setEditingWorkOrder] = useState<WorkOrder | null>(null);
+
+  // Transform work orders for table display
+  const transformedOrders = workOrders.map(order => ({
+    id: order.id,
+    product: order.title,
+    facility: order.customer, // Using customer as facility for now
+    value: `$${(Math.random() * 2000000 + 500000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`, // Mock values
+    date: new Date(order.scheduledDate).toLocaleDateString(),
+    status: order.status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase()),
+    statusClass: order.status === 'IN_PROGRESS' ? 'success' : 
+                 order.status === 'COMPLETED' ? 'success' :
+                 order.status === 'SCHEDULED' ? 'warning' : 'warning'
+  }));
 
   const tableColumns = [
     { key: 'select', label: '', type: 'checkbox' },
@@ -63,7 +60,69 @@ const Dashboard: React.FC = () => {
     { key: 'actions', label: 'Actions', type: 'actions' }
   ];
 
-  // Simulate real-time updates
+  // Update KPIs with real-time data when available
+  useEffect(() => {
+    if (realtimeKpis) {
+      setKpiData(prevData => prevData.map(kpi => {
+        switch (kpi.title) {
+          case 'Active Orders':
+            return { ...kpi, value: realtimeKpis.activeWorkOrders.toString() };
+          case 'Customer Satisfaction':
+            return { ...kpi, value: `${realtimeKpis.customerSatisfaction}%` };
+          default:
+            return kpi;
+        }
+      }));
+    }
+  }, [realtimeKpis]);
+
+  // CRUD operation handlers
+  const handleCreateWorkOrder = () => {
+    setEditingWorkOrder(null);
+    setShowModal(true);
+  };
+
+  const handleEditWorkOrder = (order: any) => {
+    // Find the original work order from the API data
+    const originalOrder = workOrders.find(wo => wo.id === order.id);
+    if (originalOrder) {
+      setEditingWorkOrder(originalOrder);
+      setShowModal(true);
+    }
+  };
+
+  const handleDeleteWorkOrder = async (order: any) => {
+    if (window.confirm('Are you sure you want to delete this work order?')) {
+      try {
+        await deleteWorkOrder(order.id);
+      } catch (error) {
+        console.error('Failed to delete work order:', error);
+        alert('Failed to delete work order. Please try again.');
+      }
+    }
+  };
+
+  const handleViewWorkOrder = (order: any) => {
+    // For now, just show an alert. In a real app, this might navigate to a detail view
+    alert(`Viewing work order: ${order.id}\nTitle: ${order.product}\nStatus: ${order.status}`);
+  };
+
+  const handleSaveWorkOrder = async (orderData: Omit<WorkOrder, 'id'> | WorkOrder) => {
+    try {
+      if ('id' in orderData) {
+        // Update existing work order
+        await updateWorkOrder(orderData.id, orderData);
+      } else {
+        // Create new work order
+        await createWorkOrder(orderData);
+      }
+    } catch (error) {
+      console.error('Failed to save work order:', error);
+      throw error; // Re-throw so the modal can handle it
+    }
+  };
+
+  // Simulate real-time updates (keep existing functionality)
   useEffect(() => {
     const interval = setInterval(() => {
       setKpiData(prevData => prevData.map(kpi => ({
@@ -88,8 +147,36 @@ const Dashboard: React.FC = () => {
           <div className="titan-dashboard-header">
             <h1 className="titan-dashboard-title">Fortune 100 Executive Dashboard</h1>
             <div className="titan-dashboard-actions">
+              <button 
+                className="titan-button"
+                onClick={handleCreateWorkOrder}
+                disabled={!!actionLoading}
+              >
+                ➕ Create Work Order
+              </button>
               <button className="titan-button">📊 Generate Report</button>
               <button className="titan-button titan-button-secondary">⚙️ Configure</button>
+              {kpiConnected && (
+                <span style={{ 
+                  fontSize: '12px', 
+                  color: 'var(--success)', 
+                  marginLeft: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  ● Live Data Connected
+                </span>
+              )}
+              {kpiError && (
+                <span style={{ 
+                  fontSize: '12px', 
+                  color: 'var(--error)', 
+                  marginLeft: '12px' 
+                }}>
+                  ⚠️ {kpiError}
+                </span>
+              )}
             </div>
           </div>
 
@@ -111,13 +198,38 @@ const Dashboard: React.FC = () => {
             <h2 className="titan-section-title">
               <span>📋</span>
               Active Work Orders & Production Pipeline
+              {ordersLoading && <span style={{ fontSize: '14px', color: 'var(--text-secondary)', marginLeft: '8px' }}>Loading...</span>}
+              {ordersError && <span style={{ fontSize: '14px', color: 'var(--error)', marginLeft: '8px' }}>⚠️ {ordersError}</span>}
             </h2>
             <DataTable
               columns={tableColumns}
-              data={recentOrders}
+              data={transformedOrders}
               searchable={true}
               paginated={true}
+              onEdit={handleEditWorkOrder}
+              onDelete={handleDeleteWorkOrder}
+              onView={handleViewWorkOrder}
             />
+            {!ordersLoading && transformedOrders.length === 0 && (
+              <div style={{ 
+                padding: '40px', 
+                textAlign: 'center', 
+                color: 'var(--text-secondary)' 
+              }}>
+                No work orders found. <button 
+                  onClick={refetchOrders}
+                  style={{ 
+                    color: 'var(--primary)', 
+                    textDecoration: 'underline',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Try refreshing
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Additional Analytics */}
@@ -185,6 +297,15 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Work Order Modal */}
+        <WorkOrderModal
+          isOpen={showModal}
+          workOrder={editingWorkOrder}
+          onClose={() => setShowModal(false)}
+          onSave={handleSaveWorkOrder}
+          loading={!!actionLoading}
+        />
       </div>
     </>
   );
