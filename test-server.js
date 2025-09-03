@@ -16,6 +16,18 @@ const serviceApi = require('./src/api/service-api.js');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// CORS middleware for React dev server
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
+
 // Serve static files from the UI directory
 app.use('/src/ui/static', express.static(path.join(__dirname, 'src/ui/static')));
 

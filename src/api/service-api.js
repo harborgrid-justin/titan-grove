@@ -205,6 +205,207 @@ router.post('/maintenance/predictive-analysis', async (req, res) => {
   }
 });
 
+// ==================== MANUFACTURING ENDPOINTS ====================
+
+/**
+ * Get production orders
+ */
+router.get('/manufacturing/production-orders', async (req, res) => {
+  try {
+    const productionOrders = [
+      {
+        id: 'po_001',
+        productId: 'prod_001',
+        productName: 'Industrial Pump Model X1',
+        quantity: 500,
+        status: 'IN_PROGRESS',
+        priority: 'HIGH',
+        startDate: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+        dueDate: new Date(Date.now() + 432000000).toISOString(), // 5 days from now
+        workCenter: 'Assembly Line A',
+        completedQuantity: 320,
+        progress: 64
+      },
+      {
+        id: 'po_002',
+        productId: 'prod_002',
+        productName: 'Control Valve Series V2',
+        quantity: 250,
+        status: 'SCHEDULED',
+        priority: 'MEDIUM',
+        startDate: new Date(Date.now() + 86400000).toISOString(), // tomorrow
+        dueDate: new Date(Date.now() + 518400000).toISOString(), // 6 days from now
+        workCenter: 'Machining Center B',
+        completedQuantity: 0,
+        progress: 0
+      },
+      {
+        id: 'po_003',
+        productId: 'prod_003',
+        productName: 'Motor Assembly M3',
+        quantity: 150,
+        status: 'COMPLETED',
+        priority: 'LOW',
+        startDate: new Date(Date.now() - 604800000).toISOString(), // 7 days ago
+        dueDate: new Date(Date.now() - 86400000).toISOString(), // yesterday
+        workCenter: 'Assembly Line C',
+        completedQuantity: 150,
+        progress: 100
+      }
+    ];
+    res.json({ success: true, data: productionOrders });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create production order
+ */
+router.post('/manufacturing/production-orders', async (req, res) => {
+  try {
+    const productionOrder = {
+      id: 'po_' + Date.now(),
+      ...req.body,
+      status: 'CREATED',
+      completedQuantity: 0,
+      progress: 0,
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: productionOrder });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update production order
+ */
+router.put('/manufacturing/production-orders/:id', async (req, res) => {
+  try {
+    const updatedOrder = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedOrder });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete production order
+ */
+router.delete('/manufacturing/production-orders/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Production order ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get manufacturing KPIs
+ */
+router.get('/manufacturing/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      oee: 87.4, // Overall Equipment Effectiveness
+      productionVolume: 12847,
+      qualityScore: 99.2,
+      downtimeHours: 2.3,
+      energyEfficiency: 94.1,
+      costPerUnit: 45.23,
+      throughput: 1250, // units per hour
+      wastePercentage: 0.8,
+      onTimeDelivery: 96.8
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get production line status
+ */
+router.get('/manufacturing/production-lines', async (req, res) => {
+  try {
+    const productionLines = [
+      {
+        id: 'line_001',
+        name: 'Assembly Line A',
+        status: 'RUNNING',
+        efficiency: 92.5,
+        currentProduct: 'Industrial Pump Model X1',
+        unitsPerHour: 25,
+        operatorCount: 8,
+        shiftStatus: 'Day Shift',
+        lastMaintenance: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+        nextMaintenance: new Date(Date.now() + 604800000).toISOString() // 7 days from now
+      },
+      {
+        id: 'line_002',
+        name: 'Machining Center B',
+        status: 'MAINTENANCE',
+        efficiency: 0,
+        currentProduct: null,
+        unitsPerHour: 0,
+        operatorCount: 2,
+        shiftStatus: 'Maintenance',
+        lastMaintenance: new Date().toISOString(),
+        nextMaintenance: new Date(Date.now() + 1209600000).toISOString() // 14 days from now
+      },
+      {
+        id: 'line_003',
+        name: 'Assembly Line C',
+        status: 'IDLE',
+        efficiency: 0,
+        currentProduct: null,
+        unitsPerHour: 0,
+        operatorCount: 0,
+        shiftStatus: 'Between Shifts',
+        lastMaintenance: new Date(Date.now() - 432000000).toISOString(), // 5 days ago
+        nextMaintenance: new Date(Date.now() + 432000000).toISOString() // 5 days from now
+      }
+    ];
+    res.json({ success: true, data: productionLines });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get quality metrics
+ */
+router.get('/manufacturing/quality-metrics', async (req, res) => {
+  try {
+    const qualityMetrics = {
+      defectRate: 0.8, // percentage
+      firstPassYield: 98.2,
+      customerReturns: 0.3,
+      qualityScore: 99.2,
+      inspectionsPassed: 2847,
+      inspectionsFailed: 23,
+      reworkCost: 12450,
+      scrapCost: 3200,
+      qualityTrends: [
+        { date: '2025-08-27', score: 98.8 },
+        { date: '2025-08-28', score: 99.1 },
+        { date: '2025-08-29', score: 98.9 },
+        { date: '2025-08-30', score: 99.3 },
+        { date: '2025-08-31', score: 99.0 },
+        { date: '2025-09-01', score: 99.4 },
+        { date: '2025-09-02', score: 99.2 }
+      ]
+    };
+    res.json({ success: true, data: qualityMetrics });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // ==================== SERVICE COMMAND CENTER ENDPOINTS ====================
 
 /**
@@ -913,6 +1114,980 @@ router.post('/main/reports/generate', async (req, res) => {
     }, 3000);
     
     res.json({ success: true, data: report });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== HR MANAGEMENT ENDPOINTS ====================
+
+/**
+ * Get employees
+ */
+router.get('/hr/employees', async (req, res) => {
+  try {
+    const employees = [
+      {
+        id: 'emp_001',
+        employeeNumber: 'E001',
+        firstName: 'John',
+        lastName: 'Smith',
+        email: 'john.smith@titangrove.com',
+        department: 'Manufacturing',
+        position: 'Production Manager',
+        status: 'ACTIVE',
+        hireDate: '2022-03-15T00:00:00Z',
+        salary: 75000,
+        manager: 'emp_005',
+        location: 'Plant A',
+        skills: ['Lean Manufacturing', 'Team Leadership', 'Quality Control']
+      },
+      {
+        id: 'emp_002',
+        employeeNumber: 'E002',
+        firstName: 'Sarah',
+        lastName: 'Johnson',
+        email: 'sarah.johnson@titangrove.com',
+        department: 'Finance',
+        position: 'Financial Analyst',
+        status: 'ACTIVE',
+        hireDate: '2021-08-22T00:00:00Z',
+        salary: 65000,
+        manager: 'emp_006',
+        location: 'HQ Building',
+        skills: ['Financial Modeling', 'Data Analysis', 'Excel', 'SAP']
+      },
+      {
+        id: 'emp_003',
+        employeeNumber: 'E003',
+        firstName: 'Mike',
+        lastName: 'Rodriguez',
+        email: 'mike.rodriguez@titangrove.com',
+        department: 'IT',
+        position: 'Software Engineer',
+        status: 'ACTIVE',
+        hireDate: '2023-01-10T00:00:00Z',
+        salary: 85000,
+        manager: 'emp_007',
+        location: 'HQ Building',
+        skills: ['React', 'Node.js', 'AWS', 'DevOps']
+      },
+      {
+        id: 'emp_004',
+        employeeNumber: 'E004',
+        firstName: 'Lisa',
+        lastName: 'Chen',
+        email: 'lisa.chen@titangrove.com',
+        department: 'Sales',
+        position: 'Account Executive',
+        status: 'ACTIVE',
+        hireDate: '2022-06-01T00:00:00Z',
+        salary: 70000,
+        manager: 'emp_008',
+        location: 'Regional Office',
+        skills: ['Customer Relations', 'Sales Strategy', 'CRM', 'Negotiation']
+      }
+    ];
+    res.json({ success: true, data: employees });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create employee
+ */
+router.post('/hr/employees', async (req, res) => {
+  try {
+    const employee = {
+      id: 'emp_' + Date.now(),
+      employeeNumber: 'E' + String(Math.floor(Math.random() * 9000) + 1000),
+      ...req.body,
+      status: 'ACTIVE',
+      hireDate: new Date().toISOString(),
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: employee });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update employee
+ */
+router.put('/hr/employees/:id', async (req, res) => {
+  try {
+    const updatedEmployee = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedEmployee });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete employee
+ */
+router.delete('/hr/employees/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Employee ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get HR KPIs
+ */
+router.get('/hr/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      totalEmployees: 847,
+      activeEmployees: 821,
+      newHires: 23,
+      turnoverRate: 5.2,
+      averageTenure: 3.4,
+      employeeSatisfaction: 4.3,
+      absenteeismRate: 2.8,
+      trainingCompletionRate: 89.5
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== SUPPLY CHAIN ENDPOINTS ====================
+
+/**
+ * Get purchase orders
+ */
+router.get('/supply-chain/purchase-orders', async (req, res) => {
+  try {
+    const purchaseOrders = [
+      {
+        id: 'po_001',
+        orderNumber: 'PO-2025-001',
+        supplier: 'Industrial Parts Inc.',
+        supplierEmail: 'orders@industrialparts.com',
+        status: 'APPROVED',
+        priority: 'HIGH',
+        orderDate: new Date(Date.now() - 86400000).toISOString(),
+        expectedDelivery: new Date(Date.now() + 432000000).toISOString(),
+        totalAmount: 45000,
+        items: [
+          { id: 'item_001', description: 'Steel Plates 10mm', quantity: 50, unitPrice: 800, total: 40000 },
+          { id: 'item_002', description: 'Industrial Bolts M12', quantity: 1000, unitPrice: 5, total: 5000 }
+        ]
+      },
+      {
+        id: 'po_002',
+        orderNumber: 'PO-2025-002',
+        supplier: 'Tech Components Ltd.',
+        supplierEmail: 'sales@techcomponents.com',
+        status: 'PENDING',
+        priority: 'MEDIUM',
+        orderDate: new Date().toISOString(),
+        expectedDelivery: new Date(Date.now() + 604800000).toISOString(),
+        totalAmount: 28500,
+        items: [
+          { id: 'item_003', description: 'Control Sensors', quantity: 25, unitPrice: 1000, total: 25000 },
+          { id: 'item_004', description: 'Cables 50m', quantity: 10, unitPrice: 350, total: 3500 }
+        ]
+      },
+      {
+        id: 'po_003',
+        orderNumber: 'PO-2025-003',
+        supplier: 'Raw Materials Supply Co.',
+        supplierEmail: 'orders@rawmaterials.com',
+        status: 'DELIVERED',
+        priority: 'LOW',
+        orderDate: new Date(Date.now() - 1209600000).toISOString(),
+        expectedDelivery: new Date(Date.now() - 172800000).toISOString(),
+        totalAmount: 67500,
+        items: [
+          { id: 'item_005', description: 'Aluminum Sheets 5mm', quantity: 100, unitPrice: 600, total: 60000 },
+          { id: 'item_006', description: 'Protective Coating', quantity: 15, unitPrice: 500, total: 7500 }
+        ]
+      }
+    ];
+    res.json({ success: true, data: purchaseOrders });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create purchase order
+ */
+router.post('/supply-chain/purchase-orders', async (req, res) => {
+  try {
+    const purchaseOrder = {
+      id: 'po_' + Date.now(),
+      orderNumber: 'PO-2025-' + String(Math.floor(Math.random() * 9000) + 1000),
+      ...req.body,
+      status: 'PENDING',
+      orderDate: new Date().toISOString(),
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: purchaseOrder });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update purchase order
+ */
+router.put('/supply-chain/purchase-orders/:id', async (req, res) => {
+  try {
+    const updatedOrder = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedOrder });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete purchase order
+ */
+router.delete('/supply-chain/purchase-orders/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Purchase order ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get supply chain KPIs
+ */
+router.get('/supply-chain/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      activeSuppliers: 145,
+      totalPurchaseOrders: 324,
+      pendingDeliveries: 28,
+      onTimeDeliveryRate: 94.2,
+      averageLeadTime: 12.5,
+      supplierPerformanceScore: 87.3,
+      inventoryTurnover: 8.4,
+      costSavings: 125000
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== CRM ENDPOINTS ====================
+
+/**
+ * Get customers
+ */
+router.get('/crm/customers', async (req, res) => {
+  try {
+    const customers = [
+      {
+        id: 'cust_001',
+        name: 'Acme Manufacturing Corp',
+        email: 'contact@acmemfg.com',
+        phone: '+1-555-0123',
+        industry: 'Manufacturing',
+        status: 'ACTIVE',
+        tier: 'ENTERPRISE',
+        accountValue: 2500000,
+        contractStart: '2023-01-15T00:00:00Z',
+        contractEnd: '2025-01-15T00:00:00Z',
+        accountManager: 'Lisa Chen',
+        location: 'Detroit, MI',
+        lastContact: new Date(Date.now() - 172800000).toISOString()
+      },
+      {
+        id: 'cust_002',
+        name: 'Global Tech Solutions',
+        email: 'partnerships@globaltech.com',
+        phone: '+1-555-0456',
+        industry: 'Technology',
+        status: 'ACTIVE',
+        tier: 'PREMIUM',
+        accountValue: 1850000,
+        contractStart: '2022-06-01T00:00:00Z',
+        contractEnd: '2024-06-01T00:00:00Z',
+        accountManager: 'Mike Rodriguez',
+        location: 'Austin, TX',
+        lastContact: new Date(Date.now() - 86400000).toISOString()
+      },
+      {
+        id: 'cust_003',
+        name: 'Energy Systems LLC',
+        email: 'procurement@energysys.com',
+        phone: '+1-555-0789',
+        industry: 'Energy',
+        status: 'ACTIVE',
+        tier: 'STANDARD',
+        accountValue: 950000,
+        contractStart: '2023-03-20T00:00:00Z',
+        contractEnd: '2024-03-20T00:00:00Z',
+        accountManager: 'Sarah Johnson',
+        location: 'Houston, TX',
+        lastContact: new Date(Date.now() - 432000000).toISOString()
+      },
+      {
+        id: 'cust_004',
+        name: 'Industrial Automation Inc',
+        email: 'sales@indautomation.com',
+        phone: '+1-555-0321',
+        industry: 'Automation',
+        status: 'PROSPECT',
+        tier: 'PREMIUM',
+        accountValue: 0,
+        contractStart: null,
+        contractEnd: null,
+        accountManager: 'John Smith',
+        location: 'Chicago, IL',
+        lastContact: new Date(Date.now() - 259200000).toISOString()
+      }
+    ];
+    res.json({ success: true, data: customers });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create customer
+ */
+router.post('/crm/customers', async (req, res) => {
+  try {
+    const customer = {
+      id: 'cust_' + Date.now(),
+      ...req.body,
+      status: 'PROSPECT',
+      accountValue: 0,
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: customer });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update customer
+ */
+router.put('/crm/customers/:id', async (req, res) => {
+  try {
+    const updatedCustomer = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedCustomer });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete customer
+ */
+router.delete('/crm/customers/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Customer ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get CRM KPIs
+ */
+router.get('/crm/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      totalCustomers: 347,
+      activeCustomers: 321,
+      newCustomers: 23,
+      customerRetentionRate: 94.2,
+      averageAccountValue: 1450000,
+      customerSatisfactionScore: 4.6,
+      salesPipelineValue: 8750000,
+      conversionRate: 12.8
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== PROJECT MANAGEMENT ENDPOINTS ====================
+
+/**
+ * Get projects
+ */
+router.get('/projects/projects', async (req, res) => {
+  try {
+    const projects = [
+      {
+        id: 'proj_001',
+        name: 'Manufacturing Line Upgrade',
+        description: 'Upgrade production line A with new automated equipment',
+        status: 'IN_PROGRESS',
+        priority: 'HIGH',
+        startDate: new Date(Date.now() - 1209600000).toISOString(),
+        endDate: new Date(Date.now() + 2592000000).toISOString(),
+        budget: 850000,
+        spent: 425000,
+        progress: 50,
+        projectManager: 'John Smith',
+        team: ['Mike Rodriguez', 'Sarah Johnson', 'Lisa Chen'],
+        milestones: [
+          { id: 'ms_001', name: 'Equipment Procurement', status: 'COMPLETED', date: '2025-08-15' },
+          { id: 'ms_002', name: 'Installation Phase 1', status: 'IN_PROGRESS', date: '2025-09-15' },
+          { id: 'ms_003', name: 'Testing & Validation', status: 'PENDING', date: '2025-10-15' }
+        ]
+      },
+      {
+        id: 'proj_002',
+        name: 'ERP System Implementation',
+        description: 'Deploy new enterprise resource planning system across all locations',
+        status: 'PLANNING',
+        priority: 'MEDIUM',
+        startDate: new Date(Date.now() + 604800000).toISOString(),
+        endDate: new Date(Date.now() + 7776000000).toISOString(),
+        budget: 1200000,
+        spent: 45000,
+        progress: 5,
+        projectManager: 'Sarah Johnson',
+        team: ['Mike Rodriguez', 'Lisa Chen'],
+        milestones: [
+          { id: 'ms_004', name: 'Requirements Gathering', status: 'IN_PROGRESS', date: '2025-09-30' },
+          { id: 'ms_005', name: 'System Configuration', status: 'PENDING', date: '2025-12-15' },
+          { id: 'ms_006', name: 'Data Migration', status: 'PENDING', date: '2026-02-28' }
+        ]
+      },
+      {
+        id: 'proj_003',
+        name: 'Quality Management System',
+        description: 'Implement ISO 9001 quality management system',
+        status: 'COMPLETED',
+        priority: 'LOW',
+        startDate: new Date(Date.now() - 5184000000).toISOString(),
+        endDate: new Date(Date.now() - 432000000).toISOString(),
+        budget: 450000,
+        spent: 425000,
+        progress: 100,
+        projectManager: 'Lisa Chen',
+        team: ['John Smith', 'Sarah Johnson'],
+        milestones: [
+          { id: 'ms_007', name: 'Process Documentation', status: 'COMPLETED', date: '2025-06-30' },
+          { id: 'ms_008', name: 'Staff Training', status: 'COMPLETED', date: '2025-07-31' },
+          { id: 'ms_009', name: 'Certification Audit', status: 'COMPLETED', date: '2025-08-31' }
+        ]
+      }
+    ];
+    res.json({ success: true, data: projects });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create project
+ */
+router.post('/projects/projects', async (req, res) => {
+  try {
+    const project = {
+      id: 'proj_' + Date.now(),
+      ...req.body,
+      status: 'PLANNING',
+      spent: 0,
+      progress: 0,
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: project });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update project
+ */
+router.put('/projects/projects/:id', async (req, res) => {
+  try {
+    const updatedProject = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedProject });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete project
+ */
+router.delete('/projects/projects/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Project ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get project KPIs
+ */
+router.get('/projects/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      totalProjects: 47,
+      activeProjects: 23,
+      completedProjects: 18,
+      onTimeDelivery: 85.7,
+      averageBudgetVariance: 8.5,
+      resourceUtilization: 87.3,
+      portfolioValue: 12500000,
+      riskExposure: 15.2
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== ASSET MANAGEMENT ENDPOINTS ====================
+
+/**
+ * Get assets
+ */
+router.get('/assets/assets', async (req, res) => {
+  try {
+    const assets = [
+      {
+        id: 'asset_001',
+        assetNumber: 'EQ-001',
+        name: 'CNC Machining Center A1',
+        category: 'Manufacturing Equipment',
+        location: 'Plant A - Floor 1',
+        status: 'OPERATIONAL',
+        condition: 'GOOD',
+        acquisitionDate: '2020-03-15T00:00:00Z',
+        acquisitionCost: 450000,
+        currentValue: 320000,
+        depreciation: 130000,
+        lastMaintenance: new Date(Date.now() - 1209600000).toISOString(),
+        nextMaintenance: new Date(Date.now() + 1209600000).toISOString(),
+        warrantyExpiry: '2025-03-15T00:00:00Z',
+        serialNumber: 'CNC-2020-001'
+      },
+      {
+        id: 'asset_002',
+        assetNumber: 'EQ-002',
+        name: 'Industrial Compressor Unit',
+        category: 'Utilities',
+        location: 'Plant A - Utility Room',
+        status: 'OPERATIONAL',
+        condition: 'FAIR',
+        acquisitionDate: '2018-08-22T00:00:00Z',
+        acquisitionCost: 125000,
+        currentValue: 65000,
+        depreciation: 60000,
+        lastMaintenance: new Date(Date.now() - 432000000).toISOString(),
+        nextMaintenance: new Date(Date.now() + 604800000).toISOString(),
+        warrantyExpiry: '2023-08-22T00:00:00Z',
+        serialNumber: 'COMP-2018-002'
+      },
+      {
+        id: 'asset_003',
+        assetNumber: 'IT-001',
+        name: 'Server Rack Cluster',
+        category: 'IT Equipment',
+        location: 'HQ - Data Center',
+        status: 'OPERATIONAL',
+        condition: 'EXCELLENT',
+        acquisitionDate: '2023-01-10T00:00:00Z',
+        acquisitionCost: 85000,
+        currentValue: 78000,
+        depreciation: 7000,
+        lastMaintenance: new Date(Date.now() - 86400000).toISOString(),
+        nextMaintenance: new Date(Date.now() + 2592000000).toISOString(),
+        warrantyExpiry: '2026-01-10T00:00:00Z',
+        serialNumber: 'SRV-2023-001'
+      },
+      {
+        id: 'asset_004',
+        assetNumber: 'VEH-001',
+        name: 'Forklift - Electric',
+        category: 'Vehicles',
+        location: 'Plant A - Warehouse',
+        status: 'MAINTENANCE',
+        condition: 'POOR',
+        acquisitionDate: '2019-06-01T00:00:00Z',
+        acquisitionCost: 35000,
+        currentValue: 18000,
+        depreciation: 17000,
+        lastMaintenance: new Date().toISOString(),
+        nextMaintenance: new Date(Date.now() + 604800000).toISOString(),
+        warrantyExpiry: '2022-06-01T00:00:00Z',
+        serialNumber: 'FLT-2019-001'
+      }
+    ];
+    res.json({ success: true, data: assets });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create asset
+ */
+router.post('/assets/assets', async (req, res) => {
+  try {
+    const asset = {
+      id: 'asset_' + Date.now(),
+      assetNumber: 'EQ-' + String(Math.floor(Math.random() * 9000) + 1000),
+      ...req.body,
+      status: 'OPERATIONAL',
+      acquisitionDate: new Date().toISOString(),
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: asset });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update asset
+ */
+router.put('/assets/assets/:id', async (req, res) => {
+  try {
+    const updatedAsset = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedAsset });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete asset
+ */
+router.delete('/assets/assets/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Asset ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get asset KPIs
+ */
+router.get('/assets/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      totalAssets: 1247,
+      operationalAssets: 1156,
+      assetsInMaintenance: 23,
+      assetUtilization: 87.3,
+      totalAssetValue: 15600000,
+      depreciatedValue: 11200000,
+      maintenanceCosts: 245000,
+      assetDowntime: 2.4
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== COMPLIANCE ENDPOINTS ====================
+
+/**
+ * Get compliance items
+ */
+router.get('/compliance/items', async (req, res) => {
+  try {
+    const complianceItems = [
+      {
+        id: 'comp_001',
+        title: 'ISO 9001:2015 Quality Management',
+        type: 'CERTIFICATION',
+        status: 'COMPLIANT',
+        severity: 'HIGH',
+        dueDate: '2025-12-31T00:00:00Z',
+        lastReview: new Date(Date.now() - 2592000000).toISOString(),
+        nextReview: new Date(Date.now() + 2592000000).toISOString(),
+        assignedTo: 'Lisa Chen',
+        description: 'Maintain ISO 9001 quality management system certification',
+        requirements: ['Annual audit', 'Process documentation', 'Training records'],
+        riskLevel: 'MEDIUM'
+      },
+      {
+        id: 'comp_002',
+        title: 'OSHA Safety Compliance',
+        type: 'REGULATORY',
+        status: 'COMPLIANT',
+        severity: 'CRITICAL',
+        dueDate: '2025-06-30T00:00:00Z',
+        lastReview: new Date(Date.now() - 1296000000).toISOString(),
+        nextReview: new Date(Date.now() + 1296000000).toISOString(),
+        assignedTo: 'John Smith',
+        description: 'Occupational Safety and Health Administration compliance',
+        requirements: ['Safety training', 'Equipment inspection', 'Incident reporting'],
+        riskLevel: 'HIGH'
+      },
+      {
+        id: 'comp_003',
+        title: 'Environmental Impact Assessment',
+        type: 'ENVIRONMENTAL',
+        status: 'PENDING',
+        severity: 'MEDIUM',
+        dueDate: '2025-09-15T00:00:00Z',
+        lastReview: new Date(Date.now() - 5184000000).toISOString(),
+        nextReview: new Date(Date.now() + 864000000).toISOString(),
+        assignedTo: 'Sarah Johnson',
+        description: 'Annual environmental impact assessment and reporting',
+        requirements: ['Emissions testing', 'Waste management review', 'Energy efficiency audit'],
+        riskLevel: 'LOW'
+      },
+      {
+        id: 'comp_004',
+        title: 'Data Protection (GDPR)',
+        type: 'DATA_PRIVACY',
+        status: 'NON_COMPLIANT',
+        severity: 'HIGH',
+        dueDate: '2025-10-01T00:00:00Z',
+        lastReview: new Date(Date.now() - 3888000000).toISOString(),
+        nextReview: new Date(Date.now() + 432000000).toISOString(),
+        assignedTo: 'Mike Rodriguez',
+        description: 'General Data Protection Regulation compliance',
+        requirements: ['Privacy policy update', 'Data audit', 'Staff training'],
+        riskLevel: 'HIGH'
+      }
+    ];
+    res.json({ success: true, data: complianceItems });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create compliance item
+ */
+router.post('/compliance/items', async (req, res) => {
+  try {
+    const complianceItem = {
+      id: 'comp_' + Date.now(),
+      ...req.body,
+      status: 'PENDING',
+      lastReview: new Date().toISOString(),
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: complianceItem });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update compliance item
+ */
+router.put('/compliance/items/:id', async (req, res) => {
+  try {
+    const updatedItem = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedItem });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete compliance item
+ */
+router.delete('/compliance/items/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Compliance item ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get compliance KPIs
+ */
+router.get('/compliance/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      totalRequirements: 147,
+      compliantItems: 124,
+      nonCompliantItems: 8,
+      pendingItems: 15,
+      complianceRate: 84.4,
+      riskScore: 23.7,
+      overdueFINDGS: 3,
+      upcomingDeadlines: 12
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== BUSINESS INTELLIGENCE ENDPOINTS ====================
+
+/**
+ * Get reports
+ */
+router.get('/bi/reports', async (req, res) => {
+  try {
+    const reports = [
+      {
+        id: 'rpt_001',
+        name: 'Executive Dashboard',
+        type: 'DASHBOARD',
+        category: 'Executive',
+        status: 'PUBLISHED',
+        createdBy: 'Sarah Johnson',
+        createdDate: new Date(Date.now() - 2592000000).toISOString(),
+        lastModified: new Date(Date.now() - 86400000).toISOString(),
+        description: 'High-level KPIs and performance metrics for executives',
+        refreshFrequency: 'DAILY',
+        subscribers: 25,
+        tags: ['executive', 'kpi', 'performance']
+      },
+      {
+        id: 'rpt_002',
+        name: 'Manufacturing Performance',
+        type: 'REPORT',
+        category: 'Operations',
+        status: 'PUBLISHED',
+        createdBy: 'John Smith',
+        createdDate: new Date(Date.now() - 1728000000).toISOString(),
+        lastModified: new Date(Date.now() - 432000000).toISOString(),
+        description: 'Detailed manufacturing metrics and production analysis',
+        refreshFrequency: 'HOURLY',
+        subscribers: 18,
+        tags: ['manufacturing', 'oee', 'production']
+      },
+      {
+        id: 'rpt_003',
+        name: 'Financial Analysis',
+        type: 'REPORT',
+        category: 'Finance',
+        status: 'DRAFT',
+        createdBy: 'Lisa Chen',
+        createdDate: new Date(Date.now() - 864000000).toISOString(),
+        lastModified: new Date(Date.now() - 172800000).toISOString(),
+        description: 'Comprehensive financial performance and forecasting',
+        refreshFrequency: 'WEEKLY',
+        subscribers: 12,
+        tags: ['finance', 'revenue', 'forecasting']
+      },
+      {
+        id: 'rpt_004',
+        name: 'Customer Satisfaction Trends',
+        type: 'ANALYTICS',
+        category: 'Customer',
+        status: 'PUBLISHED',
+        createdBy: 'Mike Rodriguez',
+        createdDate: new Date(Date.now() - 1209600000).toISOString(),
+        lastModified: new Date(Date.now() - 259200000).toISOString(),
+        description: 'Customer satisfaction trends and sentiment analysis',
+        refreshFrequency: 'WEEKLY',
+        subscribers: 8,
+        tags: ['customer', 'satisfaction', 'trends']
+      }
+    ];
+    res.json({ success: true, data: reports });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create report
+ */
+router.post('/bi/reports', async (req, res) => {
+  try {
+    const report = {
+      id: 'rpt_' + Date.now(),
+      ...req.body,
+      status: 'DRAFT',
+      subscribers: 0,
+      createdDate: new Date().toISOString(),
+      lastModified: new Date().toISOString()
+    };
+    res.json({ success: true, data: report });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update report
+ */
+router.put('/bi/reports/:id', async (req, res) => {
+  try {
+    const updatedReport = {
+      id: req.params.id,
+      ...req.body,
+      lastModified: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedReport });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete report
+ */
+router.delete('/bi/reports/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Report ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get BI KPIs
+ */
+router.get('/bi/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      totalReports: 47,
+      publishedReports: 38,
+      activeUsers: 156,
+      dataSourcesConnected: 23,
+      reportViews: 4250,
+      averageQueryTime: 1.2,
+      dataFreshness: 99.3,
+      systemUptime: 99.8
+    };
+    res.json({ success: true, data: kpis });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
