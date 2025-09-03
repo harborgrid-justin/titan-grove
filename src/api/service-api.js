@@ -205,6 +205,207 @@ router.post('/maintenance/predictive-analysis', async (req, res) => {
   }
 });
 
+// ==================== MANUFACTURING ENDPOINTS ====================
+
+/**
+ * Get production orders
+ */
+router.get('/manufacturing/production-orders', async (req, res) => {
+  try {
+    const productionOrders = [
+      {
+        id: 'po_001',
+        productId: 'prod_001',
+        productName: 'Industrial Pump Model X1',
+        quantity: 500,
+        status: 'IN_PROGRESS',
+        priority: 'HIGH',
+        startDate: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+        dueDate: new Date(Date.now() + 432000000).toISOString(), // 5 days from now
+        workCenter: 'Assembly Line A',
+        completedQuantity: 320,
+        progress: 64
+      },
+      {
+        id: 'po_002',
+        productId: 'prod_002',
+        productName: 'Control Valve Series V2',
+        quantity: 250,
+        status: 'SCHEDULED',
+        priority: 'MEDIUM',
+        startDate: new Date(Date.now() + 86400000).toISOString(), // tomorrow
+        dueDate: new Date(Date.now() + 518400000).toISOString(), // 6 days from now
+        workCenter: 'Machining Center B',
+        completedQuantity: 0,
+        progress: 0
+      },
+      {
+        id: 'po_003',
+        productId: 'prod_003',
+        productName: 'Motor Assembly M3',
+        quantity: 150,
+        status: 'COMPLETED',
+        priority: 'LOW',
+        startDate: new Date(Date.now() - 604800000).toISOString(), // 7 days ago
+        dueDate: new Date(Date.now() - 86400000).toISOString(), // yesterday
+        workCenter: 'Assembly Line C',
+        completedQuantity: 150,
+        progress: 100
+      }
+    ];
+    res.json({ success: true, data: productionOrders });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create production order
+ */
+router.post('/manufacturing/production-orders', async (req, res) => {
+  try {
+    const productionOrder = {
+      id: 'po_' + Date.now(),
+      ...req.body,
+      status: 'CREATED',
+      completedQuantity: 0,
+      progress: 0,
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: productionOrder });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update production order
+ */
+router.put('/manufacturing/production-orders/:id', async (req, res) => {
+  try {
+    const updatedOrder = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedOrder });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete production order
+ */
+router.delete('/manufacturing/production-orders/:id', async (req, res) => {
+  try {
+    res.json({ success: true, message: `Production order ${req.params.id} deleted successfully` });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get manufacturing KPIs
+ */
+router.get('/manufacturing/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      oee: 87.4, // Overall Equipment Effectiveness
+      productionVolume: 12847,
+      qualityScore: 99.2,
+      downtimeHours: 2.3,
+      energyEfficiency: 94.1,
+      costPerUnit: 45.23,
+      throughput: 1250, // units per hour
+      wastePercentage: 0.8,
+      onTimeDelivery: 96.8
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get production line status
+ */
+router.get('/manufacturing/production-lines', async (req, res) => {
+  try {
+    const productionLines = [
+      {
+        id: 'line_001',
+        name: 'Assembly Line A',
+        status: 'RUNNING',
+        efficiency: 92.5,
+        currentProduct: 'Industrial Pump Model X1',
+        unitsPerHour: 25,
+        operatorCount: 8,
+        shiftStatus: 'Day Shift',
+        lastMaintenance: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+        nextMaintenance: new Date(Date.now() + 604800000).toISOString() // 7 days from now
+      },
+      {
+        id: 'line_002',
+        name: 'Machining Center B',
+        status: 'MAINTENANCE',
+        efficiency: 0,
+        currentProduct: null,
+        unitsPerHour: 0,
+        operatorCount: 2,
+        shiftStatus: 'Maintenance',
+        lastMaintenance: new Date().toISOString(),
+        nextMaintenance: new Date(Date.now() + 1209600000).toISOString() // 14 days from now
+      },
+      {
+        id: 'line_003',
+        name: 'Assembly Line C',
+        status: 'IDLE',
+        efficiency: 0,
+        currentProduct: null,
+        unitsPerHour: 0,
+        operatorCount: 0,
+        shiftStatus: 'Between Shifts',
+        lastMaintenance: new Date(Date.now() - 432000000).toISOString(), // 5 days ago
+        nextMaintenance: new Date(Date.now() + 432000000).toISOString() // 5 days from now
+      }
+    ];
+    res.json({ success: true, data: productionLines });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get quality metrics
+ */
+router.get('/manufacturing/quality-metrics', async (req, res) => {
+  try {
+    const qualityMetrics = {
+      defectRate: 0.8, // percentage
+      firstPassYield: 98.2,
+      customerReturns: 0.3,
+      qualityScore: 99.2,
+      inspectionsPassed: 2847,
+      inspectionsFailed: 23,
+      reworkCost: 12450,
+      scrapCost: 3200,
+      qualityTrends: [
+        { date: '2025-08-27', score: 98.8 },
+        { date: '2025-08-28', score: 99.1 },
+        { date: '2025-08-29', score: 98.9 },
+        { date: '2025-08-30', score: 99.3 },
+        { date: '2025-08-31', score: 99.0 },
+        { date: '2025-09-01', score: 99.4 },
+        { date: '2025-09-02', score: 99.2 }
+      ]
+    };
+    res.json({ success: true, data: qualityMetrics });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // ==================== SERVICE COMMAND CENTER ENDPOINTS ====================
 
 /**
