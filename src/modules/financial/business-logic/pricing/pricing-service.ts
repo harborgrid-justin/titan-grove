@@ -4,7 +4,7 @@
  * Enhanced with message queue and cache integration
  */
 
-import { StandardServiceBase } from '../../../shared/utils/standard-service-base';
+import { StandardServiceBase } from '../../../../shared/utils/standard-service-base';
 import { ServiceIntegrationContext } from '../../../shared/interfaces/service-integration';
 import { MessagePayload, QueueType } from '../../../core/message-queue/types';
 
