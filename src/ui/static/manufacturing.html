@@ -733,6 +733,230 @@
         </main>
     </div>
 
+    <!-- Complex Workflow Forms for Testing -->
+    <div id="complexWorkflowModals" style="display: none;">
+        <!-- Work Order Creation Modal -->
+        <div id="workOrderModal" class="modal">
+            <div class="modal-content">
+                <h3>Create Work Order</h3>
+                <form id="workOrderForm">
+                    <input type="text" id="workOrderNumber" placeholder="Work Order Number" />
+                    <input type="text" id="productCode" placeholder="Product Code" />
+                    <input type="number" id="quantity" placeholder="Quantity" />
+                    <input type="date" id="dueDate" />
+                    <select id="priority">
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HIGH">High</option>
+                        <option value="URGENT">Urgent</option>
+                    </select>
+                    <button type="button" id="submitWorkOrder">Create Work Order</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Quality Control Modal -->
+        <div id="qualityControlModal" class="modal">
+            <div class="modal-content">
+                <h3>Quality Control Interface</h3>
+                <form id="qualityControlForm">
+                    <input type="text" id="batchNumber" placeholder="Batch Number" />
+                    <select id="defectType">
+                        <option value="DIMENSIONAL_VARIANCE">Dimensional Variance</option>
+                        <option value="SURFACE_DEFECT">Surface Defect</option>
+                        <option value="MATERIAL_DEFECT">Material Defect</option>
+                        <option value="ASSEMBLY_ERROR">Assembly Error</option>
+                    </select>
+                    <select id="severity">
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HIGH">High</option>
+                        <option value="CRITICAL">Critical</option>
+                    </select>
+                    <textarea id="description" placeholder="Defect Description"></textarea>
+                    <button type="button" id="reportDefect">Report Defect</button>
+                    <button type="button" id="startRootCause">Start Root Cause Analysis</button>
+                </form>
+                <div id="rootCauseAnalysis" style="display: none;">
+                    <select id="analysisMethod">
+                        <option value="FISHBONE_DIAGRAM">Fishbone Diagram</option>
+                        <option value="5_WHYS">5 Whys</option>
+                        <option value="PARETO_ANALYSIS">Pareto Analysis</option>
+                    </select>
+                    <select id="assignAnalyst">
+                        <option value="QA_TEAM_LEAD">QA Team Lead</option>
+                        <option value="QUALITY_ENGINEER">Quality Engineer</option>
+                        <option value="PROCESS_ENGINEER">Process Engineer</option>
+                    </select>
+                    <textarea id="correctiveActions" placeholder="Corrective Actions"></textarea>
+                    <textarea id="preventiveActions" placeholder="Preventive Actions"></textarea>
+                    <button type="button" id="implementActions">Implement Actions</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Production Planning Modal -->
+        <div id="productionPlanningModal" class="modal">
+            <div class="modal-content">
+                <h3>Production Planning & Optimization</h3>
+                <div id="forecastSection">
+                    <button type="button" id="loadForecast">Load Demand Forecast</button>
+                    <select id="forecastPeriod">
+                        <option value="NEXT_WEEK">Next Week</option>
+                        <option value="NEXT_MONTH">Next Month</option>
+                        <option value="NEXT_3_MONTHS">Next 3 Months</option>
+                    </select>
+                    <select id="demandSource">
+                        <option value="SALES_FORECAST">Sales Forecast</option>
+                        <option value="HISTORICAL_DATA">Historical Data</option>
+                        <option value="MARKET_ANALYSIS">Market Analysis</option>
+                    </select>
+                </div>
+                <div id="constraintsSection">
+                    <button type="button" id="configureConstraints">Configure Constraints</button>
+                    <input type="number" id="maxCapacity" placeholder="Max Capacity" />
+                    <input type="number" id="maxOvertime" placeholder="Max Overtime %" />
+                    <select id="materialAvailability">
+                        <option value="CURRENT_INVENTORY">Current Inventory</option>
+                        <option value="PLANNED_PROCUREMENT">Planned Procurement</option>
+                        <option value="EMERGENCY_ORDERS">Emergency Orders</option>
+                    </select>
+                    <select id="skillRequirements" multiple>
+                        <option value="WELDING">Welding</option>
+                        <option value="ASSEMBLY">Assembly</option>
+                        <option value="QUALITY_CONTROL">Quality Control</option>
+                        <option value="MACHINING">Machining</option>
+                    </select>
+                </div>
+                <div id="optimizationSection">
+                    <button type="button" id="runOptimization">Run Optimization</button>
+                    <select id="optimizationGoal">
+                        <option value="MINIMIZE_COST">Minimize Cost</option>
+                        <option value="MAXIMIZE_THROUGHPUT">Maximize Throughput</option>
+                        <option value="MINIMIZE_LEAD_TIME">Minimize Lead Time</option>
+                    </select>
+                    <select id="algorithmType">
+                        <option value="LINEAR_PROGRAMMING">Linear Programming</option>
+                        <option value="GENETIC_ALGORITHM">Genetic Algorithm</option>
+                        <option value="SIMULATED_ANNEALING">Simulated Annealing</option>
+                    </select>
+                    <div class="optimization-progress" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span>Running optimization...</span>
+                    </div>
+                </div>
+                <div id="optimizationResults" class="optimization-results" style="display: none;">
+                    <div>Efficiency Gain: <span id="efficiencyGain">--</span></div>
+                    <div>Cost Reduction: <span id="costReduction">--</span></div>
+                    <div>Resource Utilization: <span id="resourceUtilization">--</span></div>
+                    <button type="button" id="applySchedule">Apply Optimized Schedule</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Monitoring Controls -->
+        <div id="realtimeMonitoringModal" class="modal">
+            <div class="modal-content">
+                <h3>Real-time Production Monitoring</h3>
+                <div id="monitoringConfig">
+                    <button type="button" id="configureDashboard">Configure Dashboard</button>
+                    <select id="refreshInterval">
+                        <option value="1_SECOND">1 Second</option>
+                        <option value="5_SECONDS">5 Seconds</option>
+                        <option value="10_SECONDS">10 Seconds</option>
+                        <option value="30_SECONDS">30 Seconds</option>
+                    </select>
+                    <input type="checkbox" id="alertThresholds" /> <label for="alertThresholds">Enable Alert Thresholds</label>
+                    <input type="checkbox" id="historicalComparison" /> <label for="historicalComparison">Show Historical Comparison</label>
+                </div>
+                <div class="production-line-monitor">
+                    <h4>Line A Monitor</h4>
+                    <div class="line-status">Status: <span id="lineAStatus">Running</span></div>
+                    <div class="efficiency-meter">Efficiency: <span id="lineAEfficiency">94.2%</span></div>
+                    <div class="current-output">Output: <span id="lineAOutput">24.1 units/hr</span></div>
+                </div>
+                <div class="production-line-monitor">
+                    <h4>Line B Monitor</h4>
+                    <div class="line-status">Status: <span id="lineBStatus">Running</span></div>
+                    <div class="efficiency-meter">Efficiency: <span id="lineBEfficiency">91.7%</span></div>
+                    <div class="current-output">Output: <span id="lineBOutput">19.5 units/hr</span></div>
+                </div>
+                <div id="alertSystem">
+                    <button type="button" id="testAlert">Test Alert System</button>
+                    <select id="alertType">
+                        <option value="EFFICIENCY_DROP">Efficiency Drop</option>
+                        <option value="QUALITY_ISSUE">Quality Issue</option>
+                        <option value="EQUIPMENT_FAULT">Equipment Fault</option>
+                        <option value="SAFETY_ALERT">Safety Alert</option>
+                    </select>
+                    <div id="alertMessage" class="alert-message" style="display: none;">
+                        Alert: Production efficiency below threshold!
+                    </div>
+                    <button type="button" id="acknowledgeAlert" style="display: none;">Acknowledge Alert</button>
+                </div>
+                <div id="liveReporting">
+                    <button type="button" id="generateLiveReport">Generate Live Report</button>
+                    <select id="reportType">
+                        <option value="OEE_SUMMARY">OEE Summary</option>
+                        <option value="PRODUCTION_STATUS">Production Status</option>
+                        <option value="QUALITY_METRICS">Quality Metrics</option>
+                        <option value="EFFICIENCY_ANALYSIS">Efficiency Analysis</option>
+                    </select>
+                    <select id="timeRange">
+                        <option value="LAST_HOUR">Last Hour</option>
+                        <option value="LAST_4_HOURS">Last 4 Hours</option>
+                        <option value="LAST_24_HOURS">Last 24 Hours</option>
+                        <option value="CURRENT_SHIFT">Current Shift</option>
+                    </select>
+                    <div class="live-report" style="display: none;">
+                        <h4>Live Production Report</h4>
+                        <p>Generated at: <span id="reportTimestamp"></span></p>
+                        <div class="report-content">Report data would be displayed here...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Control Elements for Testing -->
+    <div style="display: none;">
+        <button id="createWorkOrder" class="create-work-order">Create Work Order</button>
+        <button id="reportDefect">Report Quality Issue</button>
+        <button id="productionPlanning">Production Planning</button>
+        <button id="realtimeMonitoring">Real-time Monitoring</button>
+        <button id="scheduleProduction">Schedule Production</button>
+        <select id="orderNumber">
+            <option value="ORD-2024-001">ORD-2024-001</option>
+            <option value="ORD-2024-002">ORD-2024-002</option>
+        </select>
+        <select id="productionLine">
+            <option value="LINE_A">Line A</option>
+            <option value="LINE_B">Line B</option>
+            <option value="LINE_C">Line C</option>
+        </select>
+        <input type="datetime-local" id="scheduledStart" />
+        <div class="production-tracking">
+            <button id="updateProgress">Update Progress</button>
+            <input type="number" id="completedQuantity" placeholder="Completed Quantity" />
+            <select id="qualityStatus">
+                <option value="PASSED">Passed</option>
+                <option value="FAILED">Failed</option>
+                <option value="PENDING">Pending</option>
+            </select>
+        </div>
+        <button id="completeOrder">Complete Order</button>
+        <select id="shippingCarrier">
+            <option value="FEDEX">FedEx</option>
+            <option value="UPS">UPS</option>
+            <option value="DHL">DHL</option>
+        </select>
+        <input type="text" id="trackingNumber" placeholder="Tracking Number" />
+        <button id="shipOrder">Ship Order</button>
+        <div class="defect-status">Status: RESOLVED</div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts/manufacturing.js"></script>
