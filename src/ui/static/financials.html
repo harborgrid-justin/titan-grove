@@ -920,6 +920,232 @@
         </main>
     </div>
 
+    <!-- Complex Financial Workflow Forms for Testing -->
+    <div id="financialWorkflowModals" style="display: none;">
+        <!-- Invoice Creation Modal -->
+        <div id="invoiceModal" class="modal">
+            <div class="modal-content">
+                <h3>Create Invoice from Work Order</h3>
+                <form id="invoiceForm">
+                    <select id="workOrderSelect">
+                        <option value="WO-2024-001">WO-2024-001</option>
+                        <option value="WO-2024-002">WO-2024-002</option>
+                    </select>
+                    <input type="text" id="customerName" placeholder="Customer Name" />
+                    <input type="number" id="invoiceAmount" placeholder="Invoice Amount" />
+                    <input type="date" id="invoiceDate" />
+                    <select id="paymentTerms">
+                        <option value="NET_30">Net 30</option>
+                        <option value="NET_15">Net 15</option>
+                        <option value="DUE_ON_RECEIPT">Due on Receipt</option>
+                    </select>
+                    <button type="button" id="generateInvoice">Generate Invoice</button>
+                </form>
+                <div class="invoice-confirmation" style="display: none;">
+                    Invoice generated successfully
+                </div>
+            </div>
+        </div>
+
+        <!-- Multi-Currency Transaction Modal -->
+        <div id="multiCurrencyModal" class="modal">
+            <div class="modal-content">
+                <h3>International Payment Processing</h3>
+                <form id="internationalPaymentForm">
+                    <select id="baseCurrency">
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                    </select>
+                    <select id="targetCurrency">
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                    </select>
+                    <input type="number" id="amount" placeholder="Amount" />
+                    <button type="button" id="getLiveRate">Get Live Exchange Rate</button>
+                    <input type="text" id="exchangeRate" placeholder="Exchange Rate" readonly />
+                    
+                    <div id="hedgingSection">
+                        <h4>Currency Hedging</h4>
+                        <select id="hedgingStrategy">
+                            <option value="FORWARD_CONTRACT">Forward Contract</option>
+                            <option value="CURRENCY_SWAP">Currency Swap</option>
+                            <option value="OPTIONS">Options</option>
+                            <option value="NO_HEDGE">No Hedge</option>
+                        </select>
+                        <select id="hedgePeriod">
+                            <option value="30_DAYS">30 Days</option>
+                            <option value="90_DAYS">90 Days</option>
+                            <option value="180_DAYS">180 Days</option>
+                            <option value="1_YEAR">1 Year</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" id="processPayment">Process Payment</button>
+                    <div class="payment-confirmation" style="display: none;">
+                        Payment processed successfully
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Budget Planning Modal -->
+        <div id="budgetPlanningModal" class="modal">
+            <div class="modal-content">
+                <h3>Budget Planning & Approval</h3>
+                <div id="budgetCreation">
+                    <button type="button" id="createBudget">Create New Budget</button>
+                    <select id="budgetYear">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                    <select id="budgetType">
+                        <option value="OPERATIONAL">Operational</option>
+                        <option value="CAPITAL">Capital</option>
+                        <option value="PROJECT">Project</option>
+                    </select>
+                    <select id="department">
+                        <option value="MANUFACTURING">Manufacturing</option>
+                        <option value="SALES">Sales</option>
+                        <option value="MARKETING">Marketing</option>
+                        <option value="IT">IT</option>
+                    </select>
+                </div>
+                
+                <div id="budgetLineItems">
+                    <button type="button" id="addLineItem">Add Line Item</button>
+                    <div class="line-item-template" style="display: none;">
+                        <select class="category">
+                            <option value="LABOR">Labor</option>
+                            <option value="MATERIALS">Materials</option>
+                            <option value="EQUIPMENT">Equipment</option>
+                            <option value="UTILITIES">Utilities</option>
+                            <option value="TRAVEL">Travel</option>
+                        </select>
+                        <input type="number" class="amount" placeholder="Amount" />
+                        <textarea class="justification" placeholder="Justification"></textarea>
+                    </div>
+                </div>
+                
+                <div id="approvalWorkflow">
+                    <button type="button" id="submitForApproval">Submit for Approval</button>
+                    <select id="approvalLevel1">
+                        <option value="DEPT_MANAGER">Department Manager</option>
+                        <option value="DIRECTOR">Director</option>
+                    </select>
+                    <select id="approvalLevel2">
+                        <option value="FINANCE_DIRECTOR">Finance Director</option>
+                        <option value="VP_FINANCE">VP Finance</option>
+                    </select>
+                    <select id="approvalLevel3">
+                        <option value="CFO">CFO</option>
+                        <option value="CEO">CEO</option>
+                    </select>
+                    <div class="approval-status">Status: PENDING_APPROVAL</div>
+                    <textarea id="approverComments" placeholder="Approver Comments"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Period Close Modal -->
+        <div id="periodCloseModal" class="modal">
+            <div class="modal-content">
+                <h3>Financial Period Close</h3>
+                <div id="periodCloseSetup">
+                    <button type="button" id="periodClose">Initialize Period Close</button>
+                    <select id="closingPeriod">
+                        <option value="2023_12">December 2023</option>
+                        <option value="2024_01">January 2024</option>
+                        <option value="2024_02">February 2024</option>
+                    </select>
+                    <select id="closeType">
+                        <option value="MONTH_END">Month End</option>
+                        <option value="QUARTER_END">Quarter End</option>
+                        <option value="YEAR_END">Year End</option>
+                    </select>
+                </div>
+                
+                <div id="validationChecks">
+                    <button type="button" id="runValidations">Run Pre-Close Validations</button>
+                    <div class="validation-check">Trial Balance: <span class="status">PASSED</span></div>
+                    <div class="validation-check">Bank Reconciliation: <span class="status">PASSED</span></div>
+                    <div class="validation-check">Inventory Count: <span class="status">PASSED</span></div>
+                    <div class="validation-check">Accounts Receivable: <span class="status">PASSED</span></div>
+                </div>
+                
+                <div id="journalProcessing">
+                    <button type="button" id="processJournals">Process Closing Journals</button>
+                    <button type="button" id="accrualEntries">Process Accruals</button>
+                    <button type="button" id="depreciationEntries">Process Depreciation</button>
+                    <button type="button" id="allocationEntries">Process Allocations</button>
+                </div>
+                
+                <div id="accountReconciliation">
+                    <div class="account-reconciliation">
+                        <h4>Cash Account Reconciliation</h4>
+                        <button class="reconcile-button">Reconcile</button>
+                        <textarea id="reconciliationNotes" placeholder="Reconciliation Notes"></textarea>
+                        <button class="mark-complete">Mark Complete</button>
+                    </div>
+                </div>
+                
+                <div id="reportGeneration">
+                    <button type="button" id="generateReports">Generate Financial Reports</button>
+                    <input type="checkbox" id="incomeStatement" /> <label>Income Statement</label>
+                    <input type="checkbox" id="balanceSheet" /> <label>Balance Sheet</label>
+                    <input type="checkbox" id="cashFlowStatement" /> <label>Cash Flow Statement</label>
+                    <input type="checkbox" id="trialBalance" /> <label>Trial Balance</label>
+                </div>
+                
+                <div id="finalClose">
+                    <button type="button" id="finalApproval">Final Approval</button>
+                    <input type="text" id="approverSignature" placeholder="Digital Signature" />
+                    <button type="button" id="closePeriod">Close Period</button>
+                    <div class="close-confirmation" style="display: none;">
+                        Period closed successfully
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Processing Modal -->
+        <div id="paymentModal" class="modal">
+            <div class="modal-content">
+                <h3>Payment Processing</h3>
+                <form id="paymentForm">
+                    <select id="shipmentReference">
+                        <option value="SHIP-2024-001">SHIP-2024-001</option>
+                        <option value="SHIP-2024-002">SHIP-2024-002</option>
+                    </select>
+                    <button type="button" id="recordPayment">Record Payment</button>
+                    <input type="number" id="paymentAmount" placeholder="Payment Amount" />
+                    <select id="paymentMethod">
+                        <option value="BANK_TRANSFER">Bank Transfer</option>
+                        <option value="CHECK">Check</option>
+                        <option value="CREDIT_CARD">Credit Card</option>
+                        <option value="CASH">Cash</option>
+                    </select>
+                    <button type="button" id="reconcileAccount">Reconcile Account</button>
+                    <div class="cycle-completion" style="display: none;">
+                        Quote-to-Cash cycle completed successfully
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Control Elements for Testing -->
+    <div style="display: none;">
+        <button class="create-invoice-from-wo">Create Invoice from Work Order</button>
+        <button class="international-payment">International Payment</button>
+        <button class="budget-planning-tab">Budget Planning</button>
+        <button id="sendInvoice">Send Invoice</button>
+        <div class="payment-status">Status: PAID</div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts/financials.js"></script>
