@@ -3,6 +3,8 @@ import KPIWidget from '../components/KPIWidget';
 import Sidebar from '../components/Sidebar';
 import DataTable from '../components/DataTable';
 import WorkOrderModal from '../components/WorkOrderModal';
+import LoadingSpinner from '../components/LoadingSpinner';
+import ConnectionStatus from '../components/ConnectionStatus';
 import { useWorkOrders, useRealtimeKPIs } from '../hooks/useApi';
 import { WorkOrder } from '../services/apiService';
 
@@ -156,27 +158,11 @@ const Dashboard: React.FC = () => {
               </button>
               <button className="titan-button">📊 Generate Report</button>
               <button className="titan-button titan-button-secondary">⚙️ Configure</button>
-              {kpiConnected && (
-                <span style={{ 
-                  fontSize: '12px', 
-                  color: 'var(--success)', 
-                  marginLeft: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}>
-                  ● Live Data Connected
-                </span>
-              )}
-              {kpiError && (
-                <span style={{ 
-                  fontSize: '12px', 
-                  color: 'var(--error)', 
-                  marginLeft: '12px' 
-                }}>
-                  ⚠️ {kpiError}
-                </span>
-              )}
+              <ConnectionStatus 
+                connected={kpiConnected}
+                reconnecting={false}
+                lastUpdateTime={realtimeKpis ? new Date().toISOString() : undefined}
+              />
             </div>
           </div>
 
@@ -198,18 +184,24 @@ const Dashboard: React.FC = () => {
             <h2 className="titan-section-title">
               <span>📋</span>
               Active Work Orders & Production Pipeline
-              {ordersLoading && <span style={{ fontSize: '14px', color: 'var(--text-secondary)', marginLeft: '8px' }}>Loading...</span>}
-              {ordersError && <span style={{ fontSize: '14px', color: 'var(--error)', marginLeft: '8px' }}>⚠️ {ordersError}</span>}
+              {ordersLoading && <LoadingSpinner size="small" message="" />}
+              {ordersError && <span style={{ fontSize: '14px', color: 'var(--error)', marginLeft: '8px' }}>⚠️ Failed to fetch</span>}
             </h2>
-            <DataTable
-              columns={tableColumns}
-              data={transformedOrders}
-              searchable={true}
-              paginated={true}
-              onEdit={handleEditWorkOrder}
-              onDelete={handleDeleteWorkOrder}
-              onView={handleViewWorkOrder}
-            />
+            {ordersLoading ? (
+              <div style={{ padding: '40px', textAlign: 'center' }}>
+                <LoadingSpinner message="Loading work orders..." />
+              </div>
+            ) : (
+              <DataTable
+                columns={tableColumns}
+                data={transformedOrders}
+                searchable={true}
+                paginated={true}
+                onEdit={handleEditWorkOrder}
+                onDelete={handleDeleteWorkOrder}
+                onView={handleViewWorkOrder}
+              />
+            )}
             {!ordersLoading && transformedOrders.length === 0 && (
               <div style={{ 
                 padding: '40px', 

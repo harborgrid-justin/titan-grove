@@ -79,12 +79,19 @@ export class ServerManager extends EventEmitter {
   }
 
   private setupRoutes(): void {
-    // Serve static files for UI
-    this.app.use('/ui', express.static('src/ui/static'));
-
-    // Serve main UI application
+    // Serve React UI static assets
+    this.app.use('/assets', express.static('dist/ui/assets'));
+    
+    // Serve React UI application for all non-API routes
     this.app.get('/', (req: Request, res: Response) => {
-      res.sendFile(path.resolve('src/ui/static/index.html'));
+      res.sendFile(path.resolve('dist/ui/index.html'));
+    });
+
+    // Serve React UI for all SPA routes (catch-all for client-side routing)
+    this.app.get(['/dashboard', '/manufacturing', '/financials', '/hr-management', 
+                  '/supply-chain', '/crm', '/business-intelligence', '/project-management', 
+                  '/asset-management', '/compliance'], (req: Request, res: Response) => {
+      res.sendFile(path.resolve('dist/ui/index.html'));
     });
 
     // Health check endpoint
