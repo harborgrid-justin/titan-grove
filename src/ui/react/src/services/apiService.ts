@@ -3,15 +3,35 @@
  * Handles all HTTP communication with the backend APIs
  */
 
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api'  // In production, API will be served from same origin
-  : 'http://localhost:3000/api'; // In development, backend runs on port 3000
+// Enhanced API configuration with fallbacks for browser environment
+const API_CONFIG = {
+  baseURL: (typeof process !== 'undefined' && process.env?.REACT_APP_API_URL) || 
+           (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) ||
+           (window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api'),
+  timeout: parseInt((typeof process !== 'undefined' && process.env?.REACT_APP_API_TIMEOUT) || 
+                   (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_TIMEOUT) || 
+                   '30000'),
+  retryAttempts: parseInt((typeof process !== 'undefined' && process.env?.REACT_APP_API_RETRY_ATTEMPTS) || 
+                         (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_RETRY_ATTEMPTS) || 
+                         '3'),
+  retryDelay: parseInt((typeof process !== 'undefined' && process.env?.REACT_APP_API_RETRY_DELAY) || 
+                      (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_RETRY_DELAY) || 
+                      '1000')
+};
+
+const API_BASE_URL = API_CONFIG.baseURL;
 
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
   message?: string;
+  meta?: {
+    endpoint?: string;
+    retryCount?: number;
+    timestamp?: string;
+    [key: string]: any;
+  };
 }
 
 export interface WorkOrder {
@@ -156,16 +176,24 @@ export interface Transaction {
 class ApiService {
   private async makeRequest<T>(
     endpoint: string, 
-    options: RequestInit = {}
+    options: RequestInit = {},
+    retryCount = 0
   ): Promise<ApiResponse<T>> {
     try {
+      // Add timeout wrapper
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.timeout);
+
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: {
           'Content-Type': 'application/json',
           ...options.headers,
         },
+        signal: controller.signal,
         ...options,
       });
+
+      clearTimeout(timeoutId);
 
       const data = await response.json();
 
@@ -175,12 +203,48 @@ class ApiService {
 
       return data;
     } catch (error) {
-      console.error(`API Error [${endpoint}]:`, error);
+      // Enhanced error handling with retry logic
+      const isNetworkError = error instanceof TypeError || 
+                           (error as any)?.name === 'AbortError' ||
+                           (error as any)?.code === 'NETWORK_ERROR';
+      
+      if (isNetworkError && retryCount < API_CONFIG.retryAttempts) {
+        console.warn(`API Error [${endpoint}] - Retrying (${retryCount + 1}/${API_CONFIG.retryAttempts}):`, error);
+        
+        // Exponential backoff
+        const delay = API_CONFIG.retryDelay * Math.pow(2, retryCount);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        
+        return this.makeRequest(endpoint, options, retryCount + 1);
+      }
+
+      console.error(`API Error [${endpoint}] (final):`, error);
+      
+      // Return structured error response
+      const errorMessage = this.getErrorMessage(error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: errorMessage,
+        meta: {
+          endpoint,
+          retryCount,
+          timestamp: new Date().toISOString()
+        }
       };
     }
+  }
+
+  private getErrorMessage(error: any): string {
+    if (error instanceof TypeError) {
+      return 'Network connection failed. Please check your internet connection.';
+    }
+    if (error?.name === 'AbortError') {
+      return 'Request timed out. Please try again.';
+    }
+    if (error?.message?.includes('Failed to fetch')) {
+      return 'Unable to connect to server. Please check if the service is running.';
+    }
+    return error instanceof Error ? error.message : 'An unexpected error occurred';
   }
 
   // Health Check
