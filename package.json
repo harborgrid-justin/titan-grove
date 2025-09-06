@@ -62,6 +62,12 @@
     "npm": ">=8.0.0"
   },
   "dependencies": {
+    "@carbon/icons-react": "^11.66.0",
+    "@carbon/layout": "^11.40.0",
+    "@carbon/react": "^1.90.0",
+    "@carbon/styles": "^1.89.0",
+    "@carbon/themes": "^11.59.0",
+    "@carbon/type": "^11.46.0",
     "@elastic/elasticsearch": "^9.1.1",
     "@types/axios": "^0.9.36",
     "@types/react": "^19.1.12",

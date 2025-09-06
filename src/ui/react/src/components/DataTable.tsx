@@ -1,4 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import {
+  DataTable as CarbonDataTable,
+  Table,
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableBody,
+  TableCell,
+  TableSelectAll,
+  TableSelectRow,
+  TableContainer,
+  TableToolbar,
+  TableToolbarContent,
+  TableToolbarSearch,
+  Pagination,
+  Button,
+  Tag
+} from '@carbon/react';
+import { Edit, Delete, View } from '@carbon/icons-react';
 
 interface Column {
   key: string;
@@ -27,223 +46,162 @@ const DataTable: React.FC<DataTableProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
-  const rowsPerPage = 10;
+  const [pageSize, setPageSize] = useState(10);
 
-  const filteredData = searchable
-    ? data.filter(row =>
-        Object.values(row).some(value =>
-          value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = useMemo(() => {
+    return searchable
+      ? data.filter(row =>
+          Object.values(row).some(value =>
+            value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+          )
         )
-      )
-    : data;
+      : data;
+  }, [data, searchTerm, searchable]);
 
-  const paginatedData = paginated
-    ? filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
-    : filteredData;
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return paginated
+      ? filteredData.slice(startIndex, startIndex + pageSize)
+      : filteredData;
+  }, [filteredData, currentPage, pageSize, paginated]);
 
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const rows = paginatedData.map((item, index) => ({
+    id: item.id || index.toString(),
+    ...item
+  }));
 
-  const handleRowSelect = (index: number) => {
-    const newSelected = new Set(selectedRows);
-    if (newSelected.has(index)) {
-      newSelected.delete(index);
-    } else {
-      newSelected.add(index);
-    }
-    setSelectedRows(newSelected);
-  };
+  const headers = columns.filter(col => col.type !== 'actions').map(col => ({
+    key: col.key,
+    header: col.label
+  }));
 
-  const handleSelectAll = () => {
-    if (selectedRows.size === paginatedData.length) {
-      setSelectedRows(new Set());
-    } else {
-      setSelectedRows(new Set(paginatedData.map((_, index) => index)));
-    }
-  };
-
-  const renderCell = (row: any, column: Column, rowIndex: number) => {
+  const renderCell = (cellValue: any, column: Column) => {
     switch (column.type) {
-      case 'checkbox':
-        return (
-          <input
-            type="checkbox"
-            checked={selectedRows.has(rowIndex)}
-            onChange={() => handleRowSelect(rowIndex)}
-          />
-        );
-      case 'status':
-        return (
-          <span className={`titan-status-indicator titan-status-${row.statusClass || 'success'}`}>
-            {row[column.key]}
-          </span>
-        );
-      case 'actions':
-        return (
-          <div style={{ display: 'flex', gap: '4px' }}>
-            {onView && (
-              <button 
-                className="titan-btn titan-btn-sm"
-                onClick={() => onView(row)}
-                style={{ padding: '4px 8px', fontSize: '12px' }}
-              >
-                View
-              </button>
-            )}
-            {onEdit && (
-              <button 
-                className="titan-btn titan-btn-sm"
-                onClick={() => onEdit(row)}
-                style={{ 
-                  padding: '4px 8px', 
-                  fontSize: '12px',
-                  background: 'var(--warning)',
-                  color: 'white'
-                }}
-              >
-                Edit
-              </button>
-            )}
-            {onDelete && (
-              <button 
-                className="titan-btn titan-btn-sm"
-                onClick={() => onDelete(row)}
-                style={{ 
-                  padding: '4px 8px', 
-                  fontSize: '12px',
-                  background: 'var(--error)',
-                  color: 'white'
-                }}
-              >
-                Delete
-              </button>
-            )}
-          </div>
-        );
       case 'currency':
-        return <strong>{row[column.key]}</strong>;
+        return new Intl.NumberFormat('en-US', { 
+          style: 'currency', 
+          currency: 'USD' 
+        }).format(cellValue);
+      case 'date':
+        return new Date(cellValue).toLocaleDateString();
+      case 'status':
+        const statusType = cellValue === 'active' || cellValue === 'complete' 
+          ? 'green' 
+          : cellValue === 'pending' || cellValue === 'warning'
+          ? 'yellow'
+          : 'red';
+        return <Tag type={statusType}>{cellValue}</Tag>;
       default:
-        return row[column.key];
+        return cellValue;
     }
+  };
+
+  const renderActions = (row: any) => {
+    return (
+      <div style={{ display: 'flex', gap: 'var(--cds-spacing-02)' }}>
+        {onView && (
+          <Button
+            kind="ghost"
+            size="sm"
+            renderIcon={View}
+            iconDescription="View"
+            onClick={() => onView(row)}
+          />
+        )}
+        {onEdit && (
+          <Button
+            kind="ghost"
+            size="sm"
+            renderIcon={Edit}
+            iconDescription="Edit"
+            onClick={() => onEdit(row)}
+          />
+        )}
+        {onDelete && (
+          <Button
+            kind="ghost"
+            size="sm"
+            renderIcon={Delete}
+            iconDescription="Delete"
+            onClick={() => onDelete(row)}
+          />
+        )}
+      </div>
+    );
   };
 
   return (
-    <div className="titan-table">
-      {searchable && (
-        <div style={{ padding: 'var(--spacing-4)', borderBottom: '1px solid #e2e8f0' }}>
-          <input
-            type="text"
-            placeholder="Search orders..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: '8px 12px',
-              border: '1px solid #e2e8f0',
-              borderRadius: '6px',
-              fontSize: '14px',
-              width: '300px',
-              fontFamily: 'var(--font-primary)'
-            }}
-          />
-        </div>
-      )}
-
-      <table>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column.key}>
-                {column.type === 'checkbox' ? (
-                  <input
-                    type="checkbox"
-                    checked={selectedRows.size === paginatedData.length && paginatedData.length > 0}
-                    onChange={handleSelectAll}
-                  />
-                ) : (
-                  column.label
+    <CarbonDataTable rows={rows} headers={headers}>
+      {({
+        rows,
+        headers,
+        getHeaderProps,
+        getRowProps,
+        getTableProps,
+        onInputChange
+      }) => (
+        <TableContainer title="Data Table">
+          {searchable && (
+            <TableToolbar>
+              <TableToolbarContent>
+                <TableToolbarSearch
+                  placeholder="Search table..."
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    onInputChange(e);
+                  }}
+                />
+              </TableToolbarContent>
+            </TableToolbar>
+          )}
+          <Table {...getTableProps()}>
+            <TableHead>
+              <TableRow>
+                {headers.map((header) => (
+                  <TableHeader {...getHeaderProps({ header })}>
+                    {header.header}
+                  </TableHeader>
+                ))}
+                {(onEdit || onDelete || onView) && (
+                  <TableHeader>Actions</TableHeader>
                 )}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {columns.map((column) => (
-                <td key={column.key}>
-                  {renderCell(row, column, rowIndex)}
-                </td>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow {...getRowProps({ row })}>
+                  {row.cells.map((cell) => {
+                    const column = columns.find(col => col.key === cell.info.header);
+                    return (
+                      <TableCell key={cell.id}>
+                        {column ? renderCell(cell.value, column) : cell.value}
+                      </TableCell>
+                    );
+                  })}
+                  {(onEdit || onDelete || onView) && (
+                    <TableCell>
+                      {renderActions(paginatedData[rows.indexOf(row)])}
+                    </TableCell>
+                  )}
+                </TableRow>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {paginated && totalPages > 1 && (
-        <div style={{
-          padding: 'var(--spacing-4)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderTop: '1px solid #e2e8f0'
-        }}>
-          <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-            Showing {((currentPage - 1) * rowsPerPage) + 1} to {Math.min(currentPage * rowsPerPage, filteredData.length)} of {filteredData.length} entries
-          </div>
-          <div style={{ display: 'flex', gap: 'var(--spacing-2)', alignItems: 'center' }}>
-            <button
-              className="titan-btn titan-btn-sm"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(1)}
-            >
-              First
-            </button>
-            <button
-              className="titan-btn titan-btn-sm"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              Previous
-            </button>
-            <span style={{ display: 'flex', gap: 'var(--spacing-1)' }}>
-              {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                const page = currentPage <= 3 ? i + 1 : currentPage - 2 + i;
-                if (page <= totalPages) {
-                  return (
-                    <button
-                      key={page}
-                      className={`titan-btn titan-btn-sm ${page === currentPage ? 'active' : ''}`}
-                      onClick={() => setCurrentPage(page)}
-                      style={{
-                        background: page === currentPage ? 'var(--primary)' : 'var(--surface)',
-                        color: page === currentPage ? 'white' : 'var(--text-primary)'
-                      }}
-                    >
-                      {page}
-                    </button>
-                  );
-                }
-                return null;
-              })}
-            </span>
-            <button
-              className="titan-btn titan-btn-sm"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              Next
-            </button>
-            <button
-              className="titan-btn titan-btn-sm"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(totalPages)}
-            >
-              Last
-            </button>
-          </div>
-        </div>
+            </TableBody>
+          </Table>
+          {paginated && (
+            <Pagination
+              page={currentPage}
+              totalItems={filteredData.length}
+              pageSize={pageSize}
+              pageSizes={[5, 10, 20, 50]}
+              onChange={({ page, pageSize: newPageSize }) => {
+                setCurrentPage(page);
+                setPageSize(newPageSize);
+              }}
+            />
+          )}
+        </TableContainer>
       )}
-    </div>
+    </CarbonDataTable>
   );
 };
 
