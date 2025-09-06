@@ -1,0 +1,291 @@
+/* Titan Grove - Carbon Design System Integration */
+/* This file provides Carbon-based design tokens for static HTML pages */
+
+@import '@carbon/styles/css/styles.css';
+
+/* Carbon design tokens mapped to Titan Grove variables */
+:root {
+  /* Primary Brand Colors using Carbon tokens */
+  --primary: #0f62fe; /* IBM Blue 60 */
+  --primary-light: #4589ff; /* IBM Blue 50 */
+  --primary-dark: #0043ce; /* IBM Blue 70 */
+  --secondary: #393939; /* IBM Gray 80 */
+  --secondary-light: #6f6f6f; /* IBM Gray 60 */
+  --accent: #f1c21b; /* IBM Yellow 30 */
+  --accent-light: #fcf4d6; /* IBM Yellow 10 */
+  
+  /* Surface Colors using Carbon UI tokens */
+  --surface: #ffffff; /* UI Background */
+  --surface-elevated: #f4f4f4; /* UI 01 */
+  --surface-overlay: rgba(255, 255, 255, 0.95);
+  --background: #f4f4f4; /* UI Background */
+  --background-secondary: #e0e0e0; /* UI 03 */
+  
+  /* Text Colors using Carbon tokens */
+  --text-primary: #161616; /* Text 01 */
+  --text-secondary: #525252; /* Text 02 */
+  --text-tertiary: #8d8d8d; /* Text 03 */
+  --text-disabled: #c6c6c6; /* Text 04 */
+  --text-inverse: #ffffff; /* Text 04 on dark backgrounds */
+  
+  /* Status Colors using Carbon tokens */
+  --success: #24a148; /* Green 50 */
+  --success-light: #42be65; /* Green 40 */
+  --success-bg: #defbe6; /* Green 10 */
+  --warning: #f1c21b; /* Yellow 30 */
+  --warning-light: #fcf4d6; /* Yellow 10 */
+  --warning-bg: #fcf4d6;
+  --error: #da1e28; /* Red 60 */
+  --error-light: #ff8389; /* Red 40 */
+  --error-bg: #ffd7d9; /* Red 10 */
+  --info: #0f62fe; /* Blue 60 */
+  --info-light: #4589ff; /* Blue 50 */
+  --info-bg: #d0e2ff; /* Blue 10 */
+  
+  /* Typography using Carbon type tokens */
+  --font-primary: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Courier, monospace;
+  
+  /* Font Sizes using Carbon productive type scale */
+  --text-xs: 0.75rem; /* Body Short 01 */
+  --text-sm: 0.875rem; /* Body Short 02 */
+  --text-base: 1rem; /* Body Long 01 */
+  --text-lg: 1.125rem; /* Body Long 02 */
+  --text-xl: 1.25rem; /* Productive Heading 01 */
+  --text-2xl: 1.5rem; /* Productive Heading 02 */
+  --text-3xl: 1.75rem; /* Productive Heading 03 */
+  --text-4xl: 2rem; /* Productive Heading 04 */
+  
+  /* Spacing using Carbon layout tokens */
+  --space-1: 0.125rem; /* 2px */
+  --space-2: 0.25rem; /* 4px */
+  --space-3: 0.5rem; /* 8px */
+  --space-4: 0.75rem; /* 12px */
+  --space-5: 1rem; /* 16px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+  --space-20: 5rem; /* 80px */
+  
+  /* Border Radius */
+  --radius-sm: 0rem; /* Carbon uses sharp corners by default */
+  --radius: 0rem;
+  --radius-md: 0rem;
+  --radius-lg: 0rem;
+  --radius-xl: 0rem;
+  --radius-2xl: 0rem;
+  
+  /* Shadows using Carbon elevation tokens */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 16px 24px rgba(0, 0, 0, 0.1);
+  
+  /* Enterprise Specific */
+  --header-height: 48px; /* Carbon header height */
+  --sidebar-width: 256px; /* Carbon side nav width */
+  --content-max-width: 1584px; /* Carbon max width */
+  
+  /* Transitions */
+  --transition-fast: 110ms cubic-bezier(0.2, 0, 0.38, 0.9); /* Carbon motion */
+  --transition-base: 240ms cubic-bezier(0.2, 0, 0.38, 0.9);
+  --transition-slow: 400ms cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+/* Override existing styles to use Carbon design patterns */
+body {
+  font-family: var(--font-primary);
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* Carbon-inspired component styles */
+.titan-enterprise-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--background-secondary);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-5);
+}
+
+.titan-card {
+  background: var(--surface);
+  border: 1px solid var(--background-secondary);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+.titan-button {
+  background: var(--primary);
+  color: var(--text-inverse);
+  border: none;
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.titan-button:hover {
+  background: var(--primary-dark);
+}
+
+.titan-button-secondary {
+  background: var(--secondary);
+  color: var(--text-inverse);
+}
+
+.titan-button-secondary:hover {
+  background: #262626;
+}
+
+/* Carbon data table inspired styles */
+.titan-table {
+  background: var(--surface);
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--background-secondary);
+}
+
+.titan-table th {
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  border-bottom: 1px solid var(--background-secondary);
+}
+
+.titan-table td {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--background-secondary);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+}
+
+.titan-table tbody tr:hover {
+  background: var(--surface-elevated);
+}
+
+/* Carbon tag inspired status indicators */
+.titan-status {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  border: 1px solid;
+  background: transparent;
+}
+
+.titan-status-success {
+  color: var(--success);
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+
+.titan-status-warning {
+  color: #8e6a00;
+  border-color: var(--warning);
+  background: var(--warning-bg);
+}
+
+.titan-status-error {
+  color: var(--error);
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.titan-status-info {
+  color: var(--info);
+  border-color: var(--info);
+  background: var(--info-bg);
+}
+
+/* Carbon-inspired KPI cards */
+.titan-kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--background-secondary);
+  padding: var(--space-5);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.titan-kpi-title {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-bottom: var(--space-2);
+}
+
+.titan-kpi-value {
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.titan-kpi-change {
+  font-size: var(--text-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.titan-kpi-change.positive {
+  color: var(--success);
+}
+
+.titan-kpi-change.negative {
+  color: var(--error);
+}
+
+/* Grid layouts */
+.titan-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+}
+
+.titan-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+.titan-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+}
+
+/* Responsive design */
+@media (max-width: 1056px) {
+  .titan-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .titan-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 672px) {
+  .titan-grid-4,
+  .titan-grid-3,
+  .titan-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .titan-enterprise-header {
+    padding: 0 var(--space-4);
+  }
+}

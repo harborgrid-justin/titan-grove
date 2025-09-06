@@ -1,38 +1,24 @@
+/* Import Carbon Design System styles */
+@import '@carbon/styles/css/styles.css';
+
+/* Carbon theme overrides for Titan Grove */
 :root {
-  --primary: #2563eb;
-  --secondary: #64748b;
-  --accent: #f59e0b;
-  --background: #ffffff;
-  --surface: #f8fafc;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-disabled: #94a3b8;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --info: #3b82f6;
-  --font-primary: 'Inter', sans-serif;
-  --font-secondary: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-md: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-xxl: 1.5rem;
-  --spacing-unit: 4px;
-  --spacing-0: 0px;
-  --spacing-1: 4px;
-  --spacing-2: 8px;
-  --spacing-3: 12px;
-  --spacing-4: 16px;
-  --spacing-5: 20px;
-  --spacing-6: 24px;
-  --spacing-8: 32px;
-  --spacing-10: 40px;
-  --spacing-12: 48px;
-  --spacing-14: 56px;
-  --spacing-16: 64px;
+  /* Carbon design tokens are imported via @carbon/styles */
+  /* Enterprise brand colors aligned with Carbon */
+  --cds-interactive-01: #0f62fe; /* Primary blue */
+  --cds-interactive-02: #393939; /* Secondary */
+  --cds-interactive-03: #0f62fe; /* Tertiary */
+  --cds-interactive-04: #0f62fe; /* Selected UI */
+  --cds-danger-01: #da1e28; /* Error */
+  --cds-warning-01: #f1c21b; /* Warning */
+  --cds-success-01: #24a148; /* Success */
+  --cds-info-01: #0043ce; /* Info */
+  
+  /* Titan Grove specific tokens */
+  --titan-primary: var(--cds-interactive-01);
+  --titan-secondary: var(--cds-text-02);
+  --titan-background: var(--cds-ui-background);
+  --titan-surface: var(--cds-ui-01);
 }
 
 * {
@@ -40,18 +26,64 @@
 }
 
 body {
-    font-family: var(--font-primary);
-    background-color: var(--background);
-    color: var(--text-primary);
+    font-family: var(--cds-productive-heading-01-font-family);
+    background-color: var(--cds-ui-background);
+    color: var(--cds-text-01);
     margin: 0;
     padding: 0;
-    line-height: 1.5;
+    line-height: var(--cds-productive-heading-01-line-height);
 }
 
+/* Titan Grove specific styles using Carbon design tokens */
 .titan-app {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--cds-ui-background);
+}
+
+.titan-main {
+  flex: 1;
+  padding: var(--cds-spacing-05);
+  background-color: var(--cds-ui-background);
+}
+
+/* Override Carbon header for Titan Grove branding */
+.cds--header {
+  background-color: var(--cds-ui-01) !important;
+  border-bottom: 1px solid var(--cds-ui-03);
+}
+
+.cds--header__name {
+  color: var(--cds-text-01) !important;
+  font-weight: 600;
+}
+
+/* Enterprise module cards */
+.module-card {
+  background-color: var(--cds-ui-01);
+  border: 1px solid var(--cds-ui-03);
+  border-radius: var(--cds-spacing-02);
+  padding: var(--cds-spacing-05);
+  margin-bottom: var(--cds-spacing-04);
+}
+
+.module-card:hover {
+  background-color: var(--cds-ui-02);
+  box-shadow: var(--cds-shadow);
+}
+
+/* KPI widget styles */
+.kpi-widget {
+  background-color: var(--cds-ui-01);
+  border: 1px solid var(--cds-ui-03);
+  border-radius: var(--cds-spacing-02);
+  padding: var(--cds-spacing-05);
+}
+
+/* Data table customizations */
+.cds--data-table {
+  background-color: var(--cds-ui-01);
 }
 
 .titan-header {

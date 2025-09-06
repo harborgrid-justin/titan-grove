@@ -1,5 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  Header as CarbonHeader,
+  HeaderContainer,
+  HeaderName,
+  HeaderNavigation,
+  HeaderMenuItem,
+  HeaderGlobalBar,
+  HeaderGlobalAction,
+  Search,
+  SkipToContent,
+} from '@carbon/react';
+import {
+  Search as SearchIcon,
+  Notification,
+  UserAvatar,
+} from '@carbon/icons-react';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -25,168 +41,62 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="titan-header">
-      <div className="titan-header-content">
-        <div className="titan-logo">
-          <span style={{ fontSize: '1.5em' }}>⚡</span>
-          <span>Titan Grove</span>
-          <span style={{ 
-            fontSize: '0.75rem', 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            padding: '2px 6px',
-            borderRadius: '4px',
-            marginLeft: '8px'
-          }}>
-            Enterprise
-          </span>
-        </div>
-
-        <nav className="titan-nav">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`titan-nav-item ${isActive(item.path) ? 'active' : ''}`}
+    <HeaderContainer
+      render={({ isSideNavExpanded, onClickSideNavExpand }) => (
+        <CarbonHeader aria-label="Titan Grove Enterprise Suite">
+          <SkipToContent />
+          <HeaderName element={Link} to="/" prefix="">
+            ⚡ Titan Grove
+            <span style={{ 
+              fontSize: '0.75rem', 
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              marginLeft: '8px'
+            }}>
+              Enterprise
+            </span>
+          </HeaderName>
+          <HeaderNavigation aria-label="Titan Grove Enterprise Suite">
+            {navItems.map((item) => (
+              <HeaderMenuItem
+                key={item.path}
+                element={Link}
+                to={item.path}
+                isActive={isActive(item.path)}
+              >
+                <span style={{ marginRight: '8px' }}>{item.icon}</span>
+                {item.label}
+              </HeaderMenuItem>
+            ))}
+          </HeaderNavigation>
+          <HeaderGlobalBar>
+            <HeaderGlobalAction
+              aria-label="Search"
+              tooltipAlignment="center"
+              onClick={() => {/* Add search functionality */}}
             >
-              <span style={{ marginRight: '6px' }}>{item.icon}</span>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="titan-user-menu">
-          <div style={{ position: 'relative', marginRight: '16px' }}>
-            <input
-              type="text"
-              placeholder="Global Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                padding: '8px 12px',
-                border: '1px solid #e2e8f0',
-                borderRadius: '6px',
-                fontSize: '14px',
-                width: '200px',
-                fontFamily: 'var(--font-primary)'
-              }}
-            />
-          </div>
-
-          <div style={{ position: 'relative' }}>
-            <button
+              <SearchIcon size={20} />
+            </HeaderGlobalAction>
+            <HeaderGlobalAction
+              aria-label="Notifications"
+              tooltipAlignment="center"
               onClick={() => setShowNotifications(!showNotifications)}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '8px',
-                borderRadius: '6px',
-                fontSize: '18px',
-                position: 'relative'
-              }}
             >
-              🔔
-              <span style={{
-                position: 'absolute',
-                top: '4px',
-                right: '4px',
-                background: '#ef4444',
-                color: 'white',
-                borderRadius: '50%',
-                width: '12px',
-                height: '12px',
-                fontSize: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                3
-              </span>
-            </button>
-          </div>
-
-          <div style={{ position: 'relative' }}>
-            <button
+              <Notification size={20} />
+            </HeaderGlobalAction>
+            <HeaderGlobalAction
+              aria-label="User Avatar"
+              tooltipAlignment="end"
               onClick={() => setShowUserMenu(!showUserMenu)}
-              style={{
-                background: 'var(--primary)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                cursor: 'pointer',
-                fontSize: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
             >
-              👤
-            </button>
-            
-            {showUserMenu && (
-              <div style={{
-                position: 'absolute',
-                top: '100%',
-                right: 0,
-                background: 'white',
-                border: '1px solid #e2e8f0',
-                borderRadius: '8px',
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
-                minWidth: '200px',
-                marginTop: '8px',
-                zIndex: 1000
-              }}>
-                <div style={{ padding: '12px 16px', borderBottom: '1px solid #e2e8f0' }}>
-                  <div style={{ fontWeight: 600 }}>John Executive</div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                    Chief Operations Officer
-                  </div>
-                </div>
-                <div style={{ padding: '8px 0' }}>
-                  <button style={{ 
-                    width: '100%', 
-                    padding: '8px 16px', 
-                    background: 'none', 
-                    border: 'none', 
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    fontSize: '14px'
-                  }}>
-                    Profile Settings
-                  </button>
-                  <button style={{ 
-                    width: '100%', 
-                    padding: '8px 16px', 
-                    background: 'none', 
-                    border: 'none', 
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    fontSize: '14px'
-                  }}>
-                    Preferences
-                  </button>
-                  <button style={{ 
-                    width: '100%', 
-                    padding: '8px 16px', 
-                    background: 'none', 
-                    border: 'none', 
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    color: 'var(--error)'
-                  }}>
-                    Sign Out
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </header>
+              <UserAvatar size={20} />
+            </HeaderGlobalAction>
+          </HeaderGlobalBar>
+        </CarbonHeader>
+      )}
+    />
   );
 };
 

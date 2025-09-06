@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Theme } from '@carbon/react';
 import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/Header';
 import Dashboard from './pages/Dashboard';
@@ -15,28 +16,30 @@ import Compliance from './pages/Compliance';
 
 function App() {
   return (
-    <ErrorBoundary>
-      <div className="titan-app">
-        <Header />
-        <main className="titan-main" id="dashboard-view">
-          <ErrorBoundary>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/manufacturing" element={<Manufacturing />} />
-              <Route path="/financials" element={<Financials />} />
-              <Route path="/hr-management" element={<HRManagement />} />
-              <Route path="/supply-chain" element={<SupplyChain />} />
-              <Route path="/crm" element={<CRMManagement />} />
-              <Route path="/business-intelligence" element={<BusinessIntelligence />} />
-              <Route path="/project-management" element={<ProjectManagement />} />
-              <Route path="/asset-management" element={<AssetManagement />} />
-              <Route path="/compliance" element={<Compliance />} />
-            </Routes>
-          </ErrorBoundary>
-        </main>
-      </div>
-    </ErrorBoundary>
+    <Theme theme="white">
+      <ErrorBoundary>
+        <div className="titan-app">
+          <Header />
+          <main className="titan-main" id="dashboard-view">
+            <ErrorBoundary>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/manufacturing" element={<Manufacturing />} />
+                <Route path="/financials" element={<Financials />} />
+                <Route path="/hr-management" element={<HRManagement />} />
+                <Route path="/supply-chain" element={<SupplyChain />} />
+                <Route path="/crm" element={<CRMManagement />} />
+                <Route path="/business-intelligence" element={<BusinessIntelligence />} />
+                <Route path="/project-management" element={<ProjectManagement />} />
+                <Route path="/asset-management" element={<AssetManagement />} />
+                <Route path="/compliance" element={<Compliance />} />
+              </Routes>
+            </ErrorBoundary>
+          </main>
+        </div>
+      </ErrorBoundary>
+    </Theme>
   );
 }
 
