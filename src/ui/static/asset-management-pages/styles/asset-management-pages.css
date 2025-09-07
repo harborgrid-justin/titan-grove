@@ -1,0 +1,320 @@
+/* Asset Management Pages Styles */
+/* Enhanced styling for enterprise asset management functionality */
+
+:root {
+    --asset-primary: #1e3a8a;
+    --asset-secondary: #3b82f6;
+    --asset-accent: #10b981;
+    --asset-warning: #f59e0b;
+    --asset-danger: #ef4444;
+    --asset-surface: #f8fafc;
+    --asset-border: #e2e8f0;
+    --asset-text: #1e293b;
+    --asset-text-muted: #64748b;
+    --asset-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.asset-management-app {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    font-family: 'Inter', sans-serif;
+}
+
+.asset-enterprise-header {
+    background: linear-gradient(135deg, var(--asset-primary) 0%, var(--asset-secondary) 100%);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--asset-shadow);
+}
+
+.asset-header-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.asset-logo-enterprise {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.asset-logo-text {
+    color: white;
+}
+
+.asset-edition-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.asset-breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.asset-breadcrumb-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.asset-breadcrumb-nav a:hover {
+    opacity: 0.8;
+}
+
+.asset-header-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.asset-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    font-size: 0.875rem;
+}
+
+.asset-btn-primary {
+    background: var(--asset-accent);
+    color: white;
+}
+
+.asset-btn-primary:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.asset-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.asset-btn-outline {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.asset-main-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.asset-content-header {
+    margin-bottom: 2rem;
+}
+
+.asset-header-left h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--asset-text);
+    margin: 0 0 0.5rem 0;
+}
+
+.asset-header-left p {
+    color: var(--asset-text-muted);
+    font-size: 1.125rem;
+    margin: 0;
+}
+
+.asset-page-content {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--asset-shadow);
+    border: 1px solid var(--asset-border);
+}
+
+.asset-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.asset-feature-card {
+    background: var(--asset-surface);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid var(--asset-border);
+    transition: all 0.2s;
+}
+
+.asset-feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.asset-feature-icon {
+    width: 3rem;
+    height: 3rem;
+    background: linear-gradient(135deg, var(--asset-secondary), var(--asset-accent));
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.asset-feature-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--asset-text);
+    margin-bottom: 0.5rem;
+}
+
+.asset-feature-description {
+    color: var(--asset-text-muted);
+    line-height: 1.6;
+}
+
+.asset-integration-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 0.5rem;
+    color: var(--asset-accent);
+    font-weight: 500;
+}
+
+.asset-coming-soon {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, var(--asset-surface) 0%, white 100%);
+    border-radius: 1rem;
+    border: 2px dashed var(--asset-border);
+}
+
+.asset-coming-soon-icon {
+    width: 4rem;
+    height: 4rem;
+    background: linear-gradient(135deg, var(--asset-warning), #f97316);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.asset-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.asset-stat-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid var(--asset-border);
+}
+
+.asset-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--asset-primary);
+    margin-bottom: 0.25rem;
+}
+
+.asset-stat-label {
+    color: var(--asset-text-muted);
+    font-weight: 500;
+}
+
+.asset-action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--asset-surface);
+    border-radius: 0.75rem;
+    border: 1px solid var(--asset-border);
+}
+
+.asset-search-filters {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.asset-search-input {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--asset-border);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    min-width: 250px;
+}
+
+.asset-filter-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--asset-border);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    background: white;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .asset-enterprise-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .asset-header-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .asset-main-content {
+        padding: 1rem;
+    }
+    
+    .asset-feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .asset-action-bar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .asset-search-filters {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .asset-search-input {
+        min-width: 100%;
+    }
+}
