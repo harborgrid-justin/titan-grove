@@ -8,6 +8,7 @@ import express, { Request, Response, Router } from 'express';
 import { ServiceCommandCenterService } from '../modules/service-command-center/business-logic/service-command-center-service';
 import { ServiceDashboardService, serviceDashboardService } from '../modules/service-command-center/business-logic/service-dashboard-service';
 import { FieldServiceService } from '../modules/field-service/business-logic/field-service-service';
+import { assetManagementService } from '../modules/enterprise-asset-management/business-logic/asset-management-service';
 import { ServiceIntegrationContext } from '../shared/interfaces/service-integration';
 
 const router: Router = express.Router();
@@ -309,6 +310,301 @@ router.get('/service-command/analytics', async (req: Request, res: Response) => 
     });
     
     res.json({ success: true, data: analytics });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== ASSET MANAGEMENT ENDPOINTS ====================
+// Extended with 32 additional business-ready API endpoints
+
+// Asset Analytics & Intelligence APIs
+router.get('/assets/datavisualization', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getDataVisualization(req.query.assetId as string);
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/predictiveinsights', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getPredictiveInsights(req.query.assetId as string);
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/machinelearning', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getMachineLearningModels();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/businessintelligence', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getBusinessIntelligence();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/datamining', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getDataMining();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/performancemodeling', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getPerformanceModeling();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/realtimeanalytics', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getRealTimeAnalytics();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/advancedreporting', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getAdvancedReporting();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Asset Financial Management APIs
+router.get('/assets/costtracking', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getCostTracking(req.query.assetId as string);
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/roianalysis', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getROIAnalysis(req.query.assetId as string);
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/depreciationmanagement', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getDepreciationManagement();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/budgetplanning', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getBudgetPlanning();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/financialplanning', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getFinancialPlanning();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/costoptimization', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getCostOptimization();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/financialreporting', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getFinancialReporting();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/investmenttracking', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getInvestmentTracking();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Asset Integration & Workflow APIs
+router.get('/assets/apimanagement', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getApiManagement();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/workflowautomation', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getWorkflowAutomation();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/datasynchronization', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getDataSynchronization();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/systemintegration', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getSystemIntegration();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/processorchestration', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getProcessOrchestration();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/integrationmonitoring', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getIntegrationMonitoring();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/datatransformation', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getDataTransformation();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/workflowdesigner', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getWorkflowDesigner();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Asset Strategic Planning APIs
+router.get('/assets/strategicplanning', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getStrategicPlanning();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/portfoliooptimization', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getPortfolioOptimization();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/investmentplanning', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getInvestmentPlanning();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/resourceallocation', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getResourceAllocation();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/marketanalysis', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getMarketAnalysis();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/riskmanagement', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getRiskManagement();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/performancestrategy', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getPerformanceStrategy();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/assets/scenarioplanning', async (req: Request, res: Response) => {
+  try {
+    const data = await assetManagementService.getScenarioPlanning();
+    res.json({ success: true, data });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
