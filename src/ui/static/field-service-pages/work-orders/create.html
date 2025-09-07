@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Work Order - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="index.html">Work Orders</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Create</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Create Work Order</h1>
+                    <p class="page-subtitle">Create a new service request for field technician assignment</p>
+                </div>
+                <div class="header-actions">
+                    <button class="titan-btn titan-btn-secondary" id="saveDraft">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button class="titan-btn titan-btn-primary" id="createWorkOrder">
+                        <i class="fas fa-plus"></i>
+                        Create Work Order
+                    </button>
+                </div>
+            </div>
+
+            <div class="work-order-form-container">
+                <form id="workOrderForm" class="work-order-form">
+                    <!-- Customer Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">Customer Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="customerId">Customer</label>
+                                <select class="form-select" id="customerId" required>
+                                    <option value="">Select Customer</option>
+                                    <option value="cust_001">Acme Corporation</option>
+                                    <option value="cust_002">Beta Industries</option>
+                                    <option value="cust_003">Gamma Solutions</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactName">Contact Name</label>
+                                <input type="text" class="form-input" id="contactName" placeholder="Primary contact name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactPhone">Contact Phone</label>
+                                <input type="tel" class="form-input" id="contactPhone" placeholder="(555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactEmail">Contact Email</label>
+                                <input type="email" class="form-input" id="contactEmail" placeholder="contact@company.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Details -->
+                    <div class="form-section">
+                        <h3 class="section-title">Service Details</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label" for="workOrderTitle">Work Order Title</label>
+                                <input type="text" class="form-input" id="workOrderTitle" placeholder="Brief description of work needed" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label" for="workOrderDescription">Description</label>
+                                <textarea class="form-textarea" id="workOrderDescription" rows="4" placeholder="Detailed description of the work to be performed..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="serviceType">Service Type</label>
+                                <select class="form-select" id="serviceType" required>
+                                    <option value="">Select Service Type</option>
+                                    <option value="installation">Installation</option>
+                                    <option value="repair">Repair</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="inspection">Inspection</option>
+                                    <option value="emergency">Emergency Service</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="priority">Priority</label>
+                                <select class="form-select" id="priority" required>
+                                    <option value="">Select Priority</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="estimatedDuration">Estimated Duration (minutes)</label>
+                                <input type="number" class="form-input" id="estimatedDuration" placeholder="120" min="15" max="480">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="skillsRequired">Skills Required</label>
+                                <input type="text" class="form-input" id="skillsRequired" placeholder="HVAC, Electrical, Plumbing">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location & Scheduling -->
+                    <div class="form-section">
+                        <h3 class="section-title">Location & Scheduling</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label" for="serviceAddress">Service Address</label>
+                                <input type="text" class="form-input" id="serviceAddress" placeholder="123 Main St, City, State 12345" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="preferredDate">Preferred Date</label>
+                                <input type="date" class="form-input" id="preferredDate">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="preferredTime">Preferred Time</label>
+                                <select class="form-select" id="preferredTime">
+                                    <option value="">Any Time</option>
+                                    <option value="morning">Morning (8AM-12PM)</option>
+                                    <option value="afternoon">Afternoon (12PM-5PM)</option>
+                                    <option value="evening">Evening (5PM-8PM)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="accessInstructions">Access Instructions</label>
+                                <textarea class="form-textarea" id="accessInstructions" rows="2" placeholder="Gate codes, building access, parking instructions..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assignment -->
+                    <div class="form-section">
+                        <h3 class="section-title">Assignment</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="assignedTechnician">Assign Technician</label>
+                                <select class="form-select" id="assignedTechnician">
+                                    <option value="">Auto-assign based on skills and location</option>
+                                    <option value="tech_001">John Smith - HVAC Specialist</option>
+                                    <option value="tech_002">Sarah Johnson - Electrical Technician</option>
+                                    <option value="tech_003">Mike Wilson - General Maintenance</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="supervisorNotify">Notify Supervisor</label>
+                                <select class="form-select" id="supervisorNotify">
+                                    <option value="">Select Supervisor</option>
+                                    <option value="sup_001">David Brown</option>
+                                    <option value="sup_002">Lisa Davis</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">Additional Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="warrantyInfo">Warranty Information</label>
+                                <input type="text" class="form-input" id="warrantyInfo" placeholder="Warranty number or coverage details">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contractInfo">Service Contract</label>
+                                <input type="text" class="form-input" id="contractInfo" placeholder="Contract number or type">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label" for="specialInstructions">Special Instructions</label>
+                                <textarea class="form-textarea" id="specialInstructions" rows="3" placeholder="Any special requirements, safety considerations, or important notes..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="titan-btn titan-btn-secondary" onclick="history.back()">
+                            Cancel
+                        </button>
+                        <button type="button" class="titan-btn titan-btn-outline" id="saveDraftBtn">
+                            Save as Draft
+                        </button>
+                        <button type="submit" class="titan-btn titan-btn-primary">
+                            Create Work Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../scripts/field-service.js"></script>
+    <script src="../scripts/work-orders-create.js"></script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Order History - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="index.html">Work Orders</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>History</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" id="exportHistory">
+                    <i class="fas fa-download"></i>
+                    Export Report
+                </button>
+                <button class="titan-btn titan-btn-outline" id="printHistory">
+                    <i class="fas fa-print"></i>
+                    Print
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Work Order History & Analytics</h1>
+                    <p class="page-subtitle">Historical data, trends, and performance analytics for completed work orders</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">1,247</div>
+                        <div class="stat-label">Total Completed</div>
+                        <div class="stat-change positive">+12% this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Avg Rating</div>
+                        <div class="stat-change positive">+0.2 this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">2.3h</div>
+                        <div class="stat-label">Avg Duration</div>
+                        <div class="stat-change negative">-15min this month</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-dashboard">
+                <!-- Analytics Charts -->
+                <div class="analytics-section">
+                    <div class="analytics-header">
+                        <h3>Performance Analytics</h3>
+                        <div class="time-range-selector">
+                            <button class="time-btn active" data-range="7d">7 Days</button>
+                            <button class="time-btn" data-range="30d">30 Days</button>
+                            <button class="time-btn" data-range="90d">90 Days</button>
+                            <button class="time-btn" data-range="1y">1 Year</button>
+                        </div>
+                    </div>
+                    
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h4>Work Orders Completed</h4>
+                                <div class="chart-info">
+                                    <span class="chart-trend positive">↗ 12%</span>
+                                </div>
+                            </div>
+                            <canvas id="completedOrdersChart"></canvas>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h4>Average Completion Time</h4>
+                                <div class="chart-info">
+                                    <span class="chart-trend negative">↘ 8%</span>
+                                </div>
+                            </div>
+                            <canvas id="completionTimeChart"></canvas>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h4>Customer Satisfaction</h4>
+                                <div class="chart-info">
+                                    <span class="chart-trend positive">↗ 5%</span>
+                                </div>
+                            </div>
+                            <canvas id="satisfactionChart"></canvas>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h4>Work Order Types</h4>
+                                <div class="chart-info">
+                                    <span class="chart-period">Last 30 days</span>
+                                </div>
+                            </div>
+                            <canvas id="workOrderTypesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h3>Filter History</h3>
+                        <button class="btn-clear-filters" id="clearFilters">Clear All</button>
+                    </div>
+                    <div class="filter-grid">
+                        <div class="filter-group">
+                            <label>Date Range</label>
+                            <div class="date-range">
+                                <input type="date" class="filter-input" id="startDate">
+                                <span>to</span>
+                                <input type="date" class="filter-input" id="endDate">
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <label>Customer</label>
+                            <select class="filter-select" id="customerFilter">
+                                <option value="">All Customers</option>
+                                <option value="acme">Acme Corporation</option>
+                                <option value="beta">Beta Industries</option>
+                                <option value="gamma">Gamma Solutions</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Technician</label>
+                            <select class="filter-select" id="technicianFilter">
+                                <option value="">All Technicians</option>
+                                <option value="tech_001">John Smith</option>
+                                <option value="tech_002">Sarah Johnson</option>
+                                <option value="tech_003">Mike Wilson</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Service Type</label>
+                            <select class="filter-select" id="serviceTypeFilter">
+                                <option value="">All Types</option>
+                                <option value="installation">Installation</option>
+                                <option value="repair">Repair</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="inspection">Inspection</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Rating</label>
+                            <select class="filter-select" id="ratingFilter">
+                                <option value="">All Ratings</option>
+                                <option value="5">5 Stars</option>
+                                <option value="4">4+ Stars</option>
+                                <option value="3">3+ Stars</option>
+                                <option value="2">2+ Stars</option>
+                                <option value="1">1+ Stars</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Search</label>
+                            <input type="text" class="filter-input" id="searchHistory" placeholder="Search work orders...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Table -->
+                <div class="history-section">
+                    <div class="section-header">
+                        <h3>Work Order History</h3>
+                        <div class="table-controls">
+                            <span class="results-count">Showing 156 of 1,247 records</span>
+                            <div class="view-options">
+                                <button class="btn-icon active" data-view="table">
+                                    <i class="fas fa-table"></i>
+                                </button>
+                                <button class="btn-icon" data-view="grid">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="id">
+                                        Work Order
+                                        <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="customer">
+                                        Customer
+                                        <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="technician">
+                                        Technician
+                                        <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="type">
+                                        Type
+                                        <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="completed">
+                                        Completed
+                                        <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="duration">
+                                        Duration
+                                        <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="rating">
+                                        Rating
+                                        <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th class="sortable" data-sort="cost">
+                                        Cost
+                                        <i class="fas fa-sort"></i>
+                                    </th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <tr class="history-row">
+                                    <td>
+                                        <div class="order-info">
+                                            <div class="order-id">#WO-2023-2847</div>
+                                            <div class="order-title">HVAC System Repair</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="customer-info">
+                                            <div class="customer-name">Acme Corporation</div>
+                                            <div class="customer-location">Downtown Office</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="technician-info">
+                                            <img src="https://ui-avatars.com/api/?name=John+Smith&size=32" alt="John Smith" class="tech-avatar">
+                                            <span>John Smith</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="service-type repair">Repair</span>
+                                    </td>
+                                    <td>
+                                        <div class="completion-info">
+                                            <div class="completion-date">Dec 28, 2023</div>
+                                            <div class="completion-time">3:45 PM</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="duration">2h 15m</span>
+                                    </td>
+                                    <td>
+                                        <div class="rating">
+                                            <div class="stars">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="rating-score">5.0</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="cost">$285.50</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" onclick="viewHistoryDetails('wo_2847')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="downloadReceipt('wo_2847')">
+                                                <i class="fas fa-receipt"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="duplicateOrder('wo_2847')">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="history-row">
+                                    <td>
+                                        <div class="order-info">
+                                            <div class="order-id">#WO-2023-2846</div>
+                                            <div class="order-title">Electrical Inspection</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="customer-info">
+                                            <div class="customer-name">Beta Industries</div>
+                                            <div class="customer-location">Warehouse B</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="technician-info">
+                                            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&size=32" alt="Sarah Johnson" class="tech-avatar">
+                                            <span>Sarah Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="service-type inspection">Inspection</span>
+                                    </td>
+                                    <td>
+                                        <div class="completion-info">
+                                            <div class="completion-date">Dec 27, 2023</div>
+                                            <div class="completion-time">11:30 AM</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="duration">1h 45m</span>
+                                    </td>
+                                    <td>
+                                        <div class="rating">
+                                            <div class="stars">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                            <span class="rating-score">4.2</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="cost">$150.00</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" onclick="viewHistoryDetails('wo_2846')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="downloadReceipt('wo_2846')">
+                                                <i class="fas fa-receipt"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="duplicateOrder('wo_2846')">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="history-row">
+                                    <td>
+                                        <div class="order-info">
+                                            <div class="order-id">#WO-2023-2845</div>
+                                            <div class="order-title">Emergency Plumbing</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="customer-info">
+                                            <div class="customer-name">Gamma Solutions</div>
+                                            <div class="customer-location">Office Complex</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="technician-info">
+                                            <img src="https://ui-avatars.com/api/?name=Mike+Wilson&size=32" alt="Mike Wilson" class="tech-avatar">
+                                            <span>Mike Wilson</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="service-type emergency">Emergency</span>
+                                    </td>
+                                    <td>
+                                        <div class="completion-info">
+                                            <div class="completion-date">Dec 26, 2023</div>
+                                            <div class="completion-time">6:20 PM</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="duration">3h 30m</span>
+                                    </td>
+                                    <td>
+                                        <div class="rating">
+                                            <div class="stars">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span class="rating-score">4.8</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="cost">$420.75</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" onclick="viewHistoryDetails('wo_2845')">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="downloadReceipt('wo_2845')">
+                                                <i class="fas fa-receipt"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="duplicateOrder('wo_2845')">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button class="pagination-btn" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                            Previous
+                        </button>
+                        <div class="pagination-numbers">
+                            <button class="pagination-number active">1</button>
+                            <button class="pagination-number">2</button>
+                            <button class="pagination-number">3</button>
+                            <span class="pagination-dots">...</span>
+                            <button class="pagination-number">42</button>
+                        </div>
+                        <button class="pagination-btn">
+                            Next
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- History Details Modal -->
+    <div class="modal-overlay" id="historyDetailsModal">
+        <div class="modal-container large">
+            <div class="modal-header">
+                <h3 class="modal-title" id="historyModalTitle">Work Order Details</h3>
+                <button class="modal-close" onclick="closeHistoryModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content" id="historyModalContent">
+                <!-- Details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../scripts/field-service.js"></script>
+    <script src="../scripts/work-orders-history.js"></script>
+</body>
+</html>

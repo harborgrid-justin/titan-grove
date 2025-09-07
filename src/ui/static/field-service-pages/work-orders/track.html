@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Work Orders - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="index.html">Work Orders</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Track</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" id="exportData">
+                    <i class="fas fa-download"></i>
+                    Export
+                </button>
+                <button class="titan-btn titan-btn-primary" onclick="location.href='create.html'">
+                    <i class="fas fa-plus"></i>
+                    New Work Order
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Work Order Tracking</h1>
+                    <p class="page-subtitle">Real-time monitoring and tracking of all field service work orders</p>
+                </div>
+                <div class="header-metrics">
+                    <div class="metric-card">
+                        <div class="metric-value">23</div>
+                        <div class="metric-label">Active</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">8</div>
+                        <div class="metric-label">In Progress</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">15</div>
+                        <div class="metric-label">Scheduled</div>
+                    </div>
+                    <div class="metric-card overdue">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Overdue</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tracking-dashboard">
+                <!-- Filters and Search -->
+                <div class="filter-panel">
+                    <div class="filter-section">
+                        <div class="search-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" class="search-input" placeholder="Search work orders..." id="searchWorkOrders">
+                        </div>
+                        <div class="filter-group">
+                            <select class="filter-select" id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="created">Created</option>
+                                <option value="assigned">Assigned</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="on-hold">On Hold</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select class="filter-select" id="priorityFilter">
+                                <option value="">All Priorities</option>
+                                <option value="critical">Critical</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select class="filter-select" id="technicianFilter">
+                                <option value="">All Technicians</option>
+                                <option value="tech_001">John Smith</option>
+                                <option value="tech_002">Sarah Johnson</option>
+                                <option value="tech_003">Mike Wilson</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <input type="date" class="filter-input" id="dateFilter">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Tracking View -->
+                <div class="tracking-content">
+                    <!-- Map View -->
+                    <div class="tracking-section">
+                        <div class="section-header">
+                            <h3>Live Technician Locations</h3>
+                            <div class="view-toggle">
+                                <button class="toggle-btn active" data-view="map">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    Map
+                                </button>
+                                <button class="toggle-btn" data-view="list">
+                                    <i class="fas fa-list"></i>
+                                    List
+                                </button>
+                            </div>
+                        </div>
+                        <div class="map-container" id="trackingMap">
+                            <!-- Map will be rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Work Orders Table -->
+                    <div class="tracking-section">
+                        <div class="section-header">
+                            <h3>Work Orders</h3>
+                            <div class="table-actions">
+                                <button class="btn-icon" id="refreshData">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="btn-icon" id="columnSettings">
+                                    <i class="fas fa-columns"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="tracking-table">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" data-sort="id">
+                                            Work Order
+                                            <i class="fas fa-sort"></i>
+                                        </th>
+                                        <th class="sortable" data-sort="customer">
+                                            Customer
+                                            <i class="fas fa-sort"></i>
+                                        </th>
+                                        <th class="sortable" data-sort="status">
+                                            Status
+                                            <i class="fas fa-sort"></i>
+                                        </th>
+                                        <th class="sortable" data-sort="technician">
+                                            Technician
+                                            <i class="fas fa-sort"></i>
+                                        </th>
+                                        <th class="sortable" data-sort="priority">
+                                            Priority
+                                            <i class="fas fa-sort"></i>
+                                        </th>
+                                        <th class="sortable" data-sort="scheduled">
+                                            Scheduled
+                                            <i class="fas fa-sort"></i>
+                                        </th>
+                                        <th class="sortable" data-sort="progress">
+                                            Progress
+                                            <i class="fas fa-sort"></i>
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="workOrdersTableBody">
+                                    <tr class="work-order-row" data-order-id="wo_001">
+                                        <td>
+                                            <div class="order-id">
+                                                <a href="edit.html?id=wo_001">#WO-2024-001</a>
+                                                <div class="order-title">HVAC System Repair</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="customer-info">
+                                                <div class="customer-name">Acme Corporation</div>
+                                                <div class="customer-contact">Jane Smith</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge status-in-progress">In Progress</span>
+                                        </td>
+                                        <td>
+                                            <div class="technician-info">
+                                                <img src="https://ui-avatars.com/api/?name=John+Smith&size=32" alt="John Smith" class="tech-avatar">
+                                                <div>
+                                                    <div class="tech-name">John Smith</div>
+                                                    <div class="tech-status online">Online</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="priority-badge priority-high">High</span>
+                                        </td>
+                                        <td>
+                                            <div class="schedule-info">
+                                                <div class="schedule-date">Jan 15, 2024</div>
+                                                <div class="schedule-time">2:00 PM - 5:00 PM</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="progress-indicator">
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: 65%"></div>
+                                                </div>
+                                                <span class="progress-text">65%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn-icon btn-primary" onclick="viewDetails('wo_001')">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn-icon btn-secondary" onclick="editOrder('wo_001')">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn-icon btn-info" onclick="trackLocation('wo_001')">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="work-order-row" data-order-id="wo_002">
+                                        <td>
+                                            <div class="order-id">
+                                                <a href="edit.html?id=wo_002">#WO-2024-002</a>
+                                                <div class="order-title">Electrical Inspection</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="customer-info">
+                                                <div class="customer-name">Beta Industries</div>
+                                                <div class="customer-contact">Mike Johnson</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge status-scheduled">Scheduled</span>
+                                        </td>
+                                        <td>
+                                            <div class="technician-info">
+                                                <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&size=32" alt="Sarah Johnson" class="tech-avatar">
+                                                <div>
+                                                    <div class="tech-name">Sarah Johnson</div>
+                                                    <div class="tech-status available">Available</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="priority-badge priority-medium">Medium</span>
+                                        </td>
+                                        <td>
+                                            <div class="schedule-info">
+                                                <div class="schedule-date">Jan 16, 2024</div>
+                                                <div class="schedule-time">9:00 AM - 11:00 AM</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="progress-indicator">
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: 0%"></div>
+                                                </div>
+                                                <span class="progress-text">0%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn-icon btn-primary" onclick="viewDetails('wo_002')">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn-icon btn-secondary" onclick="editOrder('wo_002')">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn-icon btn-info" onclick="trackLocation('wo_002')">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="work-order-row overdue" data-order-id="wo_003">
+                                        <td>
+                                            <div class="order-id">
+                                                <a href="edit.html?id=wo_003">#WO-2024-003</a>
+                                                <div class="order-title">Emergency Plumbing</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="customer-info">
+                                                <div class="customer-name">Gamma Solutions</div>
+                                                <div class="customer-contact">Lisa Davis</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge status-overdue">Overdue</span>
+                                        </td>
+                                        <td>
+                                            <div class="technician-info">
+                                                <img src="https://ui-avatars.com/api/?name=Mike+Wilson&size=32" alt="Mike Wilson" class="tech-avatar">
+                                                <div>
+                                                    <div class="tech-name">Mike Wilson</div>
+                                                    <div class="tech-status busy">Busy</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="priority-badge priority-critical">Critical</span>
+                                        </td>
+                                        <td>
+                                            <div class="schedule-info">
+                                                <div class="schedule-date">Jan 14, 2024</div>
+                                                <div class="schedule-time">3:00 PM - 6:00 PM</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="progress-indicator">
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: 25%"></div>
+                                                </div>
+                                                <span class="progress-text">25%</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn-icon btn-primary" onclick="viewDetails('wo_003')">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn-icon btn-secondary" onclick="editOrder('wo_003')">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn-icon btn-danger" onclick="escalateOrder('wo_003')">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Work Order Details Modal -->
+    <div class="modal-overlay" id="workOrderModal">
+        <div class="modal-container large">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Work Order Details</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../scripts/field-service.js"></script>
+    <script src="../scripts/work-orders-track.js"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}} - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="index.html">{{CATEGORY}}</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>{{PAGE_NAME}}</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="{{ACTION_BUTTON_ID}}">
+                    <i class="fas fa-{{ACTION_ICON}}"></i>
+                    {{ACTION_TEXT}}
+                </button>
+                <button class="titan-btn titan-btn-primary" id="{{PRIMARY_BUTTON_ID}}">
+                    <i class="fas fa-{{PRIMARY_ICON}}"></i>
+                    {{PRIMARY_TEXT}}
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">{{PAGE_TITLE}}</h1>
+                    <p class="page-subtitle">{{PAGE_DESCRIPTION}}</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">{{STAT_1_VALUE}}</div>
+                        <div class="stat-label">{{STAT_1_LABEL}}</div>
+                        <div class="stat-subtext">{{STAT_1_SUBTEXT}}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{STAT_2_VALUE}}</div>
+                        <div class="stat-label">{{STAT_2_LABEL}}</div>
+                        <div class="stat-subtext">{{STAT_2_SUBTEXT}}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{STAT_3_VALUE}}</div>
+                        <div class="stat-label">{{STAT_3_LABEL}}</div>
+                        <div class="stat-subtext">{{STAT_3_SUBTEXT}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Page-specific content will be implemented here -->
+                <div class="coming-soon-notice">
+                    <div class="notice-icon">
+                        <i class="fas fa-construction"></i>
+                    </div>
+                    <div class="notice-content">
+                        <h3>{{PAGE_TITLE}} - Coming Soon</h3>
+                        <p>This page is part of the 32-page field service extension and will be fully implemented with business-ready functionality.</p>
+                        <div class="notice-features">
+                            <h4>Planned Features:</h4>
+                            <ul>
+                                <li>{{FEATURE_1}}</li>
+                                <li>{{FEATURE_2}}</li>
+                                <li>{{FEATURE_3}}</li>
+                                <li>{{FEATURE_4}}</li>
+                            </ul>
+                        </div>
+                        <div class="notice-integration">
+                            <h4>Backend Integration:</h4>
+                            <ul>
+                                <li>✅ API endpoints defined</li>
+                                <li>✅ Database schema ready</li>
+                                <li>✅ Authentication integrated</li>
+                                <li>✅ Real-time updates supported</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Template Structure -->
+                <div class="template-structure" style="display: none;">
+                    <!-- Main Content Area -->
+                    <div class="main-content">
+                        <div class="content-section">
+                            <h3 class="section-title">{{SECTION_1_TITLE}}</h3>
+                            <div class="section-content">
+                                <!-- Content goes here -->
+                            </div>
+                        </div>
+                        
+                        <div class="content-section">
+                            <h3 class="section-title">{{SECTION_2_TITLE}}</h3>
+                            <div class="section-content">
+                                <!-- Content goes here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="page-sidebar">
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">{{SIDEBAR_1_TITLE}}</h3>
+                            <div class="sidebar-content">
+                                <!-- Sidebar content goes here -->
+                            </div>
+                        </div>
+                        
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Quick Actions</h3>
+                            <div class="quick-actions">
+                                <button class="action-btn">
+                                    <i class="fas fa-{{ACTION_1_ICON}}"></i>
+                                    {{ACTION_1_TEXT}}
+                                </button>
+                                <button class="action-btn">
+                                    <i class="fas fa-{{ACTION_2_ICON}}"></i>
+                                    {{ACTION_2_TEXT}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../scripts/field-service.js"></script>
+    <script src="../scripts/{{PAGE_SCRIPT}}.js"></script>
+
+    <style>
+        .coming-soon-notice {
+            background: var(--surface-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .notice-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .notice-content h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .notice-content p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .notice-features,
+        .notice-integration {
+            background: var(--background-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .notice-features h4,
+        .notice-integration h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .notice-features ul,
+        .notice-integration ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .notice-features li,
+        .notice-integration li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .template-structure {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .content-section {
+            background: var(--surface-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-section {
+            background: var(--surface-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .template-structure {
+                grid-template-columns: 1fr;
+            }
+            
+            .coming-soon-notice {
+                padding: 2rem 1rem;
+            }
+            
+            .notice-content h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</body>
+</html>
