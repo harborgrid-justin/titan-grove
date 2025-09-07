@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Work Order - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="index.html">Work Orders</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Edit WO-2024-001</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="duplicateWorkOrder">
+                    <i class="fas fa-copy"></i>
+                    Duplicate
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Edit Work Order #WO-2024-001</h1>
+                    <div class="work-order-status">
+                        <span class="status-badge status-in-progress">In Progress</span>
+                        <span class="last-updated">Last updated 2 hours ago</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="titan-btn titan-btn-secondary" id="viewHistory">
+                        <i class="fas fa-history"></i>
+                        View History
+                    </button>
+                    <button class="titan-btn titan-btn-primary" id="saveChanges">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+
+            <div class="work-order-edit-container">
+                <!-- Status & Assignment Panel -->
+                <div class="status-panel">
+                    <div class="panel-section">
+                        <h3>Status & Assignment</h3>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <label>Current Status</label>
+                                <select class="form-select" id="workOrderStatus">
+                                    <option value="created">Created</option>
+                                    <option value="assigned">Assigned</option>
+                                    <option value="in-progress" selected>In Progress</option>
+                                    <option value="on-hold">On Hold</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="status-item">
+                                <label>Assigned Technician</label>
+                                <select class="form-select" id="assignedTech">
+                                    <option value="tech_001" selected>John Smith - HVAC Specialist</option>
+                                    <option value="tech_002">Sarah Johnson - Electrical</option>
+                                    <option value="tech_003">Mike Wilson - General</option>
+                                </select>
+                            </div>
+                            <div class="status-item">
+                                <label>Priority</label>
+                                <select class="form-select" id="priorityLevel">
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high" selected>High</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="editWorkOrderForm" class="work-order-form">
+                    <!-- Customer Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">Customer Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="customerId">Customer</label>
+                                <select class="form-select" id="customerId" required>
+                                    <option value="cust_001" selected>Acme Corporation</option>
+                                    <option value="cust_002">Beta Industries</option>
+                                    <option value="cust_003">Gamma Solutions</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactName">Contact Name</label>
+                                <input type="text" class="form-input" id="contactName" value="Jane Smith">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactPhone">Contact Phone</label>
+                                <input type="tel" class="form-input" id="contactPhone" value="(555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contactEmail">Contact Email</label>
+                                <input type="email" class="form-input" id="contactEmail" value="jane.smith@acme.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Details -->
+                    <div class="form-section">
+                        <h3 class="section-title">Service Details</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label" for="workOrderTitle">Work Order Title</label>
+                                <input type="text" class="form-input" id="workOrderTitle" value="HVAC System Repair - Cooling Unit Malfunction" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label" for="workOrderDescription">Description</label>
+                                <textarea class="form-textarea" id="workOrderDescription" rows="4">Customer reports that the main cooling unit is not maintaining temperature. System appears to be running but not cooling effectively. Need to diagnose compressor and refrigerant levels.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="serviceType">Service Type</label>
+                                <select class="form-select" id="serviceType" required>
+                                    <option value="installation">Installation</option>
+                                    <option value="repair" selected>Repair</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="inspection">Inspection</option>
+                                    <option value="emergency">Emergency Service</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="estimatedDuration">Estimated Duration (minutes)</label>
+                                <input type="number" class="form-input" id="estimatedDuration" value="180" min="15" max="480">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="skillsRequired">Skills Required</label>
+                                <input type="text" class="form-input" id="skillsRequired" value="HVAC, Refrigeration">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Tracking -->
+                    <div class="form-section">
+                        <h3 class="section-title">Progress Tracking</h3>
+                        <div class="progress-timeline">
+                            <div class="timeline-item completed">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Work Order Created</h4>
+                                    <p>Jan 15, 2024 at 9:30 AM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item completed">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Technician Assigned</h4>
+                                    <p>Jan 15, 2024 at 10:15 AM - John Smith</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item current">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Work In Progress</h4>
+                                    <p>Started Jan 15, 2024 at 2:00 PM</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item pending">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-clipboard-check"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Completion & Sign-off</h4>
+                                    <p>Pending</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Work Notes -->
+                    <div class="form-section">
+                        <h3 class="section-title">Work Notes & Updates</h3>
+                        <div class="notes-container">
+                            <div class="existing-notes">
+                                <div class="note-item">
+                                    <div class="note-header">
+                                        <span class="note-author">John Smith (Technician)</span>
+                                        <span class="note-time">2:15 PM</span>
+                                    </div>
+                                    <div class="note-content">
+                                        Arrived on site. Customer confirmed AC not cooling. Initial inspection shows compressor running but low airflow. Checking filters and ducts first.
+                                    </div>
+                                </div>
+                                <div class="note-item">
+                                    <div class="note-header">
+                                        <span class="note-author">John Smith (Technician)</span>
+                                        <span class="note-time">2:45 PM</span>
+                                    </div>
+                                    <div class="note-content">
+                                        Found severely clogged air filter and partially blocked return ducts. Replaced filter, cleaned ducts. Testing system now.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-note">
+                                <label class="form-label" for="newNote">Add Work Note</label>
+                                <textarea class="form-textarea" id="newNote" rows="3" placeholder="Add your work progress note..."></textarea>
+                                <button type="button" class="titan-btn titan-btn-outline" id="addNote">
+                                    <i class="fas fa-plus"></i>
+                                    Add Note
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parts & Materials -->
+                    <div class="form-section">
+                        <h3 class="section-title">Parts & Materials Used</h3>
+                        <div class="parts-container">
+                            <table class="parts-table">
+                                <thead>
+                                    <tr>
+                                        <th>Part Number</th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Cost</th>
+                                        <th>Total</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="partsTableBody">
+                                    <tr>
+                                        <td>AF-20x25-MERV8</td>
+                                        <td>Air Filter 20x25 MERV 8</td>
+                                        <td>1</td>
+                                        <td>$15.99</td>
+                                        <td>$15.99</td>
+                                        <td>
+                                            <button class="btn-icon btn-danger" onclick="removePart(this)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="titan-btn titan-btn-outline" id="addPart">
+                                <i class="fas fa-plus"></i>
+                                Add Part
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="titan-btn titan-btn-secondary" onclick="history.back()">
+                            Cancel
+                        </button>
+                        <button type="button" class="titan-btn titan-btn-outline" id="markComplete">
+                            Mark Complete
+                        </button>
+                        <button type="submit" class="titan-btn titan-btn-primary">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../scripts/field-service.js"></script>
+    <script src="../scripts/work-orders-edit.js"></script>
+</body>
+</html>

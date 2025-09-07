@@ -88,6 +88,271 @@ router.get('/field-service/technicians', async (req, res) => {
 });
 
 /**
+ * Get specific work order
+ */
+router.get('/field-service/work-orders/:id', async (req, res) => {
+  try {
+    const workOrder = {
+      id: req.params.id,
+      title: 'HVAC System Repair - Cooling Unit Malfunction',
+      description: 'Customer reports that the main cooling unit is not maintaining temperature. System appears to be running but not cooling effectively.',
+      priority: 'HIGH',
+      status: 'IN_PROGRESS',
+      serviceType: 'repair',
+      customerId: 'cust_001',
+      contactName: 'Jane Smith',
+      contactPhone: '(555) 123-4567',
+      contactEmail: 'jane.smith@acme.com',
+      assignedTechnicianId: 'tech_001',
+      estimatedDuration: 180,
+      skillsRequired: ['HVAC', 'Refrigeration'],
+      serviceAddress: '123 Main St, Downtown, City 12345',
+      createdDate: new Date(Date.now() - 86400000).toISOString(),
+      lastModified: new Date().toISOString(),
+      notes: [
+        {
+          text: 'Arrived on site. Customer confirmed AC not cooling. Initial inspection shows compressor running but low airflow.',
+          author: 'John Smith (Technician)',
+          timestamp: new Date(Date.now() - 3600000).toISOString(),
+          type: 'work_progress'
+        },
+        {
+          text: 'Found severely clogged air filter and partially blocked return ducts. Replaced filter, cleaned ducts. Testing system now.',
+          author: 'John Smith (Technician)',
+          timestamp: new Date(Date.now() - 1800000).toISOString(),
+          type: 'work_progress'
+        }
+      ],
+      partsUsed: [
+        {
+          partNumber: 'AF-20x25-MERV8',
+          description: 'Air Filter 20x25 MERV 8',
+          quantity: 1,
+          unitCost: 15.99,
+          totalCost: 15.99
+        }
+      ]
+    };
+    res.json({ success: true, data: workOrder });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update work order
+ */
+router.put('/field-service/work-orders/:id', async (req, res) => {
+  try {
+    const updatedWorkOrder = {
+      id: req.params.id,
+      ...req.body,
+      lastModified: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedWorkOrder });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update work order status
+ */
+router.patch('/field-service/work-orders/:id/status', async (req, res) => {
+  try {
+    const { status } = req.body;
+    res.json({ success: true, data: { id: req.params.id, status, updatedAt: new Date().toISOString() } });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Add work note
+ */
+router.post('/field-service/work-orders/:id/notes', async (req, res) => {
+  try {
+    const note = {
+      id: `note_${Date.now()}`,
+      ...req.body,
+      timestamp: new Date().toISOString()
+    };
+    res.json({ success: true, data: note });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Add part to work order
+ */
+router.post('/field-service/work-orders/:id/parts', async (req, res) => {
+  try {
+    const part = {
+      id: `part_${Date.now()}`,
+      ...req.body,
+      addedAt: new Date().toISOString()
+    };
+    res.json({ success: true, data: part });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get customers
+ */
+router.get('/field-service/customers', async (req, res) => {
+  try {
+    const customers = [
+      {
+        id: 'cust_001',
+        name: 'Acme Corporation',
+        primaryContact: {
+          name: 'Jane Smith',
+          phone: '(555) 123-4567',
+          email: 'jane.smith@acme.com'
+        },
+        defaultAddress: '123 Main St, Downtown, City 12345'
+      },
+      {
+        id: 'cust_002',
+        name: 'Beta Industries',
+        primaryContact: {
+          name: 'Mike Johnson',
+          phone: '(555) 234-5678',
+          email: 'mike.johnson@beta.com'
+        },
+        defaultAddress: '456 Industrial Way, Business District, City 12346'
+      },
+      {
+        id: 'cust_003',
+        name: 'Gamma Solutions',
+        primaryContact: {
+          name: 'Lisa Davis',
+          phone: '(555) 345-6789',
+          email: 'lisa.davis@gamma.com'
+        },
+        defaultAddress: '789 Office Park Blvd, Uptown, City 12347'
+      }
+    ];
+    res.json({ success: true, data: customers });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get specific customer
+ */
+router.get('/field-service/customers/:id', async (req, res) => {
+  try {
+    const customer = {
+      id: req.params.id,
+      name: 'Acme Corporation',
+      primaryContact: {
+        name: 'Jane Smith',
+        phone: '(555) 123-4567',
+        email: 'jane.smith@acme.com'
+      },
+      defaultAddress: '123 Main St, Downtown, City 12345'
+    };
+    res.json({ success: true, data: customer });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get technician suggestions
+ */
+router.get('/field-service/technicians/suggest', async (req, res) => {
+  try {
+    const suggestions = [
+      {
+        id: 'tech_001',
+        name: 'John Smith',
+        skills: ['HVAC', 'Electrical'],
+        distance: '2.3 miles',
+        availability: 'Available now',
+        rating: 4.9
+      }
+    ];
+    res.json({ success: true, data: suggestions });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get specific technician profile
+ */
+router.get('/field-service/technicians/:id', async (req, res) => {
+  try {
+    const technician = {
+      id: req.params.id,
+      employeeId: 'EMP-001',
+      fullName: 'John Michael Smith',
+      role: 'Senior HVAC Technician',
+      department: 'Field Service - HVAC',
+      hireDate: '2019-03-15',
+      yearsExperience: 12,
+      status: 'available',
+      email: 'john.smith@titangrove.com',
+      phone: '(555) 123-4567',
+      mobile: '(555) 987-6543',
+      emergencyContact: 'Jane Smith - (555) 555-0123',
+      address: '123 Main St, Anytown, ST 12345',
+      serviceArea: 'Metro Area, Zone A-3',
+      skills: {
+        primary: [
+          { name: 'HVAC Systems', level: 'expert' },
+          { name: 'Refrigeration', level: 'expert' },
+          { name: 'Electrical', level: 'advanced' },
+          { name: 'Plumbing', level: 'intermediate' }
+        ]
+      },
+      certifications: [
+        {
+          name: 'EPA 608 Universal',
+          status: 'valid',
+          expiryDate: '2025-12-31'
+        },
+        {
+          name: 'NATE Certified',
+          status: 'valid',
+          expiryDate: '2026-03-15'
+        },
+        {
+          name: 'OSHA 30 Safety',
+          status: 'warning',
+          expiryDate: '2024-03-15'
+        }
+      ],
+      performance: {
+        rating: 4.9,
+        reviewCount: 247,
+        completionRate: 98.2,
+        avgResponseTime: 22
+      },
+      currentWorkOrders: [
+        {
+          id: 'WO-2024-001',
+          title: 'HVAC System Repair',
+          customer: 'Acme Corporation',
+          priority: 'high',
+          progress: 65,
+          startTime: new Date(Date.now() - 7200000).toISOString()
+        }
+      ]
+    };
+    res.json({ success: true, data: technician });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
  * Optimize schedule
  */
 router.post('/field-service/optimize-schedule', async (req, res) => {

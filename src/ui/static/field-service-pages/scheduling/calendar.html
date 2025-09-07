@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduling Calendar - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="index.html">Scheduling</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Calendar</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" id="optimizeSchedule">
+                    <i class="fas fa-magic"></i>
+                    Auto-Optimize
+                </button>
+                <button class="titan-btn titan-btn-outline" id="exportSchedule">
+                    <i class="fas fa-download"></i>
+                    Export
+                </button>
+                <button class="titan-btn titan-btn-primary" id="quickSchedule">
+                    <i class="fas fa-plus"></i>
+                    Quick Schedule
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Scheduling Calendar</h1>
+                    <p class="page-subtitle">Manage technician schedules, work order assignments, and route optimization</p>
+                </div>
+                <div class="header-controls">
+                    <div class="view-selector">
+                        <button class="view-btn active" data-view="week">Week</button>
+                        <button class="view-btn" data-view="day">Day</button>
+                        <button class="view-btn" data-view="month">Month</button>
+                    </div>
+                    <div class="date-navigator">
+                        <button class="nav-btn" id="prevPeriod">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="current-period" id="currentPeriod">January 15-21, 2024</span>
+                        <button class="nav-btn" id="nextPeriod">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="nav-btn today-btn" id="todayBtn">Today</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scheduling-container">
+                <!-- Filters Panel -->
+                <div class="scheduling-filters">
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label>Technician</label>
+                            <select class="filter-select" id="technicianFilter">
+                                <option value="">All Technicians</option>
+                                <option value="tech_001">John Smith</option>
+                                <option value="tech_002">Sarah Johnson</option>
+                                <option value="tech_003">Mike Wilson</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Service Area</label>
+                            <select class="filter-select" id="areaFilter">
+                                <option value="">All Areas</option>
+                                <option value="area_a">Zone A - Downtown</option>
+                                <option value="area_b">Zone B - Uptown</option>
+                                <option value="area_c">Zone C - Industrial</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <select class="filter-select" id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="scheduled">Scheduled</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Priority</label>
+                            <select class="filter-select" id="priorityFilter">
+                                <option value="">All Priorities</option>
+                                <option value="critical">Critical</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar View -->
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <div class="time-column">Time</div>
+                        <div class="technician-columns">
+                            <div class="technician-column" data-tech="tech_001">
+                                <div class="tech-header">
+                                    <img src="https://ui-avatars.com/api/?name=John+Smith&size=32" alt="John Smith" class="tech-avatar">
+                                    <div class="tech-info">
+                                        <div class="tech-name">John Smith</div>
+                                        <div class="tech-status online">Online</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="technician-column" data-tech="tech_002">
+                                <div class="tech-header">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&size=32" alt="Sarah Johnson" class="tech-avatar">
+                                    <div class="tech-info">
+                                        <div class="tech-name">Sarah Johnson</div>
+                                        <div class="tech-status available">Available</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="technician-column" data-tech="tech_003">
+                                <div class="tech-header">
+                                    <img src="https://ui-avatars.com/api/?name=Mike+Wilson&size=32" alt="Mike Wilson" class="tech-avatar">
+                                    <div class="tech-info">
+                                        <div class="tech-name">Mike Wilson</div>
+                                        <div class="tech-status busy">Busy</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-body">
+                        <div class="time-slots">
+                            <div class="time-slot" data-time="08:00">8:00 AM</div>
+                            <div class="time-slot" data-time="09:00">9:00 AM</div>
+                            <div class="time-slot" data-time="10:00">10:00 AM</div>
+                            <div class="time-slot" data-time="11:00">11:00 AM</div>
+                            <div class="time-slot" data-time="12:00">12:00 PM</div>
+                            <div class="time-slot" data-time="13:00">1:00 PM</div>
+                            <div class="time-slot" data-time="14:00">2:00 PM</div>
+                            <div class="time-slot" data-time="15:00">3:00 PM</div>
+                            <div class="time-slot" data-time="16:00">4:00 PM</div>
+                            <div class="time-slot" data-time="17:00">5:00 PM</div>
+                        </div>
+
+                        <div class="schedule-grid">
+                            <!-- John Smith Schedule -->
+                            <div class="tech-schedule" data-tech="tech_001">
+                                <div class="schedule-item high-priority" data-time="09:00" data-duration="2">
+                                    <div class="item-header">
+                                        <span class="work-order-id">#WO-2024-001</span>
+                                        <span class="priority-indicator high"></span>
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="item-title">HVAC System Repair</div>
+                                        <div class="item-customer">Acme Corporation</div>
+                                        <div class="item-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Downtown
+                                        </div>
+                                    </div>
+                                    <div class="item-status in-progress">
+                                        <i class="fas fa-tools"></i>
+                                        In Progress
+                                    </div>
+                                </div>
+                                <div class="schedule-item medium-priority" data-time="14:00" data-duration="1.5">
+                                    <div class="item-header">
+                                        <span class="work-order-id">#WO-2024-004</span>
+                                        <span class="priority-indicator medium"></span>
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="item-title">Routine Maintenance</div>
+                                        <div class="item-customer">Beta Industries</div>
+                                        <div class="item-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Business District
+                                        </div>
+                                    </div>
+                                    <div class="item-status scheduled">
+                                        <i class="fas fa-clock"></i>
+                                        Scheduled
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sarah Johnson Schedule -->
+                            <div class="tech-schedule" data-tech="tech_002">
+                                <div class="schedule-item medium-priority" data-time="10:00" data-duration="2">
+                                    <div class="item-header">
+                                        <span class="work-order-id">#WO-2024-002</span>
+                                        <span class="priority-indicator medium"></span>
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="item-title">Electrical Inspection</div>
+                                        <div class="item-customer">Gamma Solutions</div>
+                                        <div class="item-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Uptown
+                                        </div>
+                                    </div>
+                                    <div class="item-status scheduled">
+                                        <i class="fas fa-clock"></i>
+                                        Scheduled
+                                    </div>
+                                </div>
+                                <div class="schedule-item low-priority" data-time="15:00" data-duration="1">
+                                    <div class="item-header">
+                                        <span class="work-order-id">#WO-2024-006</span>
+                                        <span class="priority-indicator low"></span>
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="item-title">System Check</div>
+                                        <div class="item-customer">Delta Corp</div>
+                                        <div class="item-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Midtown
+                                        </div>
+                                    </div>
+                                    <div class="item-status scheduled">
+                                        <i class="fas fa-clock"></i>
+                                        Scheduled
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mike Wilson Schedule -->
+                            <div class="tech-schedule" data-tech="tech_003">
+                                <div class="schedule-item critical-priority" data-time="08:00" data-duration="4">
+                                    <div class="item-header">
+                                        <span class="work-order-id">#WO-2024-003</span>
+                                        <span class="priority-indicator critical"></span>
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="item-title">Emergency Plumbing</div>
+                                        <div class="item-customer">Epsilon Inc</div>
+                                        <div class="item-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Industrial Zone
+                                        </div>
+                                    </div>
+                                    <div class="item-status in-progress">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        Emergency
+                                    </div>
+                                </div>
+                                <div class="schedule-item medium-priority" data-time="16:00" data-duration="1">
+                                    <div class="item-header">
+                                        <span class="work-order-id">#WO-2024-007</span>
+                                        <span class="priority-indicator medium"></span>
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="item-title">Follow-up Visit</div>
+                                        <div class="item-customer">Zeta Ltd</div>
+                                        <div class="item-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Suburbs
+                                        </div>
+                                    </div>
+                                    <div class="item-status scheduled">
+                                        <i class="fas fa-clock"></i>
+                                        Scheduled
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Info -->
+                <div class="schedule-sidebar">
+                    <!-- Today's Summary -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Today's Summary</h3>
+                        <div class="summary-stats">
+                            <div class="summary-item">
+                                <div class="summary-icon">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <div class="summary-number">12</div>
+                                    <div class="summary-label">Scheduled</div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-icon active">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <div class="summary-number">3</div>
+                                    <div class="summary-label">In Progress</div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-icon completed">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <div class="summary-number">7</div>
+                                    <div class="summary-label">Completed</div>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-icon warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="summary-details">
+                                    <div class="summary-number">1</div>
+                                    <div class="summary-label">Overdue</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unassigned Work Orders -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Unassigned Orders</h3>
+                        <div class="unassigned-orders">
+                            <div class="unassigned-item" draggable="true" data-order="wo_008">
+                                <div class="item-header">
+                                    <span class="order-id">#WO-2024-008</span>
+                                    <span class="priority-badge priority-high">High</span>
+                                </div>
+                                <div class="item-content">
+                                    <div class="item-title">AC Unit Replacement</div>
+                                    <div class="item-customer">New Customer Inc</div>
+                                    <div class="item-skills">HVAC, Electrical</div>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-icon" onclick="autoAssign('wo_008')">
+                                        <i class="fas fa-magic"></i>
+                                    </button>
+                                    <button class="btn-icon" onclick="manualAssign('wo_008')">
+                                        <i class="fas fa-user-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="unassigned-item" draggable="true" data-order="wo_009">
+                                <div class="item-header">
+                                    <span class="order-id">#WO-2024-009</span>
+                                    <span class="priority-badge priority-medium">Medium</span>
+                                </div>
+                                <div class="item-content">
+                                    <div class="item-title">Lighting Installation</div>
+                                    <div class="item-customer">Office Complex LLC</div>
+                                    <div class="item-skills">Electrical</div>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn-icon" onclick="autoAssign('wo_009')">
+                                        <i class="fas fa-magic"></i>
+                                    </button>
+                                    <button class="btn-icon" onclick="manualAssign('wo_009')">
+                                        <i class="fas fa-user-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Route Optimization -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Route Optimization</h3>
+                        <div class="optimization-panel">
+                            <div class="optimization-summary">
+                                <div class="optimization-metric">
+                                    <span class="metric-label">Travel Time Saved</span>
+                                    <span class="metric-value">2.5 hours</span>
+                                </div>
+                                <div class="optimization-metric">
+                                    <span class="metric-label">Fuel Cost Saved</span>
+                                    <span class="metric-value">$45</span>
+                                </div>
+                            </div>
+                            <div class="optimization-actions">
+                                <button class="titan-btn titan-btn-primary full-width" onclick="runOptimization()">
+                                    <i class="fas fa-route"></i>
+                                    Optimize Routes
+                                </button>
+                                <button class="titan-btn titan-btn-outline full-width" onclick="viewRoutes()">
+                                    <i class="fas fa-map"></i>
+                                    View Map
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Quick Actions</h3>
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="createEmergencySlot()">
+                                <i class="fas fa-plus"></i>
+                                Emergency Slot
+                            </button>
+                            <button class="action-btn" onclick="bulkReschedule()">
+                                <i class="fas fa-calendar-alt"></i>
+                                Bulk Reschedule
+                            </button>
+                            <button class="action-btn" onclick="sendNotifications()">
+                                <i class="fas fa-bell"></i>
+                                Send Notifications
+                            </button>
+                            <button class="action-btn" onclick="exportSchedule()">
+                                <i class="fas fa-download"></i>
+                                Export Schedule
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quick Schedule Modal -->
+    <div class="modal-overlay" id="quickScheduleModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Quick Schedule</h3>
+                <button class="modal-close" onclick="closeModal('quickScheduleModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <!-- Quick schedule form would go here -->
+                <div class="form-group">
+                    <label>Work Order</label>
+                    <select class="form-select">
+                        <option>Select work order...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Technician</label>
+                    <select class="form-select">
+                        <option>Auto-assign best match</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date & Time</label>
+                    <input type="datetime-local" class="form-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="titan-btn titan-btn-secondary" onclick="closeModal('quickScheduleModal')">Cancel</button>
+                <button class="titan-btn titan-btn-primary">Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../scripts/field-service.js"></script>
+    <script src="../scripts/scheduling-calendar.js"></script>
+</body>
+</html>

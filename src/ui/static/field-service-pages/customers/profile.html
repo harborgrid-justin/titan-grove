@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Profile - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="index.html">Customers</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Acme Corporation</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="editCustomer">
+                    <i class="fas fa-edit"></i>
+                    Edit Profile
+                </button>
+                <button class="titan-btn titan-btn-primary" id="createWorkOrder">
+                    <i class="fas fa-plus"></i>
+                    New Work Order
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <div class="customer-header">
+                        <div class="customer-avatar">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="customer-info">
+                            <h1 class="page-title">Acme Corporation</h1>
+                            <div class="customer-details">
+                                <span class="customer-type">Enterprise Customer</span>
+                                <span class="customer-id">#CUST-001</span>
+                                <span class="account-status active">Active Account</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Active Contracts</div>
+                        <div class="stat-subtext">Service agreements</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Work Orders</div>
+                        <div class="stat-subtext">This year</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$47K</div>
+                        <div class="stat-label">Revenue</div>
+                        <div class="stat-subtext">YTD</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="customer-profile-container">
+                <div class="profile-layout">
+                    <!-- Main Content -->
+                    <div class="profile-main">
+                        <!-- Company Information -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Company Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Company Name</label>
+                                    <span>Acme Corporation</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Customer ID</label>
+                                    <span>CUST-001</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Industry</label>
+                                    <span>Manufacturing</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Customer Since</label>
+                                    <span>January 2020</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Account Type</label>
+                                    <span>Enterprise</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Credit Rating</label>
+                                    <span class="rating excellent">AAA</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Contact Information</h3>
+                            <div class="contacts-container">
+                                <div class="contact-card primary">
+                                    <div class="contact-header">
+                                        <span class="contact-role">Primary Contact</span>
+                                        <span class="contact-badge">Main</span>
+                                    </div>
+                                    <div class="contact-info">
+                                        <h4>Jane Smith</h4>
+                                        <p>Facilities Manager</p>
+                                        <div class="contact-details">
+                                            <div class="contact-item">
+                                                <i class="fas fa-envelope"></i>
+                                                <span>jane.smith@acme.com</span>
+                                            </div>
+                                            <div class="contact-item">
+                                                <i class="fas fa-phone"></i>
+                                                <span>(555) 123-4567</span>
+                                            </div>
+                                            <div class="contact-item">
+                                                <i class="fas fa-mobile-alt"></i>
+                                                <span>(555) 987-6543</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="contact-card">
+                                    <div class="contact-header">
+                                        <span class="contact-role">Emergency Contact</span>
+                                        <span class="contact-badge">24/7</span>
+                                    </div>
+                                    <div class="contact-info">
+                                        <h4>Mike Johnson</h4>
+                                        <p>Operations Director</p>
+                                        <div class="contact-details">
+                                            <div class="contact-item">
+                                                <i class="fas fa-envelope"></i>
+                                                <span>mike.johnson@acme.com</span>
+                                            </div>
+                                            <div class="contact-item">
+                                                <i class="fas fa-phone"></i>
+                                                <span>(555) 234-5678</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service Locations -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Service Locations</h3>
+                            <div class="locations-container">
+                                <div class="location-card">
+                                    <div class="location-header">
+                                        <div class="location-name">Corporate Headquarters</div>
+                                        <span class="location-badge primary">Primary</span>
+                                    </div>
+                                    <div class="location-address">
+                                        <p>123 Main Street</p>
+                                        <p>Downtown Business District</p>
+                                        <p>City, ST 12345</p>
+                                    </div>
+                                    <div class="location-details">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Building Type:</span>
+                                            <span>Office Complex</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Square Footage:</span>
+                                            <span>125,000 sq ft</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Access Hours:</span>
+                                            <span>24/7 with key card</span>
+                                        </div>
+                                    </div>
+                                    <div class="location-actions">
+                                        <button class="btn-location" onclick="viewLocationDetails('loc_001')">
+                                            <i class="fas fa-eye"></i>
+                                            View Details
+                                        </button>
+                                        <button class="btn-location" onclick="createWorkOrderForLocation('loc_001')">
+                                            <i class="fas fa-plus"></i>
+                                            New Work Order
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="location-card">
+                                    <div class="location-header">
+                                        <div class="location-name">Manufacturing Plant</div>
+                                        <span class="location-badge">Secondary</span>
+                                    </div>
+                                    <div class="location-address">
+                                        <p>456 Industrial Way</p>
+                                        <p>Manufacturing District</p>
+                                        <p>City, ST 12346</p>
+                                    </div>
+                                    <div class="location-details">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Building Type:</span>
+                                            <span>Manufacturing Facility</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Square Footage:</span>
+                                            <span>250,000 sq ft</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Access Hours:</span>
+                                            <span>Mon-Fri 6 AM - 10 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="location-actions">
+                                        <button class="btn-location" onclick="viewLocationDetails('loc_002')">
+                                            <i class="fas fa-eye"></i>
+                                            View Details
+                                        </button>
+                                        <button class="btn-location" onclick="createWorkOrderForLocation('loc_002')">
+                                            <i class="fas fa-plus"></i>
+                                            New Work Order
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service History Analytics -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Service Analytics</h3>
+                            <div class="analytics-grid">
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <h4>Work Orders by Month</h4>
+                                        <span class="chart-period">Last 12 months</span>
+                                    </div>
+                                    <canvas id="workOrdersChart"></canvas>
+                                </div>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <h4>Service Types Distribution</h4>
+                                        <span class="chart-period">This year</span>
+                                    </div>
+                                    <canvas id="serviceTypesChart"></canvas>
+                                </div>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <h4>Response Time Trends</h4>
+                                        <span class="chart-period">Last 6 months</span>
+                                    </div>
+                                    <canvas id="responseTimeChart"></canvas>
+                                </div>
+                                <div class="chart-container">
+                                    <div class="chart-header">
+                                        <h4>Customer Satisfaction</h4>
+                                        <span class="chart-period">Quarterly average</span>
+                                    </div>
+                                    <canvas id="satisfactionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="profile-sidebar">
+                        <!-- Quick Stats -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Quick Stats</h3>
+                            <div class="quick-stats">
+                                <div class="quick-stat">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-clipboard-list"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">3</div>
+                                        <div class="stat-text">Active Work Orders</div>
+                                    </div>
+                                </div>
+                                <div class="quick-stat">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">8</div>
+                                        <div class="stat-text">Scheduled Services</div>
+                                    </div>
+                                </div>
+                                <div class="quick-stat">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">4.8</div>
+                                        <div class="stat-text">Avg Rating</div>
+                                    </div>
+                                </div>
+                                <div class="quick-stat">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <div class="stat-number">18m</div>
+                                        <div class="stat-text">Avg Response</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Work Orders -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Active Work Orders</h3>
+                            <div class="work-orders-list">
+                                <div class="work-order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#WO-2024-001</span>
+                                        <span class="priority-badge priority-high">High</span>
+                                    </div>
+                                    <div class="order-details">
+                                        <div class="order-title">HVAC System Repair</div>
+                                        <div class="order-location">Corporate HQ</div>
+                                        <div class="order-technician">John Smith</div>
+                                    </div>
+                                    <div class="order-status">
+                                        <span class="status-badge status-in-progress">In Progress</span>
+                                    </div>
+                                </div>
+                                <div class="work-order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#WO-2024-005</span>
+                                        <span class="priority-badge priority-medium">Medium</span>
+                                    </div>
+                                    <div class="order-details">
+                                        <div class="order-title">Electrical Inspection</div>
+                                        <div class="order-location">Manufacturing Plant</div>
+                                        <div class="order-technician">Sarah Johnson</div>
+                                    </div>
+                                    <div class="order-status">
+                                        <span class="status-badge status-scheduled">Scheduled</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar-actions">
+                                <button class="titan-btn titan-btn-outline full-width" onclick="viewAllWorkOrders()">
+                                    View All Work Orders
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Service Contracts -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Service Contracts</h3>
+                            <div class="contracts-list">
+                                <div class="contract-item active">
+                                    <div class="contract-header">
+                                        <span class="contract-name">Premium HVAC Maintenance</span>
+                                        <span class="contract-status active">Active</span>
+                                    </div>
+                                    <div class="contract-details">
+                                        <div class="contract-period">Jan 2024 - Dec 2024</div>
+                                        <div class="contract-value">$24,000/year</div>
+                                    </div>
+                                </div>
+                                <div class="contract-item">
+                                    <div class="contract-header">
+                                        <span class="contract-name">Emergency Response</span>
+                                        <span class="contract-status active">Active</span>
+                                    </div>
+                                    <div class="contract-details">
+                                        <div class="contract-period">Ongoing</div>
+                                        <div class="contract-value">$15,000/year</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar-actions">
+                                <button class="titan-btn titan-btn-outline full-width" onclick="viewContracts()">
+                                    Manage Contracts
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Quick Actions</h3>
+                            <div class="quick-actions">
+                                <button class="action-btn" onclick="createWorkOrder()">
+                                    <i class="fas fa-plus"></i>
+                                    New Work Order
+                                </button>
+                                <button class="action-btn" onclick="scheduleService()">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    Schedule Service
+                                </button>
+                                <button class="action-btn" onclick="sendMessage()">
+                                    <i class="fas fa-envelope"></i>
+                                    Send Message
+                                </button>
+                                <button class="action-btn" onclick="generateReport()">
+                                    <i class="fas fa-file-pdf"></i>
+                                    Generate Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../scripts/field-service.js"></script>
+    <script src="../scripts/customer-profile.js"></script>
+</body>
+</html>

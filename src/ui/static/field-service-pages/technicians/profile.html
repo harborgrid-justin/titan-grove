@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technician Profile - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="index.html">Technicians</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>John Smith Profile</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="editProfile">
+                    <i class="fas fa-edit"></i>
+                    Edit Profile
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <div class="profile-header">
+                        <img src="https://ui-avatars.com/api/?name=John+Smith&size=80&background=1e40af&color=fff" alt="John Smith" class="profile-avatar">
+                        <div class="profile-info">
+                            <h1 class="page-title">John Smith</h1>
+                            <div class="profile-details">
+                                <span class="badge badge-online">Online</span>
+                                <span class="employee-id">#EMP-001</span>
+                                <span class="role">Senior HVAC Technician</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">Rating</div>
+                        <div class="stat-subtext">247 reviews</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">23</div>
+                        <div class="stat-label">Active Orders</div>
+                        <div class="stat-subtext">This month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Completion Rate</div>
+                        <div class="stat-subtext">Last 30 days</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="technician-profile-container">
+                <div class="profile-layout">
+                    <!-- Left Column - Profile Details -->
+                    <div class="profile-main">
+                        <!-- Basic Information -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Basic Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Full Name</label>
+                                    <span>John Michael Smith</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Employee ID</label>
+                                    <span>EMP-001</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Department</label>
+                                    <span>Field Service - HVAC</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Hire Date</label>
+                                    <span>March 15, 2019</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Years of Experience</label>
+                                    <span>12 years</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Current Status</label>
+                                    <span class="status-badge status-available">Available</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Contact Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Email</label>
+                                    <span>john.smith@titangrove.com</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Phone</label>
+                                    <span>(555) 123-4567</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Mobile</label>
+                                    <span>(555) 987-6543</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Emergency Contact</label>
+                                    <span>Jane Smith - (555) 555-0123</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Address</label>
+                                    <span>123 Main St, Anytown, ST 12345</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Service Area</label>
+                                    <span>Metro Area, Zone A-3</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills & Certifications -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Skills & Certifications</h3>
+                            <div class="skills-container">
+                                <div class="skills-category">
+                                    <h4>Primary Skills</h4>
+                                    <div class="skills-list">
+                                        <span class="skill-badge skill-expert">HVAC Systems</span>
+                                        <span class="skill-badge skill-expert">Refrigeration</span>
+                                        <span class="skill-badge skill-advanced">Electrical</span>
+                                        <span class="skill-badge skill-intermediate">Plumbing</span>
+                                    </div>
+                                </div>
+                                <div class="skills-category">
+                                    <h4>Certifications</h4>
+                                    <div class="certifications-list">
+                                        <div class="certification-item">
+                                            <div class="cert-info">
+                                                <strong>EPA 608 Universal</strong>
+                                                <span class="cert-status valid">Valid until Dec 2025</span>
+                                            </div>
+                                            <div class="cert-badge">
+                                                <i class="fas fa-certificate"></i>
+                                            </div>
+                                        </div>
+                                        <div class="certification-item">
+                                            <div class="cert-info">
+                                                <strong>NATE Certified</strong>
+                                                <span class="cert-status valid">Valid until Mar 2026</span>
+                                            </div>
+                                            <div class="cert-badge">
+                                                <i class="fas fa-certificate"></i>
+                                            </div>
+                                        </div>
+                                        <div class="certification-item">
+                                            <div class="cert-info">
+                                                <strong>OSHA 30 Safety</strong>
+                                                <span class="cert-status warning">Expires in 2 months</span>
+                                            </div>
+                                            <div class="cert-badge warning">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Metrics -->
+                        <div class="profile-section">
+                            <h3 class="section-title">Performance Metrics</h3>
+                            <div class="performance-grid">
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-title">Customer Satisfaction</span>
+                                        <span class="metric-trend positive">↗ +0.3</span>
+                                    </div>
+                                    <div class="metric-chart">
+                                        <canvas id="satisfactionChart" width="200" height="100"></canvas>
+                                    </div>
+                                    <div class="metric-value">4.9/5.0</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-title">Completion Rate</span>
+                                        <span class="metric-trend positive">↗ +2%</span>
+                                    </div>
+                                    <div class="metric-chart">
+                                        <canvas id="completionChart" width="200" height="100"></canvas>
+                                    </div>
+                                    <div class="metric-value">98.2%</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <span class="metric-title">Response Time</span>
+                                        <span class="metric-trend negative">↘ +5min</span>
+                                    </div>
+                                    <div class="metric-chart">
+                                        <canvas id="responseChart" width="200" height="100"></canvas>
+                                    </div>
+                                    <div class="metric-value">22 min avg</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Activity & Quick Actions -->
+                    <div class="profile-sidebar">
+                        <!-- Current Status -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Current Status</h3>
+                            <div class="current-status">
+                                <div class="status-item">
+                                    <div class="status-icon online">
+                                        <i class="fas fa-circle"></i>
+                                    </div>
+                                    <div class="status-details">
+                                        <div class="status-text">Available</div>
+                                        <div class="status-location">Downtown Service Area</div>
+                                        <div class="status-time">Last update: 2 mins ago</div>
+                                    </div>
+                                </div>
+                                <div class="status-actions">
+                                    <button class="btn-status" onclick="contactTechnician()">
+                                        <i class="fas fa-phone"></i>
+                                        Call
+                                    </button>
+                                    <button class="btn-status" onclick="messageTechnician()">
+                                        <i class="fas fa-message"></i>
+                                        Message
+                                    </button>
+                                    <button class="btn-status" onclick="trackLocation()">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Track
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current Work Orders -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Current Work Orders</h3>
+                            <div class="work-orders-list">
+                                <div class="work-order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#WO-2024-001</span>
+                                        <span class="priority-badge priority-high">High</span>
+                                    </div>
+                                    <div class="order-details">
+                                        <div class="order-title">HVAC System Repair</div>
+                                        <div class="order-customer">Acme Corporation</div>
+                                        <div class="order-time">Started 2 hours ago</div>
+                                    </div>
+                                    <div class="order-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 65%"></div>
+                                        </div>
+                                        <span class="progress-text">65%</span>
+                                    </div>
+                                </div>
+                                <div class="work-order-item">
+                                    <div class="order-header">
+                                        <span class="order-id">#WO-2024-004</span>
+                                        <span class="priority-badge priority-medium">Medium</span>
+                                    </div>
+                                    <div class="order-details">
+                                        <div class="order-title">Routine Maintenance</div>
+                                        <div class="order-customer">Beta Industries</div>
+                                        <div class="order-time">Scheduled for 3:00 PM</div>
+                                    </div>
+                                    <div class="order-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <span class="progress-text">Pending</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar-actions">
+                                <button class="titan-btn titan-btn-outline full-width" onclick="viewAllOrders()">
+                                    View All Orders
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Recent Activity</h3>
+                            <div class="activity-timeline">
+                                <div class="activity-item">
+                                    <div class="activity-icon completed">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Completed WO-2023-998</div>
+                                        <div class="activity-time">1 hour ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon started">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Started WO-2024-001</div>
+                                        <div class="activity-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon assigned">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Assigned to WO-2024-004</div>
+                                        <div class="activity-time">4 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon note">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Added note to WO-2023-995</div>
+                                        <div class="activity-time">Yesterday</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Quick Actions</h3>
+                            <div class="quick-actions">
+                                <button class="action-btn" onclick="assignWorkOrder()">
+                                    <i class="fas fa-plus"></i>
+                                    Assign Work Order
+                                </button>
+                                <button class="action-btn" onclick="viewSchedule()">
+                                    <i class="fas fa-calendar"></i>
+                                    View Schedule
+                                </button>
+                                <button class="action-btn" onclick="updateStatus()">
+                                    <i class="fas fa-edit"></i>
+                                    Update Status
+                                </button>
+                                <button class="action-btn" onclick="generateReport()">
+                                    <i class="fas fa-chart-bar"></i>
+                                    Generate Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../../scripts/field-service.js"></script>
+    <script src="../scripts/technician-profile.js"></script>
+</body>
+</html>
