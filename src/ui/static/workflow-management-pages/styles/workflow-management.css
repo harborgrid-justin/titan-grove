@@ -1,0 +1,341 @@
+/* Workflow Management Pages - Consistent Styling */
+
+.workflow-enterprise-app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Inter', sans-serif;
+}
+
+.workflow-enterprise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #ffffff;
+    border-bottom: 1px solid #e1e5e9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.workflow-header-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.workflow-logo-enterprise {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    color: #1a365d;
+}
+
+.workflow-logo-enterprise i {
+    font-size: 1.5rem;
+    color: #2b6cb0;
+}
+
+.workflow-edition-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.workflow-breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4a5568;
+}
+
+.workflow-breadcrumb-nav a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.workflow-breadcrumb-nav a:hover {
+    text-decoration: underline;
+}
+
+.workflow-main-content {
+    flex: 1;
+    padding: 2rem;
+}
+
+.workflow-content-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.workflow-page-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.workflow-page-title h1 {
+    color: #1a365d;
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.workflow-page-description {
+    color: #4a5568;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.workflow-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.workflow-feature-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.workflow-feature-card:hover {
+    transform: translateY(-2px);
+}
+
+.workflow-feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.workflow-feature-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a365d;
+    margin-bottom: 0.5rem;
+}
+
+.workflow-feature-description {
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.workflow-integration-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #38a169;
+    font-weight: 600;
+}
+
+.workflow-integration-status i {
+    color: #38a169;
+}
+
+.workflow-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.workflow-stat-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.workflow-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #38a169;
+}
+
+.workflow-stat-label {
+    color: #4a5568;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.workflow-implementation-details {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.backend-integration h4,
+.business-logic h4,
+.implementation-features h4 {
+    color: #1a365d;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.backend-integration ul,
+.business-logic ul,
+.implementation-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.backend-integration li,
+.business-logic li,
+.implementation-features li {
+    padding: 0.5rem 0;
+    color: #4a5568;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.workflow-action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.workflow-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.workflow-btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.workflow-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.workflow-btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.workflow-btn-secondary:hover {
+    background: #cbd5e0;
+}
+
+/* Workflow Categories Grid */
+.workflow-categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.workflow-category-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.workflow-category-card:hover {
+    transform: translateY(-2px);
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.category-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.category-info h3 {
+    color: #1a365d;
+    margin: 0 0 0.25rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.category-info p {
+    color: #4a5568;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.category-pages {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: #f7fafc;
+    color: #2d3748;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.page-link:hover {
+    background: #edf2f7;
+    color: #2b6cb0;
+    transform: translateX(2px);
+}
+
+.page-link i {
+    color: #667eea;
+    font-size: 0.8rem;
+    width: 16px;
+    text-align: center;
+}
+
+.page-link span {
+    font-size: 0.85rem;
+}
