@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Optimization - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Scheduling & Routing</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Schedule Optimization</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="optimizeBtn">
+                    <i class="fas fa-magic"></i>
+                    Run Optimization
+                </button>
+                <button class="titan-btn titan-btn-primary" id="saveOptimizationBtn">
+                    <i class="fas fa-save"></i>
+                    Save Schedule
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Schedule Optimization</h1>
+                    <p class="page-subtitle">AI-powered schedule optimization with resource balancing and efficiency maximization</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="efficiencyGain">+24%</div>
+                        <div class="stat-label">Efficiency Gain</div>
+                        <div class="stat-subtext">vs manual scheduling</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="travelTime">-18%</div>
+                        <div class="stat-label">Travel Time</div>
+                        <div class="stat-subtext">reduced with optimization</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="costSaving">$12.4K</div>
+                        <div class="stat-label">Monthly Savings</div>
+                        <div class="stat-subtext">operational cost reduction</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Optimization Control Panel -->
+                <div class="optimization-controls">
+                    <div class="control-section">
+                        <h3>Optimization Parameters</h3>
+                        <div class="parameter-grid">
+                            <div class="parameter-item">
+                                <label for="optimizationPeriod">Period</label>
+                                <select id="optimizationPeriod">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly" selected>Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="parameter-item">
+                                <label for="priorityWeight">Priority Weight</label>
+                                <input type="range" id="priorityWeight" min="0" max="100" value="75">
+                                <span class="range-value">75%</span>
+                            </div>
+                            <div class="parameter-item">
+                                <label for="travelOptimization">Travel Optimization</label>
+                                <input type="checkbox" id="travelOptimization" checked>
+                                <span class="checkbox-label">Minimize travel time</span>
+                            </div>
+                            <div class="parameter-item">
+                                <label for="skillMatching">Skill Matching</label>
+                                <input type="checkbox" id="skillMatching" checked>
+                                <span class="checkbox-label">Match technician skills</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optimization Results -->
+                <div class="optimization-results">
+                    <div class="results-header">
+                        <h3>Optimization Results</h3>
+                        <div class="optimization-status">
+                            <span class="status-indicator success"></span>
+                            <span>Optimization Complete</span>
+                        </div>
+                    </div>
+                    
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-header">
+                                <i class="fas fa-clock"></i>
+                                <h4>Schedule Changes</h4>
+                            </div>
+                            <div class="result-content">
+                                <div class="metric-row">
+                                    <span>Work Orders Rescheduled:</span>
+                                    <span class="metric-value">23</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Time Conflicts Resolved:</span>
+                                    <span class="metric-value">7</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Technician Utilization:</span>
+                                    <span class="metric-value">94%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-header">
+                                <i class="fas fa-route"></i>
+                                <h4>Route Optimization</h4>
+                            </div>
+                            <div class="result-content">
+                                <div class="metric-row">
+                                    <span>Total Distance Saved:</span>
+                                    <span class="metric-value">156 miles</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Travel Time Reduced:</span>
+                                    <span class="metric-value">4.2 hours</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Fuel Cost Savings:</span>
+                                    <span class="metric-value">$67.23</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-header">
+                                <i class="fas fa-users"></i>
+                                <h4>Resource Allocation</h4>
+                            </div>
+                            <div class="result-content">
+                                <div class="metric-row">
+                                    <span>Skill Matches Improved:</span>
+                                    <span class="metric-value">12</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Overtime Reduced:</span>
+                                    <span class="metric-value">8.5 hours</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Customer SLA Met:</span>
+                                    <span class="metric-value">98.7%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optimization Schedule Preview -->
+                <div class="schedule-preview">
+                    <h3>Optimized Schedule Preview</h3>
+                    <div class="schedule-timeline">
+                        <div class="timeline-header">
+                            <div class="timeline-day">Monday</div>
+                            <div class="timeline-day">Tuesday</div>
+                            <div class="timeline-day">Wednesday</div>
+                            <div class="timeline-day">Thursday</div>
+                            <div class="timeline-day">Friday</div>
+                        </div>
+                        <div class="timeline-content" id="optimizedTimeline">
+                            <!-- Timeline content will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/schedule-optimization.js"></script>
+</body>
+</html>
