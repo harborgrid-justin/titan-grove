@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dispatch Center - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Scheduling & Routing</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Dispatch Center</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="emergencyDispatchBtn">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Emergency Dispatch
+                </button>
+                <button class="titan-btn titan-btn-primary" id="newDispatchBtn">
+                    <i class="fas fa-plus"></i>
+                    New Dispatch
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Dispatch Center</h1>
+                    <p class="page-subtitle">Real-time dispatch coordination and technician management</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="activeTechnicians">12</div>
+                        <div class="stat-label">Active Technicians</div>
+                        <div class="stat-subtext">currently in field</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="pendingDispatch">7</div>
+                        <div class="stat-label">Pending Dispatch</div>
+                        <div class="stat-subtext">awaiting assignment</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="responseTime">8.5min</div>
+                        <div class="stat-label">Avg Response</div>
+                        <div class="stat-subtext">dispatch time</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Dispatch Control Panel -->
+                <div class="dispatch-controls">
+                    <div class="control-section">
+                        <h3>Active Dispatches</h3>
+                        <div class="dispatch-filters">
+                            <select id="priorityFilter">
+                                <option value="all">All Priorities</option>
+                                <option value="emergency">Emergency</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                            <select id="statusFilter">
+                                <option value="all">All Status</option>
+                                <option value="dispatched">Dispatched</option>
+                                <option value="en_route">En Route</option>
+                                <option value="on_site">On Site</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <button class="refresh-btn" id="refreshDispatchesBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dispatch Dashboard -->
+                <div class="dispatch-dashboard">
+                    <div class="dashboard-section">
+                        <div class="section-left">
+                            <!-- Live Map -->
+                            <div class="live-map-container">
+                                <div class="map-header">
+                                    <h4>Live Technician Map</h4>
+                                    <div class="map-controls">
+                                        <button class="map-btn" id="centerMapBtn">
+                                            <i class="fas fa-crosshairs"></i>
+                                            Center
+                                        </button>
+                                        <button class="map-btn" id="toggleTrafficBtn">
+                                            <i class="fas fa-road"></i>
+                                            Traffic
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="live-map" id="dispatchMap">
+                                    <!-- Map will be rendered here -->
+                                    <div class="map-placeholder">
+                                        <i class="fas fa-map"></i>
+                                        <p>Live Technician Tracking Map</p>
+                                        <div class="map-legend">
+                                            <div class="legend-item">
+                                                <span class="legend-color available"></span>
+                                                <span>Available</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color dispatched"></span>
+                                                <span>Dispatched</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color on-site"></span>
+                                                <span>On Site</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pending Dispatches -->
+                            <div class="pending-dispatches">
+                                <h4>Pending Dispatches</h4>
+                                <div class="dispatch-queue" id="pendingQueue">
+                                    <!-- Pending dispatches will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-right">
+                            <!-- Technician Status Panel -->
+                            <div class="technician-status">
+                                <h4>Technician Status</h4>
+                                <div class="technician-list" id="technicianList">
+                                    <!-- Technician status cards will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Communication Panel -->
+                            <div class="communication-panel">
+                                <h4>Communications</h4>
+                                <div class="comm-tabs">
+                                    <button class="comm-tab active" data-tab="messages">Messages</button>
+                                    <button class="comm-tab" data-tab="alerts">Alerts</button>
+                                    <button class="comm-tab" data-tab="notifications">Notifications</button>
+                                </div>
+                                <div class="comm-content">
+                                    <div class="comm-section active" id="messages">
+                                        <div class="message-list" id="messageList">
+                                            <!-- Messages will be populated here -->
+                                        </div>
+                                        <div class="message-input">
+                                            <input type="text" id="newMessage" placeholder="Send message to technician...">
+                                            <button id="sendMessageBtn">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="comm-section" id="alerts">
+                                        <div class="alert-list" id="alertList">
+                                            <!-- Alerts will be populated here -->
+                                        </div>
+                                    </div>
+                                    <div class="comm-section" id="notifications">
+                                        <div class="notification-list" id="notificationList">
+                                            <!-- Notifications will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Dispatch Modal -->
+                <div class="modal" id="emergencyModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Emergency Dispatch</h3>
+                            <button class="modal-close" id="closeEmergencyModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="emergency-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="emergencyType">Emergency Type</label>
+                                        <select id="emergencyType">
+                                            <option value="safety">Safety Emergency</option>
+                                            <option value="equipment">Equipment Failure</option>
+                                            <option value="environmental">Environmental Hazard</option>
+                                            <option value="security">Security Issue</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="urgencyLevel">Urgency Level</label>
+                                        <select id="urgencyLevel">
+                                            <option value="critical">Critical</option>
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="emergencyLocation">Location</label>
+                                    <input type="text" id="emergencyLocation" placeholder="Enter emergency location">
+                                </div>
+                                <div class="form-group">
+                                    <label for="emergencyDescription">Description</label>
+                                    <textarea id="emergencyDescription" rows="4" placeholder="Describe the emergency situation"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nearestTechnician">Nearest Available Technician</label>
+                                    <select id="nearestTechnician">
+                                        <!-- Options will be populated by JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="titan-btn titan-btn-secondary" id="cancelEmergencyBtn">Cancel</button>
+                            <button class="titan-btn titan-btn-danger" id="dispatchEmergencyBtn">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Dispatch Emergency
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/dispatch-center.js"></script>
+</body>
+</html>

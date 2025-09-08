@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Planning - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Scheduling & Routing</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Route Planning</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="optimizeRoutesBtn">
+                    <i class="fas fa-route"></i>
+                    Optimize Routes
+                </button>
+                <button class="titan-btn titan-btn-primary" id="saveRoutesBtn">
+                    <i class="fas fa-save"></i>
+                    Save Routes
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Route Planning</h1>
+                    <p class="page-subtitle">Optimize travel routes and logistics for maximum efficiency</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalDistance">247</div>
+                        <div class="stat-label">Total Miles</div>
+                        <div class="stat-subtext">today's routes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="fuelSaved">$89</div>
+                        <div class="stat-label">Fuel Savings</div>
+                        <div class="stat-subtext">vs. unoptimized</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="timeEfficiency">+31%</div>
+                        <div class="stat-label">Time Efficiency</div>
+                        <div class="stat-subtext">improvement</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Route Planning Controls -->
+                <div class="route-controls">
+                    <div class="control-section">
+                        <h3>Route Configuration</h3>
+                        <div class="route-config-grid">
+                            <div class="config-item">
+                                <label for="routeDate">Date</label>
+                                <input type="date" id="routeDate" value="">
+                            </div>
+                            <div class="config-item">
+                                <label for="routeType">Route Type</label>
+                                <select id="routeType">
+                                    <option value="daily">Daily Routes</option>
+                                    <option value="emergency">Emergency Routes</option>
+                                    <option value="maintenance">Maintenance Routes</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label for="maxStops">Max Stops per Route</label>
+                                <input type="number" id="maxStops" value="8" min="1" max="15">
+                            </div>
+                            <div class="config-item">
+                                <label for="prioritizeBy">Prioritize By</label>
+                                <select id="prioritizeBy">
+                                    <option value="distance">Shortest Distance</option>
+                                    <option value="time">Fastest Time</option>
+                                    <option value="priority">Work Order Priority</option>
+                                    <option value="balanced">Balanced Approach</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Route Planning Dashboard -->
+                <div class="route-dashboard">
+                    <div class="dashboard-layout">
+                        <div class="routes-panel">
+                            <!-- Route Map -->
+                            <div class="route-map-container">
+                                <div class="map-header">
+                                    <h4>Route Visualization</h4>
+                                    <div class="map-controls">
+                                        <button class="map-btn" id="zoomFitBtn">
+                                            <i class="fas fa-expand-arrows-alt"></i>
+                                            Fit All
+                                        </button>
+                                        <button class="map-btn" id="toggleTrafficBtn">
+                                            <i class="fas fa-road"></i>
+                                            Traffic
+                                        </button>
+                                        <button class="map-btn" id="printRouteBtn">
+                                            <i class="fas fa-print"></i>
+                                            Print
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="route-map" id="routeMap">
+                                    <div class="map-placeholder">
+                                        <i class="fas fa-map"></i>
+                                        <p>Route Optimization Map</p>
+                                        <div class="route-legend">
+                                            <div class="legend-item">
+                                                <span class="legend-color route-1"></span>
+                                                <span>Route 1 - John Smith</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color route-2"></span>
+                                                <span>Route 2 - Sarah Johnson</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color route-3"></span>
+                                                <span>Route 3 - Mike Rodriguez</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Route Optimization Results -->
+                            <div class="optimization-results">
+                                <h4>Optimization Results</h4>
+                                <div class="results-grid">
+                                    <div class="result-metric">
+                                        <div class="metric-label">Routes Created</div>
+                                        <div class="metric-value" id="routesCount">3</div>
+                                    </div>
+                                    <div class="result-metric">
+                                        <div class="metric-label">Distance Saved</div>
+                                        <div class="metric-value" id="distanceSaved">47 miles</div>
+                                    </div>
+                                    <div class="result-metric">
+                                        <div class="metric-label">Time Saved</div>
+                                        <div class="metric-value" id="timeSaved">2.3 hours</div>
+                                    </div>
+                                    <div class="result-metric">
+                                        <div class="metric-label">Cost Savings</div>
+                                        <div class="metric-value" id="costSavings">$127.50</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="routes-list-panel">
+                            <!-- Individual Routes -->
+                            <div class="routes-list">
+                                <h4>Planned Routes</h4>
+                                <div class="route-tabs">
+                                    <button class="route-tab active" data-route="route1">Route 1</button>
+                                    <button class="route-tab" data-route="route2">Route 2</button>
+                                    <button class="route-tab" data-route="route3">Route 3</button>
+                                </div>
+                                
+                                <div class="route-content">
+                                    <div class="route-details active" id="route1">
+                                        <div class="route-summary">
+                                            <div class="route-technician">
+                                                <i class="fas fa-user"></i>
+                                                <span>John Smith</span>
+                                            </div>
+                                            <div class="route-stats">
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Distance:</span>
+                                                    <span class="stat-value">89 miles</span>
+                                                </div>
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Duration:</span>
+                                                    <span class="stat-value">6.5 hours</span>
+                                                </div>
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Stops:</span>
+                                                    <span class="stat-value">6</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="route-stops" id="route1Stops">
+                                            <!-- Route stops will be populated here -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="route-details" id="route2">
+                                        <div class="route-summary">
+                                            <div class="route-technician">
+                                                <i class="fas fa-user"></i>
+                                                <span>Sarah Johnson</span>
+                                            </div>
+                                            <div class="route-stats">
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Distance:</span>
+                                                    <span class="stat-value">76 miles</span>
+                                                </div>
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Duration:</span>
+                                                    <span class="stat-value">5.8 hours</span>
+                                                </div>
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Stops:</span>
+                                                    <span class="stat-value">5</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="route-stops" id="route2Stops">
+                                            <!-- Route stops will be populated here -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="route-details" id="route3">
+                                        <div class="route-summary">
+                                            <div class="route-technician">
+                                                <i class="fas fa-user"></i>
+                                                <span>Mike Rodriguez</span>
+                                            </div>
+                                            <div class="route-stats">
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Distance:</span>
+                                                    <span class="stat-value">82 miles</span>
+                                                </div>
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Duration:</span>
+                                                    <span class="stat-value">6.2 hours</span>
+                                                </div>
+                                                <div class="route-stat">
+                                                    <span class="stat-label">Stops:</span>
+                                                    <span class="stat-value">7</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="route-stops" id="route3Stops">
+                                            <!-- Route stops will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Route Actions -->
+                            <div class="route-actions">
+                                <h4>Route Actions</h4>
+                                <div class="action-buttons">
+                                    <button class="action-btn" id="exportRoutesBtn">
+                                        <i class="fas fa-download"></i>
+                                        Export Routes
+                                    </button>
+                                    <button class="action-btn" id="shareRoutesBtn">
+                                        <i class="fas fa-share"></i>
+                                        Share with Team
+                                    </button>
+                                    <button class="action-btn" id="printRoutesBtn">
+                                        <i class="fas fa-print"></i>
+                                        Print Instructions
+                                    </button>
+                                    <button class="action-btn" id="emailRoutesBtn">
+                                        <i class="fas fa-envelope"></i>
+                                        Email to Technicians
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/route-planning.js"></script>
+</body>
+</html>

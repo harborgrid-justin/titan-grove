@@ -2220,6 +2220,809 @@ router.get('/compliance/kpis', async (req, res) => {
   }
 });
 
+// ==================== FIELD SERVICE OPTIMIZATION ENDPOINTS ====================
+
+/**
+ * Get optimization status
+ */
+router.get('/field-service/optimization/status', async (req, res) => {
+  try {
+    const status = {
+      stats: {
+        efficiencyGain: '+24%',
+        travelTimeReduction: '-18%',
+        costSavings: '$12.4K'
+      },
+      lastOptimization: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+      nextScheduled: new Date(Date.now() + 3600000).toISOString() // 1 hour from now
+    };
+    res.json({ success: true, data: status });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Run schedule optimization
+ */
+router.post('/field-service/optimization/run', async (req, res) => {
+  try {
+    const { period, priorityWeight, travelOptimization, skillMatching } = req.body;
+    
+    // Simulate optimization process
+    await new Promise(resolve => setTimeout(resolve, 2000)); // 2 second delay
+    
+    const results = {
+      rescheduledOrders: Math.floor(Math.random() * 30) + 15,
+      conflictsResolved: Math.floor(Math.random() * 10) + 3,
+      utilization: 90 + Math.floor(Math.random() * 10),
+      distanceSaved: Math.floor(Math.random() * 100) + 100,
+      timeSaved: (Math.random() * 5 + 2).toFixed(1),
+      fuelSavings: (Math.random() * 100 + 50).toFixed(2),
+      skillMatches: Math.floor(Math.random() * 20) + 5,
+      overtimeReduced: (Math.random() * 10 + 5).toFixed(1),
+      slaCompliance: (95 + Math.random() * 5).toFixed(1)
+    };
+    
+    res.json({ success: true, data: results });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Save optimization results
+ */
+router.post('/field-service/optimization/save', async (req, res) => {
+  try {
+    // Simulate saving process
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    res.json({ success: true, message: 'Schedule saved successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== DISPATCH CENTER ENDPOINTS ====================
+
+/**
+ * Get dispatch status
+ */
+router.get('/field-service/dispatch/status', async (req, res) => {
+  try {
+    const status = {
+      stats: {
+        activeTechnicians: 12,
+        pendingDispatch: 7,
+        responseTime: '8.5min'
+      },
+      lastUpdate: new Date().toISOString()
+    };
+    res.json({ success: true, data: status });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get technician status
+ */
+router.get('/field-service/technicians/status', async (req, res) => {
+  try {
+    const technicians = [
+      { id: 'tech_001', name: 'John Smith', status: 'available', location: 'Downtown', skills: ['HVAC', 'Electrical'] },
+      { id: 'tech_002', name: 'Sarah Johnson', status: 'dispatched', location: 'North Side', skills: ['Plumbing', 'General'] },
+      { id: 'tech_003', name: 'Mike Rodriguez', status: 'on_site', location: 'South District', skills: ['HVAC', 'Mechanical'] },
+      { id: 'tech_004', name: 'Lisa Chen', status: 'available', location: 'West End', skills: ['Electrical', 'Security'] }
+    ];
+    res.json({ success: true, data: technicians });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get pending dispatches
+ */
+router.get('/field-service/dispatch/pending', async (req, res) => {
+  try {
+    const dispatches = [
+      { id: 'wo_001', customer: 'Acme Corp', type: 'HVAC Repair', priority: 'high', eta: '15 min' },
+      { id: 'wo_002', customer: 'Beta LLC', type: 'Electrical Inspection', priority: 'medium', eta: '30 min' },
+      { id: 'wo_003', customer: 'Gamma Inc', type: 'Emergency Repair', priority: 'emergency', eta: '5 min' }
+    ];
+    res.json({ success: true, data: dispatches });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get available technicians for emergency
+ */
+router.get('/field-service/technicians/available', async (req, res) => {
+  try {
+    const technicians = [
+      { id: 'tech_001', name: 'John Smith', distance: '2.3' },
+      { id: 'tech_004', name: 'Lisa Chen', distance: '4.1' },
+      { id: 'tech_005', name: 'Robert Wilson', distance: '5.7' }
+    ];
+    res.json({ success: true, data: technicians });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Emergency dispatch
+ */
+router.post('/field-service/dispatch/emergency', async (req, res) => {
+  try {
+    const { type, urgency, location, description, technician } = req.body;
+    
+    const emergencyDispatch = {
+      id: 'emergency_' + Date.now(),
+      type,
+      urgency,
+      location,
+      description,
+      technician,
+      dispatchTime: new Date().toISOString(),
+      status: 'DISPATCHED'
+    };
+    
+    res.json({ success: true, data: emergencyDispatch });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get communications
+ */
+router.get('/field-service/communications/:type', async (req, res) => {
+  try {
+    const { type } = req.params;
+    let data = [];
+    
+    switch (type) {
+      case 'messages':
+        data = [
+          { id: 1, from: 'John Smith', message: 'Arrived at customer location', time: '14:32', status: 'read' },
+          { id: 2, from: 'Sarah Johnson', message: 'Need additional parts for repair', time: '14:28', status: 'unread' },
+          { id: 3, from: 'Mike Rodriguez', message: 'Job completed successfully', time: '14:15', status: 'read' }
+        ];
+        break;
+      case 'alerts':
+        data = [
+          { id: 1, type: 'warning', message: 'Technician running behind schedule', time: '14:30' },
+          { id: 2, type: 'info', message: 'New work order assigned', time: '14:25' },
+          { id: 3, type: 'error', message: 'Equipment failure reported', time: '14:20' }
+        ];
+        break;
+      case 'notifications':
+        data = [
+          { id: 1, title: 'Schedule Updated', message: 'Your schedule has been optimized', time: '14:35' },
+          { id: 2, title: 'New Message', message: 'Message from John Smith', time: '14:32' },
+          { id: 3, title: 'Work Order Complete', message: 'WO #wo_001 has been completed', time: '14:15' }
+        ];
+        break;
+    }
+    
+    res.json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Send communication
+ */
+router.post('/field-service/communications/send', async (req, res) => {
+  try {
+    const { message, type } = req.body;
+    
+    // Simulate sending message
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    res.json({ success: true, message: 'Message sent successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== ROUTE PLANNING ENDPOINTS ====================
+
+/**
+ * Get current routes
+ */
+router.get('/field-service/routes/current', async (req, res) => {
+  try {
+    const routes = {
+      stats: {
+        totalDistance: 247,
+        fuelSaved: '$89',
+        timeEfficiency: '+31%'
+      },
+      optimization: {
+        routesCount: 3,
+        distanceSaved: 47,
+        timeSaved: 2.3,
+        costSavings: 127.50
+      }
+    };
+    res.json({ success: true, data: routes });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Optimize routes
+ */
+router.post('/field-service/routes/optimize', async (req, res) => {
+  try {
+    const { date, type, maxStops, prioritizeBy } = req.body;
+    
+    // Simulate route optimization
+    await new Promise(resolve => setTimeout(resolve, 3000)); // 3 second delay
+    
+    const results = {
+      routesCount: 3,
+      distanceSaved: Math.floor(Math.random() * 100) + 30,
+      timeSaved: (Math.random() * 5 + 1).toFixed(1),
+      costSavings: (Math.random() * 200 + 100).toFixed(2),
+      routesUpdated: true
+    };
+    
+    res.json({ success: true, data: results });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Save routes
+ */
+router.post('/field-service/routes/save', async (req, res) => {
+  try {
+    // Simulate saving process
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    res.json({ success: true, message: 'Routes saved successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get route stops
+ */
+router.get('/field-service/routes/:routeId/stops', async (req, res) => {
+  try {
+    const { routeId } = req.params;
+    
+    // Sample route stops data
+    const sampleStops = {
+      route1: [
+        {
+          id: 'stop_001',
+          customer: 'Acme Corporation',
+          address: '123 Business Ave, Downtown',
+          estimatedTime: '08:00 AM',
+          duration: '1.5 hrs',
+          priority: 'high',
+          workOrder: 'WO-001',
+          serviceType: 'HVAC Repair'
+        },
+        {
+          id: 'stop_002',
+          customer: 'Beta Manufacturing',
+          address: '456 Industrial Blvd, North Side',
+          estimatedTime: '10:30 AM',
+          duration: '2 hrs',
+          priority: 'medium',
+          workOrder: 'WO-002',
+          serviceType: 'Electrical Inspection'
+        }
+      ],
+      route2: [
+        {
+          id: 'stop_004',
+          customer: 'Delta Corp',
+          address: '321 Corporate Dr, West End',
+          estimatedTime: '09:00 AM',
+          duration: '2.5 hrs',
+          priority: 'high',
+          workOrder: 'WO-004',
+          serviceType: 'System Installation'
+        }
+      ],
+      route3: [
+        {
+          id: 'stop_006',
+          customer: 'Foxtrot LLC',
+          address: '987 Tech Park, Innovation District',
+          estimatedTime: '08:30 AM',
+          duration: '2 hrs',
+          priority: 'high',
+          workOrder: 'WO-006',
+          serviceType: 'Emergency Repair'
+        }
+      ]
+    };
+    
+    const stops = sampleStops[routeId] || [];
+    res.json({ success: true, data: stops });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Export routes
+ */
+router.post('/field-service/routes/export', async (req, res) => {
+  try {
+    const { format, date } = req.body;
+    
+    // Simulate file export
+    const filename = `routes-${date}.${format}`;
+    
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+    
+    // Send empty file for demo
+    res.send(Buffer.from('Sample route export data'));
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Email routes to technicians
+ */
+router.post('/field-service/routes/email', async (req, res) => {
+  try {
+    // Simulate email sending
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    res.json({ success: true, message: 'Routes emailed to technicians' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete route stop
+ */
+router.delete('/field-service/routes/stops/:stopId', async (req, res) => {
+  try {
+    const { stopId } = req.params;
+    
+    // Simulate stop deletion
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    res.json({ success: true, message: 'Stop removed successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ==================== TECHNICIAN MANAGEMENT ENDPOINTS ====================
+
+/**
+ * Get technician schedule
+ */
+router.get('/field-service/technicians/:techId/schedule', async (req, res) => {
+  try {
+    const { techId } = req.params;
+    const { week } = req.query;
+    
+    // Sample schedule data
+    const schedule = {
+      stats: {
+        totalHours: 40,
+        utilization: '92%',
+        completionRate: '98%'
+      },
+      schedule: {
+        monday: [
+          {
+            id: 'sched_001',
+            workOrderId: 'WO-001',
+            startTime: '08:00',
+            endTime: '10:00',
+            customer: 'Acme Corp',
+            serviceType: 'HVAC Repair',
+            location: 'Downtown',
+            priority: 'high'
+          }
+        ],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: []
+      }
+    };
+    
+    res.json({ success: true, data: schedule });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get technician profile
+ */
+router.get('/field-service/technicians/:techId/profile', async (req, res) => {
+  try {
+    const { techId } = req.params;
+    
+    const profiles = {
+      'tech_001': {
+        id: 'TECH001',
+        name: 'John Smith',
+        status: 'Available',
+        skills: ['HVAC', 'Electrical', 'Plumbing'],
+        weeklyHours: '40',
+        workOrders: '8',
+        avgRating: '4.8'
+      },
+      'tech_002': {
+        id: 'TECH002',
+        name: 'Sarah Johnson',
+        status: 'On Site',
+        skills: ['Plumbing', 'General Maintenance'],
+        weeklyHours: '38',
+        workOrders: '6',
+        avgRating: '4.9'
+      }
+    };
+    
+    const profile = profiles[techId] || profiles['tech_001'];
+    res.json({ success: true, data: profile });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get unassigned work orders
+ */
+router.get('/field-service/work-orders/unassigned', async (req, res) => {
+  try {
+    const workOrders = [
+      { id: 'WO-008', title: 'HVAC Maintenance', customer: 'Hotel Corp' },
+      { id: 'WO-009', title: 'Electrical Upgrade', customer: 'India Ltd' },
+      { id: 'WO-010', title: 'Plumbing Repair', customer: 'Juliet Inc' }
+    ];
+    
+    res.json({ success: true, data: workOrders });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Assign work order to technician
+ */
+router.post('/field-service/schedule/assign', async (req, res) => {
+  try {
+    const { technicianId, workOrderId, date, startTime, duration, notes } = req.body;
+    
+    // Simulate assignment process
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const assignment = {
+      id: 'assign_' + Date.now(),
+      technicianId,
+      workOrderId,
+      date,
+      startTime,
+      duration,
+      notes,
+      status: 'ASSIGNED',
+      assignedDate: new Date().toISOString()
+    };
+    
+    res.json({ success: true, data: assignment });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update technician schedule
+ */
+router.post('/field-service/schedule/update', async (req, res) => {
+  try {
+    const { technicianId, week, action } = req.body;
+    
+    // Simulate update process
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    res.json({ success: true, message: 'Schedule updated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete schedule item
+ */
+router.delete('/field-service/schedule/items/:scheduleId', async (req, res) => {
+  try {
+    const { scheduleId } = req.params;
+    
+    // Simulate deletion
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    res.json({ success: true, message: 'Schedule item removed' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get performance metrics
+ */
+router.get('/field-service/performance/metrics', async (req, res) => {
+  try {
+    const { technician, dateRange, metricType } = req.query;
+    
+    const metrics = {
+      stats: {
+        teamAvgRating: 4.7,
+        avgResponseTime: '12min',
+        completionRate: '96%'
+      },
+      kpis: {
+        avgJobTime: '2.4 hrs',
+        firstTimeFixRate: '94%',
+        customerSatisfaction: 4.8,
+        utilizationRate: '91%'
+      },
+      goals: {
+        customerSat: 4.8,
+        firstTimeFix: '94%',
+        responseTime: '12 min',
+        utilization: '91%'
+      }
+    };
+    
+    res.json({ success: true, data: metrics });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get technician performance data
+ */
+router.get('/field-service/performance/technicians', async (req, res) => {
+  try {
+    const technicians = [
+      {
+        id: 'TECH001',
+        name: 'John Smith',
+        jobsCompleted: 147,
+        avgRating: 4.8,
+        firstTimeFix: 94,
+        responseTime: '11 min',
+        utilization: 92,
+        customerFeedback: 89
+      },
+      {
+        id: 'TECH002',
+        name: 'Sarah Johnson',
+        jobsCompleted: 132,
+        avgRating: 4.9,
+        firstTimeFix: 96,
+        responseTime: '9 min',
+        utilization: 89,
+        customerFeedback: 76
+      }
+    ];
+    
+    res.json({ success: true, data: technicians });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Export performance report
+ */
+router.post('/field-service/performance/export', async (req, res) => {
+  try {
+    const filters = req.body;
+    
+    // Simulate report generation
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=performance-report.xlsx');
+    
+    // Send empty file for demo
+    res.send(Buffer.from('Sample performance report data'));
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Generate performance report
+ */
+router.post('/field-service/performance/generate-report', async (req, res) => {
+  try {
+    const filters = req.body;
+    
+    // Simulate report generation
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    res.json({ success: true, message: 'Performance report generated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get certifications
+ */
+router.get('/field-service/certifications', async (req, res) => {
+  try {
+    const { technician, status, category } = req.query;
+    
+    const certifications = [
+      {
+        id: 'cert_001',
+        technicianId: 'TECH001',
+        technicianName: 'John Smith',
+        certificationName: 'EPA 608 Universal',
+        category: 'hvac',
+        issueDate: '2023-01-15',
+        expiryDate: '2026-01-15',
+        status: 'valid',
+        provider: 'EPA',
+        certificationNumber: 'EPA608-12345',
+        level: 'advanced'
+      },
+      {
+        id: 'cert_002',
+        technicianId: 'TECH001',
+        technicianName: 'John Smith',
+        certificationName: 'NATE HVAC Installation',
+        category: 'hvac',
+        issueDate: '2023-06-10',
+        expiryDate: '2024-06-10',
+        status: 'expiring',
+        provider: 'NATE',
+        certificationNumber: 'NATE-67890',
+        level: 'intermediate'
+      }
+    ];
+    
+    res.json({ success: true, data: certifications });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Add certification
+ */
+router.post('/field-service/certifications', async (req, res) => {
+  try {
+    const certificationData = req.body;
+    
+    // Simulate certification creation
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const certification = {
+      id: 'cert_' + Date.now(),
+      ...certificationData,
+      status: 'valid',
+      createdDate: new Date().toISOString()
+    };
+    
+    res.json({ success: true, data: certification });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Schedule training session
+ */
+router.post('/field-service/training/schedule', async (req, res) => {
+  try {
+    const trainingData = req.body;
+    
+    // Simulate training scheduling
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const training = {
+      id: 'training_' + Date.now(),
+      ...trainingData,
+      status: 'SCHEDULED',
+      createdDate: new Date().toISOString()
+    };
+    
+    res.json({ success: true, data: training });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get training sessions
+ */
+router.get('/field-service/training/sessions', async (req, res) => {
+  try {
+    const sessions = [
+      {
+        id: 'training_001',
+        title: 'HVAC Advanced Certification',
+        date: '2024-03-15',
+        time: '09:00',
+        duration: 4,
+        location: 'Training Center',
+        attendees: ['tech_001', 'tech_002', 'tech_003'],
+        status: 'SCHEDULED'
+      },
+      {
+        id: 'training_002',
+        title: 'Electrical Safety Training',
+        date: '2024-03-22',
+        time: '10:00',
+        duration: 3,
+        location: 'Main Office',
+        attendees: ['tech_002', 'tech_004'],
+        status: 'SCHEDULED'
+      }
+    ];
+    
+    res.json({ success: true, data: sessions });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update certification
+ */
+router.put('/field-service/certifications/:certId', async (req, res) => {
+  try {
+    const { certId } = req.params;
+    const updateData = req.body;
+    
+    // Simulate certification update
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    res.json({ success: true, message: 'Certification updated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete certification
+ */
+router.delete('/field-service/certifications/:certId', async (req, res) => {
+  try {
+    const { certId } = req.params;
+    
+    // Simulate certification deletion
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    res.json({ success: true, message: 'Certification deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // ==================== BUSINESS INTELLIGENCE ENDPOINTS ====================
 
 /**
