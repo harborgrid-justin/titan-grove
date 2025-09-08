@@ -798,6 +798,120 @@ const logisticsPages = {
         'Exception analytics and learning'
       ]
     }
+  ],
+  'compliance': [
+    {
+      name: 'regulatory-compliance',
+      title: 'Regulatory Compliance Management',
+      description: 'Comprehensive regulatory compliance tracking with automated reporting and audit trails',
+      features: [
+        'Regulatory requirement tracking and monitoring',
+        'Automated compliance reporting and submissions',
+        'Audit trail and documentation management',
+        'Regulatory change impact assessment'
+      ]
+    },
+    {
+      name: 'trade-compliance',
+      title: 'International Trade Compliance',
+      description: 'Global trade compliance with customs documentation and restricted party screening',
+      features: [
+        'Customs documentation automation',
+        'Restricted party screening and monitoring',
+        'Trade agreement and tariff management',
+        'Export control and licensing compliance'
+      ]
+    },
+    {
+      name: 'data-privacy',
+      title: 'Data Privacy & Security Compliance',
+      description: 'GDPR, CCPA, and data privacy compliance with security monitoring',
+      features: [
+        'GDPR and CCPA compliance monitoring',
+        'Data subject rights management',
+        'Privacy impact assessments',
+        'Data breach detection and reporting'
+      ]
+    },
+    {
+      name: 'industry-standards',
+      title: 'Industry Standards Compliance',
+      description: 'ISO, FDA, and industry-specific standards compliance tracking',
+      features: [
+        'ISO certification tracking and management',
+        'FDA and pharmaceutical compliance',
+        'Industry-specific standard monitoring',
+        'Certification renewal and maintenance'
+      ]
+    },
+    {
+      name: 'compliance-analytics',
+      title: 'Compliance Analytics & Reporting',
+      description: 'Advanced compliance analytics with risk scoring and performance dashboards',
+      features: [
+        'Compliance risk scoring and analytics',
+        'Performance dashboards and KPIs',
+        'Predictive compliance monitoring',
+        'Executive compliance reporting'
+      ]
+    }
+  ],
+  'intelligence': [
+    {
+      name: 'market-intelligence',
+      title: 'Market Intelligence & Research',
+      description: 'Market analysis and competitive intelligence with trend monitoring',
+      features: [
+        'Market trend analysis and forecasting',
+        'Competitive intelligence gathering',
+        'Price monitoring and benchmarking',
+        'Market opportunity identification'
+      ]
+    },
+    {
+      name: 'supply-intelligence',
+      title: 'Supply Chain Intelligence',
+      description: 'AI-driven supply chain insights with risk prediction and optimization',
+      features: [
+        'Supply chain risk intelligence',
+        'Predictive disruption modeling',
+        'Supplier financial health monitoring',
+        'Geopolitical risk assessment'
+      ]
+    },
+    {
+      name: 'customer-intelligence',
+      title: 'Customer Demand Intelligence',
+      description: 'Customer behavior analysis with demand pattern recognition',
+      features: [
+        'Customer demand pattern analysis',
+        'Behavioral analytics and segmentation',
+        'Churn prediction and retention',
+        'Customer lifetime value optimization'
+      ]
+    },
+    {
+      name: 'operational-intelligence',
+      title: 'Operational Intelligence Platform',
+      description: 'Real-time operational insights with performance optimization',
+      features: [
+        'Real-time operational dashboards',
+        'Performance anomaly detection',
+        'Process optimization recommendations',
+        'Operational efficiency scoring'
+      ]
+    },
+    {
+      name: 'strategic-intelligence',
+      title: 'Strategic Planning Intelligence',
+      description: 'Strategic decision support with scenario analysis and planning',
+      features: [
+        'Strategic scenario planning and modeling',
+        'Decision support analytics',
+        'Investment opportunity analysis',
+        'Long-term trend forecasting'
+      ]
+    }
   ]
 };
 
@@ -993,6 +1107,8 @@ console.log('   - Quality Management (6 pages)');
 console.log('   - Safety Management (6 pages)');
 console.log('   - Planning & Forecasting (6 pages)');
 console.log('   - Visibility & Monitoring (6 pages)');
+console.log('   - Compliance Management (5 pages)');
+console.log('   - Business Intelligence (5 pages)');
 console.log('\n🚀 All pages include:');
 console.log('   ✅ Complete frontend implementation');
 console.log('   ✅ Backend API integration');
