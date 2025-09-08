@@ -1,0 +1,437 @@
+/* Configuration Management Common Styles */
+
+.config-enterprise-app {
+    min-height: 100vh;
+    background: #f8fafc;
+    font-family: 'Inter', sans-serif;
+}
+
+.config-enterprise-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.config-header-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.config-logo-enterprise {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.config-logo-enterprise i {
+    font-size: 1.5rem;
+    color: #3b82f6;
+}
+
+.config-logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.config-edition-badge {
+    background: #3b82f6;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.config-breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.config-breadcrumb-nav a {
+    color: #3b82f6;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.config-breadcrumb-nav a:hover {
+    color: #1d4ed8;
+}
+
+.config-breadcrumb-nav i {
+    font-size: 0.75rem;
+}
+
+.config-header-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.config-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.config-btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.config-btn-primary:hover {
+    background: #2563eb;
+}
+
+.config-btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+
+.config-btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+.config-btn-outline {
+    background: transparent;
+    color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.config-btn-outline:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+.config-main-content {
+    padding: 2rem;
+}
+
+.config-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.config-content-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.config-page-description {
+    color: #64748b;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.config-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f0f9ff;
+    border: 1px solid #7dd3fc;
+    border-radius: 0.5rem;
+    color: #0369a1;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.config-status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.config-status-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.config-status-card .status-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.config-status-card.integration .status-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.config-status-card.business .status-icon {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.config-status-card.customer .status-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.config-status-card .status-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.25rem 0;
+}
+
+.config-status-card .status-content p {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.status-indicator {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+}
+
+.status-indicator.connected {
+    background: #3b82f6;
+}
+
+.status-indicator.ready {
+    background: #10b981;
+}
+
+.status-indicator.complete {
+    background: #f59e0b;
+}
+
+.config-implementation-details {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 2rem;
+}
+
+.implementation-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.implementation-content p {
+    color: #64748b;
+    margin: 0 0 2rem 0;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.feature-card {
+    background: #f8fafc;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.feature-card .feature-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #3b82f6;
+    color: white;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card .feature-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.feature-card .feature-description {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.feature-card .feature-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #10b981;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.implementation-features,
+.backend-integration,
+.business-logic {
+    margin-bottom: 2rem;
+}
+
+.implementation-features h4,
+.backend-integration h4,
+.business-logic h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem 0;
+}
+
+.implementation-features ul,
+.backend-integration ul,
+.business-logic ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.implementation-features li,
+.backend-integration li,
+.business-logic li {
+    padding: 0.5rem 0;
+    color: #64748b;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.implementation-features li:last-child,
+.backend-integration li:last-child,
+.business-logic li:last-child {
+    border-bottom: none;
+}
+
+.page-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.action-btn.primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.action-btn.primary:hover {
+    background: #2563eb;
+}
+
+.action-btn.secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+
+.action-btn.secondary:hover {
+    background: #e2e8f0;
+}
+
+.action-btn.outline {
+    background: transparent;
+    color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.action-btn.outline:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+.action-btn.success {
+    background: #10b981;
+    color: white;
+}
+
+.action-btn.success:hover {
+    background: #059669;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .config-enterprise-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .config-header-left {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .config-status-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .config-content-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .page-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        justify-content: center;
+    }
+}
