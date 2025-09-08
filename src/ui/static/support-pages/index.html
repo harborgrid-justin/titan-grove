@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Pages Directory - Titan Grove Enterprise Support Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="styles/support-pages.css">
+    <style>
+        .support-directory {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .directory-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .directory-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        .directory-subtitle {
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        
+        .completion-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+        
+        .category-section {
+            margin-bottom: 3rem;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem 0;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .category-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .category-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .category-description {
+            color: #6b7280;
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .page-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .page-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: #dc2626;
+        }
+        
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .page-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .page-description {
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .page-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .page-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        
+        .page-features li:before {
+            content: '✅';
+            font-size: 0.75rem;
+        }
+        
+        .stats-section {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .integration-status {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 0.75rem;
+        }
+        
+        .status-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-content h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .status-content p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        @media (max-width: 768px) {
+            .support-directory {
+                padding: 1rem;
+            }
+            
+            .directory-title {
+                font-size: 2rem;
+            }
+            
+            .pages-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="support-enterprise-app">
+        <header class="support-enterprise-header">
+            <div class="support-header-left">
+                <div class="support-logo-enterprise">
+                    <i class="fas fa-headset"></i>
+                    <span class="support-logo-text">Titan Grove</span>
+                    <span class="support-edition-badge">Support Enterprise</span>
+                </div>
+                <nav class="support-breadcrumb-nav">
+                    <a href="../index.html">Dashboard</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Support Pages Directory</span>
+                </nav>
+            </div>
+            <div class="support-header-right">
+                <div class="support-user-controls">
+                    <div class="support-notification-badge">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge-count">23</span>
+                    </div>
+                    <div class="support-user-profile">
+                        <img src="../assets/avatar-placeholder.png" alt="User" class="profile-avatar">
+                        <span class="user-name">Support Manager</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="support-main-content">
+            <div class="support-directory">
+                <div class="directory-header">
+                    <h1 class="directory-title">Support Management Pages</h1>
+                    <p class="directory-subtitle">Comprehensive support operations platform with 49 business-ready and customer-ready pages</p>
+                    <div class="completion-badge">
+                        <i class="fas fa-check-circle"></i>
+                        49 Support Pages Complete
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">49</div>
+                            <div class="stat-label">Support Pages</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">7</div>
+                            <div class="stat-label">Categories</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Business Ready</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Customer Ready</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="integration-status">
+                    <h3 style="margin-bottom: 1.5rem; color: #1f2937;">Integration Status</h3>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <div class="status-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="status-content">
+                                <h4>Backend Integration</h4>
+                                <p>Complete API endpoints and business logic</p>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="status-content">
+                                <h4>Database Schema</h4>
+                                <p>Configured models and relationships</p>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="status-content">
+                                <h4>Security & Auth</h4>
+                                <p>Enterprise-grade security integration</p>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="status-content">
+                                <h4>Real-time Updates</h4>
+                                <p>WebSocket connections for live data</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Operations Category -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div>
+                            <h2 class="category-title">Support Operations</h2>
+                            <p class="category-description">Core support management and operational control systems</p>
+                        </div>
+                    </div>
+                    <div class="pages-grid">
+                        <div class="page-card" onclick="window.location.href='support-operations/support-desk-management.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                                <h3 class="page-title">Support Desk Management</h3>
+                            </div>
+                            <p class="page-description">Centralized support desk operations with agent management, queue optimization, and performance tracking</p>
+                            <ul class="page-features">
+                                <li>Agent workload management</li>
+                                <li>Queue optimization algorithms</li>
+                                <li>Performance analytics dashboard</li>
+                                <li>Real-time monitoring tools</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-operations/ticket-lifecycle-management.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-recycle"></i>
+                                </div>
+                                <h3 class="page-title">Ticket Lifecycle Management</h3>
+                            </div>
+                            <p class="page-description">Complete ticket lifecycle tracking from creation to resolution with automated workflow management</p>
+                            <ul class="page-features">
+                                <li>Automated workflow triggers</li>
+                                <li>Lifecycle stage tracking</li>
+                                <li>Resolution time optimization</li>
+                                <li>Quality assurance integration</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-operations/multi-channel-support.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <h3 class="page-title">Multi-Channel Support</h3>
+                            </div>
+                            <p class="page-description">Unified support across email, chat, phone, and social media channels with conversation management</p>
+                            <ul class="page-features">
+                                <li>Omnichannel integration</li>
+                                <li>Conversation threading</li>
+                                <li>Channel-specific automation</li>
+                                <li>Unified customer timeline</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-operations/escalation-management.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <h3 class="page-title">Escalation Management</h3>
+                            </div>
+                            <p class="page-description">Intelligent escalation rules and automated routing for complex issues requiring specialized attention</p>
+                            <ul class="page-features">
+                                <li>Smart escalation triggers</li>
+                                <li>Skill-based routing</li>
+                                <li>Escalation path management</li>
+                                <li>Authority level controls</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-operations/support-team-collaboration.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3 class="page-title">Support Team Collaboration</h3>
+                            </div>
+                            <p class="page-description">Team collaboration tools for complex problem resolution with internal communication and resource sharing</p>
+                            <ul class="page-features">
+                                <li>Internal collaboration tools</li>
+                                <li>Expert consultation system</li>
+                                <li>Knowledge sharing platform</li>
+                                <li>Team performance metrics</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-operations/customer-communication.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <h3 class="page-title">Customer Communication</h3>
+                            </div>
+                            <p class="page-description">Automated and personalized customer communication with templates, notifications, and follow-up systems</p>
+                            <ul class="page-features">
+                                <li>Automated notifications</li>
+                                <li>Personalized templates</li>
+                                <li>Multi-language support</li>
+                                <li>Communication scheduling</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-operations/support-automation.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <h3 class="page-title">Support Automation</h3>
+                            </div>
+                            <p class="page-description">AI-powered automation for routine tasks, auto-categorization, and intelligent response suggestions</p>
+                            <ul class="page-features">
+                                <li>AI-powered categorization</li>
+                                <li>Automated response suggestions</li>
+                                <li>Workflow automation</li>
+                                <li>Machine learning optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Incident Management Category -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <h2 class="category-title">Incident Management</h2>
+                            <p class="category-description">Comprehensive incident tracking, resolution, and post-incident analysis</p>
+                        </div>
+                    </div>
+                    <div class="pages-grid">
+                        <div class="page-card" onclick="window.location.href='incident-management/incident-tracking.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h3 class="page-title">Incident Tracking</h3>
+                            </div>
+                            <p class="page-description">Real-time incident tracking with status monitoring, timeline visualization, and impact assessment</p>
+                            <ul class="page-features">
+                                <li>Real-time status tracking</li>
+                                <li>Impact assessment tools</li>
+                                <li>Timeline visualization</li>
+                                <li>Automated notifications</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='incident-management/incident-classification.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-tags"></i>
+                                </div>
+                                <h3 class="page-title">Incident Classification</h3>
+                            </div>
+                            <p class="page-description">Automated incident classification and prioritization based on impact, urgency, and business rules</p>
+                            <ul class="page-features">
+                                <li>AI-powered classification</li>
+                                <li>Priority matrix automation</li>
+                                <li>Business impact analysis</li>
+                                <li>Custom classification rules</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='incident-management/incident-response.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-ambulance"></i>
+                                </div>
+                                <h3 class="page-title">Incident Response</h3>
+                            </div>
+                            <p class="page-description">Structured incident response procedures with playbooks, resource allocation, and team coordination</p>
+                            <ul class="page-features">
+                                <li>Response playbooks</li>
+                                <li>Resource allocation</li>
+                                <li>Team coordination tools</li>
+                                <li>Response time tracking</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='incident-management/major-incident-management.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <h3 class="page-title">Major Incident Management</h3>
+                            </div>
+                            <p class="page-description">Specialized handling for major incidents with war room coordination, stakeholder communication, and crisis management</p>
+                            <ul class="page-features">
+                                <li>War room coordination</li>
+                                <li>Stakeholder communication</li>
+                                <li>Crisis management protocols</li>
+                                <li>Executive dashboards</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='incident-management/incident-resolution.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <h3 class="page-title">Incident Resolution</h3>
+                            </div>
+                            <p class="page-description">Resolution tracking with solution documentation, customer verification, and closure workflows</p>
+                            <ul class="page-features">
+                                <li>Solution documentation</li>
+                                <li>Customer verification</li>
+                                <li>Closure workflows</li>
+                                <li>Resolution time analytics</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='incident-management/post-incident-review.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-clipboard-list"></i>
+                                </div>
+                                <h3 class="page-title">Post-Incident Review</h3>
+                            </div>
+                            <p class="page-description">Comprehensive post-incident analysis with lessons learned, improvement recommendations, and follow-up actions</p>
+                            <ul class="page-features">
+                                <li>Lessons learned capture</li>
+                                <li>Improvement recommendations</li>
+                                <li>Follow-up action tracking</li>
+                                <li>Process optimization insights</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='incident-management/incident-analytics.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 class="page-title">Incident Analytics</h3>
+                            </div>
+                            <p class="page-description">Advanced incident analytics with trend analysis, pattern recognition, and predictive insights</p>
+                            <ul class="page-features">
+                                <li>Trend analysis</li>
+                                <li>Pattern recognition</li>
+                                <li>Predictive analytics</li>
+                                <li>Performance metrics</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Problem Management Category -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <div>
+                            <h2 class="category-title">Problem Management</h2>
+                            <p class="category-description">Root cause analysis and proactive problem prevention methodologies</p>
+                        </div>
+                    </div>
+                    <div class="pages-grid">
+                        <div class="page-card" onclick="window.location.href='problem-management/problem-identification.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <h3 class="page-title">Problem Identification</h3>
+                            </div>
+                            <p class="page-description">Proactive problem identification through pattern analysis, trend monitoring, and incident correlation</p>
+                            <ul class="page-features">
+                                <li>Pattern analysis algorithms</li>
+                                <li>Trend monitoring tools</li>
+                                <li>Incident correlation matrix</li>
+                                <li>Proactive alerts</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='problem-management/root-cause-analysis.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-microscope"></i>
+                                </div>
+                                <h3 class="page-title">Root Cause Analysis</h3>
+                            </div>
+                            <p class="page-description">Systematic root cause analysis with investigation tools, analysis frameworks, and documentation</p>
+                            <ul class="page-features">
+                                <li>Investigation frameworks</li>
+                                <li>Analysis methodologies</li>
+                                <li>Evidence collection tools</li>
+                                <li>Hypothesis testing</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='problem-management/problem-prioritization.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-sort-amount-down"></i>
+                                </div>
+                                <h3 class="page-title">Problem Prioritization</h3>
+                            </div>
+                            <p class="page-description">Business impact-based problem prioritization with resource allocation and timeline planning</p>
+                            <ul class="page-features">
+                                <li>Business impact assessment</li>
+                                <li>Resource allocation optimization</li>
+                                <li>Timeline planning tools</li>
+                                <li>Priority matrix automation</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='problem-management/solution-development.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h3 class="page-title">Solution Development</h3>
+                            </div>
+                            <p class="page-description">Collaborative solution development with testing frameworks, approval workflows, and implementation planning</p>
+                            <ul class="page-features">
+                                <li>Solution brainstorming tools</li>
+                                <li>Testing frameworks</li>
+                                <li>Approval workflows</li>
+                                <li>Implementation planning</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='problem-management/known-error-database.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <h3 class="page-title">Known Error Database</h3>
+                            </div>
+                            <p class="page-description">Comprehensive known error database with workarounds, permanent fixes, and prevention strategies</p>
+                            <ul class="page-features">
+                                <li>Error documentation system</li>
+                                <li>Workaround management</li>
+                                <li>Fix tracking</li>
+                                <li>Prevention strategies</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='problem-management/proactive-problem-management.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h3 class="page-title">Proactive Problem Management</h3>
+                            </div>
+                            <p class="page-description">Proactive problem prevention through monitoring, analysis, and preventive action implementation</p>
+                            <ul class="page-features">
+                                <li>Preventive monitoring</li>
+                                <li>Risk assessment tools</li>
+                                <li>Preventive action planning</li>
+                                <li>Continuous improvement</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='problem-management/problem-analytics.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <h3 class="page-title">Problem Analytics</h3>
+                            </div>
+                            <p class="page-description">Advanced problem analytics with trend analysis, cost impact assessment, and prevention effectiveness metrics</p>
+                            <ul class="page-features">
+                                <li>Cost impact analysis</li>
+                                <li>Prevention effectiveness metrics</li>
+                                <li>Trend analysis dashboards</li>
+                                <li>ROI calculations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Change Management Category -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div>
+                            <h2 class="category-title">Change Management</h2>
+                            <p class="category-description">Controlled change implementation with risk assessment and approval workflows</p>
+                        </div>
+                    </div>
+                    <div class="pages-grid">
+                        <div class="page-card" onclick="window.location.href='change-management/change-request-management.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <h3 class="page-title">Change Request Management</h3>
+                            </div>
+                            <p class="page-description">Comprehensive change request lifecycle with submission, evaluation, and approval tracking</p>
+                            <ul class="page-features">
+                                <li>Request submission portal</li>
+                                <li>Evaluation workflows</li>
+                                <li>Approval tracking</li>
+                                <li>Request status monitoring</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='change-management/change-advisory-board.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-users-cog"></i>
+                                </div>
+                                <h3 class="page-title">Change Advisory Board</h3>
+                            </div>
+                            <p class="page-description">Change Advisory Board management with meeting scheduling, decision tracking, and stakeholder coordination</p>
+                            <ul class="page-features">
+                                <li>Meeting coordination</li>
+                                <li>Decision tracking</li>
+                                <li>Stakeholder management</li>
+                                <li>Approval documentation</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='change-management/change-risk-assessment.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                                <h3 class="page-title">Change Risk Assessment</h3>
+                            </div>
+                            <p class="page-description">Comprehensive risk assessment framework with impact analysis, mitigation planning, and risk scoring</p>
+                            <ul class="page-features">
+                                <li>Risk scoring algorithms</li>
+                                <li>Impact analysis tools</li>
+                                <li>Mitigation planning</li>
+                                <li>Risk monitoring</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='change-management/change-implementation.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-play-circle"></i>
+                                </div>
+                                <h3 class="page-title">Change Implementation</h3>
+                            </div>
+                            <p class="page-description">Controlled change implementation with scheduling, rollback procedures, and progress monitoring</p>
+                            <ul class="page-features">
+                                <li>Implementation scheduling</li>
+                                <li>Rollback procedures</li>
+                                <li>Progress monitoring</li>
+                                <li>Success validation</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='change-management/emergency-changes.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h3 class="page-title">Emergency Changes</h3>
+                            </div>
+                            <p class="page-description">Fast-track emergency change procedures with expedited approvals and post-implementation review</p>
+                            <ul class="page-features">
+                                <li>Expedited approval process</li>
+                                <li>Emergency authorization</li>
+                                <li>Fast-track implementation</li>
+                                <li>Post-implementation review</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='change-management/change-calendar.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <h3 class="page-title">Change Calendar</h3>
+                            </div>
+                            <p class="page-description">Integrated change calendar with conflict detection, blackout periods, and resource scheduling</p>
+                            <ul class="page-features">
+                                <li>Conflict detection</li>
+                                <li>Blackout period management</li>
+                                <li>Resource scheduling</li>
+                                <li>Timeline optimization</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='change-management/change-analytics.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-analytics"></i>
+                                </div>
+                                <h3 class="page-title">Change Analytics</h3>
+                            </div>
+                            <p class="page-description">Change management analytics with success rates, impact analysis, and continuous improvement insights</p>
+                            <ul class="page-features">
+                                <li>Success rate tracking</li>
+                                <li>Impact analysis</li>
+                                <li>Continuous improvement</li>
+                                <li>Performance metrics</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Knowledge Management Category -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div>
+                            <h2 class="category-title">Knowledge Management</h2>
+                            <p class="category-description">Advanced knowledge base operations with AI-powered content management</p>
+                        </div>
+                    </div>
+                    <div class="pages-grid">
+                        <div class="page-card" onclick="window.location.href='knowledge-management/knowledge-base-authoring.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                                <h3 class="page-title">Knowledge Base Authoring</h3>
+                            </div>
+                            <p class="page-description">Advanced authoring tools with collaborative editing, version control, and content workflows</p>
+                            <ul class="page-features">
+                                <li>Collaborative editing</li>
+                                <li>Version control system</li>
+                                <li>Content workflows</li>
+                                <li>Rich media support</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='knowledge-management/content-optimization.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-search-plus"></i>
+                                </div>
+                                <h3 class="page-title">Content Optimization</h3>
+                            </div>
+                            <p class="page-description">AI-powered content optimization with usage analytics, search optimization, and content recommendations</p>
+                            <ul class="page-features">
+                                <li>Usage analytics</li>
+                                <li>Search optimization</li>
+                                <li>Content recommendations</li>
+                                <li>Performance metrics</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='knowledge-management/knowledge-search.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h3 class="page-title">Knowledge Search</h3>
+                            </div>
+                            <p class="page-description">Advanced search capabilities with natural language processing, faceted search, and intelligent suggestions</p>
+                            <ul class="page-features">
+                                <li>Natural language processing</li>
+                                <li>Faceted search</li>
+                                <li>Intelligent suggestions</li>
+                                <li>Search analytics</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='knowledge-management/content-lifecycle.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-recycle"></i>
+                                </div>
+                                <h3 class="page-title">Content Lifecycle</h3>
+                            </div>
+                            <p class="page-description">Complete content lifecycle management with review cycles, expiration tracking, and archival processes</p>
+                            <ul class="page-features">
+                                <li>Review cycle automation</li>
+                                <li>Expiration tracking</li>
+                                <li>Archival processes</li>
+                                <li>Content auditing</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='knowledge-management/expert-collaboration.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <h3 class="page-title">Expert Collaboration</h3>
+                            </div>
+                            <p class="page-description">Expert network management with knowledge sharing, peer review, and expertise identification</p>
+                            <ul class="page-features">
+                                <li>Expert identification</li>
+                                <li>Knowledge sharing platform</li>
+                                <li>Peer review system</li>
+                                <li>Collaboration tools</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='knowledge-management/knowledge-analytics.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3 class="page-title">Knowledge Analytics</h3>
+                            </div>
+                            <p class="page-description">Comprehensive knowledge analytics with usage patterns, content effectiveness, and knowledge gaps analysis</p>
+                            <ul class="page-features">
+                                <li>Usage pattern analysis</li>
+                                <li>Content effectiveness metrics</li>
+                                <li>Knowledge gap identification</li>
+                                <li>ROI measurement</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='knowledge-management/ai-knowledge-assistant.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <h3 class="page-title">AI Knowledge Assistant</h3>
+                            </div>
+                            <p class="page-description">AI-powered knowledge assistant with intelligent recommendations, auto-tagging, and content suggestions</p>
+                            <ul class="page-features">
+                                <li>Intelligent recommendations</li>
+                                <li>Auto-tagging system</li>
+                                <li>Content suggestions</li>
+                                <li>Natural language queries</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Level Management Category -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <div>
+                            <h2 class="category-title">Service Level Management</h2>
+                            <p class="category-description">SLA monitoring, optimization, and performance management tools</p>
+                        </div>
+                    </div>
+                    <div class="pages-grid">
+                        <div class="page-card" onclick="window.location.href='service-level-management/sla-definition.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-file-contract"></i>
+                                </div>
+                                <h3 class="page-title">SLA Definition</h3>
+                            </div>
+                            <p class="page-description">Comprehensive SLA definition and management with templates, metrics, and automated monitoring setup</p>
+                            <ul class="page-features">
+                                <li>SLA template library</li>
+                                <li>Metrics definition</li>
+                                <li>Automated monitoring setup</li>
+                                <li>Contract management</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='service-level-management/sla-monitoring.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                </div>
+                                <h3 class="page-title">SLA Monitoring</h3>
+                            </div>
+                            <p class="page-description">Real-time SLA monitoring with automated alerts, performance dashboards, and breach prevention</p>
+                            <ul class="page-features">
+                                <li>Real-time monitoring</li>
+                                <li>Automated alerts</li>
+                                <li>Performance dashboards</li>
+                                <li>Breach prevention</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='service-level-management/performance-analytics.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-chart-area"></i>
+                                </div>
+                                <h3 class="page-title">Performance Analytics</h3>
+                            </div>
+                            <p class="page-description">Advanced performance analytics with trend analysis, capacity planning, and optimization recommendations</p>
+                            <ul class="page-features">
+                                <li>Trend analysis</li>
+                                <li>Capacity planning</li>
+                                <li>Optimization recommendations</li>
+                                <li>Predictive analytics</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='service-level-management/sla-reporting.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-file-chart-line"></i>
+                                </div>
+                                <h3 class="page-title">SLA Reporting</h3>
+                            </div>
+                            <p class="page-description">Automated SLA reporting with customizable dashboards, executive summaries, and stakeholder communication</p>
+                            <ul class="page-features">
+                                <li>Automated reporting</li>
+                                <li>Customizable dashboards</li>
+                                <li>Executive summaries</li>
+                                <li>Stakeholder communication</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='service-level-management/service-catalog.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-list-alt"></i>
+                                </div>
+                                <h3 class="page-title">Service Catalog</h3>
+                            </div>
+                            <p class="page-description">Comprehensive service catalog with service definitions, SLA mappings, and customer-facing portal</p>
+                            <ul class="page-features">
+                                <li>Service definitions</li>
+                                <li>SLA mappings</li>
+                                <li>Customer-facing portal</li>
+                                <li>Service request integration</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='service-level-management/capacity-management.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-expand-arrows-alt"></i>
+                                </div>
+                                <h3 class="page-title">Capacity Management</h3>
+                            </div>
+                            <p class="page-description">Proactive capacity management with resource planning, scaling recommendations, and performance optimization</p>
+                            <ul class="page-features">
+                                <li>Resource planning</li>
+                                <li>Scaling recommendations</li>
+                                <li>Performance optimization</li>
+                                <li>Capacity forecasting</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='service-level-management/availability-management.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <h3 class="page-title">Availability Management</h3>
+                            </div>
+                            <p class="page-description">Comprehensive availability management with uptime monitoring, redundancy planning, and disaster recovery</p>
+                            <ul class="page-features">
+                                <li>Uptime monitoring</li>
+                                <li>Redundancy planning</li>
+                                <li>Disaster recovery</li>
+                                <li>Availability reporting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Analytics Category -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h2 class="category-title">Support Analytics</h2>
+                            <p class="category-description">Comprehensive support metrics, insights, and business intelligence</p>
+                        </div>
+                    </div>
+                    <div class="pages-grid">
+                        <div class="page-card" onclick="window.location.href='support-analytics/support-dashboard.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-tv"></i>
+                                </div>
+                                <h3 class="page-title">Support Dashboard</h3>
+                            </div>
+                            <p class="page-description">Executive support dashboard with real-time KPIs, performance metrics, and operational insights</p>
+                            <ul class="page-features">
+                                <li>Real-time KPIs</li>
+                                <li>Performance metrics</li>
+                                <li>Operational insights</li>
+                                <li>Executive summaries</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-analytics/agent-performance.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <h3 class="page-title">Agent Performance</h3>
+                            </div>
+                            <p class="page-description">Individual and team performance analytics with productivity metrics, quality scores, and development insights</p>
+                            <ul class="page-features">
+                                <li>Productivity metrics</li>
+                                <li>Quality scores</li>
+                                <li>Development insights</li>
+                                <li>Performance comparisons</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-analytics/customer-satisfaction.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-smile"></i>
+                                </div>
+                                <h3 class="page-title">Customer Satisfaction</h3>
+                            </div>
+                            <p class="page-description">Comprehensive customer satisfaction tracking with surveys, feedback analysis, and improvement recommendations</p>
+                            <ul class="page-features">
+                                <li>Satisfaction surveys</li>
+                                <li>Feedback analysis</li>
+                                <li>Improvement recommendations</li>
+                                <li>Satisfaction trending</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-analytics/operational-metrics.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <h3 class="page-title">Operational Metrics</h3>
+                            </div>
+                            <p class="page-description">Detailed operational metrics with volume analysis, efficiency tracking, and resource utilization</p>
+                            <ul class="page-features">
+                                <li>Volume analysis</li>
+                                <li>Efficiency tracking</li>
+                                <li>Resource utilization</li>
+                                <li>Cost analysis</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-analytics/predictive-analytics.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-crystal-ball"></i>
+                                </div>
+                                <h3 class="page-title">Predictive Analytics</h3>
+                            </div>
+                            <p class="page-description">AI-powered predictive analytics with volume forecasting, resource planning, and trend prediction</p>
+                            <ul class="page-features">
+                                <li>Volume forecasting</li>
+                                <li>Resource planning</li>
+                                <li>Trend prediction</li>
+                                <li>Risk assessment</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-analytics/business-intelligence.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h3 class="page-title">Business Intelligence</h3>
+                            </div>
+                            <p class="page-description">Advanced business intelligence with cross-functional analytics, ROI analysis, and strategic insights</p>
+                            <ul class="page-features">
+                                <li>Cross-functional analytics</li>
+                                <li>ROI analysis</li>
+                                <li>Strategic insights</li>
+                                <li>Executive reporting</li>
+                            </ul>
+                        </div>
+
+                        <div class="page-card" onclick="window.location.href='support-analytics/custom-reporting.html'">
+                            <div class="page-header">
+                                <div class="page-icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <h3 class="page-title">Custom Reporting</h3>
+                            </div>
+                            <p class="page-description">Flexible custom reporting with report builder, scheduled delivery, and interactive visualizations</p>
+                            <ul class="page-features">
+                                <li>Report builder</li>
+                                <li>Scheduled delivery</li>
+                                <li>Interactive visualizations</li>
+                                <li>Export capabilities</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="scripts/support-common.js"></script>
+    <script>
+        // Initialize support pages directory
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Support Pages Directory loaded');
+            
+            // Add click tracking for analytics
+            document.querySelectorAll('.page-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const pageTitle = this.querySelector('.page-title').textContent;
+                    console.log(`Navigating to: ${pageTitle}`);
+                    
+                    // Analytics tracking
+                    if (window.SupportPageManager) {
+                        window.SupportPageManager.showNotification(`Opening ${pageTitle}`, 'info', 2000);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
