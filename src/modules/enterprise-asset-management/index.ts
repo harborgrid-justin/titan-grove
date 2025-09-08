@@ -67,7 +67,7 @@ export class EnterpriseAssetManager extends BaseManager {
    */
   async getAsset(assetId: string): Promise<any> {
     this.logAction('getAsset', { assetId });
-    return assetManagementService.getAssetPerformanceMetrics(assetId);
+    return assetManagementService.monitorAssetPerformance(assetId);
   }
 
   /**
@@ -98,7 +98,7 @@ export class EnterpriseAssetManager extends BaseManager {
    * Create maintenance schedule
    */
   async createMaintenanceSchedule(scheduleData: any): Promise<any> {
-    return await assetManagementService.createPreventiveMaintenancePlan(scheduleData);
+    return await assetManagementService.createMaintenancePlan(scheduleData);
   }
 
   /**
