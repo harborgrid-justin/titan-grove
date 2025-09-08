@@ -3161,4 +3161,520 @@ router.get('/bi/kpis', async (req, res) => {
   }
 });
 
+// ==================== PROCUREMENT ENDPOINTS ====================
+
+/**
+ * Get procurement suppliers
+ */
+router.get('/procurement/suppliers', async (req, res) => {
+  try {
+    const suppliers = [
+      {
+        id: 'sup_001',
+        name: 'Acme Manufacturing Inc.',
+        email: 'contact@acme-mfg.com',
+        phone: '+1-555-0123',
+        website: 'https://acme-mfg.com',
+        address: '123 Industrial Blvd, City, State 12345',
+        category: 'Manufacturing',
+        status: 'pending',
+        submitted: '2025-01-15',
+        priority: 'high',
+        businessType: 'Corporation',
+        taxId: '12-3456789',
+        yearsInBusiness: 15,
+        annualRevenue: 25000000,
+        employees: 150,
+        certifications: ['ISO 9001', 'ISO 14001'],
+        documents: ['Business License', 'Tax Certificate', 'Insurance Certificate'],
+        performanceRating: 4.8,
+        onTimeDeliveryRate: 96.5,
+        qualityScore: 94.2
+      },
+      {
+        id: 'sup_002',
+        name: 'Global Tech Solutions',
+        email: 'procurement@globaltech.com',
+        phone: '+1-555-0456',
+        website: 'https://globaltech.com',
+        address: '456 Tech Park Dr, Silicon Valley, CA 94041',
+        category: 'Technology',
+        status: 'approved',
+        submitted: '2025-01-12',
+        priority: 'medium',
+        businessType: 'LLC',
+        taxId: '98-7654321',
+        yearsInBusiness: 8,
+        annualRevenue: 12000000,
+        employees: 75,
+        certifications: ['SOC 2', 'CMMI Level 3'],
+        documents: ['Articles of Incorporation', 'Financial Statements', 'SOC 2 Report'],
+        performanceRating: 4.9,
+        onTimeDeliveryRate: 98.2,
+        qualityScore: 96.8
+      },
+      {
+        id: 'sup_003',
+        name: 'Green Energy Corp',
+        email: 'info@greenenergy.com',
+        phone: '+1-555-0789',
+        website: 'https://greenenergy.com',
+        address: '789 Renewable Way, Portland, OR 97201',
+        category: 'Services',
+        status: 'under-review',
+        submitted: '2025-01-10',
+        priority: 'low',
+        businessType: 'Corporation',
+        taxId: '45-6789012',
+        yearsInBusiness: 12,
+        annualRevenue: 8000000,
+        employees: 45,
+        certifications: ['B Corp', 'LEED Gold'],
+        documents: ['Environmental Certificates', 'Financial Statements'],
+        performanceRating: 4.6,
+        onTimeDeliveryRate: 92.1,
+        qualityScore: 88.5
+      }
+    ];
+    res.json({ success: true, data: suppliers });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create supplier
+ */
+router.post('/procurement/suppliers', async (req, res) => {
+  try {
+    const supplier = {
+      id: 'sup_' + Date.now(),
+      ...req.body,
+      status: 'pending',
+      submitted: new Date().toISOString().split('T')[0],
+      performanceRating: 0,
+      onTimeDeliveryRate: 0,
+      qualityScore: 0,
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: supplier });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update supplier
+ */
+router.put('/procurement/suppliers/:id', async (req, res) => {
+  try {
+    const updatedSupplier = {
+      id: req.params.id,
+      ...req.body,
+      updatedDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: updatedSupplier });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get supplier performance
+ */
+router.get('/procurement/suppliers/:id/performance', async (req, res) => {
+  try {
+    const performance = {
+      supplierId: req.params.id,
+      performanceRating: 4.8,
+      onTimeDeliveryRate: 96.5,
+      qualityScore: 94.2,
+      totalOrders: 147,
+      completedOrders: 142,
+      pendingOrders: 5,
+      totalValue: 2450000,
+      lastDelivery: '2025-01-14',
+      averageLeadTime: 12.5,
+      defectRate: 0.8,
+      complianceScore: 98.5
+    };
+    res.json({ success: true, data: performance });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get purchase requisitions
+ */
+router.get('/procurement/requisitions', async (req, res) => {
+  try {
+    const requisitions = [
+      {
+        id: 'req_001',
+        requisitionNumber: 'REQ-2025-0001',
+        requestor: 'John Smith',
+        department: 'Manufacturing',
+        status: 'approved',
+        priority: 'high',
+        requestDate: '2025-01-15',
+        requiredDate: '2025-01-30',
+        totalAmount: 45000,
+        approvalWorkflow: [
+          { step: 'Department Manager', approver: 'Sarah Johnson', status: 'approved', date: '2025-01-16' },
+          { step: 'Finance Director', approver: 'Michael Chen', status: 'approved', date: '2025-01-17' }
+        ],
+        items: [
+          { description: 'Steel Plates 10mm', quantity: 50, estimatedPrice: 800, total: 40000 },
+          { description: 'Industrial Bolts M12', quantity: 1000, estimatedPrice: 5, total: 5000 }
+        ]
+      },
+      {
+        id: 'req_002',
+        requisitionNumber: 'REQ-2025-0002',
+        requestor: 'Emily Davis',
+        department: 'IT',
+        status: 'pending',
+        priority: 'medium',
+        requestDate: '2025-01-16',
+        requiredDate: '2025-02-15',
+        totalAmount: 28500,
+        approvalWorkflow: [
+          { step: 'Department Manager', approver: 'Mike Rodriguez', status: 'pending', date: null }
+        ],
+        items: [
+          { description: 'Laptops Dell XPS', quantity: 10, estimatedPrice: 2500, total: 25000 },
+          { description: 'Software Licenses', quantity: 10, estimatedPrice: 350, total: 3500 }
+        ]
+      }
+    ];
+    res.json({ success: true, data: requisitions });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create purchase requisition
+ */
+router.post('/procurement/requisitions', async (req, res) => {
+  try {
+    const requisition = {
+      id: 'req_' + Date.now(),
+      requisitionNumber: 'REQ-2025-' + String(Math.floor(Math.random() * 9000) + 1000),
+      ...req.body,
+      status: 'pending',
+      requestDate: new Date().toISOString().split('T')[0],
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: requisition });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get contracts
+ */
+router.get('/procurement/contracts', async (req, res) => {
+  try {
+    const contracts = [
+      {
+        id: 'cont_001',
+        contractNumber: 'CONT-2025-001',
+        supplier: 'Acme Manufacturing Inc.',
+        contractType: 'Master Service Agreement',
+        status: 'active',
+        startDate: '2025-01-01',
+        endDate: '2025-12-31',
+        totalValue: 2500000,
+        renewalDate: '2025-10-01',
+        terms: 'Net 30 Days',
+        currency: 'USD',
+        autoRenewal: true,
+        performanceMetrics: {
+          qualityTarget: 95,
+          deliveryTarget: 98,
+          currentQuality: 94.2,
+          currentDelivery: 96.5
+        }
+      },
+      {
+        id: 'cont_002',
+        contractNumber: 'CONT-2025-002',
+        supplier: 'Global Tech Solutions',
+        contractType: 'Software License Agreement',
+        status: 'pending_renewal',
+        startDate: '2024-06-01',
+        endDate: '2025-05-31',
+        totalValue: 850000,
+        renewalDate: '2025-03-01',
+        terms: 'Net 60 Days',
+        currency: 'USD',
+        autoRenewal: false,
+        performanceMetrics: {
+          uptimeTarget: 99.9,
+          supportTarget: 95,
+          currentUptime: 99.8,
+          currentSupport: 96.2
+        }
+      }
+    ];
+    res.json({ success: true, data: contracts });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create contract
+ */
+router.post('/procurement/contracts', async (req, res) => {
+  try {
+    const contract = {
+      id: 'cont_' + Date.now(),
+      contractNumber: 'CONT-2025-' + String(Math.floor(Math.random() * 900) + 100),
+      ...req.body,
+      status: 'draft',
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: contract });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get RFQs (Request for Quotations)
+ */
+router.get('/procurement/rfqs', async (req, res) => {
+  try {
+    const rfqs = [
+      {
+        id: 'rfq_001',
+        rfqNumber: 'RFQ-2025-001',
+        title: 'Manufacturing Equipment Procurement',
+        description: 'Request for quotation for new manufacturing equipment',
+        status: 'open',
+        issueDate: '2025-01-10',
+        closeDate: '2025-01-25',
+        category: 'Manufacturing',
+        estimatedValue: 500000,
+        currency: 'USD',
+        responseCount: 5,
+        invitedSuppliers: [
+          'Acme Manufacturing Inc.',
+          'Industrial Equipment Corp',
+          'Precision Tools Ltd'
+        ],
+        requirements: [
+          'ISO 9001 certification required',
+          'Minimum 2-year warranty',
+          'Installation and training included'
+        ]
+      },
+      {
+        id: 'rfq_002',
+        rfqNumber: 'RFQ-2025-002',
+        title: 'IT Infrastructure Upgrade',
+        description: 'Request for quotation for network infrastructure upgrade',
+        status: 'evaluation',
+        issueDate: '2025-01-05',
+        closeDate: '2025-01-20',
+        category: 'Technology',
+        estimatedValue: 250000,
+        currency: 'USD',
+        responseCount: 8,
+        invitedSuppliers: [
+          'Global Tech Solutions',
+          'Network Systems Inc',
+          'Tech Infrastructure Corp'
+        ],
+        requirements: [
+          '24/7 support required',
+          'Cloud integration capability',
+          'Scalable architecture'
+        ]
+      }
+    ];
+    res.json({ success: true, data: rfqs });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Create RFQ
+ */
+router.post('/procurement/rfqs', async (req, res) => {
+  try {
+    const rfq = {
+      id: 'rfq_' + Date.now(),
+      rfqNumber: 'RFQ-2025-' + String(Math.floor(Math.random() * 900) + 100),
+      ...req.body,
+      status: 'draft',
+      issueDate: new Date().toISOString().split('T')[0],
+      responseCount: 0,
+      createdDate: new Date().toISOString()
+    };
+    res.json({ success: true, data: rfq });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get procurement analytics
+ */
+router.get('/procurement/analytics/spend', async (req, res) => {
+  try {
+    const spendAnalytics = {
+      totalSpend: 12500000,
+      monthlySpend: 1250000,
+      spendByCategory: [
+        { category: 'Manufacturing', amount: 4500000, percentage: 36 },
+        { category: 'Technology', amount: 3200000, percentage: 25.6 },
+        { category: 'Services', amount: 2800000, percentage: 22.4 },
+        { category: 'Materials', amount: 2000000, percentage: 16 }
+      ],
+      spendBySupplier: [
+        { supplier: 'Acme Manufacturing Inc.', amount: 2500000, percentage: 20 },
+        { supplier: 'Global Tech Solutions', amount: 1800000, percentage: 14.4 },
+        { supplier: 'Industrial Parts Corp', amount: 1500000, percentage: 12 },
+        { supplier: 'Others', amount: 6700000, percentage: 53.6 }
+      ],
+      savingsTracking: {
+        totalSavings: 485000,
+        targetSavings: 600000,
+        savingsRate: 3.88,
+        costAvoidance: 125000,
+        negotiatedSavings: 360000
+      },
+      trends: {
+        spendGrowth: 8.5,
+        supplierCount: 247,
+        contractCount: 156,
+        avgContractValue: 125000
+      }
+    };
+    res.json({ success: true, data: spendAnalytics });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get procurement performance dashboard
+ */
+router.get('/procurement/analytics/performance', async (req, res) => {
+  try {
+    const performance = {
+      kpis: {
+        avgProcurementCycle: 14.5,
+        onTimeDelivery: 94.2,
+        supplierPerformance: 87.3,
+        costSavings: 485000,
+        contractCompliance: 96.8,
+        processEfficiency: 78.5
+      },
+      cycleTimeAnalysis: {
+        requisitionToOrder: 5.2,
+        orderToDelivery: 9.3,
+        invoiceProcessing: 3.1,
+        totalCycleTime: 17.6
+      },
+      supplierMetrics: {
+        totalSuppliers: 247,
+        activeSuppliers: 189,
+        newSuppliers: 23,
+        supplierTurnover: 8.2,
+        avgSupplierRating: 4.2
+      },
+      riskIndicators: {
+        singleSourceRisk: 'Medium',
+        supplierConcentration: 'Low',
+        geographicRisk: 'Low',
+        financialRisk: 'Medium'
+      }
+    };
+    res.json({ success: true, data: performance });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get procurement compliance report
+ */
+router.get('/procurement/analytics/compliance', async (req, res) => {
+  try {
+    const compliance = {
+      overallScore: 96.8,
+      auditFindings: 3,
+      policyCompliance: {
+        procurementPolicy: 98.5,
+        supplierOnboarding: 94.2,
+        contractManagement: 97.8,
+        spendAuthorization: 99.1
+      },
+      regualtoryCompliance: {
+        sox: 'Compliant',
+        gdpr: 'Compliant',
+        antiCorruption: 'Compliant',
+        tradeCompliance: 'Minor Issues'
+      },
+      auditTrail: [
+        {
+          id: 'audit_001',
+          type: 'Supplier Audit',
+          supplier: 'Acme Manufacturing Inc.',
+          date: '2025-01-10',
+          status: 'Completed',
+          findings: 'No issues found'
+        },
+        {
+          id: 'audit_002',
+          type: 'Contract Review',
+          contract: 'CONT-2025-001',
+          date: '2025-01-08',
+          status: 'In Progress',
+          findings: 'Pending documentation'
+        }
+      ]
+    };
+    res.json({ success: true, data: compliance });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get procurement KPIs
+ */
+router.get('/procurement/kpis', async (req, res) => {
+  try {
+    const kpis = {
+      totalSuppliers: 247,
+      activeSuppliers: 189,
+      pendingApplications: 47,
+      approvedApplications: 234,
+      avgProcessingDays: 5.2,
+      approvalRate: 94,
+      totalPurchaseOrders: 324,
+      activePurchaseOrders: 156,
+      totalContracts: 156,
+      activeContracts: 142,
+      totalSpend: 12500000,
+      monthlySpend: 1250000,
+      costSavings: 485000,
+      onTimeDeliveryRate: 94.2,
+      supplierPerformanceScore: 87.3,
+      contractCompliance: 96.8
+    };
+    res.json({ success: true, data: kpis });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 module.exports = router;

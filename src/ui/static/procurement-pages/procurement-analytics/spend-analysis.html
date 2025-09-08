@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spend Analysis - Titan Grove Procurement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/asset-management.css">
+    <link rel="stylesheet" href="../styles/procurement-pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="procurement-management-app">
+        <!-- Enterprise Header -->
+        <header class="procurement-enterprise-header">
+            <div class="procurement-header-left">
+                <div class="procurement-logo-enterprise">
+                    <i class="fas fa-money-bill-trend-up"></i>
+                    <span class="procurement-logo-text">Titan Grove</span>
+                    <span class="procurement-edition-badge">Spend Analysis</span>
+                </div>
+                <nav class="procurement-breadcrumb-nav">
+                    <a href="../../supply-chain-management.html">Supply Chain</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Procurement Pages</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Spend Analysis</span>
+                </nav>
+            </div>
+            <div class="procurement-header-actions">
+                <button class="procurement-btn procurement-btn-secondary">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <button class="procurement-btn procurement-btn-primary">
+                    <i class="fas fa-download"></i> Export Report
+                </button>
+            </div>
+        </header>
+
+        <main class="procurement-main-content">
+            <!-- Spend Overview KPIs -->
+            <div class="spend-kpi-grid">
+                <div class="spend-kpi-card">
+                    <div class="spend-kpi-header">
+                        <h3>Total Spend</h3>
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="spend-kpi-value">$12.5M</div>
+                    <div class="spend-kpi-change positive">
+                        <i class="fas fa-arrow-up"></i> 8.5% vs last year
+                    </div>
+                </div>
+                <div class="spend-kpi-card">
+                    <div class="spend-kpi-header">
+                        <h3>Monthly Spend</h3>
+                        <i class="fas fa-calendar-month"></i>
+                    </div>
+                    <div class="spend-kpi-value">$1.25M</div>
+                    <div class="spend-kpi-change positive">
+                        <i class="fas fa-arrow-up"></i> 12.3% vs last month
+                    </div>
+                </div>
+                <div class="spend-kpi-card">
+                    <div class="spend-kpi-header">
+                        <h3>Cost Savings</h3>
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="spend-kpi-value">$485K</div>
+                    <div class="spend-kpi-change positive">
+                        <i class="fas fa-arrow-up"></i> 15.2% achieved
+                    </div>
+                </div>
+                <div class="spend-kpi-card">
+                    <div class="spend-kpi-header">
+                        <h3>Suppliers</h3>
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="spend-kpi-value">247</div>
+                    <div class="spend-kpi-change neutral">
+                        <i class="fas fa-minus"></i> 3 new this month
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts and Analytics -->
+            <div class="spend-analytics-grid">
+                <!-- Spend by Category Chart -->
+                <div class="procurement-card chart-card">
+                    <div class="procurement-card-header">
+                        <h3>Spend by Category</h3>
+                        <div class="chart-controls">
+                            <select class="form-control-sm">
+                                <option>2025</option>
+                                <option>2024</option>
+                                <option>2023</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    <div class="category-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #3b82f6;"></div>
+                            <span>Manufacturing (36%)</span>
+                            <strong>$4.5M</strong>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #10b981;"></div>
+                            <span>Technology (25.6%)</span>
+                            <strong>$3.2M</strong>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #f59e0b;"></div>
+                            <span>Services (22.4%)</span>
+                            <strong>$2.8M</strong>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ef4444;"></div>
+                            <span>Materials (16%)</span>
+                            <strong>$2.0M</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spend Trend Chart -->
+                <div class="procurement-card chart-card">
+                    <div class="procurement-card-header">
+                        <h3>Spend Trend (Last 12 Months)</h3>
+                        <div class="chart-controls">
+                            <button class="btn-chart active">Monthly</button>
+                            <button class="btn-chart">Quarterly</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Top Suppliers -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Top Suppliers by Spend</h3>
+                        <button class="btn-link">View All</button>
+                    </div>
+                    <div class="supplier-spend-list">
+                        <div class="supplier-spend-item">
+                            <div class="supplier-info">
+                                <div class="supplier-name">Acme Manufacturing Inc.</div>
+                                <div class="supplier-category">Manufacturing</div>
+                            </div>
+                            <div class="spend-amount">$2.5M</div>
+                            <div class="spend-percentage">20%</div>
+                            <div class="spend-trend positive">
+                                <i class="fas fa-arrow-up"></i> 8%
+                            </div>
+                        </div>
+                        <div class="supplier-spend-item">
+                            <div class="supplier-info">
+                                <div class="supplier-name">Global Tech Solutions</div>
+                                <div class="supplier-category">Technology</div>
+                            </div>
+                            <div class="spend-amount">$1.8M</div>
+                            <div class="spend-percentage">14.4%</div>
+                            <div class="spend-trend positive">
+                                <i class="fas fa-arrow-up"></i> 12%
+                            </div>
+                        </div>
+                        <div class="supplier-spend-item">
+                            <div class="supplier-info">
+                                <div class="supplier-name">Industrial Parts Corp</div>
+                                <div class="supplier-category">Parts</div>
+                            </div>
+                            <div class="spend-amount">$1.5M</div>
+                            <div class="spend-percentage">12%</div>
+                            <div class="spend-trend negative">
+                                <i class="fas fa-arrow-down"></i> 3%
+                            </div>
+                        </div>
+                        <div class="supplier-spend-item">
+                            <div class="supplier-info">
+                                <div class="supplier-name">Quality Components Ltd</div>
+                                <div class="supplier-category">Components</div>
+                            </div>
+                            <div class="spend-amount">$1.2M</div>
+                            <div class="spend-percentage">9.6%</div>
+                            <div class="spend-trend positive">
+                                <i class="fas fa-arrow-up"></i> 5%
+                            </div>
+                        </div>
+                        <div class="supplier-spend-item">
+                            <div class="supplier-info">
+                                <div class="supplier-name">Others (243 suppliers)</div>
+                                <div class="supplier-category">Various</div>
+                            </div>
+                            <div class="spend-amount">$5.5M</div>
+                            <div class="spend-percentage">44%</div>
+                            <div class="spend-trend neutral">
+                                <i class="fas fa-minus"></i> 0%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Savings Analysis -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Savings Analysis</h3>
+                        <div class="savings-target">
+                            Target: $600K (4.8%)
+                        </div>
+                    </div>
+                    <div class="savings-progress">
+                        <div class="savings-bar">
+                            <div class="savings-achieved" style="width: 80.8%;"></div>
+                        </div>
+                        <div class="savings-labels">
+                            <span>Achieved: $485K (80.8%)</span>
+                            <span>Remaining: $115K</span>
+                        </div>
+                    </div>
+                    <div class="savings-breakdown">
+                        <div class="savings-item">
+                            <div class="savings-type">Negotiated Savings</div>
+                            <div class="savings-value">$360K</div>
+                            <div class="savings-percent">74.2%</div>
+                        </div>
+                        <div class="savings-item">
+                            <div class="savings-type">Cost Avoidance</div>
+                            <div class="savings-value">$125K</div>
+                            <div class="savings-percent">25.8%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spend Analytics Table -->
+                <div class="procurement-card spend-table-card">
+                    <div class="procurement-card-header">
+                        <h3>Detailed Spend Analysis</h3>
+                        <div class="table-controls">
+                            <input type="text" placeholder="Search..." class="search-input">
+                            <select class="form-control-sm">
+                                <option>All Categories</option>
+                                <option>Manufacturing</option>
+                                <option>Technology</option>
+                                <option>Services</option>
+                                <option>Materials</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="spend-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Current Spend</th>
+                                    <th>Previous Year</th>
+                                    <th>Change</th>
+                                    <th>% of Total</th>
+                                    <th>Suppliers</th>
+                                    <th>Avg Order Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="category-cell">
+                                            <i class="fas fa-industry"></i>
+                                            Manufacturing
+                                        </div>
+                                    </td>
+                                    <td><strong>$4,500,000</strong></td>
+                                    <td>$4,100,000</td>
+                                    <td class="change positive">+9.8%</td>
+                                    <td>36.0%</td>
+                                    <td>45</td>
+                                    <td>$25,500</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="category-cell">
+                                            <i class="fas fa-laptop"></i>
+                                            Technology
+                                        </div>
+                                    </td>
+                                    <td><strong>$3,200,000</strong></td>
+                                    <td>$2,950,000</td>
+                                    <td class="change positive">+8.5%</td>
+                                    <td>25.6%</td>
+                                    <td>28</td>
+                                    <td>$35,800</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="category-cell">
+                                            <i class="fas fa-tools"></i>
+                                            Services
+                                        </div>
+                                    </td>
+                                    <td><strong>$2,800,000</strong></td>
+                                    <td>$2,750,000</td>
+                                    <td class="change positive">+1.8%</td>
+                                    <td>22.4%</td>
+                                    <td>67</td>
+                                    <td>$18,200</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="category-cell">
+                                            <i class="fas fa-boxes"></i>
+                                            Materials
+                                        </div>
+                                    </td>
+                                    <td><strong>$2,000,000</strong></td>
+                                    <td>$2,100,000</td>
+                                    <td class="change negative">-4.8%</td>
+                                    <td>16.0%</td>
+                                    <td>107</td>
+                                    <td>$12,800</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Spend Analysis JavaScript -->
+    <script src="../scripts/spend-analysis.js"></script>
+</body>
+</html>
