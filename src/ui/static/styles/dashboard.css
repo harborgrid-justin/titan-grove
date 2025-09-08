@@ -1274,3 +1274,51 @@ body {
     height: 30px;
   }
 }
+
+/* Financial Extension Banner */
+.financial-extension-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  margin: 2rem 0;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.extension-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.extension-content p {
+  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+  opacity: 0.9;
+}
+
+.extension-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.extension-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
