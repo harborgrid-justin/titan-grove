@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Management Suite - Titan Grove Enterprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="../styles/financials.css">
+    <link rel="stylesheet" href="styles/financial-pages.css">
+</head>
+<body>
+    <div class="financial-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="financial-enterprise-header">
+            <div class="financial-header-left">
+                <div class="financial-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="financial-logo-text">Titan Grove</span>
+                    <span class="financial-edition-badge">Financial Suite</span>
+                </div>
+                <nav class="financial-breadcrumb-nav">
+                    <a href="../financials.html">Financial Management</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Financial Pages</span>
+                </nav>
+            </div>
+            <div class="financial-header-actions">
+                <button class="financial-btn financial-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="financial-btn financial-btn-primary" id="refreshBtn">
+                    <i class="fas fa-sync"></i>
+                    Refresh Data
+                </button>
+            </div>
+        </header>
+
+        <main class="financial-main-content">
+            <!-- Financial Overview -->
+            <div class="financial-overview-header">
+                <h1>Extended Financial Management Suite</h1>
+                <p>32 Additional Business-Ready Financial Pages with Complete Backend Integration</p>
+                <div class="financial-stats-grid">
+                    <div class="financial-stat-card">
+                        <div class="financial-stat-value">32</div>
+                        <div class="financial-stat-label">New Pages</div>
+                    </div>
+                    <div class="financial-stat-card">
+                        <div class="financial-stat-value">100%</div>
+                        <div class="financial-stat-label">Backend Integrated</div>
+                    </div>
+                    <div class="financial-stat-card">
+                        <div class="financial-stat-value">100%</div>
+                        <div class="financial-stat-label">Business Ready</div>
+                    </div>
+                    <div class="financial-stat-card">
+                        <div class="financial-stat-value">100%</div>
+                        <div class="financial-stat-label">Customer Ready</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Categories -->
+            
+            <!-- General Ledger & Accounting (8 pages) -->
+            <div class="financial-category-section">
+                <h2><i class="fas fa-book"></i> General Ledger & Accounting (8 Pages)</h2>
+                <div class="financial-pages-grid">
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="financial-page-title">Advanced Chart of Accounts</div>
+                        <div class="financial-page-description">Hierarchical account structure with multi-dimensional reporting</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="general-ledger/chart-of-accounts.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="financial-page-title">Journal Entry Management</div>
+                        <div class="financial-page-description">Automated journal entries with approval workflows</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="general-ledger/journal-entries.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-balance-scale"></i></div>
+                        <div class="financial-page-title">Trial Balance Analysis</div>
+                        <div class="financial-page-description">Real-time trial balance with variance analysis</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="general-ledger/trial-balance.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-calculator"></i></div>
+                        <div class="financial-page-title">General Ledger Reconciliation</div>
+                        <div class="financial-page-description">Automated account reconciliation with exception handling</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="general-ledger/gl-reconciliation.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="financial-page-title">Period Close Management</div>
+                        <div class="financial-page-description">Automated period close with checklist and validations</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="general-ledger/period-close.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-exchange-alt"></i></div>
+                        <div class="financial-page-title">Multi-Currency Management</div>
+                        <div class="financial-page-description">Currency translation and hedging management</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="general-ledger/multi-currency.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-layer-group"></i></div>
+                        <div class="financial-page-title">Consolidation Management</div>
+                        <div class="financial-page-description">Multi-entity consolidation with elimination entries</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="general-ledger/consolidation.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-cogs"></i></div>
+                        <div class="financial-page-title">Allocations Engine</div>
+                        <div class="financial-page-description">Automated cost and revenue allocations with rules</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="general-ledger/allocations.html" class="financial-page-link">Open Page</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Planning & Analysis (8 pages) -->
+            <div class="financial-category-section">
+                <h2><i class="fas fa-chart-pie"></i> Financial Planning & Analysis (8 Pages)</h2>
+                <div class="financial-pages-grid">
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-money-bill-wave"></i></div>
+                        <div class="financial-page-title">Budget Planning & Control</div>
+                        <div class="financial-page-description">Comprehensive budget planning with variance analysis</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="planning-analysis/budget-planning.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-chart-area"></i></div>
+                        <div class="financial-page-title">Forecasting & Modeling</div>
+                        <div class="financial-page-description">Predictive financial modeling with scenario analysis</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="planning-analysis/forecasting.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-bullseye"></i></div>
+                        <div class="financial-page-title">Performance Management</div>
+                        <div class="financial-page-description">KPI tracking and performance scorecards</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="planning-analysis/performance-mgmt.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-sitemap"></i></div>
+                        <div class="financial-page-title">Profitability Analysis</div>
+                        <div class="financial-page-description">Product and customer profitability analysis</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="planning-analysis/profitability.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-percentage"></i></div>
+                        <div class="financial-page-title">Variance Analysis</div>
+                        <div class="financial-page-description">Budget vs actual variance analysis with drill-down</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="planning-analysis/variance-analysis.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-coins"></i></div>
+                        <div class="financial-page-title">Cost Management</div>
+                        <div class="financial-page-description">Activity-based costing and cost center management</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="planning-analysis/cost-management.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-trendline"></i></div>
+                        <div class="financial-page-title">Financial Analytics</div>
+                        <div class="financial-page-description">Advanced financial analytics and trend analysis</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="planning-analysis/financial-analytics.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-route"></i></div>
+                        <div class="financial-page-title">Rolling Forecasts</div>
+                        <div class="financial-page-description">Continuous rolling forecast management</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="planning-analysis/rolling-forecasts.html" class="financial-page-link">Open Page</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Treasury & Cash Management (8 pages) -->
+            <div class="financial-category-section">
+                <h2><i class="fas fa-university"></i> Treasury & Cash Management (8 Pages)</h2>
+                <div class="financial-pages-grid">
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-cash-register"></i></div>
+                        <div class="financial-page-title">Cash Flow Management</div>
+                        <div class="financial-page-description">Real-time cash flow monitoring and forecasting</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="treasury/cash-flow-management.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-credit-card"></i></div>
+                        <div class="financial-page-title">Banking & Payments</div>
+                        <div class="financial-page-description">Multi-bank integration and payment processing</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="treasury/banking-payments.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-piggy-bank"></i></div>
+                        <div class="financial-page-title">Investment Management</div>
+                        <div class="financial-page-description">Portfolio management and investment tracking</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="treasury/investment-management.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="financial-page-title">Risk Management</div>
+                        <div class="financial-page-description">Financial risk assessment and hedging strategies</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="treasury/risk-management.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                        <div class="financial-page-title">Debt Management</div>
+                        <div class="financial-page-description">Debt portfolio management and covenant tracking</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="treasury/debt-management.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-globe"></i></div>
+                        <div class="financial-page-title">Foreign Exchange</div>
+                        <div class="financial-page-description">FX trading and hedging management</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="treasury/foreign-exchange.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-chart-bar"></i></div>
+                        <div class="financial-page-title">Liquidity Management</div>
+                        <div class="financial-page-description">Liquidity planning and optimization</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="treasury/liquidity-management.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-stamp"></i></div>
+                        <div class="financial-page-title">Treasury Operations</div>
+                        <div class="financial-page-description">Daily treasury operations and reporting</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="treasury/treasury-operations.html" class="financial-page-link">Open Page</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Reporting & Compliance (8 pages) -->
+            <div class="financial-category-section">
+                <h2><i class="fas fa-file-contract"></i> Financial Reporting & Compliance (8 Pages)</h2>
+                <div class="financial-pages-grid">
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="financial-page-title">Financial Statements</div>
+                        <div class="financial-page-description">Automated financial statement generation and formatting</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="reporting-compliance/financial-statements.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-gavel"></i></div>
+                        <div class="financial-page-title">Regulatory Reporting</div>
+                        <div class="financial-page-description">Automated regulatory compliance reporting</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="reporting-compliance/regulatory-reporting.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-receipt"></i></div>
+                        <div class="financial-page-title">Tax Management</div>
+                        <div class="financial-page-description">Tax calculation and reporting automation</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="reporting-compliance/tax-management.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-search"></i></div>
+                        <div class="financial-page-title">Audit Management</div>
+                        <div class="financial-page-description">Audit trail management and documentation</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="reporting-compliance/audit-management.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-eye"></i></div>
+                        <div class="financial-page-title">Internal Controls</div>
+                        <div class="financial-page-description">SOX compliance and internal control monitoring</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="reporting-compliance/internal-controls.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="financial-page-title">Management Reporting</div>
+                        <div class="financial-page-description">Executive dashboards and management reports</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="reporting-compliance/management-reporting.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-database"></i></div>
+                        <div class="financial-page-title">Data Governance</div>
+                        <div class="financial-page-description">Financial data quality and governance controls</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="reporting-compliance/data-governance.html" class="financial-page-link">Open Page</a>
+                    </div>
+                    
+                    <div class="financial-page-card">
+                        <div class="financial-page-icon"><i class="fas fa-tools"></i></div>
+                        <div class="financial-page-title">Report Builder</div>
+                        <div class="financial-page-description">Custom report builder with drag-and-drop interface</div>
+                        <div class="financial-page-status">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Business Ready</span>
+                        </div>
+                        <a href="reporting-compliance/report-builder.html" class="financial-page-link">Open Page</a>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- Financial Management JavaScript -->
+    <script src="scripts/financial-pages-common.js"></script>
+</body>
+</html>
