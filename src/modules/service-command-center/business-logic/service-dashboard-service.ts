@@ -386,7 +386,7 @@ export class ServiceDashboardService {
     };
   }
 
-  private async getMapData(config: any): Promise<any> {
+  public async getMapData(config: any): Promise<any> {
     // Return simulated map data
     return {
       resources: [

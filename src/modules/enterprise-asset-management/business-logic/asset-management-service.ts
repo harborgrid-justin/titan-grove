@@ -864,18 +864,7 @@ export class AssetManagementService {
     };
   }
 
-  private async getPredictiveInsights(assetId: string): Promise<any> {
-    return {
-      maintenanceRecommendations: [
-        {
-          recommendationType: 'SCHEDULE_MAINTENANCE',
-          priority: 'HIGH',
-          description: 'Schedule bearing replacement within 30 days',
-          estimatedBenefit: 15000
-        }
-      ]
-    };
-  }
+
 
   private async generatePerformanceInsights(performance: AssetPerformance): Promise<any[]> {
     return [];
