@@ -368,6 +368,436 @@ const logisticsPages = {
         'Data integration and ETL processes'
       ]
     }
+  ],
+  'procurement': [
+    {
+      name: 'supplier-management',
+      title: 'Strategic Supplier Management',
+      description: 'Comprehensive supplier lifecycle management with performance tracking and risk assessment',
+      features: [
+        'Supplier onboarding and qualification workflows',
+        'Performance scorecards and risk assessment',
+        'Contract lifecycle and compliance management',
+        'Supplier diversity and sustainability tracking'
+      ]
+    },
+    {
+      name: 'sourcing-optimization',
+      title: 'Strategic Sourcing & Optimization',
+      description: 'AI-driven sourcing strategies with spend analysis and category management',
+      features: [
+        'Category management and spend analysis',
+        'RFP/RFQ automation and evaluation',
+        'Should-cost modeling and market intelligence',
+        'Sourcing event management and auctions'
+      ]
+    },
+    {
+      name: 'purchase-order-management',
+      title: 'Purchase Order Management',
+      description: 'Automated purchase order processing with approval workflows and tracking',
+      features: [
+        'Automated PO creation and processing',
+        'Multi-level approval workflows',
+        'Receipt matching and three-way matching',
+        'PO change management and version control'
+      ]
+    },
+    {
+      name: 'vendor-portal',
+      title: 'Vendor Collaboration Portal',
+      description: 'Self-service vendor portal for order management and communication',
+      features: [
+        'Vendor self-service portal and registration',
+        'Order acknowledgment and status updates',
+        'Invoice submission and payment tracking',
+        'Document sharing and communication tools'
+      ]
+    },
+    {
+      name: 'contract-lifecycle',
+      title: 'Contract Lifecycle Management',
+      description: 'End-to-end contract management with automated renewals and compliance tracking',
+      features: [
+        'Contract authoring and template management',
+        'Approval workflows and digital signatures',
+        'Contract performance and milestone tracking',
+        'Automated renewal alerts and management'
+      ]
+    },
+    {
+      name: 'spend-analytics',
+      title: 'Procurement Spend Analytics',
+      description: 'Advanced spend analytics with cost savings tracking and procurement insights',
+      features: [
+        'Spend cube analysis and visualization',
+        'Cost savings tracking and reporting',
+        'Procurement KPI dashboards',
+        'Supplier performance analytics'
+      ]
+    },
+    {
+      name: 'risk-management',
+      title: 'Supplier Risk Management',
+      description: 'Comprehensive supplier risk assessment and mitigation strategies',
+      features: [
+        'Financial and operational risk assessment',
+        'Geopolitical and regulatory risk monitoring',
+        'Business continuity and contingency planning',
+        'Risk scoring and mitigation workflows'
+      ]
+    },
+    {
+      name: 'compliance-management',
+      title: 'Procurement Compliance Management',
+      description: 'Regulatory compliance tracking with audit trails and reporting',
+      features: [
+        'Regulatory compliance monitoring',
+        'Audit trail and documentation management',
+        'Policy enforcement and exception handling',
+        'Compliance reporting and certification'
+      ]
+    }
+  ],
+  'sustainability': [
+    {
+      name: 'carbon-footprint',
+      title: 'Carbon Footprint Tracking',
+      description: 'Comprehensive carbon footprint measurement and reduction planning across supply chain',
+      features: [
+        'Scope 1, 2, and 3 emissions tracking',
+        'Transportation carbon footprint analysis',
+        'Supplier carbon assessment and reporting',
+        'Carbon reduction goal setting and tracking'
+      ]
+    },
+    {
+      name: 'circular-economy',
+      title: 'Circular Economy Management',
+      description: 'Circular economy initiatives with waste reduction and material recovery tracking',
+      features: [
+        'Waste stream analysis and optimization',
+        'Material recovery and recycling tracking',
+        'Product lifecycle assessment (LCA)',
+        'Circular supply chain design'
+      ]
+    },
+    {
+      name: 'sustainable-sourcing',
+      title: 'Sustainable Sourcing',
+      description: 'Sustainable supplier selection with ESG criteria and certification tracking',
+      features: [
+        'ESG criteria integration and scoring',
+        'Sustainable supplier certification tracking',
+        'Ethical sourcing compliance monitoring',
+        'Social impact assessment and reporting'
+      ]
+    },
+    {
+      name: 'green-logistics',
+      title: 'Green Logistics Optimization',
+      description: 'Eco-friendly logistics planning with emission reduction and route optimization',
+      features: [
+        'Green transportation mode optimization',
+        'Fuel consumption and emission tracking',
+        'Eco-friendly packaging optimization',
+        'Sustainable last-mile delivery solutions'
+      ]
+    },
+    {
+      name: 'energy-management',
+      title: 'Energy Management System',
+      description: 'Facility energy management with renewable energy tracking and optimization',
+      features: [
+        'Energy consumption monitoring and optimization',
+        'Renewable energy tracking and reporting',
+        'Energy efficiency improvement programs',
+        'Utility cost management and forecasting'
+      ]
+    },
+    {
+      name: 'sustainability-reporting',
+      title: 'Sustainability Reporting & ESG',
+      description: 'Comprehensive sustainability reporting with ESG metrics and stakeholder communication',
+      features: [
+        'ESG metrics collection and reporting',
+        'Sustainability goal tracking and progress',
+        'Stakeholder communication and transparency',
+        'Regulatory sustainability compliance'
+      ]
+    }
+  ],
+  'quality': [
+    {
+      name: 'quality-control',
+      title: 'Quality Control Management',
+      description: 'Comprehensive quality control with inspection workflows and defect tracking',
+      features: [
+        'Inspection planning and scheduling',
+        'Quality control checkpoints and workflows',
+        'Defect tracking and root cause analysis',
+        'Quality metrics and performance dashboards'
+      ]
+    },
+    {
+      name: 'supplier-quality',
+      title: 'Supplier Quality Management',
+      description: 'Supplier quality assurance with certification tracking and performance monitoring',
+      features: [
+        'Supplier quality certification tracking',
+        'Incoming inspection and testing protocols',
+        'Supplier quality performance scorecards',
+        'Quality agreement management'
+      ]
+    },
+    {
+      name: 'corrective-actions',
+      title: 'Corrective Action Management',
+      description: 'Systematic corrective action process with issue tracking and resolution',
+      features: [
+        'Non-conformance reporting and tracking',
+        'Corrective action planning and implementation',
+        'Root cause analysis methodologies',
+        'Preventive action planning'
+      ]
+    },
+    {
+      name: 'quality-audits',
+      title: 'Quality Audit Management',
+      description: 'Quality audit planning and execution with compliance tracking',
+      features: [
+        'Audit planning and scheduling',
+        'Audit checklist and protocol management',
+        'Finding tracking and resolution',
+        'Audit report generation and distribution'
+      ]
+    },
+    {
+      name: 'document-control',
+      title: 'Quality Document Control',
+      description: 'Quality document management with version control and change tracking',
+      features: [
+        'Document version control and approval',
+        'Change request management',
+        'Document distribution and access control',
+        'Training record and competency tracking'
+      ]
+    },
+    {
+      name: 'quality-analytics',
+      title: 'Quality Analytics & Insights',
+      description: 'Advanced quality analytics with trend analysis and predictive insights',
+      features: [
+        'Quality trend analysis and reporting',
+        'Statistical process control (SPC)',
+        'Predictive quality analytics',
+        'Quality cost analysis and optimization'
+      ]
+    }
+  ],
+  'safety': [
+    {
+      name: 'incident-management',
+      title: 'Safety Incident Management',
+      description: 'Comprehensive incident reporting and investigation with corrective action tracking',
+      features: [
+        'Incident reporting and investigation workflows',
+        'Injury and near-miss tracking',
+        'Root cause analysis and corrective actions',
+        'Safety performance metrics and dashboards'
+      ]
+    },
+    {
+      name: 'hazmat-management',
+      title: 'Hazardous Materials Management',
+      description: 'Hazardous materials handling with regulatory compliance and safety protocols',
+      features: [
+        'Hazmat classification and labeling',
+        'Transportation safety compliance',
+        'Chemical inventory and tracking',
+        'Emergency response planning'
+      ]
+    },
+    {
+      name: 'training-compliance',
+      title: 'Safety Training & Compliance',
+      description: 'Safety training management with certification tracking and compliance monitoring',
+      features: [
+        'Safety training program management',
+        'Certification tracking and renewals',
+        'Compliance monitoring and reporting',
+        'Training effectiveness assessment'
+      ]
+    },
+    {
+      name: 'risk-assessment',
+      title: 'Safety Risk Assessment',
+      description: 'Workplace safety risk assessment with mitigation planning and monitoring',
+      features: [
+        'Workplace hazard identification',
+        'Risk assessment and scoring',
+        'Mitigation planning and implementation',
+        'Safety inspection and monitoring'
+      ]
+    },
+    {
+      name: 'emergency-response',
+      title: 'Emergency Response Management',
+      description: 'Emergency response planning and execution with communication and coordination',
+      features: [
+        'Emergency response plan development',
+        'Crisis communication and coordination',
+        'Resource allocation and deployment',
+        'Post-incident analysis and improvement'
+      ]
+    },
+    {
+      name: 'safety-analytics',
+      title: 'Safety Analytics & Reporting',
+      description: 'Safety performance analytics with predictive insights and trend analysis',
+      features: [
+        'Safety KPI tracking and reporting',
+        'Predictive safety analytics',
+        'Benchmarking and trend analysis',
+        'Regulatory compliance reporting'
+      ]
+    }
+  ],
+  'planning': [
+    {
+      name: 'demand-sensing',
+      title: 'Real-time Demand Sensing',
+      description: 'AI-driven real-time demand sensing with market signal integration',
+      features: [
+        'Real-time market signal integration',
+        'AI-driven demand pattern recognition',
+        'Point-of-sale data integration',
+        'Weather and event impact analysis'
+      ]
+    },
+    {
+      name: 'supply-planning',
+      title: 'Strategic Supply Planning',
+      description: 'Long-term supply planning with capacity modeling and constraint optimization',
+      features: [
+        'Capacity planning and modeling',
+        'Supply constraint optimization',
+        'Supplier capacity collaboration',
+        'Long-term supply strategy development'
+      ]
+    },
+    {
+      name: 'inventory-optimization',
+      title: 'Multi-echelon Inventory Optimization',
+      description: 'Advanced inventory optimization across multiple echelons with service level balancing',
+      features: [
+        'Multi-echelon inventory modeling',
+        'Service level optimization',
+        'Safety stock optimization',
+        'Inventory deployment strategies'
+      ]
+    },
+    {
+      name: 'sales-operations',
+      title: 'Sales & Operations Planning',
+      description: 'Integrated S&OP process with cross-functional collaboration and scenario planning',
+      features: [
+        'S&OP process workflow management',
+        'Cross-functional collaboration tools',
+        'Scenario planning and what-if analysis',
+        'Executive dashboard and reporting'
+      ]
+    },
+    {
+      name: 'capacity-planning',
+      title: 'Capacity Planning & Management',
+      description: 'Production and distribution capacity planning with bottleneck analysis',
+      features: [
+        'Production capacity modeling',
+        'Distribution capacity planning',
+        'Bottleneck identification and resolution',
+        'Capacity utilization optimization'
+      ]
+    },
+    {
+      name: 'new-product-planning',
+      title: 'New Product Introduction Planning',
+      description: 'New product launch planning with supply chain readiness assessment',
+      features: [
+        'Product launch planning and coordination',
+        'Supply chain readiness assessment',
+        'Supplier onboarding for new products',
+        'Launch risk assessment and mitigation'
+      ]
+    }
+  ],
+  'visibility': [
+    {
+      name: 'real-time-tracking',
+      title: 'Real-time Asset Tracking',
+      description: 'IoT-enabled real-time tracking of assets, shipments, and inventory across the supply chain',
+      features: [
+        'IoT sensor integration and monitoring',
+        'GPS tracking and geofencing',
+        'Temperature and humidity monitoring',
+        'Real-time alert and notification system'
+      ]
+    },
+    {
+      name: 'digital-twin',
+      title: 'Supply Chain Digital Twin',
+      description: 'Digital twin modeling of supply chain with simulation and optimization capabilities',
+      features: [
+        'Supply chain modeling and simulation',
+        'What-if scenario analysis',
+        'Optimization recommendation engine',
+        'Digital twin synchronization'
+      ]
+    },
+    {
+      name: 'blockchain-traceability',
+      title: 'Blockchain Traceability',
+      description: 'Blockchain-based product traceability with provenance tracking and verification',
+      features: [
+        'Product provenance and traceability',
+        'Blockchain transaction recording',
+        'Authentication and verification',
+        'Supply chain transparency reporting'
+      ]
+    },
+    {
+      name: 'predictive-monitoring',
+      title: 'Predictive Supply Chain Monitoring',
+      description: 'AI-powered predictive monitoring with anomaly detection and early warning systems',
+      features: [
+        'Anomaly detection and alerts',
+        'Predictive maintenance scheduling',
+        'Supply chain health monitoring',
+        'Early warning system implementation'
+      ]
+    },
+    {
+      name: 'collaboration-platform',
+      title: 'Supply Chain Collaboration Platform',
+      description: 'Multi-party collaboration platform with shared visibility and communication tools',
+      features: [
+        'Multi-party information sharing',
+        'Collaborative planning tools',
+        'Shared dashboard and reporting',
+        'Communication and messaging platform'
+      ]
+    },
+    {
+      name: 'exception-management',
+      title: 'Exception Management System',
+      description: 'Automated exception detection and resolution with escalation workflows',
+      features: [
+        'Exception detection and classification',
+        'Automated resolution workflows',
+        'Escalation and notification management',
+        'Exception analytics and learning'
+      ]
+    }
   ]
 };
 
@@ -536,24 +966,33 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 // Generate all logistics pages
-console.log('🚀 Generating 32 business-ready logistics pages...\n');
+console.log('🚀 Generating 80 business-ready logistics pages...\n');
 
+let totalPages = 0;
 Object.keys(logisticsPages).forEach(category => {
-  console.log(`📁 Creating ${category} category pages:`);
+  const categoryPages = logisticsPages[category].length;
+  totalPages += categoryPages;
+  console.log(`📁 Creating ${category} category pages (${categoryPages} pages):`);
   logisticsPages[category].forEach(pageData => {
     createLogisticsPage(category, pageData);
     createPageScript(category, pageData);
   });
 });
 
-console.log('\n✅ Successfully created 32 business-ready logistics pages!');
-console.log('📁 Pages organized in 6 categories:');
+console.log(`\n✅ Successfully created ${totalPages} business-ready logistics pages!`);
+console.log(`📁 Pages organized in ${Object.keys(logisticsPages).length} categories:`);
 console.log('   - Transportation Management (6 pages)');
 console.log('   - Warehouse Management (6 pages)');
 console.log('   - Route Optimization (5 pages)');
 console.log('   - Distribution Management (5 pages)');
 console.log('   - Freight Management (5 pages)');
 console.log('   - Logistics Analytics (5 pages)');
+console.log('   - Procurement Management (8 pages)');
+console.log('   - Sustainability Management (6 pages)');
+console.log('   - Quality Management (6 pages)');
+console.log('   - Safety Management (6 pages)');
+console.log('   - Planning & Forecasting (6 pages)');
+console.log('   - Visibility & Monitoring (6 pages)');
 console.log('\n🚀 All pages include:');
 console.log('   ✅ Complete frontend implementation');
 console.log('   ✅ Backend API integration');
