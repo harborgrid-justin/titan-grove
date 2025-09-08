@@ -679,6 +679,9 @@ export class TitanGrove {
   }
 
   private setupBusinessAPIs(app: any): void {
+    // Manufacturing APIs (49 endpoints)
+    this.setupManufacturingAPIs(app);
+
     // Financial Management APIs
     app.get('/api/financial/trial-balance', async (req: any, res: any) => {
       const balance = await this.financial.getTrialBalance(new Date());
@@ -961,6 +964,138 @@ export class TitanGrove {
         domains: 8 // New domain organization
       }
     };
+  }
+
+  /**
+   * Setup Manufacturing APIs - 49 endpoints for comprehensive manufacturing management
+   */
+  private setupManufacturingAPIs(app: any): void {
+    console.log('🏭 Setting up Manufacturing APIs (49 endpoints)...');
+
+    // Import manufacturing routes
+    const manufacturingRoutes = require('./api/manufacturing/manufacturing-routes').default;
+    
+    // Mount manufacturing routes
+    app.use('/api/manufacturing', manufacturingRoutes);
+
+    // Additional manufacturing endpoints integrated with business logic
+    
+    // Production Planning & Scheduling
+    app.get('/api/manufacturing/dashboard', async (req: any, res: any) => {
+      try {
+        const dashboard = await this.manufacturing.generateManufacturingDashboard();
+        res.json({ success: true, data: dashboard });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    app.get('/api/manufacturing/metrics', async (req: any, res: any) => {
+      try {
+        const startDate = req.query.startDate ? new Date(req.query.startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const endDate = req.query.endDate ? new Date(req.query.endDate) : new Date();
+        
+        const metrics = await this.manufacturing.getProductionMetrics(startDate, endDate);
+        res.json({ success: true, data: metrics });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // Advanced Manufacturing Capabilities
+    app.get('/api/manufacturing/lean-capabilities', async (req: any, res: any) => {
+      try {
+        const leanCapabilities = await this.manufacturing.getLeanManufacturingCapabilities();
+        res.json({ success: true, data: leanCapabilities });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    app.get('/api/manufacturing/industry40-capabilities', async (req: any, res: any) => {
+      try {
+        const industry40Capabilities = await this.manufacturing.getIndustry40Capabilities();
+        res.json({ success: true, data: industry40Capabilities });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    app.get('/api/manufacturing/advanced-dashboard', async (req: any, res: any) => {
+      try {
+        const advancedDashboard = await this.manufacturing.getAdvancedManufacturingDashboard();
+        res.json({ success: true, data: advancedDashboard });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // Supply Chain Integration
+    app.get('/api/manufacturing/supply-chain-integration', async (req: any, res: any) => {
+      try {
+        const integration = await this.manufacturing.integrateWithSupplyChain();
+        res.json({ success: true, data: integration });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // Real-time production status
+    app.get('/api/manufacturing/production-status', async (req: any, res: any) => {
+      try {
+        const status = await this.manufacturing.getRealtimeProductionStatus();
+        res.json({ success: true, data: status });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // Cost management endpoints
+    app.get('/api/manufacturing/product-costs/:productId', async (req: any, res: any) => {
+      try {
+        const { productId } = req.params;
+        const { costingMethod = 'STANDARD' } = req.query;
+        
+        const costs = await this.manufacturing.calculateProductCosts(
+          productId, 
+          costingMethod as 'STANDARD' | 'AVERAGE' | 'ACTUAL'
+        );
+        res.json({ success: true, data: costs });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // Material requirements
+    app.post('/api/manufacturing/material-requirements', async (req: any, res: any) => {
+      try {
+        const { workOrderId } = req.body;
+        const requirements = await this.manufacturing.generateMaterialRequirements(workOrderId);
+        res.json({ success: true, data: requirements });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // Capacity planning
+    app.get('/api/manufacturing/capacity/:workCenterCode', async (req: any, res: any) => {
+      try {
+        const { workCenterCode } = req.params;
+        const startDate = req.query.startDate ? new Date(req.query.startDate) : new Date();
+        const endDate = req.query.endDate ? new Date(req.query.endDate) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        
+        const capacity = await this.manufacturing.calculateWorkCenterCapacity(
+          workCenterCode,
+          startDate,
+          endDate
+        );
+        res.json({ success: true, data: capacity });
+      } catch (error: any) {
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    console.log('✅ Manufacturing APIs setup complete - 49 endpoints ready');
   }
 }
 
