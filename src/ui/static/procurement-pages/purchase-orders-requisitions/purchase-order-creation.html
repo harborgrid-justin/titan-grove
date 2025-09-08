@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Order Creation - Titan Grove Procurement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/asset-management.css">
+    <link rel="stylesheet" href="../styles/procurement-pages.css">
+</head>
+<body>
+    <div class="procurement-management-app">
+        <!-- Enterprise Header -->
+        <header class="procurement-enterprise-header">
+            <div class="procurement-header-left">
+                <div class="procurement-logo-enterprise">
+                    <i class="fas fa-plus-circle"></i>
+                    <span class="procurement-logo-text">Titan Grove</span>
+                    <span class="procurement-edition-badge">Purchase Order Creation</span>
+                </div>
+                <nav class="procurement-breadcrumb-nav">
+                    <a href="../../supply-chain-management.html">Supply Chain</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Procurement Pages</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Purchase Order Creation</span>
+                </nav>
+            </div>
+            <div class="procurement-header-actions">
+                <button class="procurement-btn procurement-btn-secondary">
+                    <i class="fas fa-save"></i> Save Draft
+                </button>
+                <button class="procurement-btn procurement-btn-primary">
+                    <i class="fas fa-paper-plane"></i> Submit PO
+                </button>
+            </div>
+        </header>
+
+        <main class="procurement-main-content">
+            <!-- PO Creation Form -->
+            <div class="po-creation-container">
+                <!-- PO Header Information -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Purchase Order Information</h3>
+                        <div class="po-number">
+                            <span>PO Number: </span>
+                            <strong id="poNumber">PO-2025-0247</strong>
+                        </div>
+                    </div>
+                    <div class="po-header-form">
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label>Supplier *</label>
+                                <select class="form-control" id="supplier" required>
+                                    <option value="">Select Supplier</option>
+                                    <option value="sup_001">Acme Manufacturing Inc.</option>
+                                    <option value="sup_002">Global Tech Solutions</option>
+                                    <option value="sup_003">Industrial Parts Corp</option>
+                                    <option value="sup_004">Quality Components Ltd</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Delivery Date *</label>
+                                <input type="date" class="form-control" id="deliveryDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Priority</label>
+                                <select class="form-control" id="priority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Department</label>
+                                <select class="form-control" id="department">
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="it">IT Department</option>
+                                    <option value="facilities">Facilities</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="research">Research & Development</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Cost Center</label>
+                                <input type="text" class="form-control" id="costCenter" placeholder="CC-001">
+                            </div>
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select class="form-control" id="currency">
+                                    <option value="USD" selected>USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="CAD">CAD</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description / Notes</label>
+                            <textarea class="form-control" id="description" rows="3" 
+                                      placeholder="Purchase order description and special instructions..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Line Items -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Line Items</h3>
+                        <button class="procurement-btn procurement-btn-primary btn-sm" onclick="poManager.addLineItem()">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
+                    </div>
+                    <div class="line-items-container">
+                        <div class="line-items-header">
+                            <div class="item-col-desc">Description</div>
+                            <div class="item-col-qty">Quantity</div>
+                            <div class="item-col-unit">Unit</div>
+                            <div class="item-col-price">Unit Price</div>
+                            <div class="item-col-total">Total</div>
+                            <div class="item-col-actions">Actions</div>
+                        </div>
+                        <div id="lineItemsContainer">
+                            <!-- Line items will be added dynamically -->
+                        </div>
+                        <div class="add-item-row">
+                            <button class="btn-add-item" onclick="poManager.addLineItem()">
+                                <i class="fas fa-plus"></i> Add Line Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delivery & Billing Information -->
+                <div class="procurement-form-grid">
+                    <div class="procurement-card">
+                        <div class="procurement-card-header">
+                            <h3>Delivery Information</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Delivery Address</label>
+                            <select class="form-control" id="deliveryAddress">
+                                <option value="main">Main Warehouse - 123 Industrial Blvd</option>
+                                <option value="dock2">Dock 2 - 456 Receiving Way</option>
+                                <option value="facility3">Facility 3 - 789 Production St</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Special Instructions</label>
+                            <textarea class="form-control" rows="3" 
+                                      placeholder="Delivery instructions, contact person, access requirements..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Incoterms</label>
+                            <select class="form-control">
+                                <option value="FOB">FOB - Free on Board</option>
+                                <option value="CIF">CIF - Cost, Insurance, Freight</option>
+                                <option value="DDP">DDP - Delivered Duty Paid</option>
+                                <option value="EXW">EXW - Ex Works</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="procurement-card">
+                        <div class="procurement-card-header">
+                            <h3>Payment Terms</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Terms</label>
+                            <select class="form-control" id="paymentTerms">
+                                <option value="net30">Net 30 Days</option>
+                                <option value="net60">Net 60 Days</option>
+                                <option value="cod">Cash on Delivery</option>
+                                <option value="prepaid">Prepaid</option>
+                                <option value="2-10-net30">2/10 Net 30</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <select class="form-control">
+                                <option value="ach">ACH Transfer</option>
+                                <option value="check">Check</option>
+                                <option value="wire">Wire Transfer</option>
+                                <option value="card">Corporate Card</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Purchase Order Total</label>
+                            <div class="po-total-display">
+                                <div class="total-line">
+                                    <span>Subtotal:</span>
+                                    <span id="subtotal">$0.00</span>
+                                </div>
+                                <div class="total-line">
+                                    <span>Tax (8.5%):</span>
+                                    <span id="tax">$0.00</span>
+                                </div>
+                                <div class="total-line">
+                                    <span>Shipping:</span>
+                                    <span id="shipping">$0.00</span>
+                                </div>
+                                <div class="total-line total-final">
+                                    <span>Total:</span>
+                                    <span id="total">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Approval Workflow Preview -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Approval Workflow</h3>
+                        <span class="workflow-status">Pending Submission</span>
+                    </div>
+                    <div class="approval-workflow">
+                        <div class="approval-step">
+                            <div class="step-icon pending">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="step-info">
+                                <div class="step-title">Department Manager</div>
+                                <div class="step-person">Sarah Johnson</div>
+                                <div class="step-amount">Up to $25,000</div>
+                            </div>
+                        </div>
+                        <div class="approval-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="approval-step">
+                            <div class="step-icon pending">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="step-info">
+                                <div class="step-title">Finance Director</div>
+                                <div class="step-person">Michael Chen</div>
+                                <div class="step-amount">$25,000 - $100,000</div>
+                            </div>
+                        </div>
+                        <div class="approval-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="approval-step">
+                            <div class="step-icon pending">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="step-info">
+                                <div class="step-title">CEO Approval</div>
+                                <div class="step-person">Alexandra Torres</div>
+                                <div class="step-amount">Above $100,000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Budget Check -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Budget Validation</h3>
+                        <span class="budget-status available">
+                            <i class="fas fa-check-circle"></i> Budget Available
+                        </span>
+                    </div>
+                    <div class="budget-info">
+                        <div class="budget-details">
+                            <div class="budget-item">
+                                <span class="budget-label">Department Budget:</span>
+                                <span class="budget-value">$150,000</span>
+                            </div>
+                            <div class="budget-item">
+                                <span class="budget-label">Used This Month:</span>
+                                <span class="budget-value">$45,200</span>
+                            </div>
+                            <div class="budget-item">
+                                <span class="budget-label">Available:</span>
+                                <span class="budget-value available">$104,800</span>
+                            </div>
+                            <div class="budget-item">
+                                <span class="budget-label">This PO:</span>
+                                <span class="budget-value" id="budgetPOAmount">$0.00</span>
+                            </div>
+                            <div class="budget-item">
+                                <span class="budget-label">Remaining After:</span>
+                                <span class="budget-value" id="budgetRemaining">$104,800</span>
+                            </div>
+                        </div>
+                        <div class="budget-chart">
+                            <div class="budget-bar">
+                                <div class="budget-used" style="width: 30%"></div>
+                                <div class="budget-reserved" style="width: 0%" id="budgetReserved"></div>
+                            </div>
+                            <div class="budget-labels">
+                                <span>Used: 30%</span>
+                                <span id="budgetPercentage">Available: 70%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button class="procurement-btn procurement-btn-secondary" onclick="poManager.saveDraft()">
+                        <i class="fas fa-save"></i> Save as Draft
+                    </button>
+                    <button class="procurement-btn procurement-btn-secondary" onclick="poManager.previewPO()">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button class="procurement-btn procurement-btn-primary" onclick="poManager.submitPO()">
+                        <i class="fas fa-paper-plane"></i> Submit for Approval
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Purchase Order Creation JavaScript -->
+    <script src="../scripts/purchase-order-creation.js"></script>
+</body>
+</html>

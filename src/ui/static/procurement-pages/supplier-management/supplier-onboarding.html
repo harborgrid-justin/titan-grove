@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Onboarding - Titan Grove Procurement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/asset-management.css">
+    <link rel="stylesheet" href="../styles/procurement-pages.css">
+</head>
+<body>
+    <div class="procurement-management-app">
+        <!-- Enterprise Header -->
+        <header class="procurement-enterprise-header">
+            <div class="procurement-header-left">
+                <div class="procurement-logo-enterprise">
+                    <i class="fas fa-user-plus"></i>
+                    <span class="procurement-logo-text">Titan Grove</span>
+                    <span class="procurement-edition-badge">Supplier Onboarding</span>
+                </div>
+                <nav class="procurement-breadcrumb-nav">
+                    <a href="../../supply-chain-management.html">Supply Chain</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Procurement Pages</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Supplier Onboarding</span>
+                </nav>
+            </div>
+            <div class="procurement-header-actions">
+                <button class="procurement-btn procurement-btn-primary">
+                    <i class="fas fa-plus"></i> New Supplier
+                </button>
+                <button class="procurement-btn procurement-btn-secondary">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+        </header>
+
+        <main class="procurement-main-content">
+            <!-- Page Header with KPIs -->
+            <div class="procurement-page-header">
+                <div class="procurement-page-title">
+                    <h1>Supplier Onboarding Management</h1>
+                    <p>Comprehensive supplier registration and approval workflow system</p>
+                </div>
+                <div class="procurement-kpi-grid">
+                    <div class="procurement-kpi-card">
+                        <div class="procurement-kpi-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="procurement-kpi-content">
+                            <div class="procurement-kpi-value">47</div>
+                            <div class="procurement-kpi-label">Pending Applications</div>
+                        </div>
+                    </div>
+                    <div class="procurement-kpi-card">
+                        <div class="procurement-kpi-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="procurement-kpi-content">
+                            <div class="procurement-kpi-value">234</div>
+                            <div class="procurement-kpi-label">Approved Suppliers</div>
+                        </div>
+                    </div>
+                    <div class="procurement-kpi-card">
+                        <div class="procurement-kpi-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="procurement-kpi-content">
+                            <div class="procurement-kpi-value">5.2</div>
+                            <div class="procurement-kpi-label">Avg. Processing Days</div>
+                        </div>
+                    </div>
+                    <div class="procurement-kpi-card">
+                        <div class="procurement-kpi-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="procurement-kpi-content">
+                            <div class="procurement-kpi-value">94%</div>
+                            <div class="procurement-kpi-label">Approval Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onboarding Dashboard -->
+            <div class="procurement-dashboard-grid">
+                <!-- Supplier Applications Table -->
+                <div class="procurement-card procurement-card-large">
+                    <div class="procurement-card-header">
+                        <h3>Supplier Applications</h3>
+                        <div class="procurement-card-actions">
+                            <input type="text" placeholder="Search suppliers..." class="procurement-search-input-sm">
+                            <select class="procurement-select-sm">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending Review</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="procurement-table-container">
+                        <table class="procurement-table">
+                            <thead>
+                                <tr>
+                                    <th>Supplier Name</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Submitted</th>
+                                    <th>Priority</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="suppliersTable">
+                                <tr>
+                                    <td>
+                                        <div class="supplier-info">
+                                            <div class="supplier-name">Acme Manufacturing Inc.</div>
+                                            <div class="supplier-email">contact@acme-mfg.com</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="category-tag manufacturing">Manufacturing</span></td>
+                                    <td><span class="status-badge pending">Pending Review</span></td>
+                                    <td>2025-01-15</td>
+                                    <td><span class="priority-badge high">High</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="View Details"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="Approve"><i class="fas fa-check"></i></button>
+                                            <button class="btn-icon" title="Request Info"><i class="fas fa-question"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="supplier-info">
+                                            <div class="supplier-name">Global Tech Solutions</div>
+                                            <div class="supplier-email">procurement@globaltech.com</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="category-tag technology">Technology</span></td>
+                                    <td><span class="status-badge approved">Approved</span></td>
+                                    <td>2025-01-12</td>
+                                    <td><span class="priority-badge medium">Medium</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="View Details"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon" title="Documents"><i class="fas fa-file-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="supplier-info">
+                                            <div class="supplier-name">Green Energy Corp</div>
+                                            <div class="supplier-email">info@greenenergy.com</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="category-tag services">Services</span></td>
+                                    <td><span class="status-badge under-review">Under Review</span></td>
+                                    <td>2025-01-10</td>
+                                    <td><span class="priority-badge low">Low</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon" title="View Details"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="Request Info"><i class="fas fa-question"></i></button>
+                                            <button class="btn-icon" title="Schedule Meeting"><i class="fas fa-calendar"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Onboarding Workflow -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Onboarding Workflow</h3>
+                    </div>
+                    <div class="workflow-steps">
+                        <div class="workflow-step completed">
+                            <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+                            <div class="step-content">
+                                <div class="step-title">Application Submitted</div>
+                                <div class="step-description">Supplier submits registration form</div>
+                            </div>
+                        </div>
+                        <div class="workflow-step completed">
+                            <div class="step-icon"><i class="fas fa-search"></i></div>
+                            <div class="step-content">
+                                <div class="step-title">Initial Review</div>
+                                <div class="step-description">Basic information validation</div>
+                            </div>
+                        </div>
+                        <div class="workflow-step active">
+                            <div class="step-icon"><i class="fas fa-clipboard-check"></i></div>
+                            <div class="step-content">
+                                <div class="step-title">Document Verification</div>
+                                <div class="step-description">Legal and financial documents review</div>
+                            </div>
+                        </div>
+                        <div class="workflow-step">
+                            <div class="step-icon"><i class="fas fa-handshake"></i></div>
+                            <div class="step-content">
+                                <div class="step-title">Risk Assessment</div>
+                                <div class="step-description">Financial and operational risk evaluation</div>
+                            </div>
+                        </div>
+                        <div class="workflow-step">
+                            <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="step-content">
+                                <div class="step-title">Final Approval</div>
+                                <div class="step-description">Supplier activation and setup</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-icon approved">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Supplier Approved</div>
+                                <div class="activity-description">Global Tech Solutions has been approved</div>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon pending">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">New Application</div>
+                                <div class="activity-description">Acme Manufacturing Inc. submitted application</div>
+                                <div class="activity-time">4 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon info">
+                                <i class="fas fa-info"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Document Requested</div>
+                                <div class="activity-description">Additional tax certificate requested from Green Energy Corp</div>
+                                <div class="activity-time">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="procurement-card">
+                    <div class="procurement-card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>Add New Supplier</span>
+                        </button>
+                        <button class="quick-action-btn">
+                            <i class="fas fa-upload"></i>
+                            <span>Bulk Import</span>
+                        </button>
+                        <button class="quick-action-btn">
+                            <i class="fas fa-file-export"></i>
+                            <span>Export Applications</span>
+                        </button>
+                        <button class="quick-action-btn">
+                            <i class="fas fa-cog"></i>
+                            <span>Workflow Settings</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Supplier Onboarding JavaScript -->
+    <script src="../scripts/supplier-onboarding.js"></script>
+</body>
+</html>
