@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certifications - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Technician Management</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Certifications</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="addCertificationBtn">
+                    <i class="fas fa-plus"></i>
+                    Add Certification
+                </button>
+                <button class="titan-btn titan-btn-primary" id="scheduleTrainingBtn">
+                    <i class="fas fa-calendar-plus"></i>
+                    Schedule Training
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Certifications</h1>
+                    <p class="page-subtitle">Manage certifications and training for field technicians</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalCertifications">127</div>
+                        <div class="stat-label">Total Certifications</div>
+                        <div class="stat-subtext">across all technicians</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="expiringCount">8</div>
+                        <div class="stat-label">Expiring Soon</div>
+                        <div class="stat-subtext">within 90 days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="complianceRate">94%</div>
+                        <div class="stat-label">Compliance Rate</div>
+                        <div class="stat-subtext">certification validity</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Certification Filters -->
+                <div class="certification-controls">
+                    <div class="control-section">
+                        <h3>Certification Management</h3>
+                        <div class="certification-filters">
+                            <div class="filter-group">
+                                <label for="technicianFilter">Technician</label>
+                                <select id="technicianFilter">
+                                    <option value="all">All Technicians</option>
+                                    <option value="tech_001">John Smith</option>
+                                    <option value="tech_002">Sarah Johnson</option>
+                                    <option value="tech_003">Mike Rodriguez</option>
+                                    <option value="tech_004">Lisa Chen</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="certificationStatus">Status</label>
+                                <select id="certificationStatus">
+                                    <option value="all">All Status</option>
+                                    <option value="valid">Valid</option>
+                                    <option value="expiring">Expiring Soon</option>
+                                    <option value="expired">Expired</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="certificationCategory">Category</label>
+                                <select id="certificationCategory">
+                                    <option value="all">All Categories</option>
+                                    <option value="hvac">HVAC</option>
+                                    <option value="electrical">Electrical</option>
+                                    <option value="plumbing">Plumbing</option>
+                                    <option value="safety">Safety</option>
+                                    <option value="specialized">Specialized</option>
+                                </select>
+                            </div>
+                            <button class="refresh-btn" id="refreshCertificationsBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certification Dashboard -->
+                <div class="certification-dashboard">
+                    <!-- Certification Overview -->
+                    <div class="overview-section">
+                        <div class="overview-cards">
+                            <div class="overview-card">
+                                <div class="card-header">
+                                    <i class="fas fa-certificate"></i>
+                                    <h4>Active Certifications</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="metric-large" id="activeCertifications">119</div>
+                                    <div class="metric-trend positive">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>+5 this month</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="overview-card">
+                                <div class="card-header">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <h4>Compliance Alerts</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="metric-large warning" id="complianceAlerts">8</div>
+                                    <div class="metric-description">certifications expiring</div>
+                                </div>
+                            </div>
+
+                            <div class="overview-card">
+                                <div class="card-header">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <h4>Training Sessions</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="metric-large" id="upcomingTraining">12</div>
+                                    <div class="metric-description">scheduled this quarter</div>
+                                </div>
+                            </div>
+
+                            <div class="overview-card">
+                                <div class="card-header">
+                                    <i class="fas fa-users"></i>
+                                    <h4>Certified Technicians</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="metric-large" id="certifiedTechnicians">15</div>
+                                    <div class="metric-description">out of 16 total</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certification Table -->
+                    <div class="certification-table-section">
+                        <div class="table-header">
+                            <h4>Certification Details</h4>
+                            <div class="table-controls">
+                                <input type="text" id="searchCertifications" placeholder="Search certifications...">
+                                <select id="sortCertifications">
+                                    <option value="technician">Sort by Technician</option>
+                                    <option value="certification">Sort by Certification</option>
+                                    <option value="expiry">Sort by Expiry Date</option>
+                                    <option value="status">Sort by Status</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="certification-table-container">
+                            <table class="certification-table" id="certificationTable">
+                                <thead>
+                                    <tr>
+                                        <th>Technician</th>
+                                        <th>Certification</th>
+                                        <th>Category</th>
+                                        <th>Issue Date</th>
+                                        <th>Expiry Date</th>
+                                        <th>Status</th>
+                                        <th>Renewal</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="certificationTableBody">
+                                    <!-- Table rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Training Calendar -->
+                    <div class="training-calendar-section">
+                        <div class="calendar-header">
+                            <h4>Training Schedule</h4>
+                            <div class="calendar-controls">
+                                <button class="calendar-nav" id="prevMonthBtn">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span class="current-month" id="currentMonthDisplay">March 2024</span>
+                                <button class="calendar-nav" id="nextMonthBtn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="training-calendar" id="trainingCalendar">
+                            <div class="calendar-placeholder">
+                                <i class="fas fa-calendar"></i>
+                                <p>Training Calendar</p>
+                                <div class="upcoming-sessions">
+                                    <div class="session-item">
+                                        <span class="session-date">Mar 15</span>
+                                        <span class="session-title">HVAC Advanced Certification</span>
+                                        <span class="session-attendees">6 attendees</span>
+                                    </div>
+                                    <div class="session-item">
+                                        <span class="session-date">Mar 22</span>
+                                        <span class="session-title">Electrical Safety Training</span>
+                                        <span class="session-attendees">8 attendees</span>
+                                    </div>
+                                    <div class="session-item">
+                                        <span class="session-date">Mar 29</span>
+                                        <span class="session-title">EPA Certification Renewal</span>
+                                        <span class="session-attendees">4 attendees</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Certification Modal -->
+                <div class="modal" id="addCertificationModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Add Certification</h3>
+                            <button class="modal-close" id="closeAddCertificationModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="certification-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="certTechnician">Technician</label>
+                                        <select id="certTechnician">
+                                            <option value="">Select Technician</option>
+                                            <option value="tech_001">John Smith</option>
+                                            <option value="tech_002">Sarah Johnson</option>
+                                            <option value="tech_003">Mike Rodriguez</option>
+                                            <option value="tech_004">Lisa Chen</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="certName">Certification Name</label>
+                                        <input type="text" id="certName" placeholder="Enter certification name">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="certCategory">Category</label>
+                                        <select id="certCategory">
+                                            <option value="hvac">HVAC</option>
+                                            <option value="electrical">Electrical</option>
+                                            <option value="plumbing">Plumbing</option>
+                                            <option value="safety">Safety</option>
+                                            <option value="specialized">Specialized</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="certProvider">Certification Provider</label>
+                                        <input type="text" id="certProvider" placeholder="Enter provider name">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="certIssueDate">Issue Date</label>
+                                        <input type="date" id="certIssueDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="certExpiryDate">Expiry Date</label>
+                                        <input type="date" id="certExpiryDate">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="certNumber">Certification Number</label>
+                                        <input type="text" id="certNumber" placeholder="Enter certification number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="certLevel">Level</label>
+                                        <select id="certLevel">
+                                            <option value="basic">Basic</option>
+                                            <option value="intermediate">Intermediate</option>
+                                            <option value="advanced">Advanced</option>
+                                            <option value="expert">Expert</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="certNotes">Notes</label>
+                                    <textarea id="certNotes" rows="3" placeholder="Additional notes or requirements"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="titan-btn titan-btn-secondary" id="cancelAddCertificationBtn">Cancel</button>
+                            <button class="titan-btn titan-btn-primary" id="confirmAddCertificationBtn">
+                                <i class="fas fa-plus"></i>
+                                Add Certification
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule Training Modal -->
+                <div class="modal" id="scheduleTrainingModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Schedule Training Session</h3>
+                            <button class="modal-close" id="closeScheduleTrainingModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="training-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="trainingTitle">Training Title</label>
+                                        <input type="text" id="trainingTitle" placeholder="Enter training session title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="trainingCategory">Category</label>
+                                        <select id="trainingCategory">
+                                            <option value="hvac">HVAC</option>
+                                            <option value="electrical">Electrical</option>
+                                            <option value="plumbing">Plumbing</option>
+                                            <option value="safety">Safety</option>
+                                            <option value="general">General</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="trainingDate">Date</label>
+                                        <input type="date" id="trainingDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="trainingTime">Time</label>
+                                        <input type="time" id="trainingTime">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="trainingDuration">Duration (hours)</label>
+                                        <input type="number" id="trainingDuration" min="0.5" max="8" step="0.5" value="4">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="trainingLocation">Location</label>
+                                        <input type="text" id="trainingLocation" placeholder="Training location">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="trainingAttendees">Attendees</label>
+                                    <div class="attendees-selection">
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" value="tech_001"> John Smith
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" value="tech_002"> Sarah Johnson
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" value="tech_003"> Mike Rodriguez
+                                        </label>
+                                        <label class="checkbox-item">
+                                            <input type="checkbox" value="tech_004"> Lisa Chen
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="trainingDescription">Description</label>
+                                    <textarea id="trainingDescription" rows="3" placeholder="Training session description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="titan-btn titan-btn-secondary" id="cancelScheduleTrainingBtn">Cancel</button>
+                            <button class="titan-btn titan-btn-primary" id="confirmScheduleTrainingBtn">
+                                <i class="fas fa-calendar-plus"></i>
+                                Schedule Training
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/certifications.js"></script>
+</body>
+</html>

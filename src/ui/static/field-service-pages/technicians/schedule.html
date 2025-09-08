@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technician Schedule - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Technician Management</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Technician Schedule</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="assignWorkBtn">
+                    <i class="fas fa-plus"></i>
+                    Assign Work
+                </button>
+                <button class="titan-btn titan-btn-primary" id="updateScheduleBtn">
+                    <i class="fas fa-save"></i>
+                    Update Schedule
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Technician Schedule</h1>
+                    <p class="page-subtitle">Individual technician scheduling and work assignment management</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalHours">40</div>
+                        <div class="stat-label">Scheduled Hours</div>
+                        <div class="stat-subtext">this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="utilization">92%</div>
+                        <div class="stat-label">Utilization</div>
+                        <div class="stat-subtext">efficiency rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completionRate">98%</div>
+                        <div class="stat-label">Completion</div>
+                        <div class="stat-subtext">on-time delivery</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Technician Selection and Filters -->
+                <div class="schedule-controls">
+                    <div class="control-section">
+                        <h3>Schedule Management</h3>
+                        <div class="schedule-filters">
+                            <div class="filter-group">
+                                <label for="technicianSelect">Technician</label>
+                                <select id="technicianSelect">
+                                    <option value="tech_001">John Smith</option>
+                                    <option value="tech_002">Sarah Johnson</option>
+                                    <option value="tech_003">Mike Rodriguez</option>
+                                    <option value="tech_004">Lisa Chen</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="weekSelect">Week</label>
+                                <input type="week" id="weekSelect" value="">
+                            </div>
+                            <div class="filter-group">
+                                <label for="viewType">View</label>
+                                <select id="viewType">
+                                    <option value="week">Weekly View</option>
+                                    <option value="day">Daily View</option>
+                                    <option value="month">Monthly View</option>
+                                </select>
+                            </div>
+                            <button class="refresh-btn" id="refreshScheduleBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technician Information Panel -->
+                <div class="technician-info-panel">
+                    <div class="tech-profile" id="selectedTechProfile">
+                        <div class="tech-avatar">
+                            <img src="https://ui-avatars.com/api/?name=John+Smith&background=0D8ABC&color=fff" alt="Technician" id="techAvatar">
+                        </div>
+                        <div class="tech-details">
+                            <h4 id="techName">John Smith</h4>
+                            <div class="tech-meta">
+                                <span class="tech-id">ID: <span id="techId">TECH001</span></span>
+                                <span class="tech-status" id="techStatus">Available</span>
+                            </div>
+                            <div class="tech-skills" id="techSkills">
+                                <span class="skill-tag">HVAC</span>
+                                <span class="skill-tag">Electrical</span>
+                                <span class="skill-tag">Plumbing</span>
+                            </div>
+                        </div>
+                        <div class="tech-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="weeklyHours">40</span>
+                                <span class="stat-label">Hours</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="workOrders">8</span>
+                                <span class="stat-label">Work Orders</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="avgRating">4.8</span>
+                                <span class="stat-label">Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule Calendar -->
+                <div class="schedule-calendar">
+                    <div class="calendar-header">
+                        <h3>Weekly Schedule</h3>
+                        <div class="calendar-navigation">
+                            <button class="nav-btn" id="prevWeekBtn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span class="current-week" id="currentWeekDisplay">March 6-12, 2024</span>
+                            <button class="nav-btn" id="nextWeekBtn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="calendar-grid">
+                        <div class="time-column">
+                            <div class="time-header">Time</div>
+                            <div class="time-slots">
+                                <div class="time-slot">8:00 AM</div>
+                                <div class="time-slot">9:00 AM</div>
+                                <div class="time-slot">10:00 AM</div>
+                                <div class="time-slot">11:00 AM</div>
+                                <div class="time-slot">12:00 PM</div>
+                                <div class="time-slot">1:00 PM</div>
+                                <div class="time-slot">2:00 PM</div>
+                                <div class="time-slot">3:00 PM</div>
+                                <div class="time-slot">4:00 PM</div>
+                                <div class="time-slot">5:00 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="days-grid">
+                            <div class="day-column">
+                                <div class="day-header">Monday</div>
+                                <div class="day-slots" id="mondaySlots">
+                                    <!-- Schedule items will be populated here -->
+                                </div>
+                            </div>
+                            <div class="day-column">
+                                <div class="day-header">Tuesday</div>
+                                <div class="day-slots" id="tuesdaySlots">
+                                    <!-- Schedule items will be populated here -->
+                                </div>
+                            </div>
+                            <div class="day-column">
+                                <div class="day-header">Wednesday</div>
+                                <div class="day-slots" id="wednesdaySlots">
+                                    <!-- Schedule items will be populated here -->
+                                </div>
+                            </div>
+                            <div class="day-column">
+                                <div class="day-header">Thursday</div>
+                                <div class="day-slots" id="thursdaySlots">
+                                    <!-- Schedule items will be populated here -->
+                                </div>
+                            </div>
+                            <div class="day-column">
+                                <div class="day-header">Friday</div>
+                                <div class="day-slots" id="fridaySlots">
+                                    <!-- Schedule items will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule Summary -->
+                <div class="schedule-summary">
+                    <div class="summary-section">
+                        <h4>Week Summary</h4>
+                        <div class="summary-grid">
+                            <div class="summary-card">
+                                <div class="summary-header">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Time Management</span>
+                                </div>
+                                <div class="summary-content">
+                                    <div class="summary-item">
+                                        <span>Scheduled Hours:</span>
+                                        <span id="summaryScheduledHours">40</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Travel Time:</span>
+                                        <span id="summaryTravelTime">6 hrs</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Overtime:</span>
+                                        <span id="summaryOvertime">0 hrs</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="summary-card">
+                                <div class="summary-header">
+                                    <i class="fas fa-tasks"></i>
+                                    <span>Work Orders</span>
+                                </div>
+                                <div class="summary-content">
+                                    <div class="summary-item">
+                                        <span>Total Assigned:</span>
+                                        <span id="summaryTotalOrders">8</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>High Priority:</span>
+                                        <span id="summaryHighPriority">2</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Emergency:</span>
+                                        <span id="summaryEmergency">0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="summary-card">
+                                <div class="summary-header">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <span>Location Coverage</span>
+                                </div>
+                                <div class="summary-content">
+                                    <div class="summary-item">
+                                        <span>Service Area:</span>
+                                        <span id="summaryServiceArea">Downtown</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Total Distance:</span>
+                                        <span id="summaryDistance">147 miles</span>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Efficiency:</span>
+                                        <span id="summaryEfficiency">94%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work Assignment Modal -->
+                <div class="modal" id="assignWorkModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Assign Work Order</h3>
+                            <button class="modal-close" id="closeAssignModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="assign-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="workOrderSelect">Work Order</label>
+                                        <select id="workOrderSelect">
+                                            <!-- Options will be populated by JavaScript -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assignDate">Date</label>
+                                        <input type="date" id="assignDate">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="assignTime">Start Time</label>
+                                        <input type="time" id="assignTime">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="estimatedDuration">Duration (hours)</label>
+                                        <input type="number" id="estimatedDuration" min="0.5" max="8" step="0.5" value="2">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="assignNotes">Notes</label>
+                                    <textarea id="assignNotes" rows="3" placeholder="Additional notes or instructions"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="titan-btn titan-btn-secondary" id="cancelAssignBtn">Cancel</button>
+                            <button class="titan-btn titan-btn-primary" id="confirmAssignBtn">
+                                <i class="fas fa-plus"></i>
+                                Assign Work Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/technician-schedule.js"></script>
+</body>
+</html>

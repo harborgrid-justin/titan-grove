@@ -2610,6 +2610,419 @@ router.delete('/field-service/routes/stops/:stopId', async (req, res) => {
   }
 });
 
+// ==================== TECHNICIAN MANAGEMENT ENDPOINTS ====================
+
+/**
+ * Get technician schedule
+ */
+router.get('/field-service/technicians/:techId/schedule', async (req, res) => {
+  try {
+    const { techId } = req.params;
+    const { week } = req.query;
+    
+    // Sample schedule data
+    const schedule = {
+      stats: {
+        totalHours: 40,
+        utilization: '92%',
+        completionRate: '98%'
+      },
+      schedule: {
+        monday: [
+          {
+            id: 'sched_001',
+            workOrderId: 'WO-001',
+            startTime: '08:00',
+            endTime: '10:00',
+            customer: 'Acme Corp',
+            serviceType: 'HVAC Repair',
+            location: 'Downtown',
+            priority: 'high'
+          }
+        ],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: []
+      }
+    };
+    
+    res.json({ success: true, data: schedule });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get technician profile
+ */
+router.get('/field-service/technicians/:techId/profile', async (req, res) => {
+  try {
+    const { techId } = req.params;
+    
+    const profiles = {
+      'tech_001': {
+        id: 'TECH001',
+        name: 'John Smith',
+        status: 'Available',
+        skills: ['HVAC', 'Electrical', 'Plumbing'],
+        weeklyHours: '40',
+        workOrders: '8',
+        avgRating: '4.8'
+      },
+      'tech_002': {
+        id: 'TECH002',
+        name: 'Sarah Johnson',
+        status: 'On Site',
+        skills: ['Plumbing', 'General Maintenance'],
+        weeklyHours: '38',
+        workOrders: '6',
+        avgRating: '4.9'
+      }
+    };
+    
+    const profile = profiles[techId] || profiles['tech_001'];
+    res.json({ success: true, data: profile });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get unassigned work orders
+ */
+router.get('/field-service/work-orders/unassigned', async (req, res) => {
+  try {
+    const workOrders = [
+      { id: 'WO-008', title: 'HVAC Maintenance', customer: 'Hotel Corp' },
+      { id: 'WO-009', title: 'Electrical Upgrade', customer: 'India Ltd' },
+      { id: 'WO-010', title: 'Plumbing Repair', customer: 'Juliet Inc' }
+    ];
+    
+    res.json({ success: true, data: workOrders });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Assign work order to technician
+ */
+router.post('/field-service/schedule/assign', async (req, res) => {
+  try {
+    const { technicianId, workOrderId, date, startTime, duration, notes } = req.body;
+    
+    // Simulate assignment process
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const assignment = {
+      id: 'assign_' + Date.now(),
+      technicianId,
+      workOrderId,
+      date,
+      startTime,
+      duration,
+      notes,
+      status: 'ASSIGNED',
+      assignedDate: new Date().toISOString()
+    };
+    
+    res.json({ success: true, data: assignment });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update technician schedule
+ */
+router.post('/field-service/schedule/update', async (req, res) => {
+  try {
+    const { technicianId, week, action } = req.body;
+    
+    // Simulate update process
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    res.json({ success: true, message: 'Schedule updated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete schedule item
+ */
+router.delete('/field-service/schedule/items/:scheduleId', async (req, res) => {
+  try {
+    const { scheduleId } = req.params;
+    
+    // Simulate deletion
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    res.json({ success: true, message: 'Schedule item removed' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get performance metrics
+ */
+router.get('/field-service/performance/metrics', async (req, res) => {
+  try {
+    const { technician, dateRange, metricType } = req.query;
+    
+    const metrics = {
+      stats: {
+        teamAvgRating: 4.7,
+        avgResponseTime: '12min',
+        completionRate: '96%'
+      },
+      kpis: {
+        avgJobTime: '2.4 hrs',
+        firstTimeFixRate: '94%',
+        customerSatisfaction: 4.8,
+        utilizationRate: '91%'
+      },
+      goals: {
+        customerSat: 4.8,
+        firstTimeFix: '94%',
+        responseTime: '12 min',
+        utilization: '91%'
+      }
+    };
+    
+    res.json({ success: true, data: metrics });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get technician performance data
+ */
+router.get('/field-service/performance/technicians', async (req, res) => {
+  try {
+    const technicians = [
+      {
+        id: 'TECH001',
+        name: 'John Smith',
+        jobsCompleted: 147,
+        avgRating: 4.8,
+        firstTimeFix: 94,
+        responseTime: '11 min',
+        utilization: 92,
+        customerFeedback: 89
+      },
+      {
+        id: 'TECH002',
+        name: 'Sarah Johnson',
+        jobsCompleted: 132,
+        avgRating: 4.9,
+        firstTimeFix: 96,
+        responseTime: '9 min',
+        utilization: 89,
+        customerFeedback: 76
+      }
+    ];
+    
+    res.json({ success: true, data: technicians });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Export performance report
+ */
+router.post('/field-service/performance/export', async (req, res) => {
+  try {
+    const filters = req.body;
+    
+    // Simulate report generation
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=performance-report.xlsx');
+    
+    // Send empty file for demo
+    res.send(Buffer.from('Sample performance report data'));
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Generate performance report
+ */
+router.post('/field-service/performance/generate-report', async (req, res) => {
+  try {
+    const filters = req.body;
+    
+    // Simulate report generation
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    res.json({ success: true, message: 'Performance report generated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get certifications
+ */
+router.get('/field-service/certifications', async (req, res) => {
+  try {
+    const { technician, status, category } = req.query;
+    
+    const certifications = [
+      {
+        id: 'cert_001',
+        technicianId: 'TECH001',
+        technicianName: 'John Smith',
+        certificationName: 'EPA 608 Universal',
+        category: 'hvac',
+        issueDate: '2023-01-15',
+        expiryDate: '2026-01-15',
+        status: 'valid',
+        provider: 'EPA',
+        certificationNumber: 'EPA608-12345',
+        level: 'advanced'
+      },
+      {
+        id: 'cert_002',
+        technicianId: 'TECH001',
+        technicianName: 'John Smith',
+        certificationName: 'NATE HVAC Installation',
+        category: 'hvac',
+        issueDate: '2023-06-10',
+        expiryDate: '2024-06-10',
+        status: 'expiring',
+        provider: 'NATE',
+        certificationNumber: 'NATE-67890',
+        level: 'intermediate'
+      }
+    ];
+    
+    res.json({ success: true, data: certifications });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Add certification
+ */
+router.post('/field-service/certifications', async (req, res) => {
+  try {
+    const certificationData = req.body;
+    
+    // Simulate certification creation
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const certification = {
+      id: 'cert_' + Date.now(),
+      ...certificationData,
+      status: 'valid',
+      createdDate: new Date().toISOString()
+    };
+    
+    res.json({ success: true, data: certification });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Schedule training session
+ */
+router.post('/field-service/training/schedule', async (req, res) => {
+  try {
+    const trainingData = req.body;
+    
+    // Simulate training scheduling
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const training = {
+      id: 'training_' + Date.now(),
+      ...trainingData,
+      status: 'SCHEDULED',
+      createdDate: new Date().toISOString()
+    };
+    
+    res.json({ success: true, data: training });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Get training sessions
+ */
+router.get('/field-service/training/sessions', async (req, res) => {
+  try {
+    const sessions = [
+      {
+        id: 'training_001',
+        title: 'HVAC Advanced Certification',
+        date: '2024-03-15',
+        time: '09:00',
+        duration: 4,
+        location: 'Training Center',
+        attendees: ['tech_001', 'tech_002', 'tech_003'],
+        status: 'SCHEDULED'
+      },
+      {
+        id: 'training_002',
+        title: 'Electrical Safety Training',
+        date: '2024-03-22',
+        time: '10:00',
+        duration: 3,
+        location: 'Main Office',
+        attendees: ['tech_002', 'tech_004'],
+        status: 'SCHEDULED'
+      }
+    ];
+    
+    res.json({ success: true, data: sessions });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Update certification
+ */
+router.put('/field-service/certifications/:certId', async (req, res) => {
+  try {
+    const { certId } = req.params;
+    const updateData = req.body;
+    
+    // Simulate certification update
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    res.json({ success: true, message: 'Certification updated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * Delete certification
+ */
+router.delete('/field-service/certifications/:certId', async (req, res) => {
+  try {
+    const { certId } = req.params;
+    
+    // Simulate certification deletion
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    res.json({ success: true, message: 'Certification deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // ==================== BUSINESS INTELLIGENCE ENDPOINTS ====================
 
 /**

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Metrics - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Technician Management</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Performance Metrics</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="exportReportBtn">
+                    <i class="fas fa-download"></i>
+                    Export Report
+                </button>
+                <button class="titan-btn titan-btn-primary" id="generateReportBtn">
+                    <i class="fas fa-chart-line"></i>
+                    Generate Report
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Performance Metrics</h1>
+                    <p class="page-subtitle">KPI tracking and performance analysis for technicians</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="teamAvgRating">4.7</div>
+                        <div class="stat-label">Team Avg Rating</div>
+                        <div class="stat-subtext">customer satisfaction</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgResponseTime">12min</div>
+                        <div class="stat-label">Avg Response</div>
+                        <div class="stat-subtext">first contact</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completionRate">96%</div>
+                        <div class="stat-label">Completion Rate</div>
+                        <div class="stat-subtext">first-time fix</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Performance Filters -->
+                <div class="performance-controls">
+                    <div class="control-section">
+                        <h3>Performance Analysis</h3>
+                        <div class="performance-filters">
+                            <div class="filter-group">
+                                <label for="technicianFilter">Technician</label>
+                                <select id="technicianFilter">
+                                    <option value="all">All Technicians</option>
+                                    <option value="tech_001">John Smith</option>
+                                    <option value="tech_002">Sarah Johnson</option>
+                                    <option value="tech_003">Mike Rodriguez</option>
+                                    <option value="tech_004">Lisa Chen</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="dateRange">Date Range</label>
+                                <select id="dateRange">
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="quarter">This Quarter</option>
+                                    <option value="year">This Year</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="metricType">Metric Type</label>
+                                <select id="metricType">
+                                    <option value="all">All Metrics</option>
+                                    <option value="productivity">Productivity</option>
+                                    <option value="quality">Quality</option>
+                                    <option value="customer">Customer Satisfaction</option>
+                                    <option value="efficiency">Efficiency</option>
+                                </select>
+                            </div>
+                            <button class="refresh-btn" id="refreshMetricsBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Dashboard -->
+                <div class="performance-dashboard">
+                    <!-- Key Performance Indicators -->
+                    <div class="kpi-section">
+                        <h4>Key Performance Indicators</h4>
+                        <div class="kpi-grid">
+                            <div class="kpi-card">
+                                <div class="kpi-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="kpi-content">
+                                    <div class="kpi-value" id="avgJobTime">2.4 hrs</div>
+                                    <div class="kpi-label">Avg Job Time</div>
+                                    <div class="kpi-trend positive">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>+12%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="kpi-card">
+                                <div class="kpi-icon">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="kpi-content">
+                                    <div class="kpi-value" id="firstTimeFixRate">94%</div>
+                                    <div class="kpi-label">First-Time Fix</div>
+                                    <div class="kpi-trend positive">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>+3%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="kpi-card">
+                                <div class="kpi-icon">
+                                    <i class="fas fa-smile"></i>
+                                </div>
+                                <div class="kpi-content">
+                                    <div class="kpi-value" id="customerSatisfaction">4.8</div>
+                                    <div class="kpi-label">Customer Rating</div>
+                                    <div class="kpi-trend positive">
+                                        <i class="fas fa-arrow-up"></i>
+                                        <span>+0.2</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="kpi-card">
+                                <div class="kpi-icon">
+                                    <i class="fas fa-route"></i>
+                                </div>
+                                <div class="kpi-content">
+                                    <div class="kpi-value" id="utilizationRate">91%</div>
+                                    <div class="kpi-label">Utilization Rate</div>
+                                    <div class="kpi-trend negative">
+                                        <i class="fas fa-arrow-down"></i>
+                                        <span>-2%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Charts -->
+                    <div class="charts-section">
+                        <div class="chart-row">
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h4>Monthly Performance Trend</h4>
+                                    <div class="chart-controls">
+                                        <select id="trendMetric">
+                                            <option value="completion">Completion Rate</option>
+                                            <option value="response">Response Time</option>
+                                            <option value="satisfaction">Customer Satisfaction</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="chart-content" id="performanceTrendChart">
+                                    <div class="chart-placeholder">
+                                        <i class="fas fa-chart-line"></i>
+                                        <p>Performance Trend Chart</p>
+                                        <div class="sample-data">
+                                            <div class="data-point">Jan: 92%</div>
+                                            <div class="data-point">Feb: 94%</div>
+                                            <div class="data-point">Mar: 96%</div>
+                                            <div class="data-point">Apr: 95%</div>
+                                            <div class="data-point">May: 97%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="chart-container">
+                                <div class="chart-header">
+                                    <h4>Technician Comparison</h4>
+                                    <div class="chart-controls">
+                                        <select id="comparisonMetric">
+                                            <option value="productivity">Productivity</option>
+                                            <option value="quality">Quality Score</option>
+                                            <option value="efficiency">Efficiency</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="chart-content" id="technicianComparisonChart">
+                                    <div class="chart-placeholder">
+                                        <i class="fas fa-chart-bar"></i>
+                                        <p>Technician Comparison Chart</p>
+                                        <div class="comparison-bars">
+                                            <div class="bar-item">
+                                                <span class="bar-label">John Smith</span>
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: 95%"></div>
+                                                </div>
+                                                <span class="bar-value">95%</span>
+                                            </div>
+                                            <div class="bar-item">
+                                                <span class="bar-label">Sarah Johnson</span>
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: 92%"></div>
+                                                </div>
+                                                <span class="bar-value">92%</span>
+                                            </div>
+                                            <div class="bar-item">
+                                                <span class="bar-label">Mike Rodriguez</span>
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill" style="width: 88%"></div>
+                                                </div>
+                                                <span class="bar-value">88%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Performance Table -->
+                    <div class="performance-table-section">
+                        <div class="table-header">
+                            <h4>Detailed Performance Metrics</h4>
+                            <div class="table-controls">
+                                <input type="text" id="searchTechnician" placeholder="Search technicians...">
+                                <select id="sortBy">
+                                    <option value="name">Sort by Name</option>
+                                    <option value="rating">Sort by Rating</option>
+                                    <option value="completion">Sort by Completion Rate</option>
+                                    <option value="efficiency">Sort by Efficiency</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="performance-table-container">
+                            <table class="performance-table" id="performanceTable">
+                                <thead>
+                                    <tr>
+                                        <th>Technician</th>
+                                        <th>Jobs Completed</th>
+                                        <th>Avg Rating</th>
+                                        <th>First-Time Fix</th>
+                                        <th>Response Time</th>
+                                        <th>Utilization</th>
+                                        <th>Customer Feedback</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="performanceTableBody">
+                                    <!-- Table rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Goals -->
+                <div class="performance-goals">
+                    <h4>Performance Goals & Targets</h4>
+                    <div class="goals-grid">
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <h5>Customer Satisfaction</h5>
+                                <span class="goal-target">Target: 4.5+</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="goal-current">Current: <span id="goalCustomerSat">4.8</span></div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 96%"></div>
+                                </div>
+                                <div class="goal-status achieved">Goal Achieved</div>
+                            </div>
+                        </div>
+
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <h5>First-Time Fix Rate</h5>
+                                <span class="goal-target">Target: 90%</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="goal-current">Current: <span id="goalFirstTimeFix">94%</span></div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 94%"></div>
+                                </div>
+                                <div class="goal-status achieved">Goal Achieved</div>
+                            </div>
+                        </div>
+
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <h5>Response Time</h5>
+                                <span class="goal-target">Target: &lt;15 min</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="goal-current">Current: <span id="goalResponseTime">12 min</span></div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 80%"></div>
+                                </div>
+                                <div class="goal-status achieved">Goal Achieved</div>
+                            </div>
+                        </div>
+
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <h5>Utilization Rate</h5>
+                                <span class="goal-target">Target: 85%</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="goal-current">Current: <span id="goalUtilization">91%</span></div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 91%"></div>
+                                </div>
+                                <div class="goal-status achieved">Goal Achieved</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/performance-metrics.js"></script>
+</body>
+</html>
