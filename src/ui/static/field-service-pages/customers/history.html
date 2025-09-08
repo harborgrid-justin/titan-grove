@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service History - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Customer Management</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Service History</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="exportHistoryBtn">
+                    <i class="fas fa-download"></i>
+                    Export History
+                </button>
+                <button class="titan-btn titan-btn-primary" id="newServiceBtn">
+                    <i class="fas fa-plus"></i>
+                    New Service Request
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Service History</h1>
+                    <p class="page-subtitle">Customer service history and trend analysis</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalServices">247</div>
+                        <div class="stat-label">Total Services</div>
+                        <div class="stat-subtext">lifetime count</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgSatisfaction">4.6</div>
+                        <div class="stat-label">Avg Satisfaction</div>
+                        <div class="stat-subtext">customer rating</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="responseTime">11min</div>
+                        <div class="stat-label">Avg Response</div>
+                        <div class="stat-subtext">to service calls</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Customer Selection and Filters -->
+                <div class="history-controls">
+                    <div class="control-section">
+                        <h3>Service History Filters</h3>
+                        <div class="history-filters">
+                            <div class="filter-group">
+                                <label for="customerSelect">Customer</label>
+                                <select id="customerSelect">
+                                    <option value="all">All Customers</option>
+                                    <option value="cust_001">Acme Corporation</option>
+                                    <option value="cust_002">Beta Manufacturing</option>
+                                    <option value="cust_003">Gamma Services</option>
+                                    <option value="cust_004">Delta Enterprises</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="dateRange">Date Range</label>
+                                <select id="dateRange">
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="quarter">This Quarter</option>
+                                    <option value="year">This Year</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="serviceType">Service Type</label>
+                                <select id="serviceType">
+                                    <option value="all">All Types</option>
+                                    <option value="hvac">HVAC</option>
+                                    <option value="electrical">Electrical</option>
+                                    <option value="plumbing">Plumbing</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="emergency">Emergency</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="serviceStatus">Status</label>
+                                <select id="serviceStatus">
+                                    <option value="all">All Status</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <button class="refresh-btn" id="refreshHistoryBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
+                        <div class="custom-date-range" id="customDateRange" style="display: none;">
+                            <div class="date-inputs">
+                                <input type="date" id="startDate" placeholder="Start Date">
+                                <input type="date" id="endDate" placeholder="End Date">
+                                <button class="apply-dates-btn" id="applyDatesBtn">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service History Dashboard -->
+                <div class="history-dashboard">
+                    <!-- Customer Overview Panel -->
+                    <div class="customer-overview" id="customerOverview">
+                        <div class="overview-header">
+                            <h4>Customer Overview</h4>
+                            <div class="customer-selector">
+                                <span>Viewing: </span>
+                                <strong id="selectedCustomerName">All Customers</strong>
+                            </div>
+                        </div>
+                        <div class="overview-stats">
+                            <div class="overview-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-number" id="customerServices">47</div>
+                                    <div class="stat-label">Total Services</div>
+                                </div>
+                            </div>
+                            <div class="overview-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-number" id="lastService">5 days ago</div>
+                                    <div class="stat-label">Last Service</div>
+                                </div>
+                            </div>
+                            <div class="overview-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-number" id="totalValue">$47,320</div>
+                                    <div class="stat-label">Total Value</div>
+                                </div>
+                            </div>
+                            <div class="overview-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <div class="stat-number" id="avgRating">4.7</div>
+                                    <div class="stat-label">Avg Rating</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Trend Chart -->
+                    <div class="trend-chart-section">
+                        <div class="chart-header">
+                            <h4>Service Trends</h4>
+                            <div class="chart-controls">
+                                <select id="trendMetric">
+                                    <option value="count">Service Count</option>
+                                    <option value="value">Service Value</option>
+                                    <option value="satisfaction">Satisfaction Rating</option>
+                                    <option value="response">Response Time</option>
+                                </select>
+                                <select id="trendPeriod">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="trend-chart" id="serviceTrendChart">
+                            <div class="chart-placeholder">
+                                <i class="fas fa-chart-area"></i>
+                                <p>Service Trend Chart</p>
+                                <div class="sample-trend">
+                                    <div class="trend-point">Jan: 24 services</div>
+                                    <div class="trend-point">Feb: 31 services</div>
+                                    <div class="trend-point">Mar: 28 services</div>
+                                    <div class="trend-point">Apr: 35 services</div>
+                                    <div class="trend-point">May: 29 services</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service History Table -->
+                    <div class="history-table-section">
+                        <div class="table-header">
+                            <h4>Service Records</h4>
+                            <div class="table-controls">
+                                <input type="text" id="searchHistory" placeholder="Search service records...">
+                                <select id="sortHistory">
+                                    <option value="date">Sort by Date</option>
+                                    <option value="customer">Sort by Customer</option>
+                                    <option value="type">Sort by Service Type</option>
+                                    <option value="value">Sort by Value</option>
+                                    <option value="rating">Sort by Rating</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="history-table-container">
+                            <table class="history-table" id="historyTable">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Work Order</th>
+                                        <th>Customer</th>
+                                        <th>Service Type</th>
+                                        <th>Technician</th>
+                                        <th>Duration</th>
+                                        <th>Value</th>
+                                        <th>Status</th>
+                                        <th>Rating</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyTableBody">
+                                    <!-- Table rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-pagination">
+                            <div class="pagination-info">
+                                Showing <span id="recordsRange">1-10</span> of <span id="totalRecords">247</span> records
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="pagination-btn" id="prevPageBtn" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <span class="page-info">Page <span id="currentPage">1</span> of <span id="totalPages">25</span></span>
+                                <button class="pagination-btn" id="nextPageBtn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Categories Breakdown -->
+                    <div class="categories-breakdown">
+                        <h4>Service Categories</h4>
+                        <div class="categories-grid">
+                            <div class="category-card">
+                                <div class="category-header">
+                                    <i class="fas fa-wind"></i>
+                                    <h5>HVAC Services</h5>
+                                </div>
+                                <div class="category-stats">
+                                    <div class="category-count" id="hvacCount">89</div>
+                                    <div class="category-percentage">36%</div>
+                                    <div class="category-value">$32,450</div>
+                                </div>
+                            </div>
+
+                            <div class="category-card">
+                                <div class="category-header">
+                                    <i class="fas fa-bolt"></i>
+                                    <h5>Electrical Services</h5>
+                                </div>
+                                <div class="category-stats">
+                                    <div class="category-count" id="electricalCount">67</div>
+                                    <div class="category-percentage">27%</div>
+                                    <div class="category-value">$28,120</div>
+                                </div>
+                            </div>
+
+                            <div class="category-card">
+                                <div class="category-header">
+                                    <i class="fas fa-wrench"></i>
+                                    <h5>Plumbing Services</h5>
+                                </div>
+                                <div class="category-stats">
+                                    <div class="category-count" id="plumbingCount">52</div>
+                                    <div class="category-percentage">21%</div>
+                                    <div class="category-value">$19,890</div>
+                                </div>
+                            </div>
+
+                            <div class="category-card">
+                                <div class="category-header">
+                                    <i class="fas fa-tools"></i>
+                                    <h5>Maintenance</h5>
+                                </div>
+                                <div class="category-stats">
+                                    <div class="category-count" id="maintenanceCount">39</div>
+                                    <div class="category-percentage">16%</div>
+                                    <div class="category-value">$15,670</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Details Modal -->
+                <div class="modal" id="serviceDetailsModal">
+                    <div class="modal-content large">
+                        <div class="modal-header">
+                            <h3>Service Details</h3>
+                            <button class="modal-close" id="closeServiceDetailsModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="service-details" id="serviceDetailsContent">
+                                <!-- Service details will be populated here -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="titan-btn titan-btn-secondary" id="closeDetailsBtn">Close</button>
+                            <button class="titan-btn titan-btn-outline" id="repeatServiceBtn">
+                                <i class="fas fa-redo"></i>
+                                Repeat Service
+                            </button>
+                            <button class="titan-btn titan-btn-primary" id="followUpBtn">
+                                <i class="fas fa-phone"></i>
+                                Schedule Follow-up
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/service-history.js"></script>
+</body>
+</html>

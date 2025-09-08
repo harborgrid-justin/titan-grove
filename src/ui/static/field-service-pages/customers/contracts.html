@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Management - Titan Grove Field Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/field-service.css">
+    <link rel="stylesheet" href="../styles/field-service-pages.css">
+</head>
+<body>
+    <div class="titan-enterprise-app">
+        <!-- Enterprise Header -->
+        <header class="titan-enterprise-header">
+            <div class="titan-header-left">
+                <div class="titan-logo-enterprise">
+                    <i class="fas fa-mountain"></i>
+                    <span class="titan-logo-text">Titan Grove</span>
+                    <span class="titan-edition-badge">Field Service</span>
+                </div>
+                <nav class="breadcrumb-nav">
+                    <a href="../field-service.html">Field Service</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="../index.html">Customer Management</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Contract Management</span>
+                </nav>
+            </div>
+            <div class="titan-header-actions">
+                <button class="titan-btn titan-btn-secondary" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+                <button class="titan-btn titan-btn-outline" id="newContractBtn">
+                    <i class="fas fa-plus"></i>
+                    New Contract
+                </button>
+                <button class="titan-btn titan-btn-primary" id="renewContractsBtn">
+                    <i class="fas fa-sync-alt"></i>
+                    Bulk Renewal
+                </button>
+            </div>
+        </header>
+
+        <main class="field-service-main">
+            <div class="content-header">
+                <div class="header-left">
+                    <h1 class="page-title">Contract Management</h1>
+                    <p class="page-subtitle">Service contract management and renewal tracking</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="activeContracts">89</div>
+                        <div class="stat-label">Active Contracts</div>
+                        <div class="stat-subtext">currently in force</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="contractValue">$2.3M</div>
+                        <div class="stat-label">Total Value</div>
+                        <div class="stat-subtext">annual recurring</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="renewalsNeeded">12</div>
+                        <div class="stat-label">Renewals Due</div>
+                        <div class="stat-subtext">within 90 days</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-container">
+                <!-- Contract Filters -->
+                <div class="contract-controls">
+                    <div class="control-section">
+                        <h3>Contract Management</h3>
+                        <div class="contract-filters">
+                            <div class="filter-group">
+                                <label for="contractStatus">Status</label>
+                                <select id="contractStatus">
+                                    <option value="all">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="expiring">Expiring Soon</option>
+                                    <option value="expired">Expired</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="contractType">Contract Type</label>
+                                <select id="contractType">
+                                    <option value="all">All Types</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="support">Support</option>
+                                    <option value="service">Service Agreement</option>
+                                    <option value="warranty">Warranty Extension</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="customerFilter">Customer</label>
+                                <select id="customerFilter">
+                                    <option value="all">All Customers</option>
+                                    <option value="cust_001">Acme Corporation</option>
+                                    <option value="cust_002">Beta Manufacturing</option>
+                                    <option value="cust_003">Gamma Services</option>
+                                    <option value="cust_004">Delta Enterprises</option>
+                                </select>
+                            </div>
+                            <button class="refresh-btn" id="refreshContractsBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contract Dashboard -->
+                <div class="contract-dashboard">
+                    <!-- Contract Overview Cards -->
+                    <div class="overview-cards">
+                        <div class="overview-card">
+                            <div class="card-header">
+                                <i class="fas fa-file-contract"></i>
+                                <h4>Contract Portfolio</h4>
+                            </div>
+                            <div class="card-metrics">
+                                <div class="metric-item">
+                                    <span class="metric-value" id="totalContracts">156</span>
+                                    <span class="metric-label">Total Contracts</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-value" id="avgContractValue">$26K</span>
+                                    <span class="metric-label">Avg Value</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-value" id="renewalRate">87%</span>
+                                    <span class="metric-label">Renewal Rate</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="overview-card">
+                            <div class="card-header">
+                                <i class="fas fa-calendar-check"></i>
+                                <h4>Renewal Pipeline</h4>
+                            </div>
+                            <div class="renewal-timeline">
+                                <div class="timeline-item">
+                                    <span class="timeline-period">Next 30 days</span>
+                                    <span class="timeline-count" id="renewals30">5</span>
+                                    <span class="timeline-value">$340K</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-period">31-60 days</span>
+                                    <span class="timeline-count" id="renewals60">7</span>
+                                    <span class="timeline-value">$489K</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-period">61-90 days</span>
+                                    <span class="timeline-count" id="renewals90">9</span>
+                                    <span class="timeline-value">$567K</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="overview-card">
+                            <div class="card-header">
+                                <i class="fas fa-chart-pie"></i>
+                                <h4>Contract Types</h4>
+                            </div>
+                            <div class="contract-types">
+                                <div class="type-item">
+                                    <span class="type-color maintenance"></span>
+                                    <span class="type-label">Maintenance</span>
+                                    <span class="type-count" id="maintenanceContracts">45</span>
+                                </div>
+                                <div class="type-item">
+                                    <span class="type-color support"></span>
+                                    <span class="type-label">Support</span>
+                                    <span class="type-count" id="supportContracts">32</span>
+                                </div>
+                                <div class="type-item">
+                                    <span class="type-color service"></span>
+                                    <span class="type-label">Service Agreement</span>
+                                    <span class="type-count" id="serviceContracts">28</span>
+                                </div>
+                                <div class="type-item">
+                                    <span class="type-color warranty"></span>
+                                    <span class="type-label">Warranty</span>
+                                    <span class="type-count" id="warrantyContracts">17</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contracts Table -->
+                    <div class="contracts-table-section">
+                        <div class="table-header">
+                            <h4>Contract Details</h4>
+                            <div class="table-controls">
+                                <input type="text" id="searchContracts" placeholder="Search contracts...">
+                                <select id="sortContracts">
+                                    <option value="expiry">Sort by Expiry Date</option>
+                                    <option value="customer">Sort by Customer</option>
+                                    <option value="value">Sort by Value</option>
+                                    <option value="type">Sort by Type</option>
+                                    <option value="status">Sort by Status</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="contracts-table-container">
+                            <table class="contracts-table" id="contractsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Contract</th>
+                                        <th>Customer</th>
+                                        <th>Type</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Value</th>
+                                        <th>Status</th>
+                                        <th>Renewal</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="contractsTableBody">
+                                    <!-- Table rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Renewal Alerts -->
+                    <div class="renewal-alerts-section">
+                        <h4>Renewal Alerts</h4>
+                        <div class="alerts-container" id="renewalAlerts">
+                            <!-- Renewal alerts will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Contract Modal -->
+                <div class="modal" id="newContractModal">
+                    <div class="modal-content large">
+                        <div class="modal-header">
+                            <h3>New Service Contract</h3>
+                            <button class="modal-close" id="closeNewContractModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="contract-form">
+                                <div class="form-section">
+                                    <h5>Contract Information</h5>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="contractNumber">Contract Number</label>
+                                            <input type="text" id="contractNumber" placeholder="Auto-generated" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="contractTitle">Contract Title</label>
+                                            <input type="text" id="contractTitle" placeholder="Enter contract title">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="contractCustomer">Customer</label>
+                                            <select id="contractCustomer">
+                                                <option value="">Select Customer</option>
+                                                <option value="cust_001">Acme Corporation</option>
+                                                <option value="cust_002">Beta Manufacturing</option>
+                                                <option value="cust_003">Gamma Services</option>
+                                                <option value="cust_004">Delta Enterprises</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="contractTypeNew">Contract Type</label>
+                                            <select id="contractTypeNew">
+                                                <option value="maintenance">Maintenance Contract</option>
+                                                <option value="support">Technical Support</option>
+                                                <option value="service">Service Agreement</option>
+                                                <option value="warranty">Warranty Extension</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h5>Contract Terms</h5>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="startDate">Start Date</label>
+                                            <input type="date" id="startDate">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="endDate">End Date</label>
+                                            <input type="date" id="endDate">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="contractValue">Annual Value</label>
+                                            <input type="number" id="contractValue" placeholder="Enter annual value" min="0" step="100">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billingFrequency">Billing Frequency</label>
+                                            <select id="billingFrequency">
+                                                <option value="monthly">Monthly</option>
+                                                <option value="quarterly">Quarterly</option>
+                                                <option value="annually">Annually</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h5>Service Details</h5>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="serviceLevel">Service Level</label>
+                                            <select id="serviceLevel">
+                                                <option value="basic">Basic</option>
+                                                <option value="standard">Standard</option>
+                                                <option value="premium">Premium</option>
+                                                <option value="enterprise">Enterprise</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="responseTime">Response Time (hours)</label>
+                                            <input type="number" id="responseTime" min="1" max="72" value="24">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="serviceDescription">Service Description</label>
+                                        <textarea id="serviceDescription" rows="4" placeholder="Describe the services included in this contract"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h5>Auto-Renewal Settings</h5>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" id="autoRenewal">
+                                                Enable Auto-Renewal
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="renewalNotice">Renewal Notice (days)</label>
+                                            <input type="number" id="renewalNotice" min="30" max="365" value="90">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="titan-btn titan-btn-secondary" id="cancelNewContractBtn">Cancel</button>
+                            <button class="titan-btn titan-btn-outline" id="saveAsDraftBtn">
+                                <i class="fas fa-save"></i>
+                                Save as Draft
+                            </button>
+                            <button class="titan-btn titan-btn-primary" id="createContractBtn">
+                                <i class="fas fa-file-contract"></i>
+                                Create Contract
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contract Details Modal -->
+                <div class="modal" id="contractDetailsModal">
+                    <div class="modal-content large">
+                        <div class="modal-header">
+                            <h3>Contract Details</h3>
+                            <button class="modal-close" id="closeContractDetailsModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="contract-details" id="contractDetailsContent">
+                                <!-- Contract details will be populated here -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="titan-btn titan-btn-secondary" id="closeContractDetailsBtn">Close</button>
+                            <button class="titan-btn titan-btn-outline" id="editContractBtn">
+                                <i class="fas fa-edit"></i>
+                                Edit Contract
+                            </button>
+                            <button class="titan-btn titan-btn-primary" id="renewContractBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                Renew Contract
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../scripts/contract-management.js"></script>
+</body>
+</html>
