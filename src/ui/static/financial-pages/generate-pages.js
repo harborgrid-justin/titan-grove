@@ -364,6 +364,546 @@ const financialPages = {
         'Interactive report visualization'
       ]
     }
+  ],
+  'capital-asset': [
+    {
+      name: 'asset-valuation',
+      title: 'Asset Valuation & Appraisal',
+      description: 'Comprehensive asset valuation with multiple methodologies and fair value assessment',
+      features: [
+        'Multi-methodology asset valuation models',
+        'Fair value measurement and assessment',
+        'Automated revaluation and impairment testing',
+        'Market-based and income-based valuations'
+      ]
+    },
+    {
+      name: 'capital-budgeting',
+      title: 'Capital Budgeting & Planning',
+      description: 'Strategic capital allocation with NPV analysis and investment optimization',
+      features: [
+        'Net Present Value (NPV) analysis',
+        'Capital allocation optimization',
+        'Investment project ranking and selection',
+        'Risk-adjusted return calculations'
+      ]
+    },
+    {
+      name: 'depreciation-mgmt',
+      title: 'Depreciation Management',
+      description: 'Automated depreciation calculations with multiple methods and regulatory compliance',
+      features: [
+        'Multiple depreciation method support',
+        'Automated depreciation calculations',
+        'Tax vs book depreciation reconciliation',
+        'Asset lifecycle management'
+      ]
+    },
+    {
+      name: 'lease-accounting',
+      title: 'Lease Accounting (ASC 842)',
+      description: 'Complete lease accounting solution with ASC 842 compliance and automation',
+      features: [
+        'ASC 842 lease accounting automation',
+        'Right-of-use asset calculations',
+        'Lease payment scheduling and tracking',
+        'Transition and ongoing compliance'
+      ]
+    },
+    {
+      name: 'fixed-assets',
+      title: 'Fixed Asset Management',
+      description: 'Complete fixed asset lifecycle management with tracking and reporting',
+      features: [
+        'Asset registration and tracking',
+        'Maintenance scheduling and history',
+        'Asset transfer and disposal management',
+        'Comprehensive asset reporting'
+      ]
+    },
+    {
+      name: 'intangible-assets',
+      title: 'Intangible Asset Management',
+      description: 'Intellectual property and intangible asset valuation and amortization',
+      features: [
+        'IP and intangible asset valuation',
+        'Amortization and impairment testing',
+        'Patent and trademark management',
+        'Goodwill allocation and testing'
+      ]
+    },
+    {
+      name: 'capital-structure',
+      title: 'Capital Structure Analysis',
+      description: 'Optimal capital structure analysis with debt-equity optimization',
+      features: [
+        'Debt-to-equity ratio optimization',
+        'Cost of capital calculations',
+        'Capital structure stress testing',
+        'Leverage analysis and planning'
+      ]
+    },
+    {
+      name: 'asset-disposal',
+      title: 'Asset Disposal & Retirement',
+      description: 'Asset retirement and disposal management with gain/loss calculations',
+      features: [
+        'Asset retirement obligation (ARO) management',
+        'Disposal gain/loss calculations',
+        'Environmental liability tracking',
+        'Retirement planning and scheduling'
+      ]
+    }
+  ],
+  'credit-risk': [
+    {
+      name: 'credit-scoring',
+      title: 'Credit Scoring & Rating',
+      description: 'Advanced credit scoring models with machine learning and risk assessment',
+      features: [
+        'AI-powered credit scoring models',
+        'Customer credit rating systems',
+        'Risk-based pricing algorithms',
+        'Portfolio credit risk analysis'
+      ]
+    },
+    {
+      name: 'credit-monitoring',
+      title: 'Credit Monitoring & Alerts',
+      description: 'Real-time credit monitoring with early warning systems and alerts',
+      features: [
+        'Real-time credit monitoring systems',
+        'Early warning indicators and alerts',
+        'Credit limit management and controls',
+        'Automated risk escalation workflows'
+      ]
+    },
+    {
+      name: 'collections-mgmt',
+      title: 'Collections Management',
+      description: 'Automated collections workflows with predictive analytics and optimization',
+      features: [
+        'Automated collections workflows',
+        'Predictive collections analytics',
+        'Payment plan management',
+        'Recovery optimization strategies'
+      ]
+    },
+    {
+      name: 'bad-debt-provision',
+      title: 'Bad Debt Provisioning',
+      description: 'CECL-compliant expected credit loss modeling and provisioning',
+      features: [
+        'CECL expected credit loss modeling',
+        'Automated provision calculations',
+        'Historical loss rate analysis',
+        'Forward-looking economic indicators'
+      ]
+    },
+    {
+      name: 'portfolio-analysis',
+      title: 'Credit Portfolio Analysis',
+      description: 'Comprehensive credit portfolio risk analysis and concentration management',
+      features: [
+        'Portfolio concentration analysis',
+        'Credit risk diversification metrics',
+        'Sector and geographic risk analysis',
+        'Portfolio stress testing'
+      ]
+    },
+    {
+      name: 'counterparty-risk',
+      title: 'Counterparty Risk Management',
+      description: 'Trading counterparty risk assessment and exposure management',
+      features: [
+        'Counterparty exposure calculations',
+        'Credit valuation adjustments (CVA)',
+        'Collateral management optimization',
+        'Netting agreement analysis'
+      ]
+    },
+    {
+      name: 'credit-derivatives',
+      title: 'Credit Derivatives & Hedging',
+      description: 'Credit derivative valuation and credit risk hedging strategies',
+      features: [
+        'Credit default swap valuation',
+        'Credit hedging strategy optimization',
+        'Credit derivative portfolio management',
+        'Basis risk monitoring and control'
+      ]
+    },
+    {
+      name: 'regulatory-capital',
+      title: 'Regulatory Capital Management',
+      description: 'Basel III regulatory capital calculations and optimization',
+      features: [
+        'Basel III capital requirement calculations',
+        'Risk-weighted asset optimization',
+        'Capital adequacy ratio monitoring',
+        'Stress testing and scenario analysis'
+      ]
+    }
+  ],
+  'operations-control': [
+    {
+      name: 'financial-close',
+      title: 'Financial Close Automation',
+      description: 'Automated financial close with task management and validation controls',
+      features: [
+        'Automated close task orchestration',
+        'Real-time close status monitoring',
+        'Exception management and resolution',
+        'Close timeline optimization'
+      ]
+    },
+    {
+      name: 'reconciliation-engine',
+      title: 'Reconciliation Engine',
+      description: 'Automated reconciliation across all financial systems and accounts',
+      features: [
+        'Cross-system reconciliation automation',
+        'Exception identification and routing',
+        'Reconciliation workflow management',
+        'Variance analysis and reporting'
+      ]
+    },
+    {
+      name: 'intercompany-accounting',
+      title: 'Intercompany Accounting',
+      description: 'Automated intercompany transactions and elimination processing',
+      features: [
+        'Automated intercompany matching',
+        'Elimination entry generation',
+        'Transfer pricing compliance',
+        'Intercompany reporting and analytics'
+      ]
+    },
+    {
+      name: 'journal-automation',
+      title: 'Journal Entry Automation',
+      description: 'Intelligent journal entry automation with AI-powered posting',
+      features: [
+        'AI-powered journal entry creation',
+        'Template-based recurring entries',
+        'Approval workflow automation',
+        'Real-time posting and validation'
+      ]
+    },
+    {
+      name: 'expense-management',
+      title: 'Expense Management & Control',
+      description: 'Comprehensive expense management with policy compliance and automation',
+      features: [
+        'Automated expense policy enforcement',
+        'Receipt capture and processing',
+        'Expense approval workflows',
+        'Spend analytics and reporting'
+      ]
+    },
+    {
+      name: 'procurement-finance',
+      title: 'Procurement Finance Integration',
+      description: 'Procurement-to-pay integration with financial control and automation',
+      features: [
+        'Purchase order automation',
+        '3-way matching and validation',
+        'Supplier financing optimization',
+        'Procurement spend analytics'
+      ]
+    },
+    {
+      name: 'revenue-recognition',
+      title: 'Revenue Recognition (ASC 606)',
+      description: 'Automated revenue recognition with ASC 606 compliance and contract management',
+      features: [
+        'ASC 606 revenue recognition automation',
+        'Contract modification management',
+        'Performance obligation tracking',
+        'Revenue allocation and timing'
+      ]
+    },
+    {
+      name: 'financial-controls',
+      title: 'Financial Controls Framework',
+      description: 'Comprehensive financial controls with automated testing and monitoring',
+      features: [
+        'Automated control testing',
+        'Control deficiency tracking',
+        'Remediation workflow management',
+        'Control effectiveness reporting'
+      ]
+    }
+  ],
+  'strategic-planning': [
+    {
+      name: 'strategic-planning',
+      title: 'Strategic Financial Planning',
+      description: 'Long-term strategic planning with scenario modeling and sensitivity analysis',
+      features: [
+        'Long-term strategic plan modeling',
+        'Scenario and sensitivity analysis',
+        'Strategic initiative prioritization',
+        'Resource allocation optimization'
+      ]
+    },
+    {
+      name: 'business-modeling',
+      title: 'Business Model Analytics',
+      description: 'Business model performance analysis with value driver identification',
+      features: [
+        'Business model performance metrics',
+        'Value driver identification and analysis',
+        'Business model optimization',
+        'Competitive benchmarking'
+      ]
+    },
+    {
+      name: 'merger-acquisition',
+      title: 'M&A Financial Analysis',
+      description: 'Merger and acquisition financial modeling with valuation and integration planning',
+      features: [
+        'M&A valuation modeling',
+        'Synergy identification and quantification',
+        'Integration planning and tracking',
+        'Post-merger performance analysis'
+      ]
+    },
+    {
+      name: 'investment-analysis',
+      title: 'Investment Analysis & ROI',
+      description: 'Investment decision support with ROI analysis and portfolio optimization',
+      features: [
+        'Investment ROI calculations',
+        'Portfolio optimization algorithms',
+        'Risk-return analysis',
+        'Investment performance tracking'
+      ]
+    },
+    {
+      name: 'financial-modeling',
+      title: 'Financial Modeling Suite',
+      description: 'Advanced financial modeling with Monte Carlo simulation and optimization',
+      features: [
+        'Advanced financial model building',
+        'Monte Carlo simulation capabilities',
+        'Model validation and testing',
+        'Sensitivity and scenario analysis'
+      ]
+    },
+    {
+      name: 'capital-allocation',
+      title: 'Capital Allocation Strategy',
+      description: 'Strategic capital allocation with portfolio theory and optimization',
+      features: [
+        'Capital allocation optimization',
+        'Portfolio theory implementation',
+        'Resource constraint modeling',
+        'Strategic goal alignment'
+      ]
+    },
+    {
+      name: 'value-creation',
+      title: 'Value Creation Analysis',
+      description: 'Shareholder value creation analysis with EVA and value-based metrics',
+      features: [
+        'Economic Value Added (EVA) calculations',
+        'Value-based performance metrics',
+        'Shareholder value optimization',
+        'Value creation driver analysis'
+      ]
+    },
+    {
+      name: 'growth-strategy',
+      title: 'Growth Strategy Finance',
+      description: 'Growth strategy financial analysis with market opportunity assessment',
+      features: [
+        'Growth opportunity financial modeling',
+        'Market size and penetration analysis',
+        'Growth investment prioritization',
+        'Scale economics optimization'
+      ]
+    }
+  ],
+  'compliance-governance': [
+    {
+      name: 'sox-compliance',
+      title: 'SOX Compliance Management',
+      description: 'Sarbanes-Oxley compliance automation with control testing and documentation',
+      features: [
+        'SOX compliance automation',
+        'Control testing and documentation',
+        'Deficiency tracking and remediation',
+        'Management certification support'
+      ]
+    },
+    {
+      name: 'regulatory-compliance',
+      title: 'Regulatory Compliance Hub',
+      description: 'Multi-jurisdiction regulatory compliance with automated monitoring and reporting',
+      features: [
+        'Multi-jurisdiction compliance tracking',
+        'Regulatory change monitoring',
+        'Automated compliance reporting',
+        'Violation detection and escalation'
+      ]
+    },
+    {
+      name: 'esg-reporting',
+      title: 'ESG Reporting & Analytics',
+      description: 'Environmental, Social, and Governance reporting with sustainability metrics',
+      features: [
+        'ESG metrics collection and reporting',
+        'Sustainability performance tracking',
+        'Climate risk assessment',
+        'Stakeholder reporting automation'
+      ]
+    },
+    {
+      name: 'policy-management',
+      title: 'Financial Policy Management',
+      description: 'Financial policy lifecycle management with compliance monitoring',
+      features: [
+        'Policy lifecycle management',
+        'Compliance monitoring and tracking',
+        'Policy version control',
+        'Training and acknowledgment tracking'
+      ]
+    },
+    {
+      name: 'ethics-compliance',
+      title: 'Ethics & Conduct Compliance',
+      description: 'Ethics and conduct monitoring with whistleblower management and investigation',
+      features: [
+        'Ethics violation tracking',
+        'Whistleblower management system',
+        'Investigation workflow automation',
+        'Ethics training and certification'
+      ]
+    },
+    {
+      name: 'data-privacy',
+      title: 'Financial Data Privacy',
+      description: 'Financial data privacy compliance with GDPR and data protection regulations',
+      features: [
+        'Data privacy compliance automation',
+        'Personal data inventory and mapping',
+        'Consent management systems',
+        'Data breach detection and response'
+      ]
+    },
+    {
+      name: 'vendor-compliance',
+      title: 'Vendor Compliance Management',
+      description: 'Vendor and supplier compliance monitoring with risk assessment',
+      features: [
+        'Vendor compliance monitoring',
+        'Supplier risk assessment',
+        'Due diligence automation',
+        'Contract compliance tracking'
+      ]
+    },
+    {
+      name: 'governance-reporting',
+      title: 'Corporate Governance Reporting',
+      description: 'Corporate governance reporting with board and committee management',
+      features: [
+        'Board and committee reporting',
+        'Governance metrics tracking',
+        'Shareholder communication management',
+        'Governance framework optimization'
+      ]
+    }
+  ],
+  'analytics-ai': [
+    {
+      name: 'predictive-analytics',
+      title: 'Predictive Financial Analytics',
+      description: 'AI-powered predictive analytics with machine learning and forecasting models',
+      features: [
+        'Machine learning financial models',
+        'Predictive cash flow analytics',
+        'AI-powered trend analysis',
+        'Automated anomaly detection'
+      ]
+    },
+    {
+      name: 'financial-ai',
+      title: 'Financial AI & Automation',
+      description: 'Artificial intelligence for financial process automation and decision support',
+      features: [
+        'AI-powered process automation',
+        'Intelligent decision support systems',
+        'Natural language financial queries',
+        'Automated insight generation'
+      ]
+    },
+    {
+      name: 'advanced-reporting',
+      title: 'Advanced Reporting & BI',
+      description: 'Advanced business intelligence with interactive dashboards and self-service analytics',
+      features: [
+        'Interactive dashboard creation',
+        'Self-service analytics platform',
+        'Advanced data visualization',
+        'Real-time reporting capabilities'
+      ]
+    },
+    {
+      name: 'data-mining',
+      title: 'Financial Data Mining',
+      description: 'Data mining and pattern recognition for financial insights and optimization',
+      features: [
+        'Pattern recognition algorithms',
+        'Financial data mining tools',
+        'Correlation and causation analysis',
+        'Hidden insight discovery'
+      ]
+    },
+    {
+      name: 'optimization-engine',
+      title: 'Financial Optimization Engine',
+      description: 'Mathematical optimization for financial planning and resource allocation',
+      features: [
+        'Linear and nonlinear optimization',
+        'Constraint-based optimization',
+        'Multi-objective optimization',
+        'Real-time optimization algorithms'
+      ]
+    },
+    {
+      name: 'simulation-modeling',
+      title: 'Simulation & Modeling',
+      description: 'Advanced simulation models with Monte Carlo and discrete event simulation',
+      features: [
+        'Monte Carlo simulation engines',
+        'Discrete event simulation',
+        'Stochastic modeling capabilities',
+        'Risk simulation and analysis'
+      ]
+    },
+    {
+      name: 'cognitive-finance',
+      title: 'Cognitive Finance Platform',
+      description: 'Cognitive computing for financial analysis with natural language processing',
+      features: [
+        'Natural language processing (NLP)',
+        'Cognitive document analysis',
+        'Intelligent financial assistants',
+        'Automated report generation'
+      ]
+    },
+    {
+      name: 'real-time-analytics',
+      title: 'Real-Time Financial Analytics',
+      description: 'Real-time financial analytics with streaming data and instant insights',
+      features: [
+        'Streaming financial data analytics',
+        'Real-time dashboard updates',
+        'Instant alert and notification systems',
+        'High-frequency trading analytics'
+      ]
+    }
   ]
 };
 
@@ -527,12 +1067,18 @@ Object.entries(financialPages).forEach(([category, pages]) => {
   });
 });
 
-console.log('\\n✅ Successfully created 32 business-ready financial pages!');
-console.log('📁 Pages organized in 4 categories:');
+console.log('\\n✅ Successfully created 80 business-ready financial pages!');
+console.log('📁 Pages organized in 10 categories:');
 console.log('   - General Ledger & Accounting (8 pages)');
 console.log('   - Financial Planning & Analysis (8 pages)');
 console.log('   - Treasury & Cash Management (8 pages)');
 console.log('   - Financial Reporting & Compliance (8 pages)');
+console.log('   - Capital & Asset Management (8 pages)');
+console.log('   - Credit & Risk Assessment (8 pages)');
+console.log('   - Financial Operations & Control (8 pages)');
+console.log('   - Strategic Financial Planning (8 pages)');
+console.log('   - Compliance & Governance (8 pages)');
+console.log('   - Advanced Analytics & AI (8 pages)');
 console.log('\\n🚀 All pages include:');
 console.log('   ✅ Complete frontend implementation');
 console.log('   ✅ Backend API integration');
