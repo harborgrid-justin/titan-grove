@@ -5,7 +5,7 @@
 
 import { Router } from 'express';
 import { applyStandardMiddleware, handleRouteErrors } from '../base/base-routes';
-import { validateRequest } from '../../middleware/validation';
+import { validateBusiness, validateIdParam } from '../../middleware/validation';
 import { financeController } from './finance-controller';
 import type { Router as RouterType } from 'express';
 
@@ -17,23 +17,23 @@ applyStandardMiddleware(router);
 
 // General Ledger Routes
 router.get('/ledger', financeController.getGeneralLedger);
-router.post('/ledger/entry', validateRequest, financeController.createJournalEntry);
+router.post('/ledger/entry', validateBusiness('createJournalEntry'), financeController.createJournalEntry);
 
 // Accounts Payable Routes
 router.get('/payable', financeController.getAccountsPayable);
-router.post('/invoices', validateRequest, financeController.createInvoice);
+router.post('/invoices', validateBusiness('createInvoice'), financeController.createInvoice);
 
 // Accounts Receivable Routes
 router.get('/receivable', financeController.getAccountsReceivable);
-router.post('/payments', validateRequest, financeController.recordPayment);
+router.post('/payments', validateBusiness('recordPayment'), financeController.recordPayment);
 
 // Financial Reporting Routes
 router.get('/reports', financeController.getFinancialReports);
-router.post('/reports/generate', validateRequest, financeController.generateReport);
+router.post('/reports/generate', validateBusiness('generateReport'), financeController.generateReport);
 
 // Budget Management Routes
 router.get('/budget/analysis', financeController.getBudgetAnalysis);
-router.put('/budget', validateRequest, financeController.updateBudget);
+router.put('/budget', validateBusiness('updateBudget'), financeController.updateBudget);
 
 // Apply error handling
 handleRouteErrors(router);

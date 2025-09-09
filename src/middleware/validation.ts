@@ -241,6 +241,69 @@ export const businessValidation = {
     })
   },
   
+  // Financial - Invoice Management
+  createInvoice: {
+    body: Joi.object({
+      vendorId: Joi.string().uuid().required(),
+      invoiceNumber: Joi.string().max(100).required(),
+      amount: Joi.number().positive().precision(2).required(),
+      currency: Joi.string().length(3).uppercase().default('USD'),
+      dueDate: Joi.date().min('now').required(),
+      description: Joi.string().max(500).optional(),
+      taxAmount: Joi.number().precision(2).min(0).optional(),
+      lineItems: Joi.array().items(
+        Joi.object({
+          description: Joi.string().max(255).required(),
+          quantity: Joi.number().positive().required(),
+          unitPrice: Joi.number().positive().precision(2).required(),
+          total: Joi.number().positive().precision(2).required()
+        })
+      ).min(1).required()
+    })
+  },
+  
+  // Financial - Payment Management
+  recordPayment: {
+    body: Joi.object({
+      invoiceId: Joi.string().uuid().required(),
+      amount: Joi.number().positive().precision(2).required(),
+      currency: Joi.string().length(3).uppercase().default('USD'),
+      paymentMethod: Joi.string().valid('cash', 'check', 'wire_transfer', 'credit_card', 'bank_transfer').required(),
+      paymentDate: Joi.date().default(() => new Date()),
+      reference: Joi.string().max(100).optional(),
+      notes: Joi.string().max(500).optional()
+    })
+  },
+  
+  // Financial - Report Generation
+  generateReport: {
+    body: Joi.object({
+      reportType: Joi.string().valid('income_statement', 'balance_sheet', 'cash_flow', 'trial_balance', 'accounts_aging').required(),
+      startDate: Joi.date().required(),
+      endDate: Joi.date().min(Joi.ref('startDate')).required(),
+      format: Joi.string().valid('pdf', 'excel', 'csv').default('pdf'),
+      includeDrafts: Joi.boolean().default(false),
+      departmentFilter: Joi.array().items(Joi.string().uuid()).optional()
+    })
+  },
+  
+  // Financial - Budget Management
+  updateBudget: {
+    body: Joi.object({
+      departmentId: Joi.string().uuid().required(),
+      fiscalYear: Joi.number().integer().min(2020).max(2030).required(),
+      budgetItems: Joi.array().items(
+        Joi.object({
+          accountId: Joi.string().uuid().required(),
+          plannedAmount: Joi.number().precision(2).required(),
+          description: Joi.string().max(255).optional()
+        })
+      ).min(1).required(),
+      approvedBy: Joi.string().uuid().required(),
+      notes: Joi.string().max(1000).optional()
+    })
+  },
+  
   // HR management
   createEmployee: {
     body: Joi.object({
@@ -269,6 +332,65 @@ export const businessValidation = {
     }),
     params: Joi.object({
       id: commonSchemas.id
+    })
+  },
+  
+  // CRM - Customer Management
+  createCustomer: {
+    body: Joi.object({
+      name: Joi.string().max(255).required(),
+      email: Joi.string().email().required(),
+      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).optional(),
+      address: Joi.object({
+        street: Joi.string().max(255).required(),
+        city: Joi.string().max(100).required(),
+        state: Joi.string().max(100).required(),
+        zipCode: Joi.string().max(20).required(),
+        country: Joi.string().max(100).required()
+      }).optional(),
+      industry: Joi.string().max(100).optional(),
+      companySize: Joi.string().valid('small', 'medium', 'large', 'enterprise').optional()
+    })
+  },
+  
+  // CRM - Opportunity Management
+  createOpportunity: {
+    body: Joi.object({
+      customerId: Joi.string().uuid().required(),
+      title: Joi.string().max(255).required(),
+      description: Joi.string().max(1000).optional(),
+      value: Joi.number().positive().precision(2).required(),
+      currency: Joi.string().length(3).uppercase().default('USD'),
+      stage: Joi.string().valid('prospecting', 'qualification', 'proposal', 'negotiation', 'closed_won', 'closed_lost').required(),
+      probability: Joi.number().min(0).max(100).required(),
+      expectedCloseDate: Joi.date().min('now').required(),
+      assignedTo: Joi.string().uuid().required()
+    })
+  },
+  
+  // CRM - Contact Management
+  createContact: {
+    body: Joi.object({
+      customerId: Joi.string().uuid().required(),
+      firstName: Joi.string().max(100).required(),
+      lastName: Joi.string().max(100).required(),
+      email: Joi.string().email().required(),
+      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).optional(),
+      jobTitle: Joi.string().max(100).optional(),
+      department: Joi.string().max(100).optional(),
+      isPrimary: Joi.boolean().default(false)
+    })
+  },
+  
+  // CRM - Lead Management
+  convertLead: {
+    body: Joi.object({
+      leadId: Joi.string().uuid().required(),
+      customerId: Joi.string().uuid().optional(),
+      createOpportunity: Joi.boolean().default(true),
+      opportunityValue: Joi.number().positive().precision(2).optional(),
+      assignedTo: Joi.string().uuid().required(),
+      notes: Joi.string().max(1000).optional()
     })
   }
 };

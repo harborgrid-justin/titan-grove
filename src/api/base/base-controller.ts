@@ -3,7 +3,7 @@
  * Provides common functionality for all domain controllers
  */
 
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 export abstract class BaseController {
   /**
@@ -44,8 +44,8 @@ export abstract class BaseController {
   /**
    * Handle async controller methods with error catching
    */
-  protected asyncHandler(fn: Function) {
-    return (req: Request, res: Response, next: Function) => {
+  protected asyncHandler(fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) {
+    return (req: Request, res: Response, next: NextFunction) => {
       Promise.resolve(fn(req, res, next)).catch(next);
     };
   }

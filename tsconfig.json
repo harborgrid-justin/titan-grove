@@ -8,6 +8,8 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": false,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -42,7 +44,8 @@
     "dist",
     "**/*.test.ts",
     "**/*.spec.ts",
-    "src/ui/static/**/*.js"
+    "src/ui/static/**/*.js",
+    "src/ui/react/**/*"
   ],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
