@@ -10,8 +10,9 @@ import { authMiddleware } from '../../security/auth-middleware';
 import { validateReportingPermissions } from '../../security/permissions-validator';
 import { auditMiddleware } from '../../security/audit-middleware';
 import { rateLimitMiddleware } from '../../security/rate-limit-middleware';
+import type { Router as RouterType } from 'express';
 
-const router = Router();
+const router: RouterType = Router();
 const reportingController = new ReportingController();
 
 // Apply enterprise security middleware to all reporting routes

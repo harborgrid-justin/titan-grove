@@ -22,6 +22,7 @@ import {
   IntegrationConfig, 
   IntegrationEvent 
 } from './integration-layer';
+import { healthThresholds } from '../config';
 
 export interface SystemCoordinatorConfig {
   business: BusinessSystemConfig;
@@ -156,7 +157,7 @@ export class SystemCoordinator extends BaseService {
       };
     }
 
-    return this.executeWithMetrics(async () => {
+    const result = await this.executeWithMetrics(async () => {
       this.logger.info('Executing cross-system operation', {
         operationId,
         name: operation.name,
@@ -167,25 +168,25 @@ export class SystemCoordinator extends BaseService {
       if (this.config.enableCrossSystemValidation && operation.validationRules) {
         const validation = this.validateCrossSystemInput(input, operation.validationRules);
         if (!validation.success) {
-          return validation;
+          throw new Error(validation.error?.message || 'Validation failed');
         }
       }
 
-      let result: any = input;
+      let workResult: any = input;
 
       // Execute business operation if defined
       if (operation.businessOperation) {
         const businessResult = await this.businessSystem.executeBusinessOperation(
           operation.businessOperation,
-          result,
+          workResult,
           context
         );
         
         if (!businessResult.success) {
-          return businessResult;
+          throw new Error(businessResult.error?.message || 'Business operation failed');
         }
         
-        result = businessResult.data;
+        workResult = businessResult.data;
         
         // Publish business operation completed event
         await this.publishSystemEvent({
@@ -197,7 +198,7 @@ export class SystemCoordinator extends BaseService {
           payload: {
             operationId: operation.businessOperation,
             crossSystemOperationId: operationId,
-            result
+            result: workResult
           }
         });
       }
@@ -206,30 +207,30 @@ export class SystemCoordinator extends BaseService {
       if (operation.integrationWorkflow) {
         const workflowResult = await this.integrationLayer.executeWorkflow(
           operation.integrationWorkflow,
-          result,
+          workResult,
           context
         );
         
         if (!workflowResult.success) {
-          return workflowResult;
+          throw new Error(workflowResult.error?.message || 'Workflow failed');
         }
         
-        result = workflowResult.data;
+        workResult = workflowResult.data;
       }
 
       // Execute customer operation if defined
       if (operation.customerOperation) {
         const customerResult = await this.customerSystem.executeCustomerOperation(
           operation.customerOperation,
-          result,
+          workResult,
           context
         );
         
         if (!customerResult.success) {
-          return customerResult;
+          throw new Error(customerResult.error?.message || 'Customer operation failed');
         }
         
-        result = customerResult.data;
+        workResult = customerResult.data;
         
         // Publish customer operation completed event
         await this.publishSystemEvent({
@@ -241,13 +242,15 @@ export class SystemCoordinator extends BaseService {
           payload: {
             operationId: operation.customerOperation,
             crossSystemOperationId: operationId,
-            result
+            result: workResult
           }
         });
       }
 
-      return result as TOutput;
+      return workResult as TOutput;
     }, context);
+    
+    return result;
   }
 
   /**
@@ -260,17 +263,17 @@ export class SystemCoordinator extends BaseService {
 
     // Determine business system status
     let businessStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-    if (businessHealth.complianceStatus === 'violation' || businessHealth.recentFailures > 10) {
+    if (businessHealth.complianceStatus === 'violation' || businessHealth.recentFailures > healthThresholds.business.maxFailuresForViolation) {
       businessStatus = 'unhealthy';
-    } else if (businessHealth.complianceStatus === 'warning' || businessHealth.recentFailures > 5) {
+    } else if (businessHealth.complianceStatus === 'warning' || businessHealth.recentFailures > healthThresholds.business.maxFailuresForWarning) {
       businessStatus = 'degraded';
     }
 
     // Determine customer system status
     let customerStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-    if (customerHealth.avgResponseTime > 5000 || customerHealth.cacheHitRate < 0.3) {
+    if (customerHealth.avgResponseTime > healthThresholds.customer.maxResponseTimeForUnhealthy || customerHealth.cacheHitRate < healthThresholds.customer.minCacheHitRateForUnhealthy) {
       customerStatus = 'unhealthy';
-    } else if (customerHealth.avgResponseTime > 2000 || customerHealth.cacheHitRate < 0.6) {
+    } else if (customerHealth.avgResponseTime > healthThresholds.customer.maxResponseTimeForDegraded || customerHealth.cacheHitRate < healthThresholds.customer.minCacheHitRateForDegraded) {
       customerStatus = 'degraded';
     }
 

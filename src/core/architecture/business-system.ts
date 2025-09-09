@@ -5,6 +5,7 @@
 
 import { BaseService, ServiceContext, ServiceResult } from './service-layer';
 import { Logger } from 'winston';
+import { memoryLimits } from '../config';
 
 export interface BusinessSystemConfig {
   enableAuditLog: boolean;
@@ -205,9 +206,9 @@ export class BusinessSystemService extends BaseService {
   private logAuditEntry(entry: AuditLogEntry): void {
     this.auditLog.push(entry);
     
-    // Keep only last 10000 entries in memory
-    if (this.auditLog.length > 10000) {
-      this.auditLog.splice(0, 1000);
+    // Keep only configured number of entries in memory
+    if (this.auditLog.length > memoryLimits.audit.maxLogEntries) {
+      this.auditLog.splice(0, memoryLimits.audit.cleanupBatchSize);
     }
 
     this.logger.info('Business operation audit', entry);

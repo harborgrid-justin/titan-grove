@@ -7,8 +7,9 @@ import { Router } from 'express';
 import { authenticate } from '../../middleware/auth';
 import { validateRequest } from '../../middleware/validation';
 import { logisticsController } from './logistics-controller';
+import type { Router as RouterType } from 'express';
 
-const router = Router();
+const router: RouterType = Router();
 
 // Apply authentication middleware to all logistics routes
 router.use(authenticate);

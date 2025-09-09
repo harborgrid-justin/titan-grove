@@ -4,6 +4,7 @@
  */
 
 import { Logger } from 'winston';
+import { performanceThresholds } from '../config';
 
 export interface ServiceContext {
   logger: Logger;
@@ -25,6 +26,11 @@ export interface ServiceResult<T = any> {
     executionTime?: number;
     cacheHit?: boolean;
     warnings?: string[];
+    handlersExecuted?: number;
+    failures?: number;
+    stepsExecuted?: number;
+    workflowId?: string;
+    executionId?: string;
   };
 }
 
@@ -118,16 +124,16 @@ export abstract class BaseService {
     let status: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
 
     // Check error rate
-    if (this.metrics.errorRate > 0.1) {
+    if (this.metrics.errorRate > performanceThresholds.errorRate.errorThreshold) {
       issues.push('High error rate detected');
       status = 'unhealthy';
-    } else if (this.metrics.errorRate > 0.05) {
+    } else if (this.metrics.errorRate > performanceThresholds.errorRate.warningThreshold) {
       issues.push('Elevated error rate');
       status = 'degraded';
     }
 
     // Check response time
-    if (this.metrics.averageResponseTime > 5000) {
+    if (this.metrics.averageResponseTime > performanceThresholds.responseTime.errorThreshold) {
       issues.push('High response time detected');
       status = status === 'healthy' ? 'degraded' : status;
     }

@@ -6,6 +6,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { Logger } from 'winston';
+import { authLogger } from '../core/logger';
+import { securityConfig } from '../core/config';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -111,7 +113,7 @@ export class AuthenticationService {
 // Default authentication configuration
 const defaultAuthConfig: AuthConfig = {
   jwtSecret: process.env.JWT_SECRET || 'titan-grove-default-secret',
-  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '24h',
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || securityConfig.authentication.jwtExpiresIn,
   enableBusinessAuth: true,
   enableCustomerAuth: true,
   publicPaths: [
@@ -124,10 +126,12 @@ const defaultAuthConfig: AuthConfig = {
   ]
 };
 
+import { authLogger } from '../core/logger';
+
 // Create authentication service instance
 const authService = new AuthenticationService(
   defaultAuthConfig,
-  console as any // Will be replaced with proper logger
+  authLogger
 );
 
 /**
