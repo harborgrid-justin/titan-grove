@@ -15,10 +15,7 @@
 export * from './business-logic/field-service-service';
 export * from './types';
 
-// Export data access layer
-export * from './data-access';
-
-// Import shared utilities  
+// Export business logic services  
 import { BaseManager } from '../../shared/utils/base-manager';
 
 // Import business logic services
@@ -104,14 +101,14 @@ export class FieldServiceManager extends BaseManager {
    * Create work order from service request
    */
   async createWorkOrder(serviceRequestId: string, workOrderData: any): Promise<any> {
-    return await fieldServiceService.createWorkOrder(serviceRequestId, workOrderData);
+    return await fieldServiceService.createWorkOrder(serviceRequestId);
   }
 
   /**
    * Schedule service appointment
    */
   async scheduleServiceAppointment(workOrderId: string, appointmentData: any): Promise<any> {
-    return await fieldServiceService.scheduleServiceAppointment(workOrderId, appointmentData);
+    return await fieldServiceService.scheduleAppointment(appointmentData);
   }
 }
 

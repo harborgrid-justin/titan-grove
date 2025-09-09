@@ -515,7 +515,7 @@ export class FieldServiceService extends StandardServiceBase {
             accuracy: 0,
             timestamp: new Date()
           },
-          status: 'AVAILABLE', // Map to valid MobileWorkforce status
+          status: 'AVAILABLE' as 'AVAILABLE' | 'EN_ROUTE' | 'ON_SITE' | 'BREAK' | 'OFFLINE',
           currentWorkOrder: tech.currentAssignment?.workOrderId,
           estimatedArrival: tech.currentAssignment?.estimatedCompletion
         };
@@ -895,7 +895,7 @@ export class FieldServiceService extends StandardServiceBase {
       });
     }
 
-    if (analytics.technicianData?.utilizationRate && analytics.technicianData.utilizationRate < 0.75) {
+    if (analytics.technicianData?.averageUtilizationRate && analytics.technicianData.averageUtilizationRate < 0.75) {
       insights.push({
         insightType: 'EFFICIENCY',
         title: 'Technician Utilization Opportunity',
@@ -973,7 +973,7 @@ export class FieldServiceService extends StandardServiceBase {
       }
       if (options.skills && options.skills.length > 0) {
         technicians = technicians.filter(tech => 
-          options.skills!.some(skill => tech.skills.includes(skill))
+          options.skills!.some(skill => tech.skills.some(techSkill => techSkill.skillName === skill))
         );
       }
 
@@ -1054,9 +1054,9 @@ export class FieldServiceService extends StandardServiceBase {
       // Update work order
       workOrder.assignedTechnician = {
         technicianId: technician.technicianId,
-        technicianName: technician.personalInfo.name,
-        skills: technician.skills,
-        certifications: technician.certifications
+        technicianName: `${technician.firstName} ${technician.lastName}`,
+        skills: technician.skills.map(skill => skill.skillName),
+        certifications: technician.certifications.map(cert => cert.certificationName)
       };
       
       if (scheduledDate) {
@@ -1064,13 +1064,21 @@ export class FieldServiceService extends StandardServiceBase {
         workOrder.scheduledEnd = new Date(scheduledDate.getTime() + workOrder.estimatedDuration * 60000);
       }
 
-      workOrder.status = 'ASSIGNED';
+      workOrder.status = 'DISPATCHED';
       workOrder.lastUpdated = new Date();
       this.workOrders.set(workOrderId, workOrder);
 
-      // Update technician status
-      technician.status = 'ASSIGNED';
-      technician.currentWorkOrder = workOrderId;
+      // Update technician status - using valid status enum
+      technician.status = 'ACTIVE';
+      // Note: currentWorkOrder property doesn't exist in ServiceTechnician interface
+      // Instead we track assignment in currentAssignment
+      if (!technician.currentAssignment) {
+        technician.currentAssignment = {
+          workOrderId: workOrderId,
+          estimatedCompletion: new Date(Date.now() + workOrder.estimatedDuration * 60000),
+          status: 'EN_ROUTE'
+        };
+      }
       this.technicians.set(technicianId, technician);
 
       // Create appointment
@@ -1113,11 +1121,11 @@ export class FieldServiceService extends StandardServiceBase {
       
       return technicians.map(tech => ({
         technicianId: tech.technicianId,
-        name: tech.personalInfo.name,
-        location: tech.location || { lat: 40.7128 + (Math.random() - 0.5) * 0.1, lng: -74.0060 + (Math.random() - 0.5) * 0.1 },
+        name: `${tech.firstName} ${tech.lastName}`,
+        location: tech.currentLocation?.coordinates || { lat: 40.7128 + (Math.random() - 0.5) * 0.1, lng: -74.0060 + (Math.random() - 0.5) * 0.1 },
         status: tech.status,
         lastUpdate: new Date(),
-        currentWorkOrder: tech.currentWorkOrder
+        currentWorkOrder: tech.currentAssignment?.workOrderId
       }));
     });
   }
@@ -1144,10 +1152,27 @@ export class FieldServiceService extends StandardServiceBase {
         technician.status = updates.status as any;
       }
       if (updates.location) {
-        technician.location = updates.location;
+        if (!technician.currentLocation) {
+          technician.currentLocation = {
+            coordinates: updates.location,
+            address: '',
+            timestamp: new Date()
+          };
+        } else {
+          technician.currentLocation.coordinates = updates.location;
+          technician.currentLocation.timestamp = new Date();
+        }
       }
       if (updates.currentWorkOrder !== undefined) {
-        technician.currentWorkOrder = updates.currentWorkOrder;
+        if (updates.currentWorkOrder) {
+          technician.currentAssignment = {
+            workOrderId: updates.currentWorkOrder,
+            estimatedCompletion: new Date(Date.now() + 2 * 60 * 60 * 1000),
+            status: 'EN_ROUTE'
+          };
+        } else {
+          technician.currentAssignment = undefined;
+        }
       }
 
       technician.lastUpdated = new Date();
@@ -1160,7 +1185,7 @@ export class FieldServiceService extends StandardServiceBase {
         {
           technicianId,
           status: technician.status,
-          location: technician.location,
+          location: technician.currentLocation?.coordinates,
           timestamp: new Date()
         }
       );
@@ -1238,7 +1263,7 @@ export class FieldServiceService extends StandardServiceBase {
           address: '123 Main St, New York, NY 10001',
           coordinates: { lat: 40.7505, lng: -73.9934 }
         },
-        status: 'ASSIGNED',
+        status: 'SCHEDULED',
         followUpRequired: false,
         createdBy: 'DISPATCHER',
         createdDate: new Date(Date.now() - 2 * 60 * 60 * 1000),
@@ -1295,63 +1320,145 @@ export class FieldServiceService extends StandardServiceBase {
     const sampleTechnicians: ServiceTechnician[] = [
       {
         technicianId: 'TECH_001',
-        employeeNumber: 'EMP-001',
-        personalInfo: {
-          name: 'John Smith',
-          phone: '555-0101',
-          email: 'john.smith@company.com',
-          address: '123 Tech St, New York, NY'
-        },
-        skills: ['HVAC', 'Electrical', 'Plumbing'],
-        certifications: ['EPA 608', 'NATE Certified'],
-        tools: ['Gauges', 'Multimeter', 'Hand Tools'],
-        serviceArea: {
-          primaryZone: 'Manhattan',
-          coverage: ['Manhattan', 'Brooklyn']
-        },
-        workSchedule: {
-          standardHours: { start: '08:00', end: '17:00' },
-          availability: ['MON', 'TUE', 'WED', 'THU', 'FRI']
-        },
+        employeeId: 'EMP-001',
+        firstName: 'John',
+        lastName: 'Smith',
+        email: 'john.smith@company.com',
+        phone: '555-0101',
+        mobilePhone: '555-0101',
+        skills: [
+          { skillId: 'HVAC_001', skillName: 'HVAC', proficiencyLevel: 'EXPERT', yearsExperience: 8 },
+          { skillId: 'ELEC_001', skillName: 'Electrical', proficiencyLevel: 'ADVANCED', yearsExperience: 6 },
+          { skillId: 'PLUMB_001', skillName: 'Plumbing', proficiencyLevel: 'INTERMEDIATE', yearsExperience: 4 }
+        ],
+        certifications: [
+          { certificationId: 'EPA_001', certificationName: 'EPA 608', issuingOrganization: 'EPA', issueDate: new Date('2020-01-01'), status: 'ACTIVE' },
+          { certificationId: 'NATE_001', certificationName: 'NATE Certified', issuingOrganization: 'NATE', issueDate: new Date('2019-06-01'), status: 'ACTIVE' }
+        ],
+        tools: [
+          { toolId: 'TOOL_001', toolName: 'Gauges', condition: 'GOOD' },
+          { toolId: 'TOOL_002', toolName: 'Multimeter', condition: 'GOOD' },
+          { toolId: 'TOOL_003', toolName: 'Hand Tools', condition: 'FAIR' }
+        ],
         performance: {
-          rating: 4.8,
+          onTimeRate: 0.95,
+          firstTimeFixRate: 0.88,
+          customerSatisfactionScore: 4.8,
           completionRate: 0.95,
-          customerSatisfaction: 4.9
+          utilizationRate: 0.85
         },
-        location: { lat: 40.7128, lng: -74.0060 },
-        status: 'AVAILABLE',
-        currentWorkOrder: null,
+        currentStatus: 'AVAILABLE',
+        currentLocation: {
+          coordinates: { lat: 40.7128, lng: -74.0060 },
+          address: '123 Tech St, New York, NY',
+          timestamp: new Date()
+        },
+        emergencyContact: {
+          name: 'Jane Smith',
+          relationship: 'Spouse',
+          phone: '555-0199'
+        },
+        serviceTerritory: {
+          territoryId: 'TERRITORY_001',
+          territoryName: 'Manhattan North',
+          geoFence: null,
+          travelRadius: 25
+        },
+        homeBase: {
+          address: '123 Tech St, New York, NY',
+          coordinates: { lat: 40.7128, lng: -74.0060 }
+        },
+        workingHours: {
+          schedule: {
+            MON: { start: '08:00', end: '17:00' },
+            TUE: { start: '08:00', end: '17:00' },
+            WED: { start: '08:00', end: '17:00' },
+            THU: { start: '08:00', end: '17:00' },
+            FRI: { start: '08:00', end: '17:00' }
+          },
+          availability: 'FULL_TIME',
+          timeZone: 'America/New_York'
+        },
+        mobileInventory: {
+          capacity: 500,
+          currentStock: [],
+          stockValue: 0
+        },
+        status: 'ACTIVE',
+        hireDate: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
         createdDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
         lastUpdated: new Date()
       },
       {
         technicianId: 'TECH_002',
-        employeeNumber: 'EMP-002',
-        personalInfo: {
-          name: 'Sarah Johnson',
-          phone: '555-0102',
-          email: 'sarah.johnson@company.com',
-          address: '456 Service Ave, Brooklyn, NY'
-        },
-        skills: ['Plumbing', 'General Maintenance'],
-        certifications: ['Licensed Plumber'],
-        tools: ['Pipe Tools', 'Hand Tools'],
-        serviceArea: {
-          primaryZone: 'Brooklyn',
-          coverage: ['Brooklyn', 'Queens']
-        },
-        workSchedule: {
-          standardHours: { start: '07:00', end: '16:00' },
-          availability: ['MON', 'TUE', 'WED', 'THU', 'FRI']
-        },
+        employeeId: 'EMP-002',
+        firstName: 'Sarah',
+        lastName: 'Johnson',
+        email: 'sarah.johnson@company.com',
+        phone: '555-0102',
+        mobilePhone: '555-0102',
+        skills: [
+          { skillId: 'PLUMB_001', skillName: 'Plumbing', proficiencyLevel: 'EXPERT', yearsExperience: 10 },
+          { skillId: 'MAINT_001', skillName: 'General Maintenance', proficiencyLevel: 'ADVANCED', yearsExperience: 5 }
+        ],
+        certifications: [
+          { certificationId: 'LIC_001', certificationName: 'Licensed Plumber', issuingOrganization: 'NYC DOB', issueDate: new Date('2018-01-01'), status: 'ACTIVE' }
+        ],
+        tools: [
+          { toolId: 'TOOL_004', toolName: 'Pipe Tools', condition: 'GOOD' },
+          { toolId: 'TOOL_005', toolName: 'Hand Tools', condition: 'GOOD' }
+        ],
         performance: {
-          rating: 4.6,
+          onTimeRate: 0.92,
+          firstTimeFixRate: 0.85,
+          customerSatisfactionScore: 4.6,
           completionRate: 0.92,
-          customerSatisfaction: 4.7
+          utilizationRate: 0.80
         },
-        location: { lat: 40.7589, lng: -73.9851 },
-        status: 'ON_SITE',
-        currentWorkOrder: 'WO_002',
+        currentStatus: 'BUSY',
+        currentLocation: {
+          coordinates: { lat: 40.7589, lng: -73.9851 },
+          address: '456 Service Ave, Brooklyn, NY',
+          timestamp: new Date()
+        },
+        currentAssignment: {
+          workOrderId: 'WO_002',
+          estimatedCompletion: new Date(Date.now() + 2 * 60 * 60 * 1000),
+          status: 'ON_SITE'
+        },
+        emergencyContact: {
+          name: 'Mike Johnson',
+          relationship: 'Brother',
+          phone: '555-0299'
+        },
+        serviceTerritory: {
+          territoryId: 'TERRITORY_002',
+          territoryName: 'Brooklyn Central',
+          geoFence: null,
+          travelRadius: 30
+        },
+        homeBase: {
+          address: '456 Service Ave, Brooklyn, NY',
+          coordinates: { lat: 40.7589, lng: -73.9851 }
+        },
+        workingHours: {
+          schedule: {
+            MON: { start: '07:00', end: '16:00' },
+            TUE: { start: '07:00', end: '16:00' },
+            WED: { start: '07:00', end: '16:00' },
+            THU: { start: '07:00', end: '16:00' },
+            FRI: { start: '07:00', end: '16:00' }
+          },
+          availability: 'FULL_TIME',
+          timeZone: 'America/New_York'
+        },
+        mobileInventory: {
+          capacity: 400,
+          currentStock: [],
+          stockValue: 0
+        },
+        status: 'ACTIVE',
+        hireDate: new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000),
         createdDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
         lastUpdated: new Date()
       }
@@ -1384,7 +1491,7 @@ export class FieldServiceService extends StandardServiceBase {
 
       return {
         technicianId: tech.technicianId,
-        technicianName: tech.personalInfo.name,
+        technicianName: `${tech.firstName} ${tech.lastName}`,
         workOrders: assignedOrders.map(wo => wo.workOrderId),
         totalTravelTime: Math.floor(Math.random() * 60) + 30, // 30-90 minutes
         efficiency: 0.8 + Math.random() * 0.2, // 80-100%
@@ -1403,6 +1510,90 @@ export class FieldServiceService extends StandardServiceBase {
         'Schedule high-priority orders during peak hours'
       ]
     };
+  }
+
+  /**
+   * Update work order status
+   */
+  async updateWorkOrderStatus(workOrderId: string, status: string): Promise<WorkOrder> {
+    const workOrder = this.workOrders.get(workOrderId);
+    if (!workOrder) {
+      throw new Error(`Work order ${workOrderId} not found`);
+    }
+
+    // Map string status to valid enum values
+    const validStatuses = ['CREATED', 'SCHEDULED', 'DISPATCHED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'ON_HOLD'];
+    const mappedStatus = validStatuses.includes(status) ? status as any : 'IN_PROGRESS';
+
+    workOrder.status = mappedStatus;
+    workOrder.lastUpdated = new Date();
+    
+    this.workOrders.set(workOrderId, workOrder);
+    
+    this.logger?.info(`Work order ${workOrderId} status updated to ${mappedStatus}`);
+    
+    return workOrder;
+  }
+
+  /**
+   * Schedule appointment
+   */
+  async scheduleAppointment(appointmentData: any): Promise<ServiceAppointment> {
+    const appointmentId = this.generateId();
+    
+    const appointment: ServiceAppointment = {
+      appointmentId,
+      workOrderId: appointmentData.workOrderId || '',
+      customerId: appointmentData.customerId || '',
+      technicianId: appointmentData.technicianId || '',
+      scheduledDate: appointmentData.scheduledDate || new Date(),
+      timeWindow: appointmentData.timeWindow || {
+        start: new Date().toTimeString().substring(0, 5),
+        end: new Date(Date.now() + 2 * 60 * 60 * 1000).toTimeString().substring(0, 5),
+        duration: 120
+      },
+      appointmentType: appointmentData.appointmentType || 'MAINTENANCE',
+      serviceAddress: appointmentData.serviceAddress || {
+        address: 'Default Address',
+        coordinates: { lat: 40.7128, lng: -74.0060 }
+      },
+      status: 'SCHEDULED',
+      skillsRequired: appointmentData.skillsRequired || [],
+      toolsRequired: appointmentData.toolsRequired || [],
+      partsRequired: appointmentData.partsRequired || [],
+      actualStart: undefined,
+      actualEnd: undefined,
+      notifications: {
+        confirmationSent: false,
+        reminderSent: false,
+        arrivalNotificationSent: false,
+        completionNotificationSent: false
+      },
+      rescheduleHistory: [],
+      customerPreferences: appointmentData.customerPreferences || {
+        preferredTimeSlots: [],
+        specialRequirements: [],
+        accessInstructions: '',
+        specialInstructions: appointmentData.specialInstructions || '',
+        contactMethod: 'PHONE'
+      },
+      createdBy: 'SYSTEM',
+      createdDate: new Date(),
+      lastUpdated: new Date()
+    };
+
+    this.appointments.set(appointmentId, appointment);
+    
+    this.logger?.info(`Appointment ${appointmentId} scheduled for work order ${appointmentData.workOrderId}`);
+    
+    return appointment;
+  }
+
+  /**
+   * Generate a unique ID (protected to match base class)
+   */
+  protected generateId(): string {
+    return Math.random().toString(36).substr(2, 9);
   }
 }
 
