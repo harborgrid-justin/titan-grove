@@ -1,11 +1,107 @@
 /**
  * Manufacturing & Production Domain
  * Centralized business logic for manufacturing operations, quality control, and production scheduling
+ * 
+ * @author Titan Grove Development Team
+ * @version 1.0.0
+ * @since 2024-01-01
  */
 
 import { manufacturingManager, ManufacturingManager } from '../../modules/manufacturing';
 import { qualityManager, QualityManager } from '../../modules/quality';
 import { BusinessConfig } from '../../types/business-config';
+
+/**
+ * Custom error classes for manufacturing domain-specific error handling
+ */
+export class ManufacturingDomainError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+    public details?: any
+  ) {
+    super(message);
+    this.name = 'ManufacturingDomainError';
+  }
+}
+
+export class InvalidOEEParametersError extends ManufacturingDomainError {
+  constructor(details: any) {
+    super('Invalid OEE calculation parameters provided', 'INVALID_OEE_PARAMETERS', details);
+  }
+}
+
+export class QualityControlCalculationError extends ManufacturingDomainError {
+  constructor(details: any) {
+    super('Quality control calculation failed', 'QUALITY_CONTROL_ERROR', details);
+  }
+}
+
+export class ProductionSchedulingError extends ManufacturingDomainError {
+  constructor(details: any) {
+    super('Production scheduling calculation failed', 'PRODUCTION_SCHEDULING_ERROR', details);
+  }
+}
+
+/**
+ * Manufacturing parameters validation utilities
+ */
+export class ManufacturingParametersValidator {
+  /**
+   * Validates OEE calculation parameters
+   * @param params - The OEE parameters to validate
+   * @throws {InvalidOEEParametersError} If parameters are invalid
+   */
+  static validateOEEParameters(params: {
+    availableTime: number;
+    downtime: number;
+    actualProduction: number;
+    targetProduction: number;
+    goodParts: number;
+    totalParts: number;
+  }): void {
+    const errors: string[] = [];
+
+    // Time validation
+    if (typeof params.availableTime !== 'number' || params.availableTime <= 0) {
+      errors.push('Available time must be a positive number');
+    }
+
+    if (typeof params.downtime !== 'number' || params.downtime < 0) {
+      errors.push('Downtime must be a non-negative number');
+    }
+
+    if (params.downtime > params.availableTime) {
+      errors.push('Downtime cannot exceed available time');
+    }
+
+    // Production validation
+    if (typeof params.actualProduction !== 'number' || params.actualProduction < 0) {
+      errors.push('Actual production must be a non-negative number');
+    }
+
+    if (typeof params.targetProduction !== 'number' || params.targetProduction <= 0) {
+      errors.push('Target production must be a positive number');
+    }
+
+    // Parts validation
+    if (typeof params.goodParts !== 'number' || params.goodParts < 0) {
+      errors.push('Good parts must be a non-negative number');
+    }
+
+    if (typeof params.totalParts !== 'number' || params.totalParts <= 0) {
+      errors.push('Total parts must be a positive number');
+    }
+
+    if (params.goodParts > params.totalParts) {
+      errors.push('Good parts cannot exceed total parts');
+    }
+
+    if (errors.length > 0) {
+      throw new InvalidOEEParametersError({ errors, providedParams: params });
+    }
+  }
+}
 
 export interface ManufacturingProductionDomainConfig {
   production: {
@@ -62,57 +158,318 @@ export interface ManufacturingProductionDomainConfig {
 
 /**
  * Core Business Logic Functions - Manufacturing & Production Domain
- * Consolidated from multiple manufacturing and quality services
+ * Production-grade business logic with comprehensive error handling and validation
+ * 
+ * This class centralizes all manufacturing calculations and provides standardized
+ * business logic across the manufacturing and production domain.
  */
 export class ManufacturingProductionBusinessLogic {
   
+  private static readonly OEE_CALCULATION_CONSTANTS = {
+    PERCENTAGE_MULTIPLIER: 100,
+    PERFECT_EFFICIENCY: 1.0,
+    MIN_ACCEPTABLE_OEE: 0.60,
+    GOOD_OEE_THRESHOLD: 0.75,
+    EXCELLENT_OEE_THRESHOLD: 0.85
+  } as const;
+
+  private static readonly OEE_COMPONENT_WEIGHTS = {
+    AVAILABILITY: 'Availability',
+    PERFORMANCE: 'Performance', 
+    QUALITY: 'Quality'
+  } as const;
+
   /**
-   * Calculate Overall Equipment Effectiveness (OEE)
-   * Consolidated from production monitoring services
+   * Calculate Overall Equipment Effectiveness (OEE) with comprehensive analysis
+   * 
+   * Implements the standard OEE calculation methodology used in lean manufacturing
+   * and provides detailed analysis including component breakdown, performance
+   * categorization, and improvement recommendations.
+   * 
+   * @param productionMetrics - Core production time and output metrics
+   * @param domainConfig - Domain-specific configuration for OEE analysis
+   * @returns Comprehensive OEE analysis with component breakdown and recommendations
+   * @throws {InvalidOEEParametersError} When parameters are invalid
+   * 
+   * @example
+   * ```typescript
+   * const oeeAnalysis = ManufacturingProductionBusinessLogic.calculateOverallEquipmentEffectiveness(
+   *   {
+   *     availableTime: 480, // 8 hours in minutes
+   *     downtime: 60,       // 1 hour downtime
+   *     actualProduction: 950,
+   *     targetProduction: 1000,
+   *     goodParts: 900,
+   *     totalParts: 950
+   *   },
+   *   domainConfig
+   * );
+   * ```
    */
-  static calculateOEE(
-    availableTime: number,
-    downtime: number,
-    actualProduction: number,
-    targetProduction: number,
-    goodParts: number,
-    totalParts: number,
-    config: ManufacturingProductionDomainConfig
+  static calculateOverallEquipmentEffectiveness(
+    productionMetrics: {
+      availableTime: number;
+      downtime: number;
+      actualProduction: number;
+      targetProduction: number;
+      goodParts: number;
+      totalParts: number;
+    },
+    domainConfig: ManufacturingProductionDomainConfig
   ): {
-    availability: number;
-    performance: number;
-    quality: number;
-    oee: number;
-    category: 'excellent' | 'good' | 'acceptable' | 'poor';
+    availabilityPercentage: number;
+    performancePercentage: number;
+    qualityPercentage: number;
+    overallEquipmentEffectiveness: number;
+    performanceCategory: 'excellent' | 'good' | 'acceptable' | 'poor';
+    improvementRecommendations: string[];
+    analysisDetails: {
+      operatingTime: number;
+      plannedProductionTime: number;
+      actualRunRate: number;
+      targetRunRate: number;
+      defectRate: number;
+      lossBreakdown: {
+        availabilityLoss: number;
+        performanceLoss: number;
+        qualityLoss: number;
+      };
+    };
   } {
+    // Input validation
+    ManufacturingParametersValidator.validateOEEParameters(productionMetrics);
+
+    try {
+      // Calculate OEE components with detailed analysis
+      const availabilityAnalysis = this.calculateAvailabilityComponent(
+        productionMetrics.availableTime,
+        productionMetrics.downtime
+      );
+
+      const performanceAnalysis = this.calculatePerformanceComponent(
+        productionMetrics.actualProduction,
+        productionMetrics.targetProduction
+      );
+
+      const qualityAnalysis = this.calculateQualityComponent(
+        productionMetrics.goodParts,
+        productionMetrics.totalParts
+      );
+
+      // Calculate overall OEE
+      const oeeDecimal = availabilityAnalysis.availability * performanceAnalysis.performance * qualityAnalysis.quality;
+      const oeePercentage = oeeDecimal * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER;
+
+      // Determine performance category
+      const performanceCategory = this.determineOEEPerformanceCategory(oeeDecimal, domainConfig);
+
+      // Calculate loss breakdown for improvement analysis
+      const lossBreakdown = this.calculateOEELossBreakdown(
+        availabilityAnalysis,
+        performanceAnalysis,
+        qualityAnalysis
+      );
+
+      // Generate improvement recommendations
+      const improvementRecommendations = this.generateOEEImprovementRecommendations(
+        availabilityAnalysis,
+        performanceAnalysis,
+        qualityAnalysis,
+        oeeDecimal,
+        domainConfig
+      );
+
+      return {
+        availabilityPercentage: availabilityAnalysis.availability * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+        performancePercentage: performanceAnalysis.performance * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+        qualityPercentage: qualityAnalysis.quality * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+        overallEquipmentEffectiveness: oeePercentage,
+        performanceCategory: performanceCategory.category,
+        improvementRecommendations,
+        analysisDetails: {
+          operatingTime: availabilityAnalysis.operatingTime,
+          plannedProductionTime: productionMetrics.availableTime,
+          actualRunRate: performanceAnalysis.actualRunRate,
+          targetRunRate: performanceAnalysis.targetRunRate,
+          defectRate: qualityAnalysis.defectRate,
+          lossBreakdown
+        }
+      };
+
+    } catch (error) {
+      if (error instanceof InvalidOEEParametersError) {
+        throw error;
+      }
+
+      throw new ManufacturingDomainError(
+        'Failed to calculate Overall Equipment Effectiveness',
+        'OEE_CALCULATION_ERROR',
+        { originalError: error, metrics: productionMetrics }
+      );
+    }
+  }
+
+  /**
+   * Calculate availability component of OEE
+   * @private
+   */
+  private static calculateAvailabilityComponent(
+    availableTime: number,
+    downtime: number
+  ): { availability: number; operatingTime: number; } {
     const operatingTime = availableTime - downtime;
     const availability = availableTime > 0 ? operatingTime / availableTime : 0;
-    
+
+    return {
+      availability: Math.max(0, Math.min(this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY, availability)),
+      operatingTime
+    };
+  }
+
+  /**
+   * Calculate performance component of OEE
+   * @private
+   */
+  private static calculatePerformanceComponent(
+    actualProduction: number,
+    targetProduction: number
+  ): { performance: number; actualRunRate: number; targetRunRate: number; } {
     const performance = targetProduction > 0 ? actualProduction / targetProduction : 0;
-    
+
+    return {
+      performance: Math.max(0, Math.min(this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY, performance)),
+      actualRunRate: actualProduction,
+      targetRunRate: targetProduction
+    };
+  }
+
+  /**
+   * Calculate quality component of OEE
+   * @private
+   */
+  private static calculateQualityComponent(
+    goodParts: number,
+    totalParts: number
+  ): { quality: number; defectRate: number; } {
     const quality = totalParts > 0 ? goodParts / totalParts : 0;
-    
-    const oee = availability * performance * quality;
-    
-    // Categorize OEE performance
+    const defectRate = totalParts > 0 ? (totalParts - goodParts) / totalParts : 0;
+
+    return {
+      quality: Math.max(0, Math.min(this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY, quality)),
+      defectRate
+    };
+  }
+
+  /**
+   * Determine OEE performance category based on score
+   * @private
+   */
+  private static determineOEEPerformanceCategory(
+    oeeDecimal: number,
+    domainConfig: ManufacturingProductionDomainConfig
+  ): { category: 'excellent' | 'good' | 'acceptable' | 'poor'; threshold: number; } {
+    const targetOEE = domainConfig.production.efficiency.targetOEE / this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER;
+
     let category: 'excellent' | 'good' | 'acceptable' | 'poor';
-    if (oee >= config.production.efficiency.targetOEE) {
+    let threshold: number;
+
+    if (oeeDecimal >= Math.max(targetOEE, this.OEE_CALCULATION_CONSTANTS.EXCELLENT_OEE_THRESHOLD)) {
       category = 'excellent';
-    } else if (oee >= 0.75) {
+      threshold = this.OEE_CALCULATION_CONSTANTS.EXCELLENT_OEE_THRESHOLD;
+    } else if (oeeDecimal >= this.OEE_CALCULATION_CONSTANTS.GOOD_OEE_THRESHOLD) {
       category = 'good';
-    } else if (oee >= 0.60) {
+      threshold = this.OEE_CALCULATION_CONSTANTS.GOOD_OEE_THRESHOLD;
+    } else if (oeeDecimal >= this.OEE_CALCULATION_CONSTANTS.MIN_ACCEPTABLE_OEE) {
       category = 'acceptable';
+      threshold = this.OEE_CALCULATION_CONSTANTS.MIN_ACCEPTABLE_OEE;
     } else {
       category = 'poor';
+      threshold = this.OEE_CALCULATION_CONSTANTS.MIN_ACCEPTABLE_OEE;
     }
-    
+
+    return { category, threshold };
+  }
+
+  /**
+   * Calculate loss breakdown for OEE improvement analysis
+   * @private
+   */
+  private static calculateOEELossBreakdown(
+    availabilityAnalysis: { availability: number; },
+    performanceAnalysis: { performance: number; },
+    qualityAnalysis: { quality: number; }
+  ): { availabilityLoss: number; performanceLoss: number; qualityLoss: number; } {
     return {
-      availability: availability * 100,
-      performance: performance * 100,
-      quality: quality * 100,
-      oee: oee * 100,
-      category
+      availabilityLoss: (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - availabilityAnalysis.availability) * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+      performanceLoss: (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - performanceAnalysis.performance) * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+      qualityLoss: (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - qualityAnalysis.quality) * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER
     };
+  }
+
+  /**
+   * Generate OEE improvement recommendations based on component analysis
+   * @private
+   */
+  private static generateOEEImprovementRecommendations(
+    availabilityAnalysis: { availability: number; },
+    performanceAnalysis: { performance: number; },
+    qualityAnalysis: { quality: number; },
+    overallOEE: number,
+    domainConfig: ManufacturingProductionDomainConfig
+  ): string[] {
+    const recommendations: string[] = [];
+
+    const IMPROVEMENT_THRESHOLDS = {
+      AVAILABILITY_THRESHOLD: 0.90,
+      PERFORMANCE_THRESHOLD: 0.85,
+      QUALITY_THRESHOLD: 0.95,
+      CRITICAL_THRESHOLD: 0.70
+    } as const;
+
+    // Availability recommendations
+    if (availabilityAnalysis.availability < IMPROVEMENT_THRESHOLDS.AVAILABILITY_THRESHOLD) {
+      if (availabilityAnalysis.availability < IMPROVEMENT_THRESHOLDS.CRITICAL_THRESHOLD) {
+        recommendations.push('CRITICAL: Implement aggressive preventive maintenance program to reduce equipment downtime');
+      } else {
+        recommendations.push('Optimize planned maintenance schedules and reduce changeover times to improve availability');
+      }
+    }
+
+    // Performance recommendations
+    if (performanceAnalysis.performance < IMPROVEMENT_THRESHOLDS.PERFORMANCE_THRESHOLD) {
+      if (performanceAnalysis.performance < IMPROVEMENT_THRESHOLDS.CRITICAL_THRESHOLD) {
+        recommendations.push('CRITICAL: Investigate and resolve major performance bottlenecks affecting production rate');
+      } else {
+        recommendations.push('Fine-tune equipment settings and operator training to achieve target production rates');
+      }
+    }
+
+    // Quality recommendations
+    if (qualityAnalysis.quality < IMPROVEMENT_THRESHOLDS.QUALITY_THRESHOLD) {
+      if (qualityAnalysis.quality < IMPROVEMENT_THRESHOLDS.CRITICAL_THRESHOLD) {
+        recommendations.push('CRITICAL: Implement immediate quality control measures to reduce defect rates');
+      } else {
+        recommendations.push('Enhance quality control processes and implement statistical process control');
+      }
+    }
+
+    // Overall OEE recommendations
+    const targetOEE = domainConfig.production.efficiency.targetOEE / this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER;
+    if (overallOEE < targetOEE) {
+      recommendations.push(`Overall OEE below target (${(targetOEE * 100).toFixed(1)}%) - prioritize highest impact improvements`);
+    }
+
+    // Identify highest priority area for improvement
+    const lowestComponent = Math.min(availabilityAnalysis.availability, performanceAnalysis.performance, qualityAnalysis.quality);
+    if (lowestComponent === availabilityAnalysis.availability) {
+      recommendations.push('Priority focus: Availability improvement will provide highest OEE impact');
+    } else if (lowestComponent === performanceAnalysis.performance) {
+      recommendations.push('Priority focus: Performance optimization will provide highest OEE impact');
+    } else {
+      recommendations.push('Priority focus: Quality improvement will provide highest OEE impact');
+    }
+
+    return recommendations;
   }
 
   /**
