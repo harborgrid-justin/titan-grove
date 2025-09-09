@@ -1,6 +1,7 @@
 /**
  * Customer System Architecture
- * Handles customer-facing operations, self-service, and user experience
+ * Handles customer-facing operations, self-service portals, and user experience optimization
+ * Provides performance-optimized, cache-enabled customer services with analytics
  */
 
 import { BaseService, ServiceContext, ServiceResult } from './service-layer';

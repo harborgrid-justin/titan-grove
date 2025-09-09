@@ -35,18 +35,14 @@
     }
   },
   "include": [
-    "src/core/**/*",
-    "src/business-suite.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.test.ts",
     "**/*.spec.ts",
-    "src/ui/static/**/*.js",
-    "src/modules/**/*",
-    "src/api/**/*",
-    "src/middleware/**/*"
+    "src/ui/static/**/*.js"
   ],
   "ts-node": {
     "require": ["tsconfig-paths/register"]
