@@ -425,14 +425,6 @@ export class SupplyChainOperationsBusinessLogic {
       leadTimeDemand
     };
   }
-    
-    return {
-      economicOrderQuantity: Math.round(economicOrderQuantity),
-      totalAnnualCost,
-      orderFrequency,
-      reorderPoint: Math.round(reorderPoint)
-    };
-  }
 
   /**
    * Calculate comprehensive supplier performance evaluation with detailed scoring
@@ -760,23 +752,6 @@ export class SupplyChainOperationsBusinessLogic {
     }
 
     return recommendations;
-  }
-    const recommendations: string[] = [];
-    if (supplier.qualityRating < 80) {
-      recommendations.push('Implement quality improvement program');
-    }
-    if (supplier.deliveryPerformance < 85) {
-      recommendations.push('Review delivery schedules and logistics');
-    }
-    if (supplier.costCompetitiveness < 70) {
-      recommendations.push('Negotiate better pricing terms');
-    }
-    
-    return {
-      overallScore: riskAdjustedScore,
-      category,
-      recommendations
-    };
   }
 
   /**
