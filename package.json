@@ -10,7 +10,9 @@
     "titan-server": "./bin/titan-server.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run build:native && tsc",
+    "build:native": "napi build --platform --release --js native.js --dts native.d.ts",
+    "build:native:debug": "napi build --platform --js native.js --dts native.d.ts",
     "build:watch": "tsc --watch",
     "build:ui": "vite build",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
@@ -130,6 +132,7 @@
   },
   "devDependencies": {
     "@jest/types": "^30.0.5",
+    "@napi-rs/cli": "^2.18.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/compression": "^1.8.1",
     "@types/cors": "^2.8.19",
