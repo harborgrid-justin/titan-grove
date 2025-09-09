@@ -7,8 +7,9 @@ import { Router } from 'express';
 import { authenticate } from '../../middleware/auth';
 import { validateRequest } from '../../middleware/validation';
 import { supportController } from './support-controller';
+import type { Router as RouterType } from 'express';
 
-const router = Router();
+const router: RouterType = Router();
 
 // Apply authentication middleware to all support routes
 router.use(authenticate);

@@ -3,8 +3,9 @@
 
 import { Router } from 'express';
 import { Request, Response } from 'express';
+import type { Router as RouterType } from 'express';
 
-const router = Router();
+const router: RouterType = Router();
 
 // List of all ETL endpoints
 const etlEndpoints = [

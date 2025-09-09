@@ -7,6 +7,7 @@ import { ServiceContext, ServiceResult } from './service-layer';
 import { BusinessSystemService } from './business-system';
 import { CustomerSystemService } from './customer-system';
 import { Logger } from 'winston';
+import { integrationConfig } from '../config';
 
 export interface IntegrationConfig {
   enableEventBridge: boolean;
@@ -434,7 +435,7 @@ export class IntegrationLayerService {
     if (!breaker) return false;
 
     // Reset circuit breaker after timeout
-    const timeoutMs = 60000; // 1 minute
+    const timeoutMs = integrationConfig.circuitBreaker.timeoutMs;
     if (breaker.isOpen && Date.now() - breaker.lastFailure.getTime() > timeoutMs) {
       breaker.isOpen = false;
       breaker.failures = 0;
@@ -453,11 +454,11 @@ export class IntegrationLayerService {
     breaker.failures++;
     breaker.lastFailure = new Date();
 
-    if (breaker.failures >= this.config.circuitBreakerThreshold) {
+    if (breaker.failures >= integrationConfig.circuitBreaker.defaultThreshold) {
       breaker.isOpen = true;
       this.logger.warn(`Circuit breaker opened for ${key}`, {
         failures: breaker.failures,
-        threshold: this.config.circuitBreakerThreshold
+        threshold: integrationConfig.circuitBreaker.defaultThreshold
       });
     }
   }
@@ -493,14 +494,14 @@ export class IntegrationLayerService {
     input: any,
     context: ServiceContext
   ): Promise<ServiceResult<any>> {
-    for (let attempt = 1; attempt <= this.config.maxRetryAttempts; attempt++) {
+    for (let attempt = 1; attempt <= integrationConfig.retry.maxAttempts; attempt++) {
       this.logger.debug('Retrying workflow step', {
         stepId: step.stepId,
         attempt,
-        maxAttempts: this.config.maxRetryAttempts
+        maxAttempts: integrationConfig.retry.maxAttempts
       });
 
-      await new Promise(resolve => setTimeout(resolve, this.config.retryDelayMs * attempt));
+      await new Promise(resolve => setTimeout(resolve, integrationConfig.retry.delayMs * attempt));
 
       let result: ServiceResult<any>;
       
@@ -514,7 +515,7 @@ export class IntegrationLayerService {
         return result;
       }
 
-      if (attempt === this.config.maxRetryAttempts) {
+      if (attempt === integrationConfig.retry.maxAttempts) {
         return result;
       }
     }

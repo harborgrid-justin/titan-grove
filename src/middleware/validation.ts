@@ -6,6 +6,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 import { Logger } from 'winston';
+import { validationLogger } from '../core/logger';
 
 export interface ValidationRule {
   body?: Joi.ObjectSchema;
@@ -154,7 +155,7 @@ const defaultValidationConfig: ValidationConfig = {
 // Create validation service instance
 const validationService = new ValidationService(
   defaultValidationConfig,
-  console as any // Will be replaced with proper logger
+  validationLogger
 );
 
 /**

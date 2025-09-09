@@ -3,8 +3,8 @@
  * Tests the standardized platform architecture with business and customer systems
  */
 
-// Use CommonJS require instead of ES modules
-const { TitanGroveBusinessSuite } = require('./src/business-suite.ts');
+// Use compiled JavaScript instead of TypeScript source
+const { TitanGroveBusinessSuite } = require('./dist/business-suite.js');
 
 async function testStandardizedArchitecture() {
   console.log('🧪 Testing Standardized Platform Architecture...\n');

@@ -12,6 +12,7 @@ import {
   CustomerSystemConfig,
   IntegrationConfig
 } from './core/architecture';
+import { createLogger, businessLogger } from './core/logger';
 
 // Domain Orchestration
 import { 
@@ -1282,7 +1283,7 @@ export class TitanGroveBusinessSuite {
     console.log('🏗️  Initializing Standardized Platform Architecture...');
 
     // Create logger (simplified for this implementation)
-    this.logger = console;
+    this.logger = createLogger('TitanGroveBusinessSuite');
 
     // Configure standardized architecture
     const architectureConfig: SystemCoordinatorConfig = {

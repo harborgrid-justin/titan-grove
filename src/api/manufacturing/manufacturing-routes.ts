@@ -12,8 +12,9 @@ import { workOrderManagementService } from '../../modules/manufacturing/business
 import { shopFloorControlService } from '../../modules/manufacturing/business-logic/shop-floor-control/shop-floor-control-service';
 import { qualityManagementService } from '../../modules/manufacturing/business-logic/quality-management/quality-management-service';
 import { costManagementService } from '../../modules/manufacturing/business-logic/cost-management/cost-management-service';
+import type { Router as RouterType } from 'express';
 
-const router = Router();
+const router: RouterType = Router();
 
 // =============================================================================
 // PRODUCTION MANAGEMENT ENDPOINTS (10 endpoints)

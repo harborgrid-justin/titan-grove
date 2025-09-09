@@ -5,6 +5,7 @@
 
 import { BaseService, ServiceContext, ServiceResult } from './service-layer';
 import { Logger } from 'winston';
+import { memoryLimits } from '../config';
 
 export interface CustomerSystemConfig {
   enableSelfService: boolean;
@@ -68,7 +69,7 @@ export class CustomerSystemService extends BaseService {
     
     // Setup cache cleanup interval
     if (this.config.cacheEnabled) {
-      setInterval(() => this.cleanupExpiredCache(), 60000); // Every minute
+      setInterval(() => this.cleanupExpiredCache(), memoryLimits.cache.cleanupInterval);
     }
   }
 
@@ -281,9 +282,9 @@ export class CustomerSystemService extends BaseService {
 
     this.interactions.push(interaction);
 
-    // Keep only last 50000 interactions in memory
-    if (this.interactions.length > 50000) {
-      this.interactions.splice(0, 10000);
+    // Keep only configured number of interactions in memory
+    if (this.interactions.length > memoryLimits.interactions.maxInteractionEntries) {
+      this.interactions.splice(0, memoryLimits.interactions.cleanupBatchSize);
     }
 
     this.logger.info('Customer interaction tracked', {
