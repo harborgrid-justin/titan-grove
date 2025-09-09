@@ -5,6 +5,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/Header';
 import Dashboard from './pages/Dashboard';
 import Manufacturing from './pages/Manufacturing';
+import HealthMedical from './pages/HealthMedical';
 import Financials from './pages/Financials';
 import HRManagement from './pages/HRManagement';
 import SupplyChain from './pages/SupplyChain';
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/manufacturing" element={<Manufacturing />} />
+                <Route path="/health-medical" element={<HealthMedical />} />
                 <Route path="/financials" element={<Financials />} />
                 <Route path="/hr-management" element={<HRManagement />} />
                 <Route path="/supply-chain" element={<SupplyChain />} />

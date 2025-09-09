@@ -67,7 +67,7 @@ import {
   Phone,
   Chat
 } from '@carbon/icons-react';
-import { healthMedicalDomainManager, HealthMedicalBusinessLogic } from '../../../../../../../domains/health-medical';
+import { healthMedicalDomainManager, HealthMedicalBusinessLogic } from '../../../../../domains/health-medical';
 
 interface LaboratoryResultsData {
   id: string;
