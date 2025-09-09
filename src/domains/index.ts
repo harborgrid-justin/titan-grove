@@ -51,6 +51,12 @@ import {
   TechnologyIntegrationDomainConfig 
 } from './technology-integration';
 
+import { 
+  HealthMedicalDomainManager, 
+  healthMedicalDomainManager,
+  HealthMedicalDomainConfig 
+} from './health-medical';
+
 export interface DomainConfiguration {
   financialAdministrative: FinancialAdministrativeDomainConfig;
   supplyChainOperations: SupplyChainOperationsDomainConfig;
@@ -60,6 +66,7 @@ export interface DomainConfiguration {
   assetMaintenance: AssetMaintenanceDomainConfig;
   projectService: ProjectServiceDomainConfig;
   technologyIntegration: TechnologyIntegrationDomainConfig;
+  healthMedical: HealthMedicalDomainConfig;
 }
 
 export interface DomainManagers {
@@ -71,6 +78,7 @@ export interface DomainManagers {
   assetMaintenance: AssetMaintenanceDomainManager;
   projectService: ProjectServiceDomainManager;
   technologyIntegration: TechnologyIntegrationDomainManager;
+  healthMedical: HealthMedicalDomainManager;
 }
 
 /**
@@ -258,7 +266,7 @@ export class DomainOrchestrator {
   private businessLogicRegistry: typeof CentralBusinessLogicRegistry;
 
   constructor(config?: Partial<DomainConfiguration>) {
-    // Initialize all 8 domain managers
+    // Initialize all 9 domain managers
     this.domainManagers = {
       financialAdministrative: financialAdministrativeDomainManager,
       supplyChainOperations: supplyChainOperationsDomainManager,
@@ -267,7 +275,8 @@ export class DomainOrchestrator {
       customerSales: customerSalesDomainManager,
       assetMaintenance: assetMaintenanceDomainManager,
       projectService: projectServiceDomainManager,
-      technologyIntegration: technologyIntegrationDomainManager
+      technologyIntegration: technologyIntegrationDomainManager,
+      healthMedical: healthMedicalDomainManager
     };
 
     this.businessLogicRegistry = CentralBusinessLogicRegistry;
@@ -398,7 +407,8 @@ export {
   CustomerSalesDomainManager,
   AssetMaintenanceDomainManager,
   ProjectServiceDomainManager,
-  TechnologyIntegrationDomainManager
+  TechnologyIntegrationDomainManager,
+  HealthMedicalDomainManager
 };
 
 // Export business logic classes for testing and external use
@@ -433,3 +443,7 @@ export {
 export {
   TechnologyIntegrationBusinessLogic
 } from './technology-integration';
+
+export {
+  HealthMedicalBusinessLogic
+} from './health-medical';

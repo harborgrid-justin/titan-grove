@@ -26,6 +26,7 @@ const Header: React.FC = () => {
   const navItems = [
     { path: '/dashboard', label: 'Executive Dashboard', icon: '🏢' },
     { path: '/manufacturing', label: 'Manufacturing', icon: '🏭' },
+    { path: '/health-medical', label: 'Health & Medical', icon: '🏥' },
     { path: '/financials', label: 'Financials', icon: '💰' },
     { path: '/hr-management', label: 'HR Management', icon: '👥' },
     { path: '/supply-chain', label: 'Supply Chain', icon: '🚚' },
