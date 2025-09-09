@@ -126,8 +126,6 @@ const defaultAuthConfig: AuthConfig = {
   ]
 };
 
-import { authLogger } from '../core/logger';
-
 // Create authentication service instance
 const authService = new AuthenticationService(
   defaultAuthConfig,

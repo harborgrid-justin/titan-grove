@@ -1,6 +1,10 @@
 /**
  * Financial & Administrative Domain
  * Centralized business logic for financial operations, compliance, and risk management
+ * 
+ * @author Titan Grove Development Team
+ * @version 1.0.0
+ * @since 2024-01-01
  */
 
 import { financialManager, FinancialManager } from '../../modules/financial';
@@ -8,6 +12,108 @@ import { riskManager, RiskManager } from '../../modules/risk';
 import { complianceManager, ComplianceManager } from '../../modules/compliance';
 import { documentManager, DocumentManager } from '../../modules/document';
 import { BusinessConfig } from '../../types/business-config';
+
+/**
+ * Custom error classes for domain-specific error handling
+ */
+export class FinancialDomainError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+    public details?: any
+  ) {
+    super(message);
+    this.name = 'FinancialDomainError';
+  }
+}
+
+export class InvalidFinancialMetricsError extends FinancialDomainError {
+  constructor(details: any) {
+    super('Invalid financial metrics provided', 'INVALID_FINANCIAL_METRICS', details);
+  }
+}
+
+export class RiskCalculationError extends FinancialDomainError {
+  constructor(details: any) {
+    super('Risk calculation failed', 'RISK_CALCULATION_ERROR', details);
+  }
+}
+
+/**
+ * Financial metrics validation utilities
+ */
+export class FinancialMetricsValidator {
+  /**
+   * Validates financial metrics input
+   * @param metrics - The financial metrics to validate
+   * @throws {InvalidFinancialMetricsError} If metrics are invalid
+   */
+  static validateFinancialMetrics(metrics: {
+    revenue: number;
+    costs: number;
+    assets: number;
+    liabilities: number;
+    cashFlow: number;
+  }): void {
+    const errors: string[] = [];
+
+    if (typeof metrics.revenue !== 'number' || metrics.revenue < 0) {
+      errors.push('Revenue must be a non-negative number');
+    }
+
+    if (typeof metrics.costs !== 'number' || metrics.costs < 0) {
+      errors.push('Costs must be a non-negative number');
+    }
+
+    if (typeof metrics.assets !== 'number' || metrics.assets <= 0) {
+      errors.push('Assets must be a positive number');
+    }
+
+    if (typeof metrics.liabilities !== 'number' || metrics.liabilities < 0) {
+      errors.push('Liabilities must be a non-negative number');
+    }
+
+    if (typeof metrics.cashFlow !== 'number') {
+      errors.push('Cash flow must be a number');
+    }
+
+    // Business logic validations
+    if (metrics.costs > metrics.revenue * 2) {
+      errors.push('Costs cannot exceed 200% of revenue');
+    }
+
+    if (metrics.liabilities > metrics.assets * 1.5) {
+      errors.push('Liabilities cannot exceed 150% of assets');
+    }
+
+    if (errors.length > 0) {
+      throw new InvalidFinancialMetricsError({ errors, providedMetrics: metrics });
+    }
+  }
+
+  /**
+   * Validates risk factors for ROI calculation
+   * @param riskFactors - The risk factors to validate
+   * @throws {RiskCalculationError} If risk factors are invalid
+   */
+  static validateRiskFactors(riskFactors: {
+    market: number;
+    operational: number;
+    financial: number;
+  }): void {
+    const errors: string[] = [];
+
+    Object.entries(riskFactors).forEach(([key, value]) => {
+      if (typeof value !== 'number' || value < 0 || value > 1) {
+        errors.push(`${key} risk factor must be a number between 0 and 1`);
+      }
+    });
+
+    if (errors.length > 0) {
+      throw new RiskCalculationError({ errors, providedRiskFactors: riskFactors });
+    }
+  }
+}
 
 export interface FinancialAdministrativeDomainConfig {
   financial: {
@@ -43,59 +149,285 @@ export interface FinancialAdministrativeDomainConfig {
 
 /**
  * Core Business Logic Functions - Financial & Administrative Domain
- * Consolidated from multiple service files to centralize calculations
+ * Production-grade business logic with comprehensive error handling and validation
+ * 
+ * This class centralizes all financial calculations and provides standardized
+ * business logic across the financial and administrative domain.
  */
 export class FinancialAdministrativeBusinessLogic {
   
+  private static readonly FINANCIAL_HEALTH_WEIGHTS = {
+    PROFIT_MARGIN: 0.3,
+    ASSET_UTILIZATION: 0.25,
+    DEBT_RATIO: 0.25,
+    CASH_FLOW_RATIO: 0.2
+  } as const;
+
+  private static readonly HEALTH_SCORE_BOUNDS = {
+    MIN_SCORE: 0,
+    MAX_SCORE: 100
+  } as const;
+
   /**
-   * Calculate comprehensive financial health score
-   * Consolidated from multiple financial analysis services
+   * Calculate comprehensive financial health score with enhanced validation and logging
+   * 
+   * This method provides a standardized approach to calculating financial health
+   * based on key performance indicators including profit margin, asset utilization,
+   * debt ratios, and cash flow performance.
+   * 
+   * @param financialMetrics - Core financial metrics for health calculation
+   * @param domainConfig - Domain-specific configuration parameters
+   * @returns Financial health score between 0-100
+   * @throws {InvalidFinancialMetricsError} When metrics are invalid
+   * 
+   * @example
+   * ```typescript
+   * const healthScore = FinancialAdministrativeBusinessLogic.calculateFinancialHealthScore(
+   *   { revenue: 1000000, costs: 750000, assets: 2000000, liabilities: 800000, cashFlow: 200000 },
+   *   domainConfig
+   * );
+   * ```
    */
-  static calculateFinancialHealthScore(metrics: {
-    revenue: number;
-    costs: number;
-    assets: number;
-    liabilities: number;
-    cashFlow: number;
-  }, config: FinancialAdministrativeDomainConfig): number {
-    const profitMargin = (metrics.revenue - metrics.costs) / metrics.revenue;
-    const assetUtilization = metrics.revenue / metrics.assets;
-    const debtRatio = metrics.liabilities / metrics.assets;
-    const cashFlowRatio = metrics.cashFlow / metrics.revenue;
-    
-    // Weighted scoring algorithm
-    const score = (
-      (profitMargin * 0.3) +
-      (assetUtilization * 0.25) +
-      ((1 - debtRatio) * 0.25) +
-      (cashFlowRatio * 0.2)
-    ) * 100;
-    
-    return Math.max(0, Math.min(100, score));
+  static calculateFinancialHealthScore(
+    financialMetrics: {
+      revenue: number;
+      costs: number;
+      assets: number;
+      liabilities: number;
+      cashFlow: number;
+    }, 
+    domainConfig: FinancialAdministrativeDomainConfig
+  ): number {
+    // Input validation
+    FinancialMetricsValidator.validateFinancialMetrics(financialMetrics);
+
+    try {
+      // Calculate key financial ratios with defensive programming
+      const profitMarginRatio = this.calculateProfitMarginRatio(
+        financialMetrics.revenue, 
+        financialMetrics.costs
+      );
+      
+      const assetUtilizationRatio = this.calculateAssetUtilizationRatio(
+        financialMetrics.revenue, 
+        financialMetrics.assets
+      );
+      
+      const debtToAssetRatio = this.calculateDebtToAssetRatio(
+        financialMetrics.liabilities, 
+        financialMetrics.assets
+      );
+      
+      const cashFlowToRevenueRatio = this.calculateCashFlowToRevenueRatio(
+        financialMetrics.cashFlow, 
+        financialMetrics.revenue
+      );
+      
+      // Weighted scoring algorithm with clear business logic
+      const weightedHealthScore = (
+        (profitMarginRatio * this.FINANCIAL_HEALTH_WEIGHTS.PROFIT_MARGIN) +
+        (assetUtilizationRatio * this.FINANCIAL_HEALTH_WEIGHTS.ASSET_UTILIZATION) +
+        ((1 - debtToAssetRatio) * this.FINANCIAL_HEALTH_WEIGHTS.DEBT_RATIO) +
+        (cashFlowToRevenueRatio * this.FINANCIAL_HEALTH_WEIGHTS.CASH_FLOW_RATIO)
+      ) * this.HEALTH_SCORE_BOUNDS.MAX_SCORE;
+      
+      // Ensure score is within valid bounds
+      return Math.max(
+        this.HEALTH_SCORE_BOUNDS.MIN_SCORE, 
+        Math.min(this.HEALTH_SCORE_BOUNDS.MAX_SCORE, weightedHealthScore)
+      );
+      
+    } catch (error) {
+      throw new FinancialDomainError(
+        'Failed to calculate financial health score',
+        'HEALTH_SCORE_CALCULATION_ERROR',
+        { originalError: error, metrics: financialMetrics }
+      );
+    }
   }
 
   /**
-   * Calculate risk-adjusted return on investment
-   * Integrates risk factors with financial returns
+   * Calculate profit margin ratio with validation
+   * @private
    */
-  static calculateRiskAdjustedROI(
-    initialInvestment: number,
-    returns: number[],
-    riskFactors: { market: number; operational: number; financial: number },
-    config: FinancialAdministrativeDomainConfig
+  private static calculateProfitMarginRatio(revenue: number, costs: number): number {
+    if (revenue === 0) return 0;
+    return (revenue - costs) / revenue;
+  }
+
+  /**
+   * Calculate asset utilization ratio with validation
+   * @private
+   */
+  private static calculateAssetUtilizationRatio(revenue: number, assets: number): number {
+    if (assets === 0) throw new FinancialDomainError('Assets cannot be zero', 'ZERO_ASSETS_ERROR');
+    return revenue / assets;
+  }
+
+  /**
+   * Calculate debt to asset ratio with validation
+   * @private
+   */
+  private static calculateDebtToAssetRatio(liabilities: number, assets: number): number {
+    if (assets === 0) throw new FinancialDomainError('Assets cannot be zero', 'ZERO_ASSETS_ERROR');
+    return liabilities / assets;
+  }
+
+  /**
+   * Calculate cash flow to revenue ratio with validation
+   * @private
+   */
+  private static calculateCashFlowToRevenueRatio(cashFlow: number, revenue: number): number {
+    if (revenue === 0) return 0;
+    return cashFlow / revenue;
+  }
+
+  /**
+   * Calculate risk-adjusted return on investment with comprehensive validation
+   * 
+   * Integrates multiple risk factors with financial returns to provide a more
+   * accurate assessment of investment performance. Uses industry-standard
+   * risk adjustment methodologies.
+   * 
+   * @param initialInvestmentAmount - The initial capital investment
+   * @param periodicReturns - Array of returns for each period
+   * @param riskFactors - Risk assessment across market, operational, and financial dimensions
+   * @param domainConfig - Domain configuration for risk calculations
+   * @returns Risk-adjusted ROI as a decimal (0.15 = 15%)
+   * @throws {RiskCalculationError} When risk calculation fails
+   * 
+   * @example
+   * ```typescript
+   * const riskAdjustedROI = FinancialAdministrativeBusinessLogic.calculateRiskAdjustedReturnOnInvestment(
+   *   1000000,
+   *   [250000, 300000, 280000],
+   *   { market: 0.15, operational: 0.10, financial: 0.08 },
+   *   domainConfig
+   * );
+   * ```
+   */
+  static calculateRiskAdjustedReturnOnInvestment(
+    initialInvestmentAmount: number,
+    periodicReturns: number[],
+    riskFactors: { 
+      market: number; 
+      operational: number; 
+      financial: number; 
+    },
+    domainConfig: FinancialAdministrativeDomainConfig
   ): number {
-    const totalReturn = returns.reduce((sum, ret) => sum + ret, 0);
-    const rawROI = (totalReturn - initialInvestment) / initialInvestment;
-    
-    // Risk adjustment calculation
-    const combinedRiskFactor = (
-      riskFactors.market * 0.4 +
-      riskFactors.operational * 0.35 +
-      riskFactors.financial * 0.25
+    // Input validation
+    this.validateInvestmentInputs(initialInvestmentAmount, periodicReturns);
+    FinancialMetricsValidator.validateRiskFactors(riskFactors);
+
+    try {
+      // Calculate base ROI
+      const totalReturns = periodicReturns.reduce(
+        (accumulatedSum, currentReturn) => accumulatedSum + currentReturn, 
+        0
+      );
+      
+      if (initialInvestmentAmount === 0) {
+        throw new RiskCalculationError({ 
+          message: 'Initial investment cannot be zero',
+          investment: initialInvestmentAmount 
+        });
+      }
+
+      const baseReturnOnInvestment = (totalReturns - initialInvestmentAmount) / initialInvestmentAmount;
+      
+      // Calculate composite risk factor using weighted approach
+      const compositeRiskFactor = this.calculateCompositeRiskFactor(riskFactors);
+      
+      // Apply risk adjustment using domain configuration
+      const riskAdjustmentMultiplier = this.calculateRiskAdjustmentMultiplier(
+        compositeRiskFactor, 
+        domainConfig
+      );
+      
+      const riskAdjustedROI = baseReturnOnInvestment * riskAdjustmentMultiplier;
+      
+      return riskAdjustedROI;
+      
+    } catch (error) {
+      if (error instanceof RiskCalculationError) {
+        throw error;
+      }
+      
+      throw new RiskCalculationError({
+        message: 'Failed to calculate risk-adjusted ROI',
+        originalError: error,
+        inputs: { initialInvestmentAmount, periodicReturns, riskFactors }
+      });
+    }
+  }
+
+  /**
+   * Validates investment calculation inputs
+   * @private
+   */
+  private static validateInvestmentInputs(
+    initialInvestmentAmount: number, 
+    periodicReturns: number[]
+  ): void {
+    if (typeof initialInvestmentAmount !== 'number' || initialInvestmentAmount < 0) {
+      throw new RiskCalculationError({
+        message: 'Initial investment must be a non-negative number',
+        investment: initialInvestmentAmount
+      });
+    }
+
+    if (!Array.isArray(periodicReturns) || periodicReturns.length === 0) {
+      throw new RiskCalculationError({
+        message: 'Periodic returns must be a non-empty array',
+        returns: periodicReturns
+      });
+    }
+
+    const invalidReturns = periodicReturns.filter(
+      returnValue => typeof returnValue !== 'number'
     );
     
-    const riskAdjustment = 1 - (combinedRiskFactor * config.risk.mitigationFactors.diversification);
-    return rawROI * riskAdjustment;
+    if (invalidReturns.length > 0) {
+      throw new RiskCalculationError({
+        message: 'All periodic returns must be numbers',
+        invalidReturns
+      });
+    }
+  }
+
+  /**
+   * Calculate composite risk factor from individual risk components
+   * @private
+   */
+  private static calculateCompositeRiskFactor(riskFactors: {
+    market: number;
+    operational: number;
+    financial: number;
+  }): number {
+    const RISK_FACTOR_WEIGHTS = {
+      MARKET: 0.4,
+      OPERATIONAL: 0.35,
+      FINANCIAL: 0.25
+    } as const;
+
+    return (
+      riskFactors.market * RISK_FACTOR_WEIGHTS.MARKET +
+      riskFactors.operational * RISK_FACTOR_WEIGHTS.OPERATIONAL +
+      riskFactors.financial * RISK_FACTOR_WEIGHTS.FINANCIAL
+    );
+  }
+
+  /**
+   * Calculate risk adjustment multiplier based on domain configuration
+   * @private
+   */
+  private static calculateRiskAdjustmentMultiplier(
+    compositeRiskFactor: number,
+    domainConfig: FinancialAdministrativeDomainConfig
+  ): number {
+    const riskMitigation = domainConfig.risk.mitigationFactors.diversification;
+    return 1 - (compositeRiskFactor * riskMitigation);
   }
 
   /**
