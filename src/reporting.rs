@@ -13,7 +13,7 @@ pub struct ReportMetrics {
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
-pub struct DataTransformation {
+pub struct ReportingDataTransformation {
     pub source_format: String,
     pub target_format: String,
     pub transformation_rules: Vec<String>,
@@ -112,14 +112,14 @@ pub fn optimize_data_transformation(
     source_records: i32,
     transformation_complexity: f64,
     target_format_efficiency: f64,
-) -> DataTransformation {
+) -> ReportingDataTransformation {
     let base_processing_time = source_records as f64 * 0.001; // 1ms per record
     let complexity_adjusted_time = base_processing_time * transformation_complexity;
     let final_processing_time = complexity_adjusted_time / target_format_efficiency;
     
     let success_rate = (100.0 - transformation_complexity * 2.0).max(85.0);
     
-    DataTransformation {
+    ReportingDataTransformation {
         source_format: "SOURCE".to_string(),
         target_format: "TARGET".to_string(),
         transformation_rules: vec!["RULE_1".to_string(), "RULE_2".to_string()],

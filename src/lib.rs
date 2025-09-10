@@ -42,6 +42,25 @@ pub mod yard_management;
 pub mod resource_optimization;
 pub mod reporting;
 
+// Additional 20 modules for comprehensive enterprise coverage
+pub mod accounting;
+pub mod budgeting;
+pub mod tax;
+pub mod audit;
+pub mod pricing;
+pub mod sales;
+pub mod marketing;
+pub mod banking;
+pub mod investment;
+pub mod treasury;
+pub mod vendor;
+pub mod customer;
+pub mod training;
+pub mod performance;
+pub mod planning;
+pub mod sustainability;
+pub mod analytics;
+
 // Re-export all functions from modules
 // Original modules
 pub use risk::*;
@@ -76,3 +95,22 @@ pub use equipment_cost::*;
 pub use yard_management::*;
 pub use resource_optimization::*;
 pub use reporting::*;
+
+// Additional 20 modules
+pub use accounting::*;
+pub use budgeting::*;
+pub use tax::*;
+pub use audit::*;
+pub use pricing::*;
+pub use sales::*;
+pub use marketing::*;
+pub use banking::*;
+pub use investment::*;
+pub use treasury::*;
+pub use vendor::*;
+pub use customer::*;
+pub use training::*;
+pub use performance::*;
+pub use planning::*;
+pub use sustainability::*;
+pub use analytics::*;

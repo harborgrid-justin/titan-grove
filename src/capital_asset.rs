@@ -38,7 +38,7 @@ pub struct AssetPerformance {
 }
 
 #[napi]
-pub fn calculate_net_present_value(
+pub fn calculate_capital_net_present_value(
     initial_investment: f64,
     cash_flows: Vec<f64>,
     discount_rate: f64,
@@ -54,7 +54,7 @@ pub fn calculate_net_present_value(
 }
 
 #[napi]
-pub fn calculate_internal_rate_of_return(
+pub fn calculate_capital_internal_rate_of_return(
     initial_investment: f64,
     cash_flows: Vec<f64>,
     max_iterations: i32,
@@ -66,7 +66,7 @@ pub fn calculate_internal_rate_of_return(
     
     for _ in 0..max_iterations {
         let mid_rate = (low_rate + high_rate) / 2.0;
-        let npv = calculate_net_present_value(initial_investment, cash_flows.clone(), mid_rate);
+        let npv = calculate_capital_net_present_value(initial_investment, cash_flows.clone(), mid_rate);
         
         if npv.abs() < tolerance {
             return mid_rate;
@@ -83,7 +83,7 @@ pub fn calculate_internal_rate_of_return(
 }
 
 #[napi]
-pub fn calculate_payback_period(
+pub fn calculate_capital_payback_period(
     initial_investment: f64,
     annual_cash_flows: Vec<f64>,
 ) -> f64 {
@@ -147,7 +147,7 @@ pub fn calculate_capital_asset_pricing_model(
 }
 
 #[napi]
-pub fn calculate_economic_value_added(
+pub fn calculate_capital_economic_value_added(
     net_operating_profit_after_tax: f64,
     total_capital: f64,
     cost_of_capital: f64,
@@ -239,9 +239,9 @@ pub fn generate_investment_analysis(
     discount_rate: f64,
     strategic_importance: f64,
 ) -> InvestmentAnalysis {
-    let npv = calculate_net_present_value(initial_investment, cash_flows.clone(), discount_rate);
-    let irr = calculate_internal_rate_of_return(initial_investment, cash_flows.clone(), 100);
-    let payback_period = calculate_payback_period(initial_investment, cash_flows.clone());
+    let npv = calculate_capital_net_present_value(initial_investment, cash_flows.clone(), discount_rate);
+    let irr = calculate_capital_internal_rate_of_return(initial_investment, cash_flows.clone(), 100);
+    let payback_period = calculate_capital_payback_period(initial_investment, cash_flows.clone());
     
     let present_value_cash_flows = cash_flows.iter().enumerate()
         .map(|(i, &cf)| cf / (1.0 + discount_rate / 100.0).powi((i + 1) as i32))

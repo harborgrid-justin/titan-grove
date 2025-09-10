@@ -162,7 +162,7 @@ pub fn calculate_resource_utilization(
 }
 
 #[napi]
-pub fn optimize_resource_allocation(
+pub fn optimize_project_resource_allocation(
     resources: Vec<ResourceAllocation>,
     project_priority: i32,
     budget_constraint: f64,
