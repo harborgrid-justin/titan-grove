@@ -147,7 +147,19 @@ pub fn optimize_production_sequence(
 pub fn calculate_material_requirements(
     production_quantity: f64,
     components: Vec<MaterialComponent>,
+    product_id: String,
 ) -> BillOfMaterials {
+    if production_quantity <= 0.0 {
+        return BillOfMaterials {
+            product_id,
+            components: Vec::new(),
+            total_material_cost: 0.0,
+            labor_cost: 0.0,
+            overhead_cost: 0.0,
+            total_cost: 0.0,
+        };
+    }
+    
     let mut total_material_cost = 0.0;
     let mut updated_components = Vec::new();
     
@@ -165,19 +177,50 @@ pub fn calculate_material_requirements(
         });
     }
     
-    // Estimate labor and overhead costs (these would typically come from other calculations)
-    let labor_cost = total_material_cost * 0.3; // 30% of material cost
-    let overhead_cost = total_material_cost * 0.2; // 20% of material cost
+    // Calculate labor cost based on complexity and production volume
+    let labor_cost = calculate_labor_cost(total_material_cost, production_quantity);
+    
+    // Calculate overhead cost based on facility and equipment costs
+    let overhead_cost = calculate_overhead_cost(total_material_cost, production_quantity);
+    
     let total_cost = total_material_cost + labor_cost + overhead_cost;
     
     BillOfMaterials {
-        product_id: "".to_string(), // To be set by caller
+        product_id,
         components: updated_components,
         total_material_cost,
         labor_cost,
         overhead_cost,
         total_cost,
     }
+}
+
+// Helper function to calculate production labor costs
+fn calculate_labor_cost(material_cost: f64, production_quantity: f64) -> f64 {
+    // Base labor rate: 25-35% of material cost depending on production volume
+    let base_rate = if production_quantity > 1000.0 {
+        0.25 // Economies of scale for large batches
+    } else if production_quantity > 100.0 {
+        0.30 // Standard labor rate
+    } else {
+        0.35 // Higher rate for small batches
+    };
+    
+    material_cost * base_rate
+}
+
+// Helper function to calculate manufacturing overhead costs
+fn calculate_overhead_cost(material_cost: f64, production_quantity: f64) -> f64 {
+    // Overhead includes facility, equipment, utilities, and administrative costs
+    let overhead_rate = if production_quantity > 1000.0 {
+        0.15 // Lower overhead rate for high-volume production
+    } else if production_quantity > 100.0 {
+        0.20 // Standard overhead rate
+    } else {
+        0.25 // Higher overhead for low-volume production
+    };
+    
+    material_cost * overhead_rate
 }
 
 #[napi]
@@ -199,18 +242,33 @@ pub fn calculate_production_efficiency(
     actual_output: f64,
     planned_time: f64,
     actual_time: f64,
+    work_center_id: String,
+    defective_units: i32,
+    total_units: i32,
+    setup_time_hours: f64,
 ) -> ProductionEfficiency {
-    let efficiency_percentage = if planned_output > 0.0 && planned_time > 0.0 {
+    // Input validation
+    if planned_output <= 0.0 || planned_time <= 0.0 {
+        return ProductionEfficiency {
+            work_center_id,
+            planned_production_time: planned_time,
+            actual_production_time: actual_time,
+            efficiency_percentage: 0.0,
+            downtime_hours: 0.0,
+            setup_time_hours,
+            oee_score: 0.0,
+        };
+    }
+    
+    let efficiency_percentage = {
         let planned_rate = planned_output / planned_time;
         let actual_rate = if actual_time > 0.0 { actual_output / actual_time } else { 0.0 };
         (actual_rate / planned_rate) * 100.0
-    } else {
-        0.0
     };
     
     let downtime_hours = if actual_time > planned_time { actual_time - planned_time } else { 0.0 };
     
-    // Calculate OEE components
+    // Calculate OEE components with real data
     let availability = if planned_time > 0.0 {
         ((planned_time - downtime_hours) / planned_time) * 100.0
     } else {
@@ -223,17 +281,23 @@ pub fn calculate_production_efficiency(
         0.0
     };
     
-    let quality = 95.0; // Would be calculated from actual quality data
+    // Calculate quality from actual defect data instead of hardcoded value
+    let quality = if total_units > 0 {
+        let good_units = total_units - defective_units;
+        (good_units as f64 / total_units as f64) * 100.0
+    } else {
+        100.0 // No defects if no units produced
+    };
     
     let oee_score = calculate_oee_score(availability, performance, quality);
     
     ProductionEfficiency {
-        work_center_id: "".to_string(), // To be set by caller
+        work_center_id,
         planned_production_time: planned_time,
         actual_production_time: actual_time,
         efficiency_percentage,
         downtime_hours,
-        setup_time_hours: 0.0, // Would be provided separately
+        setup_time_hours,
         oee_score,
     }
 }

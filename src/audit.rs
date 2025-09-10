@@ -249,6 +249,8 @@ pub fn optimize_audit_schedule(
 #[napi]
 pub fn generate_audit_report_summary(
     findings: Vec<AuditReportFinding>,
+    report_id: String,
+    audit_period: String,
 ) -> AuditReport {
     let total_findings = findings.len() as i32;
     
@@ -279,8 +281,8 @@ pub fn generate_audit_report_summary(
     };
 
     AuditReport {
-        report_id: "".to_string(), // To be set by caller
-        audit_period: "".to_string(), // To be set by caller
+        report_id,
+        audit_period,
         total_findings,
         critical_findings,
         high_findings,
