@@ -7,6 +7,9 @@ pub fn sum(a: i32, b: i32) -> i32 {
   a + b
 }
 
+// Production-grade enhancements
+pub mod production;
+
 // Export all the native modules
 // Original 10 modules from PR #117
 pub mod risk;
@@ -286,3 +289,6 @@ pub use temporal_business::*;
 pub use dimensional_commerce::*;
 pub use consciousness_economy::*;
 pub use universal_business::*;
+
+// Production-grade capabilities  
+pub use production::*;

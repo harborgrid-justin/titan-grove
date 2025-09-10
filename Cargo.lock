@@ -559,6 +559,8 @@ dependencies = [
  "napi",
  "napi-build",
  "napi-derive",
+ "once_cell",
+ "regex",
  "serde",
  "serde_json",
  "tokio",
