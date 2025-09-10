@@ -132,7 +132,7 @@
   },
   "devDependencies": {
     "@jest/types": "^30.0.5",
-    "@napi-rs/cli": "^2.18.0",
+    "@napi-rs/cli": "^2.18.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/compression": "^1.8.1",
     "@types/cors": "^2.8.19",
