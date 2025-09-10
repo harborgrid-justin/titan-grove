@@ -7,6 +7,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
+lazy_static = "1.4"
 napi = { version = "2.13.0", default-features = false, features = ["napi8"] }
 napi-derive = "2.13.0"
 serde = { version = "1.0", features = ["derive"] }

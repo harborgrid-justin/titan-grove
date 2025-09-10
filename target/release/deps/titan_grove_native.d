@@ -1,6 +1,6 @@
-/home/runner/work/titan-grove/titan-grove/target/release/deps/titan_grove_native.d: src/lib.rs src/risk.rs src/compliance.rs src/document.rs src/workflow.rs src/quality.rs src/inventory.rs src/integration.rs src/maintenance.rs src/assets.rs src/calculations.rs src/procurement.rs src/orders.rs src/financial.rs src/hr.rs src/manufacturing.rs src/crm.rs src/scm.rs src/project.rs src/service.rs src/bi.rs src/logistics.rs src/field_service.rs src/real_estate.rs src/rental.rs src/capital_asset.rs src/enterprise_asset.rs src/equipment_cost.rs src/yard_management.rs src/resource_optimization.rs src/reporting.rs src/accounting.rs src/budgeting.rs src/tax.rs src/audit.rs src/pricing.rs src/sales.rs src/marketing.rs src/banking.rs src/investment.rs src/treasury.rs src/vendor.rs src/customer.rs src/training.rs src/performance.rs src/planning.rs src/sustainability.rs src/analytics.rs
+/home/runner/work/titan-grove/titan-grove/target/release/deps/titan_grove_native.d: src/lib.rs src/risk.rs src/compliance.rs src/document.rs src/workflow.rs src/quality.rs src/inventory.rs src/integration.rs src/maintenance.rs src/assets.rs src/calculations.rs src/procurement.rs src/orders.rs src/financial.rs src/hr.rs src/manufacturing.rs src/crm.rs src/scm.rs src/project.rs src/service.rs src/bi.rs src/logistics.rs src/field_service.rs src/real_estate.rs src/rental.rs src/capital_asset.rs src/enterprise_asset.rs src/equipment_cost.rs src/yard_management.rs src/resource_optimization.rs src/reporting.rs src/accounting.rs src/budgeting.rs src/tax.rs src/audit.rs src/pricing.rs src/sales.rs src/marketing.rs src/banking.rs src/investment.rs src/treasury.rs src/vendor.rs src/customer.rs src/training.rs src/performance.rs src/planning.rs src/sustainability.rs src/analytics.rs src/advanced_manufacturing.rs src/production_planning.rs src/lean_manufacturing.rs src/product_lifecycle.rs src/factory_automation.rs src/international_trade.rs src/multi_currency.rs src/corporate_governance.rs src/regulatory_compliance.rs src/business_continuity.rs src/algorithmic_trading.rs src/credit_risk.rs src/payment_processing.rs src/investment_portfolio.rs src/regulatory_reporting.rs src/quantum_computing.rs src/edge_computing.rs src/augmented_reality.rs src/neural_networks.rs src/computer_vision.rs src/digital_twin.rs src/smart_city.rs src/autonomous_systems.rs src/predictive_analytics.rs src/smart_grid.rs src/professional_services.rs src/research_development.rs src/testing_validation.rs src/advisory_consulting.rs src/digital_forensics.rs
 
-/home/runner/work/titan-grove/titan-grove/target/release/deps/libtitan_grove_native.so: src/lib.rs src/risk.rs src/compliance.rs src/document.rs src/workflow.rs src/quality.rs src/inventory.rs src/integration.rs src/maintenance.rs src/assets.rs src/calculations.rs src/procurement.rs src/orders.rs src/financial.rs src/hr.rs src/manufacturing.rs src/crm.rs src/scm.rs src/project.rs src/service.rs src/bi.rs src/logistics.rs src/field_service.rs src/real_estate.rs src/rental.rs src/capital_asset.rs src/enterprise_asset.rs src/equipment_cost.rs src/yard_management.rs src/resource_optimization.rs src/reporting.rs src/accounting.rs src/budgeting.rs src/tax.rs src/audit.rs src/pricing.rs src/sales.rs src/marketing.rs src/banking.rs src/investment.rs src/treasury.rs src/vendor.rs src/customer.rs src/training.rs src/performance.rs src/planning.rs src/sustainability.rs src/analytics.rs
+/home/runner/work/titan-grove/titan-grove/target/release/deps/libtitan_grove_native.so: src/lib.rs src/risk.rs src/compliance.rs src/document.rs src/workflow.rs src/quality.rs src/inventory.rs src/integration.rs src/maintenance.rs src/assets.rs src/calculations.rs src/procurement.rs src/orders.rs src/financial.rs src/hr.rs src/manufacturing.rs src/crm.rs src/scm.rs src/project.rs src/service.rs src/bi.rs src/logistics.rs src/field_service.rs src/real_estate.rs src/rental.rs src/capital_asset.rs src/enterprise_asset.rs src/equipment_cost.rs src/yard_management.rs src/resource_optimization.rs src/reporting.rs src/accounting.rs src/budgeting.rs src/tax.rs src/audit.rs src/pricing.rs src/sales.rs src/marketing.rs src/banking.rs src/investment.rs src/treasury.rs src/vendor.rs src/customer.rs src/training.rs src/performance.rs src/planning.rs src/sustainability.rs src/analytics.rs src/advanced_manufacturing.rs src/production_planning.rs src/lean_manufacturing.rs src/product_lifecycle.rs src/factory_automation.rs src/international_trade.rs src/multi_currency.rs src/corporate_governance.rs src/regulatory_compliance.rs src/business_continuity.rs src/algorithmic_trading.rs src/credit_risk.rs src/payment_processing.rs src/investment_portfolio.rs src/regulatory_reporting.rs src/quantum_computing.rs src/edge_computing.rs src/augmented_reality.rs src/neural_networks.rs src/computer_vision.rs src/digital_twin.rs src/smart_city.rs src/autonomous_systems.rs src/predictive_analytics.rs src/smart_grid.rs src/professional_services.rs src/research_development.rs src/testing_validation.rs src/advisory_consulting.rs src/digital_forensics.rs
 
 src/lib.rs:
 src/risk.rs:
@@ -50,3 +50,33 @@ src/performance.rs:
 src/planning.rs:
 src/sustainability.rs:
 src/analytics.rs:
+src/advanced_manufacturing.rs:
+src/production_planning.rs:
+src/lean_manufacturing.rs:
+src/product_lifecycle.rs:
+src/factory_automation.rs:
+src/international_trade.rs:
+src/multi_currency.rs:
+src/corporate_governance.rs:
+src/regulatory_compliance.rs:
+src/business_continuity.rs:
+src/algorithmic_trading.rs:
+src/credit_risk.rs:
+src/payment_processing.rs:
+src/investment_portfolio.rs:
+src/regulatory_reporting.rs:
+src/quantum_computing.rs:
+src/edge_computing.rs:
+src/augmented_reality.rs:
+src/neural_networks.rs:
+src/computer_vision.rs:
+src/digital_twin.rs:
+src/smart_city.rs:
+src/autonomous_systems.rs:
+src/predictive_analytics.rs:
+src/smart_grid.rs:
+src/professional_services.rs:
+src/research_development.rs:
+src/testing_validation.rs:
+src/advisory_consulting.rs:
+src/digital_forensics.rs:
