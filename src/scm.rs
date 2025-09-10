@@ -238,7 +238,7 @@ pub fn optimize_network_design(
 }
 
 #[napi]
-pub fn calculate_vendor_performance_score(
+pub fn calculate_scm_vendor_performance_score(
     quality_rating: f64,
     delivery_performance: f64,
     cost_competitiveness: f64,

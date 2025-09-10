@@ -283,7 +283,7 @@ pub fn calculate_vacancy_impact(
 }
 
 #[napi]
-pub fn optimize_maintenance_schedule(
+pub fn optimize_property_maintenance_schedule(
     properties: Vec<Property>,
     maintenance_budget: f64,
     urgency_scores: Vec<f64>,
