@@ -492,3 +492,1042 @@ export declare function calculateMovingAverage(values: Array<number>, windowSize
 export declare function calculateGrowthRate(initialValue: number, finalValue: number, periods: number): number
 export declare function calculateZScore(value: number, mean: number, standardDeviation: number): number
 export declare function calculatePercentile(values: Array<number>, percentile: number): number
+export interface PurchaseOrder {
+  id: string
+  supplierId: string
+  orderDate: string
+  totalAmount: number
+  currency: string
+  status: string
+  items: Array<PurchaseOrderItem>
+  deliveryDate: string
+  terms: string
+}
+export interface PurchaseOrderItem {
+  itemId: string
+  description: string
+  quantity: number
+  unitPrice: number
+  totalPrice: number
+  deliveryDate: string
+}
+export interface SupplierScore {
+  supplierId: string
+  qualityScore: number
+  deliveryScore: number
+  priceCompetitiveness: number
+  overallScore: number
+  riskLevel: string
+}
+export interface RfqResponse {
+  rfqId: string
+  supplierId: string
+  responseDate: string
+  totalQuotedPrice: number
+  deliveryTimeDays: number
+  complianceScore: number
+  competitivenessScore: number
+}
+export interface ProcurementAnalytics {
+  totalSpend: number
+  supplierCount: number
+  averageOrderValue: number
+  topSuppliers: Array<string>
+  costSavings: number
+  deliveryPerformance: number
+}
+export declare function calculatePurchaseOrderTotal(items: Array<PurchaseOrderItem>): number
+export declare function calculateSupplierScore(qualityRating: number, onTimeDeliveryRate: number, priceCompetitiveness: number, paymentTermsCompliance: number): SupplierScore
+export declare function calculateRfqCompetitiveness(quotedPrice: number, marketAveragePrice: number, deliveryDays: number, standardDeliveryDays: number): number
+export declare function calculateProcurementSavings(baselineSpend: number, actualSpend: number): number
+export declare function optimizePurchaseOrderTiming(demandForecast: Array<number>, leadTimeDays: number, safetyStockDays: number): Array<number>
+export declare function calculateSupplierRiskAssessment(financialStabilityScore: number, geographicRiskScore: number, capacityUtilization: number, dependencyLevel: number): number
+export declare function calculatePurchaseOrderDiscount(baseTotal: number, quantity: number, volumeDiscountThreshold: number, discountPercentage: number): number
+export declare function generateProcurementAnalytics(orders: Array<PurchaseOrder>, targetSavingsPercentage: number): ProcurementAnalytics
+export interface SalesOrder {
+  id: string
+  customerId: string
+  orderDate: string
+  totalAmount: number
+  currency: string
+  status: string
+  items: Array<OrderItem>
+  deliveryDate: string
+  shippingMethod: string
+}
+export interface OrderItem {
+  itemId: string
+  productCode: string
+  description: string
+  quantity: number
+  unitPrice: number
+  discountPercentage: number
+  totalPrice: number
+  taxAmount: number
+}
+export interface PricingRule {
+  ruleId: string
+  customerTier: string
+  productCategory: string
+  quantityThreshold: number
+  discountPercentage: number
+  effectiveDate: string
+  expiryDate: string
+}
+export interface OrderFulfillment {
+  orderId: string
+  fulfillmentStatus: string
+  pickedItems: number
+  packedItems: number
+  shippedItems: number
+  deliveredItems: number
+  fulfillmentScore: number
+}
+export interface ShippingCalculation {
+  shippingCost: number
+  estimatedDeliveryDays: number
+  shippingMethod: string
+  insuranceCost: number
+  totalShippingCost: number
+}
+export interface OrderAnalytics {
+  totalOrders: number
+  totalRevenue: number
+  averageOrderValue: number
+  fulfillmentRate: number
+  onTimeDeliveryRate: number
+  customerSatisfactionScore: number
+}
+export declare function calculateOrderTotal(items: Array<OrderItem>): number
+export declare function calculateItemTotalPrice(quantity: number, unitPrice: number, discountPercentage: number): number
+export declare function calculateDynamicPricing(basePrice: number, demandFactor: number, inventoryLevel: number, competitorPrice: number, customerTierMultiplier: number): number
+export declare function calculateShippingCost(weightKg: number, distanceKm: number, shippingMethod: string, insuranceValue: number): ShippingCalculation
+export declare function calculateOrderFulfillmentScore(totalItems: number, pickedItems: number, packedItems: number, shippedItems: number, deliveredItems: number): number
+export declare function optimizeOrderBatching(orders: Array<string>, batchSizeLimit: number, priorityScores: Array<number>): Array<Array<string>>
+export declare function calculateOrderPriorityScore(customerTier: string, orderValue: number, shippingMethod: string, ageHours: number): number
+export declare function generateOrderAnalytics(orders: Array<SalesOrder>, targetFulfillmentRate: number): OrderAnalytics
+export interface Account {
+  accountId: string
+  accountNumber: string
+  accountName: string
+  accountType: string
+  balance: number
+  currency: string
+  isActive: boolean
+}
+export interface Transaction {
+  transactionId: string
+  accountId: string
+  amount: number
+  transactionType: string
+  description: string
+  transactionDate: string
+  referenceNumber: string
+}
+export interface BudgetAnalysis {
+  budgetCategory: string
+  budgetedAmount: number
+  actualAmount: number
+  variance: number
+  variancePercentage: number
+  status: string
+}
+export interface CashFlowProjection {
+  period: string
+  openingBalance: number
+  totalInflows: number
+  totalOutflows: number
+  netCashFlow: number
+  closingBalance: number
+}
+export interface FinancialRatios {
+  currentRatio: number
+  quickRatio: number
+  debtToEquity: number
+  returnOnAssets: number
+  returnOnEquity: number
+  grossProfitMargin: number
+  netProfitMargin: number
+}
+export interface FinancialReport {
+  reportType: string
+  period: string
+  totalRevenue: number
+  totalExpenses: number
+  grossProfit: number
+  netIncome: number
+  ebitda: number
+}
+export declare function calculateAccountBalance(transactions: Array<Transaction>): number
+export declare function calculateBudgetVariance(budgetedAmount: number, actualAmount: number): BudgetAnalysis
+export declare function calculateCashFlowProjection(openingBalance: number, inflows: Array<number>, outflows: Array<number>): CashFlowProjection
+export declare function calculateFinancialRatios(currentAssets: number, currentLiabilities: number, quickAssets: number, totalDebt: number, totalEquity: number, totalAssets: number, netIncome: number, revenue: number, costOfGoodsSold: number): FinancialRatios
+export declare function calculateDepreciationStraightLine(assetCost: number, salvageValue: number, usefulLifeYears: number): number
+export declare function calculateDepreciationDecliningBalance(bookValue: number, depreciationRate: number): number
+export declare function calculateLoanPayment(principal: number, annualInterestRate: number, loanTermYears: number): number
+export declare function calculateFinancialBreakEvenPoint(fixedCosts: number, variableCostPerUnit: number, sellingPricePerUnit: number): number
+export declare function calculateCostOfCapital(costOfDebt: number, costOfEquity: number, marketValueDebt: number, marketValueEquity: number, taxRate: number): number
+export declare function calculateEconomicValueAdded(netOperatingProfitAfterTax: number, investedCapital: number, costOfCapital: number): number
+export declare function generateFinancialReport(revenue: number, costOfGoodsSold: number, operatingExpenses: number, interestExpense: number, taxExpense: number, depreciationExpense: number): FinancialReport
+export declare function calculateWorkingCapitalRatio(currentAssets: number, currentLiabilities: number): number
+export declare function calculateFinancialInventoryTurnover(costOfGoodsSold: number, averageInventory: number): number
+export declare function calculateFinancialDaysSalesOutstanding(accountsReceivable: number, annualSales: number): number
+export interface Employee {
+  employeeId: string
+  name: string
+  position: string
+  department: string
+  hireDate: string
+  salary: number
+  currency: string
+  employmentType: string
+  performanceRating: number
+}
+export interface PayrollCalculation {
+  employeeId: string
+  baseSalary: number
+  overtimeHours: number
+  overtimeRate: number
+  overtimePay: number
+  grossPay: number
+  taxDeductions: number
+  benefitDeductions: number
+  netPay: number
+}
+export interface PerformanceMetrics {
+  employeeId: string
+  goalsCompleted: number
+  totalGoals: number
+  qualityScore: number
+  productivityScore: number
+  teamworkScore: number
+  overallPerformanceScore: number
+  performanceLevel: string
+}
+export interface BenefitCalculation {
+  employeeId: string
+  healthInsurance: number
+  dentalInsurance: number
+  retirementContribution: number
+  lifeInsurance: number
+  totalBenefitsValue: number
+}
+export interface WorkforceAnalytics {
+  totalEmployees: number
+  averageSalary: number
+  turnoverRate: number
+  averagePerformanceScore: number
+  departmentHeadcount: Array<DepartmentHeadcount>
+  totalPayrollCost: number
+}
+export interface DepartmentHeadcount {
+  department: string
+  employeeCount: number
+  averageSalary: number
+}
+export interface TimeTracking {
+  employeeId: string
+  regularHours: number
+  overtimeHours: number
+  vacationHours: number
+  sickHours: number
+  totalHours: number
+}
+export declare function calculatePayroll(baseSalary: number, overtimeHours: number, overtimeMultiplier: number, taxRate: number, benefitDeductions: number, payPeriodsPerYear: number): PayrollCalculation
+export declare function calculatePerformanceScore(goalsCompleted: number, totalGoals: number, qualityScore: number, productivityScore: number, teamworkScore: number): PerformanceMetrics
+export declare function calculateBenefitsValue(salary: number, healthInsurancePercentage: number, dentalInsurancePercentage: number, retirementMatchPercentage: number, lifeInsuranceFlatRate: number): BenefitCalculation
+export declare function calculateTurnoverRate(employeesLeft: number, averageHeadcount: number, periodMonths: number): number
+export declare function calculateSalaryIncreaseRecommendation(currentSalary: number, performanceScore: number, marketAdjustment: number, budgetConstraint: number): number
+export declare function calculateCostPerHire(totalRecruitingCost: number, numberOfHires: number): number
+export declare function calculateEmployeeProductivity(revenueGenerated: number, hoursWorked: number): number
+export declare function calculateTrainingRoi(trainingCost: number, productivityImprovement: number, employeeSalary: number, trainingPeriodMonths: number): number
+export declare function calculateCompensationRatio(employeeSalary: number, marketMedianSalary: number): number
+export declare function generateWorkforceAnalytics(employees: Array<Employee>, turnoverCount: number, periodMonths: number): WorkforceAnalytics
+export declare function calculateOvertimeThreshold(regularHoursPerWeek: number, overtimeMultiplier: number, targetCostIncrease: number): number
+export interface ProductionOrder {
+  orderId: string
+  productId: string
+  quantityPlanned: number
+  quantityProduced: number
+  startDate: string
+  endDate: string
+  status: string
+  priority: number
+}
+export interface WorkCenter {
+  workCenterId: string
+  name: string
+  capacityPerHour: number
+  efficiencyRate: number
+  availabilityHours: number
+  currentUtilization: number
+}
+export interface ProductionSchedule {
+  workCenterId: string
+  productionOrders: Array<string>
+  totalScheduledHours: number
+  capacityUtilization: number
+  completionDate: string
+}
+export interface ManufacturingQualityMetrics {
+  batchId: string
+  totalUnits: number
+  defectiveUnits: number
+  defectRate: number
+  firstPassYield: number
+  reworkRate: number
+  scrapRate: number
+}
+export interface ProductionEfficiency {
+  workCenterId: string
+  plannedProductionTime: number
+  actualProductionTime: number
+  efficiencyPercentage: number
+  downtimeHours: number
+  setupTimeHours: number
+  oeeScore: number
+}
+export interface BillOfMaterials {
+  productId: string
+  components: Array<MaterialComponent>
+  totalMaterialCost: number
+  laborCost: number
+  overheadCost: number
+  totalCost: number
+}
+export interface MaterialComponent {
+  componentId: string
+  quantityRequired: number
+  unitCost: number
+  totalCost: number
+  leadTimeDays: number
+}
+export declare function calculateProductionCapacity(workCenters: Array<WorkCenter>, plannedHours: number): number
+export declare function calculateProductionTimeRequired(quantity: number, productionRatePerHour: number, setupTimeHours: number): number
+export declare function calculateOeeScore(availabilityPercentage: number, performancePercentage: number, qualityPercentage: number): number
+export declare function optimizeProductionSequence(orders: Array<string>, priorities: Array<number>, processingTimes: Array<number>): Array<string>
+export declare function calculateMaterialRequirements(productionQuantity: number, components: Array<MaterialComponent>): BillOfMaterials
+export declare function calculateCycleTime(setupTime: number, processingTimePerUnit: number, batchSize: number): number
+export declare function calculateProductionEfficiency(plannedOutput: number, actualOutput: number, plannedTime: number, actualTime: number): ProductionEfficiency
+export declare function calculateBatchSizeOptimization(annualDemand: number, setupCost: number, holdingCostPerUnit: number): number
+export declare function calculateChangeoverTime(fromProductId: string, toProductId: string, baseChangeoverTime: number, complexityFactor: number): number
+export declare function calculateCapacityUtilization(scheduledHours: number, availableHours: number): number
+export declare function calculateProductionCostPerUnit(totalMaterialCost: number, totalLaborCost: number, totalOverheadCost: number, quantityProduced: number): number
+export declare function calculateLeadTimeVariance(plannedLeadTimes: Array<number>, actualLeadTimes: Array<number>): number
+export declare function calculateWorkCenterEfficiency(workCenters: Array<WorkCenter>): number
+export interface Customer {
+  customerId: string
+  name: string
+  email: string
+  phone: string
+  company: string
+  totalPurchases: number
+  lastPurchaseDate: string
+  customerTier: string
+}
+export interface Lead {
+  leadId: string
+  name: string
+  email: string
+  source: string
+  score: number
+  status: string
+  createdDate: string
+  estimatedValue: number
+}
+export interface CustomerScore {
+  customerId: string
+  purchaseFrequencyScore: number
+  purchaseValueScore: number
+  loyaltyScore: number
+  engagementScore: number
+  overallScore: number
+  customerSegment: string
+}
+export interface SalesOpportunity {
+  opportunityId: string
+  customerId: string
+  estimatedValue: number
+  probability: number
+  expectedValue: number
+  stage: string
+  closeDate: string
+}
+export interface CrmAnalytics {
+  totalCustomers: number
+  activeCustomers: number
+  totalLeads: number
+  conversionRate: number
+  averageDealSize: number
+  customerLifetimeValue: number
+  churnRate: number
+}
+export interface SalesPerformance {
+  salesRepId: string
+  dealsClosed: number
+  totalRevenue: number
+  conversionRate: number
+  averageDealSize: number
+  performanceScore: number
+}
+export declare function calculateCustomerLifetimeValue(averagePurchaseValue: number, purchaseFrequencyPerYear: number, customerLifespanYears: number): number
+export declare function calculateLeadScore(demographicScore: number, behavioralScore: number, engagementScore: number, fitScore: number): number
+export declare function calculateCustomerScore(daysSinceLastPurchase: number, totalPurchases: number, purchaseFrequency: number, engagementMetrics: number): CustomerScore
+export declare function calculateChurnProbability(daysSinceLastPurchase: number, averageDaysBetweenPurchases: number, purchaseTrend: number, engagementScore: number): number
+export declare function calculateSalesConversionRate(leadsConverted: number, totalLeads: number): number
+export declare function calculateOpportunityExpectedValue(estimatedValue: number, probabilityPercentage: number): number
+export declare function optimizeSalesTerritory(territories: Array<string>, customerValues: Array<number>, salesRepCapacities: Array<number>): Array<string>
+export declare function calculateCustomerAcquisitionCost(totalMarketingSpend: number, totalSalesSpend: number, newCustomersAcquired: number): number
+export declare function calculateCustomerRetentionRate(customersAtStart: number, customersAtEnd: number, newCustomers: number): number
+export declare function calculateSalesPipelineVelocity(numberOfOpportunities: number, averageDealSize: number, winRatePercentage: number, averageSalesCycleDays: number): number
+export declare function generateCrmAnalytics(customers: Array<Customer>, leads: Array<Lead>, conversionRate: number): CrmAnalytics
+export declare function calculateCrossSellProbability(customerSegment: string, productAffinityScore: number, timeSinceLastPurchase: number, previousCrossSells: number): number
+export interface SupplyChainNode {
+  nodeId: string
+  nodeType: string
+  location: string
+  capacity: number
+  currentInventory: number
+  leadTimeDays: number
+}
+export interface ShipmentRoute {
+  routeId: string
+  origin: string
+  destination: string
+  distanceKm: number
+  transportCostPerKm: number
+  transitTimeHours: number
+  capacityLimit: number
+}
+export interface DemandForecast {
+  productId: string
+  period: string
+  forecastedDemand: number
+  confidenceInterval: number
+  seasonalFactor: number
+  trendFactor: number
+}
+export interface ScmInventoryOptimization {
+  productId: string
+  currentStock: number
+  optimalStockLevel: number
+  reorderPoint: number
+  economicOrderQuantity: number
+  safetyStock: number
+  stockoutRisk: number
+}
+export interface SupplyChainMetrics {
+  totalCost: number
+  averageLeadTime: number
+  fillRate: number
+  inventoryTurnover: number
+  supplyChainEfficiency: number
+  carbonFootprint: number
+}
+export interface ScmRiskAssessment {
+  riskType: string
+  probability: number
+  impactScore: number
+  riskScore: number
+  mitigationCost: number
+  residualRisk: number
+}
+export declare function calculateTotalLogisticsCost(transportationCost: number, warehousingCost: number, inventoryCarryingCost: number, administrativeCost: number): number
+export declare function calculateOptimalRoute(routes: Array<ShipmentRoute>, shipmentVolume: number): string
+export declare function calculateDemandForecast(historicalDemand: Array<number>, seasonalFactors: Array<number>, trendFactor: number): number
+export declare function optimizeInventoryLevels(annualDemand: number, orderingCost: number, holdingCostPerUnit: number, leadTimeDays: number, serviceLevel: number): ScmInventoryOptimization
+export declare function calculateSupplyChainResilience(supplierDiversification: number, geographicDistribution: number, inventoryBuffer: number, alternativeRoutes: number): number
+export declare function calculateBullwhipEffect(demandVariance: number, orderVariance: number): number
+export declare function calculateSupplyChainCarbonFootprint(transportationEmissions: number, warehousingEmissions: number, manufacturingEmissions: number, packagingEmissions: number): number
+export declare function optimizeNetworkDesign(nodes: Array<SupplyChainNode>, demandCenters: Array<number>, fixedCosts: Array<number>): Array<string>
+export declare function calculateVendorPerformanceScore(qualityRating: number, deliveryPerformance: number, costCompetitiveness: number, serviceLevel: number, innovationScore: number): number
+export declare function calculateSupplyRiskScore(supplierFinancialStability: number, geographicConcentration: number, supplierDependency: number, politicalStability: number, naturalDisasterRisk: number): ScmRiskAssessment
+export declare function calculateOrderFulfillmentRate(ordersFulfilledOnTime: number, totalOrders: number): number
+export declare function optimizeProductionDistribution(productionCapacities: Array<number>, demandRequirements: Array<number>, transportationCosts: Array<number>): Array<number>
+export declare function generateSupplyChainMetrics(nodes: Array<SupplyChainNode>, routes: Array<ShipmentRoute>, demandForecast: number): SupplyChainMetrics
+export interface Project {
+  projectId: string
+  name: string
+  startDate: string
+  endDate: string
+  budget: number
+  actualCost: number
+  progressPercentage: number
+  status: string
+  priority: number
+}
+export interface ProjectTask {
+  taskId: string
+  projectId: string
+  name: string
+  durationDays: number
+  progressPercentage: number
+  assignedResources: Array<string>
+  dependencies: Array<string>
+  criticalPath: boolean
+}
+export interface ResourceAllocation {
+  resourceId: string
+  resourceName: string
+  allocationPercentage: number
+  hourlyRate: number
+  totalHours: number
+  totalCost: number
+  utilizationRate: number
+}
+export interface ProjectMetrics {
+  schedulePerformanceIndex: number
+  costPerformanceIndex: number
+  estimateAtCompletion: number
+  estimateToComplete: number
+  varianceAtCompletion: number
+  projectHealthScore: number
+}
+export interface RiskAnalysis {
+  riskId: string
+  description: string
+  probability: number
+  impact: number
+  riskScore: number
+  mitigationStrategy: string
+  contingencyCost: number
+}
+export interface ProjectPortfolio {
+  totalProjects: number
+  totalBudget: number
+  totalActualCost: number
+  averageProgress: number
+  onTimeProjects: number
+  overBudgetProjects: number
+  roi: number
+}
+export declare function calculateProjectCompletionPercentage(completedTasks: number, totalTasks: number): number
+export declare function calculateEarnedValueMetrics(plannedValue: number, earnedValue: number, actualCost: number, budgetAtCompletion: number): ProjectMetrics
+export declare function calculateCriticalPathDuration(tasks: Array<ProjectTask>): number
+export declare function calculateResourceUtilization(allocatedHours: number, availableHours: number): number
+export declare function optimizeResourceAllocation(resources: Array<ResourceAllocation>, projectPriority: number, budgetConstraint: number): Array<ResourceAllocation>
+export declare function calculateProjectRiskScore(technicalComplexity: number, teamExperience: number, stakeholderEngagement: number, externalDependencies: number, budgetConstraints: number): number
+export declare function calculateProjectRoi(projectBenefits: number, projectCosts: number): number
+export declare function estimateProjectDuration(optimisticDays: number, pessimisticDays: number, mostLikelyDays: number): number
+export declare function calculateBurnRate(budgetSpent: number, timeElapsedDays: number): number
+export declare function calculateVelocity(storyPointsCompleted: number, sprintDurationDays: number): number
+export declare function optimizeProjectSchedule(tasks: Array<ProjectTask>, resourceConstraints: number): number
+export declare function calculateScopeCreep(originalScopePoints: number, currentScopePoints: number): number
+export declare function calculateTeamProductivity(deliverablesCompleted: number, teamSize: number, timePeriodDays: number): number
+export declare function generateProjectPortfolioMetrics(projects: Array<Project>): ProjectPortfolio
+export declare function calculateMilestoneVariance(plannedMilestoneDate: string, actualMilestoneDate: string): number
+export declare function calculateQualityMetrics(defectsFound: number, totalDeliverables: number, reworkHours: number, totalDevelopmentHours: number): number
+export interface ServiceTicket {
+  ticketId: string
+  customerId: string
+  category: string
+  priority: string
+  status: string
+  createdDate: string
+  resolvedDate: string
+  assignedAgent: string
+  description: string
+}
+export interface ServiceAgent {
+  agentId: string
+  name: string
+  skillLevel: number
+  currentWorkload: number
+  maxCapacity: number
+  specializations: Array<string>
+  performanceRating: number
+}
+export interface ServiceLevelMetrics {
+  averageResponseTime: number
+  averageResolutionTime: number
+  firstCallResolutionRate: number
+  customerSatisfactionScore: number
+  slaComplianceRate: number
+  ticketVolume: number
+}
+export interface TicketPrioritization {
+  ticketId: string
+  priorityScore: number
+  estimatedEffort: number
+  customerTier: string
+  urgencyLevel: string
+  businessImpact: string
+}
+export interface WorkloadDistribution {
+  agentId: string
+  assignedTickets: number
+  workloadPercentage: number
+  efficiencyScore: number
+  recommendedAssignments: number
+}
+export interface ServiceAnalytics {
+  totalTickets: number
+  resolvedTickets: number
+  pendingTickets: number
+  escalatedTickets: number
+  averageResolutionTime: number
+  customerSatisfaction: number
+  agentUtilization: number
+}
+export declare function calculateTicketPriorityScore(customerTier: string, issueSeverity: string, businessImpact: string, timeSensitivity: number): number
+export declare function calculateSlaCompliance(resolvedWithinSla: number, totalTickets: number): number
+export declare function calculateFirstCallResolutionRate(resolvedOnFirstContact: number, totalContacts: number): number
+export declare function optimizeAgentAssignment(agents: Array<ServiceAgent>, ticketCategory: string, requiredSkillLevel: number): string
+export declare function calculateServiceCustomerSatisfactionScore(ratingSum: number, numberOfRatings: number): number
+export declare function calculateResolutionTimeSla(priority: string, complexity: string): number
+export declare function calculateEscalationProbability(currentResolutionTime: number, slaTargetTime: number, agentSkillLevel: number, ticketComplexity: string): number
+export declare function optimizeServiceCapacity(historicalTicketVolume: Array<number>, peakHourMultiplier: number, targetResponseTime: number): number
+export declare function calculateAgentProductivity(ticketsResolved: number, hoursWorked: number, qualityScore: number): number
+export declare function calculateServiceCostPerTicket(totalServiceCost: number, ticketsHandled: number): number
+export declare function generateServiceAnalytics(tickets: Array<ServiceTicket>, targetResolutionTime: number): ServiceAnalytics
+export declare function calculateServiceEfficiencyScore(actualResolutionTime: number, targetResolutionTime: number, firstCallResolutionRate: number, customerSatisfaction: number): number
+export interface DataPoint {
+  metricName: string
+  value: number
+  timestamp: string
+  dimension: string
+  category: string
+}
+export interface KpiMetric {
+  kpiName: string
+  currentValue: number
+  targetValue: number
+  previousValue: number
+  unit: string
+  trend: string
+  variancePercentage: number
+}
+export interface TrendAnalysis {
+  metricName: string
+  trendDirection: string
+  trendStrength: number
+  seasonalPattern: boolean
+  forecastValue: number
+  confidenceInterval: number
+}
+export interface PerformanceDashboard {
+  dashboardName: string
+  kpis: Array<KpiMetric>
+  overallScore: number
+  alerts: Array<string>
+  recommendations: Array<string>
+}
+export interface BusinessInsight {
+  insightType: string
+  description: string
+  impactScore: number
+  confidenceLevel: number
+  recommendedActions: Array<string>
+  dataSources: Array<string>
+}
+export interface DataQualityReport {
+  completenessScore: number
+  accuracyScore: number
+  consistencyScore: number
+  timelinessScore: number
+  overallQualityScore: number
+  issuesFound: number
+}
+export declare function calculateKpiVariance(currentValue: number, targetValue: number): number
+export declare function calculateTrendStrength(dataPoints: Array<number>): number
+export declare function detectAnomalies(dataPoints: Array<number>, thresholdMultiplier: number): Array<number>
+export declare function calculateBiCorrelationCoefficient(xValues: Array<number>, yValues: Array<number>): number
+export declare function calculateBiMovingAverage(dataPoints: Array<number>, windowSize: number): Array<number>
+export declare function calculateForecastedValue(historicalData: Array<number>, periodsAhead: number): number
+export declare function calculateBiDataQualityScore(totalRecords: number, completeRecords: number, accurateRecords: number, consistentRecords: number, timelyRecords: number): DataQualityReport
+export declare function calculatePerformanceIndex(actualValues: Array<number>, targetValues: Array<number>, weights: Array<number>): number
+export declare function generateBusinessInsights(revenueData: Array<number>, costData: Array<number>, customerData: Array<number>): Array<BusinessInsight>
+export declare function calculateCohortRetention(cohortSizes: Array<number>, retainedUsers: Array<number>): Array<number>
+export declare function calculateConversionFunnel(funnelSteps: Array<number>): Array<number>
+export declare function optimizeDashboardLayout(kpiImportanceScores: Array<number>, kpiNames: Array<string>, maxDisplayItems: number): Array<string>
+export interface Vehicle {
+  vehicleId: string
+  vehicleType: string
+  capacityWeight: number
+  capacityVolume: number
+  fuelEfficiency: number
+  operatingCostPerKm: number
+  currentLocation: string
+  availabilityStatus: string
+}
+export interface DeliveryRoute {
+  routeId: string
+  vehicleId: string
+  stops: Array<string>
+  totalDistanceKm: number
+  estimatedDurationHours: number
+  totalCost: number
+  deliveryPriority: number
+}
+export interface RouteOptimization {
+  optimizedRoutes: Array<DeliveryRoute>
+  totalDistance: number
+  totalCost: number
+  vehiclesUsed: number
+  efficiencyScore: number
+}
+export interface FleetMetrics {
+  totalVehicles: number
+  activeVehicles: number
+  fleetUtilization: number
+  averageFuelEfficiency: number
+  totalOperatingCost: number
+  maintenanceCost: number
+  deliveryPerformance: number
+}
+export interface ShippingCost {
+  baseCost: number
+  distanceCost: number
+  weightCost: number
+  fuelSurcharge: number
+  totalShippingCost: number
+  estimatedDeliveryTime: number
+}
+export interface WarehouseLocation {
+  warehouseId: string
+  latitude: number
+  longitude: number
+  capacity: number
+  currentInventory: number
+  processingCostPerUnit: number
+}
+export declare function calculateDeliveryDistance(originLat: number, originLng: number, destinationLat: number, destinationLng: number): number
+export declare function optimizeDeliveryRoutes(vehicles: Array<Vehicle>, deliveryAddresses: Array<string>, deliveryPriorities: Array<number>): RouteOptimization
+export declare function calculateLogisticsShippingCost(weightKg: number, distanceKm: number, shippingClass: string, fuelPricePerLiter: number): ShippingCost
+export declare function calculateFleetUtilization(vehicles: Array<Vehicle>, activeRoutes: number): number
+export declare function optimizeWarehouseAllocation(warehouses: Array<WarehouseLocation>, customerLocations: Array<[number, number]>, orderVolumes: Array<number>): Array<string>
+export declare function calculateCarbonEmissions(distanceKm: number, vehicleFuelEfficiency: number, emissionFactor: number): number
+export declare function optimizeLoadPlanning(items: Array<number>, vehicleCapacity: number, maxItemsPerLoad: number): Array<Array<number>>
+export declare function calculateDeliveryTimeWindow(distanceKm: number, averageSpeedKmh: number, loadingTimeHours: number, trafficFactor: number): number
+export declare function generateFleetMetrics(vehicles: Array<Vehicle>, totalOperatingCost: number, maintenanceCost: number): FleetMetrics
+export declare function calculateLastMileEfficiency(totalDeliveries: number, successfulDeliveries: number, totalDeliveryTime: number, totalDistance: number): number
+export interface ServiceTechnician {
+  technicianId: string
+  name: string
+  skillLevel: number
+  certifications: Array<string>
+  currentLocation: string
+  availabilityHours: number
+  hourlyRate: number
+  performanceRating: number
+}
+export interface ServiceCall {
+  callId: string
+  customerId: string
+  serviceType: string
+  priority: string
+  estimatedDuration: number
+  requiredSkills: Array<string>
+  location: string
+  scheduledTime: string
+  slaDeadline: string
+}
+export interface ScheduleOptimization {
+  technicianId: string
+  assignedCalls: Array<string>
+  totalTravelTime: number
+  totalServiceTime: number
+  efficiencyScore: number
+  utilizationRate: number
+}
+export interface ServiceMetrics {
+  totalServiceCalls: number
+  completedCalls: number
+  slaComplianceRate: number
+  averageResponseTime: number
+  firstTimeFixRate: number
+  technicianUtilization: number
+  customerSatisfaction: number
+}
+export interface TechnicianPerformance {
+  technicianId: string
+  callsCompleted: number
+  averageServiceTime: number
+  firstTimeFixRate: number
+  customerRating: number
+  productivityScore: number
+  efficiencyRating: string
+}
+export interface ServiceCostAnalysis {
+  laborCost: number
+  travelCost: number
+  partsCost: number
+  overheadCost: number
+  totalServiceCost: number
+  costPerCall: number
+}
+export declare function calculateTechnicianSkillMatch(technicianSkills: Array<string>, requiredSkills: Array<string>): number
+export declare function optimizeTechnicianScheduling(technicians: Array<ServiceTechnician>, serviceCalls: Array<ServiceCall>, maxTravelTimePerDay: number): Array<ScheduleOptimization>
+export declare function calculateServiceResponseTime(callReceivedTime: string, technicianArrivalTime: string, slaTargetHours: number): number
+export declare function calculateFirstTimeFixRate(callsFixedFirstTime: number, totalCalls: number): number
+export declare function optimizeRouteForTechnician(technicianLocation: string, serviceLocations: Array<string>, estimatedTravelTimes: Array<number>): Array<string>
+export declare function calculateServiceCostBreakdown(technicianHours: number, hourlyRate: number, travelDistanceKm: number, travelCostPerKm: number, partsCost: number, overheadPercentage: number): ServiceCostAnalysis
+export declare function calculateTechnicianProductivity(callsCompleted: number, hoursWorked: number, revenueGenerated: number): number
+export declare function predictServiceDuration(serviceType: string, technicianSkillLevel: number, equipmentAgeYears: number, complexityFactor: number): number
+export declare function calculateSlaComplianceScore(callsWithinSla: number, totalCalls: number, averageResponseTime: number, targetResponseTime: number): number
+export declare function optimizeInventoryAllocation(technicians: Array<ServiceTechnician>, partsInventory: Array<string>, historicalUsage: Array<number>): Array<Array<string>>
+export declare function generateServiceMetrics(serviceCalls: Array<ServiceCall>, completedCalls: number, slaCompliantCalls: number): ServiceMetrics
+export declare function calculateEmergencyResponsePriority(serviceType: string, customerTier: string, equipmentCriticality: string, downtimeCostPerHour: number): number
+export interface Property {
+  propertyId: string
+  propertyType: string
+  location: string
+  squareFootage: number
+  bedrooms: number
+  bathrooms: number
+  yearBuilt: number
+  currentValue: number
+  monthlyRent: number
+  occupancyStatus: string
+}
+export interface LeaseContract {
+  leaseId: string
+  propertyId: string
+  tenantId: string
+  startDate: string
+  endDate: string
+  monthlyRent: number
+  securityDeposit: number
+  leaseType: string
+  renewalTerms: string
+}
+export interface PropertyValuation {
+  propertyId: string
+  estimatedValue: number
+  comparableSalesValue: number
+  incomeApproachValue: number
+  costApproachValue: number
+  confidenceLevel: number
+  valuationDate: string
+}
+export interface RentalYieldAnalysis {
+  propertyId: string
+  annualRentalIncome: number
+  propertyValue: number
+  grossYield: number
+  netYield: number
+  operatingExpenses: number
+  roiPercentage: number
+}
+export interface MarketAnalysis {
+  area: string
+  averagePropertyValue: number
+  averageRentPerSqft: number
+  vacancyRate: number
+  marketTrend: string
+  priceAppreciation: number
+  rentalDemandScore: number
+}
+export interface PropertyMetrics {
+  totalProperties: number
+  occupiedProperties: number
+  occupancyRate: number
+  totalRentalIncome: number
+  averageRentPerSqft: number
+  totalPropertyValue: number
+  portfolioYield: number
+}
+export declare function calculatePropertyValueComparative(comparableSales: Array<number>, propertySqft: number, comparableSqft: Array<number>, locationAdjustment: number, conditionAdjustment: number): number
+export declare function calculateRentalYield(annualRentalIncome: number, propertyValue: number, annualOperatingExpenses: number): RentalYieldAnalysis
+export declare function calculateOptimalRent(marketRentPerSqft: number, propertySqft: number, propertyConditionFactor: number, locationPremium: number, amenitiesPremium: number): number
+export declare function calculateLeaseBreakPenalty(remainingLeaseMonths: number, monthlyRent: number, penaltyPercentage: number): number
+export declare function calculatePropertyAppreciation(currentValue: number, purchaseValue: number, yearsHeld: number): number
+export declare function optimizeSpaceAllocation(totalSpaceSqft: number, spaceRequirements: Array<number>, spacePriorities: Array<number>, costPerSqft: number): Array<number>
+export declare function calculatePropertyCashFlow(monthlyRent: number, mortgagePayment: number, propertyTaxes: number, insurance: number, maintenanceCosts: number, propertyManagementFee: number): number
+export declare function calculateCapitalizationRate(netOperatingIncome: number, propertyValue: number): number
+export declare function calculateDebtServiceCoverageRatio(netOperatingIncome: number, annualDebtService: number): number
+export declare function assessInvestmentViability(purchasePrice: number, annualRentalIncome: number, annualExpenses: number, financingCosts: number, targetRoi: number): number
+export declare function calculateVacancyImpact(annualRentalIncome: number, vacancyRate: number, vacancyPreparationCost: number): number
+export declare function optimizeMaintenanceSchedule(properties: Array<Property>, maintenanceBudget: number, urgencyScores: Array<number>): Array<string>
+export declare function generatePropertyMetrics(properties: Array<Property>): PropertyMetrics
+export declare function calculateMarketRentEstimate(comparableRents: Array<number>, comparableSqft: Array<number>, propertySqft: number, locationAdjustment: number): number
+export interface RentalAsset {
+  assetId: string
+  assetType: string
+  description: string
+  acquisitionCost: number
+  currentValue: number
+  dailyRentalRate: number
+  utilizationRate: number
+  maintenanceCostPerDay: number
+  conditionScore: number
+}
+export interface RentalPricing {
+  baseDailyRate: number
+  seasonalAdjustment: number
+  demandAdjustment: number
+  conditionAdjustment: number
+  recommendedRate: number
+  competitivePosition: string
+}
+export interface UtilizationAnalysis {
+  assetId: string
+  totalAvailableDays: number
+  rentedDays: number
+  utilizationPercentage: number
+  revenueGenerated: number
+  lostRevenueOpportunity: number
+}
+export interface RentalMetrics {
+  totalAssets: number
+  averageUtilization: number
+  totalRevenue: number
+  totalMaintenanceCost: number
+  netProfit: number
+  roiPercentage: number
+  fleetEfficiencyScore: number
+}
+export declare function calculateOptimalRentalPricing(baseRate: number, marketDemandFactor: number, seasonalFactor: number, assetConditionScore: number, competitorRates: Array<number>): RentalPricing
+export declare function calculateUtilizationMetrics(totalAvailableDays: number, rentedDays: number, dailyRate: number): UtilizationAnalysis
+export declare function calculateRentalRoi(initialInvestment: number, annualRevenue: number, annualOperatingCosts: number, depreciation: number): number
+export declare function optimizeFleetAllocation(assets: Array<RentalAsset>, demandForecast: Array<number>, targetUtilization: number): Array<string>
+export declare function calculateMaintenanceScheduling(assetConditionScores: Array<number>, usageHours: Array<number>, maintenanceThresholds: Array<number>): Array<number>
+export declare function calculateDepreciationSchedule(initialValue: number, usefulLifeYears: number, salvageValue: number, depreciationMethod: string): number
+export declare function calculateDemandForecasting(historicalDemand: Array<number>, seasonalFactors: Array<number>, trendFactor: number, periodsAhead: number): Array<number>
+export declare function optimizePricingStrategy(currentRates: Array<number>, utilizationRates: Array<number>, targetUtilization: number, priceElasticity: number): Array<number>
+export declare function calculateBreakEvenUtilization(fixedCosts: number, variableCostPerDay: number, dailyRentalRate: number, daysInPeriod: number): number
+export declare function generateRentalMetrics(assets: Array<RentalAsset>, totalMaintenanceCost: number): RentalMetrics
+export interface CapitalAsset {
+  assetId: string
+  assetName: string
+  assetCategory: string
+  acquisitionCost: number
+  acquisitionDate: string
+  usefulLifeYears: number
+  salvageValue: number
+  currentBookValue: number
+  fairMarketValue: number
+}
+export interface InvestmentAnalysis {
+  initialInvestment: number
+  netPresentValue: number
+  internalRateOfReturn: number
+  paybackPeriodYears: number
+  profitabilityIndex: number
+  recommendation: string
+}
+export interface AssetPerformance {
+  assetId: string
+  returnOnInvestment: number
+  assetTurnover: number
+  utilizationRate: number
+  maintenanceEfficiency: number
+  overallPerformanceScore: number
+}
+export declare function calculateNetPresentValue(initialInvestment: number, cashFlows: Array<number>, discountRate: number): number
+export declare function calculateInternalRateOfReturn(initialInvestment: number, cashFlows: Array<number>, maxIterations: number): number
+export declare function calculateProfitabilityIndex(presentValueOfCashFlows: number, initialInvestment: number): number
+export declare function calculateAssetReplacementAnalysis(currentAssetValue: number, currentAnnualCosts: number, newAssetCost: number, newAnnualCosts: number, analysisPeriodYears: number, discountRate: number): number
+export declare function calculateCapitalAssetPricingModel(riskFreeRate: number, marketReturn: number, assetBeta: number): number
+export declare function calculateEconomicValueAdded(netOperatingProfitAfterTax: number, totalCapital: number, costOfCapital: number): number
+export declare function optimizeCapitalAllocation(investmentOptions: Array<number>, expectedReturns: Array<number>, riskScores: Array<number>, budgetConstraint: number, riskTolerance: number): Array<number>
+export declare function calculateAssetImpairmentTest(bookValue: number, fairValue: number, valueInUse: number): number
+export declare function calculateCapitalBudgetingScore(npv: number, irr: number, paybackPeriod: number, profitabilityIndex: number, strategicImportance: number): number
+export declare function generateInvestmentAnalysis(initialInvestment: number, cashFlows: Array<number>, discountRate: number, strategicImportance: number): InvestmentAnalysis
+export interface EnterpriseAsset {
+  assetId: string
+  assetType: string
+  location: string
+  acquisitionCost: number
+  currentValue: number
+  lifecycleStage: string
+  conditionRating: number
+  utilizationRate: number
+  annualMaintenanceCost: number
+}
+export interface AssetLifecycleMetrics {
+  totalCostOfOwnership: number
+  remainingUsefulLife: number
+  replacementTimeline: number
+  maintenanceEfficiency: number
+  assetValueRetention: number
+}
+export declare function calculateTotalCostOfOwnership(acquisitionCost: number, annualOperatingCosts: Array<number>, annualMaintenanceCosts: Array<number>, disposalValue: number, discountRate: number): number
+export declare function calculateAssetReliabilityScore(uptimePercentage: number, mtbfHours: number, mttrHours: number): number
+export declare function optimizeReplacementSchedule(assets: Array<EnterpriseAsset>, budgetConstraint: number, replacementCosts: Array<number>): Array<string>
+export declare function calculateAssetPerformanceIndex(actualOutput: number, designCapacity: number, availability: number, qualityRate: number): number
+export declare function generateAssetLifecycleMetrics(asset: EnterpriseAsset, usefulLifeYears: number, ageYears: number): AssetLifecycleMetrics
+export interface Equipment {
+  equipmentId: string
+  equipmentType: string
+  acquisitionCost: number
+  installationCost: number
+  annualOperatingCost: number
+  annualMaintenanceCost: number
+  usefulLifeYears: number
+  salvageValue: number
+}
+export interface CostAnalysis {
+  equipmentId: string
+  totalAcquisitionCost: number
+  annualTotalCost: number
+  lifecycleCost: number
+  costPerUnitOutput: number
+  breakEvenAnalysis: number
+}
+export declare function calculateEquipmentLifecycleCost(acquisitionCost: number, installationCost: number, annualOperatingCost: number, annualMaintenanceCost: number, usefulLifeYears: number, salvageValue: number, discountRate: number): number
+export declare function calculateEquipmentProductivity(actualOutput: number, designCapacity: number, operatingHours: number, availableHours: number): number
+export declare function calculateMaintenanceCostOptimization(preventiveMaintenanceCost: number, correctiveMaintenanceCost: number, downtimeCostPerHour: number, preventiveDowntimeHours: number, correctiveDowntimeHours: number): number
+export declare function calculateEquipmentRoi(equipmentCost: number, annualCostSavings: number, annualRevenueIncrease: number, usefulLifeYears: number): number
+export declare function optimizeEquipmentReplacementTiming(currentMaintenanceCost: number, maintenanceCostGrowthRate: number, newEquipmentCost: number, efficiencyImprovement: number, yearsToAnalyze: number): number
+export declare function generateEquipmentCostAnalysis(equipment: Equipment, annualOutputUnits: number, discountRate: number): CostAnalysis
+export interface YardSpace {
+  spaceId: string
+  areaSqm: number
+  capacityUnits: number
+  currentOccupancy: number
+  spaceType: string
+  hourlyRate: number
+}
+export interface SpaceOptimization {
+  totalSpaceUtilized: number
+  utilizationPercentage: number
+  revenueOptimization: number
+  recommendedLayout: Array<string>
+}
+export declare function calculateYardUtilization(totalCapacity: number, currentOccupancy: number): number
+export declare function optimizeContainerPlacement(containerSizes: Array<number>, yardCapacity: number, priorityScores: Array<number>): Array<number>
+export declare function calculateSpaceEfficiencyScore(spaces: Array<YardSpace>): number
+export declare function optimizeYardRevenue(spaces: Array<YardSpace>, demandForecast: Array<number>): number
+export declare function calculateTurnaroundTimeOptimization(arrivalTimes: Array<number>, serviceTimes: Array<number>, yardCapacity: number): number
+export interface Resource {
+  resourceId: string
+  resourceType: string
+  capacity: number
+  availability: number
+  costPerHour: number
+  skillLevel: number
+  location: string
+}
+export interface OptimizationResult {
+  resourceId: string
+  allocatedCapacity: number
+  utilizationRate: number
+  efficiencyScore: number
+  costEffectiveness: number
+}
+export declare function optimizeResourceAllocation(resources: Array<Resource>, demandRequirements: Array<number>, priorityWeights: Array<number>, budgetConstraint: number): Array<OptimizationResult>
+export declare function calculateCapacityPlanning(historicalDemand: Array<number>, growthRate: number, safetyFactor: number, planningHorizonMonths: number): number
+export declare function optimizeSkillMatching(requiredSkills: Array<string>, availableResources: Array<Resource>, skillImportance: Array<number>): Array<string>
+export declare function calculateResourceUtilizationEfficiency(plannedUtilization: number, actualUtilization: number, resourceCapacity: number): number
+export declare function optimizeLoadBalancing(resourceLoads: Array<number>, resourceCapacities: Array<number>, transferCosts: Array<number>): Array<number>
+export interface ReportMetrics {
+  totalRecords: number
+  processingTimeMs: number
+  dataAccuracyScore: number
+  completenessPercentage: number
+  reportSizeMb: number
+}
+export interface DataTransformation {
+  sourceFormat: string
+  targetFormat: string
+  transformationRules: Array<string>
+  successRate: number
+  processingTime: number
+}
+export declare function calculateReportProcessingTime(dataVolumeMb: number, complexityFactor: number, processingPowerFactor: number): number
+export declare function calculateDataAggregationEfficiency(inputRecords: number, outputRecords: number, processingTime: number): number
+export declare function optimizeReportCaching(reportFrequency: number, reportSizeMb: number, cacheHitRate: number, cacheCostPerMb: number): number
+export declare function calculateReportAccuracyScore(correctValues: number, totalValues: number, criticalErrors: number, minorErrors: number): number
+export declare function generateReportMetrics(totalRecords: number, processingTimeMs: number, correctRecords: number, completeRecords: number, reportSizeMb: number): ReportMetrics
+export declare function optimizeDataTransformation(sourceRecords: number, transformationComplexity: number, targetFormatEfficiency: number): DataTransformation
