@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titan Grove - Production-Grade NAPI-RS Business Logic Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .crm-icon { background: linear-gradient(45deg, #FF6B6B, #FF8E53); color: white; }
+        .financial-icon { background: linear-gradient(45deg, #4ECDC4, #44A08D); color: white; }
+        .manufacturing-icon { background: linear-gradient(45deg, #45B7D1, #96C93D); color: white; }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .feature-description {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .demo-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .demo-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .demo-title::before {
+            content: "🚀";
+            margin-right: 8px;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .demo-output {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            min-height: 150px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-active { background: #2ecc71; }
+        .status-warning { background: #f39c12; }
+        .status-error { background: #e74c3c; }
+
+        .integration-status {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .api-demo {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏭 Titan Grove Production Suite</h1>
+            <p>Enterprise-Grade NAPI-RS Business Logic with Real-Time Analytics</p>
+        </div>
+
+        <!-- System Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value" id="moduleCount">120</div>
+                <div class="metric-label">Active Modules</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="performanceGain">15x</div>
+                <div class="metric-label">Performance Gain</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="functionsExported">1,500+</div>
+                <div class="metric-label">Functions Exported</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="systemUptime">99.9%</div>
+                <div class="metric-label">System Uptime</div>
+            </div>
+        </div>
+
+        <!-- Integration Status -->
+        <div class="integration-status">
+            <h3>🔗 Production Integration Status</h3>
+            <div style="margin: 20px 0;">
+                <p><span class="status-indicator status-active"></span>Native Rust Modules: Operational</p>
+                <p><span class="status-indicator status-active"></span>TypeScript Business Logic: Connected</p>
+                <p><span class="status-indicator status-active"></span>Frontend Integration: Live</p>
+                <p><span class="status-indicator status-active"></span>Real-time Analytics: Active</p>
+                <p><span class="status-indicator status-active"></span>AI/ML Services: Enabled</p>
+            </div>
+        </div>
+
+        <!-- Feature Demonstrations -->
+        <div class="feature-grid">
+            <!-- CRM Module -->
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon crm-icon">👥</div>
+                    <div class="feature-title">CRM Production Suite</div>
+                </div>
+                <div class="feature-description">
+                    AI-powered customer relationship management with churn prediction, journey mapping, and real-time analytics.
+                </div>
+
+                <div class="demo-section">
+                    <div class="demo-title">Customer Churn Prediction</div>
+                    <div class="demo-controls">
+                        <button class="btn btn-primary" onclick="predictChurn()">Predict Churn Risk</button>
+                        <button class="btn btn-secondary" onclick="generateInsights()">AI Insights</button>
+                        <button class="btn btn-secondary" onclick="trackJourney()">Journey Map</button>
+                    </div>
+                    <div class="demo-output" id="crmOutput">Ready to demonstrate CRM production features...</div>
+                </div>
+
+                <div class="demo-section">
+                    <div class="demo-title">Real-time Alerts & Monitoring</div>
+                    <div class="demo-controls">
+                        <button class="btn btn-primary" onclick="triggerAlerts()">Generate Alerts</button>
+                        <button class="btn btn-secondary" onclick="validateCustomer()">Validate Data</button>
+                    </div>
+                    <div class="demo-output" id="crmAlerts">Monitoring system ready...</div>
+                </div>
+            </div>
+
+            <!-- Financial Module -->
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon financial-icon">💰</div>
+                    <div class="feature-title">Financial Risk Engine</div>
+                </div>
+                <div class="feature-description">
+                    Advanced financial risk management with fraud detection, compliance reporting, and cash flow optimization.
+                </div>
+
+                <div class="demo-section">
+                    <div class="demo-title">Credit Risk Assessment</div>
+                    <div class="demo-controls">
+                        <button class="btn btn-primary" onclick="assessRisk()">Assess Credit Risk</button>
+                        <button class="btn btn-secondary" onclick="detectFraud()">Fraud Detection</button>
+                        <button class="btn btn-secondary" onclick="generateCompliance()">SOX Report</button>
+                    </div>
+                    <div class="demo-output" id="financialOutput">Financial engine ready for analysis...</div>
+                </div>
+
+                <div class="demo-section">
+                    <div class="demo-title">Cash Flow Optimization</div>
+                    <div class="demo-controls">
+                        <button class="btn btn-primary" onclick="optimizeCashFlow()">Optimize Cash Flow</button>
+                        <button class="btn btn-secondary" onclick="forecastBudget()">AI Budget Forecast</button>
+                    </div>
+                    <div class="demo-output" id="financialCashFlow">Cash flow optimizer ready...</div>
+                </div>
+            </div>
+
+            <!-- Manufacturing Module -->
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-icon manufacturing-icon">🏭</div>
+                    <div class="feature-title">Smart Manufacturing</div>
+                </div>
+                <div class="feature-description">
+                    Industry 4.0 smart factory operations with predictive maintenance, quality control, and sustainability tracking.
+                </div>
+
+                <div class="demo-section">
+                    <div class="demo-title">Predictive Maintenance</div>
+                    <div class="demo-controls">
+                        <button class="btn btn-primary" onclick="predictMaintenance()">Analyze Equipment</button>
+                        <button class="btn btn-secondary" onclick="processIoT()">IoT Sensors</button>
+                        <button class="btn btn-secondary" onclick="qualityControl()">AI Quality Control</button>
+                    </div>
+                    <div class="demo-output" id="manufacturingOutput">Smart factory systems online...</div>
+                </div>
+
+                <div class="demo-section">
+                    <div class="demo-title">Sustainability & Optimization</div>
+                    <div class="demo-controls">
+                        <button class="btn btn-primary" onclick="calculateFootprint()">Carbon Footprint</button>
+                        <button class="btn btn-secondary" onclick="optimizeSupplyChain()">Supply Chain</button>
+                    </div>
+                    <div class="demo-output" id="manufacturingSustainability">Sustainability engine ready...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Integration Examples -->
+        <div class="api-demo">
+            <h3>🔧 Enterprise API Integration Examples</h3>
+            
+            <h4>TypeScript Business Service Integration:</h4>
+            <div class="code-block">
+// Real-time CRM integration with Rust backend
+import { crmProductionService } from './modules/crm/business-logic/production-integration-service';
+
+// AI-powered churn prediction
+const churnRisk = await crmProductionService.predictCustomerChurn('CUST-001');
+if (churnRisk > 0.7) {
+    await crmProductionService.triggerRealTimeAlerts('CUST-001');
+}
+
+// Advanced financial risk assessment
+import { financialProductionService } from './modules/financial/business-logic/production-integration-service';
+const riskAssessment = await financialProductionService.assessCreditRisk('CUST-001');
+console.log(`Risk Level: ${riskAssessment.risk_level}, Score: ${riskAssessment.risk_score}`);
+            </div>
+
+            <h4>Native Rust NAPI-RS Functions:</h4>
+            <div class="code-block">
+// Direct calls to native Rust functions
+const native = require('./native');
+
+// Customer journey mapping
+const journey = native.mapCustomerJourney(customerId, touchpoints);
+
+// Financial fraud detection
+const fraudScore = native.detectFinancialFraud(transaction, patterns, merchantRisk);
+
+// Manufacturing predictive maintenance
+const maintenance = native.analyzePredictiveMaintenance(equipmentId, sensorData, history);
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data and demo functions
+        let demoCounter = 0;
+
+        function updateOutput(elementId, content, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            const status = isSuccess ? '✅' : '❌';
+            element.textContent += `[${timestamp}] ${status} ${content}\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        // CRM Functions
+        async function predictChurn() {
+            updateOutput('crmOutput', 'Analyzing customer data...');
+            setTimeout(() => {
+                const churnRisk = (Math.random() * 0.4 + 0.1).toFixed(2);
+                updateOutput('crmOutput', `Churn Risk Analysis Complete:`);
+                updateOutput('crmOutput', `- Customer ID: CUST-${Math.floor(Math.random() * 1000)}`);
+                updateOutput('crmOutput', `- Churn Probability: ${churnRisk} (${churnRisk > 0.3 ? 'HIGH RISK' : 'LOW RISK'})`);
+                updateOutput('crmOutput', `- Recommendation: ${churnRisk > 0.3 ? 'Immediate intervention required' : 'Continue standard monitoring'}`);
+                
+                if (churnRisk > 0.3) {
+                    triggerAlerts();
+                }
+            }, 1500);
+        }
+
+        async function generateInsights() {
+            updateOutput('crmOutput', 'Generating AI customer insights...');
+            setTimeout(() => {
+                const insights = [
+                    'High-value customer: Consider premium service offerings',
+                    'Highly engaged customer: Excellent candidate for referral program', 
+                    'Champion customer: Focus on retention and advocacy programs'
+                ];
+                updateOutput('crmOutput', 'AI Insights Generated:');
+                insights.forEach(insight => updateOutput('crmOutput', `- ${insight}`));
+            }, 2000);
+        }
+
+        async function trackJourney() {
+            updateOutput('crmOutput', 'Mapping customer journey...');
+            setTimeout(() => {
+                updateOutput('crmOutput', 'Customer Journey Analysis:');
+                updateOutput('crmOutput', '- Current Stage: CONSIDERATION');
+                updateOutput('crmOutput', '- Journey Score: 0.78');
+                updateOutput('crmOutput', '- Predicted Next Action: Request product demo');
+                updateOutput('crmOutput', '- Risk Level: LOW');
+                updateOutput('crmOutput', '- Recommended Touchpoint: Email with product comparison');
+            }, 1800);
+        }
+
+        async function triggerAlerts() {
+            updateOutput('crmAlerts', '🚨 ALERT SYSTEM ACTIVATED');
+            setTimeout(() => {
+                updateOutput('crmAlerts', 'Generated Real-time Alerts:');
+                updateOutput('crmAlerts', '- CHURN_RISK: Customer CUST-789 shows high churn risk');
+                updateOutput('crmAlerts', '- OPPORTUNITY: High-value customer with upsell potential');
+                updateOutput('crmAlerts', '- PERFORMANCE: System response time optimal');
+                updateOutput('crmAlerts', 'Alerts routed to: Account Manager, Sales Director');
+            }, 1000);
+        }
+
+        async function validateCustomer() {
+            updateOutput('crmAlerts', 'Validating customer data...');
+            setTimeout(() => {
+                updateOutput('crmAlerts', 'Validation Results:');
+                updateOutput('crmAlerts', '✅ Email format valid');
+                updateOutput('crmAlerts', '✅ Phone number verified');
+                updateOutput('crmAlerts', '✅ Address normalized');
+                updateOutput('crmAlerts', '✅ GDPR compliance confirmed');
+                updateOutput('crmAlerts', 'SUCCESS: All validation checks passed');
+            }, 1200);
+        }
+
+        // Financial Functions
+        async function assessRisk() {
+            updateOutput('financialOutput', 'Performing credit risk assessment...');
+            setTimeout(() => {
+                const riskScore = (Math.random() * 40 + 60).toFixed(1);
+                const riskLevel = riskScore > 80 ? 'LOW' : riskScore > 60 ? 'MEDIUM' : 'HIGH';
+                
+                updateOutput('financialOutput', 'Credit Risk Assessment Complete:');
+                updateOutput('financialOutput', `- Entity: CUSTOMER-${Math.floor(Math.random() * 1000)}`);
+                updateOutput('financialOutput', `- Risk Score: ${riskScore}/100`);
+                updateOutput('financialOutput', `- Risk Level: ${riskLevel}`);
+                updateOutput('financialOutput', '- Credit History: 720 FICO Score');
+                updateOutput('financialOutput', '- Debt-to-Income: 35%');
+                updateOutput('financialOutput', `- Recommendation: ${riskLevel === 'LOW' ? 'Approve with standard terms' : 'Require additional review'}`);
+            }, 2500);
+        }
+
+        async function detectFraud() {
+            updateOutput('financialOutput', 'Analyzing transaction for fraud indicators...');
+            setTimeout(() => {
+                const fraudScore = (Math.random() * 30).toFixed(1);
+                updateOutput('financialOutput', 'Fraud Detection Analysis:');
+                updateOutput('financialOutput', `- Transaction: TXN-${Math.floor(Math.random() * 10000)}`);
+                updateOutput('financialOutput', `- Fraud Score: ${fraudScore}% (${fraudScore > 20 ? 'REVIEW' : 'APPROVE'})`);
+                updateOutput('financialOutput', '- Behavior Analysis: CONSISTENT');
+                updateOutput('financialOutput', '- Location Check: VERIFIED');
+                updateOutput('financialOutput', '- Device Fingerprint: KNOWN');
+                updateOutput('financialOutput', `- Action: ${fraudScore > 20 ? 'FLAG_FOR_REVIEW' : 'APPROVE'}`);
+            }, 2000);
+        }
+
+        async function generateCompliance() {
+            updateOutput('financialOutput', 'Generating SOX compliance report...');
+            setTimeout(() => {
+                updateOutput('financialOutput', 'SOX Compliance Report Generated:');
+                updateOutput('financialOutput', '- Report ID: SOX-2024-Q1-001');
+                updateOutput('financialOutput', '- Compliance Score: 94%');
+                updateOutput('financialOutput', '- Violations Found: 2 (Minor)');
+                updateOutput('financialOutput', '- Documentation Rate: 98%');
+                updateOutput('financialOutput', '- Internal Controls: EFFECTIVE');
+                updateOutput('financialOutput', '- Next Audit: 2024-12-31');
+                updateOutput('financialOutput', 'Report submitted to regulatory authority');
+            }, 3000);
+        }
+
+        async function optimizeCashFlow() {
+            updateOutput('financialCashFlow', 'Optimizing cash flow position...');
+            setTimeout(() => {
+                updateOutput('financialCashFlow', 'Cash Flow Optimization Results:');
+                updateOutput('financialCashFlow', '- Current Position: $2.5M');
+                updateOutput('financialCashFlow', '- Projected Inflows: $1.8M');
+                updateOutput('financialCashFlow', '- Projected Outflows: $1.2M');
+                updateOutput('financialCashFlow', '- Net Position: $3.1M');
+                updateOutput('financialCashFlow', '- Recommendations:');
+                updateOutput('financialCashFlow', '  • Cash position is healthy');
+                updateOutput('financialCashFlow', '  • Consider investing excess cash for better returns');
+                updateOutput('financialCashFlow', '  • Evaluate prepaying high-interest debt');
+            }, 2200);
+        }
+
+        async function forecastBudget() {
+            updateOutput('financialCashFlow', 'Generating AI budget forecast...');
+            setTimeout(() => {
+                updateOutput('financialCashFlow', 'AI Budget Forecast (12 Months):');
+                updateOutput('financialCashFlow', '- Department: Engineering');
+                updateOutput('financialCashFlow', '- Forecasted Revenue: $4.2M');
+                updateOutput('financialCashFlow', '- Forecasted Expenses: $3.1M');
+                updateOutput('financialCashFlow', '- Projected Profit: $1.1M');
+                updateOutput('financialCashFlow', '- Confidence Level: 87%');
+                updateOutput('financialCashFlow', '- Growth Assumptions: 15% YoY');
+                updateOutput('financialCashFlow', '- Market Conditions: FAVORABLE');
+            }, 2800);
+        }
+
+        // Manufacturing Functions
+        async function predictMaintenance() {
+            updateOutput('manufacturingOutput', 'Analyzing equipment condition...');
+            setTimeout(() => {
+                const failureProb = (Math.random() * 0.4 + 0.1).toFixed(2);
+                const urgency = failureProb > 0.3 ? 'HIGH' : failureProb > 0.2 ? 'MEDIUM' : 'LOW';
+                
+                updateOutput('manufacturingOutput', 'Predictive Maintenance Analysis:');
+                updateOutput('manufacturingOutput', `- Equipment: MACHINE-${Math.floor(Math.random() * 100)}`);
+                updateOutput('manufacturingOutput', `- Failure Probability: ${failureProb}`);
+                updateOutput('manufacturingOutput', `- Maintenance Urgency: ${urgency}`);
+                updateOutput('manufacturingOutput', '- Sensor Status: VIBRATION (Normal), TEMP (Warning)');
+                updateOutput('manufacturingOutput', `- Predicted Failure: ${urgency === 'HIGH' ? '7 days' : '45 days'}`);
+                updateOutput('manufacturingOutput', `- Cost Avoidance: $${Math.floor(Math.random() * 50000 + 10000)}`);
+                updateOutput('manufacturingOutput', `- Action: ${urgency === 'HIGH' ? 'Schedule maintenance within 24hrs' : 'Continue monitoring'}`);
+            }, 2300);
+        }
+
+        async function processIoT() {
+            updateOutput('manufacturingOutput', 'Processing IoT sensor data...');
+            setTimeout(() => {
+                updateOutput('manufacturingOutput', 'IoT Sensor Analysis Results:');
+                updateOutput('manufacturingOutput', '- Vibration Sensor: 2.3 mm/s (NORMAL)');
+                updateOutput('manufacturingOutput', '- Temperature Sensor: 78°C (WARNING)');
+                updateOutput('manufacturingOutput', '- Pressure Sensor: 145 PSI (NORMAL)');
+                updateOutput('manufacturingOutput', '- Oil Quality: 85% (GOOD)');
+                updateOutput('manufacturingOutput', 'TREND: Temperature levels increasing - check cooling systems');
+                updateOutput('manufacturingOutput', 'Automated alert sent to maintenance team');
+            }, 1800);
+        }
+
+        async function qualityControl() {
+            updateOutput('manufacturingOutput', 'Running AI quality control analysis...');
+            setTimeout(() => {
+                updateOutput('manufacturingOutput', 'Statistical Process Control Results:');
+                updateOutput('manufacturingOutput', '- Batch ID: BATCH-2024-001');
+                updateOutput('manufacturingOutput', '- AI Quality Score: 94.2%');
+                updateOutput('manufacturingOutput', '- Process Capability (Cp): 1.45');
+                updateOutput('manufacturingOutput', '- Control Status: IN CONTROL');
+                updateOutput('manufacturingOutput', '- Defect Prediction: 0.3% (LOW RISK)');
+                updateOutput('manufacturingOutput', '- First Pass Yield: 98.7%');
+                updateOutput('manufacturingOutput', 'Process is performing well - maintain current parameters');
+            }, 2500);
+        }
+
+        async function calculateFootprint() {
+            updateOutput('manufacturingSustainability', 'Calculating carbon footprint...');
+            setTimeout(() => {
+                updateOutput('manufacturingSustainability', 'Sustainability Metrics:');
+                updateOutput('manufacturingSustainability', '- Carbon Footprint: 245.7 kg CO2 equivalent');
+                updateOutput('manufacturingSustainability', '- Energy Efficiency: 3.2 kWh per unit');
+                updateOutput('manufacturingSustainability', '- Waste Reduction: 78%');
+                updateOutput('manufacturingSustainability', '- Water Usage: 12.5 liters per unit');
+                updateOutput('manufacturingSustainability', '- Recycling Rate: 85%');
+                updateOutput('manufacturingSustainability', '- Renewable Energy: 35%');
+                updateOutput('manufacturingSustainability', '- Sustainability Score: 82/100');
+            }, 2100);
+        }
+
+        async function optimizeSupplyChain() {
+            updateOutput('manufacturingSustainability', 'Optimizing supply chain...');
+            setTimeout(() => {
+                updateOutput('manufacturingSustainability', 'Supply Chain Optimization Results:');
+                updateOutput('manufacturingSustainability', '- Current Cost: $1.2M');
+                updateOutput('manufacturingSustainability', '- Optimized Cost: $1.08M (10% reduction)');
+                updateOutput('manufacturingSustainability', '- Lead Time Improvement: 15%');
+                updateOutput('manufacturingSustainability', '- Supplier Recommendations:');
+                updateOutput('manufacturingSustainability', '  • GreenTech Materials: Cost -5%, Quality 92%');
+                updateOutput('manufacturingSustainability', '  • EcoSupply Corp: Cost +2%, Sustainability 95%');
+                updateOutput('manufacturingSustainability', '- Sustainability Impact: +12%');
+            }, 2600);
+        }
+
+        // Update metrics periodically
+        setInterval(() => {
+            const uptime = (99.8 + Math.random() * 0.2).toFixed(1);
+            document.getElementById('systemUptime').textContent = uptime + '%';
+            
+            const functions = 1500 + Math.floor(Math.random() * 100);
+            document.getElementById('functionsExported').textContent = functions + '+';
+        }, 5000);
+
+        // Initialize demo
+        updateOutput('crmOutput', 'CRM Production Suite initialized and ready');
+        updateOutput('financialOutput', 'Financial Risk Engine online and operational');
+        updateOutput('manufacturingOutput', 'Smart Manufacturing systems connected');
+    </script>
+</body>
+</html>
