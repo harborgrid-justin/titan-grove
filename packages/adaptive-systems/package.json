@@ -1,0 +1,51 @@
+{
+  "name": "@titan-grove/adaptive-systems",
+  "version": "1.0.0",
+  "description": "Adaptive Systems and Self-Healing Infrastructure module for Titan Grove - Native NAPI-RS implementation",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": [
+    "adaptive-systems",
+    "self-healing",
+    "autonomous-infrastructure",
+    "resilient-systems",
+    "enterprise",
+    "napi-rs",
+    "native",
+    "rust"
+  ],
+  "author": "Titan Grove Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harborgrid-justin/titan-grove.git",
+    "directory": "packages/adaptive-systems"
+  },
+  "scripts": {
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "node test.js",
+    "test:memory": "node --expose-gc test.js"
+  },
+  "napi": {
+    "name": "titan-grove-adaptive-systems",
+    "triples": {
+      "defaults": true,
+      "additional": [
+        "x86_64-unknown-linux-musl",
+        "aarch64-unknown-linux-gnu",
+        "i686-pc-windows-msvc",
+        "armv7-unknown-linux-gnueabihf",
+        "aarch64-apple-darwin",
+        "aarch64-pc-windows-msvc",
+        "aarch64-unknown-linux-musl",
+        "aarch64-linux-android",
+        "x86_64-unknown-freebsd",
+        "x86_64-unknown-linux-musl",
+        "x86_64-pc-windows-msvc",
+        "x86_64-apple-darwin"
+      ]
+    }
+  }
+}
