@@ -31,6 +31,16 @@ pub mod scm;
 pub mod project;
 pub mod service;
 pub mod bi;
+pub mod logistics;
+pub mod field_service;
+pub mod real_estate;
+pub mod rental;
+pub mod capital_asset;
+pub mod enterprise_asset;
+pub mod equipment_cost;
+pub mod yard_management;
+pub mod resource_optimization;
+pub mod reporting;
 
 // Re-export all functions from modules
 // Original modules
@@ -56,3 +66,13 @@ pub use scm::*;
 pub use project::*;
 pub use service::*;
 pub use bi::*;
+pub use logistics::*;
+pub use field_service::*;
+pub use real_estate::*;
+pub use rental::*;
+pub use capital_asset::*;
+pub use enterprise_asset::*;
+pub use equipment_cost::*;
+pub use yard_management::*;
+pub use resource_optimization::*;
+pub use reporting::*;

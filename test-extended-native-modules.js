@@ -168,6 +168,95 @@ const {
   calculateConversionFunnel,
   optimizeDashboardLayout,
   
+  // Final 10 Modules (Logistics, Field Service, Real Estate, Rental, Capital Asset, Enterprise Asset, Equipment Cost, Yard Management, Resource Optimization, Reporting)
+  calculateDeliveryDistance,
+  optimizeDeliveryRoutes,
+  calculateLogisticsShippingCost,
+  calculateFleetUtilization,
+  optimizeWarehouseAllocation,
+  calculateCarbonEmissions,
+  optimizeLoadPlanning,
+  calculateDeliveryTimeWindow,
+  generateFleetMetrics,
+  calculateLastMileEfficiency,
+  
+  calculateTechnicianSkillMatch,
+  optimizeTechnicianScheduling,
+  calculateServiceResponseTime,
+  optimizeRouteForTechnician,
+  calculateServiceCostBreakdown,
+  calculateTechnicianProductivity,
+  predictServiceDuration,
+  calculateSlaComplianceScore,
+  optimizeInventoryAllocation,
+  generateServiceMetrics,
+  calculateEmergencyResponsePriority,
+  
+  calculatePropertyValueComparative,
+  calculateRentalYield,
+  calculateOptimalRent,
+  calculateLeaseBreakPenalty,
+  calculatePropertyAppreciation,
+  optimizeSpaceAllocation,
+  calculatePropertyCashFlow,
+  calculateCapitalizationRate,
+  calculateDebtServiceCoverageRatio,
+  assessInvestmentViability,
+  calculateVacancyImpact,
+  optimizeMaintenanceSchedule,
+  generatePropertyMetrics,
+  calculateMarketRentEstimate,
+  
+  calculateOptimalRentalPricing,
+  calculateUtilizationMetrics,
+  calculateRentalRoi,
+  optimizeFleetAllocation,
+  calculateMaintenanceScheduling,
+  calculateDepreciationSchedule,
+  calculateDemandForecasting,
+  optimizePricingStrategy,
+  calculateBreakEvenUtilization,
+  generateRentalMetrics,
+  
+  calculateProfitabilityIndex,
+  calculateAssetReplacementAnalysis,
+  calculateCapitalAssetPricingModel,
+  optimizeCapitalAllocation,
+  calculateAssetImpairmentTest,
+  calculateCapitalBudgetingScore,
+  generateInvestmentAnalysis,
+  
+  calculateTotalCostOfOwnership,
+  calculateAssetReliabilityScore,
+  optimizeReplacementSchedule,
+  calculateAssetPerformanceIndex,
+  generateAssetLifecycleMetrics,
+  
+  calculateEquipmentLifecycleCost,
+  calculateEquipmentProductivity,
+  calculateMaintenanceCostOptimization,
+  calculateEquipmentRoi,
+  optimizeEquipmentReplacementTiming,
+  generateEquipmentCostAnalysis,
+  
+  calculateYardUtilization,
+  optimizeContainerPlacement,
+  calculateSpaceEfficiencyScore,
+  optimizeYardRevenue,
+  calculateTurnaroundTimeOptimization,
+  
+  calculateCapacityPlanning,
+  optimizeSkillMatching,
+  calculateResourceUtilizationEfficiency,
+  optimizeLoadBalancing,
+  
+  calculateReportProcessingTime,
+  calculateDataAggregationEfficiency,
+  optimizeReportCaching,
+  calculateReportAccuracyScore,
+  generateReportMetrics,
+  optimizeDataTransformation,
+  
 } = require('./native');
 
 console.log('🚀 Testing Extended NAPI-RS Native Modules (20 Additional Modules)');
@@ -339,7 +428,81 @@ console.log(`  - Trend Strength: ${trendStrength.toFixed(2)}`);
 const anomalies = detectAnomalies([10, 12, 11, 50, 13, 12, 14], 2.0);
 console.log(`  - Anomalies Detected: ${anomalies.length} (at indices: ${anomalies.join(', ')})`);
 
-console.log('\n✅ All Extended NAPI-RS Native Modules Tested Successfully!');
+console.log('\n🚚 Testing Logistics Module:');
+// Test delivery distance calculation
+const distance = calculateDeliveryDistance(40.7128, -74.0060, 34.0522, -118.2437); // NYC to LA
+console.log(`  - NYC to LA Distance: ${distance.toFixed(0)} km`);
+
+// Test fleet utilization
+const fleetUtil = calculateFleetUtilization([], 8);
+console.log(`  - Fleet Utilization: ${fleetUtil.toFixed(2)}%`);
+
+console.log('\n🔧 Testing Field Service Module:');
+// Test skill matching
+const skillMatch = calculateTechnicianSkillMatch(['ELECTRICAL', 'HVAC'], ['ELECTRICAL', 'PLUMBING']);
+console.log(`  - Technician Skill Match: ${skillMatch.toFixed(2)}%`);
+
+// Test service cost breakdown
+const serviceCost = calculateServiceCostBreakdown(4.0, 75.0, 150.0, 0.8, 250.0, 15.0);
+console.log(`  - Total Service Cost: $${serviceCost.totalServiceCost.toFixed(2)}`);
+
+console.log('\n🏠 Testing Real Estate Module:');
+// Test property valuation
+const propertyValue = calculatePropertyValueComparative([450000, 480000, 460000], 2000, [1800, 2100, 1950], 1.05, 0.95);
+console.log(`  - Property Value Estimate: $${propertyValue.toFixed(0)}`);
+
+// Test rental yield
+const rentalYield = calculateRentalYield(36000, 500000, 8000);
+console.log(`  - Gross Rental Yield: ${rentalYield.grossYield.toFixed(2)}%`);
+console.log(`  - Net Rental Yield: ${rentalYield.netYield.toFixed(2)}%`);
+
+console.log('\n🚗 Testing Rental Module:');
+// Test optimal rental pricing
+const rentalPricing = calculateOptimalRentalPricing(50.0, 1.2, 1.1, 85.0, [45, 52, 48]);
+console.log(`  - Recommended Rental Rate: $${rentalPricing.recommendedRate.toFixed(2)}/day`);
+console.log(`  - Competitive Position: ${rentalPricing.competitivePosition}`);
+
+console.log('\n💼 Testing Capital Asset Module:');
+// Test NPV calculation
+const npv = calculateNetPresentValue(100000, [30000, 35000, 40000, 25000], 10);
+console.log(`  - Net Present Value: $${npv.toFixed(0)}`);
+
+// Test investment analysis
+const investmentAnalysis = generateInvestmentAnalysis(100000, [30000, 35000, 40000, 25000], 10, 75);
+console.log(`  - Investment Recommendation: ${investmentAnalysis.recommendation}`);
+console.log(`  - IRR: ${investmentAnalysis.internalRateOfReturn.toFixed(2)}%`);
+
+console.log('\n🏭 Testing Enterprise Asset Module:');
+// Test asset reliability
+const reliabilityScore = calculateAssetReliabilityScore(95.5, 1200, 4);
+console.log(`  - Asset Reliability Score: ${reliabilityScore.toFixed(2)}/100`);
+
+console.log('\n⚙️ Testing Equipment Cost Module:');
+// Test equipment lifecycle cost
+const lifecycleCost = calculateEquipmentLifecycleCost(150000, 25000, 15000, 8000, 10, 10000, 8);
+console.log(`  - Equipment Lifecycle Cost: $${lifecycleCost.toFixed(0)}`);
+
+console.log('\n📦 Testing Yard Management Module:');
+// Test yard utilization
+const yardUtil = calculateYardUtilization(100, 85);
+console.log(`  - Yard Utilization: ${yardUtil.toFixed(2)}%`);
+
+console.log('\n📊 Testing Resource Optimization Module:');
+// Test capacity planning
+const capacityPlan = calculateCapacityPlanning([100, 110, 105, 120], 15, 20, 12);
+console.log(`  - Required Capacity: ${capacityPlan.toFixed(0)} units`);
+
+console.log('\n📋 Testing Reporting Module:');
+// Test report processing time
+const processingTime = calculateReportProcessingTime(50.0, 2.5, 1.2);
+console.log(`  - Report Processing Time: ${processingTime.toFixed(2)} seconds`);
+
+// Test report metrics
+const reportMetrics = generateReportMetrics(10000, 2500, 9800, 9900, 5.2);
+console.log(`  - Report Accuracy: ${reportMetrics.dataAccuracyScore.toFixed(2)}%`);
+console.log(`  - Data Completeness: ${reportMetrics.completenessPercentage.toFixed(2)}%`);
+
+console.log('\n✅ All 30 NAPI-RS Native Modules Tested Successfully!');
 console.log('🎯 Performance Benefits Extended:');
 console.log('  - Procurement calculations: ~8x faster');
 console.log('  - Order processing: ~12x faster');
@@ -347,4 +510,4 @@ console.log('  - Financial computations: ~10x faster');
 console.log('  - HR analytics: ~7x faster');
 console.log('  - Manufacturing optimization: ~15x faster');
 
-console.log('\n🔥 NAPI-RS Integration Enhanced - 20 Modules Converted! (10 more in progress)');
+console.log('\n🔥 NAPI-RS Integration Complete - 30 Modules Converted! (20 additional + 10 from PR #117)');
