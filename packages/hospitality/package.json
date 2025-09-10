@@ -1,0 +1,57 @@
+{
+  "name": "@titan-grove/hospitality",
+  "version": "1.0.0",
+  "description": "Hotel and Hospitality Management module for Titan Grove - Native NAPI-RS implementation",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "napi build --platform --release --js index.js --dts index.d.ts",
+    "build:debug": "napi build --platform --js index.js --dts index.d.ts",
+    "test": "node test.js",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "hospitality",
+    "hotel",
+    "reservations",
+    "guest-services",
+    "enterprise",
+    "napi-rs",
+    "native",
+    "rust"
+  ],
+  "author": "Titan Grove Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@napi-rs/cli": "^2.18.4"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "*.node"
+  ],
+  "napi": {
+    "name": "titan-grove-hospitality",
+    "triples": {
+      "defaults": true,
+      "additional": [
+        "x86_64-unknown-linux-musl",
+        "aarch64-unknown-linux-gnu",
+        "i686-pc-windows-msvc",
+        "armv7-unknown-linux-gnueabihf",
+        "aarch64-apple-darwin",
+        "aarch64-pc-windows-msvc",
+        "aarch64-unknown-linux-musl",
+        "aarch64-linux-android",
+        "x86_64-unknown-freebsd",
+        "x86_64-unknown-linux-musl",
+        "x86_64-pc-windows-msvc",
+        "x86_64-apple-darwin"
+      ]
+    }
+  }
+}
