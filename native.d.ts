@@ -672,6 +672,104 @@ export declare function generateFinancialReport(revenue: number, costOfGoodsSold
 export declare function calculateWorkingCapitalRatio(currentAssets: number, currentLiabilities: number): number
 export declare function calculateFinancialInventoryTurnover(costOfGoodsSold: number, averageInventory: number): number
 export declare function calculateFinancialDaysSalesOutstanding(accountsReceivable: number, annualSales: number): number
+export interface FinancialConfiguration {
+  multiCurrencyEnabled: boolean
+  realTimeFxRates: boolean
+  automatedReconciliation: boolean
+  riskMonitoring: boolean
+  complianceReporting: boolean
+  aiFraudDetection: boolean
+  blockchainAudit: boolean
+  defaultCurrency: string
+  fiscalYearStart: string
+}
+export interface FinancialMetrics {
+  timestamp: string
+  transactionsProcessed: number
+  totalVolume: number
+  avgProcessingTimeMs: number
+  errorRate: number
+  complianceScore: number
+  fraudDetectionRate: number
+  systemUptime: number
+}
+export interface RiskAssessment {
+  assessmentId: string
+  entityType: string
+  entityId: string
+  riskScore: number
+  riskLevel: string
+  riskFactors: Array<RiskFactor>
+  mitigationStrategies: Array<string>
+  assessmentDate: string
+  nextReviewDate: string
+}
+export interface RiskFactor {
+  factorName: string
+  weight: number
+  score: number
+  description: string
+}
+export interface FinancialAlert {
+  alertId: string
+  alertType: string
+  severity: string
+  title: string
+  description: string
+  amount?: number
+  accountId?: string
+  createdAt: string
+  status: string
+  requiresAction: boolean
+}
+export interface BudgetForecast {
+  forecastId: string
+  department: string
+  forecastPeriod: string
+  forecastedRevenue: number
+  forecastedExpenses: number
+  projectedProfit: number
+  confidenceLevel: number
+  keyAssumptions: Array<string>
+  riskFactors: Array<string>
+}
+export interface ComplianceReport {
+  reportId: string
+  regulationType: string
+  complianceScore: number
+  violationsFound: number
+  recommendations: Array<string>
+  reportDate: string
+  auditor: string
+}
+export interface CashFlowOptimization {
+  optimizationId: string
+  currentCashPosition: number
+  projectedInflows: Array<CashFlowItem>
+  projectedOutflows: Array<CashFlowItem>
+  optimizationRecommendations: Array<string>
+  projectedImprovement: number
+}
+export interface CashFlowItem {
+  itemId: string
+  description: string
+  amount: number
+  date: string
+  certainty: number
+  category: string
+}
+export declare function assessCreditRisk(customerId: string, creditHistoryScore: number, paymentHistory: Array<number>, debtToIncome: number, industryRisk: number): RiskAssessment
+export declare function detectFinancialFraud(transaction: Transaction, customerSpendingPattern: Array<number>, merchantRiskScore: number): number
+export declare function generateSoxComplianceReport(transactions: Array<Transaction>, internalControlsScore: number): ComplianceReport
+export declare function validateGaapCompliance(revenueRecognition: number, expenseMatching: number, assetValuation: number): string
+export declare function optimizeCashFlow(currentCash: number, projectedInflows: Array<CashFlowItem>, projectedOutflows: Array<CashFlowItem>, minimumCashBuffer: number): CashFlowOptimization
+export declare function predictCashFlowTrends(historicalCashFlows: Array<number>, seasonalFactors: Array<number>, growthRate: number): Array<number>
+export declare function generateAiBudgetForecast(department: string, historicalRevenue: Array<number>, historicalExpenses: Array<number>, marketConditions: number, growthAssumptions: number): BudgetForecast
+export declare function monitorFinancialKpis(currentMetrics: FinancialMetrics, budgetVariance: number, cashRatio: number, debtServiceCoverage: number): Array<FinancialAlert>
+export declare function calculateCurrencyExposureRisk(baseCurrency: string, foreignHoldings: Array<[string, number]>, volatilityData: Array<number>): number
+export declare function optimizeFxHedgingStrategy(exposureAmount: number, forwardRate: number, spotRate: number, volatility: number, timeToExpiry: number): string
+export declare function getFinancialConfiguration(): FinancialConfiguration
+export declare function validateFinancialTransaction(transaction: Transaction, accountBalance: number, dailyLimit: number): string
 export interface Employee {
   employeeId: string
   name: string
@@ -815,6 +913,111 @@ export declare function calculateCapacityUtilization(scheduledHours: number, ava
 export declare function calculateProductionCostPerUnit(totalMaterialCost: number, totalLaborCost: number, totalOverheadCost: number, quantityProduced: number): number
 export declare function calculateLeadTimeVariance(plannedLeadTimes: Array<number>, actualLeadTimes: Array<number>): number
 export declare function calculateWorkCenterEfficiency(workCenters: Array<WorkCenter>): number
+export interface ManufacturingConfiguration {
+  industry40Enabled: boolean
+  iotIntegration: boolean
+  aiQualityControl: boolean
+  predictiveMaintenance: boolean
+  realTimeMonitoring: boolean
+  automatedScheduling: boolean
+  sustainabilityTracking: boolean
+  leanManufacturing: boolean
+  safetyCompliance: boolean
+}
+export interface ProductionMetrics {
+  timestamp: string
+  totalOee: number
+  productionVolume: number
+  qualityRate: number
+  downtimeMinutes: number
+  energyConsumption: number
+  laborEfficiency: number
+  safetyIncidents: number
+  costPerUnit: number
+}
+export interface SmartFactory {
+  factoryId: string
+  factoryName: string
+  connectedMachines: number
+  iotSensors: number
+  automationLevel: number
+  dataIntegrationScore: number
+  aiSystemsActive: Array<string>
+  digitalTwinEnabled: boolean
+}
+export interface PredictiveMaintenance {
+  equipmentId: string
+  equipmentName: string
+  failureProbability: number
+  maintenanceUrgency: string
+  predictedFailureDate: string
+  recommendedActions: Array<string>
+  costAvoidance: number
+  sensorData: Array<SensorReading>
+}
+export interface SensorReading {
+  sensorId: string
+  sensorType: string
+  value: number
+  unit: string
+  thresholdMin: number
+  thresholdMax: number
+  status: string
+  timestamp: string
+}
+export interface QualityIntelligence {
+  batchId: string
+  productLine: string
+  aiQualityScore: number
+  defectPredictions: Array<DefectPrediction>
+  processRecommendations: Array<string>
+  qualityTrends: Array<number>
+  rootCauseAnalysis: string
+}
+export interface DefectPrediction {
+  defectType: string
+  probability: number
+  contributingFactors: Array<string>
+  preventionActions: Array<string>
+}
+export interface SupplyChainOptimization {
+  optimizationId: string
+  currentInventoryCost: number
+  optimizedInventoryCost: number
+  leadTimeOptimization: number
+  supplierRecommendations: Array<SupplierRecommendation>
+  riskMitigationStrategies: Array<string>
+  sustainabilityImpact: number
+}
+export interface SupplierRecommendation {
+  supplierId: string
+  supplierName: string
+  costAdvantage: number
+  qualityScore: number
+  deliveryReliability: number
+  sustainabilityRating: number
+  riskLevel: string
+}
+export interface SustainabilityMetrics {
+  carbonFootprint: number
+  energyEfficiency: number
+  wasteReduction: number
+  waterUsage: number
+  recyclingRate: number
+  renewableEnergyUsage: number
+  sustainabilityScore: number
+}
+export declare function initializeSmartFactory(factoryName: string, machineCount: number, automationBudget: number): SmartFactory
+export declare function optimizeProductionLine(workCenters: Array<WorkCenter>, productionTargets: Array<number>, constraints: Array<string>): string
+export declare function implementLeanManufacturing(wasteSources: Array<string>, currentEfficiency: number, improvementBudget: number): number
+export declare function analyzePredictiveMaintenance(equipmentId: string, sensorReadings: Array<SensorReading>, historicalFailures: Array<number>, maintenanceSchedule: Array<string>): PredictiveMaintenance
+export declare function processIotSensorData(sensorReadings: Array<SensorReading>, alertThresholds: Array<number>): Array<string>
+export declare function aiQualityAnalysis(batchId: string, productSpecifications: Array<number>, measurementData: Array<number>, historicalQualityData: Array<number>): QualityIntelligence
+export declare function implementStatisticalProcessControl(measurements: Array<number>, targetValue: number, tolerance: number): string
+export declare function calculateCarbonFootprint(energyConsumptionKwh: number, materialUsageKg: Array<number>, transportationKm: number, wasteGeneratedKg: number): SustainabilityMetrics
+export declare function optimizeEnergyConsumption(currentConsumption: number, productionSchedule: Array<number>, energyPrices: Array<number>): number
+export declare function optimizeSupplyChain(currentSuppliers: Array<string>, demandForecast: Array<number>, riskTolerance: number, sustainabilityWeight: number): SupplyChainOptimization
+export declare function calculateJustInTimeParameters(demandVariability: number, leadTimeVariability: number, serviceLevelTarget: number): string
 export interface Customer {
   customerId: string
   name: string
@@ -882,6 +1085,95 @@ export declare function calculateCustomerRetentionRate(customersAtStart: number,
 export declare function calculateSalesPipelineVelocity(numberOfOpportunities: number, averageDealSize: number, winRatePercentage: number, averageSalesCycleDays: number): number
 export declare function generateCrmAnalytics(customers: Array<Customer>, leads: Array<Lead>, conversionRate: number): CrmAnalytics
 export declare function calculateCrossSellProbability(customerSegment: string, productAffinityScore: number, timeSinceLastPurchase: number, previousCrossSells: number): number
+export interface CrmConfiguration {
+  autoLeadScoring: boolean
+  emailIntegrationEnabled: boolean
+  aiRecommendations: boolean
+  realTimeNotifications: boolean
+  dataRetentionDays: number
+  maxConcurrentCampaigns: number
+  securityLevel: string
+}
+export interface CrmMetrics {
+  timestamp: string
+  activeUsers: number
+  leadsProcessed: number
+  conversionRate: number
+  responseTimeMs: number
+  cacheHitRate: number
+  errorCount: number
+}
+export interface CustomerJourney {
+  customerId: string
+  stage: string
+  touchpoints: Array<Touchpoint>
+  journeyScore: number
+  predictedNextAction: string
+  riskLevel: string
+}
+export interface Touchpoint {
+  touchpointId: string
+  channel: string
+  interactionType: string
+  timestamp: string
+  engagementScore: number
+  conversionValue: number
+}
+export interface CrmAuditLog {
+  logId: string
+  userId: string
+  action: string
+  resourceType: string
+  resourceId: string
+  timestamp: string
+  ipAddress: string
+  userAgent: string
+  success: boolean
+  errorMessage?: string
+}
+export interface CustomerSegmentation {
+  segmentId: string
+  segmentName: string
+  criteria: Array<SegmentCriteria>
+  customerCount: number
+  avgLifetimeValue: number
+  churnRisk: number
+  recommendedActions: Array<string>
+}
+export interface SegmentCriteria {
+  field: string
+  operator: string
+  value: string
+  weight: number
+}
+export interface CrmAlert {
+  alertId: string
+  alertType: string
+  severity: string
+  title: string
+  description: string
+  customerId?: string
+  createdAt: string
+  status: string
+  assignedTo?: string
+}
+export declare function validateCustomerData(customer: Customer): string
+export declare function handleCrmErrorWithRetry(operation: string, errorCount: number, maxRetries: number): string
+export declare function logCrmActivity(userId: string, action: string, resourceId: string, ipAddress: string): CrmAuditLog
+export declare function collectCrmMetrics(activeUsers: number, leadsProcessed: number, conversionRate: number, responseTimeMs: number): CrmMetrics
+export declare function validateCrmPermissions(userRole: string, requestedAction: string, resourceSensitivity: string): boolean
+export declare function encryptSensitiveCustomerData(customerData: string, encryptionKey: string): string
+export declare function checkDataCompliance(customer: Customer, regulation: string): string
+export declare function cacheCustomerLookup(customerId: string, cacheTtlSeconds: number): string
+export declare function optimizeCrmQuery(queryType: string, filters: Array<string>, sortField: string, limit: number): string
+export declare function predictCustomerChurn(customer: Customer, historicalInteractions: number, lastPurchaseDays: number, supportTickets: number): number
+export declare function generateAiCustomerInsights(customer: Customer, purchaseHistory: Array<number>, interactionData: Array<string>): Array<string>
+export declare function mapCustomerJourney(customerId: string, touchpoints: Array<Touchpoint>): CustomerJourney
+export declare function createDynamicCustomerSegments(customers: Array<Customer>, segmentationStrategy: string): Array<CustomerSegmentation>
+export declare function generateCrmAlerts(customer: Customer, recentActivity: Array<string>, performanceMetrics: CrmMetrics): Array<CrmAlert>
+export declare function getCrmConfiguration(): CrmConfiguration
+export declare function updateCrmConfiguration(config: CrmConfiguration, userRole: string): string
+export declare function syncWithExternalSystems(customerId: string, systemType: string, syncDirection: string): string
 export interface SupplyChainNode {
   nodeId: string
   nodeType: string
