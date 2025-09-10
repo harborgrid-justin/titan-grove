@@ -93,6 +93,80 @@ const {
   calculateProductionCostPerUnit,
   calculateLeadTimeVariance,
   calculateWorkCenterEfficiency,
+  // New CRM Module
+  calculateCustomerLifetimeValue,
+  calculateLeadScore,
+  calculateCustomerScore,
+  calculateChurnProbability,
+  calculateSalesConversionRate,
+  calculateOpportunityExpectedValue,
+  optimizeSalesTerritory,
+  calculateCustomerAcquisitionCost,
+  calculateCustomerRetentionRate,
+  calculateSalesPipelineVelocity,
+  generateCrmAnalytics,
+  calculateCrossSellProbability,
+  
+  // New SCM Module
+  calculateTotalLogisticsCost,
+  calculateOptimalRoute,
+  calculateDemandForecast,
+  optimizeInventoryLevels,
+  calculateSupplyChainResilience,
+  calculateBullwhipEffect,
+  calculateSupplyChainCarbonFootprint,
+  optimizeNetworkDesign,
+  calculateVendorPerformanceScore,
+  calculateSupplyRiskScore,
+  calculateOrderFulfillmentRate,
+  optimizeProductionDistribution,
+  generateSupplyChainMetrics,
+  
+  // New Project Module
+  calculateProjectCompletionPercentage,
+  calculateEarnedValueMetrics,
+  calculateCriticalPathDuration,
+  calculateResourceUtilization,
+  optimizeResourceAllocation,
+  calculateProjectRiskScore,
+  calculateProjectRoi,
+  estimateProjectDuration,
+  calculateBurnRate,
+  calculateVelocity,
+  optimizeProjectSchedule,
+  calculateScopeCreep,
+  calculateTeamProductivity,
+  generateProjectPortfolioMetrics,
+  calculateMilestoneVariance,
+  calculateQualityMetrics,
+  
+  // New Service Module
+  calculateTicketPriorityScore,
+  calculateSlaCompliance,
+  calculateFirstCallResolutionRate,
+  optimizeAgentAssignment,
+  calculateServiceCustomerSatisfactionScore,
+  calculateResolutionTimeSla,
+  calculateEscalationProbability,
+  optimizeServiceCapacity,
+  calculateAgentProductivity,
+  calculateServiceCostPerTicket,
+  generateServiceAnalytics,
+  calculateServiceEfficiencyScore,
+  
+  // New BI Module
+  calculateKpiVariance,
+  calculateTrendStrength,
+  detectAnomalies,
+  calculateBiCorrelationCoefficient,
+  calculateBiMovingAverage,
+  calculateForecastedValue,
+  calculateBiDataQualityScore,
+  calculatePerformanceIndex,
+  generateBusinessInsights,
+  calculateCohortRetention,
+  calculateConversionFunnel,
+  optimizeDashboardLayout,
   
 } = require('./native');
 
@@ -208,6 +282,64 @@ const optimalBatchSize = calculateBatchSizeOptimization(12000.0, 500.0, 2.5);
 console.log(`  - Optimal Batch Size: ${optimalBatchSize.toFixed(0)} units`);
 
 console.log('\n✅ All Extended NAPI-RS Native Modules Tested Successfully!');
+
+console.log('\n👥 Testing CRM Module:');
+// Test customer lifetime value
+const clv = calculateCustomerLifetimeValue(250.0, 4.0, 3.0);
+console.log(`  - Customer Lifetime Value: $${clv.toFixed(2)}`);
+
+// Test lead scoring
+const leadScore = calculateLeadScore(75.0, 85.0, 80.0, 90.0);
+console.log(`  - Lead Score: ${leadScore.toFixed(2)}/100`);
+
+// Test customer scoring
+const customerScore = calculateCustomerScore(15, 2500.0, 8, 85.0);
+console.log(`  - Customer Score: ${customerScore.overallScore.toFixed(2)} (${customerScore.customerSegment})`);
+
+console.log('\n🚚 Testing SCM Module:');
+// Test logistics cost calculation
+const logisticsCost = calculateTotalLogisticsCost(15000.0, 8000.0, 5000.0, 2000.0);
+console.log(`  - Total Logistics Cost: $${logisticsCost.toFixed(2)}`);
+
+// Test supply chain resilience
+const resilience = calculateSupplyChainResilience(80.0, 70.0, 85.0, 3);
+console.log(`  - Supply Chain Resilience: ${resilience.toFixed(2)}/100`);
+
+console.log('\n📊 Testing Project Module:');
+// Test earned value metrics
+const evMetrics = calculateEarnedValueMetrics(100000.0, 95000.0, 105000.0, 120000.0);
+console.log(`  - Schedule Performance Index: ${evMetrics.schedulePerformanceIndex.toFixed(2)}`);
+console.log(`  - Cost Performance Index: ${evMetrics.costPerformanceIndex.toFixed(2)}`);
+console.log(`  - Project Health Score: ${evMetrics.projectHealthScore.toFixed(2)}/100`);
+
+// Test project ROI
+const projectRoi = calculateProjectRoi(150000.0, 100000.0);
+console.log(`  - Project ROI: ${projectRoi.toFixed(2)}%`);
+
+console.log('\n🎫 Testing Service Module:');
+// Test ticket prioritization
+const ticketPriority = calculateTicketPriorityScore('ENTERPRISE', 'HIGH', 'MAJOR_FUNCTIONALITY', 4);
+console.log(`  - Ticket Priority Score: ${ticketPriority.toFixed(2)}/100`);
+
+// Test SLA compliance
+const slaCompliance = calculateSlaCompliance(85, 100);
+console.log(`  - SLA Compliance: ${slaCompliance.toFixed(2)}%`);
+
+console.log('\n📈 Testing BI Module:');
+// Test KPI variance
+const kpiVariance = calculateKpiVariance(105.0, 100.0);
+console.log(`  - KPI Variance: ${kpiVariance.toFixed(2)}%`);
+
+// Test trend analysis
+const trendData = [100, 105, 102, 108, 115, 120, 118, 125];
+const trendStrength = calculateTrendStrength(trendData);
+console.log(`  - Trend Strength: ${trendStrength.toFixed(2)}`);
+
+// Test anomaly detection
+const anomalies = detectAnomalies([10, 12, 11, 50, 13, 12, 14], 2.0);
+console.log(`  - Anomalies Detected: ${anomalies.length} (at indices: ${anomalies.join(', ')})`);
+
+console.log('\n✅ All Extended NAPI-RS Native Modules Tested Successfully!');
 console.log('🎯 Performance Benefits Extended:');
 console.log('  - Procurement calculations: ~8x faster');
 console.log('  - Order processing: ~12x faster');
@@ -215,4 +347,4 @@ console.log('  - Financial computations: ~10x faster');
 console.log('  - HR analytics: ~7x faster');
 console.log('  - Manufacturing optimization: ~15x faster');
 
-console.log('\n🔥 NAPI-RS Integration Enhanced - 15 Modules Converted! (5 more in progress)');
+console.log('\n🔥 NAPI-RS Integration Enhanced - 20 Modules Converted! (10 more in progress)');

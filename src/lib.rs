@@ -26,6 +26,11 @@ pub mod orders;
 pub mod financial;
 pub mod hr;
 pub mod manufacturing;
+pub mod crm;
+pub mod scm;
+pub mod project;
+pub mod service;
+pub mod bi;
 
 // Re-export all functions from modules
 // Original modules
@@ -46,3 +51,8 @@ pub use orders::*;
 pub use financial::*;
 pub use hr::*;
 pub use manufacturing::*;
+pub use crm::*;
+pub use scm::*;
+pub use project::*;
+pub use service::*;
+pub use bi::*;
