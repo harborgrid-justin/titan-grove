@@ -463,8 +463,8 @@ console.log(`  - Recommended Rental Rate: $${rentalPricing.recommendedRate.toFix
 console.log(`  - Competitive Position: ${rentalPricing.competitivePosition}`);
 
 console.log('\n💼 Testing Capital Asset Module:');
-// Test NPV calculation
-const npv = calculateNetPresentValue(100000, [30000, 35000, 40000, 25000], 10);
+// Test NPV calculation (using cash flows with initial investment as negative first value)
+const npv = calculateNetPresentValue([-100000, 30000, 35000, 40000, 25000], 10);
 console.log(`  - Net Present Value: $${npv.toFixed(0)}`);
 
 // Test investment analysis
