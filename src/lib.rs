@@ -8,6 +8,7 @@ pub fn sum(a: i32, b: i32) -> i32 {
 }
 
 // Export all the native modules
+// Original 10 modules from PR #117
 pub mod risk;
 pub mod compliance;
 pub mod document;
@@ -19,7 +20,15 @@ pub mod maintenance;
 pub mod assets;
 pub mod calculations;
 
+// New 20 modules for enhanced NAPI-RS coverage
+pub mod procurement;
+pub mod orders;
+pub mod financial;
+pub mod hr;
+pub mod manufacturing;
+
 // Re-export all functions from modules
+// Original modules
 pub use risk::*;
 pub use compliance::*;
 pub use document::*;
@@ -30,3 +39,10 @@ pub use integration::*;
 pub use maintenance::*;
 pub use assets::*;
 pub use calculations::*;
+
+// New modules
+pub use procurement::*;
+pub use orders::*;
+pub use financial::*;
+pub use hr::*;
+pub use manufacturing::*;
