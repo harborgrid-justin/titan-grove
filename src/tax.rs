@@ -286,14 +286,81 @@ pub fn generate_tax_compliance_report(
     filing_deadlines: Vec<String>,
 ) -> TaxCompliance {
     let total_liability: f64 = tax_calculations.iter().map(|t| t.tax_amount).sum();
-    let compliance_score = 95.0; // Would be calculated based on actual compliance metrics
+    
+    // Calculate compliance score based on actual metrics
+    let compliance_score = calculate_tax_compliance_score(&tax_calculations, &filing_deadlines);
+    
+    // Determine penalties and interest based on compliance
+    let (penalties_assessed, interest_charges) = calculate_penalties_and_interest(&tax_calculations, compliance_score);
+    
+    let filing_status = if compliance_score >= 95.0 {
+        "CURRENT".to_string()
+    } else if compliance_score >= 80.0 {
+        "ATTENTION_REQUIRED".to_string()
+    } else {
+        "NON_COMPLIANT".to_string()
+    };
     
     TaxCompliance {
-        filing_status: "CURRENT".to_string(),
+        filing_status,
         due_dates: filing_deadlines,
         compliance_score,
-        penalties_assessed: 0.0,
-        interest_charges: 0.0,
+        penalties_assessed,
+        interest_charges,
         total_liability,
     }
+}
+
+// Helper function to calculate tax compliance score
+fn calculate_tax_compliance_score(tax_calculations: &[TaxCalculation], filing_deadlines: &[String]) -> f64 {
+    if tax_calculations.is_empty() {
+        return 100.0;
+    }
+    
+    let mut score = 100.0;
+    
+    // Check for missing or late filings
+    let filings_expected = filing_deadlines.len() as f64;
+    let filings_completed = tax_calculations.len() as f64;
+    
+    if filings_completed < filings_expected {
+        let missing_ratio = (filings_expected - filings_completed) / filings_expected;
+        score -= missing_ratio * 30.0; // Deduct up to 30 points for missing filings
+    }
+    
+    // Check for accuracy (simplified - based on calculation consistency)
+    let avg_tax_rate = tax_calculations.iter()
+        .map(|calc| if calc.taxable_amount > 0.0 { calc.tax_amount / calc.taxable_amount } else { 0.0 })
+        .sum::<f64>() / tax_calculations.len() as f64;
+    
+    // Deduct points for outlier calculations (indicating potential errors)
+    for calc in tax_calculations {
+        let calc_rate = if calc.taxable_amount > 0.0 { calc.tax_amount / calc.taxable_amount } else { 0.0 };
+        if (calc_rate - avg_tax_rate).abs() > avg_tax_rate * 0.2 {
+            score -= 5.0; // Deduct 5 points for each outlier
+        }
+    }
+    
+    score.max(0.0)
+}
+
+// Helper function to calculate penalties and interest
+fn calculate_penalties_and_interest(tax_calculations: &[TaxCalculation], compliance_score: f64) -> (f64, f64) {
+    let total_tax = tax_calculations.iter().map(|t| t.tax_amount).sum::<f64>();
+    
+    let penalties = if compliance_score < 80.0 {
+        total_tax * 0.05 // 5% penalty for poor compliance
+    } else if compliance_score < 95.0 {
+        total_tax * 0.02 // 2% penalty for moderate compliance issues
+    } else {
+        0.0 // No penalties for good compliance
+    };
+    
+    let interest = if compliance_score < 90.0 {
+        total_tax * 0.03 // 3% interest on outstanding amounts
+    } else {
+        0.0
+    };
+    
+    (penalties, interest)
 }

@@ -144,7 +144,19 @@ pub fn calculate_commission_structure(
     base_commission_rate: f64,
     tier_thresholds: Vec<f64>,
     tier_rates: Vec<f64>,
+    sales_rep_id: String,
 ) -> CommissionCalculation {
+    if sales_amount <= 0.0 {
+        return CommissionCalculation {
+            sales_rep_id,
+            sales_amount,
+            commission_rate: base_commission_rate,
+            commission_amount: 0.0,
+            bonus_amount: 0.0,
+            total_compensation: 0.0,
+        };
+    }
+    
     let mut commission_amount = 0.0;
     let mut remaining_amount = sales_amount;
 
@@ -166,11 +178,11 @@ pub fn calculate_commission_structure(
         commission_amount += remaining_amount * (highest_tier_rate / 100.0);
     }
 
-    // Calculate bonus (simplified)
-    let bonus_amount = if sales_amount > 100000.0 { 1000.0 } else { 0.0 };
+    // Calculate bonus based on sales performance tiers
+    let bonus_amount = calculate_performance_bonus(sales_amount);
 
     CommissionCalculation {
-        sales_rep_id: "".to_string(), // To be set by caller
+        sales_rep_id,
         sales_amount,
         commission_rate: base_commission_rate,
         commission_amount,
@@ -179,11 +191,25 @@ pub fn calculate_commission_structure(
     }
 }
 
+// Helper function to calculate performance-based bonuses
+fn calculate_performance_bonus(sales_amount: f64) -> f64 {
+    match sales_amount {
+        amount if amount >= 500000.0 => 5000.0,  // Platinum tier
+        amount if amount >= 250000.0 => 2500.0,  // Gold tier  
+        amount if amount >= 100000.0 => 1000.0,  // Silver tier
+        amount if amount >= 50000.0 => 500.0,    // Bronze tier
+        _ => 0.0,                                 // No bonus
+    }
+}
+
 #[napi]
 pub fn calculate_quote_totals(
     line_items: Vec<QuoteLineItem>,
     tax_rate: f64,
     overall_discount_percentage: f64,
+    quote_id: String,
+    customer_id: String,
+    validity_days: i32,
 ) -> SalesQuotation {
     let subtotal: f64 = line_items.iter().map(|item| item.line_total).sum();
     let discount_amount = subtotal * (overall_discount_percentage / 100.0);
@@ -191,15 +217,18 @@ pub fn calculate_quote_totals(
     let tax_amount = discounted_subtotal * (tax_rate / 100.0);
     let total_amount = discounted_subtotal + tax_amount;
 
+    // Calculate valid until date (simplified - in production would use proper date handling)
+    let valid_until = format!("2024-12-{:02}", (validity_days % 28) + 1);
+
     SalesQuotation {
-        quote_id: "".to_string(), // To be set by caller
-        customer_id: "".to_string(), // To be set by caller
+        quote_id,
+        customer_id,
         line_items,
         subtotal,
         discount_amount,
         tax_amount,
         total_amount,
-        valid_until: "".to_string(), // To be set by caller
+        valid_until,
     }
 }
 

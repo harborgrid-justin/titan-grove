@@ -22,6 +22,7 @@ pub struct ShipmentRoute {
     pub transport_cost_per_km: f64,
     pub transit_time_hours: f64,
     pub capacity_limit: f64,
+    pub transport_mode: String, // TRUCK, RAIL, AIR, SHIP
 }
 
 #[derive(Serialize, Deserialize)]
@@ -137,7 +138,22 @@ pub fn optimize_inventory_levels(
     holding_cost_per_unit: f64,
     lead_time_days: f64,
     service_level: f64, // 0.0 to 1.0
+    product_id: String,
+    current_stock: f64,
 ) -> ScmInventoryOptimization {
+    // Input validation
+    if annual_demand <= 0.0 || ordering_cost <= 0.0 || holding_cost_per_unit <= 0.0 {
+        return ScmInventoryOptimization {
+            product_id,
+            current_stock,
+            optimal_stock_level: 0.0,
+            reorder_point: 0.0,
+            economic_order_quantity: 0.0,
+            safety_stock: 0.0,
+            stockout_risk: 1.0,
+        };
+    }
+    
     // Economic Order Quantity (EOQ)
     let eoq = if holding_cost_per_unit > 0.0 {
         ((2.0 * annual_demand * ordering_cost) / holding_cost_per_unit).sqrt()
@@ -148,24 +164,48 @@ pub fn optimize_inventory_levels(
     // Daily demand
     let daily_demand = annual_demand / 365.0;
     
-    // Reorder point (assuming normal distribution)
-    let safety_stock = daily_demand * lead_time_days * service_level;
+    // Safety stock calculation using Z-score for service level
+    let z_score = calculate_service_level_z_score(service_level);
+    let demand_std_dev = daily_demand * 0.2; // Assume 20% demand variability
+    let safety_stock = z_score * demand_std_dev * (lead_time_days.sqrt());
+    
+    // Reorder point
     let reorder_point = (daily_demand * lead_time_days) + safety_stock;
     
     // Optimal stock level (target inventory)
     let optimal_stock_level = reorder_point + (eoq / 2.0);
     
-    // Stockout risk (simplified)
-    let stockout_risk = 1.0 - service_level;
+    // Calculate stockout risk based on current stock vs reorder point
+    let stockout_risk = if current_stock >= reorder_point {
+        (1.0 - service_level) * 0.1 // Low risk when above reorder point
+    } else {
+        let stock_deficit_ratio = (reorder_point - current_stock) / reorder_point;
+        ((1.0 - service_level) + stock_deficit_ratio).min(1.0)
+    };
     
     ScmInventoryOptimization {
-        product_id: "".to_string(), // To be set by caller
-        current_stock: 0.0, // To be set by caller
+        product_id,
+        current_stock,
         optimal_stock_level,
         reorder_point,
         economic_order_quantity: eoq,
         safety_stock,
         stockout_risk,
+    }
+}
+
+// Helper function to calculate Z-score for service level
+fn calculate_service_level_z_score(service_level: f64) -> f64 {
+    // Approximate Z-score calculation for common service levels
+    match service_level {
+        sl if sl >= 0.999 => 3.09,
+        sl if sl >= 0.99 => 2.33,
+        sl if sl >= 0.98 => 2.05,
+        sl if sl >= 0.95 => 1.65,
+        sl if sl >= 0.90 => 1.28,
+        sl if sl >= 0.85 => 1.04,
+        sl if sl >= 0.80 => 0.84,
+        _ => 0.67, // Default for ~75% service level
     }
 }
 
@@ -349,14 +389,14 @@ pub fn generate_supply_chain_metrics(
         0.0
     };
     
-    // Calculate fill rate (simplified)
-    let fill_rate = 95.0; // Would be calculated from actual data
+    // Calculate fill rate from actual supply chain performance
+    let fill_rate = calculate_supply_chain_fill_rate(&nodes, demand_forecast);
     
     // Calculate efficiency score
     let supply_chain_efficiency = (fill_rate + (inventory_turnover * 10.0)) / 2.0;
     
-    // Calculate carbon footprint (simplified)
-    let carbon_footprint = total_transport_cost * 0.1; // Simplified calculation
+    // Calculate carbon footprint based on distance and mode
+    let carbon_footprint = calculate_carbon_footprint(&routes);
     
     SupplyChainMetrics {
         total_cost: total_transport_cost,
@@ -366,4 +406,41 @@ pub fn generate_supply_chain_metrics(
         supply_chain_efficiency,
         carbon_footprint,
     }
+}
+
+// Helper function to calculate actual fill rate from supply chain data
+fn calculate_supply_chain_fill_rate(nodes: &[SupplyChainNode], demand_forecast: f64) -> f64 {
+    if nodes.is_empty() || demand_forecast <= 0.0 {
+        return 0.0;
+    }
+    
+    // Calculate fill rate based on available inventory vs demand
+    let total_available_inventory: f64 = nodes.iter()
+        .filter(|node| node.node_type == "WAREHOUSE" || node.node_type == "DISTRIBUTION_CENTER")
+        .map(|node| node.current_inventory)
+        .sum();
+    
+    if total_available_inventory >= demand_forecast {
+        100.0 // Can fulfill all demand
+    } else {
+        (total_available_inventory / demand_forecast) * 100.0
+    }
+}
+
+// Helper function to calculate carbon footprint from transportation routes
+fn calculate_carbon_footprint(routes: &[ShipmentRoute]) -> f64 {
+    routes.iter()
+        .map(|route| {
+            // Carbon emission factors by transport mode (kg CO2 per km)
+            let emission_factor = match route.transport_mode.as_str() {
+                "TRUCK" => 0.084,      // kg CO2 per km for truck
+                "RAIL" => 0.048,       // kg CO2 per km for rail
+                "AIR" => 0.75,         // kg CO2 per km for air freight
+                "SHIP" => 0.015,       // kg CO2 per km for sea freight
+                _ => 0.084,            // Default to truck
+            };
+            
+            route.distance_km * emission_factor
+        })
+        .sum()
 }
