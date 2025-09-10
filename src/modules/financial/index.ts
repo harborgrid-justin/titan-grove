@@ -232,7 +232,7 @@ export class FinancialManager extends BaseManager {
    * Tax Management
    */
   async calculateTax(leaseId: string, assetValue: number, jurisdiction: string) {
-    return taxService.calculateTax(leaseId, assetValue, jurisdiction);
+    return taxService.calculateTax(leaseId, `tx_${Date.now()}`, assetValue, jurisdiction);
   }
 
   async generateTaxReport(startDate: Date, endDate: Date) {

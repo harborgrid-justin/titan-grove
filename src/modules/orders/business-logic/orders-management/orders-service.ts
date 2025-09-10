@@ -4,7 +4,7 @@
  */
 
 import type { OrdersEntity } from '../../types';
-import { ordersRepository } from '../../data-access/repositories';
+import { orderRepository } from '../../data-access/repositories';
 
 export class OrdersService {
   
