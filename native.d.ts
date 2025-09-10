@@ -1721,7 +1721,7 @@ export interface AuditTrail {
   timestamp: string
   ipAddress: string
 }
-export interface AuditFinding {
+export interface AuditReportFinding {
   findingId: string
   auditType: string
   severity: string
@@ -1770,7 +1770,7 @@ export declare function calculateAuditSamplingSize(populationSize: number, confi
 export declare function assessFraudRiskIndicators(financialPressureScore: number, opportunityScore: number, rationalizationScore: number): number
 export declare function calculateControlDeficiencyImpact(deficiencySeverity: string, processCriticality: number, frequencyOfOperation: number): number
 export declare function optimizeAuditSchedule(auditAreas: Array<string>, riskScores: Array<number>, availableHours: number, estimatedHours: Array<number>): Array<string>
-export declare function generateAuditReportSummary(findings: Array<AuditFinding>): AuditReport
+export declare function generateAuditReportSummary(findings: Array<AuditReportFinding>): AuditReport
 export interface PricingModel {
   modelId: string
   productId: string
@@ -1966,7 +1966,7 @@ export interface TrainingProgram {
   completionRate: number
   effectivenessScore: number
 }
-export declare function calculateTrainingRoi(trainingCost: number, productivityImprovement: number, participantCount: number, annualSalaryAverage: number): number
+export declare function calculateTrainingProgramRoi(trainingCost: number, productivityImprovement: number, participantCount: number, annualSalaryAverage: number): number
 export declare function calculateSkillGapScore(requiredSkillLevel: number, currentSkillLevel: number): number
 export interface Kpi {
   kpiId: string

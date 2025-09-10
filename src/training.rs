@@ -13,7 +13,7 @@ pub struct TrainingProgram {
 }
 
 #[napi]
-pub fn calculate_training_roi(
+pub fn calculate_training_program_roi(
     training_cost: f64,
     productivity_improvement: f64,
     participant_count: i32,

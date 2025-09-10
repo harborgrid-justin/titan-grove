@@ -17,7 +17,7 @@ pub struct AuditTrail {
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
-pub struct AuditFinding {
+pub struct AuditReportFinding {
     pub finding_id: String,
     pub audit_type: String,
     pub severity: String,
@@ -248,7 +248,7 @@ pub fn optimize_audit_schedule(
 
 #[napi]
 pub fn generate_audit_report_summary(
-    findings: Vec<AuditFinding>,
+    findings: Vec<AuditReportFinding>,
 ) -> AuditReport {
     let total_findings = findings.len() as i32;
     
