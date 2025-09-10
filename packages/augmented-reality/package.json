@@ -1,0 +1,60 @@
+{
+  "name": "@titan-grove/augmented-reality",
+  "version": "1.0.0",
+  "description": "AR/VR and Mixed Reality Integration module for Titan Grove - Native NAPI-RS implementation",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "napi": {
+    "name": "augmented-reality",
+    "triples": {
+      "defaults": true,
+      "additional": [
+        "x86_64-unknown-linux-musl",
+        "aarch64-unknown-linux-gnu",
+        "i686-pc-windows-msvc",
+        "armv7-unknown-linux-gnueabihf",
+        "aarch64-apple-darwin",
+        "aarch64-pc-windows-msvc",
+        "aarch64-unknown-linux-musl",
+        "x86_64-unknown-freebsd"
+      ]
+    }
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@napi-rs/cli": "^2.18.0"
+  },
+  "ava": {
+    "timeout": "3m"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "ava",
+    "universal": "napi universal",
+    "version": "napi version"
+  },
+  "keywords": [
+    "augmented-reality",
+    "virtual-reality",
+    "mixed-reality",
+    "ar-vr",
+    "enterprise",
+    "napi-rs",
+    "native",
+    "rust"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harborgrid-justin/titan-grove.git",
+    "directory": "packages/augmented-reality"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}
