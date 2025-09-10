@@ -142,3 +142,12 @@ vite.config.ts.timestamp-*
 cypress/screenshots/
 cypress/videos/
 cypress/downloads/
+
+# Rust/Cargo build artifacts
+target/
+Cargo.lock
+*.node
+
+# NAPI-RS generated files
+index.*.node
+*.d.ts.backup
