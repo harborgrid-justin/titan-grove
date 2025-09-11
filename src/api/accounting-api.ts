@@ -1,5 +1,5 @@
 import ProductionManager from '../production/framework';
-import { ValidationRule, validateWithRules } from '@/shared/utils/api-validation';
+import { ValidationRule, validateWithRules } from '../shared/utils/api-validation';
 import * as native from '../../native';
 
 // ============================================================================

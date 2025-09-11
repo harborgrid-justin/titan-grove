@@ -1,5 +1,6 @@
 import Joi from 'joi';
-import { TitanConfig } from '@/types';
+import * as os from 'os';
+import { TitanConfig } from '../types';
 
 // Re-export extended configuration loaders
 export { loadExtendedConfig, loadBusinessConfig, validateExtendedConfig } from './business-config';
@@ -121,7 +122,7 @@ const configSchema = Joi.object({
 
   cluster: Joi.object({
     enabled: Joi.boolean().default(false),
-    workers: Joi.number().default(require('os').cpus().length),
+    workers: Joi.number().default(os.cpus().length),
     gracefulTimeout: Joi.number().default(5000),
   }).optional(),
 

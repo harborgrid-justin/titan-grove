@@ -52,7 +52,7 @@ export const createCRUDRoutes = (router: Router, basePath: string, controller: a
  * Standard route error handling
  */
 export const handleRouteErrors = (router: Router) => {
-  router.use((error: any, req: any, res: any, next: any) => {
+  router.use((error: any, req: any, res: any, _next: any) => {
     console.error('Route Error:', error);
 
     res.status(error.status || 500).json({

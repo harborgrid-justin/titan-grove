@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { performance } from 'perf_hooks';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 // ============================================================================
 // 🚀 PRODUCTION-GRADE FEATURES FRAMEWORK
@@ -277,7 +277,7 @@ export class ProductionCache {
 }
 
 // Production Feature 5: Metrics Collection
-export class ProductionMetrics {
+export class ProductionMetricsManager {
   private metrics: Map<string, ProductionMetrics> = new Map();
   private eventEmitter = new EventEmitter();
 
@@ -312,11 +312,11 @@ export class ProductionMetrics {
   getMetrics(module?: string): Map<string, ProductionMetrics> {
     if (module) {
       const filtered = new Map();
-      for (const [key, value] of this.metrics) {
+      this.metrics.forEach((value, key) => {
         if (key.startsWith(module + ':')) {
           filtered.set(key, value);
         }
-      }
+      });
       return filtered;
     }
     return this.metrics;
@@ -380,7 +380,7 @@ export class ProductionManager {
   public readonly errorHandler: ProductionErrorHandler;
   public readonly logger: ProductionLogger;
   public readonly cache: ProductionCache;
-  public readonly metrics: ProductionMetrics;
+  public readonly metrics: ProductionMetricsManager;
   public readonly auditor: ProductionAuditor;
   public readonly config: ProductionConfig;
 
@@ -400,7 +400,7 @@ export class ProductionManager {
     this.errorHandler = new ProductionErrorHandler(this.config.retryAttempts);
     this.logger = new ProductionLogger(this.config.logLevel);
     this.cache = new ProductionCache();
-    this.metrics = new ProductionMetrics();
+    this.metrics = new ProductionMetricsManager();
     this.auditor = new ProductionAuditor();
   }
 

@@ -63,7 +63,7 @@ const etlEndpoints = [
 // Business logic for ETL operations
 class ETLBusinessLogic {
   // Enterprise Data Warehouse Management
-  static async processDataWarehouse(data: any) {
+  static async processDataWarehouse(_data: any) {
     return {
       status: 'success',
       warehouseMetrics: {
@@ -82,7 +82,7 @@ class ETLBusinessLogic {
   }
 
   // Cloud Data Migration
-  static async processCloudMigration(data: any) {
+  static async processCloudMigration(_data: any) {
     return {
       status: 'success',
       migrationMetrics: {
@@ -100,7 +100,7 @@ class ETLBusinessLogic {
   }
 
   // Master Data Management
-  static async processMasterData(data: any) {
+  static async processMasterData(_data: any) {
     return {
       status: 'success',
       mdmMetrics: {
@@ -118,7 +118,7 @@ class ETLBusinessLogic {
   }
 
   // Financial Data Integration
-  static async processFinancialData(data: any) {
+  static async processFinancialData(_data: any) {
     return {
       status: 'success',
       financialMetrics: {
@@ -136,7 +136,7 @@ class ETLBusinessLogic {
   }
 
   // Supply Chain Data Flows
-  static async processSupplyChainData(data: any) {
+  static async processSupplyChainData(_data: any) {
     return {
       status: 'success',
       supplyChainMetrics: {
@@ -154,7 +154,7 @@ class ETLBusinessLogic {
   }
 
   // Manufacturing MES Integration
-  static async processManufacturingMES(data: any) {
+  static async processManufacturingMES(_data: any) {
     return {
       status: 'success',
       mesMetrics: {
@@ -172,7 +172,7 @@ class ETLBusinessLogic {
   }
 
   // Generic ETL processor for all other endpoints
-  static async processGenericETL(endpoint: string, data: any) {
+  static async processGenericETL(endpoint: string, _data: any) {
     const endpointTitle = endpoint
       .split('-')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -268,7 +268,7 @@ etlEndpoints.forEach((endpoint) => {
       };
 
       res.json(testResult);
-    } catch (error) {
+    } catch {
       res.status(500).json({
         error: 'Test failed',
         endpoint: endpoint,
@@ -297,7 +297,7 @@ etlEndpoints.forEach((endpoint) => {
       // Send simulated Excel data
       const excelContent = JSON.stringify(exportData);
       res.send(Buffer.from(excelContent));
-    } catch (error) {
+    } catch {
       res.status(500).json({
         error: 'Export failed',
         endpoint: endpoint,
@@ -322,7 +322,7 @@ etlEndpoints.forEach((endpoint) => {
       };
 
       res.json(configuration);
-    } catch (error) {
+    } catch {
       res.status(500).json({
         error: 'Configuration failed',
         endpoint: endpoint,
@@ -366,7 +366,7 @@ router.get('/summary', async (req: Request, res: Response) => {
     };
 
     res.json(summary);
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: 'Failed to generate summary' });
   }
 });
