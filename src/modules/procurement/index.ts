@@ -9,8 +9,8 @@ export * from './types';
 // Export data access layer
 export * from './data-access/repositories';
 
-// Import shared utilities
-import { BaseManager } from '../../shared/utils/base-manager';
+// Import shared utilities using path aliases
+import { BaseManager } from '@/shared/utils/base-manager';
 
 // Import business logic services
 import { procurementService } from './business-logic/procurement-management/procurement-service';

@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { TitanGrove } from './business-suite';
-import { loadConfig, loadExtendedConfig } from './utils/config';
+import { loadConfig, loadExtendedConfig } from '@/utils/config';
 
 async function main() {
   try {
@@ -80,7 +80,11 @@ if (require.main === module) {
   main();
 }
 
-// Export the Business Suite and all modules
+// Export the Business Suite and all modules - following tree-shaking best practices
 export { TitanGrove } from './business-suite';
 export * from './business-suite';
-export * from './types';
+export * from '@/types';
+
+// Re-export core functionality
+export * from '@/core';
+export * from '@/shared';

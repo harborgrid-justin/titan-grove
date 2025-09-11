@@ -1,9 +1,11 @@
 /**
- * Shared Utilities Index
- * Export shared utility functions and classes
+ * Shared Utilities Barrel Exports
+ * Centralized utility exports following Facebook/Google best practices
  */
 
-export * from './recommendation-generator';
+export * from './base-manager';
+export * from './standard-service-base';
 export * from './business-entity-utils';
 export * from './id-generator';
-export * from './base-manager';
+export * from './recommendation-generator';
+export * from './service-factory';

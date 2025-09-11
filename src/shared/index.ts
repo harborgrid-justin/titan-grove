@@ -1,10 +1,23 @@
 /**
- * Shared Module Index
- * Export all shared utilities and types
+ * Shared Module Barrel Exports
+ * Centralized exports following industry best practices for tree-shaking and module organization
  */
 
-export * from './utils';
+// Utils - Base functionality
+export * from './utils/base-manager';
+export * from './utils/standard-service-base';
+
+// Types - Shared type definitions
 export * from './types';
-export * from './data-access';
+
+// Constants - Application-wide constants
 export * from './constants';
+
+// Interfaces - Shared interface definitions  
+export * from './interfaces';
+
+// Validation - Shared validation utilities
 export * from './validation';
+
+// Data Access - Shared data access patterns
+export * from './data-access';
