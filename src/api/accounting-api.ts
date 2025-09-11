@@ -43,10 +43,13 @@ export class AccountingApi {
     
     // Production Feature: Data Validation
     async validateData(data: any): Promise<any> {
-        const rules: ValidationRule[] = [
+        const _rules: ValidationRule[] = [
             { field: 'data', type: 'required' }
         ];
         
+        // TODO: Implement actual validation logic using _rules
+        
+        // TODO: Implement actual validation logic using _rules
         const errors = ProductionManager.getInstance().constructor.name === 'ProductionManager' 
             ? [] : []; // Simplified validation
         

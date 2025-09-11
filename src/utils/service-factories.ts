@@ -81,7 +81,7 @@ export function createWarehouseManagementService(config?: BusinessConfig) {
       }
     ]),
     
-    getDefaultStorageAreaConfig: (facility: any) => ([
+    getDefaultStorageAreaConfig: (_facility: any) => ([
       {
         areaId: 'bulk-1',
         areaName: 'Bulk Storage Area 1',
