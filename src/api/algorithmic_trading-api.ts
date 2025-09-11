@@ -1,5 +1,5 @@
 import ProductionManager from '../production/framework';
-import { ValidationRule, validateWithRules } from '@/shared/utils/api-validation';
+import { ValidationRule, validateWithRules } from '../shared/utils/api-validation';
 import * as native from '../../native';
 
 // ============================================================================
@@ -44,10 +44,10 @@ export class AlgorithmicTradingApi {
     
     if (!validationResult.valid) {
       const errors = validationResult.errors || [];
-      ProductionManager.getInstance().constructor.name === 'ProductionManager' ? [] : []; // Simplified validation
 
-    if (errors.length > 0) {
-      throw new Error(`Validation failed: ${validationResult.errors?.join(', ')}`);
+      if (errors.length > 0) {
+        throw new Error(`Validation failed: ${validationResult.errors?.join(', ')}`);
+      }
     }
 
     return this.production.executeOperation(

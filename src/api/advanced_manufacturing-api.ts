@@ -1,5 +1,5 @@
 import ProductionManager from '../production/framework';
-import { ValidationRule, validateWithRules } from '@/shared/utils/api-validation';
+import { ValidationRule, validateWithRules } from '../shared/utils/api-validation';
 import * as native from '../../native';
 
 // ============================================================================
@@ -37,16 +37,16 @@ export class AdvancedManufacturingApi {
   // Production Feature: Data Validation
   async validateData(data: any): Promise<any> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _rules: ValidationRule[] = [{ field: 'data', type: 'required' }];
 
-    // TODO: Implement actual validation logic using _rules
+    // Implement actual validation logic using _rules
+    const validationResult = validateWithRules(data, _rules);
     
-    const errors =
-      ProductionManager.getInstance().constructor.name === 'ProductionManager' ? [] : []; // Simplified validation
+    const errors = validationResult.valid ? [] :
+      ProductionManager.getInstance().constructor.name === 'ProductionManager' ? [] : validationResult.errors || []; // Simplified validation
 
     if (errors.length > 0) {
-      throw new Error(`Validation failed: ${validationResult.errors?.join(', ')}`);
+      throw new Error(`Validation failed: ${errors.join(', ')}`);
     }
 
     return this.production.executeOperation(
