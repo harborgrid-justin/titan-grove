@@ -98,6 +98,31 @@ export declare function updateProductionConfig(config: ProductionConfig): boolea
 export declare function clearMetrics(): void
 /** Get system overview for monitoring dashboard */
 export declare function getSystemOverview(): string
+/** Business Rule Execution Engine */
+export interface BusinessRuleEngine {
+  engineId: string
+  version: string
+  loadedRules: number
+  executionCount: number
+  averageExecutionTimeMs: number
+  successRate: number
+}
+/** Advanced Data Validation with Machine Learning */
+export declare function advancedDataValidation(data: string, validationProfile: string): string
+/** Real-time Business Intelligence Analytics */
+export declare function realtimeBiAnalytics(module: string, timeRange: string): string
+/** Advanced Workflow Management */
+export declare function executeAdvancedWorkflow(workflowDefinition: string, inputData: string): string
+/** Enterprise-Grade Calculation Engine */
+export declare function executeEnterpriseCalculation(formula: string, variables: string, precision: number): string
+/** Advanced Data Standardization Engine */
+export declare function standardizeEnterpriseData(data: string, standards: string): string
+/** Production-Grade Risk Assessment Engine */
+export declare function assessProductionRisk(module: string, operation: string, data: string): string
+/** Advanced Compliance Monitoring */
+export declare function monitorCompliance(regulations: string, auditScope: string): string
+/** Production-Grade Performance Optimization */
+export declare function optimizeProductionPerformance(module: string, metrics: string): string
 /**
  * Production-Grade Business Rules Engine
  * Provides configurable business logic for enterprise operations
@@ -2352,6 +2377,51 @@ export declare function calculateQuickRatio(currentAssets: number, inventory: nu
 export declare function generateTrialBalance(chartOfAccounts: Array<ChartOfAccounts>): Array<ChartOfAccounts>
 export declare function calculatePeriodClosingEntries(revenueAccounts: Array<number>, expenseAccounts: Array<number>): number
 export declare function calculateBadDebtProvision(totalReceivables: number, historicalBadDebtRate: number): number
+export interface HealthStatus {
+  status: string
+  module: string
+  timestamp: string
+  details: string
+}
+export interface AccountingConfig {
+  fiscalYearStart: string
+  defaultCurrency: string
+  decimalPrecision: number
+  autoPostingEnabled: boolean
+  reconciliationThreshold: number
+}
+export interface ValidationResult {
+  isValid: boolean
+  errors: Array<string>
+  warnings: Array<string>
+}
+export interface AccountingRecord {
+  id: string
+  accountCode: string
+  amount: number
+  description: string
+  transactionDate: string
+  status: string
+}
+export interface PerformanceAnalysis {
+  module: string
+  totalTransactions: number
+  processingTimeMs: number
+  errorRate: number
+  recommendations: Array<string>
+}
+export declare function checkAccountingHealth(): HealthStatus
+export declare function getAccountingConfig(): AccountingConfig
+export declare function validateAccountingData(data: string): ValidationResult
+export declare function createAccountingRecord(data: string): AccountingRecord
+export declare function getAccountingRecord(id: string): AccountingRecord | null
+export declare function updateAccountingRecord(id: string, data: string): AccountingRecord
+export declare function deleteAccountingRecord(id: string): boolean
+export declare function bulkCreateAccountingRecords(data: string): Array<AccountingRecord>
+export declare function analyzeAccountingPerformance(periodDays: number): PerformanceAnalysis
+export declare function optimizeAccountingPerformance(config: string): string
+export declare function applyAccountingBusinessRules(transactionData: string): ValidationResult
+export declare function standardizeAccountingData(rawData: string): string
 export interface BudgetLine {
   lineId: string
   accountCode: string
