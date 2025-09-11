@@ -6,7 +6,13 @@
 export interface ProcureToPayProcess {
   processId: string;
   contractId: string;
-  status: 'INITIATED' | 'REQUISITION_CREATED' | 'PO_CREATED' | 'GOODS_RECEIVED' | 'INVOICE_PROCESSED' | 'PAYMENT_MADE';
+  status:
+    | 'INITIATED'
+    | 'REQUISITION_CREATED'
+    | 'PO_CREATED'
+    | 'GOODS_RECEIVED'
+    | 'INVOICE_PROCESSED'
+    | 'PAYMENT_MADE';
   integrationPoints: IntegrationPoint[];
   currentStage: P2PStage;
   stages: P2PStage[];
@@ -135,54 +141,54 @@ export class ProcureToPayIntegrationService {
           systemName: 'Oracle Financials',
           status: 'CONNECTED',
           lastSync: new Date(),
-          dataExchanged: 1000
+          dataExchanged: 1000,
         },
         {
           systemName: 'Oracle Purchasing',
           status: 'CONNECTED',
           lastSync: new Date(),
-          dataExchanged: 500
+          dataExchanged: 500,
         },
         {
           systemName: 'Oracle Payables',
           status: 'CONNECTED',
           lastSync: new Date(),
-          dataExchanged: 750
-        }
+          dataExchanged: 750,
+        },
       ],
       currentStage: {
         stageId: 'stage_1',
         stageName: 'Requisition Creation',
         status: 'PENDING',
-        systemInvolved: 'Oracle Purchasing'
+        systemInvolved: 'Oracle Purchasing',
       },
       stages: [
         {
           stageId: 'stage_1',
           stageName: 'Requisition Creation',
           status: 'PENDING',
-          systemInvolved: 'Oracle Purchasing'
+          systemInvolved: 'Oracle Purchasing',
         },
         {
           stageId: 'stage_2',
           stageName: 'Purchase Order Creation',
           status: 'PENDING',
-          systemInvolved: 'Oracle Purchasing'
+          systemInvolved: 'Oracle Purchasing',
         },
         {
           stageId: 'stage_3',
           stageName: 'Receipt Processing',
           status: 'PENDING',
-          systemInvolved: 'Oracle Inventory'
+          systemInvolved: 'Oracle Inventory',
         },
         {
           stageId: 'stage_4',
           stageName: 'Invoice Processing',
           status: 'PENDING',
-          systemInvolved: 'Oracle Payables'
-        }
+          systemInvolved: 'Oracle Payables',
+        },
       ],
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
@@ -195,7 +201,7 @@ export class ProcureToPayIntegrationService {
     items: RequisitionItem[]
   ): Promise<Requisition> {
     const totalAmount = items.reduce((sum, item) => sum + item.totalPrice, 0);
-    
+
     return {
       requisitionId: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       contractId,
@@ -208,14 +214,14 @@ export class ProcureToPayIntegrationService {
         {
           stepId: 'approval_1',
           approverRole: 'BUDGET_MANAGER',
-          status: 'PENDING'
+          status: 'PENDING',
         },
         {
           stepId: 'approval_2',
           approverRole: 'PROCUREMENT_MANAGER',
-          status: 'PENDING'
-        }
-      ]
+          status: 'PENDING',
+        },
+      ],
     };
   }
 
@@ -233,7 +239,7 @@ export class ProcureToPayIntegrationService {
       receivedItems,
       receivedBy,
       receiptDate: new Date(),
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
   }
 
@@ -255,17 +261,17 @@ export class ProcureToPayIntegrationService {
           {
             validationRule: 'PO-Invoice Match',
             status: 'PASSED',
-            description: 'Invoice amounts match purchase order within tolerance'
+            description: 'Invoice amounts match purchase order within tolerance',
           },
           {
             validationRule: 'Receipt-Invoice Match',
             status: 'PASSED',
-            description: 'Invoice quantities match received quantities'
-          }
+            description: 'Invoice quantities match received quantities',
+          },
         ],
-        overallStatus: 'PASSED'
+        overallStatus: 'PASSED',
       },
-      paymentStatus: 'PENDING'
+      paymentStatus: 'PENDING',
     };
   }
 
@@ -283,27 +289,27 @@ export class ProcureToPayIntegrationService {
         {
           category: 'Process Automation',
           amount: 1000000,
-          percentage: 40
+          percentage: 40,
         },
         {
           category: 'Early Payment Discounts',
           amount: 750000,
-          percentage: 30
+          percentage: 30,
         },
         {
           category: 'Reduced Maverick Spending',
           amount: 750000,
-          percentage: 30
-        }
+          percentage: 30,
+        },
       ],
       processImprovements: [
         {
           improvement: 'Automated Invoice Processing',
           timeSaved: '75%',
           errorReduction: '90%',
-          costImpact: 1000000
-        }
-      ]
+          costImpact: 1000000,
+        },
+      ],
     };
   }
 }

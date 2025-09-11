@@ -100,9 +100,14 @@ export interface InternationalTaxPosition {
 
 export class TaxService {
   // Enhanced Tax Calculation Engine
-  async calculateTax(entityId: string, transactionId: string, assetValue: number, jurisdiction: string): Promise<TaxCalculation> {
+  async calculateTax(
+    entityId: string,
+    transactionId: string,
+    assetValue: number,
+    jurisdiction: string
+  ): Promise<TaxCalculation> {
     const calculationId = `tc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Advanced multi-jurisdiction tax calculation
     const taxRules = await this.getTaxRules(jurisdiction);
     const applicableTaxes: ApplicableTax[] = [];
@@ -117,11 +122,11 @@ export class TaxService {
         taxAmount,
         jurisdiction,
         ruleId: rule.id,
-        exemptionApplied: false
+        exemptionApplied: false,
       });
       totalTax += taxAmount;
     }
-    
+
     return {
       id: calculationId,
       entityId,
@@ -132,12 +137,14 @@ export class TaxService {
       totalTaxAmount: totalTax,
       calculationDate: new Date(),
       calculationMethod: 'ADVANCED_ENGINE_V2',
-      auditTrail: [{
-        timestamp: new Date(),
-        action: 'TAX_CALCULATED',
-        userId: 'system',
-        details: { method: 'calculateTax', jurisdiction, assetValue }
-      }]
+      auditTrail: [
+        {
+          timestamp: new Date(),
+          action: 'TAX_CALCULATED',
+          userId: 'system',
+          details: { method: 'calculateTax', jurisdiction, assetValue },
+        },
+      ],
     };
   }
 
@@ -154,7 +161,7 @@ export class TaxService {
         applicableAssetTypes: ['EQUIPMENT', 'VEHICLES', 'FURNITURE'],
         exemptions: [],
         nexusThreshold: 100000,
-        complianceRequirements: ['REGISTRATION', 'MONTHLY_FILING']
+        complianceRequirements: ['REGISTRATION', 'MONTHLY_FILING'],
       },
       {
         id: 'use_' + jurisdiction,
@@ -164,18 +171,22 @@ export class TaxService {
         effectiveDate: new Date('2024-01-01'),
         applicableAssetTypes: ['EQUIPMENT', 'SOFTWARE'],
         exemptions: [],
-        complianceRequirements: ['ANNUAL_FILING']
-      }
+        complianceRequirements: ['ANNUAL_FILING'],
+      },
     ];
   }
 
   // Advanced Tax Return Processing
-  async generateTaxReturn(entityId: string, jurisdiction: string, period: {startDate: Date, endDate: Date}): Promise<TaxReturn> {
+  async generateTaxReturn(
+    entityId: string,
+    jurisdiction: string,
+    period: { startDate: Date; endDate: Date }
+  ): Promise<TaxReturn> {
     const returnId = `tr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Calculate tax liability for the period
     const taxLiability = await this.calculatePeriodTaxLiability(entityId, jurisdiction, period);
-    
+
     return {
       id: returnId,
       entityId,
@@ -186,7 +197,7 @@ export class TaxService {
       taxOwed: taxLiability.totalTax,
       payments: taxLiability.paymentsApplied,
       refund: Math.max(0, taxLiability.paymentsApplied - taxLiability.totalTax),
-      attachments: []
+      attachments: [],
     };
   }
 
@@ -202,7 +213,7 @@ export class TaxService {
         status: 'PENDING',
         filingRequired: true,
         paymentRequired: true,
-        amount: 15000
+        amount: 15000,
       },
       {
         id: 'comp_2',
@@ -212,8 +223,8 @@ export class TaxService {
         dueDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 days from now
         status: 'PENDING',
         filingRequired: true,
-        paymentRequired: false
-      }
+        paymentRequired: false,
+      },
     ];
   }
 
@@ -229,7 +240,7 @@ export class TaxService {
         foreignTaxCredit: 50000,
         effectiveTaxRate: 0.21,
         treatyBenefits: 10000,
-        transferPricingAdjustments: 0
+        transferPricingAdjustments: 0,
       },
       {
         id: 'int_2',
@@ -240,38 +251,41 @@ export class TaxService {
         foreignTaxCredit: 125000,
         effectiveTaxRate: 0.25,
         treatyBenefits: 5000,
-        transferPricingAdjustments: 25000
-      }
+        transferPricingAdjustments: 25000,
+      },
     ];
   }
 
   // Tax Analytics and Reporting
-  async generateTaxAnalytics(entityId: string, period: {startDate: Date, endDate: Date}): Promise<any> {
+  async generateTaxAnalytics(
+    entityId: string,
+    period: { startDate: Date; endDate: Date }
+  ): Promise<any> {
     const analytics = {
       period: `${period.startDate.toISOString().split('T')[0]} to ${period.endDate.toISOString().split('T')[0]}`,
       totalTaxLiability: 245000,
       effectiveTaxRate: 0.245,
       taxByJurisdiction: {
-        'CA': 125000,
-        'NY': 85000,
-        'TX': 35000
+        CA: 125000,
+        NY: 85000,
+        TX: 35000,
       },
       taxByType: {
-        'SALES': 180000,
-        'USE': 45000,
-        'PROPERTY': 20000
+        SALES: 180000,
+        USE: 45000,
+        PROPERTY: 20000,
       },
       complianceStatus: {
         current: 15,
         overdue: 2,
-        upcoming: 8
+        upcoming: 8,
       },
       benchmarkComparison: {
         industryAverage: 0.28,
         peerMedian: 0.26,
-        performance: 'FAVORABLE'
+        performance: 'FAVORABLE',
       },
-      reportDate: new Date()
+      reportDate: new Date(),
     };
 
     return analytics;
@@ -285,15 +299,15 @@ export class TaxService {
         action: 'TAX_CALCULATION_EXECUTED',
         userId: 'user123',
         details: { entityId, calculationType: 'SALES_TAX', amount: 8500 },
-        ipAddress: '192.168.1.100'
+        ipAddress: '192.168.1.100',
       },
       {
         timestamp: new Date(Date.now() - 3600000), // 1 hour ago
         action: 'TAX_RETURN_FILED',
         userId: 'user456',
         details: { entityId, jurisdiction: 'CA', returnType: 'QUARTERLY', amount: 45000 },
-        ipAddress: '192.168.1.101'
-      }
+        ipAddress: '192.168.1.101',
+      },
     ];
   }
 
@@ -306,26 +320,26 @@ export class TaxService {
           description: 'Update expired exemption certificates to reduce tax liability',
           potentialSavings: 12000,
           implementationEffort: 'LOW',
-          priority: 'HIGH'
+          priority: 'HIGH',
         },
         {
           type: 'NEXUS_REVIEW',
           description: 'Review nexus positions in low-activity states',
           potentialSavings: 8500,
           implementationEffort: 'MEDIUM',
-          priority: 'MEDIUM'
+          priority: 'MEDIUM',
         },
         {
           type: 'TIMING_OPTIMIZATION',
           description: 'Optimize transaction timing for tax efficiency',
           potentialSavings: 15000,
           implementationEffort: 'HIGH',
-          priority: 'HIGH'
-        }
+          priority: 'HIGH',
+        },
       ],
       totalPotentialSavings: 35500,
       riskAssessment: 'LOW',
-      recommendedActions: 3
+      recommendedActions: 3,
     };
   }
 
@@ -337,7 +351,7 @@ export class TaxService {
       intercompanyEliminations: 0,
       consolidatedETR: 0,
       jurisdictionBreakdown: {},
-      consolidationDate: new Date()
+      consolidationDate: new Date(),
     };
 
     // Process each entity
@@ -347,16 +361,20 @@ export class TaxService {
     }
 
     consolidatedResults.consolidatedETR = consolidatedResults.totalTaxLiability / 5000000; // Mock revenue base
-    
+
     return consolidatedResults;
   }
 
   // Supporting methods
-  private async calculatePeriodTaxLiability(entityId: string, jurisdiction: string, period: {startDate: Date, endDate: Date}): Promise<any> {
+  private async calculatePeriodTaxLiability(
+    entityId: string,
+    jurisdiction: string,
+    period: { startDate: Date; endDate: Date }
+  ): Promise<any> {
     return {
       totalTax: 15000,
       paymentsApplied: 12000,
-      penaltiesAndInterest: 150
+      penaltiesAndInterest: 150,
     };
   }
 
@@ -365,7 +383,7 @@ export class TaxService {
       entityId,
       totalLiability: 50000 + Math.random() * 100000,
       currentPortion: 35000,
-      deferredPortion: 15000
+      deferredPortion: 15000,
     };
   }
 

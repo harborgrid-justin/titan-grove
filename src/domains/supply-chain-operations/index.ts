@@ -1,7 +1,7 @@
 /**
  * Supply Chain & Operations Domain
  * Centralized business logic for supply chain management, procurement, inventory, and logistics
- * 
+ *
  * @author Titan Grove Development Team
  * @version 1.0.0
  * @since 2024-01-01
@@ -96,17 +96,19 @@ export class SupplyChainParametersValidator {
    * @param suppliers - The supplier data to validate
    * @throws {SupplierEvaluationError} If supplier data is invalid
    */
-  static validateSupplierScoringParameters(suppliers: Array<{
-    id: string;
-    qualityScore: number;
-    deliveryScore: number;
-    costScore: number;
-    serviceScore: number;
-  }>): void {
+  static validateSupplierScoringParameters(
+    suppliers: Array<{
+      id: string;
+      qualityScore: number;
+      deliveryScore: number;
+      costScore: number;
+      serviceScore: number;
+    }>
+  ): void {
     if (!Array.isArray(suppliers) || suppliers.length === 0) {
       throw new SupplierEvaluationError({
         message: 'Suppliers must be a non-empty array',
-        providedSuppliers: suppliers
+        providedSuppliers: suppliers,
       });
     }
 
@@ -117,7 +119,7 @@ export class SupplyChainParametersValidator {
         errors.push(`Supplier at index ${index} must have a valid ID`);
       }
 
-      ['qualityScore', 'deliveryScore', 'costScore', 'serviceScore'].forEach(scoreField => {
+      ['qualityScore', 'deliveryScore', 'costScore', 'serviceScore'].forEach((scoreField) => {
         const score = supplier[scoreField as keyof typeof supplier];
         if (typeof score !== 'number' || score < 0 || score > 100) {
           errors.push(`${scoreField} at index ${index} must be a number between 0 and 100`);
@@ -180,38 +182,37 @@ export interface SupplyChainOperationsDomainConfig {
 /**
  * Core Business Logic Functions - Supply Chain & Operations Domain
  * Production-grade business logic with comprehensive error handling and validation
- * 
+ *
  * This class centralizes all supply chain calculations and provides standardized
  * business logic across the supply chain and operations domain.
  */
 export class SupplyChainOperationsBusinessLogic {
-  
   private static readonly EOQ_CALCULATION_CONSTANTS = {
     DAYS_PER_YEAR: 365,
     EOQ_FORMULA_MULTIPLIER: 2,
     MIN_SAFETY_STOCK_FACTOR: 0.1,
-    MAX_SAFETY_STOCK_FACTOR: 0.5
+    MAX_SAFETY_STOCK_FACTOR: 0.5,
   } as const;
 
   private static readonly SUPPLIER_SCORING_WEIGHTS = {
     DEFAULT_QUALITY_WEIGHT: 0.3,
     DEFAULT_DELIVERY_WEIGHT: 0.25,
     DEFAULT_COST_WEIGHT: 0.25,
-    DEFAULT_SERVICE_WEIGHT: 0.2
+    DEFAULT_SERVICE_WEIGHT: 0.2,
   } as const;
 
   /**
    * Calculate Economic Order Quantity (EOQ) with advanced validation and error handling
-   * 
+   *
    * Implements the classic EOQ model with modern enhancements including safety stock
    * calculations, lead time considerations, and configurable cost factors. Provides
    * comprehensive inventory optimization analysis.
-   * 
+   *
    * @param inventoryDemandParameters - Annual demand and cost parameters
    * @param domainConfig - Domain-specific configuration for calculations
    * @returns Comprehensive EOQ analysis with optimization metrics
    * @throws {InvalidInventoryParametersError} When parameters are invalid
-   * 
+   *
    * @example
    * ```typescript
    * const eoqAnalysis = SupplyChainOperationsBusinessLogic.calculateEconomicOrderQuantity(
@@ -258,19 +259,19 @@ export class SupplyChainOperationsBusinessLogic {
 
       // Calculate basic EOQ using classic formula
       const basicEOQCalculation = this.calculateBasicEOQ(
-        annualDemand, 
-        orderingCost, 
-        carryingCost, 
+        annualDemand,
+        orderingCost,
+        carryingCost,
         unitCost
       );
-      
+
       // Apply domain configuration adjustments
       const adjustedCostParameters = this.calculateAdjustedCostParameters(
         orderingCost,
         carryingCost,
         domainConfig
       );
-      
+
       // Calculate optimized EOQ with adjustments
       const optimizedEOQ = this.calculateOptimizedEOQ(
         annualDemand,
@@ -278,7 +279,7 @@ export class SupplyChainOperationsBusinessLogic {
         adjustedCostParameters.carryingCost,
         unitCost
       );
-      
+
       // Calculate total annual cost
       const totalAnnualCostCalculation = this.calculateTotalAnnualInventoryCost(
         annualDemand,
@@ -287,16 +288,16 @@ export class SupplyChainOperationsBusinessLogic {
         adjustedCostParameters.carryingCost,
         unitCost
       );
-      
+
       // Calculate order frequency
       const orderFrequencyPerYear = this.calculateOrderFrequency(annualDemand, optimizedEOQ);
-      
+
       // Calculate reorder point with safety stock
       const reorderPointAnalysis = this.calculateReorderPointWithSafetyStock(
         annualDemand,
         domainConfig
       );
-      
+
       return {
         economicOrderQuantity: optimizedEOQ,
         totalAnnualCost: totalAnnualCostCalculation.totalCost,
@@ -308,15 +309,14 @@ export class SupplyChainOperationsBusinessLogic {
           adjustedOrderingCost: adjustedCostParameters.orderingCost,
           adjustedCarryingCost: adjustedCostParameters.carryingCost,
           leadTimeDemand: reorderPointAnalysis.leadTimeDemand,
-          costBreakdown: totalAnnualCostCalculation.breakdown
-        }
+          costBreakdown: totalAnnualCostCalculation.breakdown,
+        },
       };
-      
     } catch (error) {
       if (error instanceof InvalidInventoryParametersError) {
         throw error;
       }
-      
+
       throw new SupplyChainDomainError(
         'Failed to calculate Economic Order Quantity',
         'EOQ_CALCULATION_ERROR',
@@ -336,8 +336,8 @@ export class SupplyChainOperationsBusinessLogic {
     unitCost: number
   ): number {
     return Math.sqrt(
-      (this.EOQ_CALCULATION_CONSTANTS.EOQ_FORMULA_MULTIPLIER * annualDemand * orderingCost) / 
-      (carryingCost * unitCost)
+      (this.EOQ_CALCULATION_CONSTANTS.EOQ_FORMULA_MULTIPLIER * annualDemand * orderingCost) /
+        (carryingCost * unitCost)
     );
   }
 
@@ -349,13 +349,15 @@ export class SupplyChainOperationsBusinessLogic {
     baseOrderingCost: number,
     baseCarryingCost: number,
     domainConfig: SupplyChainOperationsDomainConfig
-  ): { orderingCost: number; carryingCost: number; } {
-    const adjustedOrderingCost = baseOrderingCost + domainConfig.inventory.costFactors.orderingCostBase;
-    const adjustedCarryingCost = baseCarryingCost * domainConfig.inventory.costFactors.carryingCostRate;
-    
+  ): { orderingCost: number; carryingCost: number } {
+    const adjustedOrderingCost =
+      baseOrderingCost + domainConfig.inventory.costFactors.orderingCostBase;
+    const adjustedCarryingCost =
+      baseCarryingCost * domainConfig.inventory.costFactors.carryingCostRate;
+
     return {
       orderingCost: adjustedOrderingCost,
-      carryingCost: adjustedCarryingCost
+      carryingCost: adjustedCarryingCost,
     };
   }
 
@@ -370,8 +372,10 @@ export class SupplyChainOperationsBusinessLogic {
     unitCost: number
   ): number {
     return Math.sqrt(
-      (this.EOQ_CALCULATION_CONSTANTS.EOQ_FORMULA_MULTIPLIER * annualDemand * adjustedOrderingCost) / 
-      (adjustedCarryingCost * unitCost)
+      (this.EOQ_CALCULATION_CONSTANTS.EOQ_FORMULA_MULTIPLIER *
+        annualDemand *
+        adjustedOrderingCost) /
+        (adjustedCarryingCost * unitCost)
     );
   }
 
@@ -385,16 +389,16 @@ export class SupplyChainOperationsBusinessLogic {
     orderingCost: number,
     carryingCost: number,
     unitCost: number
-  ): { totalCost: number; breakdown: { orderingCosts: number; carryingCosts: number; }; } {
+  ): { totalCost: number; breakdown: { orderingCosts: number; carryingCosts: number } } {
     const annualOrderingCosts = (annualDemand / economicOrderQuantity) * orderingCost;
     const annualCarryingCosts = (economicOrderQuantity / 2) * carryingCost * unitCost;
-    
+
     return {
       totalCost: annualOrderingCosts + annualCarryingCosts,
       breakdown: {
         orderingCosts: annualOrderingCosts,
-        carryingCosts: annualCarryingCosts
-      }
+        carryingCosts: annualCarryingCosts,
+      },
     };
   }
 
@@ -402,7 +406,10 @@ export class SupplyChainOperationsBusinessLogic {
    * Calculate order frequency per year
    * @private
    */
-  private static calculateOrderFrequency(annualDemand: number, economicOrderQuantity: number): number {
+  private static calculateOrderFrequency(
+    annualDemand: number,
+    economicOrderQuantity: number
+  ): number {
     return annualDemand / economicOrderQuantity;
   }
 
@@ -413,31 +420,31 @@ export class SupplyChainOperationsBusinessLogic {
   private static calculateReorderPointWithSafetyStock(
     annualDemand: number,
     domainConfig: SupplyChainOperationsDomainConfig
-  ): { reorderPoint: number; safetyStock: number; leadTimeDemand: number; } {
+  ): { reorderPoint: number; safetyStock: number; leadTimeDemand: number } {
     const dailyDemand = annualDemand / this.EOQ_CALCULATION_CONSTANTS.DAYS_PER_YEAR;
     const leadTimeDemand = dailyDemand * domainConfig.inventory.reorderPoints.leadTimeBuffer;
     const safetyStock = leadTimeDemand * domainConfig.inventory.reorderPoints.demandVariability;
     const reorderPoint = leadTimeDemand + safetyStock;
-    
+
     return {
       reorderPoint,
       safetyStock,
-      leadTimeDemand
+      leadTimeDemand,
     };
   }
 
   /**
    * Calculate comprehensive supplier performance evaluation with detailed scoring
-   * 
+   *
    * Evaluates suppliers across multiple dimensions including quality, delivery,
    * cost competitiveness, and service level. Applies risk adjustments and provides
    * strategic categorization with actionable recommendations.
-   * 
+   *
    * @param supplierPerformanceMetrics - Comprehensive supplier performance data
    * @param domainConfig - Domain-specific configuration for supplier evaluation
    * @returns Detailed supplier evaluation with scoring and recommendations
    * @throws {SupplierEvaluationError} When evaluation fails
-   * 
+   *
    * @example
    * ```typescript
    * const supplierEvaluation = SupplyChainOperationsBusinessLogic.calculateSupplierPerformanceEvaluation(
@@ -493,7 +500,10 @@ export class SupplyChainOperationsBusinessLogic {
         scoringWeights
       );
 
-      const overallPerformanceScore = this.calculateWeightedSupplierScore(scoringBreakdown, scoringWeights);
+      const overallPerformanceScore = this.calculateWeightedSupplierScore(
+        scoringBreakdown,
+        scoringWeights
+      );
 
       // Apply risk adjustment
       const riskAdjustmentCalculation = this.calculateSupplierRiskAdjustment(
@@ -502,7 +512,9 @@ export class SupplyChainOperationsBusinessLogic {
       );
 
       // Determine supplier category based on risk-adjusted score
-      const supplierCategorization = this.determineSupplierCategory(riskAdjustmentCalculation.riskAdjustedScore);
+      const supplierCategorization = this.determineSupplierCategory(
+        riskAdjustmentCalculation.riskAdjustedScore
+      );
 
       // Generate strategic recommendations
       const strategicRecommendations = this.generateSupplierPerformanceRecommendations(
@@ -519,10 +531,9 @@ export class SupplyChainOperationsBusinessLogic {
         evaluationDetails: {
           scoringBreakdown,
           riskImpact: riskAdjustmentCalculation.riskImpact,
-          categoryThresholds: supplierCategorization.thresholds
-        }
+          categoryThresholds: supplierCategorization.thresholds,
+        },
       };
-
     } catch (error) {
       if (error instanceof SupplierEvaluationError) {
         throw error;
@@ -540,27 +551,31 @@ export class SupplyChainOperationsBusinessLogic {
    * Validate supplier performance metrics
    * @private
    */
-  private static validateSupplierPerformanceMetrics(
-    metrics: {
-      qualityRating: number;
-      deliveryPerformance: number;
-      costCompetitiveness: number;
-      serviceLevel: number;
-      riskFactors: number;
-    }
-  ): void {
+  private static validateSupplierPerformanceMetrics(metrics: {
+    qualityRating: number;
+    deliveryPerformance: number;
+    costCompetitiveness: number;
+    serviceLevel: number;
+    riskFactors: number;
+  }): void {
     const errors: string[] = [];
 
     // Validate performance ratings (should be 0-100)
-    ['qualityRating', 'deliveryPerformance', 'costCompetitiveness', 'serviceLevel'].forEach(metric => {
-      const value = metrics[metric as keyof typeof metrics];
-      if (typeof value !== 'number' || value < 0 || value > 100) {
-        errors.push(`${metric} must be a number between 0 and 100`);
+    ['qualityRating', 'deliveryPerformance', 'costCompetitiveness', 'serviceLevel'].forEach(
+      (metric) => {
+        const value = metrics[metric as keyof typeof metrics];
+        if (typeof value !== 'number' || value < 0 || value > 100) {
+          errors.push(`${metric} must be a number between 0 and 100`);
+        }
       }
-    });
+    );
 
     // Validate risk factors (should be 0-1)
-    if (typeof metrics.riskFactors !== 'number' || metrics.riskFactors < 0 || metrics.riskFactors > 1) {
+    if (
+      typeof metrics.riskFactors !== 'number' ||
+      metrics.riskFactors < 0 ||
+      metrics.riskFactors > 1
+    ) {
       errors.push('Risk factors must be a number between 0 and 1');
     }
 
@@ -596,7 +611,7 @@ export class SupplyChainOperationsBusinessLogic {
       qualityContribution: metrics.qualityRating * weights.qualityWeight,
       deliveryContribution: metrics.deliveryPerformance * weights.deliveryWeight,
       costContribution: metrics.costCompetitiveness * weights.costWeight,
-      serviceContribution: metrics.serviceLevel * weights.serviceWeight
+      serviceContribution: metrics.serviceLevel * weights.serviceWeight,
     };
   }
 
@@ -618,14 +633,14 @@ export class SupplyChainOperationsBusinessLogic {
       serviceWeight: number;
     }
   ): number {
-    const totalWeightedScore = (
+    const totalWeightedScore =
       scoringBreakdown.qualityContribution +
       scoringBreakdown.deliveryContribution +
       scoringBreakdown.costContribution +
-      scoringBreakdown.serviceContribution
-    );
+      scoringBreakdown.serviceContribution;
 
-    const totalWeights = weights.qualityWeight + weights.deliveryWeight + weights.costWeight + weights.serviceWeight;
+    const totalWeights =
+      weights.qualityWeight + weights.deliveryWeight + weights.costWeight + weights.serviceWeight;
 
     return totalWeights > 0 ? totalWeightedScore / totalWeights : 0;
   }
@@ -637,14 +652,14 @@ export class SupplyChainOperationsBusinessLogic {
   private static calculateSupplierRiskAdjustment(
     baseScore: number,
     riskFactors: number
-  ): { riskAdjustedScore: number; riskImpact: number; } {
+  ): { riskAdjustedScore: number; riskImpact: number } {
     const RISK_IMPACT_MULTIPLIER = 0.1;
     const riskImpact = riskFactors * RISK_IMPACT_MULTIPLIER;
     const riskAdjustedScore = baseScore * (1 - riskImpact);
 
     return {
       riskAdjustedScore: Math.max(0, riskAdjustedScore),
-      riskImpact
+      riskImpact,
     };
   }
 
@@ -652,16 +667,14 @@ export class SupplyChainOperationsBusinessLogic {
    * Determine supplier category based on risk-adjusted score
    * @private
    */
-  private static determineSupplierCategory(
-    riskAdjustedScore: number
-  ): {
+  private static determineSupplierCategory(riskAdjustedScore: number): {
     category: 'strategic' | 'approved' | 'conditional' | 'rejected';
-    thresholds: { strategic: number; approved: number; conditional: number; };
+    thresholds: { strategic: number; approved: number; conditional: number };
   } {
     const CATEGORY_THRESHOLDS = {
       STRATEGIC: 85,
       APPROVED: 75,
-      CONDITIONAL: 60
+      CONDITIONAL: 60,
     } as const;
 
     let category: 'strategic' | 'approved' | 'conditional' | 'rejected';
@@ -681,8 +694,8 @@ export class SupplyChainOperationsBusinessLogic {
       thresholds: {
         strategic: CATEGORY_THRESHOLDS.STRATEGIC,
         approved: CATEGORY_THRESHOLDS.APPROVED,
-        conditional: CATEGORY_THRESHOLDS.CONDITIONAL
-      }
+        conditional: CATEGORY_THRESHOLDS.CONDITIONAL,
+      },
     };
   }
 
@@ -707,7 +720,7 @@ export class SupplyChainOperationsBusinessLogic {
       EXCELLENT: 90,
       GOOD: 80,
       ACCEPTABLE: 70,
-      POOR: 60
+      POOR: 60,
     } as const;
 
     // Quality-based recommendations
@@ -738,7 +751,9 @@ export class SupplyChainOperationsBusinessLogic {
     // Category-specific recommendations
     switch (category) {
       case 'strategic':
-        recommendations.push('Consider long-term partnership agreements and collaborative innovation');
+        recommendations.push(
+          'Consider long-term partnership agreements and collaborative innovation'
+        );
         break;
       case 'approved':
         recommendations.push('Monitor performance regularly and explore expansion opportunities');
@@ -792,45 +807,49 @@ export class SupplyChainOperationsBusinessLogic {
       totalCost: number;
       utilization: number;
     }> = [];
-    
-    const { distanceWeight, timeWeight, costWeight, capacityUtilization } = config.logistics.routeOptimization;
-    
+
+    const { distanceWeight, timeWeight, costWeight, capacityUtilization } =
+      config.logistics.routeOptimization;
+
     // Assign deliveries to vehicles based on capacity and constraints
     let remainingDeliveries = [...deliveries];
-    
+
     for (const vehicle of vehicles) {
       const route = {
         vehicleId: vehicle.id,
         deliveries: [] as string[],
         totalDistance: 0,
         totalCost: 0,
-        utilization: 0
+        utilization: 0,
       };
-      
+
       let currentCapacity = 0;
       let currentTime = 0;
-      
+
       // Greedy assignment with optimization factors
-      while (remainingDeliveries.length > 0 && currentCapacity < vehicle.capacity * capacityUtilization) {
-        let bestDelivery: typeof deliveries[0] | null = null;
+      while (
+        remainingDeliveries.length > 0 &&
+        currentCapacity < vehicle.capacity * capacityUtilization
+      ) {
+        let bestDelivery: (typeof deliveries)[0] | null = null;
         let bestScore = -1;
         let bestIndex = -1;
-        
+
         for (let i = 0; i < remainingDeliveries.length; i++) {
           const delivery = remainingDeliveries[i];
-          
+
           if (currentCapacity + delivery.demand <= vehicle.capacity) {
             // Calculate delivery score based on multiple factors
-            const distanceScore = 1 / (1 + Math.abs(delivery.location.lat - 0) + Math.abs(delivery.location.lng - 0));
+            const distanceScore =
+              1 / (1 + Math.abs(delivery.location.lat - 0) + Math.abs(delivery.location.lng - 0));
             const timeScore = delivery.timeWindow.end > currentTime ? 1 : 0.5;
             const priorityScore = delivery.priority / 10;
-            
-            const score = (
+
+            const score =
               distanceScore * distanceWeight +
               timeScore * timeWeight +
-              priorityScore * (1 - costWeight)
-            );
-            
+              priorityScore * (1 - costWeight);
+
             if (score > bestScore) {
               bestScore = score;
               bestDelivery = delivery;
@@ -838,7 +857,7 @@ export class SupplyChainOperationsBusinessLogic {
             }
           }
         }
-        
+
         if (bestDelivery) {
           route.deliveries.push(bestDelivery.id);
           currentCapacity += bestDelivery.demand;
@@ -848,27 +867,31 @@ export class SupplyChainOperationsBusinessLogic {
           break;
         }
       }
-      
+
       // Calculate route metrics
       route.totalDistance = route.deliveries.length * 25; // Simplified distance calculation
-      route.totalCost = route.totalDistance * vehicle.costPerKm + 
-                       config.logistics.transportationCosts.fuelSurcharge +
-                       config.logistics.transportationCosts.handlingFee;
+      route.totalCost =
+        route.totalDistance * vehicle.costPerKm +
+        config.logistics.transportationCosts.fuelSurcharge +
+        config.logistics.transportationCosts.handlingFee;
       route.utilization = currentCapacity / vehicle.capacity;
-      
+
       if (route.deliveries.length > 0) {
         routes.push(route);
       }
     }
-    
+
     const totalCost = routes.reduce((sum, route) => sum + route.totalCost, 0);
     const totalDistance = routes.reduce((sum, route) => sum + route.totalDistance, 0);
-    const efficiency = deliveries.length > 0 ? (deliveries.length - remainingDeliveries.length) / deliveries.length : 0;
-    
+    const efficiency =
+      deliveries.length > 0
+        ? (deliveries.length - remainingDeliveries.length) / deliveries.length
+        : 0;
+
     return {
       routes,
       totalCost,
-      efficiency
+      efficiency,
     };
   }
 
@@ -893,23 +916,27 @@ export class SupplyChainOperationsBusinessLogic {
   } {
     // Calculate inventory turnover
     const totalAnnualUsage = items.reduce((sum, item) => sum + item.annualUsage * item.unitCost, 0);
-    const totalAverageInventory = items.reduce((sum, item) => sum + item.averageInventory * item.unitCost, 0);
-    const overallTurnover = totalAverageInventory > 0 ? totalAnnualUsage / totalAverageInventory : 0;
-    
+    const totalAverageInventory = items.reduce(
+      (sum, item) => sum + item.averageInventory * item.unitCost,
+      0
+    );
+    const overallTurnover =
+      totalAverageInventory > 0 ? totalAnnualUsage / totalAverageInventory : 0;
+
     // ABC Analysis
-    const itemsWithValue = items.map(item => ({
+    const itemsWithValue = items.map((item) => ({
       id: item.id,
       value: item.annualUsage * item.unitCost,
-      percentage: 0
+      percentage: 0,
     }));
-    
+
     itemsWithValue.sort((a, b) => b.value - a.value);
-    
+
     let cumulativeValue = 0;
-    const abcAnalysis = itemsWithValue.map(item => {
+    const abcAnalysis = itemsWithValue.map((item) => {
       cumulativeValue += item.value;
       const percentage = cumulativeValue / totalAnnualUsage;
-      
+
       let category: 'A' | 'B' | 'C';
       if (percentage <= 0.8) {
         category = 'A'; // Top 80% of value
@@ -918,39 +945,43 @@ export class SupplyChainOperationsBusinessLogic {
       } else {
         category = 'C'; // Bottom 5% of value
       }
-      
+
       return {
         id: item.id,
         category,
-        value: item.value
+        value: item.value,
       };
     });
-    
+
     // Generate optimization recommendations
     const optimizationRecommendations: string[] = [];
-    
+
     if (overallTurnover < 6) {
-      optimizationRecommendations.push('Overall inventory turnover is low - consider reducing stock levels');
+      optimizationRecommendations.push(
+        'Overall inventory turnover is low - consider reducing stock levels'
+      );
     }
-    
-    const lowTurnoverItems = items.filter(item => {
+
+    const lowTurnoverItems = items.filter((item) => {
       const turnover = item.averageInventory > 0 ? item.annualUsage / item.averageInventory : 0;
       return turnover < 4;
     });
-    
+
     if (lowTurnoverItems.length > items.length * 0.2) {
-      optimizationRecommendations.push('High number of slow-moving items - review stocking policies');
+      optimizationRecommendations.push(
+        'High number of slow-moving items - review stocking policies'
+      );
     }
-    
-    const highValueItems = abcAnalysis.filter(item => item.category === 'A').length;
+
+    const highValueItems = abcAnalysis.filter((item) => item.category === 'A').length;
     if (highValueItems > items.length * 0.3) {
       optimizationRecommendations.push('Consider more frequent ordering for high-value items');
     }
-    
+
     return {
       overallTurnover,
       abcAnalysis,
-      optimizationRecommendations
+      optimizationRecommendations,
     };
   }
 }
@@ -978,7 +1009,11 @@ export class SupplyChainOperationsDomainManager {
   }> {
     // Mock data for demonstration
     const inventoryOptimization = SupplyChainOperationsBusinessLogic.calculateEOQ(
-      10000, 250, 0.25, 50, this.config
+      10000,
+      250,
+      0.25,
+      50,
+      this.config
     );
 
     const supplierPerformance = SupplyChainOperationsBusinessLogic.calculateSupplierScore(
@@ -987,26 +1022,50 @@ export class SupplyChainOperationsDomainManager {
         deliveryPerformance: 92,
         costCompetitiveness: 75,
         serviceLevel: 85,
-        riskFactors: 0.15
+        riskFactors: 0.15,
       },
       this.config
     );
 
     const routeOptimization = SupplyChainOperationsBusinessLogic.optimizeRoutes(
       [
-        { id: '1', location: { lat: 40.7128, lng: -74.0060 }, demand: 100, timeWindow: { start: 8, end: 17 }, priority: 8 },
-        { id: '2', location: { lat: 40.7589, lng: -73.9851 }, demand: 150, timeWindow: { start: 9, end: 16 }, priority: 9 }
+        {
+          id: '1',
+          location: { lat: 40.7128, lng: -74.006 },
+          demand: 100,
+          timeWindow: { start: 8, end: 17 },
+          priority: 8,
+        },
+        {
+          id: '2',
+          location: { lat: 40.7589, lng: -73.9851 },
+          demand: 150,
+          timeWindow: { start: 9, end: 16 },
+          priority: 9,
+        },
       ],
-      [
-        { id: 'truck1', capacity: 500, costPerKm: 2.5, maxDuration: 8 }
-      ],
+      [{ id: 'truck1', capacity: 500, costPerKm: 2.5, maxDuration: 8 }],
       this.config
     );
 
     const inventoryAnalytics = SupplyChainOperationsBusinessLogic.calculateInventoryMetrics(
       [
-        { id: 'item1', category: 'raw-materials', annualUsage: 5000, averageInventory: 500, unitCost: 25, leadTime: 14 },
-        { id: 'item2', category: 'finished-goods', annualUsage: 2000, averageInventory: 200, unitCost: 100, leadTime: 7 }
+        {
+          id: 'item1',
+          category: 'raw-materials',
+          annualUsage: 5000,
+          averageInventory: 500,
+          unitCost: 25,
+          leadTime: 14,
+        },
+        {
+          id: 'item2',
+          category: 'finished-goods',
+          annualUsage: 2000,
+          averageInventory: 200,
+          unitCost: 100,
+          leadTime: 7,
+        },
       ],
       this.config
     );
@@ -1015,7 +1074,7 @@ export class SupplyChainOperationsDomainManager {
       inventoryOptimization,
       supplierPerformance,
       routeOptimization,
-      inventoryAnalytics
+      inventoryAnalytics,
     };
   }
 
@@ -1024,7 +1083,7 @@ export class SupplyChainOperationsDomainManager {
     return {
       scm: this.scm,
       procurement: this.procurement,
-      inventory: this.inventory
+      inventory: this.inventory,
     };
   }
 }
@@ -1035,45 +1094,45 @@ export const defaultSupplyChainOperationsConfig: SupplyChainOperationsDomainConf
     safetyStockFactors: {
       highVolume: 0.15,
       mediumVolume: 0.25,
-      lowVolume: 0.35
+      lowVolume: 0.35,
     },
     reorderPoints: {
       leadTimeBuffer: 14,
-      demandVariability: 0.20,
-      serviceLevel: 0.95
+      demandVariability: 0.2,
+      serviceLevel: 0.95,
     },
     costFactors: {
       carryingCostRate: 0.25,
       orderingCostBase: 100,
-      stockoutPenalty: 0.05
-    }
+      stockoutPenalty: 0.05,
+    },
   },
   procurement: {
     supplierScoring: {
-      qualityWeight: 0.30,
+      qualityWeight: 0.3,
       deliveryWeight: 0.25,
       costWeight: 0.25,
-      serviceWeight: 0.20
+      serviceWeight: 0.2,
     },
     negotiationFactors: {
       volumeDiscountThreshold: 100000,
       paymentTermsDiscount: 0.02,
-      longTermContractDiscount: 0.05
-    }
+      longTermContractDiscount: 0.05,
+    },
   },
   logistics: {
     routeOptimization: {
-      distanceWeight: 0.40,
-      timeWeight: 0.30,
-      costWeight: 0.20,
-      capacityUtilization: 0.85
+      distanceWeight: 0.4,
+      timeWeight: 0.3,
+      costWeight: 0.2,
+      capacityUtilization: 0.85,
     },
     transportationCosts: {
       fuelSurcharge: 50,
       handlingFee: 25,
-      insuranceRate: 0.005
-    }
-  }
+      insuranceRate: 0.005,
+    },
+  },
 };
 
 // Singleton instance

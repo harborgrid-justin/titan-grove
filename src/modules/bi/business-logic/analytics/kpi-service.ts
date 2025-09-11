@@ -6,28 +6,32 @@
 import type { KPI, DataSource } from '../../types';
 
 export class KPIService {
-  
   async createKPI(kpi: Omit<KPI, 'id' | 'lastUpdated'>): Promise<KPI> {
     const id = `kpi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...kpi,
       id,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
   async updateKPI(kpiId: string): Promise<KPI> {
     console.log(`Updating KPI ${kpiId}`);
-    
+
     // Example KPI calculation
     const currentValue = Math.random() * 100;
     const targetValue = 80;
     const trend = currentValue > 75 ? 'UP' : 'DOWN';
-    const status = currentValue >= targetValue ? 'EXCELLENT' : 
-                   currentValue >= targetValue * 0.9 ? 'GOOD' :
-                   currentValue >= targetValue * 0.7 ? 'WARNING' : 'CRITICAL';
-    
+    const status =
+      currentValue >= targetValue
+        ? 'EXCELLENT'
+        : currentValue >= targetValue * 0.9
+          ? 'GOOD'
+          : currentValue >= targetValue * 0.7
+            ? 'WARNING'
+            : 'CRITICAL';
+
     return {
       id: kpiId,
       name: 'Customer Satisfaction',
@@ -44,11 +48,11 @@ export class KPIService {
         { level: 'EXCELLENT', min: 80, color: '#22c55e' },
         { level: 'GOOD', min: 70, max: 79, color: '#3b82f6' },
         { level: 'WARNING', min: 60, max: 69, color: '#f59e0b' },
-        { level: 'CRITICAL', max: 59, color: '#ef4444' }
+        { level: 'CRITICAL', max: 59, color: '#ef4444' },
       ],
       owner: 'user123',
       updateFrequency: 60,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
@@ -80,12 +84,12 @@ export class KPIService {
           { level: 'EXCELLENT', min: 100000, color: '#22c55e' },
           { level: 'GOOD', min: 80000, max: 99999, color: '#3b82f6' },
           { level: 'WARNING', min: 60000, max: 79999, color: '#f59e0b' },
-          { level: 'CRITICAL', max: 59999, color: '#ef4444' }
+          { level: 'CRITICAL', max: 59999, color: '#ef4444' },
         ],
         owner: 'finance_manager',
         updateFrequency: 1440, // daily
-        lastUpdated: new Date()
-      }
+        lastUpdated: new Date(),
+      },
     ];
   }
 
@@ -101,10 +105,12 @@ export class KPIService {
 
   async getKPIHistory(kpiId: string, periods: number): Promise<any> {
     const history = Array.from({ length: periods }, (_, i) => ({
-      period: new Date(Date.now() - (periods - i) * 24 * 60 * 60 * 1000).toISOString().substring(0, 10),
+      period: new Date(Date.now() - (periods - i) * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .substring(0, 10),
       value: Math.random() * 100,
       target: 80,
-      status: 'GOOD'
+      status: 'GOOD',
     }));
 
     return {
@@ -112,10 +118,10 @@ export class KPIService {
       history,
       statistics: {
         average: history.reduce((sum, h) => sum + h.value, 0) / history.length,
-        min: Math.min(...history.map(h => h.value)),
-        max: Math.max(...history.map(h => h.value)),
-        achievementRate: history.filter(h => h.value >= h.target).length / history.length
-      }
+        min: Math.min(...history.map((h) => h.value)),
+        max: Math.max(...history.map((h) => h.value)),
+        achievementRate: history.filter((h) => h.value >= h.target).length / history.length,
+      },
     };
   }
 
@@ -126,7 +132,7 @@ export class KPIService {
 
   async bulkRefreshKPIs(kpiIds: string[]): Promise<KPI[]> {
     console.log(`Bulk refreshing ${kpiIds.length} KPIs`);
-    return Promise.all(kpiIds.map(id => this.updateKPI(id)));
+    return Promise.all(kpiIds.map((id) => this.updateKPI(id)));
   }
 
   async getKPIAlerts(kpiId?: string): Promise<any[]> {
@@ -137,8 +143,8 @@ export class KPIService {
         severity: 'WARNING',
         message: 'KPI value below warning threshold',
         triggeredAt: new Date(),
-        acknowledged: false
-      }
+        acknowledged: false,
+      },
     ];
   }
 
@@ -158,13 +164,13 @@ export class KPIService {
         overall: 'IMPROVING',
         velocity: 0.15, // rate of change
         volatility: 0.08, // how much it fluctuates
-        consistency: 0.92 // how consistent the performance is
+        consistency: 0.92, // how consistent the performance is
       },
       recommendations: [
         'KPI is showing positive trend',
         'Consider raising target value',
-        'Monitor for sustained improvement'
-      ]
+        'Monitor for sustained improvement',
+      ],
     };
   }
 
@@ -172,17 +178,17 @@ export class KPIService {
     return {
       kpiIds,
       period,
-      comparison: kpiIds.map(id => ({
+      comparison: kpiIds.map((id) => ({
         kpiId: id,
         currentValue: Math.random() * 100,
         percentileRank: Math.random() * 100,
-        relativePerformance: Math.random() > 0.5 ? 'ABOVE_AVERAGE' : 'BELOW_AVERAGE'
+        relativePerformance: Math.random() > 0.5 ? 'ABOVE_AVERAGE' : 'BELOW_AVERAGE',
       })),
       correlations: [],
       insights: [
         'KPIs show strong correlation during peak periods',
-        'Revenue KPI leads other metrics by 2-3 days'
-      ]
+        'Revenue KPI leads other metrics by 2-3 days',
+      ],
     };
   }
 
@@ -193,7 +199,7 @@ export class KPIService {
 
   async cloneKPI(kpiId: string, newName: string): Promise<KPI> {
     const id = `kpi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       id,
       name: newName,
@@ -209,7 +215,7 @@ export class KPIService {
       thresholds: [],
       owner: 'user',
       updateFrequency: 60,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
@@ -222,8 +228,8 @@ export class KPIService {
         calculationMethod: 'REAL_TIME',
         dependencies: [],
         updateSchedule: 'HOURLY',
-        businessContext: 'Key performance indicator for customer satisfaction measurement'
-      }
+        businessContext: 'Key performance indicator for customer satisfaction measurement',
+      },
     };
   }
 
@@ -235,12 +241,12 @@ export class KPIService {
         dataSourceConnectivity: 'PASS',
         formulaValidation: 'PASS',
         thresholdLogic: 'PASS',
-        updateFrequency: 'PASS'
+        updateFrequency: 'PASS',
       },
       recommendations: [
         'Consider adding more granular thresholds',
-        'Enable automated alerts for critical breaches'
-      ]
+        'Enable automated alerts for critical breaches',
+      ],
     };
   }
 }

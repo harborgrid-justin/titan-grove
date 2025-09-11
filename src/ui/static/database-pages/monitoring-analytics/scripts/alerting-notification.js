@@ -1,142 +1,146 @@
 // Alerting & Notification Management - Database Management System
 // This file provides business-ready functionality for Alerting & Notification Management
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Alerting & Notification Management page loaded');
-    
-    // Initialize page functionality
-    initalertingnotification();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadalertingnotificationData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Alerting & Notification Management page loaded');
+
+  // Initialize page functionality
+  initalertingnotification();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadalertingnotificationData();
 });
 
 async function loadalertingnotificationData() {
-    try {
-        const response = await fetch('/api/database/monitoring-analytics/alerting-notification');
-        if (response.ok) {
-            const data = await response.json();
-            updatealertingnotificationDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Alerting & Notification Management data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/monitoring-analytics/alerting-notification');
+    if (response.ok) {
+      const data = await response.json();
+      updatealertingnotificationDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Alerting & Notification Management data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initalertingnotification() {
-    console.log('Initializing Alerting & Notification Management');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Alerting & Notification Management');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Alerting & Notification Management');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Alerting & Notification Management');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Alerting & Notification Management');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Alerting & Notification Management');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Alerting & Notification Management');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Alerting & Notification Management');
 }
 
 function handlealertingnotificationAction() {
-    console.log('Alerting & Notification Management action triggered');
-    showNotification('Alerting & Notification Management configured successfully', 'success');
+  console.log('Alerting & Notification Management action triggered');
+  showNotification('Alerting & Notification Management configured successfully', 'success');
 }
 
 function executealertingnotification() {
-    console.log('Alerting & Notification Management execution started');
-    showNotification('Alerting & Notification Management executed successfully', 'success');
+  console.log('Alerting & Notification Management execution started');
+  showNotification('Alerting & Notification Management executed successfully', 'success');
 }
 
 function updatealertingnotificationDisplay(data) {
-    console.log('Updating Alerting & Notification Management display:', data);
-    // Update UI with loaded data
+  console.log('Updating Alerting & Notification Management display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/monitoring-analytics/alerting-notification/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadalertingnotificationData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handlealertingnotificationAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/monitoring-analytics/alerting-notification/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'alerting-notification-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/monitoring-analytics/alerting-notification/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadalertingnotificationData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handlealertingnotificationAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/monitoring-analytics/alerting-notification/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'alerting-notification-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

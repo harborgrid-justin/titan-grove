@@ -81,18 +81,30 @@ export class ServerManager extends EventEmitter {
   private setupRoutes(): void {
     // Serve React UI static assets
     this.app.use('/assets', express.static('dist/ui/assets'));
-    
+
     // Serve React UI application for all non-API routes
     this.app.get('/', (req: Request, res: Response) => {
       res.sendFile(path.resolve('dist/ui/index.html'));
     });
 
     // Serve React UI for all SPA routes (catch-all for client-side routing)
-    this.app.get(['/dashboard', '/manufacturing', '/financials', '/hr-management', 
-                  '/supply-chain', '/crm', '/business-intelligence', '/project-management', 
-                  '/asset-management', '/compliance'], (req: Request, res: Response) => {
-      res.sendFile(path.resolve('dist/ui/index.html'));
-    });
+    this.app.get(
+      [
+        '/dashboard',
+        '/manufacturing',
+        '/financials',
+        '/hr-management',
+        '/supply-chain',
+        '/crm',
+        '/business-intelligence',
+        '/project-management',
+        '/asset-management',
+        '/compliance',
+      ],
+      (req: Request, res: Response) => {
+        res.sendFile(path.resolve('dist/ui/index.html'));
+      }
+    );
 
     // Health check endpoint
     this.app.get('/health', async (req: Request, res: Response) => {
@@ -305,18 +317,18 @@ export class ServerManager extends EventEmitter {
             version: '1.0.0',
             config: {
               behavior: { interactive: true, realtime: true },
-              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
-            }
+              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 } },
+            },
           },
           {
             id: 'data-table',
             type: 'table',
-            name: 'Data Table', 
+            name: 'Data Table',
             version: '1.0.0',
             config: {
               behavior: { interactive: true, cacheable: true },
-              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
-            }
+              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 } },
+            },
           },
           {
             id: 'kpi-card',
@@ -325,9 +337,9 @@ export class ServerManager extends EventEmitter {
             version: '1.0.0',
             config: {
               behavior: { realtime: true },
-              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
-            }
-          }
+              responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 } },
+            },
+          },
         ];
 
         const response: APIResponse = {
@@ -352,9 +364,9 @@ export class ServerManager extends EventEmitter {
             colors: {
               primary: '#2563eb',
               secondary: '#64748b',
-              accent: '#f59e0b'
-            }
-          }
+              accent: '#f59e0b',
+            },
+          },
         ];
 
         const response: APIResponse = {
@@ -376,8 +388,8 @@ export class ServerManager extends EventEmitter {
             id: 'template-executive',
             name: 'Executive Dashboard',
             description: 'High-level KPIs and metrics for executives',
-            preview: '/ui/previews/executive-dashboard.png'
-          }
+            preview: '/ui/previews/executive-dashboard.png',
+          },
         ];
 
         const response: APIResponse = {
@@ -399,8 +411,8 @@ export class ServerManager extends EventEmitter {
           current: 2450000,
           previous: 2180000,
           trend: 'up',
-          trendValue: 12.5
-        }
+          trendValue: 12.5,
+        },
       };
       res.json(response);
     });
@@ -413,20 +425,20 @@ export class ServerManager extends EventEmitter {
             {
               id: 'TXN-2024-001',
               customer: 'Acme Corporation',
-              amount: 45250.00,
+              amount: 45250.0,
               date: '2024-01-15',
-              status: 'Completed'
+              status: 'Completed',
             },
             {
-              id: 'TXN-2024-002', 
+              id: 'TXN-2024-002',
               customer: 'TechStart Inc.',
-              amount: 12800.00,
+              amount: 12800.0,
               date: '2024-01-14',
-              status: 'Pending'
-            }
+              status: 'Pending',
+            },
           ],
-          totalCount: 25
-        }
+          totalCount: 25,
+        },
       };
       res.json(response);
     });

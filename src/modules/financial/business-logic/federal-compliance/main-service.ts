@@ -8,7 +8,7 @@ import {
   ComplianceCheck,
   ComplianceEvidence,
   FederalContractingRequirement,
-  FARAuditTrail
+  FARAuditTrail,
 } from './types';
 
 export class FederalComplianceService {
@@ -17,7 +17,7 @@ export class FederalComplianceService {
    */
   async validateFARCompliance(contractId: string): Promise<ComplianceCheck[]> {
     const checks: ComplianceCheck[] = [];
-    
+
     // Implement FAR compliance validation logic
     const farCheck: ComplianceCheck = {
       id: `far_check_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -27,9 +27,9 @@ export class FederalComplianceService {
       status: 'PENDING',
       checkDate: new Date(),
       checkedBy: 'system_automated_check',
-      evidence: []
+      evidence: [],
     };
-    
+
     checks.push(farCheck);
     return checks;
   }
@@ -39,7 +39,7 @@ export class FederalComplianceService {
    */
   async validateDFARSCompliance(contractId: string): Promise<ComplianceCheck[]> {
     const checks: ComplianceCheck[] = [];
-    
+
     // Implement DFARS compliance validation logic for DoD contracts
     const dfarsCheck: ComplianceCheck = {
       id: `dfars_check_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -49,9 +49,9 @@ export class FederalComplianceService {
       status: 'PENDING',
       checkDate: new Date(),
       checkedBy: 'system_automated_check',
-      evidence: []
+      evidence: [],
     };
-    
+
     checks.push(dfarsCheck);
     return checks;
   }
@@ -69,30 +69,24 @@ export class FederalComplianceService {
       contractType: contractType as FederalContractingRequirement['contractType'],
       dollarThreshold: contractValue,
       competitionType: 'FULL_AND_OPEN',
-      requiredClauses: [
-        'FAR 52.204-21 Basic Safeguarding',
-        'FAR 52.225-5 Trade Agreements'
-      ],
-      requiredCertifications: [
-        'SAM Registration',
-        'Reps and Certs'
-      ],
+      requiredClauses: ['FAR 52.204-21 Basic Safeguarding', 'FAR 52.225-5 Trade Agreements'],
+      requiredCertifications: ['SAM Registration', 'Reps and Certs'],
       approvalLevels: [
         {
           threshold: 750000,
           approverRole: 'CONTRACTING_OFFICER',
           requiredCertifications: ['FAC-C Level II'],
-          delegationLimits: 10000000
-        }
+          delegationLimits: 10000000,
+        },
       ],
       socioeconomicRequirements: [
         {
           type: 'SMALL_BUSINESS',
           percentage: 23,
           mandatory: true,
-          applicableContracts: ['all']
-        }
-      ]
+          applicableContracts: ['all'],
+        },
+      ],
     };
   }
 
@@ -106,7 +100,7 @@ export class FederalComplianceService {
     recommendations: string[];
   }> {
     const checks = await this.validateFARCompliance(contractId);
-    
+
     return {
       overallStatus: 'COMPLIANT',
       complianceScore: 95,
@@ -114,8 +108,8 @@ export class FederalComplianceService {
       recommendations: [
         'Maintain current compliance practices',
         'Schedule quarterly reviews',
-        'Update documentation as needed'
-      ]
+        'Update documentation as needed',
+      ],
     };
   }
 
@@ -136,7 +130,7 @@ export class FederalComplianceService {
       performedDate: new Date(),
       regulatoryJustification: justification,
       impactAssessment: 'Low impact regulatory action',
-      approvalRequired: false
+      approvalRequired: false,
     };
   }
 
@@ -155,7 +149,7 @@ export class FederalComplianceService {
       fileName,
       uploadDate: new Date(),
       uploadedBy,
-      description: `Compliance evidence: ${fileName}`
+      description: `Compliance evidence: ${fileName}`,
     };
   }
 
@@ -173,11 +167,7 @@ export class FederalComplianceService {
     return {
       applicable: true,
       reason: 'Contract meets threshold and type criteria',
-      requirements: [
-        'Documentation required',
-        'Certification needed',
-        'Reporting obligations'
-      ]
+      requirements: ['Documentation required', 'Certification needed', 'Reporting obligations'],
     };
   }
 
@@ -208,8 +198,8 @@ export class FederalComplianceService {
         effectiveDate: new Date('2024-01-01'),
         applicableContracts: ['all'],
         complianceRequirements: [],
-        isActive: true
-      }
+        isActive: true,
+      },
     ];
   }
 }

@@ -10,13 +10,13 @@ import type {
   DashboardWidget,
   AlertSettings,
   ServiceCommandCenter,
-  ServiceResource
+  ServiceResource,
 } from '../types';
 
 export class ServiceDashboardService {
   private dashboards: Map<string, ServiceDashboard> = new Map();
   private realTimeData: Map<string, any> = new Map();
-  
+
   constructor(
     private logger?: any,
     private websocketService?: any,
@@ -37,40 +37,40 @@ export class ServiceDashboardService {
     customWidgets?: Partial<DashboardWidget>[];
   }): Promise<ServiceDashboard> {
     const dashboardId = `dashboard_${Date.now()}`;
-    
+
     // Generate role-based default widgets
     const defaultWidgets = this.generateRoleBasedWidgets(config.role);
-    
+
     const dashboard: ServiceDashboard = {
       dashboardId,
       userId: config.userId,
       role: config.role,
-      
+
       // Initialize with real-time KPIs
       realTimeKPIs: await this.generateRealTimeKPIs(config.commandCenterId),
-      
+
       // Configure widgets
       widgets: [
         ...defaultWidgets,
-        ...(config.customWidgets?.map(widget => this.createWidget(widget)) || [])
+        ...(config.customWidgets?.map((widget) => this.createWidget(widget)) || []),
       ],
-      
+
       // Set up alerts based on role
       alertSettings: this.generateRoleBasedAlerts(config.role),
-      
-      lastRefreshed: new Date()
+
+      lastRefreshed: new Date(),
     };
 
     this.dashboards.set(dashboardId, dashboard);
-    
+
     // Set up real-time updates
     await this.setupRealTimeUpdates(dashboardId);
-    
+
     this.logger?.info('Service dashboard created', {
       dashboardId,
       userId: config.userId,
       role: config.role,
-      widgetCount: dashboard.widgets.length
+      widgetCount: dashboard.widgets.length,
     });
 
     return dashboard;
@@ -83,44 +83,44 @@ export class ServiceDashboardService {
     // In a real implementation, this would query actual data sources
     const now = new Date();
     const last24Hours = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    
+
     const kpis: ServiceKPIs = {
       // Operational metrics (simulated real-time data)
       totalActiveWorkOrders: 127,
       averageResponseTime: 18.5, // minutes
       firstTimeFixRate: 89.3, // percentage
       customerSatisfactionScore: 4.7, // 1-10 scale
-      
+
       // Resource utilization
       technicianUtilization: 78.9, // percentage
       assetAvailability: 96.2, // percentage
       inventoryTurnover: 8.4,
-      
+
       // Financial metrics
       serviceRevenue: 485000, // Current period
       serviceCosts: 342000,
       profitMargin: 29.5, // percentage
-      
+
       // Quality metrics
       completionRate: 94.7, // percentage
       reopenRate: 3.8, // percentage
       escalationRate: 2.1, // percentage
-      
+
       // Generate trend data for the last 7 days
       trends: [
         {
           period: 'DAILY',
           data: Array.from({ length: 7 }, (_, i) => ({
             date: new Date(now.getTime() - (6 - i) * 24 * 60 * 60 * 1000),
-            value: 85 + Math.random() * 15 // Simulated daily completion rates
-          }))
-        }
-      ]
+            value: 85 + Math.random() * 15, // Simulated daily completion rates
+          })),
+        },
+      ],
     };
 
     // Cache for performance
     this.realTimeData.set(`kpis_${commandCenterId}`, kpis);
-    
+
     return kpis;
   }
 
@@ -147,7 +147,7 @@ export class ServiceDashboardService {
       this.websocketService.emit(`dashboard_${dashboardId}`, {
         type: 'KPI_UPDATE',
         data: dashboard.realTimeKPIs,
-        timestamp: new Date()
+        timestamp: new Date(),
       });
     }
 
@@ -157,13 +157,16 @@ export class ServiceDashboardService {
   /**
    * Generate service operations heat map
    */
-  async generateServiceHeatMap(commandCenterId: string, config: {
-    timeRange: { start: Date; end: Date; };
-    metric: 'WORKLOAD' | 'RESPONSE_TIME' | 'COMPLETION_RATE' | 'RESOURCE_DENSITY';
-    granularity: 'HOURLY' | 'DAILY' | 'WEEKLY';
-  }): Promise<{
+  async generateServiceHeatMap(
+    commandCenterId: string,
+    config: {
+      timeRange: { start: Date; end: Date };
+      metric: 'WORKLOAD' | 'RESPONSE_TIME' | 'COMPLETION_RATE' | 'RESOURCE_DENSITY';
+      granularity: 'HOURLY' | 'DAILY' | 'WEEKLY';
+    }
+  ): Promise<{
     heatMapData: {
-      location: { lat: number; lng: number; };
+      location: { lat: number; lng: number };
       value: number;
       intensity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
       details: {
@@ -176,49 +179,57 @@ export class ServiceDashboardService {
     summary: {
       totalDataPoints: number;
       averageIntensity: number;
-      hotspots: { lat: number; lng: number; severity: number; }[];
+      hotspots: { lat: number; lng: number; severity: number }[];
       recommendations: string[];
     };
   }> {
     // Generate simulated heat map data
     const heatMapData = Array.from({ length: 25 }, (_, i) => {
       const lat = 40.7128 + (Math.random() - 0.5) * 0.1; // NYC area
-      const lng = -74.0060 + (Math.random() - 0.5) * 0.1;
+      const lng = -74.006 + (Math.random() - 0.5) * 0.1;
       const workOrders = Math.floor(Math.random() * 20) + 1;
       const value = workOrders * (Math.random() * 0.5 + 0.5);
-      
+
       return {
         location: { lat, lng },
         value,
-        intensity: value > 15 ? 'CRITICAL' as const :
-                  value > 10 ? 'HIGH' as const :
-                  value > 5 ? 'MEDIUM' as const : 'LOW' as const,
+        intensity:
+          value > 15
+            ? ('CRITICAL' as const)
+            : value > 10
+              ? ('HIGH' as const)
+              : value > 5
+                ? ('MEDIUM' as const)
+                : ('LOW' as const),
         details: {
           workOrders,
           avgResponseTime: 15 + Math.random() * 20,
           completionRate: 85 + Math.random() * 15,
-          resourceCount: Math.floor(Math.random() * 8) + 1
-        }
+          resourceCount: Math.floor(Math.random() * 8) + 1,
+        },
       };
     });
 
     // Identify hotspots
     const hotspots = heatMapData
-      .filter(point => point.intensity === 'HIGH' || point.intensity === 'CRITICAL')
-      .map(point => ({
+      .filter((point) => point.intensity === 'HIGH' || point.intensity === 'CRITICAL')
+      .map((point) => ({
         lat: point.location.lat,
         lng: point.location.lng,
-        severity: point.value
+        severity: point.value,
       }))
       .sort((a, b) => b.severity - a.severity)
       .slice(0, 5);
 
-    const averageIntensity = heatMapData.reduce((sum, point) => sum + point.value, 0) / heatMapData.length;
+    const averageIntensity =
+      heatMapData.reduce((sum, point) => sum + point.value, 0) / heatMapData.length;
 
     const recommendations = [
-      hotspots.length > 0 ? `Deploy additional resources to ${hotspots.length} identified hotspots` : null,
+      hotspots.length > 0
+        ? `Deploy additional resources to ${hotspots.length} identified hotspots`
+        : null,
       averageIntensity > 10 ? 'Consider expanding service team capacity' : null,
-      'Optimize routing to reduce response times by 15%'
+      'Optimize routing to reduce response times by 15%',
     ].filter(Boolean) as string[];
 
     return {
@@ -227,8 +238,8 @@ export class ServiceDashboardService {
         totalDataPoints: heatMapData.length,
         averageIntensity,
         hotspots,
-        recommendations
-      }
+        recommendations,
+      },
     };
   }
 
@@ -245,8 +256,8 @@ export class ServiceDashboardService {
         size: 'MEDIUM' as const,
         position: { row: 1, col: 1 },
         config: { metrics: ['responseTime', 'completionRate', 'satisfaction'] },
-        refreshInterval: 30
-      }
+        refreshInterval: 30,
+      },
     ];
 
     switch (role) {
@@ -260,7 +271,7 @@ export class ServiceDashboardService {
             size: 'LARGE' as const,
             position: { row: 1, col: 2 },
             config: { showResources: true, showWorkOrders: true },
-            refreshInterval: 15
+            refreshInterval: 15,
           },
           {
             widgetId: `widget_queue_${Date.now()}`,
@@ -269,8 +280,8 @@ export class ServiceDashboardService {
             size: 'MEDIUM' as const,
             position: { row: 2, col: 1 },
             config: { sortBy: 'priority', maxItems: 10 },
-            refreshInterval: 10
-          }
+            refreshInterval: 10,
+          },
         ];
       case 'MANAGER':
         return [
@@ -282,8 +293,8 @@ export class ServiceDashboardService {
             size: 'LARGE' as const,
             position: { row: 1, col: 2 },
             config: { chartType: 'line', metrics: ['efficiency', 'costs'] },
-            refreshInterval: 60
-          }
+            refreshInterval: 60,
+          },
         ];
       case 'EXECUTIVE':
         return [
@@ -295,8 +306,8 @@ export class ServiceDashboardService {
             size: 'FULL_WIDTH' as const,
             position: { row: 1, col: 1 },
             config: { showFinancials: true, showProjections: true },
-            refreshInterval: 300
-          }
+            refreshInterval: 300,
+          },
         ];
       default:
         return baseWidgets;
@@ -310,14 +321,14 @@ export class ServiceDashboardService {
         emergencyAlerts: true,
         responseTimeDelay: role === 'DISPATCHER' ? 15 : role === 'MANAGER' ? 30 : 60,
         resourceShortage: role === 'DISPATCHER' ? 20 : 30,
-        customerSatisfactionDrop: role === 'MANAGER' || role === 'EXECUTIVE' ? 0.5 : 1.0
+        customerSatisfactionDrop: role === 'MANAGER' || role === 'EXECUTIVE' ? 0.5 : 1.0,
       },
       notifications: {
         email: role === 'MANAGER' || role === 'EXECUTIVE',
         sms: role === 'DISPATCHER',
         push: true,
-        dashboard: true
-      }
+        dashboard: true,
+      },
     };
   }
 
@@ -329,7 +340,7 @@ export class ServiceDashboardService {
       size: config.size || 'MEDIUM',
       position: config.position || { row: 1, col: 1 },
       config: config.config || {},
-      refreshInterval: config.refreshInterval || 60
+      refreshInterval: config.refreshInterval || 60,
     };
   }
 
@@ -341,7 +352,10 @@ export class ServiceDashboardService {
         widget.config.data = await this.getKPIData(widget.config.metrics);
         break;
       case 'CHART':
-        widget.config.chartData = await this.getChartData(widget.config.chartType, widget.config.metrics);
+        widget.config.chartData = await this.getChartData(
+          widget.config.chartType,
+          widget.config.metrics
+        );
         break;
       case 'MAP':
         widget.config.mapData = await this.getMapData(widget.config);
@@ -354,13 +368,13 @@ export class ServiceDashboardService {
 
   private async setupRealTimeUpdates(dashboardId: string): Promise<void> {
     if (!this.websocketService) return;
-    
+
     // Set up periodic updates based on widget refresh intervals
     const dashboard = this.dashboards.get(dashboardId);
     if (!dashboard) return;
 
-    const minRefreshInterval = Math.min(...dashboard.widgets.map(w => w.refreshInterval));
-    
+    const minRefreshInterval = Math.min(...dashboard.widgets.map((w) => w.refreshInterval));
+
     setInterval(async () => {
       await this.refreshDashboard(dashboardId);
     }, minRefreshInterval * 1000);
@@ -371,7 +385,7 @@ export class ServiceDashboardService {
     return {
       responseTime: 18.5,
       completionRate: 94.7,
-      satisfaction: 4.7
+      satisfaction: 4.7,
     };
   }
 
@@ -379,10 +393,12 @@ export class ServiceDashboardService {
     // Return simulated chart data
     return {
       labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      datasets: [{
-        label: 'Service Efficiency',
-        data: [85, 88, 92, 87, 94, 89, 91]
-      }]
+      datasets: [
+        {
+          label: 'Service Efficiency',
+          data: [85, 88, 92, 87, 94, 89, 91],
+        },
+      ],
     };
   }
 
@@ -390,13 +406,13 @@ export class ServiceDashboardService {
     // Return simulated map data
     return {
       resources: [
-        { id: 'tech1', lat: 40.7128, lng: -74.0060, status: 'AVAILABLE' },
-        { id: 'tech2', lat: 40.7589, lng: -73.9851, status: 'ASSIGNED' }
+        { id: 'tech1', lat: 40.7128, lng: -74.006, status: 'AVAILABLE' },
+        { id: 'tech2', lat: 40.7589, lng: -73.9851, status: 'ASSIGNED' },
       ],
       workOrders: [
         { id: 'wo1', lat: 40.7505, lng: -73.9934, priority: 'HIGH' },
-        { id: 'wo2', lat: 40.7282, lng: -74.0776, priority: 'MEDIUM' }
-      ]
+        { id: 'wo2', lat: 40.7282, lng: -74.0776, priority: 'MEDIUM' },
+      ],
     };
   }
 
@@ -404,23 +420,24 @@ export class ServiceDashboardService {
     // Return simulated list data
     return [
       { id: 'wo1', title: 'HVAC Repair', priority: 'HIGH', eta: '15 min' },
-      { id: 'wo2', title: 'Electrical Install', priority: 'MEDIUM', eta: '45 min' }
+      { id: 'wo2', title: 'Electrical Install', priority: 'MEDIUM', eta: '45 min' },
     ];
   }
 
   /**
    * Get real-time analytics data for service operations
    */
-  async getAnalyticsData(options: {
-    timeRange?: string;
-    metrics?: string[];
-  }): Promise<any> {
+  async getAnalyticsData(options: { timeRange?: string; metrics?: string[] }): Promise<any> {
     const timeRange = options.timeRange || '7d';
-    const metrics = options.metrics || ['response_time', 'completion_rate', 'customer_satisfaction'];
-    
+    const metrics = options.metrics || [
+      'response_time',
+      'completion_rate',
+      'customer_satisfaction',
+    ];
+
     // Generate time series data based on timeRange
     const dataPoints = this.generateTimeSeriesData(timeRange);
-    
+
     const analytics = {
       timeRange,
       metrics: {},
@@ -428,17 +445,17 @@ export class ServiceDashboardService {
         totalWorkOrders: 127,
         completionRate: 94.7,
         averageResponseTime: 18.5,
-        customerSatisfaction: 4.7
+        customerSatisfaction: 4.7,
       },
       trends: {
         responseTime: this.generateTrendData('response_time', dataPoints),
         completionRate: this.generateTrendData('completion_rate', dataPoints),
-        customerSatisfaction: this.generateTrendData('customer_satisfaction', dataPoints)
+        customerSatisfaction: this.generateTrendData('customer_satisfaction', dataPoints),
       },
-      forecasts: this.generateForecastData(metrics, dataPoints)
+      forecasts: this.generateForecastData(metrics, dataPoints),
     };
 
-    metrics.forEach(metric => {
+    metrics.forEach((metric) => {
       analytics.metrics[metric] = this.getMetricData(metric, dataPoints);
     });
 
@@ -448,21 +465,17 @@ export class ServiceDashboardService {
   /**
    * Enhanced map data for service operations (made public for API access)
    */
-  async getMapData(options: {
-    layers?: string[];
-    bounds?: any;
-    filters?: any;
-  }): Promise<any> {
+  async getMapData(options: { layers?: string[]; bounds?: any; filters?: any }): Promise<any> {
     const layers = options.layers || ['technicians', 'work-orders'];
-    
+
     const mapData: any = {
       bounds: options.bounds || {
         north: 40.8,
         south: 40.7,
         east: -73.9,
-        west: -74.1
+        west: -74.1,
       },
-      layers: {}
+      layers: {},
     };
 
     if (layers.includes('technicians')) {
@@ -503,81 +516,90 @@ export class ServiceDashboardService {
 
     for (let i = pointCount - 1; i >= 0; i--) {
       dataPoints.push({
-        timestamp: new Date(now.getTime() - (i * intervalMs)),
-        value: 0.8 + Math.random() * 0.4 // Base value with some variation
+        timestamp: new Date(now.getTime() - i * intervalMs),
+        value: 0.8 + Math.random() * 0.4, // Base value with some variation
       });
     }
 
     return dataPoints;
   }
 
-  private generateTrendData(metric: string, dataPoints: Array<{ timestamp: Date; value: number }>): any {
+  private generateTrendData(
+    metric: string,
+    dataPoints: Array<{ timestamp: Date; value: number }>
+  ): any {
     const baseValues = {
       response_time: 18.5,
       completion_rate: 94.7,
-      customer_satisfaction: 4.7
+      customer_satisfaction: 4.7,
     };
 
     const baseValue = baseValues[metric as keyof typeof baseValues] || 50;
-    
+
     return {
       current: baseValue,
-      trend: dataPoints.map(point => ({
+      trend: dataPoints.map((point) => ({
         timestamp: point.timestamp,
-        value: baseValue * (0.9 + point.value * 0.2) // ±10% variation
+        value: baseValue * (0.9 + point.value * 0.2), // ±10% variation
       })),
       change: Math.random() > 0.5 ? 'improving' : 'stable',
-      changePercent: (Math.random() * 10 - 5).toFixed(1) // -5% to +5%
+      changePercent: (Math.random() * 10 - 5).toFixed(1), // -5% to +5%
     };
   }
 
-  private generateForecastData(metrics: string[], dataPoints: Array<{ timestamp: Date; value: number }>): any {
+  private generateForecastData(
+    metrics: string[],
+    dataPoints: Array<{ timestamp: Date; value: number }>
+  ): any {
     const forecasts: any = {};
-    
-    metrics.forEach(metric => {
+
+    metrics.forEach((metric) => {
       forecasts[metric] = {
         nextHour: Math.random() * 100,
         nextDay: Math.random() * 100,
         nextWeek: Math.random() * 100,
-        confidence: 0.85 + Math.random() * 0.1
+        confidence: 0.85 + Math.random() * 0.1,
       };
     });
 
     return forecasts;
   }
 
-  private getMetricData(metric: string, dataPoints: Array<{ timestamp: Date; value: number }>): any {
+  private getMetricData(
+    metric: string,
+    dataPoints: Array<{ timestamp: Date; value: number }>
+  ): any {
     return {
       current: Math.random() * 100,
       average: Math.random() * 100,
       min: Math.random() * 50,
       max: 50 + Math.random() * 50,
-      trend: dataPoints.map(point => ({
+      trend: dataPoints.map((point) => ({
         timestamp: point.timestamp,
-        value: Math.random() * 100
-      }))
+        value: Math.random() * 100,
+      })),
     };
   }
 
   private async getTechnicianMapData(): Promise<any> {
     return [
-      { 
-        id: 'tech1', 
-        lat: 40.7128, 
-        lng: -74.0060, 
+      {
+        id: 'tech1',
+        lat: 40.7128,
+        lng: -74.006,
         status: 'AVAILABLE',
         name: 'John Smith',
         skills: ['HVAC', 'Electrical'],
-        currentWorkOrder: null
+        currentWorkOrder: null,
       },
-      { 
-        id: 'tech2', 
-        lat: 40.7589, 
-        lng: -73.9851, 
+      {
+        id: 'tech2',
+        lat: 40.7589,
+        lng: -73.9851,
         status: 'ASSIGNED',
         name: 'Sarah Johnson',
         skills: ['Plumbing', 'General'],
-        currentWorkOrder: 'wo_002'
+        currentWorkOrder: 'wo_002',
       },
       {
         id: 'tech3',
@@ -586,33 +608,33 @@ export class ServiceDashboardService {
         status: 'ON_SITE',
         name: 'Mike Davis',
         skills: ['Electrical', 'HVAC'],
-        currentWorkOrder: 'wo_001'
-      }
+        currentWorkOrder: 'wo_001',
+      },
     ];
   }
 
   private async getWorkOrderMapData(): Promise<any> {
     return [
-      { 
-        id: 'wo_001', 
-        lat: 40.7505, 
-        lng: -73.9934, 
+      {
+        id: 'wo_001',
+        lat: 40.7505,
+        lng: -73.9934,
         priority: 'HIGH',
         title: 'HVAC System Repair',
         status: 'IN_PROGRESS',
         customer: 'Acme Corp',
-        assignedTechnician: 'tech3'
+        assignedTechnician: 'tech3',
       },
-      { 
-        id: 'wo_002', 
-        lat: 40.7282, 
-        lng: -74.0776, 
+      {
+        id: 'wo_002',
+        lat: 40.7282,
+        lng: -74.0776,
         priority: 'MEDIUM',
         title: 'Electrical Inspection',
         status: 'ASSIGNED',
         customer: 'Beta LLC',
-        assignedTechnician: 'tech2'
-      }
+        assignedTechnician: 'tech2',
+      },
     ];
   }
 
@@ -625,10 +647,10 @@ export class ServiceDashboardService {
           north: 40.785,
           south: 40.715,
           east: -73.95,
-          west: -74.05
+          west: -74.05,
         },
         activeTechnicians: 8,
-        workOrderCount: 15
+        workOrderCount: 15,
       },
       {
         id: 'area_2',
@@ -637,11 +659,11 @@ export class ServiceDashboardService {
           north: 40.75,
           south: 40.68,
           east: -73.95,
-          west: -74.05
+          west: -74.05,
         },
         activeTechnicians: 5,
-        workOrderCount: 12
-      }
+        workOrderCount: 12,
+      },
     ];
   }
 }

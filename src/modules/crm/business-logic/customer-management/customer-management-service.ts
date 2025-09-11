@@ -38,18 +38,19 @@ export interface HealthScoreFactor {
 }
 
 export class CRMCustomerService {
-  
   /**
    * Customer Segmentation
    */
-  async createCustomerSegment(segment: Omit<CustomerSegment, 'id' | 'customerCount'>): Promise<CustomerSegment> {
+  async createCustomerSegment(
+    segment: Omit<CustomerSegment, 'id' | 'customerCount'>
+  ): Promise<CustomerSegment> {
     const id = `segment_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const customerCount = await this.calculateSegmentSize(segment.criteria);
-    
+
     return {
       ...segment,
       id,
-      customerCount
+      customerCount,
     };
   }
 
@@ -59,12 +60,14 @@ export class CRMCustomerService {
     return 245; // Mock count
   }
 
-  async getCustomersBySegment(segmentId: string): Promise<Array<{
-    customerId: string;
-    customerName: string;
-    revenue: number;
-    lastInteraction: Date;
-  }>> {
+  async getCustomersBySegment(segmentId: string): Promise<
+    Array<{
+      customerId: string;
+      customerName: string;
+      revenue: number;
+      lastInteraction: Date;
+    }>
+  > {
     console.log(`Retrieving customers for segment ${segmentId}`);
     // Implementation would return actual customer data
     return [];
@@ -83,7 +86,7 @@ export class CRMCustomerService {
       averageOrderValue: 5100,
       customerLifetimeValue: 45000,
       churnRate: 0.08,
-      growthRate: 0.15
+      growthRate: 0.15,
     };
   }
 
@@ -95,14 +98,14 @@ export class CRMCustomerService {
     const score = this.computeHealthScore(factors);
     const riskLevel = this.determineRiskLevel(score);
     const recommendations = this.generateHealthRecommendations(factors, riskLevel);
-    
+
     return {
       customerId,
       score,
       factors,
       riskLevel,
       recommendations,
-      lastCalculated: new Date()
+      lastCalculated: new Date(),
     };
   }
 
@@ -114,40 +117,40 @@ export class CRMCustomerService {
         factor: 'Payment History',
         weight: 0.25,
         score: 95,
-        trend: 'STABLE'
+        trend: 'STABLE',
       },
       {
         factor: 'Engagement Level',
-        weight: 0.20,
+        weight: 0.2,
         score: 78,
-        trend: 'IMPROVING'
+        trend: 'IMPROVING',
       },
       {
         factor: 'Support Case Volume',
         weight: 0.15,
         score: 65,
-        trend: 'DECLINING'
+        trend: 'DECLINING',
       },
       {
         factor: 'Product Adoption',
-        weight: 0.20,
+        weight: 0.2,
         score: 82,
-        trend: 'IMPROVING'
+        trend: 'IMPROVING',
       },
       {
         factor: 'Contract Renewal Risk',
-        weight: 0.20,
+        weight: 0.2,
         score: 88,
-        trend: 'STABLE'
-      }
+        trend: 'STABLE',
+      },
     ];
   }
 
   private computeHealthScore(factors: HealthScoreFactor[]): number {
     const weightedScore = factors.reduce((sum, factor) => {
-      return sum + (factor.score * factor.weight);
+      return sum + factor.score * factor.weight;
     }, 0);
-    
+
     return Math.round(weightedScore);
   }
 
@@ -159,18 +162,18 @@ export class CRMCustomerService {
 
   private generateHealthRecommendations(factors: HealthScoreFactor[], riskLevel: string): string[] {
     const recommendations: string[] = [];
-    
+
     if (riskLevel === 'HIGH') {
       recommendations.push('Schedule immediate customer success check-in');
       recommendations.push('Review contract terms and identify retention incentives');
     }
-    
-    factors.forEach(factor => {
+
+    factors.forEach((factor) => {
       if (factor.trend === 'DECLINING' && factor.score < 70) {
         recommendations.push(`Address declining ${factor.factor.toLowerCase()}`);
       }
     });
-    
+
     return recommendations;
   }
 
@@ -183,19 +186,22 @@ export class CRMCustomerService {
   /**
    * Customer Lifecycle Management
    */
-  async onboardNewCustomer(customerId: string, onboardingPlan: {
-    milestones: string[];
-    timelineDays: number;
-    assignedCsm: string;
-  }): Promise<void> {
+  async onboardNewCustomer(
+    customerId: string,
+    onboardingPlan: {
+      milestones: string[];
+      timelineDays: number;
+      assignedCsm: string;
+    }
+  ): Promise<void> {
     console.log(`Starting onboarding for customer ${customerId}`, onboardingPlan);
-    
+
     // Create onboarding tasks
     await this.createOnboardingTasks(customerId, onboardingPlan);
-    
+
     // Assign customer success manager
     await this.assignCustomerSuccessManager(customerId, onboardingPlan.assignedCsm);
-    
+
     // Schedule check-in meetings
     await this.scheduleOnboardingCheckIns(customerId, onboardingPlan.timelineDays);
   }
@@ -208,18 +214,25 @@ export class CRMCustomerService {
     console.log(`Assigning CSM ${csmId} to customer ${customerId}`);
   }
 
-  private async scheduleOnboardingCheckIns(customerId: string, timelineDays: number): Promise<void> {
-    console.log(`Scheduling onboarding check-ins for customer ${customerId} over ${timelineDays} days`);
+  private async scheduleOnboardingCheckIns(
+    customerId: string,
+    timelineDays: number
+  ): Promise<void> {
+    console.log(
+      `Scheduling onboarding check-ins for customer ${customerId} over ${timelineDays} days`
+    );
   }
 
-  async trackCustomerJourney(customerId: string): Promise<Array<{
-    stage: string;
-    entryDate: Date;
-    duration: number;
-    touchpoints: Array<{ type: string; date: Date; outcome: string }>;
-  }>> {
+  async trackCustomerJourney(customerId: string): Promise<
+    Array<{
+      stage: string;
+      entryDate: Date;
+      duration: number;
+      touchpoints: Array<{ type: string; date: Date; outcome: string }>;
+    }>
+  > {
     console.log(`Tracking customer journey for ${customerId}`);
-    
+
     // Implementation would return actual journey data
     return [
       {
@@ -227,19 +240,35 @@ export class CRMCustomerService {
         entryDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
         duration: 30,
         touchpoints: [
-          { type: 'WEBSITE_VISIT', date: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000), outcome: 'ENGAGED' },
-          { type: 'EMAIL_CAMPAIGN', date: new Date(Date.now() - 85 * 24 * 60 * 60 * 1000), outcome: 'OPENED' }
-        ]
+          {
+            type: 'WEBSITE_VISIT',
+            date: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
+            outcome: 'ENGAGED',
+          },
+          {
+            type: 'EMAIL_CAMPAIGN',
+            date: new Date(Date.now() - 85 * 24 * 60 * 60 * 1000),
+            outcome: 'OPENED',
+          },
+        ],
       },
       {
         stage: 'CUSTOMER',
         entryDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
         duration: 60,
         touchpoints: [
-          { type: 'PURCHASE', date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000), outcome: 'COMPLETED' },
-          { type: 'ONBOARDING', date: new Date(Date.now() - 55 * 24 * 60 * 60 * 1000), outcome: 'SUCCESSFUL' }
-        ]
-      }
+          {
+            type: 'PURCHASE',
+            date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
+            outcome: 'COMPLETED',
+          },
+          {
+            type: 'ONBOARDING',
+            date: new Date(Date.now() - 55 * 24 * 60 * 60 * 1000),
+            outcome: 'SUCCESSFUL',
+          },
+        ],
+      },
     ];
   }
 
@@ -257,17 +286,16 @@ export class CRMCustomerService {
     // CLV calculation using historical data and predictive modeling
     const historicalValue = await this.getHistoricalCustomerValue(customerId);
     const metrics = await this.getCustomerMetrics(customerId);
-    
-    const predictedValue = (
-      metrics.averageOrderValue * 
-      metrics.purchaseFrequency * 
-      (metrics.retentionRate / (1 + 0.1 - metrics.retentionRate)) // Discount rate assumption
-    );
-    
+
+    const predictedValue =
+      metrics.averageOrderValue *
+      metrics.purchaseFrequency *
+      (metrics.retentionRate / (1 + 0.1 - metrics.retentionRate)); // Discount rate assumption
+
     return {
       historicalValue,
       predictedValue,
-      ...metrics
+      ...metrics,
     };
   }
 
@@ -287,19 +315,21 @@ export class CRMCustomerService {
       averageOrderValue: 5200,
       purchaseFrequency: 4.2, // purchases per year
       retentionRate: 0.85,
-      profitMargin: 0.32
+      profitMargin: 0.32,
     };
   }
 
-  async identifyUpsellOpportunities(customerId: string): Promise<Array<{
-    productId: string;
-    productName: string;
-    probability: number;
-    potentialRevenue: number;
-    reasoning: string[];
-  }>> {
+  async identifyUpsellOpportunities(customerId: string): Promise<
+    Array<{
+      productId: string;
+      productName: string;
+      probability: number;
+      potentialRevenue: number;
+      reasoning: string[];
+    }>
+  > {
     console.log(`Identifying upsell opportunities for customer ${customerId}`);
-    
+
     // Implementation would use ML models and purchase history
     return [
       {
@@ -310,9 +340,9 @@ export class CRMCustomerService {
         reasoning: [
           'Customer has maxed out current plan usage',
           'Similar customers have upgraded within 6 months',
-          'High engagement with advanced feature trials'
-        ]
-      }
+          'High engagement with advanced feature trials',
+        ],
+      },
     ];
   }
 
@@ -324,7 +354,7 @@ export class CRMCustomerService {
     timeToChurn: number; // days
   }> {
     console.log(`Predicting churn risk for customer ${customerId}`);
-    
+
     // Implementation would use ML models trained on historical churn data
     return {
       riskScore: 35,
@@ -332,14 +362,14 @@ export class CRMCustomerService {
       keyRiskFactors: [
         'Decreased product usage last 30 days',
         'Multiple support cases opened recently',
-        'No executive engagement in 90 days'
+        'No executive engagement in 90 days',
       ],
       retentionRecommendations: [
         'Schedule executive business review',
         'Provide additional product training',
-        'Offer loyalty incentive or discount'
+        'Offer loyalty incentive or discount',
       ],
-      timeToChurn: 120
+      timeToChurn: 120,
     };
   }
 }

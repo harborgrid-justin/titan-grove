@@ -14,18 +14,18 @@ export enum TechnicianStatus {
   OFF_DUTY = 'OFF_DUTY',
   IN_TRANSIT = 'IN_TRANSIT',
   ON_BREAK = 'ON_BREAK',
-  EMERGENCY = 'EMERGENCY'
+  EMERGENCY = 'EMERGENCY',
 }
 
 export enum ServiceType {
   INSTALLATION = 'INSTALLATION',
-  MAINTENANCE = 'MAINTENANCE', 
+  MAINTENANCE = 'MAINTENANCE',
   REPAIR = 'REPAIR',
   INSPECTION = 'INSPECTION',
   CALIBRATION = 'CALIBRATION',
   EMERGENCY = 'EMERGENCY',
   PREVENTIVE = 'PREVENTIVE',
-  CORRECTIVE = 'CORRECTIVE'
+  CORRECTIVE = 'CORRECTIVE',
 }
 
 export enum WorkOrderStatus {
@@ -36,7 +36,7 @@ export enum WorkOrderStatus {
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
   POSTPONED = 'POSTPONED',
-  REQUIRES_APPROVAL = 'REQUIRES_APPROVAL'
+  REQUIRES_APPROVAL = 'REQUIRES_APPROVAL',
 }
 
 export enum SkillLevel {
@@ -44,7 +44,7 @@ export enum SkillLevel {
   INTERMEDIATE = 'INTERMEDIATE',
   ADVANCED = 'ADVANCED',
   EXPERT = 'EXPERT',
-  MASTER = 'MASTER'
+  MASTER = 'MASTER',
 }
 
 export enum Priority {
@@ -53,7 +53,7 @@ export enum Priority {
   HIGH = 'HIGH',
   URGENT = 'URGENT',
   CRITICAL = 'CRITICAL',
-  EMERGENCY = 'EMERGENCY'
+  EMERGENCY = 'EMERGENCY',
 }
 
 // ================================
@@ -222,7 +222,12 @@ export interface OptimizationParameters {
 }
 
 export interface OptimizationObjective {
-  type: 'MINIMIZE_TRAVEL' | 'MAXIMIZE_UTILIZATION' | 'MINIMIZE_OVERTIME' | 'MAXIMIZE_SLA_COMPLIANCE' | 'BALANCE_WORKLOAD';
+  type:
+    | 'MINIMIZE_TRAVEL'
+    | 'MAXIMIZE_UTILIZATION'
+    | 'MINIMIZE_OVERTIME'
+    | 'MAXIMIZE_SLA_COMPLIANCE'
+    | 'BALANCE_WORKLOAD';
   weight: number; // 0-1, sum of all weights should be 1
   priority: number; // 1-10
 }

@@ -15,7 +15,7 @@ export interface Asset {
   assetType: 'EQUIPMENT' | 'MACHINERY' | 'VEHICLE' | 'BUILDING' | 'IT_ASSET' | 'INFRASTRUCTURE';
   category: string;
   subCategory: string;
-  
+
   // Classification and hierarchy
   assetClass: 'PRODUCTION' | 'SUPPORT' | 'FACILITY' | 'IT' | 'SAFETY' | 'ENVIRONMENTAL';
   hierarchy: {
@@ -24,7 +24,7 @@ export interface Asset {
     path: string;
     children: string[];
   };
-  
+
   // Technical specifications
   specifications: {
     manufacturer: string;
@@ -40,7 +40,7 @@ export interface Asset {
     };
     technicalSpecs: Record<string, any>;
   };
-  
+
   // Location and installation
   location: {
     facilityId: string;
@@ -49,17 +49,17 @@ export interface Asset {
     building?: string;
     floor?: string;
     room?: string;
-    coordinates?: { lat: number; lng: number; };
+    coordinates?: { lat: number; lng: number };
     address: string;
   };
-  
+
   installationDetails: {
     installationDate: Date;
     commissioningDate?: Date;
     installedBy: string;
     installationCost: number;
   };
-  
+
   // Financial information
   financialInfo: {
     purchasePrice: number;
@@ -69,7 +69,7 @@ export interface Asset {
     residualValue: number;
     totalCostOfOwnership: number;
   };
-  
+
   // Operational status
   operationalStatus: {
     status: 'OPERATIONAL' | 'NON_OPERATIONAL' | 'MAINTENANCE' | 'RETIRED' | 'DISPOSED';
@@ -78,7 +78,7 @@ export interface Asset {
     availability: number; // 0-100%
     utilizationRate: number; // 0-100%
   };
-  
+
   // Maintenance information
   maintenanceInfo: {
     maintenanceStrategy: 'REACTIVE' | 'PREVENTIVE' | 'PREDICTIVE' | 'RUN_TO_FAILURE';
@@ -87,16 +87,22 @@ export interface Asset {
     nextMaintenanceDate?: Date;
     maintenanceCostYTD: number;
   };
-  
+
   // Lifecycle information
   lifecycle: {
-    lifecycleStage: 'PLANNING' | 'PROCUREMENT' | 'INSTALLATION' | 'OPERATION' | 'MAINTENANCE' | 'DISPOSAL';
+    lifecycleStage:
+      | 'PLANNING'
+      | 'PROCUREMENT'
+      | 'INSTALLATION'
+      | 'OPERATION'
+      | 'MAINTENANCE'
+      | 'DISPOSAL';
     expectedLifespan: number; // years
     remainingLife: number; // years
     replacementDate?: Date;
     disposalPlan?: string;
   };
-  
+
   // Safety and compliance
   safetyInfo: {
     safetyClassification: 'STANDARD' | 'HAZARDOUS' | 'CRITICAL_SAFETY' | 'ENVIRONMENTAL';
@@ -109,7 +115,7 @@ export interface Asset {
       status: 'ACTIVE' | 'EXPIRED' | 'SUSPENDED';
     }[];
   };
-  
+
   // Documentation
   documentation: {
     manuals: string[];
@@ -118,14 +124,14 @@ export interface Asset {
     warranties: string[];
     photos: string[];
   };
-  
+
   // Relationships
   relationships: {
     dependencies: string[]; // Asset IDs this asset depends on
     dependents: string[]; // Asset IDs that depend on this asset
     spares: string[]; // Spare parts associated with this asset
   };
-  
+
   createdBy: string;
   createdDate: Date;
   lastUpdated: Date;
@@ -136,26 +142,26 @@ export interface AssetHierarchy {
   hierarchyName: string;
   hierarchyType: 'LOCATION' | 'FUNCTIONAL' | 'SYSTEM' | 'PROCESS';
   rootAssetId: string;
-  
+
   structure: {
-    level1: { id: string; name: string; type: string; }[];
-    level2: { id: string; name: string; type: string; parentId: string; }[];
-    level3: { id: string; name: string; type: string; parentId: string; }[];
-    level4: { id: string; name: string; type: string; parentId: string; }[];
-    level5: { id: string; name: string; type: string; parentId: string; }[];
+    level1: { id: string; name: string; type: string }[];
+    level2: { id: string; name: string; type: string; parentId: string }[];
+    level3: { id: string; name: string; type: string; parentId: string }[];
+    level4: { id: string; name: string; type: string; parentId: string }[];
+    level5: { id: string; name: string; type: string; parentId: string }[];
   };
-  
+
   relationships: {
-    parentChildRelations: { parentId: string; childId: string; relationshipType: string; }[];
-    systemConnections: { fromAssetId: string; toAssetId: string; connectionType: string; }[];
+    parentChildRelations: { parentId: string; childId: string; relationshipType: string }[];
+    systemConnections: { fromAssetId: string; toAssetId: string; connectionType: string }[];
   };
-  
+
   visualRepresentation?: {
     diagramType: 'TREE' | 'NETWORK' | 'SCHEMATIC';
     layout: any;
-    positions: Record<string, { x: number; y: number; }>;
+    positions: Record<string, { x: number; y: number }>;
   };
-  
+
   createdDate: Date;
   lastUpdated: Date;
 }
@@ -165,19 +171,25 @@ export interface MaintenanceSchedule {
   assetId: string;
   scheduleName: string;
   scheduleType: 'CALENDAR_BASED' | 'USAGE_BASED' | 'CONDITION_BASED' | 'PREDICTIVE';
-  
+
   // Schedule parameters
   frequency: {
     type: 'HOURS' | 'DAYS' | 'WEEKS' | 'MONTHS' | 'CYCLES' | 'MILEAGE';
     interval: number;
     tolerance?: number; // +/- days
   };
-  
+
   // Maintenance details
-  maintenanceType: 'INSPECTION' | 'LUBRICATION' | 'REPLACEMENT' | 'REPAIR' | 'OVERHAUL' | 'CALIBRATION';
+  maintenanceType:
+    | 'INSPECTION'
+    | 'LUBRICATION'
+    | 'REPLACEMENT'
+    | 'REPAIR'
+    | 'OVERHAUL'
+    | 'CALIBRATION';
   workDescription: string;
   estimatedDuration: number; // hours
-  
+
   // Planning information
   planningDetails: {
     leadTime: number; // days
@@ -185,7 +197,7 @@ export interface MaintenanceSchedule {
     autoGenerateWorkOrders: boolean;
     workOrderTemplate?: string;
   };
-  
+
   // Resource requirements
   resources: {
     skillsRequired: string[];
@@ -198,7 +210,7 @@ export interface MaintenanceSchedule {
     }[];
     estimatedCost: number;
   };
-  
+
   // Schedule execution
   execution: {
     nextScheduledDate: Date;
@@ -207,7 +219,7 @@ export interface MaintenanceSchedule {
     averageCompletionTime?: number;
     complianceRate: number; // percentage
   };
-  
+
   // Performance tracking
   performance: {
     costPerExecution: number;
@@ -215,7 +227,7 @@ export interface MaintenanceSchedule {
     downtime: number; // hours
     costSavings: number;
   };
-  
+
   status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | 'EXPIRED';
   createdBy: string;
   approvedBy?: string;
@@ -228,13 +240,13 @@ export interface WorkOrder {
   workOrderNumber: string;
   assetId: string;
   workOrderType: 'CORRECTIVE' | 'PREVENTIVE' | 'PREDICTIVE' | 'PROJECT' | 'EMERGENCY' | 'SHUTDOWN';
-  
+
   // Work order details
   description: string;
   problemDescription?: string;
   workInstructions: string;
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'EMERGENCY';
-  
+
   // Scheduling
   scheduling: {
     requestedDate: Date;
@@ -245,7 +257,7 @@ export interface WorkOrder {
     estimatedDuration: number; // hours
     actualDuration?: number; // hours
   };
-  
+
   // Assignment
   assignment: {
     assignedTo?: string; // Person ID
@@ -253,7 +265,7 @@ export interface WorkOrder {
     assignedCraftSkills: string[];
     supervisorId?: string;
   };
-  
+
   // Parts and materials
   materials: {
     requestedParts: {
@@ -263,17 +275,17 @@ export interface WorkOrder {
       unitCost: number;
       availability: 'AVAILABLE' | 'ORDER_REQUIRED' | 'BACKORDERED';
     }[];
-    
+
     actualPartsUsed?: {
       partNumber: string;
       quantity: number;
       unitCost: number;
       issueDate: Date;
     }[];
-    
+
     totalMaterialCost: number;
   };
-  
+
   // Labor tracking
   labor: {
     plannedLabor: {
@@ -281,7 +293,7 @@ export interface WorkOrder {
       estimatedHours: number;
       hourlyRate: number;
     }[];
-    
+
     actualLabor?: {
       personId: string;
       craftSkill: string;
@@ -290,10 +302,10 @@ export interface WorkOrder {
       hours: number;
       hourlyRate: number;
     }[];
-    
+
     totalLaborCost: number;
   };
-  
+
   // Safety and permits
   safety: {
     permitRequired: boolean;
@@ -304,12 +316,12 @@ export interface WorkOrder {
       expirationDate: Date;
       status: 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
     }[];
-    
+
     safetyProcedures: string[];
     hazardAnalysis?: string;
     lockoutTagout?: boolean;
   };
-  
+
   // Quality and completion
   completion: {
     workCompleted: string;
@@ -319,14 +331,14 @@ export interface WorkOrder {
       comments?: string;
       inspectorId?: string;
     }[];
-    
+
     completionCertification?: {
       certifiedBy: string;
       certificationDate: Date;
       remarks: string;
     };
   };
-  
+
   // Follow-up
   followUp: {
     followUpRequired: boolean;
@@ -334,7 +346,7 @@ export interface WorkOrder {
     followUpWorkOrder?: string;
     recommendedActions?: string[];
   };
-  
+
   // Financial tracking
   costs: {
     budgetedCost: number;
@@ -347,9 +359,17 @@ export interface WorkOrder {
       overheadCost: number;
     };
   };
-  
-  status: 'CREATED' | 'PLANNED' | 'APPROVED' | 'RELEASED' | 'IN_PROGRESS' | 'HOLD' | 'COMPLETED' | 'CANCELLED';
-  
+
+  status:
+    | 'CREATED'
+    | 'PLANNED'
+    | 'APPROVED'
+    | 'RELEASED'
+    | 'IN_PROGRESS'
+    | 'HOLD'
+    | 'COMPLETED'
+    | 'CANCELLED';
+
   // History and audit
   history: {
     statusChanges: {
@@ -359,7 +379,7 @@ export interface WorkOrder {
       changedBy: string;
       reason?: string;
     }[];
-    
+
     modifications: {
       fieldChanged: string;
       oldValue: any;
@@ -368,7 +388,7 @@ export interface WorkOrder {
       changedBy: string;
     }[];
   };
-  
+
   createdBy: string;
   createdDate: Date;
   lastUpdated: Date;
@@ -381,14 +401,14 @@ export interface AssetPerformance {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Reliability metrics
   reliability: {
     mtbf: number; // Mean Time Between Failures (hours)
     mttr: number; // Mean Time To Repair (hours)
     failureRate: number; // failures per unit time
     reliabilityScore: number; // 0-100%
-    
+
     failures: {
       failureDate: Date;
       failureMode: string;
@@ -397,7 +417,7 @@ export interface AssetPerformance {
       rootCause?: string;
     }[];
   };
-  
+
   // Availability metrics
   availability: {
     operationalTime: number; // hours
@@ -405,7 +425,7 @@ export interface AssetPerformance {
     availabilityPercentage: number;
     plannedDowntime: number; // hours
     unplannedDowntime: number; // hours
-    
+
     downtimeEvents: {
       startTime: Date;
       endTime: Date;
@@ -414,14 +434,14 @@ export interface AssetPerformance {
       type: 'PLANNED' | 'UNPLANNED';
     }[];
   };
-  
+
   // Utilization metrics
   utilization: {
     actualRunTime: number; // hours
     availableTime: number; // hours
     utilizationRate: number; // percentage
     idleTime: number; // hours
-    
+
     operatingConditions: {
       averageLoad: number; // percentage of capacity
       peakLoad: number;
@@ -429,14 +449,14 @@ export interface AssetPerformance {
       operatingHours: number;
     };
   };
-  
+
   // Maintenance effectiveness
   maintenance: {
     totalMaintenanceCost: number;
     preventiveMaintenanceCost: number;
     correctiveMaintenanceCost: number;
     maintenanceHours: number;
-    
+
     maintenanceEvents: {
       eventDate: Date;
       maintenanceType: string;
@@ -444,10 +464,10 @@ export interface AssetPerformance {
       cost: number;
       effectiveness: number; // 1-10 scale
     }[];
-    
+
     maintenanceRatio: number; // PM hours / total maintenance hours
   };
-  
+
   // Cost performance
   costs: {
     operatingCost: number;
@@ -455,14 +475,14 @@ export interface AssetPerformance {
     totalCostOfOwnership: number;
     costPerOperatingHour: number;
     costPerUnit: number; // cost per unit of production
-    
+
     costTrends: {
       period: string;
       operatingCost: number;
       maintenanceCost: number;
     }[];
   };
-  
+
   // Performance indicators
   kpis: {
     oee: number; // Overall Equipment Effectiveness
@@ -471,7 +491,7 @@ export interface AssetPerformance {
     conditionScore: number;
     riskScore: number;
   };
-  
+
   // Benchmarking
   benchmarks: {
     industryAverage?: {
@@ -480,14 +500,14 @@ export interface AssetPerformance {
       mttr: number;
       costPerHour: number;
     };
-    
+
     internalBenchmark?: {
       bestPerformingAsset: string;
       performanceGap: number;
       improvementPotential: number;
     };
   };
-  
+
   // Predictive insights
   predictions: {
     nextFailurePrediction?: {
@@ -495,7 +515,7 @@ export interface AssetPerformance {
       confidence: number;
       failureMode: string;
     };
-    
+
     maintenanceRecommendations: {
       recommendationType: string;
       priority: string;
@@ -503,7 +523,7 @@ export interface AssetPerformance {
       estimatedBenefit: number;
     }[];
   };
-  
+
   lastUpdated: Date;
 }
 
@@ -511,7 +531,7 @@ export interface MaintenancePlan {
   planId: string;
   planName: string;
   planType: 'ASSET_SPECIFIC' | 'ASSET_GROUP' | 'SYSTEM_WIDE' | 'FACILITY_WIDE';
-  
+
   // Plan scope
   scope: {
     assetIds: string[];
@@ -519,20 +539,24 @@ export interface MaintenancePlan {
     facilities: string[];
     systems: string[];
   };
-  
+
   // Strategic objectives
   objectives: {
-    primaryObjective: 'MINIMIZE_COST' | 'MAXIMIZE_AVAILABILITY' | 'EXTEND_LIFE' | 'IMPROVE_RELIABILITY';
+    primaryObjective:
+      | 'MINIMIZE_COST'
+      | 'MAXIMIZE_AVAILABILITY'
+      | 'EXTEND_LIFE'
+      | 'IMPROVE_RELIABILITY';
     targetMetrics: {
       availability: number;
       reliability: number;
       costReduction: number;
       safetyImprovement: number;
     };
-    
+
     timeHorizon: number; // months
   };
-  
+
   // Maintenance strategies
   strategies: {
     assetId: string;
@@ -540,7 +564,7 @@ export interface MaintenancePlan {
     justification: string;
     implementationDate: Date;
   }[];
-  
+
   // Resource planning
   resourcePlan: {
     laborRequirements: {
@@ -548,7 +572,7 @@ export interface MaintenancePlan {
       hoursPerMonth: number;
       resourceCount: number;
     }[];
-    
+
     budgetRequirements: {
       totalBudget: number;
       laborBudget: number;
@@ -556,14 +580,14 @@ export interface MaintenancePlan {
       contractorBudget: number;
       capitalBudget: number;
     };
-    
+
     inventoryRequirements: {
       criticalSpares: string[];
       stockingStrategy: 'MIN_MAX' | 'KANBAN' | 'JIT' | 'VENDOR_MANAGED';
       targetServiceLevel: number;
     };
   };
-  
+
   // Implementation roadmap
   roadmap: {
     phases: {
@@ -578,14 +602,14 @@ export interface MaintenancePlan {
         criteria: string;
       }[];
     }[];
-    
+
     riskMitigation: {
       riskCategory: string;
       mitigationStrategy: string;
       contingencyPlan: string;
     }[];
   };
-  
+
   // Performance monitoring
   monitoring: {
     kpiTargets: {
@@ -594,14 +618,14 @@ export interface MaintenancePlan {
       tolerance: number;
       reviewFrequency: 'WEEKLY' | 'MONTHLY' | 'QUARTERLY';
     }[];
-    
+
     reviewSchedule: {
       reviewType: 'TACTICAL' | 'STRATEGIC';
       frequency: string;
       participants: string[];
     }[];
   };
-  
+
   status: 'DRAFT' | 'APPROVED' | 'ACTIVE' | 'SUSPENDED' | 'COMPLETED';
   approvedBy?: string;
   approvalDate?: Date;
@@ -614,15 +638,21 @@ export interface AssetCondition {
   conditionId: string;
   assetId: string;
   assessmentDate: Date;
-  assessmentType: 'VISUAL' | 'VIBRATION' | 'THERMAL' | 'ULTRASONIC' | 'OIL_ANALYSIS' | 'PERFORMANCE';
-  
+  assessmentType:
+    | 'VISUAL'
+    | 'VIBRATION'
+    | 'THERMAL'
+    | 'ULTRASONIC'
+    | 'OIL_ANALYSIS'
+    | 'PERFORMANCE';
+
   // Overall condition
   overallCondition: {
     rating: 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR' | 'CRITICAL';
     score: number; // 1-100
     trend: 'IMPROVING' | 'STABLE' | 'DETERIORATING';
   };
-  
+
   // Component conditions
   componentConditions: {
     componentId: string;
@@ -636,17 +666,17 @@ export interface AssetCondition {
       recommendedAction: string;
     }[];
   }[];
-  
+
   // Measurement data
   measurements: {
     parameter: string;
     value: number;
     unit: string;
-    normalRange: { min: number; max: number; };
+    normalRange: { min: number; max: number };
     alertLevel: 'NORMAL' | 'CAUTION' | 'ALERT' | 'DANGER';
     trend: any[]; // Historical values
   }[];
-  
+
   // Inspection findings
   findings: {
     findingId: string;
@@ -658,7 +688,7 @@ export interface AssetCondition {
     recommendedAction: string;
     priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
   }[];
-  
+
   // Recommendations
   recommendations: {
     recommendationType: 'IMMEDIATE_ACTION' | 'MONITOR' | 'SCHEDULE_MAINTENANCE' | 'INVESTIGATE';
@@ -667,7 +697,7 @@ export interface AssetCondition {
     timeline: string;
     consequences: string;
   }[];
-  
+
   // Inspector information
   inspector: {
     inspectorId: string;
@@ -675,21 +705,21 @@ export interface AssetCondition {
     qualifications: string[];
     certifications: string[];
   };
-  
+
   // Historical comparison
   historicalComparison: {
     lastAssessmentDate?: Date;
     conditionChange: 'IMPROVED' | 'STABLE' | 'DETERIORATED';
     significantChanges: string[];
   };
-  
+
   // Integration with other systems
   integration: {
     workOrdersGenerated: string[];
     maintenancePlansUpdated: string[];
     inventoryImpact: string[];
   };
-  
+
   createdDate: Date;
   lastUpdated: Date;
 }
@@ -697,7 +727,7 @@ export interface AssetCondition {
 export interface MaintenanceHistory {
   historyId: string;
   assetId: string;
-  
+
   // Work order history
   workOrders: {
     workOrderId: string;
@@ -709,7 +739,7 @@ export interface MaintenanceHistory {
     downtime: number; // hours
     effectivenessRating?: number; // 1-10
   }[];
-  
+
   // Failure history
   failures: {
     failureId: string;
@@ -721,7 +751,7 @@ export interface MaintenanceHistory {
     repairCost: number;
     preventiveActions: string[];
   }[];
-  
+
   // Modification history
   modifications: {
     modificationId: string;
@@ -732,7 +762,7 @@ export interface MaintenanceHistory {
     expectedBenefits: string[];
     actualResults?: string[];
   }[];
-  
+
   // Cost history
   costHistory: {
     year: number;
@@ -743,7 +773,7 @@ export interface MaintenanceHistory {
     laborCost: number;
     materialCost: number;
   }[];
-  
+
   // Performance trends
   performanceTrends: {
     period: string;
@@ -752,7 +782,7 @@ export interface MaintenanceHistory {
     maintainability: number;
     utilizationRate: number;
   }[];
-  
+
   // Lessons learned
   lessonsLearned: {
     lessonId: string;
@@ -762,7 +792,7 @@ export interface MaintenanceHistory {
     actionsTaken: string[];
     applicability: string[];
   }[];
-  
+
   lastUpdated: Date;
 }
 
@@ -773,7 +803,7 @@ export interface AssetAnalytics {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Asset portfolio overview
   portfolioOverview?: {
     totalAssets: number;
@@ -782,7 +812,7 @@ export interface AssetAnalytics {
     totalAssetValue: number;
     averageAssetAge: number;
   };
-  
+
   // Performance analytics
   performanceData?: {
     overallEquipmentEffectiveness: number;
@@ -792,13 +822,13 @@ export interface AssetAnalytics {
       mttr: number;
       failureRate: number;
     };
-    
+
     topPerformers: {
       assetId: string;
       assetName: string;
       performanceScore: number;
     }[];
-    
+
     underPerformers: {
       assetId: string;
       assetName: string;
@@ -806,13 +836,13 @@ export interface AssetAnalytics {
       issues: string[];
     }[];
   };
-  
+
   // Cost analytics
   costData?: {
     totalMaintenanceCost: number;
     costPerAsset: number;
     costTrends: any[];
-    
+
     costDistribution: {
       preventiveCost: number;
       correctiveCost: number;
@@ -820,14 +850,14 @@ export interface AssetAnalytics {
       laborCost: number;
       materialCost: number;
     };
-    
+
     highestCostAssets: {
       assetId: string;
       assetName: string;
       totalCost: number;
     }[];
   };
-  
+
   // Predictive analytics
   predictiveData?: {
     failurePredictions: {
@@ -836,14 +866,14 @@ export interface AssetAnalytics {
       confidence: number;
       recommendedActions: string[];
     }[];
-    
+
     maintenanceForecasting: {
       assetId: string;
       nextMaintenanceDate: Date;
       estimatedCost: number;
       priority: string;
     }[];
-    
+
     optimizationOpportunities: {
       opportunityType: string;
       description: string;
@@ -851,7 +881,7 @@ export interface AssetAnalytics {
       implementationEffort: 'LOW' | 'MEDIUM' | 'HIGH';
     }[];
   };
-  
+
   // Risk analytics
   riskData?: {
     highRiskAssets: {
@@ -860,7 +890,7 @@ export interface AssetAnalytics {
       riskFactors: string[];
       mitigationActions: string[];
     }[];
-    
+
     criticality: {
       criticalAssets: number;
       highCriticalityAssets: number;
@@ -868,7 +898,7 @@ export interface AssetAnalytics {
       lowCriticalityAssets: number;
     };
   };
-  
+
   // Insights and recommendations
   insights: {
     insightType: 'OPPORTUNITY' | 'RISK' | 'EFFICIENCY' | 'COST_OPTIMIZATION';
@@ -879,7 +909,7 @@ export interface AssetAnalytics {
     estimatedBenefit: number;
     implementationComplexity: 'LOW' | 'MEDIUM' | 'HIGH';
   }[];
-  
+
   generatedDate: Date;
   lastUpdated: Date;
 }
@@ -888,7 +918,7 @@ export interface PredictiveMaintenance {
   predictionId: string;
   assetId: string;
   predictionModel: 'STATISTICAL' | 'MACHINE_LEARNING' | 'PHYSICS_BASED' | 'HYBRID';
-  
+
   // Data sources
   dataSources: {
     sourceType: 'SENSOR' | 'HISTORIAN' | 'INSPECTION' | 'MAINTENANCE_RECORDS';
@@ -897,7 +927,7 @@ export interface PredictiveMaintenance {
     dataQuality: 'HIGH' | 'MEDIUM' | 'LOW';
     lastUpdateDate: Date;
   }[];
-  
+
   // Model configuration
   modelConfig: {
     algorithm: string;
@@ -906,21 +936,21 @@ export interface PredictiveMaintenance {
     validationAccuracy: number;
     lastTrainingDate: Date;
   };
-  
+
   // Current predictions
   predictions: {
     failureMode: string;
     probabilityOfFailure: number;
     timeToFailure: number; // hours
-    confidenceInterval: { lower: number; upper: number; };
-    
+    confidenceInterval: { lower: number; upper: number };
+
     contributingFactors: {
       factor: string;
       importance: number; // 0-1
       currentValue: number;
-      normalRange: { min: number; max: number; };
+      normalRange: { min: number; max: number };
     }[];
-    
+
     recommendations: {
       action: string;
       urgency: 'LOW' | 'MEDIUM' | 'HIGH' | 'IMMEDIATE';
@@ -928,7 +958,7 @@ export interface PredictiveMaintenance {
       estimatedBenefit: number;
     }[];
   }[];
-  
+
   // Anomaly detection
   anomalies: {
     detectionDate: Date;
@@ -938,7 +968,7 @@ export interface PredictiveMaintenance {
     parameters: Record<string, number>;
     status: 'NEW' | 'ACKNOWLEDGED' | 'INVESTIGATED' | 'RESOLVED';
   }[];
-  
+
   // Trend analysis
   trends: {
     parameter: string;
@@ -947,7 +977,7 @@ export interface PredictiveMaintenance {
     significance: 'LOW' | 'MEDIUM' | 'HIGH';
     historicalData: any[];
   }[];
-  
+
   // Model performance
   modelPerformance: {
     accuracy: number;
@@ -955,14 +985,14 @@ export interface PredictiveMaintenance {
     recall: number;
     f1Score: number;
     lastValidationDate: Date;
-    
+
     predictionHistory: {
       predictionDate: Date;
       actualOutcome?: boolean;
       predictionAccuracy?: number;
     }[];
   };
-  
+
   // Alerts and notifications
   alerts: {
     alertLevel: 'INFO' | 'WARNING' | 'CRITICAL';
@@ -971,7 +1001,7 @@ export interface PredictiveMaintenance {
     acknowledged: boolean;
     acknowledgedBy?: string;
   }[];
-  
+
   lastUpdated: Date;
 }
 
@@ -979,7 +1009,7 @@ export interface AssetReliability {
   reliabilityId: string;
   assetId: string;
   analysisType: 'WEIBULL' | 'EXPONENTIAL' | 'NORMAL' | 'LOGNORMAL';
-  
+
   // Reliability parameters
   reliabilityParameters: {
     shape: number;
@@ -988,13 +1018,13 @@ export interface AssetReliability {
     mtbf: number; // Mean Time Between Failures
     characteristicLife: number;
   };
-  
+
   // Failure data
   failureData: {
     totalFailures: number;
     totalOperatingTime: number;
     censoredData: boolean; // true if some data is incomplete
-    
+
     failures: {
       failureTime: number; // hours of operation
       failureMode: string;
@@ -1002,55 +1032,59 @@ export interface AssetReliability {
       downtime: number;
     }[];
   };
-  
+
   // Reliability metrics
   metrics: {
     reliability: number; // probability of success at time t
     availabilityInherent: number;
     availabilityOperational: number;
     maintainability: number;
-    
+
     confidenceBounds: {
       lower: number;
       upper: number;
       confidenceLevel: number; // e.g., 0.95 for 95%
     };
   };
-  
+
   // Life cycle analysis
   lifeCycleAnalysis: {
     phase: 'EARLY_LIFE' | 'USEFUL_LIFE' | 'WEAR_OUT';
     currentAge: number; // years
     expectedRemainingLife: number; // years
     replacementRecommendation: Date;
-    
+
     bathtubCurveData: {
       time: number;
       failureRate: number;
     }[];
   };
-  
+
   // Criticality analysis
   criticalityAnalysis: {
     operationalImpact: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     safetyImpact: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     environmentalImpact: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     economicImpact: number; // cost per failure
-    
+
     overallCriticality: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     criticalityMatrix: string;
   };
-  
+
   // Improvement recommendations
   improvements: {
-    improvementType: 'DESIGN_CHANGE' | 'MAINTENANCE_STRATEGY' | 'OPERATING_PROCEDURE' | 'REPLACEMENT';
+    improvementType:
+      | 'DESIGN_CHANGE'
+      | 'MAINTENANCE_STRATEGY'
+      | 'OPERATING_PROCEDURE'
+      | 'REPLACEMENT';
     description: string;
     expectedImprovement: number; // % increase in reliability
     implementationCost: number;
     paybackPeriod: number; // months
     priority: 'LOW' | 'MEDIUM' | 'HIGH';
   }[];
-  
+
   // Benchmarking
   benchmarking: {
     industryBenchmark?: {
@@ -1058,13 +1092,13 @@ export interface AssetReliability {
       availability: number;
       source: string;
     };
-    
+
     internalBenchmark?: {
       bestInClass: string; // Asset ID
       performanceGap: number;
     };
   };
-  
+
   analysisDate: Date;
   lastUpdated: Date;
 }
@@ -1073,7 +1107,7 @@ export interface MaintenanceInventory {
   inventoryId: string;
   warehouseId: string;
   warehouseName: string;
-  
+
   // Inventory overview
   overview: {
     totalItems: number;
@@ -1082,14 +1116,14 @@ export interface MaintenanceInventory {
     turnoverRate: number;
     serviceLevel: number; // % of demands satisfied from stock
   };
-  
+
   // Inventory items
   items: {
     itemId: string;
     partNumber: string;
     description: string;
     category: 'SPARE_PART' | 'CONSUMABLE' | 'TOOL' | 'SAFETY_EQUIPMENT' | 'LUBRICANT';
-    
+
     // Stock information
     currentStock: number;
     unitOfMeasure: string;
@@ -1098,14 +1132,14 @@ export interface MaintenanceInventory {
       row?: string;
       section?: string;
     };
-    
+
     // Planning parameters
     minimumStock: number;
     maximumStock: number;
     reorderPoint: number;
     economicOrderQuantity: number;
     safetyStock: number;
-    
+
     // Supplier information
     preferredSupplier: {
       supplierId: string;
@@ -1114,23 +1148,23 @@ export interface MaintenanceInventory {
       unitPrice: number;
       minimumOrderQuantity: number;
     };
-    
+
     // Asset associations
     applicableAssets: {
       assetId: string;
       consumptionRate?: number; // per month
       criticalityLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     }[];
-    
+
     // Financial data
     unitCost: number;
     totalValue: number;
     averageUsage: number; // per month
     lastIssueDate?: Date;
-    
+
     // Status
     status: 'ACTIVE' | 'SLOW_MOVING' | 'OBSOLETE' | 'QUARANTINE';
-    
+
     // Quality information
     qualityControl: {
       inspectionRequired: boolean;
@@ -1139,21 +1173,21 @@ export interface MaintenanceInventory {
       hazardousClassification?: string;
     };
   }[];
-  
+
   // Inventory movements
   movements: {
     movementId: string;
     movementType: 'RECEIPT' | 'ISSUE' | 'TRANSFER' | 'ADJUSTMENT' | 'RETURN';
     partNumber: string;
     quantity: number;
-    
+
     // Transaction details
     transactionDate: Date;
     workOrderId?: string;
     issuedTo?: string;
     reason: string;
     cost: number;
-    
+
     // References
     documentNumber?: string;
     supplierInfo?: {
@@ -1162,7 +1196,7 @@ export interface MaintenanceInventory {
       receipt: string;
     };
   }[];
-  
+
   // Stock analysis
   stockAnalysis: {
     abcAnalysis: {
@@ -1170,21 +1204,21 @@ export interface MaintenanceInventory {
       bItems: number; // medium value items
       cItems: number; // low value items
     };
-    
+
     velocityAnalysis: {
       fastMoving: number;
       mediumMoving: number;
       slowMoving: number;
       nonMoving: number;
     };
-    
+
     stockouts: {
       partNumber: string;
       stockoutDate: Date;
       duration: number; // days
       impact: string;
     }[];
-    
+
     excessStock: {
       partNumber: string;
       excessQuantity: number;
@@ -1192,7 +1226,7 @@ export interface MaintenanceInventory {
       reason: string;
     }[];
   };
-  
+
   // Procurement planning
   procurement: {
     pendingOrders: {
@@ -1202,7 +1236,7 @@ export interface MaintenanceInventory {
       supplierId: string;
       orderValue: number;
     }[];
-    
+
     reorderRecommendations: {
       partNumber: string;
       recommendedQuantity: number;
@@ -1210,7 +1244,7 @@ export interface MaintenanceInventory {
       justification: string;
     }[];
   };
-  
+
   // Performance metrics
   performance: {
     inventoryTurnover: number;
@@ -1218,7 +1252,7 @@ export interface MaintenanceInventory {
     fillRate: number; // % of demands filled immediately
     inventoryAccuracy: number; // % of items with correct quantities
     totalInventoryValue: number;
-    
+
     monthlyMetrics: {
       month: string;
       receipts: number;
@@ -1227,6 +1261,6 @@ export interface MaintenanceInventory {
       value: number;
     }[];
   };
-  
+
   lastUpdated: Date;
 }

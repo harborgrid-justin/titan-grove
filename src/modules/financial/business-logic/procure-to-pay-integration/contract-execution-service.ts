@@ -3,12 +3,7 @@
  * Handles contract execution and management within the procure-to-pay flow
  */
 
-import {
-  ContractExecution,
-  DeliverySchedule,
-  PaymentTerms,
-  PerformanceMetric
-} from './types';
+import { ContractExecution, DeliverySchedule, PaymentTerms, PerformanceMetric } from './types';
 
 export class ContractExecutionService {
   /**
@@ -30,9 +25,9 @@ export class ContractExecutionService {
       performanceMetrics: this.generatePerformanceMetrics(),
       status: 'PENDING',
       effectiveDate: new Date(),
-      expirationDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) // 1 year
+      expirationDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year
     };
-    
+
     return contractExecution;
   }
 
@@ -45,7 +40,7 @@ export class ContractExecutionService {
       paymentMethod: 'NET_30',
       currencyCode: 'USD',
       discountTerms: '2/10 Net 30',
-      specialInstructions: 'Payment upon receipt of goods and invoice'
+      specialInstructions: 'Payment upon receipt of goods and invoice',
     };
   }
 
@@ -60,7 +55,7 @@ export class ContractExecutionService {
         targetValue: 95,
         unit: 'Percentage',
         measurementPeriod: 'MONTHLY',
-        status: 'ON_TARGET'
+        status: 'ON_TARGET',
       },
       {
         metricId: 'metric_quality',
@@ -68,7 +63,7 @@ export class ContractExecutionService {
         targetValue: 90,
         unit: 'Score',
         measurementPeriod: 'MONTHLY',
-        status: 'ON_TARGET'
+        status: 'ON_TARGET',
       },
       {
         metricId: 'metric_cost',
@@ -76,8 +71,8 @@ export class ContractExecutionService {
         targetValue: 100,
         unit: 'Percentage',
         measurementPeriod: 'QUARTERLY',
-        status: 'ON_TARGET'
-      }
+        status: 'ON_TARGET',
+      },
     ];
   }
 
@@ -95,21 +90,17 @@ export class ContractExecutionService {
   /**
    * Add delivery schedule to contract
    */
-  async addDeliverySchedule(
-    contractId: string,
-    schedule: DeliverySchedule[]
-  ): Promise<void> {
+  async addDeliverySchedule(contractId: string, schedule: DeliverySchedule[]): Promise<void> {
     // Implementation would add delivery schedule to contract
-    console.log(`Adding delivery schedule to contract ${contractId}: ${schedule.length} deliveries`);
+    console.log(
+      `Adding delivery schedule to contract ${contractId}: ${schedule.length} deliveries`
+    );
   }
 
   /**
    * Update performance metrics
    */
-  async updatePerformanceMetrics(
-    contractId: string,
-    metrics: PerformanceMetric[]
-  ): Promise<void> {
+  async updatePerformanceMetrics(contractId: string, metrics: PerformanceMetric[]): Promise<void> {
     // Implementation would update performance metrics
     console.log(`Updating performance metrics for contract ${contractId}`);
   }
@@ -131,7 +122,7 @@ export class ContractExecutionService {
       amendmentId: `amend_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       amendmentNumber: `AMD${Date.now().toString().slice(-6)}`,
       effectiveDate: new Date(),
-      description: `Contract amendment for ${amendmentType}: ${JSON.stringify(details)}`
+      description: `Contract amendment for ${amendmentType}: ${JSON.stringify(details)}`,
     };
   }
 
@@ -153,19 +144,19 @@ export class ContractExecutionService {
       performanceSummary: {
         onTimeDelivery: 96,
         qualityRating: 92,
-        costPerformance: 98
+        costPerformance: 98,
       },
       lessonsLearned: [
         'Supplier exceeded delivery expectations',
         'Minor quality issues resolved quickly',
-        'Cost savings achieved through efficient delivery'
-      ]
+        'Cost savings achieved through efficient delivery',
+      ],
     };
 
     return {
       closeoutDate: new Date(),
       finalStatus: closeoutType,
-      closeoutReport
+      closeoutReport,
     };
   }
 
@@ -185,17 +176,14 @@ export class ContractExecutionService {
       contractId,
       reportingPeriod: {
         startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
-        endDate: new Date()
+        endDate: new Date(),
       },
       performanceMetrics: this.generatePerformanceMetrics(),
-      issues: [
-        'Minor delivery delays in week 2',
-        'Quality inspection identified minor defects'
-      ],
+      issues: ['Minor delivery delays in week 2', 'Quality inspection identified minor defects'],
       recommendations: [
         'Increase supplier communication frequency',
-        'Implement additional quality checkpoints'
-      ]
+        'Implement additional quality checkpoints',
+      ],
     };
   }
 
@@ -212,7 +200,7 @@ export class ContractExecutionService {
       utilizationRate: 72.5,
       remainingValue: 68750,
       projectedCompletion: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days
-      utilizationTrend: 'INCREASING'
+      utilizationTrend: 'INCREASING',
     };
   }
 
@@ -231,8 +219,8 @@ export class ContractExecutionService {
       violations: [],
       recommendations: [
         'Continue current compliance practices',
-        'Schedule quarterly compliance review'
-      ]
+        'Schedule quarterly compliance review',
+      ],
     };
   }
 }

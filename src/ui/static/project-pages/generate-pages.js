@@ -9,24 +9,26 @@ const projectPages = {
     {
       name: 'project-initiation',
       title: 'Project Initiation & Charter',
-      description: 'Comprehensive project initiation with business case analysis and stakeholder alignment',
+      description:
+        'Comprehensive project initiation with business case analysis and stakeholder alignment',
       features: [
         'Project charter creation and approval workflows',
         'Business case development and ROI analysis',
         'Stakeholder identification and engagement planning',
-        'Project scope definition and requirements gathering'
-      ]
+        'Project scope definition and requirements gathering',
+      ],
     },
     {
       name: 'work-breakdown-structure',
       title: 'Work Breakdown Structure (WBS)',
-      description: 'Hierarchical task decomposition with dependency management and effort estimation',
+      description:
+        'Hierarchical task decomposition with dependency management and effort estimation',
       features: [
         'Multi-level work breakdown structure creation',
         'Task dependency mapping and critical path analysis',
         'Effort estimation with uncertainty modeling',
-        'Resource requirement planning and allocation'
-      ]
+        'Resource requirement planning and allocation',
+      ],
     },
     {
       name: 'project-scheduling',
@@ -36,8 +38,8 @@ const projectPages = {
         'AI-driven schedule optimization and leveling',
         'Resource constraint management and conflict resolution',
         'Critical path analysis with float calculations',
-        'Monte Carlo simulation for schedule risk analysis'
-      ]
+        'Monte Carlo simulation for schedule risk analysis',
+      ],
     },
     {
       name: 'milestone-management',
@@ -47,8 +49,8 @@ const projectPages = {
         'Stage-gate methodology implementation',
         'Milestone definition and tracking automation',
         'Gate review processes and approval workflows',
-        'Deliverable readiness assessment and validation'
-      ]
+        'Deliverable readiness assessment and validation',
+      ],
     },
     {
       name: 'project-execution-control',
@@ -58,8 +60,8 @@ const projectPages = {
         'Real-time execution dashboard and monitoring',
         'Automated progress tracking and reporting',
         'Exception detection and escalation workflows',
-        'Quality gate enforcement and validation'
-      ]
+        'Quality gate enforcement and validation',
+      ],
     },
     {
       name: 'scope-change-management',
@@ -69,8 +71,8 @@ const projectPages = {
         'Change request lifecycle management',
         'Impact analysis automation (schedule, cost, risk)',
         'Change approval workflows and governance',
-        'Scope creep detection and prevention'
-      ]
+        'Scope creep detection and prevention',
+      ],
     },
     {
       name: 'project-closure',
@@ -80,32 +82,34 @@ const projectPages = {
         'Project closure checklist automation',
         'Lessons learned capture and analysis',
         'Final deliverable validation and handover',
-        'Project performance post-mortem analysis'
-      ]
+        'Project performance post-mortem analysis',
+      ],
     },
     {
       name: 'agile-hybrid-management',
       title: 'Agile & Hybrid Project Management',
-      description: 'Flexible project management supporting Agile, Waterfall, and hybrid methodologies',
+      description:
+        'Flexible project management supporting Agile, Waterfall, and hybrid methodologies',
       features: [
         'Multi-methodology project support (Agile, Waterfall, Hybrid)',
         'Sprint planning and backlog management',
         'Velocity tracking and burndown charts',
-        'Scaled Agile Framework (SAFe) implementation'
-      ]
-    }
+        'Scaled Agile Framework (SAFe) implementation',
+      ],
+    },
   ],
   'resource-management': [
     {
       name: 'resource-planning',
       title: 'Strategic Resource Planning',
-      description: 'Enterprise-wide resource planning with capacity modeling and demand forecasting',
+      description:
+        'Enterprise-wide resource planning with capacity modeling and demand forecasting',
       features: [
         'Resource capacity planning and modeling',
         'Demand forecasting and resource gap analysis',
         'Skills inventory and competency mapping',
-        'Resource pool optimization and allocation'
-      ]
+        'Resource pool optimization and allocation',
+      ],
     },
     {
       name: 'resource-allocation',
@@ -115,8 +119,8 @@ const projectPages = {
         'AI-driven resource allocation optimization',
         'Resource conflict detection and resolution',
         'Multi-project resource balancing',
-        'Real-time availability tracking and scheduling'
-      ]
+        'Real-time availability tracking and scheduling',
+      ],
     },
     {
       name: 'team-formation',
@@ -126,8 +130,8 @@ const projectPages = {
         'Skills-based team formation algorithms',
         'Team chemistry and collaboration analysis',
         'Cross-functional team optimization',
-        'Virtual team management and coordination'
-      ]
+        'Virtual team management and coordination',
+      ],
     },
     {
       name: 'capacity-management',
@@ -137,8 +141,8 @@ const projectPages = {
         'Real-time capacity monitoring and tracking',
         'Utilization optimization and balancing',
         'Capacity forecasting and planning',
-        'Bottleneck detection and resolution'
-      ]
+        'Bottleneck detection and resolution',
+      ],
     },
     {
       name: 'contractor-management',
@@ -148,8 +152,8 @@ const projectPages = {
         'Contractor onboarding and management',
         'Vendor performance tracking and scorecards',
         'Contract lifecycle and compliance management',
-        'External resource integration and coordination'
-      ]
+        'External resource integration and coordination',
+      ],
     },
     {
       name: 'skills-development',
@@ -159,8 +163,8 @@ const projectPages = {
         'Skills gap analysis and development planning',
         'Training program management and tracking',
         'Competency-based career development',
-        'Certification and compliance tracking'
-      ]
+        'Certification and compliance tracking',
+      ],
     },
     {
       name: 'resource-forecasting',
@@ -170,20 +174,21 @@ const projectPages = {
         'Machine learning-based demand forecasting',
         'Scenario planning and what-if analysis',
         'Resource trend analysis and projections',
-        'Strategic workforce planning integration'
-      ]
+        'Strategic workforce planning integration',
+      ],
     },
     {
       name: 'performance-optimization',
       title: 'Resource Performance Optimization',
-      description: 'Performance analytics and optimization with productivity enhancement strategies',
+      description:
+        'Performance analytics and optimization with productivity enhancement strategies',
       features: [
         'Resource performance analytics and KPIs',
         'Productivity enhancement recommendations',
         'Performance benchmarking and comparisons',
-        'Continuous improvement and optimization'
-      ]
-    }
+        'Continuous improvement and optimization',
+      ],
+    },
   ],
   'monitoring-control': [
     {
@@ -194,8 +199,8 @@ const projectPages = {
         'Executive-level portfolio health dashboard',
         'Real-time project status and health indicators',
         'KPI tracking and performance metrics',
-        'Predictive analytics and trend analysis'
-      ]
+        'Predictive analytics and trend analysis',
+      ],
     },
     {
       name: 'earned-value-management',
@@ -205,8 +210,8 @@ const projectPages = {
         'Earned value calculations and analysis',
         'Performance indices (CPI, SPI, TCPI)',
         'Forecast to completion (ETC, EAC)',
-        'Variance analysis and trend reporting'
-      ]
+        'Variance analysis and trend reporting',
+      ],
     },
     {
       name: 'progress-tracking',
@@ -216,8 +221,8 @@ const projectPages = {
         'Multiple progress measurement methods',
         'Automated progress validation and verification',
         'Milestone completion tracking',
-        'Deliverable quality assessment'
-      ]
+        'Deliverable quality assessment',
+      ],
     },
     {
       name: 'risk-monitoring',
@@ -227,8 +232,8 @@ const projectPages = {
         'Continuous risk assessment and monitoring',
         'Automated risk alert systems',
         'Mitigation strategy tracking and effectiveness',
-        'Risk register management and reporting'
-      ]
+        'Risk register management and reporting',
+      ],
     },
     {
       name: 'quality-control',
@@ -238,8 +243,8 @@ const projectPages = {
         'Quality gate enforcement and validation',
         'Automated testing and quality checks',
         'Compliance monitoring and reporting',
-        'Defect tracking and resolution'
-      ]
+        'Defect tracking and resolution',
+      ],
     },
     {
       name: 'budget-control',
@@ -249,8 +254,8 @@ const projectPages = {
         'Real-time budget tracking and monitoring',
         'Cost variance analysis and reporting',
         'Budget approval workflows and controls',
-        'Expenditure forecasting and planning'
-      ]
+        'Expenditure forecasting and planning',
+      ],
     },
     {
       name: 'performance-analytics',
@@ -260,8 +265,8 @@ const projectPages = {
         'Machine learning performance insights',
         'Predictive project outcome modeling',
         'Benchmarking and comparative analysis',
-        'Performance pattern recognition'
-      ]
+        'Performance pattern recognition',
+      ],
     },
     {
       name: 'issue-management',
@@ -271,43 +276,46 @@ const projectPages = {
         'Issue lifecycle management and tracking',
         'Root cause analysis and problem solving',
         'Escalation workflows and notifications',
-        'Resolution tracking and effectiveness'
-      ]
-    }
+        'Resolution tracking and effectiveness',
+      ],
+    },
   ],
   'portfolio-management': [
     {
       name: 'portfolio-strategy',
       title: 'Portfolio Strategy & Planning',
-      description: 'Strategic portfolio planning with alignment to business objectives and value optimization',
+      description:
+        'Strategic portfolio planning with alignment to business objectives and value optimization',
       features: [
         'Strategic portfolio planning and alignment',
         'Business value optimization and prioritization',
         'Portfolio roadmap development',
-        'Strategic objective mapping and tracking'
-      ]
+        'Strategic objective mapping and tracking',
+      ],
     },
     {
       name: 'project-prioritization',
       title: 'Project Prioritization & Selection',
-      description: 'Multi-criteria project evaluation with scoring models and portfolio optimization',
+      description:
+        'Multi-criteria project evaluation with scoring models and portfolio optimization',
       features: [
         'Multi-criteria decision analysis (MCDA)',
         'Project scoring models and evaluation',
         'Portfolio optimization algorithms',
-        'Resource constraint consideration'
-      ]
+        'Resource constraint consideration',
+      ],
     },
     {
       name: 'portfolio-optimization',
       title: 'Portfolio Optimization & Balancing',
-      description: 'Advanced portfolio optimization with risk-return analysis and scenario planning',
+      description:
+        'Advanced portfolio optimization with risk-return analysis and scenario planning',
       features: [
         'Portfolio risk-return optimization',
         'Resource allocation optimization',
         'Scenario planning and what-if analysis',
-        'Portfolio rebalancing recommendations'
-      ]
+        'Portfolio rebalancing recommendations',
+      ],
     },
     {
       name: 'value-realization',
@@ -317,8 +325,8 @@ const projectPages = {
         'Benefits realization tracking and measurement',
         'ROI calculation and analysis',
         'Value delivery optimization',
-        'Post-project value assessment'
-      ]
+        'Post-project value assessment',
+      ],
     },
     {
       name: 'portfolio-governance',
@@ -328,8 +336,8 @@ const projectPages = {
         'Portfolio governance framework',
         'Decision rights and accountability matrix',
         'Steering committee management',
-        'Governance process automation'
-      ]
+        'Governance process automation',
+      ],
     },
     {
       name: 'capacity-portfolio',
@@ -339,8 +347,8 @@ const projectPages = {
         'Enterprise capacity modeling',
         'Multi-project resource optimization',
         'Capacity constraint analysis',
-        'Strategic capacity planning'
-      ]
+        'Strategic capacity planning',
+      ],
     },
     {
       name: 'pipeline-management',
@@ -350,8 +358,8 @@ const projectPages = {
         'Project intake and evaluation processes',
         'Pipeline optimization and flow management',
         'Demand management and capacity planning',
-        'Pipeline health and flow metrics'
-      ]
+        'Pipeline health and flow metrics',
+      ],
     },
     {
       name: 'portfolio-reporting',
@@ -361,32 +369,34 @@ const projectPages = {
         'Executive portfolio dashboards',
         'Portfolio performance analytics',
         'Comparative analysis and benchmarking',
-        'Portfolio health and risk reporting'
-      ]
-    }
+        'Portfolio health and risk reporting',
+      ],
+    },
   ],
   'collaboration-communication': [
     {
       name: 'stakeholder-management',
       title: 'Stakeholder Management & Engagement',
-      description: 'Comprehensive stakeholder management with engagement planning and communication strategies',
+      description:
+        'Comprehensive stakeholder management with engagement planning and communication strategies',
       features: [
         'Stakeholder identification and analysis',
         'Engagement planning and strategy development',
         'Communication plan automation',
-        'Stakeholder satisfaction tracking'
-      ]
+        'Stakeholder satisfaction tracking',
+      ],
     },
     {
       name: 'communication-hub',
       title: 'Project Communication Hub',
-      description: 'Centralized communication platform with automated notifications and collaboration tools',
+      description:
+        'Centralized communication platform with automated notifications and collaboration tools',
       features: [
         'Centralized communication platform',
         'Automated notification and alert systems',
         'Real-time collaboration tools',
-        'Communication audit trails'
-      ]
+        'Communication audit trails',
+      ],
     },
     {
       name: 'document-management',
@@ -396,8 +406,8 @@ const projectPages = {
         'Document lifecycle management',
         'Version control and collaborative editing',
         'Document approval workflows',
-        'Knowledge repository and search'
-      ]
+        'Knowledge repository and search',
+      ],
     },
     {
       name: 'meeting-management',
@@ -407,8 +417,8 @@ const projectPages = {
         'Meeting planning and scheduling automation',
         'Decision tracking and accountability',
         'Action item management and follow-up',
-        'Meeting effectiveness analytics'
-      ]
+        'Meeting effectiveness analytics',
+      ],
     },
     {
       name: 'team-collaboration',
@@ -418,30 +428,32 @@ const projectPages = {
         'Team collaboration workspaces',
         'Social collaboration features',
         'Knowledge sharing and wikis',
-        'Team communication analytics'
-      ]
+        'Team communication analytics',
+      ],
     },
     {
       name: 'client-portal',
       title: 'Client & Vendor Portal',
-      description: 'External stakeholder portal with self-service capabilities and project visibility',
+      description:
+        'External stakeholder portal with self-service capabilities and project visibility',
       features: [
         'Client self-service portal',
         'Vendor collaboration platform',
         'External stakeholder project visibility',
-        'Secure document sharing'
-      ]
+        'Secure document sharing',
+      ],
     },
     {
       name: 'feedback-management',
       title: 'Feedback & Review Management',
-      description: 'Systematic feedback collection with review processes and continuous improvement',
+      description:
+        'Systematic feedback collection with review processes and continuous improvement',
       features: [
         'Feedback collection and management',
         'Review process automation',
         'Continuous improvement tracking',
-        'Stakeholder satisfaction surveys'
-      ]
+        'Stakeholder satisfaction surveys',
+      ],
     },
     {
       name: 'knowledge-management',
@@ -451,32 +463,34 @@ const projectPages = {
         'Lessons learned capture and sharing',
         'Best practices repository',
         'Knowledge transfer workflows',
-        'Expertise location and matching'
-      ]
-    }
+        'Expertise location and matching',
+      ],
+    },
   ],
   'analytics-reporting': [
     {
       name: 'executive-reporting',
       title: 'Executive Reporting Suite',
-      description: 'Comprehensive executive reporting with automated insights and strategic analytics',
+      description:
+        'Comprehensive executive reporting with automated insights and strategic analytics',
       features: [
         'Executive dashboard and reporting',
         'Automated insights and recommendations',
         'Strategic analytics and forecasting',
-        'Board-level reporting automation'
-      ]
+        'Board-level reporting automation',
+      ],
     },
     {
       name: 'project-intelligence',
       title: 'Project Intelligence & Insights',
-      description: 'AI-powered project intelligence with predictive analytics and pattern recognition',
+      description:
+        'AI-powered project intelligence with predictive analytics and pattern recognition',
       features: [
         'AI-powered project insights',
         'Predictive analytics and forecasting',
         'Pattern recognition and anomaly detection',
-        'Machine learning performance optimization'
-      ]
+        'Machine learning performance optimization',
+      ],
     },
     {
       name: 'performance-metrics',
@@ -486,8 +500,8 @@ const projectPages = {
         'KPI framework and measurement',
         'Automated performance tracking',
         'Benchmarking and comparative analysis',
-        'Performance trend analysis'
-      ]
+        'Performance trend analysis',
+      ],
     },
     {
       name: 'financial-analytics',
@@ -497,19 +511,20 @@ const projectPages = {
         'Profitability analysis and optimization',
         'Cost analytics and variance reporting',
         'Financial forecasting and modeling',
-        'ROI and value analysis'
-      ]
+        'ROI and value analysis',
+      ],
     },
     {
       name: 'resource-analytics',
       title: 'Resource Analytics & Optimization',
-      description: 'Resource utilization analytics with optimization recommendations and forecasting',
+      description:
+        'Resource utilization analytics with optimization recommendations and forecasting',
       features: [
         'Resource utilization analytics',
         'Optimization recommendations',
         'Resource demand forecasting',
-        'Productivity analysis and improvement'
-      ]
+        'Productivity analysis and improvement',
+      ],
     },
     {
       name: 'risk-analytics',
@@ -519,8 +534,8 @@ const projectPages = {
         'Risk modeling and simulation',
         'Monte Carlo risk analysis',
         'Scenario planning and stress testing',
-        'Risk prediction and early warning'
-      ]
+        'Risk prediction and early warning',
+      ],
     },
     {
       name: 'custom-reporting',
@@ -530,65 +545,70 @@ const projectPages = {
         'Self-service reporting tools',
         'Drag-and-drop dashboard creation',
         'Custom report builder',
-        'Automated report scheduling and distribution'
-      ]
+        'Automated report scheduling and distribution',
+      ],
     },
     {
       name: 'data-visualization',
       title: 'Advanced Data Visualization',
-      description: 'Interactive data visualization with real-time updates and collaborative analytics',
+      description:
+        'Interactive data visualization with real-time updates and collaborative analytics',
       features: [
         'Interactive data visualization',
         'Real-time dashboard updates',
         'Collaborative analytics and sharing',
-        'Mobile-responsive visualizations'
-      ]
-    }
+        'Mobile-responsive visualizations',
+      ],
+    },
   ],
   'integration-automation': [
     {
       name: 'api-integration-hub',
       title: 'API Integration Hub',
-      description: 'Centralized API management with enterprise integration patterns and real-time synchronization',
+      description:
+        'Centralized API management with enterprise integration patterns and real-time synchronization',
       features: [
         'Enterprise service bus (ESB) integration',
         'Real-time data synchronization and ETL',
         'API gateway management and security',
-        'Microservices orchestration and choreography'
-      ]
+        'Microservices orchestration and choreography',
+      ],
     },
     {
       name: 'workflow-automation',
       title: 'Workflow Automation Engine',
-      description: 'Advanced workflow automation with AI-powered process optimization and adaptive routing',
+      description:
+        'Advanced workflow automation with AI-powered process optimization and adaptive routing',
       features: [
         'Business process modeling and automation (BPMN)',
         'AI-powered workflow optimization',
         'Adaptive routing and decision engines',
-        'Process mining and optimization analytics'
-      ]
+        'Process mining and optimization analytics',
+      ],
     },
     {
       name: 'robotic-process-automation',
       title: 'Robotic Process Automation (RPA)',
-      description: 'Intelligent RPA platform with cognitive automation and machine learning capabilities',
+      description:
+        'Intelligent RPA platform with cognitive automation and machine learning capabilities',
       features: [
         'Intelligent document processing and OCR',
         'Cognitive automation with machine learning',
         'Bot lifecycle management and monitoring',
-        'Process discovery and automation opportunities'
-      ]
+        'Process discovery and automation opportunities',
+      ],
     },
     {
       name: 'data-integration-pipeline',
       title: 'Data Integration Pipeline',
-      description: 'Comprehensive data integration with real-time streaming and batch processing capabilities',
+      description:
+        'Comprehensive data integration with real-time streaming and batch processing capabilities',
       features: [
         'Real-time data streaming and processing',
         'Batch data processing and transformation',
         'Data quality management and validation',
-        'Master data management and governance'
-      ]
+        'Master data management and governance',
+      ],
     },
     {
       name: 'enterprise-automation',
@@ -598,8 +618,8 @@ const projectPages = {
         'Cross-functional process automation',
         'Intelligent task routing and prioritization',
         'Exception handling and escalation',
-        'Automation performance analytics'
-      ]
+        'Automation performance analytics',
+      ],
     },
     {
       name: 'system-integration',
@@ -609,8 +629,8 @@ const projectPages = {
         'Legacy system modernization and integration',
         'Event-driven architecture implementation',
         'Service mesh and containerization',
-        'Integration testing and validation'
-      ]
+        'Integration testing and validation',
+      ],
     },
     {
       name: 'cloud-automation',
@@ -620,20 +640,21 @@ const projectPages = {
         'Infrastructure as code (IaC) automation',
         'Multi-cloud deployment and management',
         'Container orchestration and scaling',
-        'DevOps pipeline automation'
-      ]
+        'DevOps pipeline automation',
+      ],
     },
     {
       name: 'ai-automation',
       title: 'AI-Powered Automation',
-      description: 'Artificial intelligence and machine learning automation for intelligent decision making',
+      description:
+        'Artificial intelligence and machine learning automation for intelligent decision making',
       features: [
         'Machine learning model deployment',
         'Intelligent decision automation',
         'Natural language processing integration',
-        'Computer vision and image processing'
-      ]
-    }
+        'Computer vision and image processing',
+      ],
+    },
   ],
   'governance-compliance': [
     {
@@ -644,19 +665,20 @@ const projectPages = {
         'Multi-jurisdiction regulatory tracking',
         'Automated compliance monitoring and alerts',
         'Audit trail management and reporting',
-        'Regulatory change impact analysis'
-      ]
+        'Regulatory change impact analysis',
+      ],
     },
     {
       name: 'governance-framework',
       title: 'Project Governance Framework',
-      description: 'Enterprise governance with decision rights, accountability, and oversight mechanisms',
+      description:
+        'Enterprise governance with decision rights, accountability, and oversight mechanisms',
       features: [
         'Governance policy management and enforcement',
         'Decision rights and accountability matrix',
         'Board and committee management',
-        'Governance effectiveness measurement'
-      ]
+        'Governance effectiveness measurement',
+      ],
     },
     {
       name: 'audit-management',
@@ -666,8 +688,8 @@ const projectPages = {
         'Risk-based audit planning and execution',
         'Continuous monitoring and testing',
         'Audit finding management and tracking',
-        'Internal control testing and validation'
-      ]
+        'Internal control testing and validation',
+      ],
     },
     {
       name: 'policy-management',
@@ -677,8 +699,8 @@ const projectPages = {
         'Policy lifecycle management',
         'Version control and approval workflows',
         'Compliance tracking and attestation',
-        'Policy effectiveness measurement'
-      ]
+        'Policy effectiveness measurement',
+      ],
     },
     {
       name: 'data-governance',
@@ -688,19 +710,20 @@ const projectPages = {
         'Data classification and lineage tracking',
         'Privacy impact assessments (PIA)',
         'GDPR and data protection compliance',
-        'Data quality monitoring and stewardship'
-      ]
+        'Data quality monitoring and stewardship',
+      ],
     },
     {
       name: 'risk-governance',
       title: 'Risk Governance & Management',
-      description: 'Enterprise risk management with integrated governance and continuous monitoring',
+      description:
+        'Enterprise risk management with integrated governance and continuous monitoring',
       features: [
         'Enterprise risk assessment and modeling',
         'Risk appetite and tolerance management',
         'Integrated risk and compliance monitoring',
-        'Risk-based decision support systems'
-      ]
+        'Risk-based decision support systems',
+      ],
     },
     {
       name: 'ethics-compliance',
@@ -710,8 +733,8 @@ const projectPages = {
         'Code of conduct management and training',
         'Ethics hotline and incident reporting',
         'Conflict of interest management',
-        'Cultural assessment and improvement'
-      ]
+        'Cultural assessment and improvement',
+      ],
     },
     {
       name: 'operational-resilience',
@@ -721,32 +744,34 @@ const projectPages = {
         'Business continuity planning and testing',
         'Crisis management and response',
         'Operational resilience assessment',
-        'Recovery planning and execution'
-      ]
-    }
+        'Recovery planning and execution',
+      ],
+    },
   ],
   'training-development': [
     {
       name: 'learning-management',
       title: 'Learning Management System (LMS)',
-      description: 'Comprehensive learning platform with adaptive learning and skill development tracking',
+      description:
+        'Comprehensive learning platform with adaptive learning and skill development tracking',
       features: [
         'Adaptive learning pathways and personalization',
         'Skill gap analysis and development planning',
         'Competency-based learning and assessment',
-        'Learning analytics and performance tracking'
-      ]
+        'Learning analytics and performance tracking',
+      ],
     },
     {
       name: 'certification-management',
       title: 'Certification & Credentialing',
-      description: 'Professional certification tracking with automated renewal and compliance monitoring',
+      description:
+        'Professional certification tracking with automated renewal and compliance monitoring',
       features: [
         'Certification lifecycle management',
         'Automated renewal tracking and notifications',
         'Compliance monitoring and reporting',
-        'Professional development planning'
-      ]
+        'Professional development planning',
+      ],
     },
     {
       name: 'knowledge-transfer',
@@ -756,30 +781,32 @@ const projectPages = {
         'Expert knowledge capture and documentation',
         'Mentoring and coaching program management',
         'Knowledge retention and succession planning',
-        'Best practices sharing and collaboration'
-      ]
+        'Best practices sharing and collaboration',
+      ],
     },
     {
       name: 'skills-assessment',
       title: 'Skills Assessment & Gap Analysis',
-      description: 'Comprehensive skills evaluation with AI-powered gap analysis and development recommendations',
+      description:
+        'Comprehensive skills evaluation with AI-powered gap analysis and development recommendations',
       features: [
         'Multi-dimensional skills assessment',
         'AI-powered gap analysis and recommendations',
         'Skills inventory and talent mapping',
-        'Competency matrix development'
-      ]
+        'Competency matrix development',
+      ],
     },
     {
       name: 'training-delivery',
       title: 'Training Delivery & Management',
-      description: 'Multi-modal training delivery with virtual reality and interactive learning experiences',
+      description:
+        'Multi-modal training delivery with virtual reality and interactive learning experiences',
       features: [
         'Virtual reality (VR) and augmented reality (AR) training',
         'Interactive learning experiences',
         'Multi-modal content delivery',
-        'Training effectiveness measurement'
-      ]
+        'Training effectiveness measurement',
+      ],
     },
     {
       name: 'career-development',
@@ -789,8 +816,8 @@ const projectPages = {
         'Individual development planning (IDP)',
         'AI-powered career path recommendations',
         'Succession planning and talent pipeline',
-        'Performance and potential assessment'
-      ]
+        'Performance and potential assessment',
+      ],
     },
     {
       name: 'onboarding-integration',
@@ -800,8 +827,8 @@ const projectPages = {
         'Role-specific onboarding programs',
         'Cultural integration and socialization',
         'New hire tracking and support',
-        'Onboarding effectiveness measurement'
-      ]
+        'Onboarding effectiveness measurement',
+      ],
     },
     {
       name: 'performance-coaching',
@@ -811,21 +838,22 @@ const projectPages = {
         'AI-enhanced coaching recommendations',
         'Performance improvement planning',
         'Real-time feedback and coaching',
-        'Coaching effectiveness analytics'
-      ]
-    }
+        'Coaching effectiveness analytics',
+      ],
+    },
   ],
   'innovation-improvement': [
     {
       name: 'innovation-management',
       title: 'Innovation Management Platform',
-      description: 'Comprehensive innovation pipeline with idea management and collaborative development',
+      description:
+        'Comprehensive innovation pipeline with idea management and collaborative development',
       features: [
         'Idea generation and crowdsourcing',
         'Innovation pipeline management',
         'Collaborative innovation platforms',
-        'Innovation portfolio optimization'
-      ]
+        'Innovation portfolio optimization',
+      ],
     },
     {
       name: 'continuous-improvement',
@@ -835,8 +863,8 @@ const projectPages = {
         'Lean Six Sigma project management',
         'Kaizen event planning and execution',
         'Improvement opportunity identification',
-        'Benefits tracking and measurement'
-      ]
+        'Benefits tracking and measurement',
+      ],
     },
     {
       name: 'design-thinking',
@@ -846,8 +874,8 @@ const projectPages = {
         'Design thinking workshop facilitation',
         'User journey mapping and persona development',
         'Rapid prototyping and testing',
-        'Design sprint methodology'
-      ]
+        'Design sprint methodology',
+      ],
     },
     {
       name: 'agile-transformation',
@@ -857,8 +885,8 @@ const projectPages = {
         'Scaled Agile Framework (SAFe) implementation',
         'Agile maturity assessment and roadmap',
         'Agile coaching and mentoring',
-        'Transformation metrics and tracking'
-      ]
+        'Transformation metrics and tracking',
+      ],
     },
     {
       name: 'digital-transformation',
@@ -868,8 +896,8 @@ const projectPages = {
         'Digital transformation strategy and roadmap',
         'Technology adoption and integration',
         'Digital culture and change management',
-        'Digital maturity assessment'
-      ]
+        'Digital maturity assessment',
+      ],
     },
     {
       name: 'research-development',
@@ -879,8 +907,8 @@ const projectPages = {
         'R&D project portfolio management',
         'Intellectual property tracking and protection',
         'Research collaboration and partnerships',
-        'Innovation metrics and ROI tracking'
-      ]
+        'Innovation metrics and ROI tracking',
+      ],
     },
     {
       name: 'business-model-innovation',
@@ -890,8 +918,8 @@ const projectPages = {
         'Business model canvas and validation',
         'Market testing and customer validation',
         'Pivot strategy development',
-        'Business model performance tracking'
-      ]
+        'Business model performance tracking',
+      ],
     },
     {
       name: 'startup-incubation',
@@ -901,32 +929,34 @@ const projectPages = {
         'Internal venture development',
         'Startup acceleration programs',
         'Investment and funding management',
-        'Scaling and growth support'
-      ]
-    }
+        'Scaling and growth support',
+      ],
+    },
   ],
   'vendor-partner-management': [
     {
       name: 'vendor-lifecycle',
       title: 'Vendor Lifecycle Management',
-      description: 'End-to-end vendor management with automated onboarding and performance monitoring',
+      description:
+        'End-to-end vendor management with automated onboarding and performance monitoring',
       features: [
         'Vendor onboarding and qualification',
         'Performance monitoring and scorecards',
         'Contract lifecycle management',
-        'Vendor risk assessment and mitigation'
-      ]
+        'Vendor risk assessment and mitigation',
+      ],
     },
     {
       name: 'strategic-partnerships',
       title: 'Strategic Partnership Management',
-      description: 'Partnership strategy development with alliance management and joint venture oversight',
+      description:
+        'Partnership strategy development with alliance management and joint venture oversight',
       features: [
         'Partnership strategy and planning',
         'Alliance management and governance',
         'Joint venture oversight and control',
-        'Partnership performance measurement'
-      ]
+        'Partnership performance measurement',
+      ],
     },
     {
       name: 'procurement-optimization',
@@ -936,30 +966,32 @@ const projectPages = {
         'Spend analysis and category management',
         'Supplier optimization and rationalization',
         'Procurement automation and e-sourcing',
-        'Total cost of ownership analysis'
-      ]
+        'Total cost of ownership analysis',
+      ],
     },
     {
       name: 'supplier-collaboration',
       title: 'Supplier Collaboration Platform',
-      description: 'Integrated supplier collaboration with shared planning and performance visibility',
+      description:
+        'Integrated supplier collaboration with shared planning and performance visibility',
       features: [
         'Collaborative planning and forecasting',
         'Supplier portal and self-service',
         'Shared performance dashboards',
-        'Joint improvement initiatives'
-      ]
+        'Joint improvement initiatives',
+      ],
     },
     {
       name: 'contract-management',
       title: 'Contract Management System',
-      description: 'Intelligent contract management with AI-powered analysis and automated workflows',
+      description:
+        'Intelligent contract management with AI-powered analysis and automated workflows',
       features: [
         'AI-powered contract analysis and review',
         'Automated contract workflows and approvals',
         'Compliance monitoring and alerts',
-        'Contract performance tracking'
-      ]
+        'Contract performance tracking',
+      ],
     },
     {
       name: 'vendor-risk-management',
@@ -969,43 +1001,46 @@ const projectPages = {
         'Vendor risk assessment and scoring',
         'Continuous risk monitoring',
         'Third-party risk management',
-        'Risk mitigation planning and execution'
-      ]
+        'Risk mitigation planning and execution',
+      ],
     },
     {
       name: 'sourcing-strategy',
       title: 'Strategic Sourcing & Category Management',
-      description: 'Strategic sourcing optimization with market intelligence and category strategies',
+      description:
+        'Strategic sourcing optimization with market intelligence and category strategies',
       features: [
         'Category strategy development',
         'Market intelligence and analysis',
         'Sourcing event management',
-        'Supplier diversity and sustainability'
-      ]
+        'Supplier diversity and sustainability',
+      ],
     },
     {
       name: 'partner-ecosystem',
       title: 'Partner Ecosystem Management',
-      description: 'Ecosystem partnership management with channel optimization and ecosystem analytics',
+      description:
+        'Ecosystem partnership management with channel optimization and ecosystem analytics',
       features: [
         'Partner ecosystem mapping and management',
         'Channel partner optimization',
         'Ecosystem performance analytics',
-        'Partner enablement and support'
-      ]
-    }
+        'Partner enablement and support',
+      ],
+    },
   ],
   'technology-infrastructure': [
     {
       name: 'infrastructure-management',
       title: 'Infrastructure Management & Monitoring',
-      description: 'Comprehensive infrastructure monitoring with predictive analytics and automated remediation',
+      description:
+        'Comprehensive infrastructure monitoring with predictive analytics and automated remediation',
       features: [
         'Infrastructure monitoring and alerting',
         'Predictive analytics and maintenance',
         'Automated remediation and self-healing',
-        'Capacity planning and optimization'
-      ]
+        'Capacity planning and optimization',
+      ],
     },
     {
       name: 'cloud-migration',
@@ -1015,19 +1050,20 @@ const projectPages = {
         'Cloud migration strategy and planning',
         'Multi-cloud management and optimization',
         'Cost optimization and governance',
-        'Cloud security and compliance'
-      ]
+        'Cloud security and compliance',
+      ],
     },
     {
       name: 'cybersecurity-management',
       title: 'Cybersecurity & Threat Management',
-      description: 'Advanced cybersecurity with threat intelligence and incident response automation',
+      description:
+        'Advanced cybersecurity with threat intelligence and incident response automation',
       features: [
         'Threat intelligence and monitoring',
         'Incident response automation',
         'Security risk assessment and management',
-        'Compliance and audit automation'
-      ]
+        'Compliance and audit automation',
+      ],
     },
     {
       name: 'devops-platform',
@@ -1037,30 +1073,32 @@ const projectPages = {
         'Continuous integration and deployment',
         'Automated testing and quality gates',
         'Infrastructure as code management',
-        'DevOps metrics and performance tracking'
-      ]
+        'DevOps metrics and performance tracking',
+      ],
     },
     {
       name: 'data-platform',
       title: 'Data Platform & Analytics',
-      description: 'Enterprise data platform with real-time analytics and machine learning capabilities',
+      description:
+        'Enterprise data platform with real-time analytics and machine learning capabilities',
       features: [
         'Real-time data processing and analytics',
         'Machine learning and AI platform',
         'Data lake and warehouse management',
-        'Self-service analytics and visualization'
-      ]
+        'Self-service analytics and visualization',
+      ],
     },
     {
       name: 'architecture-governance',
       title: 'Architecture Governance & Standards',
-      description: 'Enterprise architecture governance with standards enforcement and technology roadmaps',
+      description:
+        'Enterprise architecture governance with standards enforcement and technology roadmaps',
       features: [
         'Enterprise architecture governance',
         'Technology standards and guidelines',
         'Architecture review and approval',
-        'Technology roadmap planning'
-      ]
+        'Technology roadmap planning',
+      ],
     },
     {
       name: 'technology-portfolio',
@@ -1070,8 +1108,8 @@ const projectPages = {
         'Technology portfolio analysis',
         'Investment optimization and prioritization',
         'Technology rationalization and consolidation',
-        'Technical debt management'
-      ]
+        'Technical debt management',
+      ],
     },
     {
       name: 'innovation-lab',
@@ -1081,9 +1119,9 @@ const projectPages = {
         'Emerging technology evaluation',
         'Proof of concept development',
         'Innovation sandbox and experimentation',
-        'Technology trend analysis and forecasting'
-      ]
-    }
+        'Technology trend analysis and forecasting',
+      ],
+    },
   ],
   'task-management': [
     {
@@ -1094,19 +1132,20 @@ const projectPages = {
         'Smart task creation with template library',
         'AI-powered skill-based assignment routing',
         'Dynamic workload balancing and capacity checking',
-        'Task dependency mapping and prerequisite validation'
-      ]
+        'Task dependency mapping and prerequisite validation',
+      ],
     },
     {
       name: 'task-scheduling-prioritization',
       title: 'Task Scheduling & Prioritization Engine',
-      description: 'Advanced task scheduling with multi-criteria prioritization and resource optimization',
+      description:
+        'Advanced task scheduling with multi-criteria prioritization and resource optimization',
       features: [
         'Multi-criteria decision matrix prioritization',
         'Resource-aware scheduling algorithms',
         'Critical path analysis for task sequences',
-        'Dynamic priority adjustment based on business impact'
-      ]
+        'Dynamic priority adjustment based on business impact',
+      ],
     },
     {
       name: 'task-tracking-monitoring',
@@ -1116,8 +1155,8 @@ const projectPages = {
         'Real-time progress tracking and status updates',
         'Automated milestone detection and validation',
         'Performance analytics and productivity metrics',
-        'Predictive completion time estimation'
-      ]
+        'Predictive completion time estimation',
+      ],
     },
     {
       name: 'task-workflow-automation',
@@ -1127,8 +1166,8 @@ const projectPages = {
         'Visual workflow designer with drag-and-drop interface',
         'Adaptive routing based on task complexity and priority',
         'Exception handling and escalation workflows',
-        'Process mining and optimization recommendations'
-      ]
+        'Process mining and optimization recommendations',
+      ],
     },
     {
       name: 'task-collaboration-workspace',
@@ -1138,30 +1177,32 @@ const projectPages = {
         'Task-centric communication channels',
         'Real-time collaborative editing and document sharing',
         'Team workspaces with shared task boards',
-        'Activity feeds and notification management'
-      ]
+        'Activity feeds and notification management',
+      ],
     },
     {
       name: 'task-dependency-management',
       title: 'Task Dependency Management System',
-      description: 'Advanced dependency tracking with impact analysis and critical path optimization',
+      description:
+        'Advanced dependency tracking with impact analysis and critical path optimization',
       features: [
         'Visual dependency mapping and relationship modeling',
         'Impact analysis for dependency changes',
         'Critical path identification and optimization',
-        'Dependency conflict detection and resolution'
-      ]
+        'Dependency conflict detection and resolution',
+      ],
     },
     {
       name: 'task-time-tracking',
       title: 'Task Time Tracking & Analytics',
-      description: 'Comprehensive time tracking with productivity analytics and billing integration',
+      description:
+        'Comprehensive time tracking with productivity analytics and billing integration',
       features: [
         'Automated time tracking with smart detection',
         'Productivity pattern analysis and insights',
         'Billable hours tracking and client reporting',
-        'Time estimation accuracy improvement algorithms'
-      ]
+        'Time estimation accuracy improvement algorithms',
+      ],
     },
     {
       name: 'task-resource-allocation',
@@ -1171,8 +1212,8 @@ const projectPages = {
         'AI-powered resource allocation optimization',
         'Skill-based resource matching and recommendations',
         'Capacity planning and workload forecasting',
-        'Resource conflict detection and alternative suggestions'
-      ]
+        'Resource conflict detection and alternative suggestions',
+      ],
     },
     {
       name: 'task-status-reporting',
@@ -1182,8 +1223,8 @@ const projectPages = {
         'Executive dashboard with key performance indicators',
         'Real-time status visualization and heat maps',
         'Custom report builder with drag-and-drop interface',
-        'Automated stakeholder notification and alerts'
-      ]
+        'Automated stakeholder notification and alerts',
+      ],
     },
     {
       name: 'task-quality-assurance',
@@ -1193,8 +1234,8 @@ const projectPages = {
         'Quality gate enforcement and validation workflows',
         'Automated testing and quality checks',
         'Defect tracking and resolution management',
-        'Quality metrics and improvement recommendations'
-      ]
+        'Quality metrics and improvement recommendations',
+      ],
     },
     {
       name: 'task-performance-analytics',
@@ -1204,19 +1245,20 @@ const projectPages = {
         'Machine learning performance prediction models',
         'Productivity trend analysis and forecasting',
         'Benchmarking and comparative performance analysis',
-        'Performance bottleneck identification and recommendations'
-      ]
+        'Performance bottleneck identification and recommendations',
+      ],
     },
     {
       name: 'task-escalation-management',
       title: 'Task Escalation Management System',
-      description: 'Intelligent escalation workflows with automated routing and resolution tracking',
+      description:
+        'Intelligent escalation workflows with automated routing and resolution tracking',
       features: [
         'Multi-level escalation path configuration',
         'Automated escalation trigger based on SLA metrics',
         'Escalation routing with skill-based assignment',
-        'Resolution tracking and effectiveness measurement'
-      ]
+        'Resolution tracking and effectiveness measurement',
+      ],
     },
     {
       name: 'task-template-library',
@@ -1226,19 +1268,20 @@ const projectPages = {
         'Enterprise task template library and catalog',
         'Template versioning and approval workflows',
         'Best practice sharing and knowledge transfer',
-        'Template usage analytics and optimization'
-      ]
+        'Template usage analytics and optimization',
+      ],
     },
     {
       name: 'task-kanban-boards',
       title: 'Advanced Kanban Board Management',
-      description: 'Flexible Kanban board system with advanced visualization and workflow optimization',
+      description:
+        'Flexible Kanban board system with advanced visualization and workflow optimization',
       features: [
         'Customizable Kanban boards with swim lanes',
         'WIP limits and flow optimization controls',
         'Advanced filtering and search capabilities',
-        'Board analytics and flow metrics'
-      ]
+        'Board analytics and flow metrics',
+      ],
     },
     {
       name: 'task-burndown-charts',
@@ -1248,19 +1291,20 @@ const projectPages = {
         'Real-time burndown and burnup chart generation',
         'Velocity tracking and trend analysis',
         'Sprint planning and capacity estimation',
-        'Predictive completion forecasting'
-      ]
+        'Predictive completion forecasting',
+      ],
     },
     {
       name: 'task-notifications-alerts',
       title: 'Task Notifications & Alert System',
-      description: 'Intelligent notification system with multi-channel delivery and smart filtering',
+      description:
+        'Intelligent notification system with multi-channel delivery and smart filtering',
       features: [
         'Multi-channel notification delivery (email, SMS, push)',
         'Smart notification filtering and prioritization',
         'Customizable alert rules and triggers',
-        'Notification effectiveness tracking and optimization'
-      ]
+        'Notification effectiveness tracking and optimization',
+      ],
     },
     {
       name: 'task-mobile-management',
@@ -1270,8 +1314,8 @@ const projectPages = {
         'Native mobile applications for iOS and Android',
         'Offline task management with smart synchronization',
         'Mobile-optimized user interface and interactions',
-        'Location-based task assignment and tracking'
-      ]
+        'Location-based task assignment and tracking',
+      ],
     },
     {
       name: 'task-integration-hub',
@@ -1281,8 +1325,8 @@ const projectPages = {
         'RESTful API gateway with enterprise security',
         'Pre-built integrations with popular tools (Jira, Asana, Trello)',
         'Real-time data synchronization and webhooks',
-        'Integration monitoring and health dashboards'
-      ]
+        'Integration monitoring and health dashboards',
+      ],
     },
     {
       name: 'task-ai-assistant',
@@ -1292,8 +1336,8 @@ const projectPages = {
         'Natural language task creation and queries',
         'Intelligent task recommendation engine',
         'Automated task categorization and tagging',
-        'Predictive analytics for task completion'
-      ]
+        'Predictive analytics for task completion',
+      ],
     },
     {
       name: 'task-audit-trail',
@@ -1303,8 +1347,8 @@ const projectPages = {
         'Complete audit trail and change tracking',
         'Compliance reporting for regulatory requirements',
         'Data retention and archival policies',
-        'Security access controls and permissions'
-      ]
+        'Security access controls and permissions',
+      ],
     },
     {
       name: 'task-capacity-planning',
@@ -1314,8 +1358,8 @@ const projectPages = {
         'Capacity modeling and demand forecasting',
         'Resource utilization optimization',
         'Bottleneck identification and resolution',
-        'Long-term capacity planning and budgeting'
-      ]
+        'Long-term capacity planning and budgeting',
+      ],
     },
     {
       name: 'task-agile-scrum',
@@ -1325,8 +1369,8 @@ const projectPages = {
         'Sprint planning and backlog management',
         'Story point estimation and velocity tracking',
         'Scrum ceremony management and facilitation',
-        'Agile metrics and team performance insights'
-      ]
+        'Agile metrics and team performance insights',
+      ],
     },
     {
       name: 'task-risk-management',
@@ -1336,8 +1380,8 @@ const projectPages = {
         'Risk identification and assessment matrices',
         'Automated risk monitoring and early warning',
         'Mitigation strategy planning and tracking',
-        'Risk impact analysis and reporting'
-      ]
+        'Risk impact analysis and reporting',
+      ],
     },
     {
       name: 'task-cost-tracking',
@@ -1347,8 +1391,8 @@ const projectPages = {
         'Real-time cost tracking and budget monitoring',
         'Cost allocation and billing management',
         'Financial forecasting and variance analysis',
-        'ROI calculation and profitability analysis'
-      ]
+        'ROI calculation and profitability analysis',
+      ],
     },
     {
       name: 'task-sla-management',
@@ -1358,19 +1402,20 @@ const projectPages = {
         'SLA definition and threshold configuration',
         'Real-time SLA monitoring and tracking',
         'Automated breach detection and alerting',
-        'SLA performance reporting and analytics'
-      ]
+        'SLA performance reporting and analytics',
+      ],
     },
     {
       name: 'task-knowledge-base',
       title: 'Task Knowledge Base & Documentation',
-      description: 'Centralized knowledge management with searchable documentation and best practices',
+      description:
+        'Centralized knowledge management with searchable documentation and best practices',
       features: [
         'Searchable knowledge base with AI-powered search',
         'Best practice documentation and sharing',
         'Task-specific help and guidance systems',
-        'Knowledge contribution and collaborative editing'
-      ]
+        'Knowledge contribution and collaborative editing',
+      ],
     },
     {
       name: 'task-custom-fields',
@@ -1380,8 +1425,8 @@ const projectPages = {
         'Dynamic custom field creation and management',
         'Advanced metadata tagging and categorization',
         'Custom validation rules and business logic',
-        'Field-based reporting and analytics'
-      ]
+        'Field-based reporting and analytics',
+      ],
     },
     {
       name: 'task-batch-operations',
@@ -1391,8 +1436,8 @@ const projectPages = {
         'Bulk task creation and import capabilities',
         'Mass update operations with validation',
         'Batch assignment and reassignment tools',
-        'Bulk status changes and workflow transitions'
-      ]
+        'Bulk status changes and workflow transitions',
+      ],
     },
     {
       name: 'task-approval-workflows',
@@ -1402,8 +1447,8 @@ const projectPages = {
         'Multi-level approval workflow configuration',
         'Role-based authorization and permissions',
         'Approval tracking and audit trails',
-        'Escalation paths for approval delays'
-      ]
+        'Escalation paths for approval delays',
+      ],
     },
     {
       name: 'task-calendar-integration',
@@ -1413,8 +1458,8 @@ const projectPages = {
         'Calendar integration with popular platforms',
         'Smart scheduling with conflict detection',
         'Meeting and task synchronization',
-        'Resource availability and booking management'
-      ]
+        'Resource availability and booking management',
+      ],
     },
     {
       name: 'task-comments-discussion',
@@ -1424,8 +1469,8 @@ const projectPages = {
         'Threaded comment system with mentions',
         'Activity feed and notification management',
         'File attachments and media sharing',
-        'Discussion search and archival'
-      ]
+        'Discussion search and archival',
+      ],
     },
     {
       name: 'task-file-management',
@@ -1435,19 +1480,20 @@ const projectPages = {
         'File upload and attachment management',
         'Version control and document history',
         'Access permissions and security controls',
-        'File preview and collaborative editing'
-      ]
+        'File preview and collaborative editing',
+      ],
     },
     {
       name: 'task-milestone-tracking',
       title: 'Task Milestone Tracking & Management',
-      description: 'Strategic milestone management with progress tracking and achievement analytics',
+      description:
+        'Strategic milestone management with progress tracking and achievement analytics',
       features: [
         'Milestone definition and progress tracking',
         'Achievement notifications and celebrations',
         'Milestone dependencies and critical path analysis',
-        'Performance metrics and completion analytics'
-      ]
+        'Performance metrics and completion analytics',
+      ],
     },
     {
       name: 'task-checklist-subtasks',
@@ -1457,8 +1503,8 @@ const projectPages = {
         'Hierarchical subtask creation and management',
         'Interactive checklist with progress tracking',
         'Subtask dependencies and sequencing',
-        'Progress rollup and completion analytics'
-      ]
+        'Progress rollup and completion analytics',
+      ],
     },
     {
       name: 'task-tags-labels',
@@ -1468,8 +1514,8 @@ const projectPages = {
         'Flexible tag and label management system',
         'Smart auto-tagging based on content analysis',
         'Tag-based filtering and search capabilities',
-        'Tag analytics and usage patterns'
-      ]
+        'Tag analytics and usage patterns',
+      ],
     },
     {
       name: 'task-search-filter',
@@ -1479,8 +1525,8 @@ const projectPages = {
         'Full-text search with advanced query syntax',
         'Multi-criteria filtering and faceted search',
         'Saved searches and smart filters',
-        'Search analytics and optimization'
-      ]
+        'Search analytics and optimization',
+      ],
     },
     {
       name: 'task-recurring-automation',
@@ -1490,8 +1536,8 @@ const projectPages = {
         'Flexible recurring task pattern configuration',
         'Intelligent scheduling based on workload',
         'Automatic assignment and resource allocation',
-        'Recurring task performance analytics'
-      ]
+        'Recurring task performance analytics',
+      ],
     },
     {
       name: 'task-export-import',
@@ -1501,8 +1547,8 @@ const projectPages = {
         'Multi-format export capabilities (Excel, CSV, JSON)',
         'Bulk import with data validation and mapping',
         'Template-based import/export configurations',
-        'Data transformation and migration tools'
-      ]
+        'Data transformation and migration tools',
+      ],
     },
     {
       name: 'task-backup-recovery',
@@ -1512,8 +1558,8 @@ const projectPages = {
         'Automated backup scheduling and management',
         'Point-in-time recovery capabilities',
         'Disaster recovery planning and testing',
-        'Data integrity verification and monitoring'
-      ]
+        'Data integrity verification and monitoring',
+      ],
     },
     {
       name: 'task-configuration-management',
@@ -1523,8 +1569,8 @@ const projectPages = {
         'Centralized configuration management interface',
         'Environment-specific configuration profiles',
         'Configuration versioning and rollback capabilities',
-        'Configuration audit and compliance tracking'
-      ]
+        'Configuration audit and compliance tracking',
+      ],
     },
     {
       name: 'task-user-permissions',
@@ -1534,8 +1580,8 @@ const projectPages = {
         'Granular permission matrix and access controls',
         'Role-based access control (RBAC) implementation',
         'Team and project-based permission inheritance',
-        'Access audit logging and security monitoring'
-      ]
+        'Access audit logging and security monitoring',
+      ],
     },
     {
       name: 'task-global-dashboard',
@@ -1545,19 +1591,19 @@ const projectPages = {
         'Enterprise-wide task visibility and monitoring',
         'Cross-project analytics and resource insights',
         'Executive summary reports and KPI dashboards',
-        'Global performance metrics and trending analysis'
-      ]
-    }
-  ]
+        'Global performance metrics and trending analysis',
+      ],
+    },
+  ],
 };
 
 // Ensure directory structure exists
-Object.keys(projectPages).forEach(category => {
+Object.keys(projectPages).forEach((category) => {
   const categoryDir = path.join(__dirname, category);
   if (!fs.existsSync(categoryDir)) {
     fs.mkdirSync(categoryDir, { recursive: true });
   }
-  
+
   const scriptsDir = path.join(categoryDir, 'scripts');
   if (!fs.existsSync(scriptsDir)) {
     fs.mkdirSync(scriptsDir, { recursive: true });
@@ -1572,8 +1618,9 @@ if (!fs.existsSync(stylesDir)) {
 
 // Helper function to convert kebab-case to camelCase
 function toCamelCase(str) {
-  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-            .replace(/^[a-z]/, (g) => g.toUpperCase());
+  return str
+    .replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+    .replace(/^[a-z]/, (g) => g.toUpperCase());
 }
 
 // Read template files
@@ -1583,29 +1630,32 @@ const stylePath = path.join(__dirname, 'styles', 'project-pages.css');
 // Generate pages for each category
 Object.entries(projectPages).forEach(([category, pages]) => {
   console.log(`\n📁 Generating ${category} pages...`);
-  
-  pages.forEach(page => {
+
+  pages.forEach((page) => {
     const pageFileName = `${page.name}.html`;
     const pageFilePath = path.join(__dirname, category, pageFileName);
-    
+
     console.log(`   ✅ ${page.title}`);
-    
+
     // Read template and replace placeholders
     let templateContent = fs.readFileSync(templatePath, 'utf8');
-    
+
     templateContent = templateContent
       .replace(/\{\{PAGE_TITLE\}\}/g, page.title)
       .replace(/\{\{PAGE_DESCRIPTION\}\}/g, page.description)
       .replace(/\{\{CATEGORY\}\}/g, category)
       .replace(/\{\{PAGE_NAME\}\}/g, page.name)
       .replace(/\{\{PAGE_SCRIPT\}\}/g, page.name)
-      .replace(/\{\{FEATURES_LIST\}\}/g, page.features.map(feature => 
-        `                                <li>✅ ${feature}</li>`
-      ).join('\n'));
-    
+      .replace(
+        /\{\{FEATURES_LIST\}\}/g,
+        page.features
+          .map((feature) => `                                <li>✅ ${feature}</li>`)
+          .join('\n')
+      );
+
     // Write page file
     fs.writeFileSync(pageFilePath, templateContent);
-    
+
     // Helper function to convert kebab-case to camelCase (already defined above)
 
     // Generate JavaScript file
@@ -1788,7 +1838,7 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = ${toCamelCase(page.name)}Manager;
 }
 `;
-    
+
     const jsFilePath = path.join(__dirname, category, 'scripts', `${page.name}.js`);
     fs.writeFileSync(jsFilePath, jsContent);
   });
@@ -1826,20 +1876,28 @@ const indexContent = `<!DOCTYPE html>
                 </div>
 
                 <div class="project-categories-grid">
-${Object.entries(projectPages).map(([category, pages]) => `
+${Object.entries(projectPages)
+  .map(
+    ([category, pages]) => `
                     <div class="project-category-card">
                         <div class="category-header">
-                            <h3>${category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h3>
+                            <h3>${category.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}</h3>
                             <span class="page-count">${pages.length} Pages</span>
                         </div>
                         <div class="category-pages">
-${pages.map(page => `
+${pages
+  .map(
+    (page) => `
                             <a href="${category}/${page.name}.html" class="page-link">
                                 <i class="fas fa-project-diagram"></i>
                                 <span>${page.title}</span>
-                            </a>`).join('')}
+                            </a>`
+  )
+  .join('')}
                         </div>
-                    </div>`).join('')}
+                    </div>`
+  )
+  .join('')}
                 </div>
 
                 <div class="project-implementation-summary">
@@ -1875,7 +1933,9 @@ fs.writeFileSync(path.join(__dirname, 'index.html'), indexContent);
 console.log('\n🚀 Project Execution Pages Generation Complete!');
 console.log('\n📊 Summary:');
 Object.entries(projectPages).forEach(([category, pages]) => {
-  console.log(`   - ${category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} (${pages.length} pages)`);
+  console.log(
+    `   - ${category.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())} (${pages.length} pages)`
+  );
 });
 console.log('\n🚀 All pages include:');
 console.log('   ✅ Complete frontend implementation');
@@ -1884,4 +1944,6 @@ console.log('   ✅ Business-ready functionality');
 console.log('   ✅ Customer-ready interface');
 console.log('   ✅ Real-time monitoring and analytics');
 console.log('   ✅ Enterprise security and compliance');
-console.log('\n💡 Extended with 138 comprehensive project execution pages for enterprise-grade project management!');
+console.log(
+  '\n💡 Extended with 138 comprehensive project execution pages for enterprise-grade project management!'
+);

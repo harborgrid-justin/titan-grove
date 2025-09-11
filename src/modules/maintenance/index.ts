@@ -1,5 +1,5 @@
 /**
- * Maintenance Management Module  
+ * Maintenance Management Module
  * Asset maintenance, preventive maintenance, and work order management
  */
 
@@ -23,18 +23,23 @@ import type {
   MaintenanceSchedule,
   MaintenanceTechnician,
   TechnicianSkill,
-  MaintenanceKPI
+  MaintenanceKPI,
 } from './types';
 
 export class MaintenanceManager extends BaseManager {
-  
-  async createMaintenanceAsset(asset: Omit<MaintenanceAsset, 'id' | 'maintenanceHistory'>): Promise<MaintenanceAsset> {
+  async createMaintenanceAsset(
+    asset: Omit<MaintenanceAsset, 'id' | 'maintenanceHistory'>
+  ): Promise<MaintenanceAsset> {
     const id = this.generateId('asset');
     this.logAction('createMaintenanceAsset', { id, name: asset.name });
     return { ...asset, id, maintenanceHistory: [] };
   }
 
-  async updateAssetStatus(assetId: string, status: MaintenanceAsset['status'], reason: string): Promise<{
+  async updateAssetStatus(
+    assetId: string,
+    status: MaintenanceAsset['status'],
+    reason: string
+  ): Promise<{
     assetId: string;
     previousStatus: MaintenanceAsset['status'];
     newStatus: MaintenanceAsset['status'];
@@ -47,20 +52,24 @@ export class MaintenanceManager extends BaseManager {
       previousStatus: 'ACTIVE',
       newStatus: status,
       updatedDate: new Date(),
-      reason
+      reason,
     };
   }
 
-  async schedulePreventiveMaintenance(assetId: string, maintenanceType: string, intervalDays: number): Promise<MaintenanceWorkOrder[]> {
+  async schedulePreventiveMaintenance(
+    assetId: string,
+    maintenanceType: string,
+    intervalDays: number
+  ): Promise<MaintenanceWorkOrder[]> {
     console.log(`Scheduling preventive maintenance for asset ${assetId}`);
-    
+
     const workOrders: MaintenanceWorkOrder[] = [];
     const today = new Date();
-    
+
     for (let i = 1; i <= 4; i++) {
       const scheduledDate = new Date(today);
-      scheduledDate.setDate(today.getDate() + (i * intervalDays));
-      
+      scheduledDate.setDate(today.getDate() + i * intervalDays);
+
       const workOrder: MaintenanceWorkOrder = {
         id: `mwo_${Date.now()}_${i}`,
         workOrderNumber: `PM${Date.now().toString().slice(-6)}_${i}`,
@@ -74,31 +83,36 @@ export class MaintenanceManager extends BaseManager {
         partsRequired: [],
         instructions: 'Follow preventive maintenance checklist',
         safetyRequirements: ['PPE required', 'Lockout/Tagout'],
-        createdDate: new Date()
+        createdDate: new Date(),
       };
       workOrders.push(workOrder);
     }
-    
+
     return workOrders;
   }
 
-  async createWorkOrder(workOrder: Omit<MaintenanceWorkOrder, 'id' | 'workOrderNumber' | 'status' | 'createdDate'>): Promise<MaintenanceWorkOrder> {
+  async createWorkOrder(
+    workOrder: Omit<MaintenanceWorkOrder, 'id' | 'workOrderNumber' | 'status' | 'createdDate'>
+  ): Promise<MaintenanceWorkOrder> {
     const id = this.generateId('mwo');
     const workOrderNumber = this.generateNumericId('MWO');
-    
+
     const result = {
       ...workOrder,
       id,
       workOrderNumber,
       status: 'PLANNED' as const,
-      createdDate: new Date()
+      createdDate: new Date(),
     };
-    
+
     this.logAction('createWorkOrder', { id, workOrderNumber, assetId: workOrder.assetId });
     return result;
   }
 
-  async assignWorkOrder(workOrderId: string, technicianId: string): Promise<{
+  async assignWorkOrder(
+    workOrderId: string,
+    technicianId: string
+  ): Promise<{
     workOrderId: string;
     technicianId: string;
     assignedDate: Date;
@@ -108,25 +122,28 @@ export class MaintenanceManager extends BaseManager {
     const assignedDate = new Date();
     const estimatedStartDate = new Date();
     estimatedStartDate.setHours(estimatedStartDate.getHours() + 2);
-    
+
     return {
       workOrderId,
       technicianId,
       assignedDate,
       estimatedStartDate,
-      technicianAvailability: 'AVAILABLE'
+      technicianAvailability: 'AVAILABLE',
     };
   }
 
-  async completeWorkOrder(workOrderId: string, completionDetails: {
-    actualHours: number;
-    partsUsed: MaintenancePart[];
-    workCompleted: string;
-    condition: MaintenanceRecord['condition'];
-    notes: string;
-  }): Promise<MaintenanceRecord> {
+  async completeWorkOrder(
+    workOrderId: string,
+    completionDetails: {
+      actualHours: number;
+      partsUsed: MaintenancePart[];
+      workCompleted: string;
+      condition: MaintenanceRecord['condition'];
+      notes: string;
+    }
+  ): Promise<MaintenanceRecord> {
     const recordId = this.generateId('rec');
-    
+
     return {
       recordId,
       assetId: 'asset_placeholder',
@@ -139,11 +156,14 @@ export class MaintenanceManager extends BaseManager {
       workCompleted: completionDetails.workCompleted,
       nextMaintenanceDue: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       condition: completionDetails.condition,
-      notes: completionDetails.notes
+      notes: completionDetails.notes,
     };
   }
 
-  async generateMaintenanceSchedule(assetId: string, scheduleType: 'CALENDAR_BASED' | 'USAGE_BASED' | 'CONDITION_BASED'): Promise<{
+  async generateMaintenanceSchedule(
+    assetId: string,
+    scheduleType: 'CALENDAR_BASED' | 'USAGE_BASED' | 'CONDITION_BASED'
+  ): Promise<{
     schedules: MaintenanceSchedule[];
     optimizationSuggestions: string[];
     estimatedAnnualCost: number;
@@ -161,8 +181,8 @@ export class MaintenanceManager extends BaseManager {
         safetyProcedures: ['LOTO', 'PPE'],
         isActive: true,
         nextDueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        createdDate: new Date()
-      }
+        createdDate: new Date(),
+      },
     ];
 
     return {
@@ -170,13 +190,16 @@ export class MaintenanceManager extends BaseManager {
       optimizationSuggestions: [
         'Consider condition-based monitoring for critical assets',
         'Combine similar maintenance activities to reduce downtime',
-        'Schedule maintenance during planned production breaks'
+        'Schedule maintenance during planned production breaks',
       ],
-      estimatedAnnualCost: 15000
+      estimatedAnnualCost: 15000,
     };
   }
 
-  async predictiveMaintenanceAnalysis(assetId: string, sensorData: Record<string, number[]>): Promise<{
+  async predictiveMaintenanceAnalysis(
+    assetId: string,
+    sensorData: Record<string, number[]>
+  ): Promise<{
     riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     predictedFailureDate?: Date;
     recommendedActions: string[];
@@ -189,13 +212,13 @@ export class MaintenanceManager extends BaseManager {
     }>;
   }> {
     console.log(`Analyzing predictive maintenance data for asset ${assetId}`);
-    
+
     // Simulate analysis of sensor data
-    const anomalies = Object.keys(sensorData).map(parameter => ({
+    const anomalies = Object.keys(sensorData).map((parameter) => ({
       parameter,
       currentValue: sensorData[parameter][sensorData[parameter].length - 1],
       expectedRange: { min: 18, max: 22 },
-      severity: 'LOW' as const
+      severity: 'LOW' as const,
     }));
 
     return {
@@ -204,10 +227,10 @@ export class MaintenanceManager extends BaseManager {
       recommendedActions: [
         'Schedule condition assessment',
         'Monitor vibration levels more frequently',
-        'Consider component replacement within 30 days'
+        'Consider component replacement within 30 days',
       ],
       confidenceLevel: 78.5,
-      anomalies
+      anomalies,
     };
   }
 
@@ -228,7 +251,7 @@ export class MaintenanceManager extends BaseManager {
         unit: '%',
         period: 'MONTHLY',
         trend: 'IMPROVING',
-        lastCalculated: new Date()
+        lastCalculated: new Date(),
       },
       {
         metricName: 'Mean Time Between Failures (MTBF)',
@@ -237,7 +260,7 @@ export class MaintenanceManager extends BaseManager {
         unit: 'hours',
         period: 'MONTHLY',
         trend: 'STABLE',
-        lastCalculated: new Date()
+        lastCalculated: new Date(),
       },
       {
         metricName: 'Maintenance Cost per Asset',
@@ -246,8 +269,8 @@ export class MaintenanceManager extends BaseManager {
         unit: 'USD',
         period: 'MONTHLY',
         trend: 'DECLINING',
-        lastCalculated: new Date()
-      }
+        lastCalculated: new Date(),
+      },
     ];
 
     return {
@@ -256,8 +279,8 @@ export class MaintenanceManager extends BaseManager {
       trends: {
         equipmentReliability: 'IMPROVING',
         maintenanceCosts: 'DECLINING',
-        planningEfficiency: 'STABLE'
-      }
+        planningEfficiency: 'STABLE',
+      },
     };
   }
 
@@ -280,8 +303,8 @@ export class MaintenanceManager extends BaseManager {
           {
             skillId: 'skill_001',
             skillName: 'Electrical Systems',
-            level: 'ADVANCED'
-          }
+            level: 'ADVANCED',
+          },
         ],
         certifications: ['Electrical Safety', 'HVAC Systems'],
         availabilityStatus: 'AVAILABLE',
@@ -289,16 +312,16 @@ export class MaintenanceManager extends BaseManager {
         performanceMetrics: {
           completionRate: 96.5,
           averageTimeToComplete: 4.2,
-          qualityRating: 4.7
-        }
-      }
+          qualityRating: 4.7,
+        },
+      },
     ];
 
-    const workloadDistribution = technicians.map(tech => ({
+    const workloadDistribution = technicians.map((tech) => ({
       technicianId: tech.technicianId,
       scheduledHours: 35,
       availableHours: 40,
-      utilizationRate: 87.5
+      utilizationRate: 87.5,
     }));
 
     return {
@@ -307,8 +330,8 @@ export class MaintenanceManager extends BaseManager {
       recommendations: [
         'Balance workload between technicians',
         'Schedule training for skill gaps',
-        'Consider hiring additional specialist for high-demand skills'
-      ]
+        'Consider hiring additional specialist for high-demand skills',
+      ],
     };
   }
 
@@ -321,14 +344,14 @@ export class MaintenanceManager extends BaseManager {
     lastOrderDate?: Date;
   }> {
     console.log(`Checking inventory for part ${partNumber}`);
-    
+
     return {
       partId: partNumber,
       availability: 'IN_STOCK',
       quantityOnHand: 25,
       reorderPoint: 10,
       estimatedLeadTime: 7, // days
-      lastOrderDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      lastOrderDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     };
   }
 }

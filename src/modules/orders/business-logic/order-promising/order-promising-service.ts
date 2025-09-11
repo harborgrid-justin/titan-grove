@@ -3,16 +3,9 @@
  * ATP (Available to Promise) and delivery scheduling with Oracle EBS competitive features
  */
 
-import type { 
-  SalesOrder,
-  OrderLineItem,
-  Quote,
-  QuoteLineItem
-} from '../../types';
+import type { SalesOrder, OrderLineItem, Quote, QuoteLineItem } from '../../types';
 
-import {
-  Priority
-} from '../../types';
+import { Priority } from '../../types';
 
 import { OrderPromisingConfig } from '../../../../types/business-config';
 
@@ -84,7 +77,12 @@ export interface PromiseDateComponent {
 }
 
 export interface PromiseRisk {
-  type: 'SUPPLY_SHORTAGE' | 'CAPACITY_CONSTRAINT' | 'QUALITY_ISSUE' | 'SHIPPING_DELAY' | 'SUPPLIER_ISSUE';
+  type:
+    | 'SUPPLY_SHORTAGE'
+    | 'CAPACITY_CONSTRAINT'
+    | 'QUALITY_ISSUE'
+    | 'SHIPPING_DELAY'
+    | 'SUPPLIER_ISSUE';
   description: string;
   probability: number;
   impact: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -137,9 +135,8 @@ export interface ConsolidationOpportunity {
 }
 
 export class OrderPromisingService {
-  
   constructor(private config: OrderPromisingConfig) {}
-  
+
   // ================================
   // AVAILABILITY CHECKING
   // ================================
@@ -156,9 +153,8 @@ export class OrderPromisingService {
       acceptPartialFulfillment?: boolean;
     }
   ): Promise<AvailabilityCheck[]> {
-    
     const availabilityChecks: AvailabilityCheck[] = [];
-    
+
     for (const lineItem of quote.lineItems) {
       const availabilityCheck = await this.performItemAvailabilityCheck(
         lineItem.itemId,
@@ -168,13 +164,13 @@ export class OrderPromisingService {
           customerId: quote.customerId,
           priority: quote.priority,
           territory: quote.territory,
-          ...options
+          ...options,
         }
       );
-      
+
       availabilityChecks.push(availabilityCheck);
     }
-    
+
     return availabilityChecks;
   }
 
@@ -190,9 +186,8 @@ export class OrderPromisingService {
       acceptPartialFulfillment?: boolean;
     }
   ): Promise<AvailabilityCheck[]> {
-    
     const availabilityChecks: AvailabilityCheck[] = [];
-    
+
     for (const lineItem of order.lineItems) {
       const availabilityCheck = await this.performItemAvailabilityCheck(
         lineItem.itemId,
@@ -203,13 +198,13 @@ export class OrderPromisingService {
           priority: order.priority,
           territory: order.territory,
           contractId: order.contractId,
-          ...options
+          ...options,
         }
       );
-      
+
       availabilityChecks.push(availabilityCheck);
     }
-    
+
     return availabilityChecks;
   }
 
@@ -231,31 +226,40 @@ export class OrderPromisingService {
       maxLeadTime?: number;
     }
   ): Promise<AvailabilityCheck> {
-    
     // Get current inventory levels
     const inventoryLevels = await this.getInventoryLevels(itemId, context?.warehouseId);
-    
+
     // Calculate available quantity considering reservations and allocations
     const availableQuantity = this.calculateAvailableQuantity(inventoryLevels, requestedDate);
-    
+
     // Determine availability date if quantity not available
-    const availabilityDate = availableQuantity >= quantity ? 
-      requestedDate : 
-      await this.calculateAvailabilityDate(itemId, quantity, requestedDate, context);
+    const availabilityDate =
+      availableQuantity >= quantity
+        ? requestedDate
+        : await this.calculateAvailabilityDate(itemId, quantity, requestedDate, context);
 
     // Calculate shortage
     const shortage = Math.max(0, quantity - availableQuantity);
 
     // Find substitutes if requested and shortage exists
-    const substitutes = (context?.includeSubstitutes && shortage > 0) ?
-      await this.findItemSubstitutes(itemId, shortage, requestedDate, context) : [];
+    const substitutes =
+      context?.includeSubstitutes && shortage > 0
+        ? await this.findItemSubstitutes(itemId, shortage, requestedDate, context)
+        : [];
 
     // Find alternative sources if requested and shortage exists
-    const alternativeSources = (context?.includeAlternativeSources && shortage > 0) ?
-      await this.findAlternativeSources(itemId, shortage, requestedDate, context) : [];
+    const alternativeSources =
+      context?.includeAlternativeSources && shortage > 0
+        ? await this.findAlternativeSources(itemId, shortage, requestedDate, context)
+        : [];
 
     // Identify constraints
-    const constraints = await this.identifyAvailabilityConstraints(itemId, quantity, requestedDate, context);
+    const constraints = await this.identifyAvailabilityConstraints(
+      itemId,
+      quantity,
+      requestedDate,
+      context
+    );
 
     // Calculate lead time
     const leadTime = this.calculateLeadTime(availabilityDate, requestedDate);
@@ -271,7 +275,7 @@ export class OrderPromisingService {
       shortage,
       substitutes,
       alternativeSources,
-      constraints
+      constraints,
     };
   }
 
@@ -292,18 +296,13 @@ export class OrderPromisingService {
       optimizeForSpeed?: boolean;
     }
   ): Promise<PromiseDate[]> {
-    
     const promiseDates: PromiseDate[] = [];
-    
+
     for (const lineItem of order.lineItems) {
-      const promiseDate = await this.calculateLineItemPromiseDate(
-        lineItem,
-        order,
-        options
-      );
+      const promiseDate = await this.calculateLineItemPromiseDate(lineItem, order, options);
       promiseDates.push(promiseDate);
     }
-    
+
     return promiseDates;
   }
 
@@ -321,13 +320,12 @@ export class OrderPromisingService {
       optimizeForSpeed?: boolean;
     }
   ): Promise<PromiseDate> {
-    
     const components: PromiseDateComponent[] = [];
     const risks: PromiseRisk[] = [];
     const assumptions: string[] = [];
-    
+
     let currentDate = new Date();
-    
+
     // Check if item is available in inventory
     const availabilityCheck = await this.performItemAvailabilityCheck(
       lineItem.itemId,
@@ -340,43 +338,49 @@ export class OrderPromisingService {
       // Item needs to be procured or manufactured
       if (await this.isItemManufactured(lineItem.itemId)) {
         // Manufacturing lead time
-        const mfgLeadTime = await this.getManufacturingLeadTime(lineItem.itemId, availabilityCheck.shortage);
+        const mfgLeadTime = await this.getManufacturingLeadTime(
+          lineItem.itemId,
+          availabilityCheck.shortage
+        );
         components.push({
           component: 'MANUFACTURING',
           description: `Manufacturing time for ${availabilityCheck.shortage} units`,
           duration: mfgLeadTime,
           startDate: currentDate,
           endDate: new Date(currentDate.getTime() + mfgLeadTime * 24 * 60 * 60 * 1000),
-          criticality: 'HIGH'
+          criticality: 'HIGH',
         });
         currentDate = new Date(currentDate.getTime() + mfgLeadTime * 24 * 60 * 60 * 1000);
-        
+
         risks.push({
           type: 'CAPACITY_CONSTRAINT',
           description: 'Manufacturing capacity may be limited',
           probability: 0.3,
           impact: 'MEDIUM',
-          mitigation: 'Monitor production schedule closely'
+          mitigation: 'Monitor production schedule closely',
         });
       } else {
         // Procurement lead time
-        const procurementLeadTime = await this.getProcurementLeadTime(lineItem.itemId, availabilityCheck.shortage);
+        const procurementLeadTime = await this.getProcurementLeadTime(
+          lineItem.itemId,
+          availabilityCheck.shortage
+        );
         components.push({
           component: 'PROCUREMENT',
           description: `Procurement time for ${availabilityCheck.shortage} units`,
           duration: procurementLeadTime,
           startDate: currentDate,
           endDate: new Date(currentDate.getTime() + procurementLeadTime * 24 * 60 * 60 * 1000),
-          criticality: 'HIGH'
+          criticality: 'HIGH',
         });
         currentDate = new Date(currentDate.getTime() + procurementLeadTime * 24 * 60 * 60 * 1000);
-        
+
         risks.push({
           type: 'SUPPLIER_ISSUE',
           description: 'Supplier delivery may be delayed',
           probability: 0.2,
           impact: 'HIGH',
-          mitigation: 'Maintain alternative supplier relationships'
+          mitigation: 'Maintain alternative supplier relationships',
         });
       }
     } else {
@@ -387,7 +391,7 @@ export class OrderPromisingService {
         duration: 0,
         startDate: currentDate,
         endDate: currentDate,
-        criticality: 'LOW'
+        criticality: 'LOW',
       });
       assumptions.push('Inventory levels remain available until order processing');
     }
@@ -403,7 +407,7 @@ export class OrderPromisingService {
       duration: shippingTime,
       startDate: currentDate,
       endDate: new Date(currentDate.getTime() + shippingTime * 24 * 60 * 60 * 1000),
-      criticality: 'MEDIUM'
+      criticality: 'MEDIUM',
     });
     currentDate = new Date(currentDate.getTime() + shippingTime * 24 * 60 * 60 * 1000);
 
@@ -416,7 +420,7 @@ export class OrderPromisingService {
         duration: bufferDays,
         startDate: currentDate,
         endDate: new Date(currentDate.getTime() + bufferDays * 24 * 60 * 60 * 1000),
-        criticality: 'LOW'
+        criticality: 'LOW',
       });
       currentDate = new Date(currentDate.getTime() + bufferDays * 24 * 60 * 60 * 1000);
     }
@@ -430,7 +434,7 @@ export class OrderPromisingService {
       confidence,
       components,
       assumptions,
-      risks
+      risks,
     };
   }
 
@@ -450,11 +454,10 @@ export class OrderPromisingService {
       maxDeliveries?: number;
     }
   ): Promise<DeliverySchedule> {
-    
     // Calculate promise dates for all line items
     const promiseDates = await this.calculatePromiseDates(order, {
       optimizeForCost: options?.optimizeForCost,
-      optimizeForSpeed: !options?.optimizeForCost
+      optimizeForSpeed: !options?.optimizeForCost,
     });
 
     // Group line items by availability date and warehouse
@@ -471,8 +474,9 @@ export class OrderPromisingService {
     deliveries.sort((a, b) => a.plannedShipDate.getTime() - b.plannedShipDate.getTime());
 
     // Find consolidation opportunities
-    const consolidationOpportunities = options?.consolidateShipments ?
-      await this.findConsolidationOpportunities(deliveries) : [];
+    const consolidationOpportunities = options?.consolidateShipments
+      ? await this.findConsolidationOpportunities(deliveries)
+      : [];
 
     // Calculate total shipping cost
     const shippingCost = deliveries.reduce((sum, delivery) => sum + delivery.shippingCost, 0);
@@ -480,8 +484,10 @@ export class OrderPromisingService {
     // Calculate total delivery time
     const firstShipDate = deliveries[0]?.plannedShipDate;
     const lastDeliveryDate = deliveries[deliveries.length - 1]?.estimatedDeliveryDate;
-    const estimatedTotalDeliveryTime = firstShipDate && lastDeliveryDate ?
-      Math.ceil((lastDeliveryDate.getTime() - firstShipDate.getTime()) / (24 * 60 * 60 * 1000)) : 0;
+    const estimatedTotalDeliveryTime =
+      firstShipDate && lastDeliveryDate
+        ? Math.ceil((lastDeliveryDate.getTime() - firstShipDate.getTime()) / (24 * 60 * 60 * 1000))
+        : 0;
 
     return {
       orderId: order.id,
@@ -491,7 +497,7 @@ export class OrderPromisingService {
       deliveries,
       consolidationOpportunities,
       shippingCost,
-      estimatedTotalDeliveryTime
+      estimatedTotalDeliveryTime,
     };
   }
 
@@ -507,7 +513,7 @@ export class OrderPromisingService {
       reserved: 10,
       allocated: 5,
       onOrder: 50,
-      inTransit: 20
+      inTransit: 20,
     };
   }
 
@@ -516,7 +522,12 @@ export class OrderPromisingService {
     return inventoryLevels.available;
   }
 
-  private async calculateAvailabilityDate(itemId: string, quantity: number, requestedDate: Date, context?: any): Promise<Date> {
+  private async calculateAvailabilityDate(
+    itemId: string,
+    quantity: number,
+    requestedDate: Date,
+    context?: any
+  ): Promise<Date> {
     // Implementation would consider supply schedule and lead times
     const leadTimeDays = await this.getItemLeadTime(itemId);
     const availabilityDate = new Date(requestedDate);
@@ -524,23 +535,41 @@ export class OrderPromisingService {
     return availabilityDate;
   }
 
-  private async findItemSubstitutes(itemId: string, shortage: number, requestedDate: Date, context?: any): Promise<ItemSubstitute[]> {
+  private async findItemSubstitutes(
+    itemId: string,
+    shortage: number,
+    requestedDate: Date,
+    context?: any
+  ): Promise<ItemSubstitute[]> {
     // Implementation would query substitute items and their availability
     return [];
   }
 
-  private async findAlternativeSources(itemId: string, shortage: number, requestedDate: Date, context?: any): Promise<AlternativeSource[]> {
+  private async findAlternativeSources(
+    itemId: string,
+    shortage: number,
+    requestedDate: Date,
+    context?: any
+  ): Promise<AlternativeSource[]> {
     // Implementation would query alternative warehouses, suppliers, etc.
     return [];
   }
 
-  private async identifyAvailabilityConstraints(itemId: string, quantity: number, requestedDate: Date, context?: any): Promise<AvailabilityConstraint[]> {
+  private async identifyAvailabilityConstraints(
+    itemId: string,
+    quantity: number,
+    requestedDate: Date,
+    context?: any
+  ): Promise<AvailabilityConstraint[]> {
     // Implementation would identify various constraints
     return [];
   }
 
   private calculateLeadTime(availabilityDate: Date, requestedDate: Date): number {
-    return Math.max(0, Math.ceil((availabilityDate.getTime() - requestedDate.getTime()) / (24 * 60 * 60 * 1000)));
+    return Math.max(
+      0,
+      Math.ceil((availabilityDate.getTime() - requestedDate.getTime()) / (24 * 60 * 60 * 1000))
+    );
   }
 
   private async getItemCode(itemId: string): Promise<string> {
@@ -567,15 +596,21 @@ export class OrderPromisingService {
     return this.config.itemLeadTime;
   }
 
-  private async calculateShippingTime(shippingAddress: any, shippingMethod: string): Promise<number> {
+  private async calculateShippingTime(
+    shippingAddress: any,
+    shippingMethod: string
+  ): Promise<number> {
     // Implementation would calculate shipping time based on address and method
     const shippingTimes = {
-      'OVERNIGHT': this.config.overnightShippingTime,
-      'EXPRESS': this.config.expressShippingTime,
-      'GROUND': this.config.standardShippingTime,
-      'FREIGHT': this.config.standardShippingTime
+      OVERNIGHT: this.config.overnightShippingTime,
+      EXPRESS: this.config.expressShippingTime,
+      GROUND: this.config.standardShippingTime,
+      FREIGHT: this.config.standardShippingTime,
     };
-    return shippingTimes[shippingMethod as keyof typeof shippingTimes] || this.config.standardShippingTime;
+    return (
+      shippingTimes[shippingMethod as keyof typeof shippingTimes] ||
+      this.config.standardShippingTime
+    );
   }
 
   private getDefaultBufferDays(priority: Priority): number {
@@ -584,15 +619,19 @@ export class OrderPromisingService {
       [Priority.MEDIUM]: this.config.mediumPriorityBufferDays,
       [Priority.HIGH]: this.config.highPriorityBufferDays,
       [Priority.URGENT]: 0,
-      [Priority.CRITICAL]: 0
+      [Priority.CRITICAL]: 0,
     };
     return bufferDays[priority] || this.config.mediumPriorityBufferDays;
   }
 
-  private calculateConfidence(components: PromiseDateComponent[], risks: PromiseRisk[], constraints: AvailabilityConstraint[]): number {
+  private calculateConfidence(
+    components: PromiseDateComponent[],
+    risks: PromiseRisk[],
+    constraints: AvailabilityConstraint[]
+  ): number {
     // Implementation would calculate confidence score based on various factors
     let confidence = 0.9;
-    
+
     // Reduce confidence based on risks
     for (const risk of risks) {
       const riskImpact = { LOW: 0.02, MEDIUM: 0.05, HIGH: 0.1, CRITICAL: 0.2 };
@@ -606,10 +645,17 @@ export class OrderPromisingService {
       }
     }
 
-    return Math.max(this.config.minConfidenceLevel, Math.min(this.config.maxConfidenceLevel, confidence));
+    return Math.max(
+      this.config.minConfidenceLevel,
+      Math.min(this.config.maxConfidenceLevel, confidence)
+    );
   }
 
-  private groupLineItemsForDelivery(lineItems: OrderLineItem[], promiseDates: PromiseDate[], options?: any): any[] {
+  private groupLineItemsForDelivery(
+    lineItems: OrderLineItem[],
+    promiseDates: PromiseDate[],
+    options?: any
+  ): any[] {
     // Implementation would group line items for optimal delivery
     return [{ lineItems, promiseDates }];
   }
@@ -626,11 +672,13 @@ export class OrderPromisingService {
       shipmentWeight: 0,
       shipmentVolume: 0,
       shippingCost: 0,
-      priority: order.priority
+      priority: order.priority,
     };
   }
 
-  private async findConsolidationOpportunities(deliveries: ScheduledDelivery[]): Promise<ConsolidationOpportunity[]> {
+  private async findConsolidationOpportunities(
+    deliveries: ScheduledDelivery[]
+  ): Promise<ConsolidationOpportunity[]> {
     // Implementation would find opportunities to consolidate shipments
     return [];
   }

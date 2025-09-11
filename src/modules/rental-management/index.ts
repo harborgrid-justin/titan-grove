@@ -1,7 +1,7 @@
 /**
  * Rental Management Module
  * Fortune 100 grade rental asset management and optimization
- * 
+ *
  * Provides comprehensive rental management capabilities including:
  * - Rental agreement lifecycle management
  * - Asset utilization tracking and optimization
@@ -24,7 +24,10 @@ import { BaseManager } from '../../shared/utils/base-manager';
 import { rentalManagementService } from './business-logic/rental-management-service';
 
 // Core rental management functionality
-export { RentalManagementService, rentalManagementService } from './business-logic/rental-management-service';
+export {
+  RentalManagementService,
+  rentalManagementService,
+} from './business-logic/rental-management-service';
 
 // Types
 export type {
@@ -42,7 +45,7 @@ export type {
   FleetOptimization,
   RentalAnalytics,
   RentalReservation,
-  RentalBilling
+  RentalBilling,
 } from './types';
 
 /**
@@ -58,7 +61,7 @@ export class RentalManagementManager extends BaseManager {
     const agreement = {
       id,
       ...agreementData,
-      ...this.createAuditFields('system')
+      ...this.createAuditFields('system'),
     };
     this.logAction('createRentalAgreement', { id });
     return agreement;

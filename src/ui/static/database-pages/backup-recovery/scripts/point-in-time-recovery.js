@@ -1,142 +1,142 @@
 // Point-in-Time Recovery - Database Management System
 // This file provides business-ready functionality for Point-in-Time Recovery
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Point-in-Time Recovery page loaded');
-    
-    // Initialize page functionality
-    initpointintimerecovery();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadpointintimerecoveryData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Point-in-Time Recovery page loaded');
+
+  // Initialize page functionality
+  initpointintimerecovery();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadpointintimerecoveryData();
 });
 
 async function loadpointintimerecoveryData() {
-    try {
-        const response = await fetch('/api/database/backup-recovery/point-in-time-recovery');
-        if (response.ok) {
-            const data = await response.json();
-            updatepointintimerecoveryDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Point-in-Time Recovery data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/backup-recovery/point-in-time-recovery');
+    if (response.ok) {
+      const data = await response.json();
+      updatepointintimerecoveryDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Point-in-Time Recovery data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initpointintimerecovery() {
-    console.log('Initializing Point-in-Time Recovery');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Point-in-Time Recovery');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Point-in-Time Recovery');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Point-in-Time Recovery');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Point-in-Time Recovery');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Point-in-Time Recovery');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Point-in-Time Recovery');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Point-in-Time Recovery');
 }
 
 function handlepointintimerecoveryAction() {
-    console.log('Point-in-Time Recovery action triggered');
-    showNotification('Point-in-Time Recovery configured successfully', 'success');
+  console.log('Point-in-Time Recovery action triggered');
+  showNotification('Point-in-Time Recovery configured successfully', 'success');
 }
 
 function executepointintimerecovery() {
-    console.log('Point-in-Time Recovery execution started');
-    showNotification('Point-in-Time Recovery executed successfully', 'success');
+  console.log('Point-in-Time Recovery execution started');
+  showNotification('Point-in-Time Recovery executed successfully', 'success');
 }
 
 function updatepointintimerecoveryDisplay(data) {
-    console.log('Updating Point-in-Time Recovery display:', data);
-    // Update UI with loaded data
+  console.log('Updating Point-in-Time Recovery display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/backup-recovery/point-in-time-recovery/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadpointintimerecoveryData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handlepointintimerecoveryAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/backup-recovery/point-in-time-recovery/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'point-in-time-recovery-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch('/api/database/backup-recovery/point-in-time-recovery/test');
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadpointintimerecoveryData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handlepointintimerecoveryAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch('/api/database/backup-recovery/point-in-time-recovery/export');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'point-in-time-recovery-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

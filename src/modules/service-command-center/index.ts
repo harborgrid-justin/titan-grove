@@ -1,7 +1,7 @@
 /**
  * Service Command Center Module
  * Centralized service operations hub for Fortune 100 Oracle EBS competitive implementation
- * 
+ *
  * Provides unified command and control for all service operations:
  * - Real-time service operations dashboard
  * - Centralized resource management
@@ -23,22 +23,22 @@ export * from './data-access';
 export {
   ServiceCommandCenterService,
   serviceCommandCenterService,
-  createServiceCommandCenterService
+  createServiceCommandCenterService,
 } from './business-logic/service-command-center-service';
 
 export {
   ServiceDashboardService,
-  serviceDashboardService
+  serviceDashboardService,
 } from './business-logic/service-dashboard-service';
 
 export {
   ServiceAnalyticsService,
-  serviceAnalyticsService
+  serviceAnalyticsService,
 } from './business-logic/service-analytics-service';
 
 export {
   MobileCommandService,
-  mobileCommandService
+  mobileCommandService,
 } from './business-logic/mobile-command-service';
 
 // API router export

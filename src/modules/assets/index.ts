@@ -138,7 +138,14 @@ export interface ServicePart {
 export interface AssetLifecycleEvent {
   id: string;
   assetId: string;
-  eventType: 'ACQUISITION' | 'DEPLOYMENT' | 'TRANSFER' | 'MAINTENANCE' | 'UPGRADE' | 'DISPOSAL' | 'AUDIT';
+  eventType:
+    | 'ACQUISITION'
+    | 'DEPLOYMENT'
+    | 'TRANSFER'
+    | 'MAINTENANCE'
+    | 'UPGRADE'
+    | 'DISPOSAL'
+    | 'AUDIT';
   eventDate: Date;
   fromStatus?: string;
   toStatus: string;
@@ -329,16 +336,18 @@ export class AssetManager extends BaseManager {
   /**
    * Asset Lifecycle Management
    */
-  async createAsset(asset: Omit<Asset, 'id' | 'createdAt' | 'updatedAt' | 'childAssets'>): Promise<Asset> {
+  async createAsset(
+    asset: Omit<Asset, 'id' | 'createdAt' | 'updatedAt' | 'childAssets'>
+  ): Promise<Asset> {
     const id = this.generateId('asset');
     const now = new Date();
-    
+
     const newAsset: Asset = {
       ...asset,
       id,
       createdAt: now,
       updatedAt: now,
-      childAssets: []
+      childAssets: [],
     };
 
     // Create lifecycle event for acquisition
@@ -352,7 +361,7 @@ export class AssetManager extends BaseManager {
       cost: asset.purchasePrice,
       documents: [],
       approvedBy: asset.createdBy,
-      executedBy: asset.createdBy
+      executedBy: asset.createdBy,
     });
 
     console.log(`Created asset: ${newAsset.assetName} (${newAsset.assetNumber})`);
@@ -363,14 +372,20 @@ export class AssetManager extends BaseManager {
     const updatedAsset = {
       ...updates,
       id: assetId,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     } as Asset;
 
     console.log(`Updated asset ${assetId}:`, updates);
     return updatedAsset;
   }
 
-  async transferAsset(assetId: string, fromLocation: AssetLocation, toLocation: AssetLocation, transferredBy: string, reason: string): Promise<void> {
+  async transferAsset(
+    assetId: string,
+    fromLocation: AssetLocation,
+    toLocation: AssetLocation,
+    transferredBy: string,
+    reason: string
+  ): Promise<void> {
     await this.recordLifecycleEvent({
       assetId,
       eventType: 'TRANSFER',
@@ -382,17 +397,24 @@ export class AssetManager extends BaseManager {
       description: `Asset transferred from ${fromLocation.locationName} to ${toLocation.locationName}`,
       documents: [],
       approvedBy: transferredBy,
-      executedBy: transferredBy
+      executedBy: transferredBy,
     });
 
-    console.log(`Asset ${assetId} transferred from ${fromLocation.locationName} to ${toLocation.locationName}`);
+    console.log(
+      `Asset ${assetId} transferred from ${fromLocation.locationName} to ${toLocation.locationName}`
+    );
   }
 
-  async disposeAsset(assetId: string, disposalReason: string, disposalValue: number, disposedBy: string): Promise<void> {
-    await this.updateAsset(assetId, { 
+  async disposeAsset(
+    assetId: string,
+    disposalReason: string,
+    disposalValue: number,
+    disposedBy: string
+  ): Promise<void> {
+    await this.updateAsset(assetId, {
       status: 'DISPOSED',
       currentValue: disposalValue,
-      updatedBy: disposedBy
+      updatedBy: disposedBy,
     });
 
     await this.recordLifecycleEvent({
@@ -406,18 +428,20 @@ export class AssetManager extends BaseManager {
       cost: disposalValue,
       documents: [],
       approvedBy: disposedBy,
-      executedBy: disposedBy
+      executedBy: disposedBy,
     });
 
     console.log(`Asset ${assetId} disposed with value ${disposalValue}`);
   }
 
-  async recordLifecycleEvent(event: Omit<AssetLifecycleEvent, 'id' | 'createdAt'>): Promise<AssetLifecycleEvent> {
+  async recordLifecycleEvent(
+    event: Omit<AssetLifecycleEvent, 'id' | 'createdAt'>
+  ): Promise<AssetLifecycleEvent> {
     const id = `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const lifecycleEvent: AssetLifecycleEvent = {
       ...event,
       id,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     console.log(`Recorded lifecycle event for asset ${event.assetId}: ${event.eventType}`);
@@ -440,8 +464,8 @@ export class AssetManager extends BaseManager {
         city: 'Business City',
         state: 'BC',
         postalCode: '12345',
-        country: 'USA'
-      }
+        country: 'USA',
+      },
     };
 
     console.log(`Tracking asset ${assetId} location:`, mockLocation);
@@ -477,7 +501,9 @@ export class AssetManager extends BaseManager {
   /**
    * Generate a unique ID with a given prefix.
    */
-  async createInstallBase(installBase: Omit<InstallBase, 'id' | 'createdAt' | 'updatedAt'>): Promise<InstallBase> {
+  async createInstallBase(
+    installBase: Omit<InstallBase, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<InstallBase> {
     const id = this.generateId('install');
     const now = new Date();
 
@@ -485,28 +511,46 @@ export class AssetManager extends BaseManager {
       ...installBase,
       id,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
-    console.log(`Created install base: ${newInstallBase.instanceNumber} for customer ${newInstallBase.customerName}`);
+    console.log(
+      `Created install base: ${newInstallBase.instanceNumber} for customer ${newInstallBase.customerName}`
+    );
     return newInstallBase;
   }
 
-  async updateInstallBaseStatus(installBaseId: string, status: InstallBase['status']): Promise<void> {
+  async updateInstallBaseStatus(
+    installBaseId: string,
+    status: InstallBase['status']
+  ): Promise<void> {
     console.log(`Updated install base ${installBaseId} status to ${status}`);
   }
 
-  async scheduleService(installBaseId: string, serviceType: ServiceRecord['serviceType'], scheduledDate: Date, technicianId: string): Promise<string> {
+  async scheduleService(
+    installBaseId: string,
+    serviceType: ServiceRecord['serviceType'],
+    scheduledDate: Date,
+    technicianId: string
+  ): Promise<string> {
     const serviceId = `service_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    console.log(`Scheduled ${serviceType} service for install base ${installBaseId} on ${scheduledDate}`);
+    console.log(
+      `Scheduled ${serviceType} service for install base ${installBaseId} on ${scheduledDate}`
+    );
     return serviceId;
   }
 
-  async recordServiceActivity(installBaseId: string, serviceRecord: Omit<ServiceRecord, 'id'>): Promise<ServiceRecord> {
+  async recordServiceActivity(
+    installBaseId: string,
+    serviceRecord: Omit<ServiceRecord, 'id'>
+  ): Promise<ServiceRecord> {
     const id = `service_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newServiceRecord: ServiceRecord = { ...serviceRecord, id };
 
-    console.log(`Recorded service activity for install base ${installBaseId}:`, serviceRecord.serviceType);
+    console.log(
+      `Recorded service activity for install base ${installBaseId}:`,
+      serviceRecord.serviceType
+    );
     return newServiceRecord;
   }
 
@@ -530,18 +574,20 @@ export class AssetManager extends BaseManager {
   }
 
   async optimizeSparePartsInventory(locationId: string): Promise<{
-    excess: Array<{itemId: string, excessQuantity: number, estimatedValue: number}>;
-    shortages: Array<{itemId: string, shortageQuantity: number, criticality: string}>;
+    excess: Array<{ itemId: string; excessQuantity: number; estimatedValue: number }>;
+    shortages: Array<{ itemId: string; shortageQuantity: number; criticality: string }>;
   }> {
     console.log(`Optimizing spare parts inventory for location ${locationId}`);
     // Implementation would analyze usage patterns and recommend inventory adjustments
     return {
       excess: [],
-      shortages: []
+      shortages: [],
     };
   }
 
-  async createMaintenanceSchedule(schedule: Omit<MaintenanceSchedule, 'id' | 'createdAt' | 'updatedAt'>): Promise<MaintenanceSchedule> {
+  async createMaintenanceSchedule(
+    schedule: Omit<MaintenanceSchedule, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<MaintenanceSchedule> {
     const id = `schedule_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date();
 
@@ -549,14 +595,16 @@ export class AssetManager extends BaseManager {
       ...schedule,
       id,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     console.log(`Created maintenance schedule for asset ${schedule.assetId}: ${schedule.title}`);
     return newSchedule;
   }
 
-  async createWorkOrder(workOrder: Omit<AssetWorkOrder, 'id' | 'workOrderNumber' | 'createdAt' | 'updatedAt'>): Promise<AssetWorkOrder> {
+  async createWorkOrder(
+    workOrder: Omit<AssetWorkOrder, 'id' | 'workOrderNumber' | 'createdAt' | 'updatedAt'>
+  ): Promise<AssetWorkOrder> {
     const id = `wo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const workOrderNumber = `WO-${Date.now()}`;
     const now = new Date();
@@ -566,24 +614,30 @@ export class AssetManager extends BaseManager {
       id,
       workOrderNumber,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     console.log(`Created work order ${workOrderNumber} for asset ${workOrder.assetId}`);
     return newWorkOrder;
   }
 
-  async completeWorkOrder(workOrderId: string, completionData: {
-    actualCompletionDate: Date;
-    actualCost: number;
-    laborHours: number;
-    materialsUsed: AssetWorkOrderMaterial[];
-    completionNotes: string;
-  }): Promise<void> {
+  async completeWorkOrder(
+    workOrderId: string,
+    completionData: {
+      actualCompletionDate: Date;
+      actualCost: number;
+      laborHours: number;
+      materialsUsed: AssetWorkOrderMaterial[];
+      completionNotes: string;
+    }
+  ): Promise<void> {
     console.log(`Completed work order ${workOrderId}:`, completionData);
   }
 
-  async generateMaintenanceSchedule(assetId: string, scheduleType: 'PREVENTIVE' | 'PREDICTIVE'): Promise<MaintenanceSchedule[]> {
+  async generateMaintenanceSchedule(
+    assetId: string,
+    scheduleType: 'PREVENTIVE' | 'PREDICTIVE'
+  ): Promise<MaintenanceSchedule[]> {
     console.log(`Generating ${scheduleType} maintenance schedule for asset ${assetId}`);
     // Implementation would create maintenance schedules based on asset type and manufacturer recommendations
     return [];
@@ -592,7 +646,9 @@ export class AssetManager extends BaseManager {
   /**
    * Compliance and Audit Management
    */
-  async createComplianceRequirement(requirement: Omit<ComplianceRequirement, 'id' | 'createdAt' | 'updatedAt'>): Promise<ComplianceRequirement> {
+  async createComplianceRequirement(
+    requirement: Omit<ComplianceRequirement, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<ComplianceRequirement> {
     const id = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date();
 
@@ -600,14 +656,16 @@ export class AssetManager extends BaseManager {
       ...requirement,
       id,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     console.log(`Created compliance requirement: ${requirement.requirementName}`);
     return newRequirement;
   }
 
-  async recordComplianceInspection(record: Omit<ComplianceRecord, 'id' | 'createdAt' | 'updatedAt'>): Promise<ComplianceRecord> {
+  async recordComplianceInspection(
+    record: Omit<ComplianceRecord, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<ComplianceRecord> {
     const id = `comp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date();
 
@@ -615,14 +673,16 @@ export class AssetManager extends BaseManager {
       ...record,
       id,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     console.log(`Recorded compliance inspection for asset ${record.assetId}`);
     return newRecord;
   }
 
-  async scheduleAudit(audit: Omit<AssetAudit, 'id' | 'createdAt' | 'updatedAt' | 'findings'>): Promise<AssetAudit> {
+  async scheduleAudit(
+    audit: Omit<AssetAudit, 'id' | 'createdAt' | 'updatedAt' | 'findings'>
+  ): Promise<AssetAudit> {
     const id = `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date();
 
@@ -631,19 +691,22 @@ export class AssetManager extends BaseManager {
       id,
       findings: [],
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     console.log(`Scheduled ${audit.auditType} audit: ${audit.auditNumber}`);
     return newAudit;
   }
 
-  async recordAuditFinding(auditId: string, finding: Omit<AuditFinding, 'id' | 'createdAt'>): Promise<AuditFinding> {
+  async recordAuditFinding(
+    auditId: string,
+    finding: Omit<AuditFinding, 'id' | 'createdAt'>
+  ): Promise<AuditFinding> {
     const id = `finding_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newFinding: AuditFinding = {
       ...finding,
       id,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     console.log(`Recorded audit finding for asset ${finding.assetId}: ${finding.findingType}`);
@@ -664,7 +727,7 @@ export class AssetManager extends BaseManager {
       averageAge: 0,
       utilizationRate: 0,
       maintenanceCosts: 0,
-      depreciationRate: 0
+      depreciationRate: 0,
     };
   }
 
@@ -678,21 +741,27 @@ export class AssetManager extends BaseManager {
       maintenanceCostsByType: {},
       mtbf: 0,
       mttr: 0,
-      scheduleCompliance: 0
+      scheduleCompliance: 0,
     };
   }
 
-  async generateAssetReport(reportType: 'INVENTORY' | 'LIFECYCLE' | 'MAINTENANCE' | 'COMPLIANCE', filters?: any): Promise<any> {
+  async generateAssetReport(
+    reportType: 'INVENTORY' | 'LIFECYCLE' | 'MAINTENANCE' | 'COMPLIANCE',
+    filters?: any
+  ): Promise<any> {
     console.log(`Generating ${reportType} report with filters:`, filters);
     // Implementation would generate comprehensive reports
     return {
       reportType,
       generatedAt: new Date(),
-      data: []
+      data: [],
     };
   }
 
-  async calculateAssetDepreciation(assetId: string, asOfDate: Date): Promise<{
+  async calculateAssetDepreciation(
+    assetId: string,
+    asOfDate: Date
+  ): Promise<{
     originalValue: number;
     depreciatedValue: number;
     accumulatedDepreciation: number;
@@ -704,7 +773,7 @@ export class AssetManager extends BaseManager {
       originalValue: 0,
       depreciatedValue: 0,
       accumulatedDepreciation: 0,
-      remainingValue: 0
+      remainingValue: 0,
     };
   }
 }

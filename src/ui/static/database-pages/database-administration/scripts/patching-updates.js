@@ -1,142 +1,144 @@
 // Database Patching & Updates - Database Management System
 // This file provides business-ready functionality for Database Patching & Updates
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Database Patching & Updates page loaded');
-    
-    // Initialize page functionality
-    initpatchingupdates();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadpatchingupdatesData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Database Patching & Updates page loaded');
+
+  // Initialize page functionality
+  initpatchingupdates();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadpatchingupdatesData();
 });
 
 async function loadpatchingupdatesData() {
-    try {
-        const response = await fetch('/api/database/database-administration/patching-updates');
-        if (response.ok) {
-            const data = await response.json();
-            updatepatchingupdatesDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Database Patching & Updates data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/database-administration/patching-updates');
+    if (response.ok) {
+      const data = await response.json();
+      updatepatchingupdatesDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Database Patching & Updates data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initpatchingupdates() {
-    console.log('Initializing Database Patching & Updates');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Database Patching & Updates');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Database Patching & Updates');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Database Patching & Updates');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Database Patching & Updates');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Database Patching & Updates');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Database Patching & Updates');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Database Patching & Updates');
 }
 
 function handlepatchingupdatesAction() {
-    console.log('Database Patching & Updates action triggered');
-    showNotification('Database Patching & Updates configured successfully', 'success');
+  console.log('Database Patching & Updates action triggered');
+  showNotification('Database Patching & Updates configured successfully', 'success');
 }
 
 function executepatchingupdates() {
-    console.log('Database Patching & Updates execution started');
-    showNotification('Database Patching & Updates executed successfully', 'success');
+  console.log('Database Patching & Updates execution started');
+  showNotification('Database Patching & Updates executed successfully', 'success');
 }
 
 function updatepatchingupdatesDisplay(data) {
-    console.log('Updating Database Patching & Updates display:', data);
-    // Update UI with loaded data
+  console.log('Updating Database Patching & Updates display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/database-administration/patching-updates/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadpatchingupdatesData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handlepatchingupdatesAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/database-administration/patching-updates/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'patching-updates-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch('/api/database/database-administration/patching-updates/test');
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadpatchingupdatesData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handlepatchingupdatesAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/database-administration/patching-updates/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'patching-updates-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

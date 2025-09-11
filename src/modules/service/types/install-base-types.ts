@@ -17,7 +17,7 @@ export enum AssetStatus {
   WARRANTY = 'WARRANTY',
   LOANED = 'LOANED',
   STOLEN = 'STOLEN',
-  LOST = 'LOST'
+  LOST = 'LOST',
 }
 
 export enum AssetCondition {
@@ -26,7 +26,7 @@ export enum AssetCondition {
   FAIR = 'FAIR',
   POOR = 'POOR',
   NON_FUNCTIONAL = 'NON_FUNCTIONAL',
-  UNKNOWN = 'UNKNOWN'
+  UNKNOWN = 'UNKNOWN',
 }
 
 export enum MaintenanceType {
@@ -35,7 +35,7 @@ export enum MaintenanceType {
   PREDICTIVE = 'PREDICTIVE',
   CONDITION_BASED = 'CONDITION_BASED',
   TIME_BASED = 'TIME_BASED',
-  USAGE_BASED = 'USAGE_BASED'
+  USAGE_BASED = 'USAGE_BASED',
 }
 
 export enum ConfigurationChangeType {
@@ -44,7 +44,7 @@ export enum ConfigurationChangeType {
   MODIFICATION = 'MODIFICATION',
   REPLACEMENT = 'REPLACEMENT',
   UPGRADE = 'UPGRADE',
-  DOWNGRADE = 'DOWNGRADE'
+  DOWNGRADE = 'DOWNGRADE',
 }
 
 export enum WarrantyStatus {
@@ -52,7 +52,7 @@ export enum WarrantyStatus {
   EXPIRED = 'EXPIRED',
   VOID = 'VOID',
   TRANSFERRED = 'TRANSFERRED',
-  EXTENDED = 'EXTENDED'
+  EXTENDED = 'EXTENDED',
 }
 
 // ================================
@@ -64,51 +64,51 @@ export interface InstallBase {
   installBaseNumber: string;
   name: string;
   description?: string;
-  
+
   // Customer Information
   customerId: string;
   customerName: string;
   billToCustomerId?: string;
   shipToCustomerId?: string;
-  
+
   // Location Information
   siteId: string;
   siteName: string;
   address: InstallAddress;
-  
+
   // Asset Hierarchy
   parentInstallBaseId?: string;
   childInstallBases: string[];
   assets: Asset[];
   assetCount: number;
-  
+
   // Contract & Service Information
   serviceContracts: string[];
   supportLevel: 'BASIC' | 'STANDARD' | 'PREMIUM' | 'ENTERPRISE';
   preferredServiceProvider?: string;
-  
+
   // Status & Lifecycle
   status: 'ACTIVE' | 'INACTIVE' | 'DECOMMISSIONED';
   installationDate: Date;
   commissioningDate?: Date;
   decommissioningDate?: Date;
-  
+
   // Financial Information
   totalValue: number;
   totalMaintenanceCost: number;
   totalServiceCost: number;
-  
+
   // Contact Information
   technicalContact: ContactPerson;
   businessContact: ContactPerson;
-  
+
   // Tracking & Audit
   createdBy: string;
   createdDate: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
   version: number;
-  
+
   // Custom Fields
   customAttributes: Record<string, any>;
 }
@@ -119,25 +119,25 @@ export interface Asset {
   serialNumber?: string;
   name: string;
   description?: string;
-  
+
   // Product Information
   productId: string;
   modelNumber: string;
   partNumber: string;
   manufacturerName: string;
   manufacturerPartNumber?: string;
-  
+
   // Hierarchy & Relationships
   parentAssetId?: string;
   childAssets: string[];
   installBaseId: string;
   locationId?: string;
-  
+
   // Status & Condition
   status: AssetStatus;
   condition: AssetCondition;
   operationalStatus: 'OPERATIONAL' | 'NON_OPERATIONAL' | 'DEGRADED' | 'TESTING';
-  
+
   // Installation Information
   installationDate: Date;
   installLocation: AssetLocation;
@@ -145,49 +145,49 @@ export interface Asset {
   installedBy?: string;
   commissioningDate?: Date;
   commissionedBy?: string;
-  
+
   // Specifications & Configuration
   specifications: AssetSpecification[];
   configuration: AssetConfiguration;
   configurationVersion: string;
-  
+
   // Warranty Information
   warranties: AssetWarranty[];
   currentWarrantyStatus: WarrantyStatus;
-  
+
   // Service Information
   serviceContracts: string[];
   maintenanceSchedule: MaintenanceSchedule;
   serviceHistory: ServiceRecord[];
-  
+
   // Usage & Performance
   usageMetrics: UsageMetrics;
   performanceMetrics: PerformanceMetrics;
-  
+
   // Financial Information
   acquisitionCost: number;
   currentValue: number;
   depreciationMethod: 'STRAIGHT_LINE' | 'DECLINING_BALANCE' | 'SUM_OF_YEARS' | 'CUSTOM';
   depreciationRate: number;
   residualValue: number;
-  
+
   // Lifecycle Information
   expectedLifespan: number; // years
   remainingLife: number; // years
   retirementDate?: Date;
   disposalMethod?: 'SALE' | 'TRADE_IN' | 'RECYCLE' | 'DISPOSAL' | 'DONATION';
-  
+
   // Documentation
   manuals: AssetDocument[];
   drawings: AssetDocument[];
   certificates: AssetDocument[];
   photos: string[];
-  
+
   // Compliance & Safety
   complianceRequirements: ComplianceRequirement[];
   safetyClassification?: string;
   hazardousClassification?: string;
-  
+
   // Tracking & Audit
   createdBy: string;
   createdDate: Date;
@@ -195,7 +195,7 @@ export interface Asset {
   lastModifiedDate?: Date;
   lastVerifiedDate?: Date;
   lastVerifiedBy?: string;
-  
+
   // Custom Fields
   tags: string[];
   customAttributes: Record<string, any>;
@@ -279,38 +279,38 @@ export interface ConfigurationChange {
   changeType: ConfigurationChangeType;
   description: string;
   reason: string;
-  
+
   // Change Details
   fromConfiguration: string;
   toConfiguration: string;
   componentsAffected: string[];
   parametersAffected: string[];
-  
+
   // Planning & Approval
   plannedDate: Date;
   actualDate?: Date;
   approvalRequired: boolean;
   approvedBy?: string;
   approvedDate?: Date;
-  
+
   // Implementation
   implementedBy?: string;
   implementationNotes?: string;
   rollbackPlan?: string;
   testingRequired: boolean;
   testResults?: string;
-  
+
   // Impact Assessment
   downtime: number; // minutes
   impactLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   affectedCustomers: string[];
   businessImpact: string;
-  
+
   // Tracking
   status: 'PLANNED' | 'APPROVED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'FAILED';
   createdBy: string;
   createdDate: Date;
-  
+
   // Documentation
   attachments: string[];
   photos: string[];
@@ -321,43 +321,43 @@ export interface AssetWarranty {
   type: 'MANUFACTURER' | 'EXTENDED' | 'SERVICE_PROVIDER' | 'INSURANCE';
   providerId: string;
   providerName: string;
-  
+
   // Coverage
   coverageType: 'PARTS' | 'LABOR' | 'PARTS_AND_LABOR' | 'COMPREHENSIVE';
   coverageDescription: string;
   exclusions: string[];
-  
+
   // Terms
   startDate: Date;
   endDate: Date;
   duration: number; // months
   transferable: boolean;
   proRated: boolean;
-  
+
   // Status
   status: WarrantyStatus;
   isActive: boolean;
   remainingDays: number;
-  
+
   // Financial
   cost: number;
   deductible?: number;
   maxCoverage?: number;
-  
+
   // Claims
   claimsHistory: WarrantyClaim[];
   totalClaims: number;
   totalClaimAmount: number;
-  
+
   // Terms & Conditions
   warrantyNumber: string;
   policyNumber?: string;
   terms: string;
-  
+
   // Documentation
   warrantyDocument?: string;
   certificateNumber?: string;
-  
+
   createdDate: Date;
   lastUpdated: Date;
 }
@@ -367,30 +367,30 @@ export interface WarrantyClaim {
   claimNumber: string;
   assetId: string;
   warrantyId: string;
-  
+
   // Claim Information
   issueDescription: string;
   failureDate: Date;
   claimDate: Date;
   reportedBy: string;
-  
+
   // Resolution
   resolutionType: 'REPAIR' | 'REPLACEMENT' | 'REFUND' | 'CREDIT';
   resolutionDescription?: string;
   resolvedDate?: Date;
   resolvedBy?: string;
-  
+
   // Financial
   claimAmount: number;
   approvedAmount: number;
   deductibleAmount: number;
-  
+
   // Status
   status: 'SUBMITTED' | 'UNDER_REVIEW' | 'APPROVED' | 'REJECTED' | 'PAID' | 'CANCELLED';
   approvedBy?: string;
   approvedDate?: Date;
   rejectionReason?: string;
-  
+
   // Documentation
   workOrderId?: string;
   serviceTicketId?: string;
@@ -407,37 +407,37 @@ export interface MaintenanceSchedule {
   scheduleId: string;
   name: string;
   description?: string;
-  
+
   // Schedule Type
   type: MaintenanceType;
   frequency: MaintenanceFrequency;
-  
+
   // Timing
   nextDueDate: Date;
   lastCompletedDate?: Date;
   averageInterval: number; // days
   tolerance: number; // days early/late allowed
-  
+
   // Requirements
   requiredSkills: string[];
   estimatedDuration: number; // minutes
   requiredParts: ScheduledPart[];
   requiredTools: string[];
-  
+
   // Tasks
   maintenanceTasks: MaintenanceTask[];
   checklist: MaintenanceChecklistItem[];
-  
+
   // Status
   isActive: boolean;
   suspended: boolean;
   suspensionReason?: string;
-  
+
   // Performance
   completionRate: number; // percentage
   avgActualDuration: number; // minutes
   costPerMaintenance: number;
-  
+
   // Tracking
   createdBy: string;
   createdDate: Date;
@@ -469,7 +469,14 @@ export interface MaintenanceTask {
   name: string;
   description: string;
   sequenceOrder: number;
-  type: 'INSPECTION' | 'CLEANING' | 'LUBRICATION' | 'CALIBRATION' | 'REPLACEMENT' | 'TEST' | 'ADJUSTMENT';
+  type:
+    | 'INSPECTION'
+    | 'CLEANING'
+    | 'LUBRICATION'
+    | 'CALIBRATION'
+    | 'REPLACEMENT'
+    | 'TEST'
+    | 'ADJUSTMENT';
   estimatedTime: number; // minutes
   requiredSkills: string[];
   safetyRequirements: string[];
@@ -505,45 +512,45 @@ export interface ServiceRecord {
   assetId: string;
   serviceDate: Date;
   serviceType: 'MAINTENANCE' | 'REPAIR' | 'INSPECTION' | 'CALIBRATION' | 'INSTALLATION' | 'UPGRADE';
-  
+
   // Service Details
   description: string;
   workOrderId?: string;
   technicianId?: string;
   technicianName?: string;
   serviceProvider?: string;
-  
+
   // Work Performed
   workPerformed: string;
   partsReplaced: ServicePart[];
   laborHours: number;
-  
+
   // Results
   issuesFound: string[];
   issuesResolved: string[];
   recommendations: string[];
   nextServiceDue?: Date;
-  
+
   // Quality
   qualityScore?: number;
   customerSatisfaction?: number;
   completionStatus: 'COMPLETED' | 'INCOMPLETE' | 'DEFERRED';
-  
+
   // Financial
   laborCost: number;
   partsCost: number;
   totalCost: number;
-  
+
   // Documentation
   serviceReport?: string;
   photos: string[];
   attachments: string[];
-  
+
   // Follow-up
   followUpRequired: boolean;
   followUpDate?: Date;
   followUpNotes?: string;
-  
+
   createdDate: Date;
   lastUpdated: Date;
 }
@@ -557,15 +564,15 @@ export interface ServicePart {
   totalCost: number;
   serialNumber?: string;
   lotNumber?: string;
-  
+
   // Action
   action: 'REPLACED' | 'REPAIRED' | 'CLEANED' | 'ADJUSTED' | 'INSPECTED';
   condition: 'GOOD' | 'FAIR' | 'POOR' | 'FAILED';
-  
+
   // Warranty
   warrantyPeriod?: number; // months
   warrantyStartDate?: Date;
-  
+
   // Disposal
   oldPartDisposition: 'RETURNED' | 'RECYCLED' | 'DISPOSED' | 'CREDIT' | 'CORE_EXCHANGE';
 }
@@ -577,69 +584,69 @@ export interface ServicePart {
 export interface UsageMetrics {
   assetId: string;
   period: DateRange;
-  
+
   // Usage Statistics
   totalOperatingHours: number;
   averageDailyHours: number;
   peakUsagePeriod: string;
   utilizationRate: number; // percentage
-  
+
   // Operational Metrics
   cycleCount?: number;
   throughput?: number;
   efficiency: number; // percentage
-  
+
   // Condition Indicators
   vibrationLevel?: number;
   temperature?: number;
   pressure?: number;
   noiseLevel?: number;
-  
+
   // Performance Trends
   performanceTrend: 'IMPROVING' | 'STABLE' | 'DECLINING' | 'UNKNOWN';
   reliabilityScore: number; // 1-100
   availabilityPercent: number;
-  
+
   // Maintenance Impact
   downtimeHours: number;
   maintenanceInterruptions: number;
   meanTimeBetweenFailures: number; // hours
   meanTimeToRepair: number; // hours
-  
+
   lastUpdated: Date;
 }
 
 export interface PerformanceMetrics {
   assetId: string;
   period: DateRange;
-  
+
   // Key Performance Indicators
   availability: number; // percentage
   reliability: number; // percentage
   maintainability: number; // percentage
   overallEquipmentEffectiveness: number; // percentage
-  
+
   // Failure Metrics
   meanTimeBetweenFailures: number; // hours
   meanTimeToRepair: number; // hours
   meanTimeToFailure: number; // hours
   failureRate: number; // failures per hour
-  
+
   // Cost Metrics
   totalCostOfOwnership: number;
   maintenanceCostRatio: number; // percentage of asset value
   costPerOperatingHour: number;
-  
+
   // Trend Analysis
   performanceTrends: PerformanceTrend[];
   benchmarkComparison: BenchmarkData;
-  
+
   // Predictive Indicators
   healthScore: number; // 1-100
   riskScore: number; // 1-100
   predictedFailureDate?: Date;
   recommendedActions: string[];
-  
+
   lastCalculated: Date;
 }
 
@@ -684,27 +691,27 @@ export interface CustomerHierarchy {
   hierarchyLevel: number;
   parentCustomerId?: string;
   childCustomers: string[];
-  
+
   // Hierarchy Information
   hierarchyPath: string;
   rootCustomerId: string;
   isLeafNode: boolean;
-  
+
   // Install Base Summary
   totalInstallBases: number;
   totalAssets: number;
   totalAssetValue: number;
-  
+
   // Service Summary
   activeContracts: number;
   totalServiceRevenue: number;
   serviceLevel: 'BASIC' | 'STANDARD' | 'PREMIUM' | 'ENTERPRISE';
-  
+
   // Relationship Information
   relationshipType: 'DIRECT' | 'SUBSIDIARY' | 'DIVISION' | 'DEPARTMENT' | 'LOCATION';
   effectiveDate: Date;
   expirationDate?: Date;
-  
+
   lastUpdated: Date;
 }
 

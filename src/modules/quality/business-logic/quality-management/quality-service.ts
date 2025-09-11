@@ -7,8 +7,9 @@ import type { QualityEntity } from '../../types';
 import { qualityRepository } from '../../data-access/repositories';
 
 export class QualityService {
-  
-  async createQuality(data: Omit<QualityEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<QualityEntity> {
+  async createQuality(
+    data: Omit<QualityEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<QualityEntity> {
     this.validateQualityData(data);
     return await qualityRepository.create(data);
   }
@@ -22,7 +23,7 @@ export class QualityService {
     if (!existing) {
       throw new Error(`Quality with ID ${id} not found`);
     }
-    
+
     return await qualityRepository.update(id, updates);
   }
 
@@ -31,7 +32,7 @@ export class QualityService {
     if (!existing) {
       throw new Error(`Quality with ID ${id} not found`);
     }
-    
+
     await qualityRepository.delete(id);
   }
 
@@ -39,7 +40,9 @@ export class QualityService {
     return await qualityRepository.getAll();
   }
 
-  private validateQualityData(data: Omit<QualityEntity, 'id' | 'createdDate' | 'modifiedDate'>): void {
+  private validateQualityData(
+    data: Omit<QualityEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): void {
     if (!data.name || data.name.trim() === '') {
       throw new Error('Name is required');
     }

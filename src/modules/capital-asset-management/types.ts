@@ -13,13 +13,18 @@ export interface CapitalAsset {
   assetNumber: string;
   assetName: string;
   description: string;
-  
+
   // Capital classification
-  capitalClass: 'PRODUCTION_EQUIPMENT' | 'IT_INFRASTRUCTURE' | 'FACILITY' | 'VEHICLE' | 'REAL_ESTATE';
+  capitalClass:
+    | 'PRODUCTION_EQUIPMENT'
+    | 'IT_INFRASTRUCTURE'
+    | 'FACILITY'
+    | 'VEHICLE'
+    | 'REAL_ESTATE';
   assetCategory: string;
   priorityLevel: 'HIGH' | 'MEDIUM' | 'LOW';
   strategicImportance: 'CRITICAL' | 'IMPORTANT' | 'STANDARD';
-  
+
   // Financial information
   capitalValue: {
     originalCost: number;
@@ -31,7 +36,7 @@ export interface CapitalAsset {
     usefulLife: number; // in years
     salvageValue: number;
   };
-  
+
   // Investment tracking
   investment: {
     investmentId: string;
@@ -43,7 +48,7 @@ export interface CapitalAsset {
     npv: number; // Net Present Value
     irr: number; // Internal Rate of Return
   };
-  
+
   // Performance metrics
   performance: {
     utilization: number; // percentage
@@ -54,7 +59,7 @@ export interface CapitalAsset {
     maintenanceCost: number; // annual
     operatingCost: number; // annual
   };
-  
+
   // Lifecycle information
   lifecycle: {
     acquisitionDate: Date;
@@ -65,7 +70,7 @@ export interface CapitalAsset {
     currentPhase: 'PLANNING' | 'ACQUISITION' | 'COMMISSION' | 'OPERATION' | 'UPGRADE' | 'DISPOSAL';
     remainingLife: number; // in years
   };
-  
+
   // Location and assignment
   location: {
     facilityId: string;
@@ -74,7 +79,7 @@ export interface CapitalAsset {
     responsibleManager: string;
     businessUnit: string;
   };
-  
+
   // Compliance and risk
   compliance: {
     regulatoryRequirements: string[];
@@ -83,7 +88,7 @@ export interface CapitalAsset {
     nextAuditDate?: Date;
     riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   };
-  
+
   // Audit fields
   createdAt: Date;
   updatedAt: Date;
@@ -95,12 +100,12 @@ export interface CapitalInvestment {
   investmentId: string;
   investmentName: string;
   description: string;
-  
+
   // Investment classification
   investmentType: 'NEW_ACQUISITION' | 'REPLACEMENT' | 'EXPANSION' | 'UPGRADE' | 'MAINTENANCE';
   category: 'GROWTH' | 'MAINTENANCE' | 'REGULATORY' | 'STRATEGIC';
   priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  
+
   // Financial details
   financial: {
     requestedAmount: number;
@@ -111,7 +116,7 @@ export interface CapitalInvestment {
     costCenter: string;
     accountCode: string;
   };
-  
+
   // Business justification
   businessCase: {
     strategicAlignment: string;
@@ -120,7 +125,7 @@ export interface CapitalInvestment {
     riskMitigation: string[];
     alternativesConsidered: string[];
   };
-  
+
   // Financial analysis
   analysis: {
     roi: number;
@@ -134,7 +139,7 @@ export interface CapitalInvestment {
       cumulativeCashFlow: number;
     }[];
   };
-  
+
   // Approval workflow
   approvals: {
     currentStage: string;
@@ -143,7 +148,7 @@ export interface CapitalInvestment {
     finalApprovalDate?: Date;
     finalApprover?: string;
   };
-  
+
   // Implementation
   implementation: {
     plannedStartDate: Date;
@@ -154,7 +159,7 @@ export interface CapitalInvestment {
     milestones: ImplementationMilestone[];
     status: 'PROPOSED' | 'APPROVED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
   };
-  
+
   // Performance tracking
   performance: {
     budgetVariance: number;
@@ -163,7 +168,7 @@ export interface CapitalInvestment {
     qualityMetrics: Record<string, number>;
     benefitRealization: number; // percentage
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -174,7 +179,7 @@ export interface InvestmentProposal {
   proposalId: string;
   proposalName: string;
   description: string;
-  
+
   // Proposal details
   requestor: {
     employeeId: string;
@@ -182,7 +187,7 @@ export interface InvestmentProposal {
     department: string;
     email: string;
   };
-  
+
   // Investment request
   investment: {
     requestedAmount: number;
@@ -191,7 +196,7 @@ export interface InvestmentProposal {
     expectedStartDate: Date;
     expectedDuration: number; // in months
   };
-  
+
   // Business justification
   justification: {
     businessNeed: string;
@@ -200,7 +205,7 @@ export interface InvestmentProposal {
     consequencesOfNotInvesting: string[];
     alternativesConsidered: string[];
   };
-  
+
   // Technical details
   technical: {
     specifications: Record<string, any>;
@@ -208,19 +213,19 @@ export interface InvestmentProposal {
     technicalRequirements: string[];
     integrationRequirements: string[];
   };
-  
+
   // Risk assessment
   risks: {
     identifiedRisks: RiskAssessment[];
     mitigationStrategies: string[];
     overallRiskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   };
-  
+
   // Status and workflow
   status: 'DRAFT' | 'SUBMITTED' | 'UNDER_REVIEW' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN';
   submissionDate?: Date;
   reviewDeadline?: Date;
-  
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -229,13 +234,13 @@ export interface ROIAnalysis {
   analysisId: string;
   assetId: string;
   investmentId: string;
-  
+
   // Analysis parameters
   analysisDate: Date;
   analysisType: 'INITIAL' | 'ANNUAL_REVIEW' | 'POST_IMPLEMENTATION';
   timeHorizon: number; // in years
   discountRate: number;
-  
+
   // Financial metrics
   metrics: {
     roi: number; // percentage
@@ -245,7 +250,7 @@ export interface ROIAnalysis {
     profitabilityIndex: number;
     breakEvenPoint: number; // in months
   };
-  
+
   // Cash flow analysis
   cashFlows: {
     initialInvestment: number;
@@ -259,7 +264,7 @@ export interface ROIAnalysis {
     }[];
     terminalValue?: number;
   };
-  
+
   // Sensitivity analysis
   sensitivity: {
     scenarios: {
@@ -278,12 +283,12 @@ export interface ROIAnalysis {
       }[];
     }[];
   };
-  
+
   // Assumptions and notes
   assumptions: string[];
   limitations: string[];
   recommendations: string[];
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -292,19 +297,19 @@ export interface CapitalBudget {
   budgetId: string;
   budgetName: string;
   description: string;
-  
+
   // Budget period
   fiscalYear: number;
   startDate: Date;
   endDate: Date;
-  
+
   // Budget allocation
   totalBudget: number;
   allocatedBudget: number;
   committedBudget: number;
   spentBudget: number;
   availableBudget: number;
-  
+
   // Category breakdown
   categories: {
     category: string;
@@ -314,7 +319,7 @@ export interface CapitalBudget {
     commitments: number;
     variance: number;
   }[];
-  
+
   // Department/division breakdown
   divisions: {
     divisionId: string;
@@ -324,12 +329,12 @@ export interface CapitalBudget {
     spentAmount: number;
     utilizationRate: number;
   }[];
-  
+
   // Approval and governance
   approvalStatus: 'DRAFT' | 'SUBMITTED' | 'APPROVED' | 'ACTIVE' | 'CLOSED';
   approver: string;
   approvalDate?: Date;
-  
+
   // Performance tracking
   performance: {
     budgetUtilization: number; // percentage
@@ -347,7 +352,7 @@ export interface CapitalBudget {
       }[];
     };
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -358,19 +363,19 @@ export interface CapitalExpenditure {
   expenditureId: string;
   investmentId: string;
   assetId?: string;
-  
+
   // Expenditure details
   description: string;
   category: string;
   amount: number;
   currency: string;
   expenditureDate: Date;
-  
+
   // Approval and authorization
   approvalReference: string;
   approver: string;
   approvalDate: Date;
-  
+
   // Accounting details
   accounting: {
     costCenter: string;
@@ -380,15 +385,15 @@ export interface CapitalExpenditure {
     vendorId?: string;
     poNumber?: string;
   };
-  
+
   // Classification
   expenditureType: 'CAPITAL' | 'OPERATING' | 'MAINTENANCE';
   assetImpact: 'NEW_ASSET' | 'ASSET_IMPROVEMENT' | 'REPLACEMENT' | 'DISPOSAL';
-  
+
   // Status and tracking
   status: 'PLANNED' | 'COMMITTED' | 'ACTUAL' | 'ACCRUED';
   paymentStatus: 'PENDING' | 'PAID' | 'PARTIAL' | 'CANCELLED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -399,7 +404,7 @@ export interface InvestmentPortfolio {
   portfolioId: string;
   portfolioName: string;
   description: string;
-  
+
   // Portfolio composition
   investments: {
     investmentId: string;
@@ -410,7 +415,7 @@ export interface InvestmentPortfolio {
     riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
     status: string;
   }[];
-  
+
   // Portfolio metrics
   metrics: {
     totalValue: number;
@@ -420,7 +425,7 @@ export interface InvestmentPortfolio {
     diversificationIndex: number;
     sharpeRatio: number;
   };
-  
+
   // Performance analysis
   performance: {
     periodicReturns: {
@@ -436,7 +441,7 @@ export interface InvestmentPortfolio {
       valueAtRisk: number;
     };
   };
-  
+
   // Strategic allocation
   targetAllocation: {
     category: string;
@@ -444,7 +449,7 @@ export interface InvestmentPortfolio {
     currentPercentage: number;
     variance: number;
   }[];
-  
+
   // Rebalancing
   rebalancing: {
     lastRebalanceDate: Date;
@@ -461,7 +466,7 @@ export interface InvestmentPortfolio {
       }[];
     }[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -476,7 +481,7 @@ export interface CapitalAssetPerformance {
     endDate: Date;
     periodType: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
   };
-  
+
   // Financial performance
   financial: {
     revenue: number;
@@ -486,7 +491,7 @@ export interface CapitalAssetPerformance {
     roi: number;
     cashFlow: number;
   };
-  
+
   // Operational performance
   operational: {
     utilization: number; // percentage
@@ -496,7 +501,7 @@ export interface CapitalAssetPerformance {
     availability: number; // percentage
     downtime: number; // hours
   };
-  
+
   // Key performance indicators
   kpis: {
     name: string;
@@ -506,7 +511,7 @@ export interface CapitalAssetPerformance {
     trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
     benchmark?: number;
   }[];
-  
+
   // Benchmarking
   benchmarks: {
     internal: {
@@ -520,7 +525,7 @@ export interface CapitalAssetPerformance {
       source: string;
     };
   };
-  
+
   // Performance trends
   trends: {
     metric: string;
@@ -529,7 +534,7 @@ export interface CapitalAssetPerformance {
     changePercent: number;
     trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
   }[];
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -538,7 +543,7 @@ export interface ApprovalWorkflow {
   workflowId: string;
   investmentId: string;
   workflowType: 'CAPITAL_INVESTMENT' | 'BUDGET_REQUEST' | 'EXPENDITURE_APPROVAL';
-  
+
   // Workflow definition
   workflow: {
     stages: {
@@ -553,10 +558,10 @@ export interface ApprovalWorkflow {
     currentStage: string;
     overallStatus: 'PENDING' | 'IN_PROGRESS' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
   };
-  
+
   // Approval history
   approvals: ApprovalRecord[];
-  
+
   // Escalation rules
   escalation: {
     escalationThreshold: number; // hours
@@ -564,7 +569,7 @@ export interface ApprovalWorkflow {
     maxEscalations: number;
     currentEscalationLevel: number;
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -583,7 +588,7 @@ export interface ApprovalRecord {
   comments?: string;
   delegatedTo?: string;
   conditions?: string[];
-  
+
   createdAt: Date;
 }
 
@@ -594,7 +599,7 @@ export interface InvestmentMetrics {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Portfolio-level metrics
   portfolio: {
     totalInvestments: number;
@@ -603,7 +608,7 @@ export interface InvestmentMetrics {
     riskAdjustedReturn: number;
     portfolioVolatility: number;
   };
-  
+
   // Performance metrics by category
   byCategory: {
     category: string;
@@ -619,7 +624,7 @@ export interface InvestmentMetrics {
       roi: number;
     };
   }[];
-  
+
   // Risk metrics
   risk: {
     portfolioRisk: 'LOW' | 'MEDIUM' | 'HIGH';
@@ -627,7 +632,7 @@ export interface InvestmentMetrics {
     diversificationIndex: number;
     correlationMatrix: Record<string, Record<string, number>>;
   };
-  
+
   // Trend analysis
   trends: {
     investmentVolume: {
@@ -641,7 +646,7 @@ export interface InvestmentMetrics {
       change: number;
     }[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -650,14 +655,14 @@ export interface CapitalPlan {
   planId: string;
   planName: string;
   description: string;
-  
+
   // Planning horizon
   planningHorizon: {
     startDate: Date;
     endDate: Date;
     years: number;
   };
-  
+
   // Strategic objectives
   objectives: {
     objective: string;
@@ -667,7 +672,7 @@ export interface CapitalPlan {
     gap: number;
     initiatives: string[];
   }[];
-  
+
   // Investment pipeline
   pipeline: {
     investmentId: string;
@@ -680,7 +685,7 @@ export interface CapitalPlan {
     status: 'CONCEPTUAL' | 'PLANNING' | 'APPROVED' | 'IN_PROGRESS' | 'COMPLETED';
     dependencies: string[];
   }[];
-  
+
   // Annual breakdown
   annualPlans: {
     year: number;
@@ -690,7 +695,7 @@ export interface CapitalPlan {
     majorInvestments: string[];
     strategicInitiatives: string[];
   }[];
-  
+
   // Resource requirements
   resourceRequirements: {
     resourceType: string;
@@ -699,7 +704,7 @@ export interface CapitalPlan {
     gap: number;
     acquisitionPlan: string;
   }[];
-  
+
   // Risk assessment
   risks: {
     risk: string;
@@ -709,7 +714,7 @@ export interface CapitalPlan {
     mitigation: string;
     owner: string;
   }[];
-  
+
   // Approval and governance
   governance: {
     approvalBoard: string[];
@@ -718,7 +723,7 @@ export interface CapitalPlan {
     nextReviewDate: Date;
     approvalStatus: 'DRAFT' | 'UNDER_REVIEW' | 'APPROVED' | 'ACTIVE';
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -729,11 +734,11 @@ export interface AssetAcquisition {
   acquisitionId: string;
   assetId?: string; // Set after asset is created
   investmentId: string;
-  
+
   // Acquisition details
   acquisitionType: 'PURCHASE' | 'LEASE' | 'BUILD' | 'TRANSFER';
   acquisitionMethod: 'DIRECT_PURCHASE' | 'RFP' | 'AUCTION' | 'LEASE_AGREEMENT';
-  
+
   // Vendor information
   vendor: {
     vendorId: string;
@@ -741,7 +746,7 @@ export interface AssetAcquisition {
     contactPerson: string;
     contractNumber?: string;
   };
-  
+
   // Financial terms
   terms: {
     purchasePrice: number;
@@ -751,7 +756,7 @@ export interface AssetAcquisition {
     serviceAgreements: string[];
     deliveryTerms: string;
   };
-  
+
   // Timeline
   timeline: {
     orderDate: Date;
@@ -761,7 +766,7 @@ export interface AssetAcquisition {
     commissioningDate?: Date;
     acceptanceDate?: Date;
   };
-  
+
   // Quality and compliance
   quality: {
     inspectionRequired: boolean;
@@ -770,7 +775,7 @@ export interface AssetAcquisition {
     complianceCertificates: string[];
     acceptanceStatus: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'CONDITIONAL';
   };
-  
+
   // Documentation
   documents: {
     documentType: string;
@@ -778,9 +783,16 @@ export interface AssetAcquisition {
     documentUrl: string;
     uploadDate: Date;
   }[];
-  
-  status: 'PLANNING' | 'ORDERED' | 'IN_TRANSIT' | 'DELIVERED' | 'INSTALLED' | 'COMMISSIONED' | 'ACCEPTED';
-  
+
+  status:
+    | 'PLANNING'
+    | 'ORDERED'
+    | 'IN_TRANSIT'
+    | 'DELIVERED'
+    | 'INSTALLED'
+    | 'COMMISSIONED'
+    | 'ACCEPTED';
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;

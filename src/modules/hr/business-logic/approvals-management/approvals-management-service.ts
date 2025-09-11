@@ -81,23 +81,24 @@ export interface ApprovalDashboard {
 }
 
 export class ApprovalsManagementService {
-
   /**
    * Approval Rule Engine
    */
   async createApprovalRule(rule: Omit<ApprovalRule, 'id'>): Promise<ApprovalRule> {
     const id = `rule_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newRule: ApprovalRule = {
       ...rule,
       id,
-      isActive: true
+      isActive: true,
     };
 
     // Validate rule conditions and hierarchy
     await this.validateApprovalRule(newRule);
-    
-    console.log(`Created approval rule ${id} for ${rule.applicationContext}/${rule.transactionType}`);
+
+    console.log(
+      `Created approval rule ${id} for ${rule.applicationContext}/${rule.transactionType}`
+    );
     return newRule;
   }
 
@@ -107,23 +108,26 @@ export class ApprovalsManagementService {
     return {} as ApprovalRule;
   }
 
-  async testApprovalRule(ruleId: string, testTransactionData: any): Promise<{
+  async testApprovalRule(
+    ruleId: string,
+    testTransactionData: any
+  ): Promise<{
     ruleMatches: boolean;
     approvers: ApprovalHierarchy[];
     estimatedProcessingTime: number;
     potentialIssues: string[];
   }> {
     console.log(`Testing approval rule ${ruleId} with transaction data`);
-    
+
     const rule = await this.getApprovalRule(ruleId);
     const ruleMatches = await this.evaluateRuleConditions(rule.conditions, testTransactionData);
-    
+
     if (!ruleMatches) {
       return {
         ruleMatches: false,
         approvers: [],
         estimatedProcessingTime: 0,
-        potentialIssues: ['Rule conditions not met']
+        potentialIssues: ['Rule conditions not met'],
       };
     }
 
@@ -135,7 +139,7 @@ export class ApprovalsManagementService {
       ruleMatches: true,
       approvers,
       estimatedProcessingTime: estimatedTime,
-      potentialIssues: issues
+      potentialIssues: issues,
     };
   }
 
@@ -149,10 +153,10 @@ export class ApprovalsManagementService {
     requestorId: string
   ): Promise<ApprovalRequest> {
     console.log(`Submitting transaction ${transactionId} for approval`);
-    
+
     // Find matching approval rule
     const matchingRule = await this.findMatchingApprovalRule(transactionType, transactionData);
-    
+
     if (!matchingRule) {
       throw new Error(`No approval rule found for transaction type: ${transactionType}`);
     }
@@ -168,8 +172,12 @@ export class ApprovalsManagementService {
       currentLevel: 1,
       status: 'PENDING',
       approvalHistory: [],
-      pendingApprovers: await this.resolveLevelApprovers(matchingRule.approvers, 1, transactionData),
-      nextAction: this.calculateNextActionDate(matchingRule.approvers[0])
+      pendingApprovers: await this.resolveLevelApprovers(
+        matchingRule.approvers,
+        1,
+        transactionData
+      ),
+      nextAction: this.calculateNextActionDate(matchingRule.approvers[0]),
     };
 
     // Send notifications to approvers
@@ -185,18 +193,18 @@ export class ApprovalsManagementService {
     comments?: string
   ): Promise<ApprovalRequest> {
     console.log(`Processing approval action: ${action} by ${approverId} for request ${requestId}`);
-    
+
     const request = await this.getApprovalRequest(requestId);
-    
+
     // Record the action
     const approvalAction: ApprovalAction = {
       id: `action_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       approverId,
       action,
       timestamp: new Date(),
-      comments
+      comments,
     };
-    
+
     request.approvalHistory.push(approvalAction);
 
     // Process the action
@@ -216,7 +224,7 @@ export class ApprovalsManagementService {
    */
   async getApprovalDashboard(userId: string): Promise<ApprovalDashboard> {
     console.log(`Getting approval dashboard for user ${userId}`);
-    
+
     const pendingApprovals = await this.getPendingApprovals(userId);
     const completedApprovals = await this.getCompletedApprovals(userId, 30); // Last 30 days
     const delegatedApprovals = await this.getDelegatedApprovals(userId);
@@ -225,7 +233,7 @@ export class ApprovalsManagementService {
     const statistics = {
       totalPending: pendingApprovals.length,
       averageApprovalTime: await this.calculateAverageApprovalTime(userId),
-      approvalRate: await this.calculateApprovalRate(userId)
+      approvalRate: await this.calculateApprovalRate(userId),
     };
 
     return {
@@ -234,7 +242,7 @@ export class ApprovalsManagementService {
       completedApprovals,
       delegatedApprovals,
       overdueApprovals,
-      statistics
+      statistics,
     };
   }
 
@@ -249,17 +257,17 @@ export class ApprovalsManagementService {
     recommendations: string[];
   }> {
     console.log('Validating approval policies');
-    
+
     const allRules = await this.getAllApprovalRules();
     const conflicts = await this.detectRuleConflicts(allRules);
     const coverage = await this.analyzeCoverageGaps(allRules);
-    
+
     return {
       totalRules: allRules.length,
-      validRules: allRules.filter(r => r.isActive).length,
+      validRules: allRules.filter((r) => r.isActive).length,
       conflictingRules: conflicts,
       missingCoverage: coverage,
-      recommendations: await this.generatePolicyRecommendations(allRules, conflicts, coverage)
+      recommendations: await this.generatePolicyRecommendations(allRules, conflicts, coverage),
     };
   }
 
@@ -277,13 +285,19 @@ export class ApprovalsManagementService {
     console.log(`Validated approval rule ${rule.name}`);
   }
 
-  private async evaluateRuleConditions(conditions: ApprovalCondition[], transactionData: any): Promise<boolean> {
+  private async evaluateRuleConditions(
+    conditions: ApprovalCondition[],
+    transactionData: any
+  ): Promise<boolean> {
     // Simple condition evaluation - production would use a rule engine
     console.log('Evaluating rule conditions against transaction data');
     return true;
   }
 
-  private async resolveApprovers(approvers: ApprovalHierarchy[], transactionData: any): Promise<ApprovalHierarchy[]> {
+  private async resolveApprovers(
+    approvers: ApprovalHierarchy[],
+    transactionData: any
+  ): Promise<ApprovalHierarchy[]> {
     // Implementation would resolve actual approver IDs based on hierarchy rules
     console.log('Resolving approvers for transaction');
     return approvers;
@@ -296,14 +310,14 @@ export class ApprovalsManagementService {
 
   private async identifyPotentialIssues(approvers: ApprovalHierarchy[]): Promise<string[]> {
     const issues: string[] = [];
-    
+
     // Check for common issues
     for (const approver of approvers) {
       if (approver.timeoutDays < 1) {
         issues.push(`Approver ${approver.approverId} has very short timeout period`);
       }
     }
-    
+
     return issues;
   }
 
@@ -312,9 +326,12 @@ export class ApprovalsManagementService {
     return {} as ApprovalRule;
   }
 
-  private async findMatchingApprovalRule(transactionType: string, transactionData: any): Promise<ApprovalRule | null> {
+  private async findMatchingApprovalRule(
+    transactionType: string,
+    transactionData: any
+  ): Promise<ApprovalRule | null> {
     const allRules = await this.getAllApprovalRules();
-    
+
     for (const rule of allRules) {
       if (rule.transactionType === transactionType && rule.isActive) {
         const matches = await this.evaluateRuleConditions(rule.conditions, transactionData);
@@ -323,7 +340,7 @@ export class ApprovalsManagementService {
         }
       }
     }
-    
+
     return null;
   }
 
@@ -332,9 +349,9 @@ export class ApprovalsManagementService {
     level: number,
     transactionData: any
   ): Promise<string[]> {
-    const levelApprovers = approvers.filter(a => a.level === level);
+    const levelApprovers = approvers.filter((a) => a.level === level);
     // Implementation would resolve actual approver IDs
-    return levelApprovers.map(a => a.approverId);
+    return levelApprovers.map((a) => a.approverId);
   }
 
   private calculateNextActionDate(approver: ApprovalHierarchy): Date {
@@ -401,12 +418,16 @@ export class ApprovalsManagementService {
     return [];
   }
 
-  private async detectRuleConflicts(rules: ApprovalRule[]): Promise<Array<{ ruleIds: string[]; conflict: string }>> {
+  private async detectRuleConflicts(
+    rules: ApprovalRule[]
+  ): Promise<Array<{ ruleIds: string[]; conflict: string }>> {
     // Implementation would detect conflicting rules
     return [];
   }
 
-  private async analyzeCoverageGaps(rules: ApprovalRule[]): Promise<Array<{ transactionType: string; conditions: string }>> {
+  private async analyzeCoverageGaps(
+    rules: ApprovalRule[]
+  ): Promise<Array<{ transactionType: string; conditions: string }>> {
     // Implementation would identify transaction types without coverage
     return [];
   }
@@ -417,15 +438,15 @@ export class ApprovalsManagementService {
     gaps: any[]
   ): Promise<string[]> {
     const recommendations: string[] = [];
-    
+
     if (conflicts.length > 0) {
       recommendations.push('Resolve conflicting approval rules to ensure consistent processing');
     }
-    
+
     if (gaps.length > 0) {
       recommendations.push('Create approval rules for uncovered transaction types');
     }
-    
+
     return recommendations;
   }
 }

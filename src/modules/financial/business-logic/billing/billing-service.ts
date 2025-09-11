@@ -1,5 +1,5 @@
 /**
- * Billing Service  
+ * Billing Service
  * Manages invoice generation, billing cycles, and payment processing for leases
  */
 
@@ -63,10 +63,14 @@ export class BillingService {
     return { ...billing, id };
   }
 
-  async generateInvoice(leaseId: string, billingPeriodStart: Date, billingPeriodEnd: Date): Promise<LeaseInvoice> {
+  async generateInvoice(
+    leaseId: string,
+    billingPeriodStart: Date,
+    billingPeriodEnd: Date
+  ): Promise<LeaseInvoice> {
     const invoiceId = `inv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const invoiceNumber = `INV-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-    
+
     const lineItems: InvoiceLineItem[] = [
       {
         id: `li_${Date.now()}_1`,
@@ -74,15 +78,15 @@ export class BillingService {
         amount: 1000,
         taxable: false,
         category: 'RENT',
-      }
+      },
     ];
-    
+
     const subtotal = lineItems.reduce((sum, item) => sum + item.amount, 0);
     const taxAmount = 0; // Would calculate based on taxable items
-    
+
     const dueDate = new Date();
     dueDate.setDate(dueDate.getDate() + 30); // 30 days from today
-    
+
     return {
       id: invoiceId,
       invoiceNumber,

@@ -1,142 +1,146 @@
 // Machine Learning Data Prep - Database Management System
 // This file provides business-ready functionality for Machine Learning Data Prep
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Machine Learning Data Prep page loaded');
-    
-    // Initialize page functionality
-    initMachineLearningDataPrep();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadMachineLearningDataPrepData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Machine Learning Data Prep page loaded');
+
+  // Initialize page functionality
+  initMachineLearningDataPrep();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadMachineLearningDataPrepData();
 });
 
 async function loadMachineLearningDataPrepData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/machine-learning-data-prep');
-        if (response.ok) {
-            const data = await response.json();
-            updateMachineLearningDataPrepDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Machine Learning Data Prep data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/data-integration-etl/machine-learning-data-prep');
+    if (response.ok) {
+      const data = await response.json();
+      updateMachineLearningDataPrepDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Machine Learning Data Prep data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initMachineLearningDataPrep() {
-    console.log('Initializing Machine Learning Data Prep');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Machine Learning Data Prep');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Machine Learning Data Prep');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Machine Learning Data Prep');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Machine Learning Data Prep');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Machine Learning Data Prep');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Machine Learning Data Prep');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Machine Learning Data Prep');
 }
 
 function handleMachineLearningDataPrepAction() {
-    console.log('Machine Learning Data Prep action triggered');
-    showNotification('Machine Learning Data Prep configured successfully', 'success');
+  console.log('Machine Learning Data Prep action triggered');
+  showNotification('Machine Learning Data Prep configured successfully', 'success');
 }
 
 function executeMachineLearningDataPrep() {
-    console.log('Machine Learning Data Prep execution started');
-    showNotification('Machine Learning Data Prep executed successfully', 'success');
+  console.log('Machine Learning Data Prep execution started');
+  showNotification('Machine Learning Data Prep executed successfully', 'success');
 }
 
 function updateMachineLearningDataPrepDisplay(data) {
-    console.log('Updating Machine Learning Data Prep display:', data);
-    // Update UI with loaded data
+  console.log('Updating Machine Learning Data Prep display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/machine-learning-data-prep/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadMachineLearningDataPrepData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleMachineLearningDataPrepAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/machine-learning-data-prep/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'machine-learning-data-prep-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/machine-learning-data-prep/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadMachineLearningDataPrepData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleMachineLearningDataPrepAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/machine-learning-data-prep/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'machine-learning-data-prep-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

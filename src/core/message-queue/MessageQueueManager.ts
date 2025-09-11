@@ -19,7 +19,7 @@ import {
   QueueAlert,
   ScheduledMessage,
   MessageBatch,
-  QueueSecurity
+  QueueSecurity,
 } from './types';
 
 export class MessageQueueManager extends EventEmitter {
@@ -55,8 +55,8 @@ export class MessageQueueManager extends EventEmitter {
         defaultJobOptions: {
           removeOnComplete: 100,
           removeOnFail: 50,
-          attempts: 1
-        }
+          attempts: 1,
+        },
       });
 
       // Create audit queue for compliance
@@ -65,13 +65,13 @@ export class MessageQueueManager extends EventEmitter {
         defaultJobOptions: {
           removeOnComplete: 1000,
           removeOnFail: 500,
-          attempts: 3
-        }
+          attempts: 3,
+        },
       });
 
       await this.createStandardQueues();
       this.setupGlobalEventHandlers();
-      
+
       this.logger.info('Message queue system initialized successfully');
       this.emit('initialized');
     } catch (error) {
@@ -90,63 +90,63 @@ export class MessageQueueManager extends EventEmitter {
         concurrency: 10,
         processor: 'integration-processor',
         priority: 2,
-        rateLimit: { max: 100, duration: 60000 }
+        rateLimit: { max: 100, duration: 60000 },
       },
       {
         name: QueueType.FINANCIAL,
         concurrency: 5,
         processor: 'financial-processor',
         priority: 1,
-        rateLimit: { max: 50, duration: 60000 }
+        rateLimit: { max: 50, duration: 60000 },
       },
       {
         name: QueueType.HR,
         concurrency: 3,
         processor: 'hr-processor',
-        priority: 3
+        priority: 3,
       },
       {
         name: QueueType.CRM,
         concurrency: 8,
         processor: 'crm-processor',
-        priority: 2
+        priority: 2,
       },
       {
         name: QueueType.SCM,
         concurrency: 6,
         processor: 'scm-processor',
-        priority: 2
+        priority: 2,
       },
       {
         name: QueueType.ORDER,
         concurrency: 15,
         processor: 'order-processor',
-        priority: 1
+        priority: 1,
       },
       {
         name: QueueType.INVENTORY,
         concurrency: 8,
         processor: 'inventory-processor',
-        priority: 2
+        priority: 2,
       },
       {
         name: QueueType.NOTIFICATION,
         concurrency: 20,
         processor: 'notification-processor',
-        priority: 4
+        priority: 4,
       },
       {
         name: QueueType.AUDIT,
         concurrency: 2,
         processor: 'audit-processor',
-        priority: 1
+        priority: 1,
       },
       {
         name: QueueType.ANALYTICS,
         concurrency: 4,
         processor: 'analytics-processor',
-        priority: 5
-      }
+        priority: 5,
+      },
     ];
 
     for (const queueDef of standardQueues) {
@@ -162,13 +162,13 @@ export class MessageQueueManager extends EventEmitter {
       redis: this.config.redis,
       defaultJobOptions: {
         ...this.config.defaultJobOptions,
-        ...definition.jobOptions
+        ...definition.jobOptions,
       },
-      ...definition.options
+      ...definition.options,
     };
 
     const queue = new Bull(definition.name, options);
-    
+
     // Setup rate limiting if specified
     if (definition.rateLimit) {
       queue.process(definition.name, definition.concurrency, async (job) => {
@@ -181,7 +181,9 @@ export class MessageQueueManager extends EventEmitter {
         if (processor) {
           queue.process(definition.name, definition.concurrency, processor);
         } else {
-          this.logger.warn(`Processor ${definition.processor} not found for queue ${definition.name}`);
+          this.logger.warn(
+            `Processor ${definition.processor} not found for queue ${definition.name}`
+          );
         }
       } else {
         queue.process(definition.name, definition.concurrency, definition.processor);
@@ -190,11 +192,13 @@ export class MessageQueueManager extends EventEmitter {
 
     // Setup queue event handlers
     this.setupQueueEventHandlers(queue, definition.name);
-    
+
     this.queues.set(definition.name, queue);
     this.initializeQueueMetrics(definition.name);
-    
-    this.logger.info(`Created queue: ${definition.name} with concurrency: ${definition.concurrency}`);
+
+    this.logger.info(
+      `Created queue: ${definition.name} with concurrency: ${definition.concurrency}`
+    );
     return queue;
   }
 
@@ -227,13 +231,13 @@ export class MessageQueueManager extends EventEmitter {
         messageId: message.id,
         userId: message.metadata.userId,
         timestamp: new Date(),
-        classification: message.compliance.dataClassification
+        classification: message.compliance.dataClassification,
       });
     }
 
     const jobOptions: JobOptions = {
       priority: message.metadata.priority,
-      ...options
+      ...options,
     };
 
     // Handle delayed messages
@@ -242,11 +246,11 @@ export class MessageQueueManager extends EventEmitter {
     }
 
     const job = await queue.add(message.type, message, jobOptions);
-    
+
     this.logger.debug(`Added message ${message.id} to queue ${queueName}`, {
       messageType: message.type,
       priority: message.metadata.priority,
-      jobId: job.id
+      jobId: job.id,
     });
 
     this.emit('messageAdded', { queueName, message, job });
@@ -258,7 +262,7 @@ export class MessageQueueManager extends EventEmitter {
    */
   async addBatch(queueName: string, batch: MessageBatch): Promise<Job<MessagePayload>[]> {
     const jobs: Job<MessagePayload>[] = [];
-    
+
     batch.status = 'PROCESSING';
     batch.startedAt = new Date();
 
@@ -271,10 +275,8 @@ export class MessageQueueManager extends EventEmitter {
         }
       } else {
         // Process messages in parallel
-        const jobPromises = batch.messages.map(message => 
-          this.addMessage(queueName, message)
-        );
-        jobs.push(...await Promise.all(jobPromises));
+        const jobPromises = batch.messages.map((message) => this.addMessage(queueName, message));
+        jobs.push(...(await Promise.all(jobPromises)));
       }
 
       batch.status = 'COMPLETED';
@@ -286,7 +288,7 @@ export class MessageQueueManager extends EventEmitter {
     } catch (error) {
       batch.status = 'FAILED';
       batch.completedAt = new Date();
-      
+
       this.logger.error(`Batch ${batch.id} failed`, { error });
       throw error;
     }
@@ -304,16 +306,16 @@ export class MessageQueueManager extends EventEmitter {
         options.delay = scheduleConfig.delay;
         break;
       case 'CRON':
-        options.repeat = { 
+        options.repeat = {
           cron: scheduleConfig.cronExpression!,
-          endDate: scheduleConfig.endDate 
+          endDate: scheduleConfig.endDate,
         };
         break;
       case 'INTERVAL':
         if (scheduleConfig.intervalMs) {
-          options.repeat = { 
+          options.repeat = {
             every: scheduleConfig.intervalMs,
-            limit: scheduleConfig.repeatCount
+            limit: scheduleConfig.repeatCount,
           };
         }
         break;
@@ -321,10 +323,10 @@ export class MessageQueueManager extends EventEmitter {
 
     const queueName = message.routing?.targetQueue || QueueType.SYSTEM;
     const job = await this.addMessage(queueName, message, options);
-    
+
     scheduledMessage.status = 'ACTIVE';
     this.scheduledMessages.set(scheduledMessage.id, scheduledMessage);
-    
+
     return job;
   }
 
@@ -341,7 +343,7 @@ export class MessageQueueManager extends EventEmitter {
       queue.getCompleted(),
       queue.getFailed(),
       queue.getDelayed(),
-      queue.isPaused()
+      queue.isPaused(),
     ]);
 
     const metrics: QueueMetrics = {
@@ -354,7 +356,7 @@ export class MessageQueueManager extends EventEmitter {
       paused,
       throughput: this.calculateThroughput(queueName),
       health: await this.assessQueueHealth(queueName),
-      performance: await this.getQueuePerformance(queueName)
+      performance: await this.getQueuePerformance(queueName),
     };
 
     this.metrics.set(queueName, metrics);
@@ -420,12 +422,12 @@ export class MessageQueueManager extends EventEmitter {
    */
   async shutdown(): Promise<void> {
     if (this.isShuttingDown) return;
-    
+
     this.isShuttingDown = true;
     this.logger.info('Shutting down message queue system');
 
     // Gracefully close all queues
-    const closePromises = Array.from(this.queues.values()).map(queue => queue.close());
+    const closePromises = Array.from(this.queues.values()).map((queue) => queue.close());
     if (this.deadLetterQueue) {
       closePromises.push(this.deadLetterQueue.close());
     }
@@ -434,7 +436,7 @@ export class MessageQueueManager extends EventEmitter {
     }
 
     await Promise.all(closePromises);
-    
+
     this.logger.info('Message queue system shutdown complete');
     this.emit('shutdown');
   }
@@ -485,7 +487,10 @@ export class MessageQueueManager extends EventEmitter {
     process.on('SIGINT', () => this.shutdown());
   }
 
-  private async rateLimitedProcess(job: Job<MessagePayload>, definition: QueueDefinition): Promise<any> {
+  private async rateLimitedProcess(
+    job: Job<MessagePayload>,
+    definition: QueueDefinition
+  ): Promise<any> {
     // Implement rate limiting logic here
     const processor = this.processors.get(definition.processor as string);
     if (processor) {
@@ -506,18 +511,18 @@ export class MessageQueueManager extends EventEmitter {
       throughput: {
         messagesPerSecond: 0,
         averageProcessingTime: 0,
-        peakThroughput: 0
+        peakThroughput: 0,
       },
       health: {
         status: 'HEALTHY',
         lastHealthCheck: new Date(),
-        consecutiveFailures: 0
+        consecutiveFailures: 0,
       },
       performance: {
         cpuUsage: 0,
         memoryUsage: 0,
-        redisConnections: 0
-      }
+        redisConnections: 0,
+      },
     };
     this.metrics.set(queueName, initialMetrics);
   }
@@ -527,7 +532,7 @@ export class MessageQueueManager extends EventEmitter {
     return {
       messagesPerSecond: 0,
       averageProcessingTime: 0,
-      peakThroughput: 0
+      peakThroughput: 0,
     };
   }
 
@@ -536,7 +541,7 @@ export class MessageQueueManager extends EventEmitter {
     return {
       status: 'HEALTHY',
       lastHealthCheck: new Date(),
-      consecutiveFailures: 0
+      consecutiveFailures: 0,
     };
   }
 
@@ -545,13 +550,17 @@ export class MessageQueueManager extends EventEmitter {
     return {
       cpuUsage: 0,
       memoryUsage: 0,
-      redisConnections: 0
+      redisConnections: 0,
     };
   }
 
-  private async handleFailedJob(job: Job<MessagePayload>, error: Error, queueName: string): Promise<void> {
+  private async handleFailedJob(
+    job: Job<MessagePayload>,
+    error: Error,
+    queueName: string
+  ): Promise<void> {
     const message = job.data;
-    
+
     if (job.attemptsMade >= (job.opts.attempts || 3)) {
       // Send to dead letter queue
       const deadLetterMessage: DeadLetterMessage = {
@@ -561,7 +570,7 @@ export class MessageQueueManager extends EventEmitter {
         firstFailureTime: new Date(job.timestamp),
         lastFailureTime: new Date(),
         stackTrace: error.stack,
-        canRetry: false
+        canRetry: false,
       };
 
       if (this.deadLetterQueue) {
@@ -581,7 +590,7 @@ export class MessageQueueManager extends EventEmitter {
 
   private async checkAlerts(): Promise<void> {
     const thresholds = this.config.monitoring.alertThresholds;
-    
+
     for (const [queueName, metrics] of this.metrics) {
       // Check queue depth
       if (metrics.waiting > thresholds.queueDepth) {
@@ -590,7 +599,7 @@ export class MessageQueueManager extends EventEmitter {
           alertType: 'QUEUE_DEPTH',
           severity: 'HIGH',
           message: `Queue depth exceeded threshold: ${metrics.waiting} > ${thresholds.queueDepth}`,
-          details: { currentDepth: metrics.waiting, threshold: thresholds.queueDepth }
+          details: { currentDepth: metrics.waiting, threshold: thresholds.queueDepth },
         });
       }
 
@@ -603,7 +612,7 @@ export class MessageQueueManager extends EventEmitter {
             alertType: 'HIGH_ERROR_RATE',
             severity: 'CRITICAL',
             message: `Error rate exceeded threshold: ${(errorRate * 100).toFixed(2)}% > ${thresholds.errorRate * 100}%`,
-            details: { errorRate, threshold: thresholds.errorRate }
+            details: { errorRate, threshold: thresholds.errorRate },
           });
         }
       }
@@ -614,7 +623,7 @@ export class MessageQueueManager extends EventEmitter {
     const alert: QueueAlert = {
       ...alertData,
       id: `alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      triggeredAt: new Date()
+      triggeredAt: new Date(),
     };
 
     this.alerts.push(alert);
@@ -639,13 +648,13 @@ export class MessageQueueManager extends EventEmitter {
       const active = await queue.getActive();
       const completed = await queue.getCompleted();
       const failed = await queue.getFailed();
-      
+
       const queueHealth = {
         waiting: waiting.length,
-        active: active.length, 
+        active: active.length,
         completed: completed.length,
         failed: failed.length,
-        isPaused: await queue.isPaused()
+        isPaused: await queue.isPaused(),
       };
 
       queues[name] = queueHealth;
@@ -663,7 +672,7 @@ export class MessageQueueManager extends EventEmitter {
       status: overallStatus,
       queues,
       uptime: Date.now() - this.startTime,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
   }
 

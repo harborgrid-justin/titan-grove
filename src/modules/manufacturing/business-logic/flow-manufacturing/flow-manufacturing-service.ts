@@ -135,7 +135,6 @@ export interface ContinuousImprovementEvent {
  * Comprehensive line design and balancing to reduce cycle times
  */
 export class FlowManufacturingService {
-
   // ================================
   // LINE DESIGN AND BALANCING
   // ================================
@@ -161,7 +160,7 @@ export class FlowManufacturingService {
     };
   }> {
     console.log(`Analyzing line performance for line ${lineId}`);
-    
+
     const currentPerformance: LinePerformance = {
       taktTime: 60, // 60 seconds
       totalCycleTime: 58.5,
@@ -171,15 +170,15 @@ export class FlowManufacturingService {
         {
           stationId: 'ST003',
           severity: 'MODERATE',
-          impact: 8.5
-        }
+          impact: 8.5,
+        },
       ],
       utilization: [
         { stationId: 'ST001', utilization: 85.0 },
         { stationId: 'ST002', utilization: 92.5 },
         { stationId: 'ST003', utilization: 97.5 },
-        { stationId: 'ST004', utilization: 78.0 }
-      ]
+        { stationId: 'ST004', utilization: 78.0 },
+      ],
     };
 
     const inefficiencies = [
@@ -188,15 +187,15 @@ export class FlowManufacturingService {
         location: 'Station 3',
         severity: 'MEDIUM' as const,
         impact: 8.5,
-        description: 'Assembly operation exceeds takt time by 8.5%'
+        description: 'Assembly operation exceeds takt time by 8.5%',
       },
       {
         type: 'IMBALANCE' as const,
         location: 'Station 4',
         severity: 'LOW' as const,
         impact: 3.2,
-        description: 'Station underutilized by 22%'
-      }
+        description: 'Station underutilized by 22%',
+      },
     ];
 
     const improvementOpportunities: LineImprovement[] = [
@@ -209,8 +208,8 @@ export class FlowManufacturingService {
         cost: 15000,
         timeline: 3,
         riskLevel: 'LOW',
-        expectedBenefit: 12.5
-      }
+        expectedBenefit: 12.5,
+      },
     ];
 
     return {
@@ -221,8 +220,8 @@ export class FlowManufacturingService {
         industryAverage: 85.0,
         bestInClass: 95.0,
         currentPosition: 89.2,
-        gap: 5.8
-      }
+        gap: 5.8,
+      },
     };
   }
 
@@ -239,9 +238,9 @@ export class FlowManufacturingService {
     }
   ): Promise<LineBalancingResult> {
     const balancingId = `bal_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Optimizing line balancing for line ${lineId}`);
-    
+
     const currentState: LinePerformance = {
       taktTime: 60,
       totalCycleTime: 58.5,
@@ -252,8 +251,8 @@ export class FlowManufacturingService {
         { stationId: 'ST001', utilization: 85.0 },
         { stationId: 'ST002', utilization: 92.5 },
         { stationId: 'ST003', utilization: 97.5 },
-        { stationId: 'ST004', utilization: 78.0 }
-      ]
+        { stationId: 'ST004', utilization: 78.0 },
+      ],
     };
 
     const optimizedState: LinePerformance = {
@@ -266,8 +265,8 @@ export class FlowManufacturingService {
         { stationId: 'ST001', utilization: 88.0 },
         { stationId: 'ST002', utilization: 90.5 },
         { stationId: 'ST003', utilization: 87.5 },
-        { stationId: 'ST004', utilization: 89.0 }
-      ]
+        { stationId: 'ST004', utilization: 89.0 },
+      ],
     };
 
     const improvements: LineImprovement[] = [
@@ -280,8 +279,8 @@ export class FlowManufacturingService {
         cost: 12000,
         timeline: 2,
         riskLevel: 'LOW',
-        expectedBenefit: 15.2
-      }
+        expectedBenefit: 15.2,
+      },
     ];
 
     const implementationPlan: ImplementationStep[] = [
@@ -293,7 +292,7 @@ export class FlowManufacturingService {
         dependencies: [],
         responsible: 'INDUSTRIAL_ENGINEER',
         resources: ['Stopwatch', 'Video camera', 'Analysis software'],
-        validationCriteria: ['Accurate timing data collected', 'Bottlenecks identified']
+        validationCriteria: ['Accurate timing data collected', 'Bottlenecks identified'],
       },
       {
         stepId: 'step_002',
@@ -303,8 +302,8 @@ export class FlowManufacturingService {
         dependencies: ['step_001'],
         responsible: 'INDUSTRIAL_ENGINEER',
         resources: ['CAD software', 'Ergonomic assessment tools'],
-        validationCriteria: ['New layout approved', 'Operator training plan created']
-      }
+        validationCriteria: ['New layout approved', 'Operator training plan created'],
+      },
     ];
 
     return {
@@ -319,29 +318,27 @@ export class FlowManufacturingService {
         cycleTimeReduction: 9.7,
         throughputIncrease: 17.9,
         laborSavings: 125000,
-        qualityImprovement: 3.5
-      }
+        qualityImprovement: 3.5,
+      },
     };
   }
 
   /**
    * Manage continuous improvement events
    */
-  async scheduleContinuousImprovementEvent(
-    eventData: {
-      eventType: string;
-      title: string;
-      lineId: string;
-      facilitator: string;
-      objectives: string[];
-      scheduledDate: Date;
-      duration: number;
-    }
-  ): Promise<ContinuousImprovementEvent> {
+  async scheduleContinuousImprovementEvent(eventData: {
+    eventType: string;
+    title: string;
+    lineId: string;
+    facilitator: string;
+    objectives: string[];
+    scheduledDate: Date;
+    duration: number;
+  }): Promise<ContinuousImprovementEvent> {
     const eventId = `ci_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Scheduling continuous improvement event: ${eventData.title}`);
-    
+
     const event: ContinuousImprovementEvent = {
       eventId,
       eventType: eventData.eventType as any,
@@ -353,7 +350,7 @@ export class FlowManufacturingService {
       scheduledDate: eventData.scheduledDate,
       duration: eventData.duration,
       objectives: eventData.objectives,
-      status: 'PLANNED'
+      status: 'PLANNED',
     };
 
     return event;
@@ -387,7 +384,7 @@ export class FlowManufacturingService {
     recommendations: string[];
   }> {
     console.log(`Tracking flow metrics for line ${lineId}`);
-    
+
     return {
       lineMetrics: {
         currentThroughput: 57.6,
@@ -395,7 +392,7 @@ export class FlowManufacturingService {
         efficiency: 89.2,
         flowBalance: 87.5,
         wip: 15.3,
-        leadTime: 16.2
+        leadTime: 16.2,
       },
       stationMetrics: [
         {
@@ -403,27 +400,27 @@ export class FlowManufacturingService {
           utilization: 85.0,
           cycleTime: 51.0,
           waitTime: 9.0,
-          efficiency: 85.0
+          efficiency: 85.0,
         },
         {
           stationId: 'ST002',
           utilization: 92.5,
           cycleTime: 55.5,
           waitTime: 4.5,
-          efficiency: 92.5
-        }
+          efficiency: 92.5,
+        },
       ],
       flowIndicators: {
         oneFlowScore: 78.5,
         pullSystemEffectiveness: 82.3,
         standardWorkAdherence: 94.7,
-        continuousFlowRate: 76.8
+        continuousFlowRate: 76.8,
       },
       recommendations: [
         'Reduce WIP by implementing pull signals',
         'Balance workload between stations 1 and 3',
-        'Implement standardized work procedures at all stations'
-      ]
+        'Implement standardized work procedures at all stations',
+      ],
     };
   }
 }

@@ -12,5 +12,5 @@ export { FederalComplianceService, federalComplianceService } from './main-servi
 // Legacy compatibility - re-export main service as the original name
 export {
   FederalComplianceService as FederalComplianceServiceLegacy,
-  federalComplianceService as federalComplianceServiceLegacy
+  federalComplianceService as federalComplianceServiceLegacy,
 } from './main-service';

@@ -1,7 +1,7 @@
 /**
  * Resource Optimization Module
  * Fortune 100 grade resource assignment optimization and capacity planning
- * 
+ *
  * Provides comprehensive resource optimization capabilities including:
  * - Intelligent resource assignment and matching
  * - Capacity planning and optimization
@@ -19,7 +19,10 @@ export * from './types';
 export * from './data-access';
 
 // Core resource optimization functionality
-export { ResourceOptimizationService, resourceOptimizationService } from './business-logic/resource-optimization-service';
+export {
+  ResourceOptimizationService,
+  resourceOptimizationService,
+} from './business-logic/resource-optimization-service';
 
 // Types
 export type {
@@ -37,5 +40,5 @@ export type {
   ResourcePerformance,
   CapacityAnalysis,
   ResourceBenchmark,
-  WorkloadDistribution
+  WorkloadDistribution,
 } from './types';

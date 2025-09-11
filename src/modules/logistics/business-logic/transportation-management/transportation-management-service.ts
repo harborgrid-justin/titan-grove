@@ -1,7 +1,7 @@
 /**
  * Transportation Management Service
  * Comprehensive transportation planning, execution, and management with Oracle EBS competitive features
- * 
+ *
  * Features:
  * - Multi-modal transportation planning
  * - Carrier management and selection
@@ -26,7 +26,7 @@ import type {
   OptimizedRoute,
   FreightRateQuote,
   TrackingEvent,
-  ProviderPerformanceMetrics
+  ProviderPerformanceMetrics,
 } from '../../types';
 
 export interface CarrierSelectionCriteria {
@@ -75,22 +75,22 @@ export interface TransportationPlan {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Plan components
   networkDesign: NetworkDesign;
   carrierStrategy: CarrierStrategy;
   serviceLevels: ServiceLevelPlan[];
   costTargets: CostTarget[];
-  
+
   // Analysis results
   totalCost: number;
   serviceMetrics: ServiceMetrics;
   riskAssessment: RiskAssessment;
-  
+
   // Implementation
   implementationPlan: ImplementationPlan;
   milestones: PlanMilestone[];
-  
+
   status: 'DRAFT' | 'APPROVED' | 'ACTIVE' | 'ARCHIVED';
   approvedBy?: string;
   approvedDate?: Date;
@@ -119,30 +119,30 @@ export interface CarrierBidRequest {
   bidRequestId: string;
   bidRequestName: string;
   bidType: 'RFP' | 'RFQ' | 'REVERSE_AUCTION' | 'NEGOTIATION';
-  
+
   // Request details
   requestDescription: string;
   lanes: TransportationLane[];
   serviceRequirements: CarrierServiceRequirement[];
   contractTerms: ContractTerms;
-  
+
   // Timeline
   issueDate: Date;
   responseDeadline: Date;
   implementationDate: Date;
-  
+
   // Evaluation criteria
   evaluationCriteria: EvaluationCriteria[];
   scoringMethod: 'WEIGHTED_SCORE' | 'LOWEST_COST' | 'BEST_VALUE';
-  
+
   // Responses
   invitedCarriers: string[];
   carrierResponses: CarrierBidResponse[];
-  
+
   // Award
   awardedCarriers?: string[];
   awardRationale?: string;
-  
+
   status: 'DRAFT' | 'ISSUED' | 'RESPONSE_PERIOD' | 'EVALUATION' | 'AWARDED' | 'CANCELLED';
   createdBy: string;
   createdDate: Date;
@@ -154,30 +154,30 @@ export interface CarrierBidResponse {
   carrierId: string;
   carrierName: string;
   responseDate: Date;
-  
+
   // Pricing
   laneRates: LaneRate[];
   accessorialCharges: AccessorialCharge[];
   fuelSurchargeMethod: string;
   discountStructure: DiscountStructure;
-  
+
   // Service commitments
   serviceCommitments: ServiceCommitment[];
   performanceGuarantees: PerformanceGuarantee[];
-  
+
   // Capabilities
   equipmentAvailability: EquipmentAvailability[];
   geographicCoverage: GeographicCoverage;
   specialCapabilities: string[];
-  
+
   // Terms
   contractTerms: ProposedContractTerms;
   implementationPlan: CarrierImplementationPlan;
-  
+
   // Evaluation
   evaluationScore?: number;
   evaluationNotes?: string;
-  
+
   status: 'SUBMITTED' | 'UNDER_REVIEW' | 'SHORTLISTED' | 'REJECTED' | 'AWARDED';
 }
 
@@ -202,58 +202,60 @@ export class TransportationManagementService {
   /**
    * Create comprehensive transportation plan
    */
-  async createTransportationPlan(planData: Partial<TransportationPlan>): Promise<TransportationPlan> {
+  async createTransportationPlan(
+    planData: Partial<TransportationPlan>
+  ): Promise<TransportationPlan> {
     const planId = `tp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const plan: TransportationPlan = {
       planId,
       planName: planData.planName || `Transportation Plan ${planId}`,
       planType: planData.planType || 'TACTICAL',
       planningHorizon: planData.planningHorizon || {
         startDate: new Date(),
-        endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) // 1 year
+        endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year
       },
-      
+
       networkDesign: planData.networkDesign || {
         hubLocations: [],
         serviceRoutes: [],
         consolidationPoints: [],
-        crossDockFacilities: []
+        crossDockFacilities: [],
       },
-      
+
       carrierStrategy: planData.carrierStrategy || {
         primaryCarriers: [],
         backupCarriers: [],
         diversificationRules: [],
-        performanceRequirements: []
+        performanceRequirements: [],
       },
-      
+
       serviceLevels: planData.serviceLevels || [],
       costTargets: planData.costTargets || [],
-      
+
       totalCost: 0,
       serviceMetrics: {
         averageTransitTime: 0,
         onTimeDeliveryRate: 95,
-        serviceLevel: 'STANDARD'
+        serviceLevel: 'STANDARD',
       },
-      
+
       riskAssessment: {
         riskLevel: 'MEDIUM',
         identifiedRisks: [],
-        mitigationStrategies: []
+        mitigationStrategies: [],
       },
-      
+
       implementationPlan: {
         phases: [],
         timeline: [],
-        resources: []
+        resources: [],
       },
-      
+
       milestones: [],
       status: 'DRAFT',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     // Perform network optimization if requested
@@ -265,9 +267,9 @@ export class TransportationManagementService {
     await this.calculatePlanMetrics(plan);
 
     this.transportationPlans.set(planId, plan);
-    
+
     this.logger?.info(`Transportation plan created: ${planId}`);
-    
+
     return plan;
   }
 
@@ -279,7 +281,7 @@ export class TransportationManagementService {
     const optimization = {
       objectives: ['MINIMIZE_COST', 'MAXIMIZE_SERVICE'],
       constraints: ['CAPACITY_LIMITS', 'SERVICE_TIME_WINDOWS'],
-      algorithms: ['GENETIC_ALGORITHM', 'SIMULATED_ANNEALING']
+      algorithms: ['GENETIC_ALGORITHM', 'SIMULATED_ANNEALING'],
     };
 
     // This would integrate with advanced optimization engines
@@ -287,9 +289,9 @@ export class TransportationManagementService {
       ...plan.networkDesign,
       optimizationResults: {
         totalCostReduction: 15, // percentage
-        serviceImprovement: 8,  // percentage
-        optimizationConfidence: 92 // percentage
-      }
+        serviceImprovement: 8, // percentage
+        optimizationConfidence: 92, // percentage
+      },
     };
   }
 
@@ -305,14 +307,14 @@ export class TransportationManagementService {
     plan.totalCost = totalCost;
 
     // Service metrics calculation
-    const avgTransitTime = plan.networkDesign.serviceRoutes.reduce(
-      (sum, route) => sum + route.transitTime, 0
-    ) / plan.networkDesign.serviceRoutes.length || 0;
+    const avgTransitTime =
+      plan.networkDesign.serviceRoutes.reduce((sum, route) => sum + route.transitTime, 0) /
+        plan.networkDesign.serviceRoutes.length || 0;
 
     plan.serviceMetrics = {
       averageTransitTime: avgTransitTime,
       onTimeDeliveryRate: 95, // Base assumption, would be calculated from historical data
-      serviceLevel: avgTransitTime <= 2 ? 'EXPRESS' : avgTransitTime <= 5 ? 'STANDARD' : 'ECONOMY'
+      serviceLevel: avgTransitTime <= 2 ? 'EXPRESS' : avgTransitTime <= 5 ? 'STANDARD' : 'ECONOMY',
     };
 
     // Risk assessment
@@ -324,7 +326,7 @@ export class TransportationManagementService {
    */
   private async assessTransportationRisks(plan: TransportationPlan): Promise<RiskAssessment> {
     const risks = [];
-    
+
     // Analyze carrier concentration risk
     if (plan.carrierStrategy?.primaryCarriers?.length < 2) {
       risks.push({
@@ -332,13 +334,13 @@ export class TransportationManagementService {
         severity: 'HIGH',
         probability: 0.3,
         impact: 'SERVICE_DISRUPTION',
-        mitigation: 'Diversify carrier base'
+        mitigation: 'Diversify carrier base',
       });
     }
 
     // Analyze geographic concentration risk
     const uniqueRegions = new Set();
-    plan.networkDesign.serviceRoutes.forEach(route => {
+    plan.networkDesign.serviceRoutes.forEach((route) => {
       uniqueRegions.add(route.origin.address?.state);
       uniqueRegions.add(route.destination.address?.state);
     });
@@ -349,15 +351,18 @@ export class TransportationManagementService {
         severity: 'MEDIUM',
         probability: 0.2,
         impact: 'REGIONAL_DISRUPTION',
-        mitigation: 'Expand geographic coverage'
+        mitigation: 'Expand geographic coverage',
       });
     }
 
     return {
-      riskLevel: risks.some(r => r.severity === 'HIGH') ? 'HIGH' : 
-                 risks.some(r => r.severity === 'MEDIUM') ? 'MEDIUM' : 'LOW',
+      riskLevel: risks.some((r) => r.severity === 'HIGH')
+        ? 'HIGH'
+        : risks.some((r) => r.severity === 'MEDIUM')
+          ? 'MEDIUM'
+          : 'LOW',
       identifiedRisks: risks,
-      mitigationStrategies: risks.map(r => r.mitigation)
+      mitigationStrategies: risks.map((r) => r.mitigation),
     };
   }
 
@@ -370,12 +375,12 @@ export class TransportationManagementService {
    */
   async conductCarrierBid(bidRequest: Partial<CarrierBidRequest>): Promise<CarrierBidRequest> {
     const bidRequestId = `bid_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const bid: CarrierBidRequest = {
       bidRequestId,
       bidRequestName: bidRequest.bidRequestName || `Carrier Bid ${bidRequestId}`,
       bidType: bidRequest.bidType || 'RFQ',
-      
+
       requestDescription: bidRequest.requestDescription || '',
       lanes: bidRequest.lanes || [],
       serviceRequirements: bidRequest.serviceRequirements || [],
@@ -383,36 +388,36 @@ export class TransportationManagementService {
         contractLength: 12, // months
         renewalOptions: 2,
         terminationClause: '30 days notice',
-        performancePenalties: true
+        performancePenalties: true,
       },
-      
+
       issueDate: bidRequest.issueDate || new Date(),
       responseDeadline: bidRequest.responseDeadline || DateUtils.addDays(new Date(), 14),
       implementationDate: bidRequest.implementationDate || DateUtils.addDays(new Date(), 30),
-      
+
       evaluationCriteria: bidRequest.evaluationCriteria || [
         { criterion: 'Cost', weight: 40, type: 'QUANTITATIVE' },
         { criterion: 'Service Quality', weight: 25, type: 'QUALITATIVE' },
         { criterion: 'Performance History', weight: 20, type: 'QUANTITATIVE' },
-        { criterion: 'Implementation Plan', weight: 15, type: 'QUALITATIVE' }
+        { criterion: 'Implementation Plan', weight: 15, type: 'QUALITATIVE' },
       ],
-      
+
       scoringMethod: bidRequest.scoringMethod || 'WEIGHTED_SCORE',
-      
+
       invitedCarriers: bidRequest.invitedCarriers || [],
       carrierResponses: [],
-      
+
       status: 'DRAFT',
       createdBy: bidRequest.createdBy || 'SYSTEM',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     // Auto-invite qualified carriers based on lanes and requirements
     await this.autoInviteCarriers(bid);
 
     this.logger?.info(`Carrier bid request created: ${bidRequestId}`);
-    
+
     return bid;
   }
 
@@ -421,24 +426,27 @@ export class TransportationManagementService {
    */
   private async autoInviteCarriers(bidRequest: CarrierBidRequest): Promise<void> {
     const qualifiedCarriers: string[] = [];
-    
+
     for (const [carrierId, provider] of this.providers) {
       if (provider.type !== 'CARRIER') continue;
-      
+
       // Check service area coverage
       const coverageMet = this.checkServiceCoverage(provider, bidRequest.lanes);
-      
+
       // Check capabilities
-      const capabilitiesMet = this.checkCarrierCapabilities(provider, bidRequest.serviceRequirements);
-      
+      const capabilitiesMet = this.checkCarrierCapabilities(
+        provider,
+        bidRequest.serviceRequirements
+      );
+
       // Check performance history
       const performanceMet = this.checkPerformanceRequirements(provider);
-      
+
       if (coverageMet && capabilitiesMet && performanceMet) {
         qualifiedCarriers.push(carrierId);
       }
     }
-    
+
     bidRequest.invitedCarriers = qualifiedCarriers;
     bidRequest.status = qualifiedCarriers.length > 0 ? 'ISSUED' : 'DRAFT';
   }
@@ -454,9 +462,12 @@ export class TransportationManagementService {
   /**
    * Check if carrier has required capabilities
    */
-  private checkCarrierCapabilities(provider: LogisticsProvider, requirements: CarrierServiceRequirement[]): boolean {
-    for (const requirement of requirements.filter(r => r.mandatory)) {
-      const hasCapability = provider.capabilities.some(cap => 
+  private checkCarrierCapabilities(
+    provider: LogisticsProvider,
+    requirements: CarrierServiceRequirement[]
+  ): boolean {
+    for (const requirement of requirements.filter((r) => r.mandatory)) {
+      const hasCapability = provider.capabilities.some((cap) =>
         cap.description.toLowerCase().includes(requirement.description.toLowerCase())
       );
       if (!hasCapability) return false;
@@ -469,12 +480,12 @@ export class TransportationManagementService {
    */
   private checkPerformanceRequirements(provider: LogisticsProvider): boolean {
     const metrics = provider.performanceMetrics;
-    
+
     // Basic performance thresholds
     const meetsOnTime = metrics.onTimeDeliveryRate >= 95;
     const meetsDamage = metrics.damageRate <= 0.5;
     const meetsCustomerSat = metrics.customerSatisfactionScore >= 4.0;
-    
+
     return meetsOnTime && meetsDamage && meetsCustomerSat;
   }
 
@@ -489,9 +500,12 @@ export class TransportationManagementService {
     if (!bidRequest) throw new Error('Bid request not found');
 
     const evaluations: CarrierEvaluationResult[] = [];
-    
+
     for (const response of bidRequest.carrierResponses) {
-      const evaluation = await this.evaluateSingleCarrierResponse(response, bidRequest.evaluationCriteria);
+      const evaluation = await this.evaluateSingleCarrierResponse(
+        response,
+        bidRequest.evaluationCriteria
+      );
       evaluations.push(evaluation);
     }
 
@@ -508,7 +522,7 @@ export class TransportationManagementService {
    * Evaluate a single carrier response
    */
   private async evaluateSingleCarrierResponse(
-    response: CarrierBidResponse, 
+    response: CarrierBidResponse,
     criteria: EvaluationCriteria[]
   ): Promise<CarrierEvaluationResult> {
     let totalScore = 0;
@@ -516,7 +530,7 @@ export class TransportationManagementService {
 
     for (const criterion of criteria) {
       let score = 0;
-      
+
       switch (criterion.criterion.toLowerCase()) {
         case 'cost':
           score = await this.evaluateCost(response);
@@ -536,12 +550,12 @@ export class TransportationManagementService {
 
       const weightedScore = (score * criterion.weight) / 100;
       totalScore += weightedScore;
-      
+
       criteriaScores.push({
         criterion: criterion.criterion,
         rawScore: score,
         weightedScore,
-        weight: criterion.weight
+        weight: criterion.weight,
       });
     }
 
@@ -553,7 +567,7 @@ export class TransportationManagementService {
       ranking: 0, // Will be set after sorting
       strengths: [],
       weaknesses: [],
-      recommendation: totalScore >= 70 ? 'AWARD' : totalScore >= 50 ? 'CONSIDER' : 'REJECT'
+      recommendation: totalScore >= 70 ? 'AWARD' : totalScore >= 50 ? 'CONSIDER' : 'REJECT',
     };
   }
 
@@ -564,34 +578,36 @@ export class TransportationManagementService {
   /**
    * Create transportation order
    */
-  async createTransportationOrder(orderData: Partial<TransportationOrder>): Promise<TransportationOrder> {
+  async createTransportationOrder(
+    orderData: Partial<TransportationOrder>
+  ): Promise<TransportationOrder> {
     const orderId = `to_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const orderNumber = `TO-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
-    
+
     const order: TransportationOrder = {
       orderId,
       orderNumber,
       orderType: orderData.orderType || 'DELIVERY',
       status: 'DRAFT',
       priority: orderData.priority || 'MEDIUM',
-      
+
       originLocation: orderData.originLocation!,
       destinationLocation: orderData.destinationLocation!,
-      
+
       shipments: orderData.shipments || [],
       totalWeight: orderData.totalWeight || 0,
       totalVolume: orderData.totalVolume || 0,
       totalValue: orderData.totalValue || 0,
-      
+
       serviceType: orderData.serviceType || {
         serviceId: 'standard',
         serviceName: 'Standard Service',
         serviceCode: 'STD',
         category: 'STANDARD',
         deliveryCommitment: '3-5 business days',
-        guaranteedService: false
+        guaranteedService: false,
       },
-      
+
       deliveryRequirements: orderData.deliveryRequirements || {
         signatureRequired: false,
         appointmentRequired: false,
@@ -599,35 +615,38 @@ export class TransportationManagementService {
         liftgateRequired: false,
         residentialDelivery: false,
         deliveryNotification: true,
-        specialInstructions: ''
+        specialInstructions: '',
       },
-      
+
       specialInstructions: orderData.specialInstructions || '',
-      
+
       scheduledPickupDate: orderData.scheduledPickupDate || new Date(),
-      scheduledDeliveryDate: orderData.scheduledDeliveryDate || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      
+      scheduledDeliveryDate:
+        orderData.scheduledDeliveryDate || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+
       estimatedCost: 0,
       billingDetails: orderData.billingDetails || {
         billToAccount: 'DEFAULT',
         paymentTerms: { net: 30 },
         currency: 'USD',
-        taxInfo: { taxExempt: false, taxRate: 0, taxType: 'NONE' }
+        taxInfo: { taxExempt: false, taxRate: 0, taxType: 'NONE' },
       },
-      
+
       trackingNumbers: [],
-      statusHistory: [{
-        status: 'DRAFT',
-        timestamp: new Date(),
-        updatedBy: 'SYSTEM',
-        notes: 'Order created'
-      }],
-      
+      statusHistory: [
+        {
+          status: 'DRAFT',
+          timestamp: new Date(),
+          updatedBy: 'SYSTEM',
+          notes: 'Order created',
+        },
+      ],
+
       requiredDocuments: [],
-      
+
       createdBy: orderData.createdBy || 'SYSTEM',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     // Calculate totals from shipments if not provided
@@ -641,9 +660,9 @@ export class TransportationManagementService {
     await this.getRateQuotes(order);
 
     this.transportationOrders.set(orderId, order);
-    
+
     this.logger?.info(`Transportation order created: ${orderNumber}`);
-    
+
     return order;
   }
 
@@ -665,7 +684,7 @@ export class TransportationManagementService {
 
     // Sort quotes by cost
     quotes.sort((a, b) => a.totalCost - b.totalCost);
-    
+
     // Set estimated cost to the best rate
     if (quotes.length > 0) {
       order.estimatedCost = quotes[0].totalCost;
@@ -678,51 +697,57 @@ export class TransportationManagementService {
    */
   private async findEligibleCarriers(order: TransportationOrder): Promise<LogisticsProvider[]> {
     const eligible: LogisticsProvider[] = [];
-    
+
     for (const [_, provider] of this.providers) {
       if (provider.type !== 'CARRIER' || provider.status !== 'ACTIVE') continue;
-      
+
       // Check service area coverage
       const canService = await this.canProviderServiceOrder(provider, order);
       if (canService) {
         eligible.push(provider);
       }
     }
-    
+
     return eligible;
   }
 
   /**
    * Check if provider can service the order
    */
-  private async canProviderServiceOrder(provider: LogisticsProvider, order: TransportationOrder): Promise<boolean> {
+  private async canProviderServiceOrder(
+    provider: LogisticsProvider,
+    order: TransportationOrder
+  ): Promise<boolean> {
     // Simplified logic - would be much more sophisticated in production
-    
+
     // Check operating regions
     const originState = order.originLocation.address.state;
     const destState = order.destinationLocation.address.state;
-    
-    const coversOrigin = provider.operatingRegions.some(region => 
-      region.includes(originState) || region === 'NATIONAL' || region === 'ALL'
+
+    const coversOrigin = provider.operatingRegions.some(
+      (region) => region.includes(originState) || region === 'NATIONAL' || region === 'ALL'
     );
-    
-    const coversDestination = provider.operatingRegions.some(region => 
-      region.includes(destState) || region === 'NATIONAL' || region === 'ALL'
+
+    const coversDestination = provider.operatingRegions.some(
+      (region) => region.includes(destState) || region === 'NATIONAL' || region === 'ALL'
     );
-    
+
     return coversOrigin && coversDestination;
   }
 
   /**
    * Request rate quote from carrier
    */
-  private async requestRateQuote(carrier: LogisticsProvider, order: TransportationOrder): Promise<FreightRateQuote | null> {
+  private async requestRateQuote(
+    carrier: LogisticsProvider,
+    order: TransportationOrder
+  ): Promise<FreightRateQuote | null> {
     // This would integrate with carrier APIs in production
     // For now, return a simulated quote
-    
+
     const baseRate = this.calculateBaseRate(order);
     const carrierMultiplier = this.getCarrierMultiplier(carrier);
-    
+
     return {
       quoteId: `quote_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
       carrierId: carrier.id,
@@ -734,22 +759,22 @@ export class TransportationManagementService {
         {
           chargeType: 'LINEHAUL',
           description: 'Base transportation',
-          amount: Math.round(baseRate * carrierMultiplier * 0.8 * 100) / 100
+          amount: Math.round(baseRate * carrierMultiplier * 0.8 * 100) / 100,
         },
         {
           chargeType: 'FUEL_SURCHARGE',
           description: 'Fuel surcharge',
-          amount: Math.round(baseRate * carrierMultiplier * 0.15 * 100) / 100
+          amount: Math.round(baseRate * carrierMultiplier * 0.15 * 100) / 100,
         },
         {
           chargeType: 'ACCESSORIAL',
           description: 'Additional services',
-          amount: Math.round(baseRate * carrierMultiplier * 0.05 * 100) / 100
-        }
+          amount: Math.round(baseRate * carrierMultiplier * 0.05 * 100) / 100,
+        },
       ],
       validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       terms: 'Net 30 days',
-      quote_confidence: 0.85 + Math.random() * 0.15 // 85-100%
+      quote_confidence: 0.85 + Math.random() * 0.15, // 85-100%
     };
   }
 
@@ -758,10 +783,11 @@ export class TransportationManagementService {
    */
   private calculateBaseRate(order: TransportationOrder): number {
     // Simplified rate calculation
-    const weightFactor = Math.max(order.totalWeight, 1) * 0.50; // $0.50 per lb
-    const distanceFactor = this.estimateDistance(order.originLocation, order.destinationLocation) * 0.10; // $0.10 per mile
+    const weightFactor = Math.max(order.totalWeight, 1) * 0.5; // $0.50 per lb
+    const distanceFactor =
+      this.estimateDistance(order.originLocation, order.destinationLocation) * 0.1; // $0.10 per mile
     const volumeFactor = order.totalVolume * 2.0; // $2.00 per cubic foot
-    
+
     return Math.max(weightFactor + distanceFactor + volumeFactor, 25); // Minimum $25
   }
 
@@ -773,7 +799,7 @@ export class TransportationManagementService {
     const baseMultiplier = 1.0;
     const performanceBonus = (carrier.performanceMetrics.onTimeDeliveryRate - 95) / 100; // Bonus for >95% OTD
     const servicePremium = carrier.name.toLowerCase().includes('premium') ? 0.15 : 0;
-    
+
     return baseMultiplier + performanceBonus + servicePremium;
   }
 
@@ -787,17 +813,20 @@ export class TransportationManagementService {
       const R = 3959; // Earth's radius in miles
       const dLat = this.toRadians(destination.coordinates.latitude - origin.coordinates.latitude);
       const dLon = this.toRadians(destination.coordinates.longitude - origin.coordinates.longitude);
-      
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(this.toRadians(origin.coordinates.latitude)) * Math.cos(this.toRadians(destination.coordinates.latitude)) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-      
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(this.toRadians(origin.coordinates.latitude)) *
+          Math.cos(this.toRadians(destination.coordinates.latitude)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const distance = R * c;
-      
+
       return Math.round(distance);
     }
-    
+
     // Default fallback based on different states
     return origin.address.state === destination.address.state ? 200 : 800;
   }
@@ -813,7 +842,10 @@ export class TransportationManagementService {
   /**
    * Execute transportation order
    */
-  async executeTransportationOrder(orderId: string, carrierId: string): Promise<{
+  async executeTransportationOrder(
+    orderId: string,
+    carrierId: string
+  ): Promise<{
     success: boolean;
     trackingNumbers: string[];
     estimatedDelivery: Date;
@@ -831,8 +863,8 @@ export class TransportationManagementService {
       order.status = 'ASSIGNED';
 
       // Generate tracking numbers
-      const trackingNumbers = order.shipments.map((_, index) => 
-        `TN${Date.now()}${String(index).padStart(3, '0')}`
+      const trackingNumbers = order.shipments.map(
+        (_, index) => `TN${Date.now()}${String(index).padStart(3, '0')}`
       );
       order.trackingNumbers = trackingNumbers;
 
@@ -851,7 +883,7 @@ export class TransportationManagementService {
         success: true,
         trackingNumbers,
         estimatedDelivery,
-        message: `Order assigned to ${carrier.name} successfully`
+        message: `Order assigned to ${carrier.name} successfully`,
       };
     } catch (error) {
       this.addStatusUpdate(order, 'EXCEPTION', `Execution failed: ${error}`, 'SYSTEM');
@@ -870,7 +902,7 @@ export class TransportationManagementService {
     estimatedDelivery?: Date;
   }> {
     // Find order by tracking number
-    const order = Array.from(this.transportationOrders.values()).find(o => 
+    const order = Array.from(this.transportationOrders.values()).find((o) =>
       o.trackingNumbers.includes(trackingNumber)
     );
 
@@ -879,7 +911,7 @@ export class TransportationManagementService {
         trackingNumber,
         status: 'NOT_FOUND',
         events: [],
-        message: 'Tracking number not found'
+        message: 'Tracking number not found',
       };
     }
 
@@ -890,8 +922,8 @@ export class TransportationManagementService {
         eventType: 'PICKUP_SCHEDULED',
         timestamp: order.scheduledPickupDate,
         location: order.originLocation.name || 'Origin',
-        description: 'Pickup scheduled'
-      }
+        description: 'Pickup scheduled',
+      },
     ];
 
     if (order.status !== 'DRAFT' && order.status !== 'PENDING_APPROVAL') {
@@ -900,7 +932,7 @@ export class TransportationManagementService {
         eventType: 'PICKED_UP',
         timestamp: order.actualPickupDate || order.scheduledPickupDate,
         location: order.originLocation.name || 'Origin',
-        description: 'Package picked up'
+        description: 'Package picked up',
       });
     }
 
@@ -910,7 +942,7 @@ export class TransportationManagementService {
         eventType: 'DELIVERED',
         timestamp: order.actualDeliveryDate || order.scheduledDeliveryDate,
         location: order.destinationLocation.name || 'Destination',
-        description: 'Package delivered'
+        description: 'Package delivered',
       });
     }
 
@@ -919,20 +951,25 @@ export class TransportationManagementService {
       status: order.status,
       location: events[events.length - 1]?.location,
       events,
-      estimatedDelivery: order.scheduledDeliveryDate
+      estimatedDelivery: order.scheduledDeliveryDate,
     };
   }
 
   /**
    * Add status update to order
    */
-  private addStatusUpdate(order: TransportationOrder, status: TransportationOrderStatus, notes: string, updatedBy: string): void {
+  private addStatusUpdate(
+    order: TransportationOrder,
+    status: TransportationOrderStatus,
+    notes: string,
+    updatedBy: string
+  ): void {
     order.status = status;
     order.statusHistory.push({
       status,
       timestamp: new Date(),
       updatedBy,
-      notes
+      notes,
     });
     order.lastUpdated = new Date();
   }
@@ -949,54 +986,67 @@ export class TransportationManagementService {
     averageTransitTime: number;
     onTimeDeliveryRate: number;
     averageCostPerShipment: number;
-    topCarriers: Array<{ carrierId: string; carrierName: string; orderCount: number; performanceScore: number }>;
+    topCarriers: Array<{
+      carrierId: string;
+      carrierName: string;
+      orderCount: number;
+      performanceScore: number;
+    }>;
     costTrends: Array<{ date: Date; averageCost: number; volume: number }>;
   }> {
     const orders = Array.from(this.transportationOrders.values());
-    const filteredOrders = dateRange 
-      ? orders.filter(o => o.createdDate >= dateRange.startDate && o.createdDate <= dateRange.endDate)
+    const filteredOrders = dateRange
+      ? orders.filter(
+          (o) => o.createdDate >= dateRange.startDate && o.createdDate <= dateRange.endDate
+        )
       : orders;
 
-    const completedOrders = filteredOrders.filter(o => o.status === 'DELIVERED');
-    
+    const completedOrders = filteredOrders.filter((o) => o.status === 'DELIVERED');
+
     // Calculate metrics
     const totalOrders = filteredOrders.length;
-    
-    const avgTransitTime = completedOrders.length > 0
-      ? completedOrders.reduce((sum, o) => {
-          const pickupTime = o.actualPickupDate?.getTime() || o.scheduledPickupDate.getTime();
-          const deliveryTime = o.actualDeliveryDate?.getTime() || o.scheduledDeliveryDate.getTime();
-          return sum + (deliveryTime - pickupTime) / (1000 * 60 * 60 * 24); // days
-        }, 0) / completedOrders.length
-      : 0;
+
+    const avgTransitTime =
+      completedOrders.length > 0
+        ? completedOrders.reduce((sum, o) => {
+            const pickupTime = o.actualPickupDate?.getTime() || o.scheduledPickupDate.getTime();
+            const deliveryTime =
+              o.actualDeliveryDate?.getTime() || o.scheduledDeliveryDate.getTime();
+            return sum + (deliveryTime - pickupTime) / (1000 * 60 * 60 * 24); // days
+          }, 0) / completedOrders.length
+        : 0;
 
     // On-time delivery calculation (simplified)
-    const onTimeOrders = completedOrders.filter(o => {
+    const onTimeOrders = completedOrders.filter((o) => {
       if (!o.actualDeliveryDate) return true; // Assume on-time if no actual date
       return o.actualDeliveryDate <= o.scheduledDeliveryDate;
     });
-    const onTimeDeliveryRate = completedOrders.length > 0 
-      ? (onTimeOrders.length / completedOrders.length) * 100 
-      : 0;
+    const onTimeDeliveryRate =
+      completedOrders.length > 0 ? (onTimeOrders.length / completedOrders.length) * 100 : 0;
 
-    const avgCostPerShipment = filteredOrders.length > 0
-      ? filteredOrders.reduce((sum, o) => sum + (o.actualCost || o.estimatedCost), 0) / filteredOrders.length
-      : 0;
+    const avgCostPerShipment =
+      filteredOrders.length > 0
+        ? filteredOrders.reduce((sum, o) => sum + (o.actualCost || o.estimatedCost), 0) /
+          filteredOrders.length
+        : 0;
 
     // Top carriers analysis
-    const carrierStats = new Map<string, { count: number; totalCost: number; onTimeCount: number }>();
-    
+    const carrierStats = new Map<
+      string,
+      { count: number; totalCost: number; onTimeCount: number }
+    >();
+
     for (const order of completedOrders) {
       if (order.assignedCarrier) {
         const carrierId = order.assignedCarrier.id;
         const existing = carrierStats.get(carrierId) || { count: 0, totalCost: 0, onTimeCount: 0 };
         existing.count++;
         existing.totalCost += order.actualCost || order.estimatedCost;
-        
+
         if (!order.actualDeliveryDate || order.actualDeliveryDate <= order.scheduledDeliveryDate) {
           existing.onTimeCount++;
         }
-        
+
         carrierStats.set(carrierId, existing);
       }
     }
@@ -1008,7 +1058,7 @@ export class TransportationManagementService {
           carrierId,
           carrierName: carrier?.name || 'Unknown',
           orderCount: stats.count,
-          performanceScore: Math.round((stats.onTimeCount / stats.count) * 100)
+          performanceScore: Math.round((stats.onTimeCount / stats.count) * 100),
         };
       })
       .sort((a, b) => b.orderCount - a.orderCount)
@@ -1023,17 +1073,19 @@ export class TransportationManagementService {
       onTimeDeliveryRate: Math.round(onTimeDeliveryRate * 10) / 10,
       averageCostPerShipment: Math.round(avgCostPerShipment * 100) / 100,
       topCarriers,
-      costTrends
+      costTrends,
     };
   }
 
   /**
    * Calculate cost trends over time
    */
-  private calculateCostTrends(orders: TransportationOrder[]): Array<{ date: Date; averageCost: number; volume: number }> {
+  private calculateCostTrends(
+    orders: TransportationOrder[]
+  ): Array<{ date: Date; averageCost: number; volume: number }> {
     // Group orders by month
     const monthlyData = new Map<string, { totalCost: number; count: number }>();
-    
+
     for (const order of orders) {
       const monthKey = `${order.createdDate.getFullYear()}-${order.createdDate.getMonth()}`;
       const existing = monthlyData.get(monthKey) || { totalCost: 0, count: 0 };
@@ -1048,7 +1100,7 @@ export class TransportationManagementService {
         return {
           date: new Date(year, month, 1),
           averageCost: Math.round((data.totalCost / data.count) * 100) / 100,
-          volume: data.count
+          volume: data.count,
         };
       })
       .sort((a, b) => a.date.getTime() - b.date.getTime());
@@ -1091,13 +1143,16 @@ export class TransportationManagementService {
   /**
    * Update logistics provider
    */
-  async updateLogisticsProvider(providerId: string, updates: Partial<LogisticsProvider>): Promise<LogisticsProvider | null> {
+  async updateLogisticsProvider(
+    providerId: string,
+    updates: Partial<LogisticsProvider>
+  ): Promise<LogisticsProvider | null> {
     const provider = this.providers.get(providerId);
     if (!provider) return null;
 
     const updated = { ...provider, ...updates, lastUpdated: new Date() };
     this.providers.set(providerId, updated);
-    
+
     return updated;
   }
 }

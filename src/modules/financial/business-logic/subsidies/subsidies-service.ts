@@ -65,12 +65,12 @@ export class SubsidiesService {
         eligibilityCriteria: [
           'Equipment must be ENERGY STAR certified',
           'Business must be located in eligible zones',
-          'Asset value minimum $10,000'
+          'Asset value minimum $10,000',
         ],
         effectiveDate: new Date('2024-01-01'),
         expirationDate: new Date('2024-12-31'),
         isActive: true,
-      }
+      },
     ];
   }
 
@@ -83,7 +83,7 @@ export class SubsidiesService {
     customerId: string
   ): Promise<SubsidyApplication> {
     const applicationId = `sa_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       id: applicationId,
       subsidyId,
@@ -98,23 +98,20 @@ export class SubsidiesService {
   /**
    * Calculate subsidy amount based on asset value and subsidy terms
    */
-  async calculateSubsidyAmount(
-    subsidy: Subsidy,
-    assetValue: number
-  ): Promise<number> {
+  async calculateSubsidyAmount(subsidy: Subsidy, assetValue: number): Promise<number> {
     let amount = 0;
-    
+
     if (subsidy.subsidyPercent) {
       amount = assetValue * (subsidy.subsidyPercent / 100);
     } else {
       amount = subsidy.subsidyAmount;
     }
-    
+
     // Apply maximum limit if specified
     if (subsidy.maxSubsidyAmount && amount > subsidy.maxSubsidyAmount) {
       amount = subsidy.maxSubsidyAmount;
     }
-    
+
     return amount;
   }
 

@@ -14,7 +14,6 @@ const router: RouterType = Router();
 // Apply standard middleware
 applyStandardMiddleware(router);
 
-
 // Customer Management Routes
 router.get('/customers', crmController.getCustomers);
 router.post('/customers', validateBusiness('createCustomer'), crmController.createCustomer);
@@ -23,7 +22,11 @@ router.put('/customers/:id', validateIdParam, crmController.updateCustomer);
 
 // Opportunity Management Routes
 router.get('/opportunities', crmController.getOpportunities);
-router.post('/opportunities', validateBusiness('createOpportunity'), crmController.createOpportunity);
+router.post(
+  '/opportunities',
+  validateBusiness('createOpportunity'),
+  crmController.createOpportunity
+);
 
 // Contact Management Routes
 router.get('/contacts', crmController.getContacts);

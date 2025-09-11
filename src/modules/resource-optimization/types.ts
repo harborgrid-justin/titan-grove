@@ -11,8 +11,13 @@ export interface ResourceOptimization {
   optimizationId: string;
   optimizationName: string;
   description: string;
-  optimizationType: 'PROJECT_BASED' | 'ENTERPRISE_WIDE' | 'DEPARTMENT_SPECIFIC' | 'SKILL_BASED' | 'COST_OPTIMIZATION';
-  
+  optimizationType:
+    | 'PROJECT_BASED'
+    | 'ENTERPRISE_WIDE'
+    | 'DEPARTMENT_SPECIFIC'
+    | 'SKILL_BASED'
+    | 'COST_OPTIMIZATION';
+
   // Optimization scope
   scope: {
     organizationUnits: string[];
@@ -25,10 +30,15 @@ export interface ResourceOptimization {
     };
     geographicScope: string[];
   };
-  
+
   // Optimization objectives
   objectives: {
-    primaryObjective: 'MAXIMIZE_UTILIZATION' | 'MINIMIZE_COST' | 'OPTIMIZE_SKILLS_MATCH' | 'BALANCE_WORKLOAD' | 'MAXIMIZE_REVENUE';
+    primaryObjective:
+      | 'MAXIMIZE_UTILIZATION'
+      | 'MINIMIZE_COST'
+      | 'OPTIMIZE_SKILLS_MATCH'
+      | 'BALANCE_WORKLOAD'
+      | 'MAXIMIZE_REVENUE';
     secondaryObjectives: string[];
     constraints: {
       budgetConstraints: {
@@ -53,7 +63,7 @@ export interface ResourceOptimization {
       };
     };
   };
-  
+
   // Current state analysis
   currentState: {
     totalResources: number;
@@ -78,7 +88,7 @@ export interface ResourceOptimization {
       employeeSatisfaction: number;
     };
   };
-  
+
   // Optimization scenarios
   scenarios: {
     scenarioName: string;
@@ -133,7 +143,7 @@ export interface ResourceOptimization {
       }[];
     };
   }[];
-  
+
   // Recommended solution
   recommendedSolution: {
     selectedScenario: string;
@@ -165,7 +175,7 @@ export interface ResourceOptimization {
       }[];
     };
   };
-  
+
   // Performance monitoring
   monitoring: {
     kpis: {
@@ -189,9 +199,16 @@ export interface ResourceOptimization {
       recipients: string[];
     }[];
   };
-  
-  status: 'ANALYSIS' | 'SCENARIO_DEVELOPMENT' | 'REVIEW' | 'APPROVED' | 'IMPLEMENTATION' | 'MONITORING' | 'COMPLETED';
-  
+
+  status:
+    | 'ANALYSIS'
+    | 'SCENARIO_DEVELOPMENT'
+    | 'REVIEW'
+    | 'APPROVED'
+    | 'IMPLEMENTATION'
+    | 'MONITORING'
+    | 'COMPLETED';
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -203,7 +220,7 @@ export interface ResourceAssignment {
   resourceId: string;
   projectId: string;
   taskId?: string;
-  
+
   // Assignment details
   assignment: {
     role: string;
@@ -213,7 +230,7 @@ export interface ResourceAssignment {
     priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
     assignmentType: 'DEDICATED' | 'SHARED' | 'ON_DEMAND' | 'STANDBY';
   };
-  
+
   // Resource details
   resource: {
     resourceId: string;
@@ -242,7 +259,7 @@ export interface ResourceAssignment {
       }[];
     };
   };
-  
+
   // Assignment requirements
   requirements: {
     requiredSkills: {
@@ -258,7 +275,7 @@ export interface ResourceAssignment {
       minimumYears: number;
     }[];
   };
-  
+
   // Assignment fit analysis
   fitAnalysis: {
     overallFit: number; // percentage
@@ -285,7 +302,7 @@ export interface ResourceAssignment {
       mitigation: string;
     }[];
   };
-  
+
   // Performance tracking
   performance: {
     productivity: {
@@ -307,7 +324,7 @@ export interface ResourceAssignment {
       comments: string;
     }[];
   };
-  
+
   // Financial tracking
   financial: {
     budgetAllocated: number;
@@ -322,9 +339,9 @@ export interface ResourceAssignment {
       explanation: string;
     };
   };
-  
+
   status: 'PLANNED' | 'CONFIRMED' | 'ACTIVE' | 'ON_HOLD' | 'COMPLETED' | 'CANCELLED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -340,7 +357,7 @@ export interface CapacityPlan {
     endDate: Date;
     planningPeriods: number; // quarters or months
   };
-  
+
   // Planning scope
   scope: {
     organizationalUnits: string[];
@@ -348,7 +365,7 @@ export interface CapacityPlan {
     geographicRegions: string[];
     businessLines: string[];
   };
-  
+
   // Demand analysis
   demand: {
     projects: {
@@ -386,7 +403,7 @@ export interface CapacityPlan {
       }[];
     }[];
   };
-  
+
   // Supply analysis
   supply: {
     currentWorkforce: {
@@ -431,7 +448,7 @@ export interface CapacityPlan {
       };
     }[];
   };
-  
+
   // Gap analysis
   gapAnalysis: {
     period: string;
@@ -462,7 +479,7 @@ export interface CapacityPlan {
       }[];
     }[];
   }[];
-  
+
   // Capacity strategies
   strategies: {
     strategyName: string;
@@ -501,7 +518,7 @@ export interface CapacityPlan {
       timeline: string;
     }[];
   }[];
-  
+
   // Financial analysis
   financial: {
     currentCosts: {
@@ -534,7 +551,7 @@ export interface CapacityPlan {
       priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
     }[];
   };
-  
+
   // Monitoring and control
   governance: {
     reviewFrequency: 'MONTHLY' | 'QUARTERLY' | 'BIANNUALLY';
@@ -556,9 +573,9 @@ export interface CapacityPlan {
       format: string;
     }[];
   };
-  
+
   status: 'DRAFT' | 'REVIEW' | 'APPROVED' | 'ACTIVE' | 'REVISION_REQUIRED' | 'ARCHIVED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -573,7 +590,7 @@ export interface ResourceUtilization {
     endDate: Date;
     periodType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY';
   };
-  
+
   // Overall utilization metrics
   overall: {
     totalResources: number;
@@ -582,7 +599,7 @@ export interface ResourceUtilization {
     variance: number; // percentage points
     trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
   };
-  
+
   // Utilization by category
   byCategory: {
     category: string;
@@ -603,7 +620,7 @@ export interface ResourceUtilization {
       reasons: string[];
     }[];
   }[];
-  
+
   // Utilization by skill
   bySkill: {
     skill: string;
@@ -617,7 +634,7 @@ export interface ResourceUtilization {
     underutilization: number; // hours
     marketDemand: 'HIGH' | 'MEDIUM' | 'LOW';
   }[];
-  
+
   // Time-based analysis
   timeAnalysis: {
     period: string;
@@ -631,7 +648,7 @@ export interface ResourceUtilization {
       impact: number; // percentage
     }[];
   }[];
-  
+
   // Project-based utilization
   projectUtilization: {
     projectId: string;
@@ -648,7 +665,7 @@ export interface ResourceUtilization {
       variance: number;
     }[];
   }[];
-  
+
   // Cost analysis
   costAnalysis: {
     totalResourceCost: number;
@@ -664,7 +681,7 @@ export interface ResourceUtilization {
       timeline: string;
     }[];
   };
-  
+
   // Capacity insights
   capacityInsights: {
     bottlenecks: {
@@ -686,10 +703,15 @@ export interface ResourceUtilization {
       planningImplications: string[];
     }[];
   };
-  
+
   // Improvement recommendations
   recommendations: {
-    category: 'RESOURCE_REALLOCATION' | 'SKILL_DEVELOPMENT' | 'PROCESS_IMPROVEMENT' | 'TECHNOLOGY' | 'ORGANIZATIONAL';
+    category:
+      | 'RESOURCE_REALLOCATION'
+      | 'SKILL_DEVELOPMENT'
+      | 'PROCESS_IMPROVEMENT'
+      | 'TECHNOLOGY'
+      | 'ORGANIZATIONAL';
     recommendation: string;
     priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
     expectedImpact: {
@@ -701,7 +723,7 @@ export interface ResourceUtilization {
     investmentRequired: number;
     risks: string[];
   }[];
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -711,7 +733,7 @@ export interface SkillMatrix {
   organizationUnit: string;
   matrixName: string;
   version: string;
-  
+
   // Skill taxonomy
   skillTaxonomy: {
     category: string;
@@ -728,7 +750,7 @@ export interface SkillMatrix {
       marketDemand: 'HIGH' | 'MEDIUM' | 'LOW';
     }[];
   }[];
-  
+
   // Skill levels definition
   skillLevels: {
     level: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT';
@@ -738,7 +760,7 @@ export interface SkillMatrix {
     assessmentMethod: string[];
     certificationRequired?: boolean;
   }[];
-  
+
   // Resource skills inventory
   resourceSkills: {
     resourceId: string;
@@ -750,7 +772,12 @@ export interface SkillMatrix {
       skillName: string;
       currentLevel: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT';
       assessmentDate: Date;
-      assessmentMethod: 'SELF_ASSESSMENT' | 'MANAGER_REVIEW' | 'PEER_REVIEW' | 'CERTIFICATION' | 'TESTING';
+      assessmentMethod:
+        | 'SELF_ASSESSMENT'
+        | 'MANAGER_REVIEW'
+        | 'PEER_REVIEW'
+        | 'CERTIFICATION'
+        | 'TESTING';
       certifications: {
         certification: string;
         issuer: string;
@@ -766,7 +793,7 @@ export interface SkillMatrix {
       }[];
     }[];
   }[];
-  
+
   // Skills gap analysis
   gapAnalysis: {
     skill: string;
@@ -801,7 +828,7 @@ export interface SkillMatrix {
       riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
     }[];
   }[];
-  
+
   // Development pathways
   developmentPaths: {
     pathId: string;
@@ -824,7 +851,7 @@ export interface SkillMatrix {
     successFactors: string[];
     risks: string[];
   }[];
-  
+
   // Skills demand forecasting
   demandForecast: {
     skill: string;
@@ -842,7 +869,7 @@ export interface SkillMatrix {
       technologyImpact: string[];
     };
   }[];
-  
+
   // Skills market analysis
   marketAnalysis: {
     skill: string;
@@ -865,9 +892,9 @@ export interface SkillMatrix {
       supplyTrend: 'INCREASING' | 'STABLE' | 'DECREASING';
     };
   }[];
-  
+
   status: 'DRAFT' | 'REVIEW' | 'APPROVED' | 'ACTIVE' | 'UNDER_REVISION' | 'ARCHIVED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -883,7 +910,7 @@ export interface WorkforceAnalytics {
     startDate: Date;
     endDate: Date;
   };
-  
+
   workforce: {
     totalEmployees: number;
     employeeCategories: {
@@ -906,7 +933,7 @@ export interface WorkforceAnalytics {
       costPerExit: number;
     };
   };
-  
+
   performance: {
     productivityIndex: number;
     qualityScore: number;
@@ -919,14 +946,14 @@ export interface WorkforceAnalytics {
       variance: number;
     }[];
   };
-  
+
   capacity: {
     utilizationRate: number; // percentage
     overtimePercentage: number;
     capacityConstraints: string[];
     scalabilityFactor: number; // ability to scale up/down
   };
-  
+
   cost: {
     totalWorkforceCost: number;
     costPerFTE: number;
@@ -934,7 +961,7 @@ export interface WorkforceAnalytics {
     recruitmentCost: number;
     trainingInvestment: number;
   };
-  
+
   insights: {
     strengths: string[];
     weaknesses: string[];
@@ -942,7 +969,7 @@ export interface WorkforceAnalytics {
     threats: string[];
     recommendations: string[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -955,14 +982,14 @@ export interface ResourceForecast {
     endDate: Date;
     periods: number;
   };
-  
+
   methodology: {
     forecastMethod: 'STATISTICAL' | 'CAUSAL' | 'JUDGMENTAL' | 'HYBRID';
     dataInputs: string[];
     assumptions: string[];
     confidenceLevel: number; // percentage
   };
-  
+
   demandForecast: {
     period: string;
     totalDemand: number; // FTE
@@ -976,7 +1003,7 @@ export interface ResourceForecast {
       impact: number; // percentage
     }[];
   }[];
-  
+
   supplyForecast: {
     period: string;
     totalSupply: number; // FTE
@@ -987,7 +1014,7 @@ export interface ResourceForecast {
     }[];
     constraints: string[];
   }[];
-  
+
   gapProjection: {
     period: string;
     projectedGap: number; // FTE
@@ -998,7 +1025,7 @@ export interface ResourceForecast {
     }[];
     mitigationStrategies: string[];
   }[];
-  
+
   scenarios: {
     scenarioName: string;
     probability: number; // percentage
@@ -1010,7 +1037,7 @@ export interface ResourceForecast {
       gap: number;
     };
   }[];
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1021,7 +1048,7 @@ export interface ResourcePool {
   poolId: string;
   poolName: string;
   poolType: 'SHARED' | 'DEDICATED' | 'CENTER_OF_EXCELLENCE' | 'VIRTUAL';
-  
+
   composition: {
     totalResources: number;
     resourceMix: {
@@ -1035,21 +1062,21 @@ export interface ResourcePool {
       count: number;
     }[];
   };
-  
+
   governance: {
     poolManager: string;
     allocationPolicy: string;
     prioritizationCriteria: string[];
     conflictResolution: string;
   };
-  
+
   performance: {
     utilizationRate: number;
     customerSatisfaction: number;
     responseTime: number; // hours to assign resource
     qualityScore: number;
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1060,27 +1087,27 @@ export interface AllocationStrategy {
   strategyId: string;
   strategyName: string;
   strategyType: 'OPTIMIZATION_BASED' | 'RULE_BASED' | 'PRIORITY_BASED' | 'HYBRID';
-  
+
   rules: {
     rule: string;
     priority: number;
     conditions: string[];
     actions: string[];
   }[];
-  
+
   optimization: {
     objective: string;
     constraints: string[];
     algorithm: string;
     parameters: Record<string, any>;
   };
-  
+
   performance: {
     allocationEfficiency: number;
     stakeholderSatisfaction: number;
     resourceUtilization: number;
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1090,7 +1117,7 @@ export interface AllocationStrategy {
 export interface ResourceConstraint {
   constraintId: string;
   constraintType: 'AVAILABILITY' | 'SKILL' | 'LOCATION' | 'COST' | 'COMPLIANCE' | 'PREFERENCE';
-  
+
   details: {
     resourceId?: string;
     constraint: string;
@@ -1098,13 +1125,13 @@ export interface ResourceConstraint {
     weight: number;
     violationCost?: number;
   };
-  
+
   validity: {
     startDate: Date;
     endDate?: Date;
     recurring: boolean;
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -1113,13 +1140,13 @@ export interface OptimizationScenario {
   scenarioId: string;
   scenarioName: string;
   description: string;
-  
+
   parameters: {
     objectiveFunction: string;
     constraints: string[];
     optimizationHorizon: number; // days
   };
-  
+
   results: {
     objectiveValue: number;
     assignments: {
@@ -1133,12 +1160,12 @@ export interface OptimizationScenario {
       satisfaction: number;
     };
   };
-  
+
   sensitivity: {
     parameter: string;
     impact: number;
   }[];
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -1150,7 +1177,7 @@ export interface ResourcePerformance {
     startDate: Date;
     endDate: Date;
   };
-  
+
   metrics: {
     productivity: number;
     quality: number;
@@ -1158,27 +1185,27 @@ export interface ResourcePerformance {
     utilization: number;
     satisfaction: number;
   };
-  
+
   goals: {
     goal: string;
     target: number;
     actual: number;
     variance: number;
   }[];
-  
+
   feedback: {
     feedbackType: 'MANAGER' | 'PEER' | 'CLIENT' | 'SELF';
     rating: number;
     comments: string;
     date: Date;
   }[];
-  
+
   development: {
     strengthsIdentified: string[];
     areasForImprovement: string[];
     developmentPlan: string[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -1186,31 +1213,31 @@ export interface ResourcePerformance {
 export interface CapacityAnalysis {
   analysisId: string;
   analysisDate: Date;
-  
+
   currentCapacity: {
     totalCapacity: number; // FTE
     availableCapacity: number; // FTE
     utilizationRate: number; // percentage
   };
-  
+
   demandAnalysis: {
     currentDemand: number; // FTE
     projectedDemand: number; // FTE
     seasonalVariation: number; // percentage
   };
-  
+
   gapAnalysis: {
     capacityGap: number; // FTE
     gapSeverity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
     impactAssessment: string;
   };
-  
+
   recommendations: {
     immediate: string[];
     shortTerm: string[];
     longTerm: string[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -1219,7 +1246,7 @@ export interface ResourceBenchmark {
   benchmarkId: string;
   benchmarkName: string;
   industrySegment: string;
-  
+
   metrics: {
     metric: string;
     ourValue: number;
@@ -1227,13 +1254,13 @@ export interface ResourceBenchmark {
     percentile: number;
     gap: number;
   }[];
-  
+
   insights: {
     strengths: string[];
     opportunities: string[];
     recommendations: string[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1243,7 +1270,7 @@ export interface ResourceBenchmark {
 export interface WorkloadDistribution {
   distributionId: string;
   analysisDate: Date;
-  
+
   distribution: {
     resourceId: string;
     workload: number; // percentage
@@ -1253,7 +1280,7 @@ export interface WorkloadDistribution {
       allocation: number; // percentage
     }[];
   }[];
-  
+
   balance: {
     overallocatedResources: string[];
     underutilizedResources: string[];
@@ -1262,7 +1289,7 @@ export interface WorkloadDistribution {
       recommendedAllocation: number;
     }[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }

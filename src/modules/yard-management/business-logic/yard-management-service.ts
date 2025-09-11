@@ -1,7 +1,7 @@
 /**
  * Yard Management Service
  * Oracle Yard Management competitive implementation
- * 
+ *
  * Provides comprehensive yard and dock management capabilities with:
  * - Advanced dock door scheduling and optimization
  * - Intelligent yard space allocation
@@ -20,7 +20,7 @@ import type {
   GateOperation,
   YardEquipment,
   YardOptimization,
-  YardPerformanceMetrics
+  YardPerformanceMetrics,
 } from '../types';
 
 export class YardManagementService {
@@ -47,7 +47,7 @@ export class YardManagementService {
    */
   async createYardFacility(facilityData: Partial<YardFacility>): Promise<YardFacility> {
     const facilityId = facilityData.facilityId || `FAC_${Date.now()}`;
-    
+
     const facility: YardFacility = {
       facilityId,
       facilityName: facilityData.facilityName || '',
@@ -55,39 +55,39 @@ export class YardManagementService {
       location: facilityData.location || {
         address: '',
         coordinates: { lat: 0, lng: 0 },
-        timezone: 'UTC'
+        timezone: 'UTC',
       },
       yardConfiguration: facilityData.yardConfiguration || {
         totalYardSpace: 0,
         numberOfDockDoors: 0,
         trailerCapacity: 0,
         yardSpaces: [],
-        dockDoors: []
+        dockDoors: [],
       },
       operatingHours: facilityData.operatingHours || {
-        standard: { start: '06:00', end: '22:00' }
+        standard: { start: '06:00', end: '22:00' },
       },
       securityConfiguration: facilityData.securityConfiguration || {
         gateAccess: true,
         cameraSystem: true,
-        accessControl: ['BADGE', 'BIOMETRIC']
+        accessControl: ['BADGE', 'BIOMETRIC'],
       },
       status: facilityData.status || 'ACTIVE',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     this.facilities.set(facilityId, facility);
 
     // Initialize dock doors and yard spaces if provided
     if (facility.yardConfiguration.dockDoors.length > 0) {
-      facility.yardConfiguration.dockDoors.forEach(door => {
+      facility.yardConfiguration.dockDoors.forEach((door) => {
         this.dockDoors.set(door.doorId, door);
       });
     }
 
     if (facility.yardConfiguration.yardSpaces.length > 0) {
-      facility.yardConfiguration.yardSpaces.forEach(space => {
+      facility.yardConfiguration.yardSpaces.forEach((space) => {
         this.yardSpaces.set(space.spaceId, space);
       });
     }
@@ -99,7 +99,10 @@ export class YardManagementService {
   /**
    * Optimize yard layout for maximum efficiency
    */
-  async optimizeYardLayout(facilityId: string, objectives: string[]): Promise<{
+  async optimizeYardLayout(
+    facilityId: string,
+    objectives: string[]
+  ): Promise<{
     currentLayout: any;
     optimizedLayout: any;
     improvements: any[];
@@ -112,13 +115,13 @@ export class YardManagementService {
 
     // Analyze current layout performance
     const currentLayout = await this.analyzeCurrentLayout(facilityId);
-    
+
     // Generate optimized layout based on objectives
     const optimizedLayout = await this.generateOptimizedLayout(facility, objectives, currentLayout);
-    
+
     // Calculate improvement opportunities
     const improvements = await this.calculateLayoutImprovements(currentLayout, optimizedLayout);
-    
+
     // Create implementation plan
     const implementationPlan = await this.createLayoutImplementationPlan(improvements);
 
@@ -126,7 +129,7 @@ export class YardManagementService {
       currentLayout,
       optimizedLayout,
       improvements,
-      implementationPlan
+      implementationPlan,
     };
   }
 
@@ -148,7 +151,7 @@ export class YardManagementService {
   }> {
     // Find optimal dock door for the appointment
     const optimalDoor = await this.findOptimalDockDoor(facilityId, appointmentData);
-    
+
     if (!optimalDoor) {
       throw new Error('No suitable dock door available for the requested time');
     }
@@ -165,52 +168,59 @@ export class YardManagementService {
       scheduledTime: appointmentData.scheduledTime || {
         date: new Date(),
         timeSlot: { start: '08:00', end: '10:00' },
-        duration: 120
+        duration: 120,
       },
       requirements: appointmentData.requirements || {},
       shipmentDetails: appointmentData.shipmentDetails || {
         orderIds: [],
         cargoType: 'GENERAL',
         weight: 0,
-        pieces: 0
+        pieces: 0,
       },
       status: 'SCHEDULED',
       assignments: {
-        dockDoorId: optimalDoor.doorId
+        dockDoorId: optimalDoor.doorId,
       },
       notifications: {
         reminderSent: false,
         confirmationSent: false,
-        updatesEnabled: true
+        updatesEnabled: true,
       },
       createdBy: 'SYSTEM',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     // Update dock door schedule
     optimalDoor.schedule.push(appointment);
-    
+
     this.appointments.set(appointmentId, appointment);
     this.dockDoors.set(optimalDoor.doorId, optimalDoor);
 
     // Find alternative doors
-    const alternatives = await this.findAlternativeDockDoors(facilityId, appointmentData, [optimalDoor.doorId]);
+    const alternatives = await this.findAlternativeDockDoors(facilityId, appointmentData, [
+      optimalDoor.doorId,
+    ]);
 
-    this.logger?.info(`Dock door scheduled: ${optimalDoor.doorNumber} for appointment ${appointmentId}`);
+    this.logger?.info(
+      `Dock door scheduled: ${optimalDoor.doorNumber} for appointment ${appointmentId}`
+    );
 
     return {
       success: true,
       appointment,
       dockAssignment: optimalDoor,
-      alternatives
+      alternatives,
     };
   }
 
   /**
    * Optimize dock door scheduling across all doors
    */
-  async optimizeDockScheduling(facilityId: string, timeHorizon: number = 24): Promise<{
+  async optimizeDockScheduling(
+    facilityId: string,
+    timeHorizon: number = 24
+  ): Promise<{
     currentSchedule: any;
     optimizedSchedule: any;
     improvements: any[];
@@ -222,18 +232,26 @@ export class YardManagementService {
     }
 
     // Get all appointments for the time horizon
-    const appointments = Array.from(this.appointments.values())
-      .filter(appt => appt.facilityId === facilityId);
+    const appointments = Array.from(this.appointments.values()).filter(
+      (appt) => appt.facilityId === facilityId
+    );
 
     // Analyze current schedule performance
     const currentSchedule = await this.analyzeCurrentSchedule(facilityId, appointments);
-    
+
     // Generate optimized schedule
-    const optimizedSchedule = await this.generateOptimizedSchedule(facility, appointments, timeHorizon);
-    
+    const optimizedSchedule = await this.generateOptimizedSchedule(
+      facility,
+      appointments,
+      timeHorizon
+    );
+
     // Identify improvements
-    const improvements = await this.calculateScheduleImprovements(currentSchedule, optimizedSchedule);
-    
+    const improvements = await this.calculateScheduleImprovements(
+      currentSchedule,
+      optimizedSchedule
+    );
+
     // Resolve conflicts
     const conflictResolutions = await this.resolveSchedulingConflicts(optimizedSchedule);
 
@@ -241,7 +259,7 @@ export class YardManagementService {
       currentSchedule,
       optimizedSchedule,
       improvements,
-      conflictResolutions
+      conflictResolutions,
     };
   }
 
@@ -262,10 +280,10 @@ export class YardManagementService {
     estimatedProcessingTime: number;
   }> {
     const trailerId = trailerData.trailerId || `TRL_${Date.now()}`;
-    
+
     // Find optimal yard space
     const yardSpace = await this.assignOptimalYardSpace(facilityId, trailerData);
-    
+
     if (!yardSpace) {
       throw new Error('No suitable yard space available');
     }
@@ -281,31 +299,31 @@ export class YardManagementService {
       status: 'IN_YARD',
       location: {
         facilityId,
-        yardSpaceId: yardSpace.spaceId
+        yardSpaceId: yardSpace.spaceId,
       },
       timeline: {
         gateInTime: new Date(),
-        yardAssignmentTime: new Date()
+        yardAssignmentTime: new Date(),
       },
       cargo: trailerData.cargo || {
         orderIds: [],
         cargoType: 'GENERAL',
-        value: 0
+        value: 0,
       },
       appointments: trailerData.appointments || {},
       compliance: trailerData.compliance || {
         inspectionRequired: false,
-        inspectionCompleted: false
+        inspectionCompleted: false,
       },
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     // Update yard space occupancy
     yardSpace.status = 'OCCUPIED';
     yardSpace.currentOccupancy = {
       trailerId,
-      checkInTime: new Date()
+      checkInTime: new Date(),
     };
 
     this.trailers.set(trailerId, trailer);
@@ -314,13 +332,15 @@ export class YardManagementService {
     // Calculate estimated processing time
     const estimatedProcessingTime = await this.calculateProcessingTime(trailer);
 
-    this.logger?.info(`Trailer checked in: ${trailerData.trailerNumber} to space ${yardSpace.spaceNumber}`);
+    this.logger?.info(
+      `Trailer checked in: ${trailerData.trailerNumber} to space ${yardSpace.spaceNumber}`
+    );
 
     return {
       success: true,
       trailer,
       yardAssignment: yardSpace,
-      estimatedProcessingTime
+      estimatedProcessingTime,
     };
   }
 
@@ -346,7 +366,7 @@ export class YardManagementService {
       trailer,
       currentStatus,
       timeline,
-      nextActions
+      nextActions,
     };
   }
 
@@ -364,13 +384,16 @@ export class YardManagementService {
     }
 
     const optimizationId = `OPT_${Date.now()}`;
-    
+
     // Analyze current space utilization
     const currentUtilization = await this.analyzeSpaceUtilization(facilityId);
-    
+
     // Generate optimization recommendations
-    const recommendations = await this.generateSpaceOptimizationRecommendations(facility, currentUtilization);
-    
+    const recommendations = await this.generateSpaceOptimizationRecommendations(
+      facility,
+      currentUtilization
+    );
+
     // Calculate expected benefits
     const expectedBenefits = await this.calculateSpaceOptimizationBenefits(recommendations);
 
@@ -382,30 +405,30 @@ export class YardManagementService {
         minimizeWaitTime: true,
         maximizeUtilization: true,
         minimizeTravel: true,
-        balanceWorkload: true
+        balanceWorkload: true,
       },
       constraints: {
         operatingHours: true,
         equipmentAvailability: true,
         laborCapacity: true,
-        dockCapacity: true
+        dockCapacity: true,
       },
       scenario: {
         timeHorizon: 168, // 7 days
         demandForecast: [],
         resourceConstraints: [],
-        priorityRules: []
+        priorityRules: [],
       },
       recommendations,
       expectedBenefits,
       implementationPlan: {
         phases: [],
         timeline: [],
-        resources: []
+        resources: [],
       },
       status: 'COMPLETED',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     return optimization;
@@ -430,25 +453,33 @@ export class YardManagementService {
 
     // Calculate dock utilization metrics
     const dockUtilization = await this.calculateDockUtilization(facilityId, startDate, endDate);
-    
+
     // Calculate yard utilization metrics
     const yardUtilization = await this.calculateYardUtilization(facilityId, startDate, endDate);
-    
+
     // Calculate gate operation metrics
     const gateOperations = await this.calculateGateMetrics(facilityId, startDate, endDate);
-    
+
     // Calculate trailer metrics
     const trailerMetrics = await this.calculateTrailerMetrics(facilityId, startDate, endDate);
-    
+
     // Calculate appointment metrics
-    const appointmentMetrics = await this.calculateAppointmentMetrics(facilityId, startDate, endDate);
-    
+    const appointmentMetrics = await this.calculateAppointmentMetrics(
+      facilityId,
+      startDate,
+      endDate
+    );
+
     // Calculate operational efficiency
-    const operationalEfficiency = await this.calculateOperationalEfficiency(facilityId, startDate, endDate);
-    
+    const operationalEfficiency = await this.calculateOperationalEfficiency(
+      facilityId,
+      startDate,
+      endDate
+    );
+
     // Calculate cost metrics
     const costMetrics = await this.calculateCostMetrics(facilityId, startDate, endDate);
-    
+
     // Calculate service metrics
     const serviceMetrics = await this.calculateServiceMetrics(facilityId, startDate, endDate);
 
@@ -463,7 +494,7 @@ export class YardManagementService {
       operationalEfficiency,
       costMetrics,
       serviceMetrics,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     return metrics;
@@ -478,16 +509,20 @@ export class YardManagementService {
     return {
       efficiency: 0.75,
       bottlenecks: [],
-      utilizationRate: 0.68
+      utilizationRate: 0.68,
     };
   }
 
-  private async generateOptimizedLayout(facility: YardFacility, objectives: string[], currentLayout: any): Promise<any> {
+  private async generateOptimizedLayout(
+    facility: YardFacility,
+    objectives: string[],
+    currentLayout: any
+  ): Promise<any> {
     // Implementation for layout optimization
     return {
       efficiency: 0.85,
       improvements: [],
-      newConfiguration: {}
+      newConfiguration: {},
     };
   }
 
@@ -501,32 +536,47 @@ export class YardManagementService {
     return {
       phases: [],
       timeline: [],
-      resources: []
+      resources: [],
     };
   }
 
-  private async findOptimalDockDoor(facilityId: string, appointmentData: Partial<AppointmentSchedule>): Promise<DockDoor | null> {
-    const facilityDoors = Array.from(this.dockDoors.values())
-      .filter(door => door.facilityId === facilityId && door.status === 'AVAILABLE');
-    
+  private async findOptimalDockDoor(
+    facilityId: string,
+    appointmentData: Partial<AppointmentSchedule>
+  ): Promise<DockDoor | null> {
+    const facilityDoors = Array.from(this.dockDoors.values()).filter(
+      (door) => door.facilityId === facilityId && door.status === 'AVAILABLE'
+    );
+
     // Simple selection - in production, this would include complex optimization
     return facilityDoors.length > 0 ? facilityDoors[0] : null;
   }
 
-  private async findAlternativeDockDoors(facilityId: string, appointmentData: Partial<AppointmentSchedule>, excludeIds: string[]): Promise<DockDoor[]> {
-    return Array.from(this.dockDoors.values())
-      .filter(door => 
-        door.facilityId === facilityId && 
+  private async findAlternativeDockDoors(
+    facilityId: string,
+    appointmentData: Partial<AppointmentSchedule>,
+    excludeIds: string[]
+  ): Promise<DockDoor[]> {
+    return Array.from(this.dockDoors.values()).filter(
+      (door) =>
+        door.facilityId === facilityId &&
         !excludeIds.includes(door.doorId) &&
         door.status === 'AVAILABLE'
-      );
+    );
   }
 
-  private async analyzeCurrentSchedule(facilityId: string, appointments: AppointmentSchedule[]): Promise<any> {
+  private async analyzeCurrentSchedule(
+    facilityId: string,
+    appointments: AppointmentSchedule[]
+  ): Promise<any> {
     return { utilization: 0.7, conflicts: 0 };
   }
 
-  private async generateOptimizedSchedule(facility: YardFacility, appointments: AppointmentSchedule[], timeHorizon: number): Promise<any> {
+  private async generateOptimizedSchedule(
+    facility: YardFacility,
+    appointments: AppointmentSchedule[],
+    timeHorizon: number
+  ): Promise<any> {
     return { utilization: 0.85, efficiency: 0.9 };
   }
 
@@ -538,10 +588,14 @@ export class YardManagementService {
     return [];
   }
 
-  private async assignOptimalYardSpace(facilityId: string, trailerData: Partial<TrailerManagement>): Promise<YardSpace | null> {
-    const availableSpaces = Array.from(this.yardSpaces.values())
-      .filter(space => space.facilityId === facilityId && space.status === 'AVAILABLE');
-    
+  private async assignOptimalYardSpace(
+    facilityId: string,
+    trailerData: Partial<TrailerManagement>
+  ): Promise<YardSpace | null> {
+    const availableSpaces = Array.from(this.yardSpaces.values()).filter(
+      (space) => space.facilityId === facilityId && space.status === 'AVAILABLE'
+    );
+
     return availableSpaces.length > 0 ? availableSpaces[0] : null;
   }
 
@@ -554,7 +608,7 @@ export class YardManagementService {
     return {
       status: trailer.status,
       location: trailer.location,
-      estimatedCompletion: new Date(Date.now() + 3600000) // 1 hour
+      estimatedCompletion: new Date(Date.now() + 3600000), // 1 hour
     };
   }
 
@@ -562,7 +616,7 @@ export class YardManagementService {
     return {
       events: [],
       milestones: [],
-      estimatedCompletion: new Date()
+      estimatedCompletion: new Date(),
     };
   }
 
@@ -574,7 +628,10 @@ export class YardManagementService {
     return { utilization: 0.75, efficiency: 0.68 };
   }
 
-  private async generateSpaceOptimizationRecommendations(facility: YardFacility, utilization: any): Promise<any> {
+  private async generateSpaceOptimizationRecommendations(
+    facility: YardFacility,
+    utilization: any
+  ): Promise<any> {
     return { spaceAllocations: [], improvements: [] };
   }
 
@@ -583,7 +640,7 @@ export class YardManagementService {
       waitTimeReduction: 15,
       utilizationImprovement: 10,
       costSavings: 50000,
-      serviceImprovement: 20
+      serviceImprovement: 20,
     };
   }
 
@@ -591,7 +648,7 @@ export class YardManagementService {
     return {
       averageUtilization: 0.75,
       peakUtilization: 0.95,
-      utilizationByDoor: []
+      utilizationByDoor: [],
     };
   }
 
@@ -599,7 +656,7 @@ export class YardManagementService {
     return {
       averageOccupancy: 0.68,
       peakOccupancy: 0.85,
-      turnoverRate: 2.5
+      turnoverRate: 2.5,
     };
   }
 
@@ -607,7 +664,7 @@ export class YardManagementService {
     return {
       averageProcessingTime: 12,
       dailyThroughput: 150,
-      onTimePerformance: 0.92
+      onTimePerformance: 0.92,
     };
   }
 
@@ -616,31 +673,39 @@ export class YardManagementService {
       averageDwellTime: 180,
       onTimeArrival: 0.88,
       onTimeDeparture: 0.91,
-      noShowRate: 0.05
+      noShowRate: 0.05,
     };
   }
 
-  private async calculateAppointmentMetrics(facilityId: string, start: Date, end: Date): Promise<any> {
+  private async calculateAppointmentMetrics(
+    facilityId: string,
+    start: Date,
+    end: Date
+  ): Promise<any> {
     return {
       schedulingEfficiency: 0.87,
       appointmentCompliance: 0.93,
-      reschedulingRate: 0.12
+      reschedulingRate: 0.12,
     };
   }
 
-  private async calculateOperationalEfficiency(facilityId: string, start: Date, end: Date): Promise<any> {
+  private async calculateOperationalEfficiency(
+    facilityId: string,
+    start: Date,
+    end: Date
+  ): Promise<any> {
     return {
       laborProductivity: 0.82,
       equipmentUtilization: 0.76,
-      spaceUtilization: 0.71
+      spaceUtilization: 0.71,
     };
   }
 
   private async calculateCostMetrics(facilityId: string, start: Date, end: Date): Promise<any> {
     return {
-      operatingCostPerTrailer: 45.50,
+      operatingCostPerTrailer: 45.5,
       laborCostPerOperation: 28.75,
-      equipmentCostPerHour: 85.00
+      equipmentCostPerHour: 85.0,
     };
   }
 
@@ -648,7 +713,7 @@ export class YardManagementService {
     return {
       customerSatisfaction: 0.89,
       carrierSatisfaction: 0.86,
-      complaintRate: 0.03
+      complaintRate: 0.03,
     };
   }
 }

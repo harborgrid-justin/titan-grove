@@ -3,7 +3,7 @@
  * Advanced pricing rules, discounting, and promotion management with Oracle EBS competitive features
  */
 
-import type { 
+import type {
   PricingRule,
   PricingCondition,
   PricingAction,
@@ -11,12 +11,10 @@ import type {
   QuoteLineItem,
   SalesOrder,
   OrderLineItem,
-  ProductConfiguration
+  ProductConfiguration,
 } from '../../types';
 
-import {
-  Priority
-} from '../../types';
+import { Priority } from '../../types';
 
 import { PricingEngineConfig } from '../../../../types/business-config';
 
@@ -194,9 +192,8 @@ export interface PricingTraceStep {
 }
 
 export class PricingEngineService {
-  
   constructor(private config: PricingEngineConfig) {}
-  
+
   // ================================
   // PRICE CALCULATION
   // ================================
@@ -204,11 +201,7 @@ export class PricingEngineService {
   /**
    * Calculate pricing for quote line items
    */
-  async calculateQuotePricing(
-    quote: Quote,
-    context?: PricingContext
-  ): Promise<Quote> {
-    
+  async calculateQuotePricing(quote: Quote, context?: PricingContext): Promise<Quote> {
     const pricingContext: PricingContext = {
       customerId: quote.customerId,
       priceListId: quote.priceListId,
@@ -216,11 +209,11 @@ export class PricingEngineService {
       orderDate: quote.quoteDate,
       territory: quote.territory,
       salesRepId: quote.salesRepId,
-      ...context
+      ...context,
     };
 
     const pricedLineItems: QuoteLineItem[] = [];
-    
+
     for (const lineItem of quote.lineItems) {
       const pricingResult = await this.calculateItemPricing(
         lineItem.itemId,
@@ -236,8 +229,9 @@ export class PricingEngineService {
         discountAmount: pricingResult.totalDiscountAmount,
         extendedPrice: pricingResult.extendedPrice,
         margin: pricingResult.unitPrice - (lineItem.costOfGoodsSold || 0),
-        marginPercent: lineItem.costOfGoodsSold ? 
-          ((pricingResult.unitPrice - lineItem.costOfGoodsSold) / pricingResult.unitPrice) * 100 : 0
+        marginPercent: lineItem.costOfGoodsSold
+          ? ((pricingResult.unitPrice - lineItem.costOfGoodsSold) / pricingResult.unitPrice) * 100
+          : 0,
       };
 
       pricedLineItems.push(pricedLineItem);
@@ -245,11 +239,16 @@ export class PricingEngineService {
 
     // Apply order-level promotions
     const orderLevelPromotions = await this.getOrderLevelPromotions(quote, pricingContext);
-    const promotionResults = await this.applyOrderPromotions(pricedLineItems, orderLevelPromotions, pricingContext);
+    const promotionResults = await this.applyOrderPromotions(
+      pricedLineItems,
+      orderLevelPromotions,
+      pricingContext
+    );
 
     // Calculate totals
     const subtotal = promotionResults.lineItems.reduce((sum, item) => sum + item.extendedPrice, 0);
-    const totalDiscountAmount = promotionResults.orderDiscountAmount + 
+    const totalDiscountAmount =
+      promotionResults.orderDiscountAmount +
       promotionResults.lineItems.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
 
     return {
@@ -257,18 +256,14 @@ export class PricingEngineService {
       lineItems: promotionResults.lineItems,
       subtotal: Math.round(subtotal * 100) / 100,
       discountAmount: Math.round(totalDiscountAmount * 100) / 100,
-      totalAmount: Math.round((subtotal + quote.taxAmount + quote.shippingAmount) * 100) / 100
+      totalAmount: Math.round((subtotal + quote.taxAmount + quote.shippingAmount) * 100) / 100,
     };
   }
 
   /**
    * Calculate pricing for sales order line items
    */
-  async calculateOrderPricing(
-    order: SalesOrder,
-    context?: PricingContext
-  ): Promise<SalesOrder> {
-    
+  async calculateOrderPricing(order: SalesOrder, context?: PricingContext): Promise<SalesOrder> {
     const pricingContext: PricingContext = {
       customerId: order.customerId,
       priceListId: order.priceListId,
@@ -277,11 +272,11 @@ export class PricingEngineService {
       territory: order.territory,
       salesRepId: order.salesRepId,
       contractId: order.contractId,
-      ...context
+      ...context,
     };
 
     const pricedLineItems: OrderLineItem[] = [];
-    
+
     for (const lineItem of order.lineItems) {
       const pricingResult = await this.calculateItemPricing(
         lineItem.itemId,
@@ -297,7 +292,7 @@ export class PricingEngineService {
         discountAmount: pricingResult.totalDiscountAmount,
         extendedPrice: pricingResult.extendedPrice,
         lineTotal: pricingResult.extendedPrice + (lineItem.taxAmount || 0),
-        margin: pricingResult.unitPrice - (lineItem.costOfGoodsSold || 0)
+        margin: pricingResult.unitPrice - (lineItem.costOfGoodsSold || 0),
       };
 
       pricedLineItems.push(pricedLineItem);
@@ -305,11 +300,16 @@ export class PricingEngineService {
 
     // Apply order-level discounts and promotions
     const orderPromotions = await this.getOrderLevelPromotions(order, pricingContext);
-    const promotionResults = await this.applyOrderPromotions(pricedLineItems, orderPromotions, pricingContext);
+    const promotionResults = await this.applyOrderPromotions(
+      pricedLineItems,
+      orderPromotions,
+      pricingContext
+    );
 
     // Calculate totals
     const subtotal = promotionResults.lineItems.reduce((sum, item) => sum + item.extendedPrice, 0);
-    const totalDiscountAmount = promotionResults.orderDiscountAmount + 
+    const totalDiscountAmount =
+      promotionResults.orderDiscountAmount +
       promotionResults.lineItems.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
 
     return {
@@ -318,7 +318,9 @@ export class PricingEngineService {
       subtotal: Math.round(subtotal * 100) / 100,
       discountAmount: Math.round(totalDiscountAmount * 100) / 100,
       totalAmount: Math.round((subtotal + order.taxAmount + order.shippingAmount) * 100) / 100,
-      balanceAmount: Math.round((subtotal + order.taxAmount + order.shippingAmount - order.paidAmount) * 100) / 100
+      balanceAmount:
+        Math.round((subtotal + order.taxAmount + order.shippingAmount - order.paidAmount) * 100) /
+        100,
     };
   }
 
@@ -330,14 +332,17 @@ export class PricingEngineService {
     quantity: number,
     context: PricingContext
   ): Promise<PricingResult> {
-    
     const pricingTrace: PricingTraceStep[] = [];
     let currentPrice = 0;
     const appliedDiscounts: AppliedDiscount[] = [];
     const appliedPromotions: AppliedPromotion[] = [];
 
     // Step 1: Get base list price
-    const priceListItem = await this.getPriceListItem(itemId, context.priceListId, context.currency);
+    const priceListItem = await this.getPriceListItem(
+      itemId,
+      context.priceListId,
+      context.currency
+    );
     if (!priceListItem) {
       throw new Error(`No price found for item ${itemId} in price list ${context.priceListId}`);
     }
@@ -349,7 +354,7 @@ export class PricingEngineService {
       description: `Base list price from price list ${context.priceListId}`,
       priceBeforeStep: 0,
       priceAfterStep: currentPrice,
-      discountApplied: 0
+      discountApplied: 0,
     });
 
     // Step 2: Apply price breaks (volume pricing)
@@ -364,7 +369,7 @@ export class PricingEngineService {
         priceBeforeStep: priceBeforeBreak,
         priceAfterStep: currentPrice,
         discountApplied: priceBeforeBreak - currentPrice,
-        ruleApplied: `Price break: ${priceBreak.minQuantity}+ units`
+        ruleApplied: `Price break: ${priceBreak.minQuantity}+ units`,
       });
     }
 
@@ -380,7 +385,7 @@ export class PricingEngineService {
           type: 'CONTRACT',
           discountAmount: priceBeforeContract - currentPrice,
           source: 'CONTRACT',
-          priority: 1
+          priority: 1,
         });
         pricingTrace.push({
           step: 3,
@@ -389,7 +394,7 @@ export class PricingEngineService {
           priceBeforeStep: priceBeforeContract,
           priceAfterStep: currentPrice,
           discountApplied: priceBeforeContract - currentPrice,
-          ruleApplied: `Contract ${context.contractId}`
+          ruleApplied: `Contract ${context.contractId}`,
         });
       }
     }
@@ -408,7 +413,7 @@ export class PricingEngineService {
             type: rule.ruleType,
             discountAmount: discount,
             source: 'PRICE_LIST',
-            priority: rule.priority
+            priority: rule.priority,
           });
           pricingTrace.push({
             step: 4,
@@ -417,7 +422,7 @@ export class PricingEngineService {
             priceBeforeStep: priceBeforeRule,
             priceAfterStep: currentPrice,
             discountApplied: discount,
-            ruleApplied: rule.name
+            ruleApplied: rule.name,
           });
         }
       }
@@ -426,7 +431,9 @@ export class PricingEngineService {
     // Step 5: Apply promotional pricing
     const itemPromotions = await this.getItemPromotions(itemId, context);
     for (const promotion of itemPromotions) {
-      if (this.evaluatePromotionConditions(promotion.conditions, { itemId, quantity, ...context })) {
+      if (
+        this.evaluatePromotionConditions(promotion.conditions, { itemId, quantity, ...context })
+      ) {
         const discount = this.calculatePromotionDiscount(promotion.actions, currentPrice, quantity);
         if (discount > 0) {
           const priceBeforePromo = currentPrice;
@@ -436,7 +443,7 @@ export class PricingEngineService {
             promotionName: promotion.name,
             promotionCode: promotion.promotionCode,
             discountAmount: discount,
-            appliedAt: 'LINE'
+            appliedAt: 'LINE',
           });
           pricingTrace.push({
             step: 5,
@@ -445,7 +452,7 @@ export class PricingEngineService {
             priceBeforeStep: priceBeforePromo,
             priceAfterStep: currentPrice,
             discountApplied: discount,
-            ruleApplied: promotion.name
+            ruleApplied: promotion.name,
           });
         }
       }
@@ -462,14 +469,16 @@ export class PricingEngineService {
         priceBeforeStep: priceBelowMin,
         priceAfterStep: currentPrice,
         discountApplied: priceBelowMin - currentPrice,
-        ruleApplied: `Minimum price: ${priceListItem.minPrice}`
+        ruleApplied: `Minimum price: ${priceListItem.minPrice}`,
       });
     }
 
     const extendedPrice = currentPrice * quantity;
     const totalDiscountAmount = (priceListItem.listPrice - currentPrice) * quantity;
-    const totalDiscountPercent = priceListItem.listPrice > 0 ? 
-      ((priceListItem.listPrice - currentPrice) / priceListItem.listPrice) * 100 : 0;
+    const totalDiscountPercent =
+      priceListItem.listPrice > 0
+        ? ((priceListItem.listPrice - currentPrice) / priceListItem.listPrice) * 100
+        : 0;
 
     return {
       itemId,
@@ -483,7 +492,7 @@ export class PricingEngineService {
       appliedDiscounts,
       appliedPromotions,
       priceBreakApplied: priceBreak || undefined,
-      pricingTrace
+      pricingTrace,
     };
   }
 
@@ -494,26 +503,28 @@ export class PricingEngineService {
   /**
    * Create new promotion
    */
-  async createPromotion(promotionData: {
-    name: string;
-    description: string;
-    type: 'PERCENTAGE' | 'FIXED_AMOUNT' | 'BUY_X_GET_Y' | 'FREE_SHIPPING' | 'BUNDLE';
-    priority?: number;
-    effectiveDate: Date;
-    expirationDate: Date;
-    customerSegments?: string[];
-    territories?: string[];
-    channels?: string[];
-    minimumOrderValue?: number;
-    maximumDiscount?: number;
-    usageLimit?: number;
-    stackable?: boolean;
-    conditions: PricingCondition[];
-    actions: PricingAction[];
-    promotionCode?: string;
-    autoApply?: boolean;
-  }, createdBy: string): Promise<Promotion> {
-    
+  async createPromotion(
+    promotionData: {
+      name: string;
+      description: string;
+      type: 'PERCENTAGE' | 'FIXED_AMOUNT' | 'BUY_X_GET_Y' | 'FREE_SHIPPING' | 'BUNDLE';
+      priority?: number;
+      effectiveDate: Date;
+      expirationDate: Date;
+      customerSegments?: string[];
+      territories?: string[];
+      channels?: string[];
+      minimumOrderValue?: number;
+      maximumDiscount?: number;
+      usageLimit?: number;
+      stackable?: boolean;
+      conditions: PricingCondition[];
+      actions: PricingAction[];
+      promotionCode?: string;
+      autoApply?: boolean;
+    },
+    createdBy: string
+  ): Promise<Promotion> {
     const promotion: Promotion = {
       id: `promo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       name: promotionData.name,
@@ -538,7 +549,7 @@ export class PricingEngineService {
       createdDate: new Date(),
       modifiedDate: new Date(),
       createdBy,
-      modifiedBy: createdBy
+      modifiedBy: createdBy,
     };
 
     return promotion;
@@ -557,7 +568,6 @@ export class PricingEngineService {
     discountAmount?: number;
     errorMessage?: string;
   }> {
-    
     const promotion = await this.getPromotionByCode(promotionCode);
     if (!promotion) {
       return { success: false, errorMessage: 'Invalid promotion code' };
@@ -574,16 +584,16 @@ export class PricingEngineService {
     // Check promotion conditions
     const orderValue = order.lineItems.reduce((sum, item) => sum + item.extendedPrice, 0);
     if (promotion.minimumOrderValue && orderValue < promotion.minimumOrderValue) {
-      return { 
-        success: false, 
-        errorMessage: `Minimum order value of ${promotion.minimumOrderValue} required` 
+      return {
+        success: false,
+        errorMessage: `Minimum order value of ${promotion.minimumOrderValue} required`,
       };
     }
 
     // Calculate promotion discount
     const discountAmount = this.calculatePromotionDiscount(
-      promotion.actions, 
-      orderValue, 
+      promotion.actions,
+      orderValue,
       order.lineItems.reduce((sum, item) => sum + item.quantity, 0)
     );
 
@@ -591,14 +601,14 @@ export class PricingEngineService {
       return {
         success: true,
         promotion,
-        discountAmount: promotion.maximumDiscount
+        discountAmount: promotion.maximumDiscount,
       };
     }
 
     return {
       success: true,
       promotion,
-      discountAmount
+      discountAmount,
     };
   }
 
@@ -607,14 +617,14 @@ export class PricingEngineService {
   // ================================
 
   private async getPriceListItem(
-    itemId: string, 
-    priceListId?: string, 
+    itemId: string,
+    priceListId?: string,
     currency?: string
   ): Promise<PriceListItem | null> {
     // Implementation would query price list tables
     // This is a mock implementation using centralized configuration
     const mockPricing = this.config.mockPricing;
-    
+
     return {
       id: `pli_${itemId}`,
       priceListId: priceListId || 'default',
@@ -629,32 +639,40 @@ export class PricingEngineService {
       effectiveDate: new Date(),
       isActive: true,
       priceBreaks: [
-        { 
-          id: 'pb1', 
-          minQuantity: mockPricing.priceBreaks.tier1MinQuantity, 
-          unitPrice: mockPricing.priceBreaks.tier1UnitPrice 
+        {
+          id: 'pb1',
+          minQuantity: mockPricing.priceBreaks.tier1MinQuantity,
+          unitPrice: mockPricing.priceBreaks.tier1UnitPrice,
         },
-        { 
-          id: 'pb2', 
-          minQuantity: mockPricing.priceBreaks.tier2MinQuantity, 
-          unitPrice: mockPricing.priceBreaks.tier2UnitPrice 
+        {
+          id: 'pb2',
+          minQuantity: mockPricing.priceBreaks.tier2MinQuantity,
+          unitPrice: mockPricing.priceBreaks.tier2UnitPrice,
         },
-        { 
-          id: 'pb3', 
-          minQuantity: mockPricing.priceBreaks.tier3MinQuantity, 
-          unitPrice: mockPricing.priceBreaks.tier3UnitPrice 
-        }
-      ]
+        {
+          id: 'pb3',
+          minQuantity: mockPricing.priceBreaks.tier3MinQuantity,
+          unitPrice: mockPricing.priceBreaks.tier3UnitPrice,
+        },
+      ],
     };
   }
 
   private findApplicablePriceBreak(priceBreaks: PriceBreak[], quantity: number): PriceBreak | null {
-    return priceBreaks
-      .filter(pb => quantity >= pb.minQuantity && (!pb.maxQuantity || quantity <= pb.maxQuantity))
-      .sort((a, b) => b.minQuantity - a.minQuantity)[0] || null;
+    return (
+      priceBreaks
+        .filter(
+          (pb) => quantity >= pb.minQuantity && (!pb.maxQuantity || quantity <= pb.maxQuantity)
+        )
+        .sort((a, b) => b.minQuantity - a.minQuantity)[0] || null
+    );
   }
 
-  private async getContractPrice(itemId: string, contractId: string, quantity: number): Promise<number | null> {
+  private async getContractPrice(
+    itemId: string,
+    contractId: string,
+    quantity: number
+  ): Promise<number | null> {
     // Implementation would query contract pricing tables
     return null;
   }
@@ -708,7 +726,11 @@ export class PricingEngineService {
     return totalDiscount;
   }
 
-  private calculatePromotionDiscount(actions: PricingAction[], price: number, quantity: number): number {
+  private calculatePromotionDiscount(
+    actions: PricingAction[],
+    price: number,
+    quantity: number
+  ): number {
     let totalDiscount = 0;
     for (const action of actions) {
       switch (action.actionType) {
@@ -728,8 +750,8 @@ export class PricingEngineService {
   }
 
   private async applyOrderPromotions(
-    lineItems: any[], 
-    promotions: Promotion[], 
+    lineItems: any[],
+    promotions: Promotion[],
     context: PricingContext
   ): Promise<{
     lineItems: any[];
@@ -740,7 +762,7 @@ export class PricingEngineService {
     return {
       lineItems,
       orderDiscountAmount: 0,
-      appliedPromotions: []
+      appliedPromotions: [],
     };
   }
 }

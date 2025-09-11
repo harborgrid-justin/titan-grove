@@ -12,7 +12,7 @@ import { enterpriseAssetManager } from '../modules/enterprise-asset-management';
 
 async function testCRUDOperations() {
   console.log('Testing CRUD operations...');
-  
+
   try {
     // Test Asset Manager
     console.log('\n=== Testing AssetManager ===');
@@ -20,62 +20,61 @@ async function testCRUDOperations() {
       assetName: 'Test Asset',
       assetNumber: 'TA001',
       category: 'EQUIPMENT',
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     });
     console.log('✅ Asset created:', asset.id);
-    
+
     const updatedAsset = await assetManager.updateAsset(asset.id, {
-      status: 'MAINTENANCE'
+      status: 'MAINTENANCE',
     });
     console.log('✅ Asset updated:', updatedAsset.id);
-    
-    // Test CRM Manager  
+
+    // Test CRM Manager
     console.log('\n=== Testing CRMManager ===');
     const customer = await crmManager.createCustomer({
       companyName: 'Test Corp',
       contactEmail: 'test@testcorp.com',
-      industry: 'Manufacturing'
+      industry: 'Manufacturing',
     });
     console.log('✅ Customer created:', customer.id);
-    
+
     // Test Field Service Manager
     console.log('\n=== Testing FieldServiceManager ===');
     const serviceRequest = await fieldServiceManager.createServiceRequest({
       title: 'Test Service Request',
       description: 'Test description',
-      priority: 'HIGH'
+      priority: 'HIGH',
     });
     console.log('✅ Service Request created:', serviceRequest.id);
-    
+
     // Test Real Estate Manager
     console.log('\n=== Testing RealEstateManager ===');
     const property = await realEstateManager.createProperty({
       propertyName: 'Test Property',
       address: '123 Test St',
-      propertyType: 'OFFICE'
+      propertyType: 'OFFICE',
     });
     console.log('✅ Property created:', property.id);
-    
+
     // Test Capital Asset Manager
     console.log('\n=== Testing CapitalAssetManager ===');
     const capitalAssetResult = await capitalAssetManager.createCapitalAsset({
       assetName: 'Test Capital Asset',
       assetValue: 100000,
-      category: 'PRODUCTION_EQUIPMENT'
+      category: 'PRODUCTION_EQUIPMENT',
     });
     console.log('✅ Capital Asset created:', capitalAssetResult.assetId || 'created');
-    
+
     // Test Enterprise Asset Manager
     console.log('\n=== Testing EnterpriseAssetManager ===');
     const enterpriseAsset = await enterpriseAssetManager.createAsset({
       assetName: 'Test Enterprise Asset',
       assetType: 'EQUIPMENT',
-      department: 'MANUFACTURING'
+      department: 'MANUFACTURING',
     });
     console.log('✅ Enterprise Asset created:', enterpriseAsset.id);
-    
+
     console.log('\n🎉 All CRUD operations completed successfully!');
-    
   } catch (error) {
     console.error('❌ Error testing CRUD operations:', error.message);
   }

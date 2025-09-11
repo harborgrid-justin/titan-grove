@@ -1,142 +1,148 @@
 // Manufacturing Mes Integration - Database Management System
 // This file provides business-ready functionality for Manufacturing Mes Integration
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Manufacturing Mes Integration page loaded');
-    
-    // Initialize page functionality
-    initManufacturingMesIntegration();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadManufacturingMesIntegrationData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Manufacturing Mes Integration page loaded');
+
+  // Initialize page functionality
+  initManufacturingMesIntegration();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadManufacturingMesIntegrationData();
 });
 
 async function loadManufacturingMesIntegrationData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/manufacturing-mes-integration');
-        if (response.ok) {
-            const data = await response.json();
-            updateManufacturingMesIntegrationDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Manufacturing Mes Integration data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch(
+      '/api/database/data-integration-etl/manufacturing-mes-integration'
+    );
+    if (response.ok) {
+      const data = await response.json();
+      updateManufacturingMesIntegrationDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Manufacturing Mes Integration data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initManufacturingMesIntegration() {
-    console.log('Initializing Manufacturing Mes Integration');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Manufacturing Mes Integration');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Manufacturing Mes Integration');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Manufacturing Mes Integration');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Manufacturing Mes Integration');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Manufacturing Mes Integration');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Manufacturing Mes Integration');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Manufacturing Mes Integration');
 }
 
 function handleManufacturingMesIntegrationAction() {
-    console.log('Manufacturing Mes Integration action triggered');
-    showNotification('Manufacturing Mes Integration configured successfully', 'success');
+  console.log('Manufacturing Mes Integration action triggered');
+  showNotification('Manufacturing Mes Integration configured successfully', 'success');
 }
 
 function executeManufacturingMesIntegration() {
-    console.log('Manufacturing Mes Integration execution started');
-    showNotification('Manufacturing Mes Integration executed successfully', 'success');
+  console.log('Manufacturing Mes Integration execution started');
+  showNotification('Manufacturing Mes Integration executed successfully', 'success');
 }
 
 function updateManufacturingMesIntegrationDisplay(data) {
-    console.log('Updating Manufacturing Mes Integration display:', data);
-    // Update UI with loaded data
+  console.log('Updating Manufacturing Mes Integration display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/manufacturing-mes-integration/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadManufacturingMesIntegrationData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleManufacturingMesIntegrationAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/manufacturing-mes-integration/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'manufacturing-mes-integration-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/manufacturing-mes-integration/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadManufacturingMesIntegrationData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleManufacturingMesIntegrationAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/manufacturing-mes-integration/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'manufacturing-mes-integration-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

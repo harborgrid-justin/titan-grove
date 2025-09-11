@@ -3,15 +3,20 @@
  * Type definitions for contract intelligence and analytics
  */
 
-import { 
-  ResourceUtilization, 
-  QualityMetric, 
-  ProductivityMetric 
+import {
+  ResourceUtilization,
+  QualityMetric,
+  ProductivityMetric,
 } from '../../../../shared/types/metrics';
 
 export interface ContractAnalytics {
   id: string;
-  reportType: 'EXECUTIVE_DASHBOARD' | 'OPERATIONAL_METRICS' | 'COMPLIANCE_REPORT' | 'PERFORMANCE_ANALYSIS' | 'COST_ANALYSIS';
+  reportType:
+    | 'EXECUTIVE_DASHBOARD'
+    | 'OPERATIONAL_METRICS'
+    | 'COMPLIANCE_REPORT'
+    | 'PERFORMANCE_ANALYSIS'
+    | 'COST_ANALYSIS';
   generatedDate: Date;
   reportingPeriod: ReportingPeriod;
   organizationScope: string[];
@@ -205,7 +210,12 @@ export interface PredictiveAnalytics {
   modelId: string;
   modelName: string;
   modelType: 'REGRESSION' | 'CLASSIFICATION' | 'TIME_SERIES' | 'CLUSTERING' | 'NEURAL_NETWORK';
-  predictionType: 'COST_OVERRUN' | 'SCHEDULE_DELAY' | 'PERFORMANCE_RISK' | 'COMPLIANCE_VIOLATION' | 'RENEWAL_LIKELIHOOD';
+  predictionType:
+    | 'COST_OVERRUN'
+    | 'SCHEDULE_DELAY'
+    | 'PERFORMANCE_RISK'
+    | 'COMPLIANCE_VIOLATION'
+    | 'RENEWAL_LIKELIHOOD';
   predictions: Prediction[];
   modelAccuracy: number;
   lastTrainedDate: Date;

@@ -1,142 +1,146 @@
 // Database User & Access Management - Database Management System
 // This file provides business-ready functionality for Database User & Access Management
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Database User & Access Management page loaded');
-    
-    // Initialize page functionality
-    inituseraccessmanagement();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loaduseraccessmanagementData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Database User & Access Management page loaded');
+
+  // Initialize page functionality
+  inituseraccessmanagement();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loaduseraccessmanagementData();
 });
 
 async function loaduseraccessmanagementData() {
-    try {
-        const response = await fetch('/api/database/database-administration/user-access-management');
-        if (response.ok) {
-            const data = await response.json();
-            updateuseraccessmanagementDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Database User & Access Management data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/database-administration/user-access-management');
+    if (response.ok) {
+      const data = await response.json();
+      updateuseraccessmanagementDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Database User & Access Management data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function inituseraccessmanagement() {
-    console.log('Initializing Database User & Access Management');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Database User & Access Management');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Database User & Access Management');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Database User & Access Management');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Database User & Access Management');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Database User & Access Management');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Database User & Access Management');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Database User & Access Management');
 }
 
 function handleuseraccessmanagementAction() {
-    console.log('Database User & Access Management action triggered');
-    showNotification('Database User & Access Management configured successfully', 'success');
+  console.log('Database User & Access Management action triggered');
+  showNotification('Database User & Access Management configured successfully', 'success');
 }
 
 function executeuseraccessmanagement() {
-    console.log('Database User & Access Management execution started');
-    showNotification('Database User & Access Management executed successfully', 'success');
+  console.log('Database User & Access Management execution started');
+  showNotification('Database User & Access Management executed successfully', 'success');
 }
 
 function updateuseraccessmanagementDisplay(data) {
-    console.log('Updating Database User & Access Management display:', data);
-    // Update UI with loaded data
+  console.log('Updating Database User & Access Management display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/database-administration/user-access-management/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loaduseraccessmanagementData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleuseraccessmanagementAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/database-administration/user-access-management/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'user-access-management-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/database-administration/user-access-management/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loaduseraccessmanagementData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleuseraccessmanagementAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/database-administration/user-access-management/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'user-access-management-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

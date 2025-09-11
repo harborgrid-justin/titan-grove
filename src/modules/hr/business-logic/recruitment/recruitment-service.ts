@@ -52,14 +52,28 @@ export interface Candidate {
   expectedSalary?: number;
   availabilityDate: Date;
   source: CandidateSource;
-  status: 'NEW' | 'SCREENING' | 'INTERVIEWING' | 'REFERENCE_CHECK' | 'OFFER' | 'HIRED' | 'REJECTED' | 'WITHDRAWN';
+  status:
+    | 'NEW'
+    | 'SCREENING'
+    | 'INTERVIEWING'
+    | 'REFERENCE_CHECK'
+    | 'OFFER'
+    | 'HIRED'
+    | 'REJECTED'
+    | 'WITHDRAWN';
   stages: CandidateStage[];
   skills: CandidateSkill[];
   notes: CandidateNote[];
 }
 
 export interface CandidateSource {
-  type: 'JOB_BOARD' | 'REFERRAL' | 'CAREER_SITE' | 'RECRUITER' | 'SOCIAL_MEDIA' | 'DIRECT_APPLICATION';
+  type:
+    | 'JOB_BOARD'
+    | 'REFERRAL'
+    | 'CAREER_SITE'
+    | 'RECRUITER'
+    | 'SOCIAL_MEDIA'
+    | 'DIRECT_APPLICATION';
   details: string;
   referrerEmployeeId?: string;
   cost?: number;
@@ -68,7 +82,14 @@ export interface CandidateSource {
 export interface CandidateStage {
   id: string;
   stageName: string;
-  stageType: 'APPLICATION' | 'PHONE_SCREEN' | 'TECHNICAL_INTERVIEW' | 'BEHAVIORAL_INTERVIEW' | 'PANEL_INTERVIEW' | 'FINAL_INTERVIEW' | 'REFERENCE_CHECK';
+  stageType:
+    | 'APPLICATION'
+    | 'PHONE_SCREEN'
+    | 'TECHNICAL_INTERVIEW'
+    | 'BEHAVIORAL_INTERVIEW'
+    | 'PANEL_INTERVIEW'
+    | 'FINAL_INTERVIEW'
+    | 'REFERENCE_CHECK';
   scheduledDate?: Date;
   completedDate?: Date;
   interviewer?: string;
@@ -122,7 +143,12 @@ export interface InterviewSchedule {
   id: string;
   candidateId: string;
   requisitionId: string;
-  interviewType: 'PHONE_SCREEN' | 'VIDEO_INTERVIEW' | 'IN_PERSON' | 'PANEL' | 'TECHNICAL_ASSESSMENT';
+  interviewType:
+    | 'PHONE_SCREEN'
+    | 'VIDEO_INTERVIEW'
+    | 'IN_PERSON'
+    | 'PANEL'
+    | 'TECHNICAL_ASSESSMENT';
   scheduledDate: Date;
   duration: number; // minutes
   interviewers: string[];
@@ -144,7 +170,14 @@ export interface OfferManagement {
   startDate: Date;
   offerDate: Date;
   expirationDate: Date;
-  status: 'DRAFT' | 'PENDING_APPROVAL' | 'EXTENDED' | 'ACCEPTED' | 'REJECTED' | 'WITHDRAWN' | 'EXPIRED';
+  status:
+    | 'DRAFT'
+    | 'PENDING_APPROVAL'
+    | 'EXTENDED'
+    | 'ACCEPTED'
+    | 'REJECTED'
+    | 'WITHDRAWN'
+    | 'EXPIRED';
   negotiations: OfferNegotiation[];
 }
 
@@ -159,31 +192,32 @@ export interface OfferNegotiation {
 }
 
 export class RecruitmentService {
-
   /**
    * Requisition Management
    */
-  async createRequisition(requisition: Omit<RecruitmentRequisition, 'id' | 'createdDate' | 'approvalStatus' | 'status'>): Promise<RecruitmentRequisition> {
+  async createRequisition(
+    requisition: Omit<RecruitmentRequisition, 'id' | 'createdDate' | 'approvalStatus' | 'status'>
+  ): Promise<RecruitmentRequisition> {
     const id = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newRequisition: RecruitmentRequisition = {
       ...requisition,
       id,
       createdDate: new Date(),
       approvalStatus: 'PENDING_APPROVAL',
-      status: 'OPEN'
+      status: 'OPEN',
     };
 
     // Submit for approval based on hiring policies
     await this.submitRequisitionForApproval(newRequisition);
-    
+
     console.log(`Created recruitment requisition ${id} for ${requisition.jobTitle}`);
     return newRequisition;
   }
 
   async approveRequisition(requisitionId: string, approverId: string): Promise<void> {
     console.log(`Approving requisition ${requisitionId} by ${approverId}`);
-    
+
     // Update status and begin recruitment process
     await this.activateRecruitmentProcess(requisitionId);
   }
@@ -191,15 +225,17 @@ export class RecruitmentService {
   /**
    * Candidate Management
    */
-  async addCandidate(candidate: Omit<Candidate, 'id' | 'status' | 'stages' | 'notes'>): Promise<Candidate> {
+  async addCandidate(
+    candidate: Omit<Candidate, 'id' | 'status' | 'stages' | 'notes'>
+  ): Promise<Candidate> {
     const id = `candidate_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newCandidate: Candidate = {
       ...candidate,
       id,
       status: 'NEW',
       stages: [],
-      notes: []
+      notes: [],
     };
 
     // Parse resume and extract skills if available
@@ -211,7 +247,10 @@ export class RecruitmentService {
     return newCandidate;
   }
 
-  async scoreCandidateAgainstRequisition(candidateId: string, requisitionId: string): Promise<{
+  async scoreCandidateAgainstRequisition(
+    candidateId: string,
+    requisitionId: string
+  ): Promise<{
     totalScore: number;
     maxScore: number;
     scorePercentage: number;
@@ -225,38 +264,43 @@ export class RecruitmentService {
     recommendation: 'STRONG_MATCH' | 'GOOD_MATCH' | 'MODERATE_MATCH' | 'WEAK_MATCH' | 'NO_MATCH';
   }> {
     console.log(`Scoring candidate ${candidateId} against requisition ${requisitionId}`);
-    
+
     const candidate = await this.getCandidate(candidateId);
     const requisition = await this.getRequisition(requisitionId);
-    
+
     let totalScore = 0;
     let maxScore = 0;
     const skillMatches = [];
-    
+
     for (const requirement of requisition.requirements) {
-      const candidateSkill = candidate.skills.find(s => 
+      const candidateSkill = candidate.skills.find((s) =>
         s.skillName.toLowerCase().includes(requirement.description.toLowerCase())
       );
-      
-      const score = candidateSkill 
+
+      const score = candidateSkill
         ? Math.min(candidateSkill.proficiencyLevel, 5) * requirement.weight
         : 0;
-      
+
       maxScore += 5 * requirement.weight;
       totalScore += score;
-      
+
       skillMatches.push({
         requirement: requirement.description,
         candidateLevel: candidateSkill?.proficiencyLevel || 0,
         requiredLevel: parseInt(requirement.minimumLevel) || 3,
         score,
-        gap: candidateSkill ? 'None' : 'Missing skill'
+        gap: candidateSkill ? 'None' : 'Missing skill',
       });
     }
-    
+
     const scorePercentage = (totalScore / maxScore) * 100;
-    
-    let recommendation: 'STRONG_MATCH' | 'GOOD_MATCH' | 'MODERATE_MATCH' | 'WEAK_MATCH' | 'NO_MATCH';
+
+    let recommendation:
+      | 'STRONG_MATCH'
+      | 'GOOD_MATCH'
+      | 'MODERATE_MATCH'
+      | 'WEAK_MATCH'
+      | 'NO_MATCH';
     if (scorePercentage >= 85) recommendation = 'STRONG_MATCH';
     else if (scorePercentage >= 70) recommendation = 'GOOD_MATCH';
     else if (scorePercentage >= 55) recommendation = 'MODERATE_MATCH';
@@ -268,25 +312,27 @@ export class RecruitmentService {
       maxScore,
       scorePercentage,
       skillMatches,
-      recommendation
+      recommendation,
     };
   }
 
   /**
    * Interview Management
    */
-  async scheduleInterview(interview: Omit<InterviewSchedule, 'id' | 'status'>): Promise<InterviewSchedule> {
+  async scheduleInterview(
+    interview: Omit<InterviewSchedule, 'id' | 'status'>
+  ): Promise<InterviewSchedule> {
     const id = `interview_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const scheduledInterview: InterviewSchedule = {
       ...interview,
       id,
-      status: 'SCHEDULED'
+      status: 'SCHEDULED',
     };
 
     // Send calendar invites to interviewers
     await this.sendInterviewInvites(scheduledInterview);
-    
+
     // Notify candidate
     await this.notifyCandidate(scheduledInterview);
 
@@ -307,10 +353,10 @@ export class RecruitmentService {
     }
   ): Promise<void> {
     console.log(`Submitting interview feedback for interview ${interviewId} by ${interviewerId}`);
-    
+
     // Update candidate stage with feedback
     await this.updateCandidateStage(interviewId, feedback);
-    
+
     // Determine next steps based on feedback
     await this.determineNextSteps(interviewId, feedback);
   }
@@ -318,16 +364,20 @@ export class RecruitmentService {
   /**
    * Offer Management
    */
-  async generateOffer(candidateId: string, requisitionId: string, offerTerms: {
-    baseSalary: number;
-    bonusTarget?: number;
-    equityGrant?: number;
-    benefits: string[];
-    startDate: Date;
-    specialTerms?: string[];
-  }): Promise<OfferManagement> {
+  async generateOffer(
+    candidateId: string,
+    requisitionId: string,
+    offerTerms: {
+      baseSalary: number;
+      bonusTarget?: number;
+      equityGrant?: number;
+      benefits: string[];
+      startDate: Date;
+      specialTerms?: string[];
+    }
+  ): Promise<OfferManagement> {
     const id = `offer_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const offer: OfferManagement = {
       id,
       candidateId,
@@ -340,7 +390,7 @@ export class RecruitmentService {
       offerDate: new Date(),
       expirationDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       status: 'DRAFT',
-      negotiations: []
+      negotiations: [],
     };
 
     console.log(`Generated offer ${id} for candidate ${candidateId}`);
@@ -349,24 +399,27 @@ export class RecruitmentService {
 
   async extendOffer(offerId: string): Promise<void> {
     console.log(`Extending offer ${offerId} to candidate`);
-    
+
     // Generate offer letter
     await this.generateOfferLetter(offerId);
-    
+
     // Send to candidate
     await this.sendOfferToCandidate(offerId);
-    
+
     // Update status
     await this.updateOfferStatus(offerId, 'EXTENDED');
   }
 
-  async processOfferResponse(offerId: string, response: {
-    action: 'ACCEPT' | 'REJECT' | 'NEGOTIATE';
-    negotiationRequests?: string[];
-    comments?: string;
-  }): Promise<void> {
+  async processOfferResponse(
+    offerId: string,
+    response: {
+      action: 'ACCEPT' | 'REJECT' | 'NEGOTIATE';
+      negotiationRequests?: string[];
+      comments?: string;
+    }
+  ): Promise<void> {
     console.log(`Processing offer response for offer ${offerId}`, response);
-    
+
     if (response.action === 'ACCEPT') {
       await this.processOfferAcceptance(offerId);
     } else if (response.action === 'NEGOTIATE') {
@@ -409,21 +462,21 @@ export class RecruitmentService {
     };
   }> {
     console.log('Generating comprehensive recruitment metrics');
-    
+
     return {
       timeToFill: {
         average: 35, // days
         byDepartment: {
-          'Engineering': 45,
-          'Sales': 28,
-          'Marketing': 32,
-          'Operations': 25
+          Engineering: 45,
+          Sales: 28,
+          Marketing: 32,
+          Operations: 25,
         },
         byPosition: {
           'Senior Engineer': 52,
           'Sales Manager': 38,
-          'Marketing Specialist': 30
-        }
+          'Marketing Specialist': 30,
+        },
       },
       costPerHire: {
         average: 4200,
@@ -431,51 +484,60 @@ export class RecruitmentService {
           'Job Boards': 1200,
           'Recruiter Fees': 2000,
           'Internal Costs': 800,
-          'Assessment Tools': 200
-        }
+          'Assessment Tools': 200,
+        },
       },
       sourceEffectiveness: await this.analyzeSourceEffectiveness(),
       qualityOfHire: {
         performanceRating: 4.1, // Average first-year performance rating
         retentionRate: 0.89, // 89% retention after 1 year
-        timeToProductivity: 90 // days
+        timeToProductivity: 90, // days
       },
-      diversityMetrics: await this.analyzeDiversityMetrics()
+      diversityMetrics: await this.analyzeDiversityMetrics(),
     };
   }
 
   /**
    * HRMS Integration
    */
-  async onboardNewHire(candidateId: string, offerAcceptanceData: {
-    startDate: Date;
-    finalSalary: number;
-    department: string;
-    manager: string;
-    position: string;
-  }): Promise<{
+  async onboardNewHire(
+    candidateId: string,
+    offerAcceptanceData: {
+      startDate: Date;
+      finalSalary: number;
+      department: string;
+      manager: string;
+      position: string;
+    }
+  ): Promise<{
     employeeId: string;
     onboardingTasks: OnboardingTask[];
     equipmentRequests: EquipmentRequest[];
     systemAccess: SystemAccessRequest[];
   }> {
     console.log(`Onboarding new hire from candidate ${candidateId}`);
-    
+
     // Create employee record in HRMS
     const employeeId = await this.createEmployeeFromCandidate(candidateId, offerAcceptanceData);
-    
+
     // Generate onboarding checklist
     const onboardingTasks = await this.generateOnboardingTasks(employeeId, offerAcceptanceData);
-    
+
     // Request equipment and system access
-    const equipmentRequests = await this.generateEquipmentRequests(employeeId, offerAcceptanceData.position);
-    const systemAccess = await this.generateSystemAccessRequests(employeeId, offerAcceptanceData.department);
-    
+    const equipmentRequests = await this.generateEquipmentRequests(
+      employeeId,
+      offerAcceptanceData.position
+    );
+    const systemAccess = await this.generateSystemAccessRequests(
+      employeeId,
+      offerAcceptanceData.department
+    );
+
     return {
       employeeId,
       onboardingTasks,
       equipmentRequests,
-      systemAccess
+      systemAccess,
     };
   }
 
@@ -489,10 +551,10 @@ export class RecruitmentService {
 
   private async activateRecruitmentProcess(requisitionId: string): Promise<void> {
     console.log(`Activating recruitment process for requisition ${requisitionId}`);
-    
+
     // Auto-assign recruiter if not specified
     await this.assignRecruiter(requisitionId);
-    
+
     // Create job posting
     await this.createJobPosting(requisitionId);
   }
@@ -508,15 +570,15 @@ export class RecruitmentService {
 
   private async extractSkillsFromResume(resumeUrl: string): Promise<CandidateSkill[]> {
     console.log(`Extracting skills from resume: ${resumeUrl}`);
-    
+
     // Implementation would use AI/ML to extract skills from resume
     return [
       {
         skillName: 'JavaScript',
         proficiencyLevel: 4,
         yearsExperience: 5,
-        verified: false
-      }
+        verified: false,
+      },
     ];
   }
 
@@ -545,13 +607,16 @@ export class RecruitmentService {
     console.log(`Sending offer to candidate for offer ${offerId}`);
   }
 
-  private async updateOfferStatus(offerId: string, status: OfferManagement['status']): Promise<void> {
+  private async updateOfferStatus(
+    offerId: string,
+    status: OfferManagement['status']
+  ): Promise<void> {
     console.log(`Updating offer ${offerId} status to ${status}`);
   }
 
   private async processOfferAcceptance(offerId: string): Promise<void> {
     console.log(`Processing offer acceptance for offer ${offerId}`);
-    
+
     // Begin onboarding process
     await this.initiateOnboarding(offerId);
   }
@@ -580,14 +645,16 @@ export class RecruitmentService {
     console.log(`Determining next steps for interview ${interviewId}`, feedback);
   }
 
-  private async analyzeSourceEffectiveness(): Promise<Array<{
-    source: string;
-    applications: number;
-    hires: number;
-    conversionRate: number;
-    cost: number;
-    costPerHire: number;
-  }>> {
+  private async analyzeSourceEffectiveness(): Promise<
+    Array<{
+      source: string;
+      applications: number;
+      hires: number;
+      conversionRate: number;
+      cost: number;
+      costPerHire: number;
+    }>
+  > {
     return [
       {
         source: 'LinkedIn',
@@ -595,7 +662,7 @@ export class RecruitmentService {
         hires: 8,
         conversionRate: 0.053,
         cost: 9600,
-        costPerHire: 1200
+        costPerHire: 1200,
       },
       {
         source: 'Referral',
@@ -603,8 +670,8 @@ export class RecruitmentService {
         hires: 12,
         conversionRate: 0.267,
         cost: 6000,
-        costPerHire: 500
-      }
+        costPerHire: 500,
+      },
     ];
   }
 
@@ -615,20 +682,20 @@ export class RecruitmentService {
   }> {
     return {
       applicantDiversity: {
-        'Female': 0.45,
+        Female: 0.45,
         'Underrepresented Minorities': 0.32,
-        'Veterans': 0.08
+        Veterans: 0.08,
       },
       hireDiversity: {
-        'Female': 0.42,
+        Female: 0.42,
         'Underrepresented Minorities': 0.28,
-        'Veterans': 0.12
+        Veterans: 0.12,
       },
       diversityGap: {
-        'Female': -0.03,
+        Female: -0.03,
         'Underrepresented Minorities': -0.04,
-        'Veterans': 0.04
-      }
+        Veterans: 0.04,
+      },
     };
   }
 
@@ -637,18 +704,29 @@ export class RecruitmentService {
     return `emp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  private async generateOnboardingTasks(employeeId: string, offerData: any): Promise<OnboardingTask[]> {
+  private async generateOnboardingTasks(
+    employeeId: string,
+    offerData: any
+  ): Promise<OnboardingTask[]> {
     console.log(`Generating onboarding tasks for employee ${employeeId}`);
     return [];
   }
 
-  private async generateEquipmentRequests(employeeId: string, position: string): Promise<EquipmentRequest[]> {
+  private async generateEquipmentRequests(
+    employeeId: string,
+    position: string
+  ): Promise<EquipmentRequest[]> {
     console.log(`Generating equipment requests for employee ${employeeId}, position: ${position}`);
     return [];
   }
 
-  private async generateSystemAccessRequests(employeeId: string, department: string): Promise<SystemAccessRequest[]> {
-    console.log(`Generating system access requests for employee ${employeeId}, department: ${department}`);
+  private async generateSystemAccessRequests(
+    employeeId: string,
+    department: string
+  ): Promise<SystemAccessRequest[]> {
+    console.log(
+      `Generating system access requests for employee ${employeeId}, department: ${department}`
+    );
     return [];
   }
 

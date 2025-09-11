@@ -33,6 +33,7 @@ crm/
 ## Domain Organization
 
 This module is part of the **Customer & Sales Domain** which consolidates:
+
 - Customer relationship management
 - Sales operations
 - Order management
@@ -48,7 +49,7 @@ const customer = await crmManager.createCustomer({
   companyName: 'Acme Corp',
   contactEmail: 'contact@acmecorp.com',
   industry: 'Manufacturing',
-  size: 'MEDIUM'
+  size: 'MEDIUM',
 });
 
 // Create a lead
@@ -56,13 +57,14 @@ const lead = await crmManager.createLead({
   customerId: customer.id,
   source: 'WEB',
   value: 50000,
-  probability: 0.7
+  probability: 0.7,
 });
 ```
 
 ## Business Logic
 
 The CRM module implements sophisticated business logic including:
+
 - Lead scoring algorithms
 - Sales forecasting
 - Customer segmentation

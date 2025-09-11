@@ -7,8 +7,9 @@ import type { ComplianceEntity } from '../../types';
 import { complianceRepository } from '../../data-access/repositories';
 
 export class ComplianceService {
-  
-  async createCompliance(data: Omit<ComplianceEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<ComplianceEntity> {
+  async createCompliance(
+    data: Omit<ComplianceEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<ComplianceEntity> {
     this.validateComplianceData(data);
     return await complianceRepository.create(data);
   }
@@ -17,12 +18,15 @@ export class ComplianceService {
     return await complianceRepository.getById(id);
   }
 
-  async updateCompliance(id: string, updates: Partial<ComplianceEntity>): Promise<ComplianceEntity> {
+  async updateCompliance(
+    id: string,
+    updates: Partial<ComplianceEntity>
+  ): Promise<ComplianceEntity> {
     const existing = await complianceRepository.getById(id);
     if (!existing) {
       throw new Error(`Compliance with ID ${id} not found`);
     }
-    
+
     return await complianceRepository.update(id, updates);
   }
 
@@ -31,7 +35,7 @@ export class ComplianceService {
     if (!existing) {
       throw new Error(`Compliance with ID ${id} not found`);
     }
-    
+
     await complianceRepository.delete(id);
   }
 
@@ -39,7 +43,9 @@ export class ComplianceService {
     return await complianceRepository.getAll();
   }
 
-  private validateComplianceData(data: Omit<ComplianceEntity, 'id' | 'createdDate' | 'modifiedDate'>): void {
+  private validateComplianceData(
+    data: Omit<ComplianceEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): void {
     if (!data.name || data.name.trim() === '') {
       throw new Error('Name is required');
     }

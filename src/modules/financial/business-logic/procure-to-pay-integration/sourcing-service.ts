@@ -3,12 +3,7 @@
  * Handles sourcing events and supplier evaluation within the procure-to-pay flow
  */
 
-import {
-  SourcingEvent,
-  EvaluationCriteria,
-  SupplierResponse,
-  ResponseLineItem
-} from './types';
+import { SourcingEvent, EvaluationCriteria, SupplierResponse, ResponseLineItem } from './types';
 
 export class SourcingService {
   /**
@@ -30,9 +25,9 @@ export class SourcingService {
       evaluationCriteria: this.generateEvaluationCriteria(eventType),
       invitedSuppliers: [],
       responses: [],
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
-    
+
     return sourcingEvent;
   }
 
@@ -47,7 +42,7 @@ export class SourcingService {
         weight: 60,
         type: 'PRICE',
         passFail: false,
-        description: 'Total evaluated price including all costs'
+        description: 'Total evaluated price including all costs',
       },
       {
         criteriaId: 'crit_technical',
@@ -55,7 +50,7 @@ export class SourcingService {
         weight: 25,
         type: 'TECHNICAL',
         passFail: false,
-        description: 'Technical approach and capability to meet requirements'
+        description: 'Technical approach and capability to meet requirements',
       },
       {
         criteriaId: 'crit_past_perf',
@@ -63,10 +58,10 @@ export class SourcingService {
         weight: 15,
         type: 'PAST_PERFORMANCE',
         passFail: false,
-        description: 'Demonstrated past performance on similar contracts'
-      }
+        description: 'Demonstrated past performance on similar contracts',
+      },
     ];
-    
+
     return criteria;
   }
 
@@ -95,7 +90,7 @@ export class SourcingService {
       lineItems: response.lineItems || [],
       technicalProposal: response.technicalProposal,
       certifications: response.certifications || [],
-      evaluationScores: {}
+      evaluationScores: {},
     };
 
     return supplierResponse;
@@ -109,17 +104,17 @@ export class SourcingService {
     responses: SupplierResponse[],
     criteria: EvaluationCriteria[]
   ): Promise<SupplierResponse[]> {
-    const evaluatedResponses = responses.map(response => {
+    const evaluatedResponses = responses.map((response) => {
       const evaluationScores: { [criteriaId: string]: number } = {};
       let totalScore = 0;
 
-      criteria.forEach(criterion => {
+      criteria.forEach((criterion) => {
         let score = 0;
-        
+
         switch (criterion.type) {
           case 'PRICE':
             // Lower price gets higher score (inverse relationship)
-            const minPrice = Math.min(...responses.map(r => r.totalPrice));
+            const minPrice = Math.min(...responses.map((r) => r.totalPrice));
             score = minPrice > 0 ? (minPrice / response.totalPrice) * 100 : 0;
             break;
           case 'TECHNICAL':
@@ -141,7 +136,7 @@ export class SourcingService {
       return {
         ...response,
         evaluationScores,
-        overallScore: totalScore
+        overallScore: totalScore,
       };
     });
 
@@ -157,10 +152,7 @@ export class SourcingService {
   /**
    * Award sourcing event to selected supplier
    */
-  async awardSourcingEvent(
-    eventId: string,
-    selectedResponseId: string
-  ): Promise<void> {
+  async awardSourcingEvent(eventId: string, selectedResponseId: string): Promise<void> {
     // Implementation would update event status and notify suppliers
     console.log(`Awarding sourcing event ${eventId} to response ${selectedResponseId}`);
   }
@@ -179,29 +171,29 @@ export class SourcingService {
         eventId,
         totalResponses: 3,
         responseRate: '75%',
-        averageResponseTime: '8.5 days'
+        averageResponseTime: '8.5 days',
       },
       responsesSummary: {
         priceRange: {
           lowest: 85000,
           highest: 125000,
-          average: 105000
+          average: 105000,
         },
         technicalScores: {
           average: 82.5,
-          range: '70-95'
-        }
+          range: '70-95',
+        },
       },
       evaluationSummary: {
         evaluationCompleted: true,
         evaluationDate: new Date(),
-        evaluationDuration: '3 days'
+        evaluationDuration: '3 days',
       },
       awardRecommendation: {
         recommendedSupplier: 'supplier_001',
         justification: 'Best value based on price and technical capability',
-        estimatedSavings: 15000
-      }
+        estimatedSavings: 15000,
+      },
     };
   }
 
@@ -222,7 +214,9 @@ export class SourcingService {
     justification: string
   ): Promise<void> {
     // Implementation would extend deadline and notify suppliers
-    console.log(`Extending deadline for event ${eventId} to ${newDeadline.toISOString()}: ${justification}`);
+    console.log(
+      `Extending deadline for event ${eventId} to ${newDeadline.toISOString()}: ${justification}`
+    );
   }
 }
 

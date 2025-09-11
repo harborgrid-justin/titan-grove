@@ -70,8 +70,8 @@ export class ProcurementPlanningService {
         'Acquisition Plan Approval',
         'Solicitation Release',
         'Proposal Evaluation',
-        'Contract Award'
-      ]
+        'Contract Award',
+      ],
     };
   }
 
@@ -93,8 +93,8 @@ export class ProcurementPlanningService {
           plannedAwardDate: new Date(),
           acquisitionMethod: 'Full and Open Competition',
           contractType: 'Fixed Price',
-          riskAssessment: 'Medium Risk'
-        }
+          riskAssessment: 'Medium Risk',
+        },
       ],
       totalEstimatedValue: 5000000,
       totalForecastValue: 2000000,
@@ -105,14 +105,14 @@ export class ProcurementPlanningService {
         {
           resourceType: 'Contracting Officer',
           quantity: 2,
-          estimatedCost: 150000
-        }
+          estimatedCost: 150000,
+        },
       ],
       riskAssessment: {
         overallRisk: 'MEDIUM',
         riskFactors: ['Market volatility', 'Technical complexity'],
-        mitigationStrategies: ['Enhanced market research', 'Phased approach']
-      }
+        mitigationStrategies: ['Enhanced market research', 'Phased approach'],
+      },
     };
   }
 
@@ -133,8 +133,8 @@ export class ProcurementPlanningService {
       supplierBase: 15,
       recommendations: [
         'Consider multi-year contract for price stability',
-        'Leverage competitive environment for better terms'
-      ]
+        'Leverage competitive environment for better terms',
+      ],
     };
   }
 
@@ -150,11 +150,7 @@ export class ProcurementPlanningService {
       riskLevel: 'MEDIUM',
       costStrategy: 'BEST_VALUE',
       timeline: '180 days',
-      keyMilestones: [
-        'Market Research Completion',
-        'Acquisition Plan Approval',
-        'Contract Award'
-      ]
+      keyMilestones: ['Market Research Completion', 'Acquisition Plan Approval', 'Contract Award'],
     };
   }
 
@@ -173,26 +169,26 @@ export class ProcurementPlanningService {
         {
           category: 'Direct Costs',
           amount: 4000000,
-          percentage: 80
+          percentage: 80,
         },
         {
           category: 'Indirect Costs',
           amount: 1000000,
-          percentage: 20
-        }
+          percentage: 20,
+        },
       ],
       savingsOpportunities: [
         {
           description: 'Volume consolidation',
           estimatedSavings: 250000,
           implementationEffort: 'MEDIUM',
-          priority: 'HIGH'
-        }
+          priority: 'HIGH',
+        },
       ],
       recommendations: [
         'Consider multi-year contracts for better pricing',
-        'Explore volume discount opportunities'
-      ]
+        'Explore volume discount opportunities',
+      ],
     };
   }
 
@@ -211,8 +207,8 @@ export class ProcurementPlanningService {
         {
           metricName: 'Process Transparency',
           score: 85,
-          status: 'GOOD'
-        }
+          status: 'GOOD',
+        },
       ],
       transparencyScore: 85,
       dataQuality: [
@@ -220,9 +216,9 @@ export class ProcurementPlanningService {
           dataSource: 'Procurement Database',
           qualityScore: 90,
           completeness: 95,
-          accuracy: 85
-        }
-      ]
+          accuracy: 85,
+        },
+      ],
     };
   }
 }

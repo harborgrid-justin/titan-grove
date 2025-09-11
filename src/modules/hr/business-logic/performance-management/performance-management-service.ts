@@ -150,24 +150,25 @@ export interface CompensationRecommendation {
 }
 
 export class PerformanceManagementService {
-
   /**
    * Objective Setting and Management (Workforce Performance Management)
    */
-  async createPerformanceObjective(objective: Omit<PerformanceObjective, 'id' | 'status' | 'progress' | 'quarterlyCheckIns'>): Promise<PerformanceObjective> {
+  async createPerformanceObjective(
+    objective: Omit<PerformanceObjective, 'id' | 'status' | 'progress' | 'quarterlyCheckIns'>
+  ): Promise<PerformanceObjective> {
     const id = `obj_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newObjective: PerformanceObjective = {
       ...objective,
       id,
       status: 'DRAFT',
       progress: 0,
-      quarterlyCheckIns: []
+      quarterlyCheckIns: [],
     };
 
     // Validate objective weight allocation
     await this.validateObjectiveWeights(objective.employeeId, objective.weight);
-    
+
     console.log(`Created performance objective ${id} for employee ${objective.employeeId}`);
     return newObjective;
   }
@@ -177,23 +178,26 @@ export class PerformanceManagementService {
     checkIn: Omit<ObjectiveCheckIn, 'id' | 'objectiveId'>
   ): Promise<ObjectiveCheckIn> {
     const id = `checkin_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newCheckIn: ObjectiveCheckIn = {
       ...checkIn,
       id,
-      objectiveId
+      objectiveId,
     };
 
     // Update objective progress
     await this.updateObjectiveProgressValue(objectiveId, checkIn.progress);
-    
+
     console.log(`Updated objective ${objectiveId} progress to ${checkIn.progress}%`);
     return newCheckIn;
   }
 
-  async getEmployeeObjectives(employeeId: string, period?: { startDate: Date; endDate: Date }): Promise<PerformanceObjective[]> {
+  async getEmployeeObjectives(
+    employeeId: string,
+    period?: { startDate: Date; endDate: Date }
+  ): Promise<PerformanceObjective[]> {
     console.log(`Getting objectives for employee ${employeeId}`, period);
-    
+
     // Implementation would fetch objectives from database
     return [];
   }
@@ -201,21 +205,29 @@ export class PerformanceManagementService {
   /**
    * Performance Appraisals
    */
-  async initiatePerformanceAppraisal(appraisal: Omit<PerformanceAppraisal, 'id' | 'status' | 'overallRating' | 'competencyRatings' | 'objectiveResults'>): Promise<PerformanceAppraisal> {
+  async initiatePerformanceAppraisal(
+    appraisal: Omit<
+      PerformanceAppraisal,
+      'id' | 'status' | 'overallRating' | 'competencyRatings' | 'objectiveResults'
+    >
+  ): Promise<PerformanceAppraisal> {
     const id = `appraisal_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newAppraisal: PerformanceAppraisal = {
       ...appraisal,
       id,
       status: 'NOT_STARTED',
       overallRating: 0,
       competencyRatings: await this.getEmployeeCompetencyFramework(appraisal.employeeId),
-      objectiveResults: await this.getObjectiveResultsForPeriod(appraisal.employeeId, appraisal.appraisalPeriod)
+      objectiveResults: await this.getObjectiveResultsForPeriod(
+        appraisal.employeeId,
+        appraisal.appraisalPeriod
+      ),
     };
 
     // Send notification to employee to start self-assessment
     await this.notifyAppraisalStart(newAppraisal);
-    
+
     console.log(`Initiated performance appraisal ${id} for employee ${appraisal.employeeId}`);
     return newAppraisal;
   }
@@ -231,10 +243,10 @@ export class PerformanceManagementService {
     }
   ): Promise<void> {
     console.log(`Self-assessment submitted for appraisal ${appraisalId}`);
-    
+
     // Update appraisal with self-assessment data
     await this.updateAppraisalStatus(appraisalId, 'MANAGER_REVIEW');
-    
+
     // Notify manager for review
     await this.notifyManagerForReview(appraisalId);
   }
@@ -252,68 +264,77 @@ export class PerformanceManagementService {
     }
   ): Promise<PerformanceAppraisal> {
     console.log(`Manager review completed for appraisal ${appraisalId}`);
-    
+
     // Update appraisal with manager review
     const appraisal = await this.updateAppraisalWithManagerReview(appraisalId, managerReview);
-    
+
     // Move to calibration if required
     await this.initiateCalibrationIfRequired(appraisal);
-    
+
     return appraisal;
   }
 
   /**
    * Questionnaire Administration
    */
-  async createPerformanceQuestionnaire(questionnaire: Omit<PerformanceQuestionnaire, 'id'>): Promise<PerformanceQuestionnaire> {
+  async createPerformanceQuestionnaire(
+    questionnaire: Omit<PerformanceQuestionnaire, 'id'>
+  ): Promise<PerformanceQuestionnaire> {
     const id = `questionnaire_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newQuestionnaire: PerformanceQuestionnaire = {
       ...questionnaire,
-      id
+      id,
     };
 
     // Validate questionnaire structure
     await this.validateQuestionnaireStructure(newQuestionnaire);
-    
+
     console.log(`Created performance questionnaire ${id}: ${questionnaire.name}`);
     return newQuestionnaire;
   }
 
-  async launchQuestionnaire(questionnaireId: string, targetEmployees: string[]): Promise<{
+  async launchQuestionnaire(
+    questionnaireId: string,
+    targetEmployees: string[]
+  ): Promise<{
     launchId: string;
     sentTo: number;
     expectedResponses: number;
     dueDate: Date;
   }> {
-    console.log(`Launching questionnaire ${questionnaireId} to ${targetEmployees.length} employees`);
-    
+    console.log(
+      `Launching questionnaire ${questionnaireId} to ${targetEmployees.length} employees`
+    );
+
     const launchId = `launch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Send questionnaire to target employees
     for (const employeeId of targetEmployees) {
       await this.sendQuestionnaireToEmployee(questionnaireId, employeeId);
     }
-    
+
     return {
       launchId,
       sentTo: targetEmployees.length,
       expectedResponses: targetEmployees.length,
-      dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000) // 14 days from now
+      dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
     };
   }
 
-  async submitQuestionnaireResponse(response: Omit<QuestionnaireResponse, 'id'>): Promise<QuestionnaireResponse> {
+  async submitQuestionnaireResponse(
+    response: Omit<QuestionnaireResponse, 'id'>
+  ): Promise<QuestionnaireResponse> {
     const id = `response_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newResponse: QuestionnaireResponse = {
       ...response,
-      id
+      id,
     };
 
     // Validate response completeness
     await this.validateQuestionnaireResponse(newResponse);
-    
+
     console.log(`Questionnaire response submitted: ${id}`);
     return newResponse;
   }
@@ -326,16 +347,16 @@ export class PerformanceManagementService {
     demographics: Record<string, any>;
   }> {
     console.log(`Analyzing results for questionnaire ${questionnaireId}`);
-    
+
     const responses = await this.getQuestionnaireResponses(questionnaireId);
     const questionnaire = await this.getQuestionnaire(questionnaireId);
-    
+
     return {
       responseRate: this.calculateResponseRate(responses, questionnaire.targetAudience),
       summary: await this.calculateResponseSummary(responses, questionnaire.questions),
       insights: await this.generateInsights(responses),
       recommendations: await this.generateRecommendations(responses),
-      demographics: await this.analyzeDemographics(responses)
+      demographics: await this.analyzeDemographics(responses),
     };
   }
 
@@ -347,7 +368,11 @@ export class PerformanceManagementService {
     departmentPerformance: Record<string, number>;
     objectiveCompletionRate: number;
     topPerformers: Array<{ employeeId: string; rating: number; achievements: string[] }>;
-    performanceImprovementNeeded: Array<{ employeeId: string; areas: string[]; recommendedActions: string[] }>;
+    performanceImprovementNeeded: Array<{
+      employeeId: string;
+      areas: string[];
+      recommendedActions: string[];
+    }>;
     calibrationMetrics: {
       ratingDistribution: Record<number, number>;
       managerVariation: number;
@@ -355,14 +380,14 @@ export class PerformanceManagementService {
     };
   }> {
     console.log('Generating performance analytics for period', period);
-    
+
     return {
       overallPerformanceDistribution: { 1: 5, 2: 15, 3: 60, 4: 15, 5: 5 }, // Percentage distribution
       departmentPerformance: {
-        'Engineering': 4.2,
-        'Sales': 3.8,
-        'Marketing': 4.0,
-        'Operations': 3.9
+        Engineering: 4.2,
+        Sales: 3.8,
+        Marketing: 4.0,
+        Operations: 3.9,
       },
       objectiveCompletionRate: 0.87, // 87% completion rate
       topPerformers: [],
@@ -370,8 +395,8 @@ export class PerformanceManagementService {
       calibrationMetrics: {
         ratingDistribution: { 1: 5, 2: 15, 3: 60, 4: 15, 5: 5 },
         managerVariation: 0.8, // Standard deviation
-        recommendedAdjustments: 12 // Number of ratings requiring adjustment
-      }
+        recommendedAdjustments: 12, // Number of ratings requiring adjustment
+      },
     };
   }
 
@@ -381,11 +406,11 @@ export class PerformanceManagementService {
   private async validateObjectiveWeights(employeeId: string, newWeight: number): Promise<void> {
     const existingObjectives = await this.getEmployeeObjectives(employeeId);
     const totalWeight = existingObjectives.reduce((sum, obj) => sum + obj.weight, 0) + newWeight;
-    
+
     if (totalWeight > 100) {
       throw new Error(`Objective weights exceed 100%. Current total: ${totalWeight}%`);
     }
-    
+
     console.log(`Objective weight validation passed. Total weight: ${totalWeight}%`);
   }
 
@@ -396,7 +421,7 @@ export class PerformanceManagementService {
 
   private async getEmployeeCompetencyFramework(employeeId: string): Promise<CompetencyRating[]> {
     console.log(`Getting competency framework for employee ${employeeId}`);
-    
+
     // Implementation would fetch role-based competency framework
     return [
       {
@@ -406,7 +431,7 @@ export class PerformanceManagementService {
         actualLevel: 0,
         rating: 0,
         evidence: '',
-        developmentNeeds: ''
+        developmentNeeds: '',
       },
       {
         competencyId: 'technical_skills',
@@ -415,24 +440,27 @@ export class PerformanceManagementService {
         actualLevel: 0,
         rating: 0,
         evidence: '',
-        developmentNeeds: ''
-      }
+        developmentNeeds: '',
+      },
     ];
   }
 
-  private async getObjectiveResultsForPeriod(employeeId: string, period: { startDate: Date; endDate: Date }): Promise<ObjectiveResult[]> {
+  private async getObjectiveResultsForPeriod(
+    employeeId: string,
+    period: { startDate: Date; endDate: Date }
+  ): Promise<ObjectiveResult[]> {
     console.log(`Getting objective results for employee ${employeeId} for period`, period);
-    
+
     const objectives = await this.getEmployeeObjectives(employeeId, period);
-    
-    return objectives.map(obj => ({
+
+    return objectives.map((obj) => ({
       objectiveId: obj.id,
       objectiveTitle: obj.title,
       targetValue: obj.targetValue,
       actualValue: obj.measuredValue || 'Not measured',
       achievementPercent: obj.progress,
       rating: Math.ceil(obj.progress / 20), // Convert 0-100 to 1-5 scale
-      managerComments: ''
+      managerComments: '',
     }));
   }
 
@@ -440,7 +468,10 @@ export class PerformanceManagementService {
     console.log(`Notifying employee ${appraisal.employeeId} to start self-assessment`);
   }
 
-  private async updateAppraisalStatus(appraisalId: string, status: PerformanceAppraisal['status']): Promise<void> {
+  private async updateAppraisalStatus(
+    appraisalId: string,
+    status: PerformanceAppraisal['status']
+  ): Promise<void> {
     console.log(`Updating appraisal ${appraisalId} status to ${status}`);
   }
 
@@ -448,7 +479,10 @@ export class PerformanceManagementService {
     console.log(`Notifying manager for review of appraisal ${appraisalId}`);
   }
 
-  private async updateAppraisalWithManagerReview(appraisalId: string, managerReview: any): Promise<PerformanceAppraisal> {
+  private async updateAppraisalWithManagerReview(
+    appraisalId: string,
+    managerReview: any
+  ): Promise<PerformanceAppraisal> {
     console.log(`Updating appraisal ${appraisalId} with manager review`);
     return {} as PerformanceAppraisal;
   }
@@ -458,34 +492,41 @@ export class PerformanceManagementService {
     console.log(`Checking calibration requirement for appraisal ${appraisal.id}`);
   }
 
-  private async validateQuestionnaireStructure(questionnaire: PerformanceQuestionnaire): Promise<void> {
+  private async validateQuestionnaireStructure(
+    questionnaire: PerformanceQuestionnaire
+  ): Promise<void> {
     if (!questionnaire.questions.length) {
       throw new Error('Questionnaire must have at least one question');
     }
-    
+
     console.log(`Validated questionnaire structure: ${questionnaire.questions.length} questions`);
   }
 
-  private async sendQuestionnaireToEmployee(questionnaireId: string, employeeId: string): Promise<void> {
+  private async sendQuestionnaireToEmployee(
+    questionnaireId: string,
+    employeeId: string
+  ): Promise<void> {
     console.log(`Sending questionnaire ${questionnaireId} to employee ${employeeId}`);
   }
 
   private async validateQuestionnaireResponse(response: QuestionnaireResponse): Promise<void> {
     const questionnaire = await this.getQuestionnaire(response.questionnaireId);
-    const requiredQuestions = questionnaire.questions.filter(q => q.required);
-    
-    const answeredRequired = response.responses.filter(r => 
-      requiredQuestions.some(q => q.id === r.questionId)
+    const requiredQuestions = questionnaire.questions.filter((q) => q.required);
+
+    const answeredRequired = response.responses.filter((r) =>
+      requiredQuestions.some((q) => q.id === r.questionId)
     );
-    
+
     if (answeredRequired.length < requiredQuestions.length) {
       throw new Error('All required questions must be answered');
     }
-    
+
     console.log(`Questionnaire response validation passed`);
   }
 
-  private async getQuestionnaireResponses(questionnaireId: string): Promise<QuestionnaireResponse[]> {
+  private async getQuestionnaireResponses(
+    questionnaireId: string
+  ): Promise<QuestionnaireResponse[]> {
     console.log(`Getting responses for questionnaire ${questionnaireId}`);
     return [];
   }
@@ -495,11 +536,17 @@ export class PerformanceManagementService {
     return {} as PerformanceQuestionnaire;
   }
 
-  private calculateResponseRate(responses: QuestionnaireResponse[], targetAudience: string[]): number {
+  private calculateResponseRate(
+    responses: QuestionnaireResponse[],
+    targetAudience: string[]
+  ): number {
     return responses.length / targetAudience.length;
   }
 
-  private async calculateResponseSummary(responses: QuestionnaireResponse[], questions: QuestionnaireQuestion[]): Promise<Record<string, any>> {
+  private async calculateResponseSummary(
+    responses: QuestionnaireResponse[],
+    questions: QuestionnaireQuestion[]
+  ): Promise<Record<string, any>> {
     // Implementation would calculate summary statistics for each question
     return {};
   }
@@ -513,7 +560,9 @@ export class PerformanceManagementService {
     return ['Implement technical mentorship program', 'Expand leadership training opportunities'];
   }
 
-  private async analyzeDemographics(responses: QuestionnaireResponse[]): Promise<Record<string, any>> {
+  private async analyzeDemographics(
+    responses: QuestionnaireResponse[]
+  ): Promise<Record<string, any>> {
     // Implementation would analyze response patterns by demographics
     return {};
   }

@@ -3,7 +3,7 @@
  * Comprehensive pick-pack-ship operations with Oracle EBS competitive features
  */
 
-import type { 
+import type {
   SalesOrder,
   OrderLineItem,
   Shipment,
@@ -11,13 +11,10 @@ import type {
   PackageItem,
   ShipmentLineItem,
   OrderAllocation,
-  OrderAddress
+  OrderAddress,
 } from '../../types';
 
-import {
-  ShipmentStatus,
-  Priority
-} from '../../types';
+import { ShipmentStatus, Priority } from '../../types';
 
 export interface PickList {
   id: string;
@@ -82,7 +79,6 @@ export interface PackingSlip {
 }
 
 export class OrderFulfillmentService {
-  
   // ================================
   // PICK OPERATIONS
   // ================================
@@ -101,7 +97,6 @@ export class OrderFulfillmentService {
       consolidateItems?: boolean;
     }
   ): Promise<PickList> {
-    
     const order = await this.getOrderById(orderId);
     if (!order) {
       throw new Error(`Order ${orderId} not found`);
@@ -112,7 +107,7 @@ export class OrderFulfillmentService {
 
     // Get inventory allocations
     const allocations = await this.getOrderAllocations(orderId, warehouseId);
-    
+
     // Generate optimized pick instructions
     const pickInstructions = await this.generateOptimizedPickInstructions(
       order.lineItems,
@@ -136,7 +131,7 @@ export class OrderFulfillmentService {
       estimatedPickTime,
       pickInstructions,
       createdBy: 'SYSTEM', // Would be actual user in real implementation
-      modifiedBy: 'SYSTEM'
+      modifiedBy: 'SYSTEM',
     };
 
     return pickList;
@@ -164,7 +159,7 @@ export class OrderFulfillmentService {
       status: 'RELEASED',
       releasedDate: new Date(),
       assignedTo: assignedTo || pickList.assignedTo,
-      modifiedBy: releasedBy
+      modifiedBy: releasedBy,
     };
 
     return updatedPickList;
@@ -193,11 +188,11 @@ export class OrderFulfillmentService {
     }
 
     // Update pick instructions with results
-    const updatedInstructions = pickList.pickInstructions.map(instruction => {
-      const result = pickResults.find(r => r.instructionLineNumber === instruction.lineNumber);
+    const updatedInstructions = pickList.pickInstructions.map((instruction) => {
+      const result = pickResults.find((r) => r.instructionLineNumber === instruction.lineNumber);
       if (result) {
         let status: 'PENDING' | 'PICKED' | 'SHORT' | 'DAMAGED' | 'SUBSTITUTED' = 'PICKED';
-        
+
         if (result.quantityPicked < instruction.quantityToPick) {
           status = 'SHORT';
         } else if (result.condition === 'DAMAGED') {
@@ -212,16 +207,16 @@ export class OrderFulfillmentService {
           lotNumber: result.lotNumber || instruction.lotNumber,
           serialNumber: result.serialNumber || instruction.serialNumber,
           status,
-          specialInstructions: result.notes ? 
-            `${instruction.specialInstructions || ''} ${result.notes}`.trim() : 
-            instruction.specialInstructions
+          specialInstructions: result.notes
+            ? `${instruction.specialInstructions || ''} ${result.notes}`.trim()
+            : instruction.specialInstructions,
         };
       }
       return instruction;
     });
 
     const actualPickTime = this.calculateActualPickTime(pickList.releasedDate!, new Date());
-    const allPicked = updatedInstructions.every(inst => inst.status !== 'PENDING');
+    const allPicked = updatedInstructions.every((inst) => inst.status !== 'PENDING');
 
     const updatedPickList: PickList = {
       ...pickList,
@@ -229,11 +224,11 @@ export class OrderFulfillmentService {
       pickInstructions: updatedInstructions,
       pickedDate: allPicked ? new Date() : undefined,
       actualPickTime: allPicked ? actualPickTime : undefined,
-      modifiedBy: pickedBy
+      modifiedBy: pickedBy,
     };
 
     // Handle shortages and substitutions
-    if (updatedInstructions.some(inst => inst.status === 'SHORT')) {
+    if (updatedInstructions.some((inst) => inst.status === 'SHORT')) {
       await this.handlePickShortages(pickListId, updatedInstructions);
     }
 
@@ -257,10 +252,9 @@ export class OrderFulfillmentService {
       preferredCarrier?: string;
     }
   ): Promise<PackingSlip> {
-    
     const order = await this.getOrderById(orderId);
     const pickList = await this.getPickListById(pickListId);
-    
+
     if (!order || !pickList) {
       throw new Error('Order or pick list not found');
     }
@@ -291,10 +285,12 @@ export class OrderFulfillmentService {
       hazardousMaterial,
       totalPackages: packageDetails.length,
       totalWeight: packageDetails.reduce((sum, pkg) => sum + pkg.weight, 0),
-      totalVolume: packageDetails.reduce((sum, pkg) => 
-        sum + (pkg.dimensions.length * pkg.dimensions.width * pkg.dimensions.height), 0),
+      totalVolume: packageDetails.reduce(
+        (sum, pkg) => sum + pkg.dimensions.length * pkg.dimensions.width * pkg.dimensions.height,
+        0
+      ),
       createdDate: new Date(),
-      modifiedDate: new Date()
+      modifiedDate: new Date(),
     };
 
     return packingSlip;
@@ -320,24 +316,25 @@ export class OrderFulfillmentService {
     }>,
     packedBy: string
   ): Promise<PackingSlip> {
-    
     const packingSlip = await this.getPackingSlipById(packingSlipId);
     if (!packingSlip) {
       throw new Error(`Packing slip ${packingSlipId} not found`);
     }
 
     // Update package details with actual results
-    const updatedPackageDetails = packingSlip.packageDetails.map(pkg => {
-      const result = packageResults.find(r => r.packageNumber === pkg.packageNumber);
+    const updatedPackageDetails = packingSlip.packageDetails.map((pkg) => {
+      const result = packageResults.find((r) => r.packageNumber === pkg.packageNumber);
       if (result) {
         return {
           ...pkg,
           weight: result.actualWeight,
-          dimensions: result.actualDimensions ? {
-            ...result.actualDimensions,
-            unit: result.actualDimensions.unit || pkg.dimensions.unit
-          } : pkg.dimensions,
-          trackingNumber: result.trackingNumber
+          dimensions: result.actualDimensions
+            ? {
+                ...result.actualDimensions,
+                unit: result.actualDimensions.unit || pkg.dimensions.unit,
+              }
+            : pkg.dimensions,
+          trackingNumber: result.trackingNumber,
         };
       }
       return pkg;
@@ -350,7 +347,7 @@ export class OrderFulfillmentService {
       packingDate: new Date(),
       packedBy,
       totalWeight: updatedPackageDetails.reduce((sum, pkg) => sum + pkg.weight, 0),
-      modifiedDate: new Date()
+      modifiedDate: new Date(),
     };
 
     return updatedPackingSlip;
@@ -379,10 +376,9 @@ export class OrderFulfillmentService {
     },
     createdBy: string
   ): Promise<Shipment> {
-    
     const order = await this.getOrderById(orderId);
     const packingSlip = await this.getPackingSlipById(packingSlipId);
-    
+
     if (!order || !packingSlip) {
       throw new Error('Order or packing slip not found');
     }
@@ -419,16 +415,21 @@ export class OrderFulfillmentService {
       lineItems: shipmentLineItems,
       totalWeight: packingSlip.totalWeight,
       totalVolume: packingSlip.totalVolume,
-      shippingCost: await this.calculateShippingCost(packingSlip.packageDetails, order.shippingAddress, shippingOptions),
+      shippingCost: await this.calculateShippingCost(
+        packingSlip.packageDetails,
+        order.shippingAddress,
+        shippingOptions
+      ),
       insuredValue: shippingOptions.insuredValue,
-      insuredAmount: shippingOptions.insuredValue ? 
-        await this.calculateInsuranceCost(shippingOptions.insuredValue) : undefined,
+      insuredAmount: shippingOptions.insuredValue
+        ? await this.calculateInsuranceCost(shippingOptions.insuredValue)
+        : undefined,
       hazardousMaterial: packingSlip.hazardousMaterial,
       specialInstructions: shippingOptions.specialInstructions,
       createdDate: new Date(),
       modifiedDate: new Date(),
       createdBy,
-      modifiedBy: createdBy
+      modifiedBy: createdBy,
     };
 
     return shipment;
@@ -456,14 +457,15 @@ export class OrderFulfillmentService {
     shippingCost: number;
     errorMessage?: string;
   }> {
-    
     const shipment = await this.getShipmentById(shipmentId);
     if (!shipment) {
       throw new Error(`Shipment ${shipmentId} not found`);
     }
 
     if (shipment.status !== ShipmentStatus.PLANNED && shipment.status !== ShipmentStatus.PACKED) {
-      throw new Error(`Shipment ${shipment.shipmentNumber} cannot be shipped in status ${shipment.status}`);
+      throw new Error(
+        `Shipment ${shipment.shipmentNumber} cannot be shipped in status ${shipment.status}`
+      );
     }
 
     try {
@@ -480,10 +482,10 @@ export class OrderFulfillmentService {
         freightBill: shippingDetails.freightBill,
         packageDetails: shipment.packageDetails.map((pkg, index) => ({
           ...pkg,
-          trackingNumber: carrierResponse.packageTrackingNumbers[index] || pkg.trackingNumber
+          trackingNumber: carrierResponse.packageTrackingNumbers[index] || pkg.trackingNumber,
         })),
         modifiedDate: new Date(),
-        modifiedBy: shippedBy
+        modifiedBy: shippedBy,
       };
 
       // Update order status
@@ -494,15 +496,14 @@ export class OrderFulfillmentService {
         trackingNumbers: carrierResponse.packageTrackingNumbers,
         billOfLading: shippingDetails.billOfLading,
         estimatedDelivery: carrierResponse.estimatedDelivery,
-        shippingCost: updatedShipment.shippingCost
+        shippingCost: updatedShipment.shippingCost,
       };
-
     } catch (error) {
       return {
         status: 'ERROR',
         trackingNumbers: [],
         shippingCost: shipment.shippingCost,
-        errorMessage: error instanceof Error ? error.message : 'Unknown shipping error'
+        errorMessage: error instanceof Error ? error.message : 'Unknown shipping error',
       };
     }
   }
@@ -517,16 +518,21 @@ export class OrderFulfillmentService {
     }
 
     // Check for active holds that prevent picking
-    const blockingHolds = order.holds.filter(hold => 
-      hold.status === 'ACTIVE' && ['CREDIT', 'QUALITY'].includes(hold.holdType)
+    const blockingHolds = order.holds.filter(
+      (hold) => hold.status === 'ACTIVE' && ['CREDIT', 'QUALITY'].includes(hold.holdType)
     );
 
     if (blockingHolds.length > 0) {
-      throw new Error(`Order has active holds preventing picking: ${blockingHolds.map(h => h.holdType).join(', ')}`);
+      throw new Error(
+        `Order has active holds preventing picking: ${blockingHolds.map((h) => h.holdType).join(', ')}`
+      );
     }
   }
 
-  private async getOrderAllocations(orderId: string, warehouseId: string): Promise<OrderAllocation[]> {
+  private async getOrderAllocations(
+    orderId: string,
+    warehouseId: string
+  ): Promise<OrderAllocation[]> {
     // Implementation would retrieve allocations from inventory system
     return [];
   }
@@ -553,7 +559,7 @@ export class OrderFulfillmentService {
       bin: '01',
       pickSequence: index + 1,
       substitutionAllowed: false,
-      status: 'PENDING'
+      status: 'PENDING',
     }));
   }
 
@@ -566,11 +572,16 @@ export class OrderFulfillmentService {
     return Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60)); // minutes
   }
 
-  private async handlePickShortages(pickListId: string, instructions: PickInstruction[]): Promise<void> {
+  private async handlePickShortages(
+    pickListId: string,
+    instructions: PickInstruction[]
+  ): Promise<void> {
     // Implementation would create shortage records and back orders
-    const shortages = instructions.filter(inst => inst.status === 'SHORT');
+    const shortages = instructions.filter((inst) => inst.status === 'SHORT');
     for (const shortage of shortages) {
-      console.log(`Shortage detected: ${shortage.itemCode}, short by ${shortage.quantityToPick - shortage.quantityPicked}`);
+      console.log(
+        `Shortage detected: ${shortage.itemCode}, short by ${shortage.quantityToPick - shortage.quantityPicked}`
+      );
     }
   }
 
@@ -590,17 +601,17 @@ export class OrderFulfillmentService {
           length: 12,
           width: 10,
           height: 8,
-          unit: 'IN'
+          unit: 'IN',
         },
-        items: pickInstructions.map(inst => ({
+        items: pickInstructions.map((inst) => ({
           orderLineItemId: inst.orderLineItemId,
           itemCode: inst.itemCode,
           itemDescription: inst.itemDescription,
           quantity: inst.quantityPicked,
           serialNumbers: inst.serialNumber ? [inst.serialNumber] : undefined,
-          lotNumbers: inst.lotNumber ? [inst.lotNumber] : undefined
-        }))
-      }
+          lotNumbers: inst.lotNumber ? [inst.lotNumber] : undefined,
+        })),
+      },
     ];
   }
 
@@ -613,29 +624,35 @@ export class OrderFulfillmentService {
     return 'Standard packing procedures apply. Fragile items require bubble wrap.';
   }
 
-  private async getSpecialHandlingRequirements(order: SalesOrder, instructions: PickInstruction[]): Promise<string[]> {
+  private async getSpecialHandlingRequirements(
+    order: SalesOrder,
+    instructions: PickInstruction[]
+  ): Promise<string[]> {
     const requirements = [];
-    
+
     if (order.priority === Priority.URGENT) {
       requirements.push('RUSH_HANDLING');
     }
-    
+
     // Check for temperature-sensitive items
     // Check for fragile items
     // etc.
-    
+
     return requirements;
   }
 
-  private async generateShipmentLineItems(order: SalesOrder, packingSlip: PackingSlip): Promise<ShipmentLineItem[]> {
+  private async generateShipmentLineItems(
+    order: SalesOrder,
+    packingSlip: PackingSlip
+  ): Promise<ShipmentLineItem[]> {
     // Implementation would map packed items to shipment line items
-    return order.lineItems.map(item => ({
+    return order.lineItems.map((item) => ({
       orderLineItemId: item.id,
       itemId: item.itemId,
       itemCode: item.itemCode,
       shippedQuantity: item.quantity,
       unitOfMeasure: item.unitOfMeasure,
-      condition: 'NEW'
+      condition: 'NEW',
     }));
   }
 
@@ -645,10 +662,14 @@ export class OrderFulfillmentService {
     shippingMethod: string
   ): Promise<Date> {
     // Implementation would integrate with carrier APIs
-    const businessDays = shippingMethod.includes('EXPRESS') ? 1 : 
-                        shippingMethod.includes('OVERNIGHT') ? 1 : 
-                        shippingMethod.includes('2DAY') ? 2 : 5;
-    
+    const businessDays = shippingMethod.includes('EXPRESS')
+      ? 1
+      : shippingMethod.includes('OVERNIGHT')
+        ? 1
+        : shippingMethod.includes('2DAY')
+          ? 2
+          : 5;
+
     const deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate() + businessDays);
     return deliveryDate;
@@ -661,7 +682,7 @@ export class OrderFulfillmentService {
   ): Promise<number> {
     // Implementation would integrate with carrier rating APIs
     const totalWeight = packageDetails.reduce((sum, pkg) => sum + pkg.weight, 0);
-    const baseRate = shippingOptions.shippingMethod.includes('EXPRESS') ? 25.00 : 12.50;
+    const baseRate = shippingOptions.shippingMethod.includes('EXPRESS') ? 25.0 : 12.5;
     return totalWeight * baseRate;
   }
 
@@ -669,7 +690,10 @@ export class OrderFulfillmentService {
     return insuredValue * 0.005; // 0.5% of insured value
   }
 
-  private async integrateWithCarrierAPI(shipment: Shipment, details: any): Promise<{
+  private async integrateWithCarrierAPI(
+    shipment: Shipment,
+    details: any
+  ): Promise<{
     masterTrackingNumber: string;
     packageTrackingNumbers: string[];
     estimatedDelivery: Date;
@@ -678,11 +702,11 @@ export class OrderFulfillmentService {
     // Implementation would integrate with actual carrier APIs (UPS, FedEx, etc.)
     return {
       masterTrackingNumber: `1Z999AA1234567890${Date.now().toString().slice(-3)}`,
-      packageTrackingNumbers: shipment.packageDetails.map((_, index) => 
-        `1Z999AA1234567890${Date.now().toString().slice(-3)}${index}`
+      packageTrackingNumbers: shipment.packageDetails.map(
+        (_, index) => `1Z999AA1234567890${Date.now().toString().slice(-3)}${index}`
       ),
       estimatedDelivery: shipment.estimatedDeliveryDate || new Date(),
-      labelUrls: ['https://example.com/label1.pdf']
+      labelUrls: ['https://example.com/label1.pdf'],
     };
   }
 

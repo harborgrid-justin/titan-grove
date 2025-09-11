@@ -21,20 +21,15 @@ import { rfqService } from './business-logic/rfq-management/rfq-service';
 import { contractService } from './business-logic/contract-management/contract-service';
 import { procurementAnalyticsService } from './business-logic/procurement-analytics/procurement-analytics-service';
 
-import type {
-  Supplier,
-  PurchaseOrder,
-  PurchaseRequisition,
-  RFQ,
-  Contract
-} from './types';
+import type { Supplier, PurchaseOrder, PurchaseRequisition, RFQ, Contract } from './types';
 
 export class ProcurementManager extends BaseManager {
-  
   /**
    * Supplier Management
    */
-  async createSupplier(supplier: Omit<Supplier, 'id' | 'createdDate' | 'performanceRating' | 'riskRating'>): Promise<Supplier> {
+  async createSupplier(
+    supplier: Omit<Supplier, 'id' | 'createdDate' | 'performanceRating' | 'riskRating'>
+  ): Promise<Supplier> {
     const id = this.generateId('supp');
     return {
       ...supplier,
@@ -42,7 +37,7 @@ export class ProcurementManager extends BaseManager {
       id,
       createdDate: new Date(),
       performanceRating: 0,
-      riskRating: 'MEDIUM'
+      riskRating: 'MEDIUM',
     };
   }
 
@@ -64,15 +59,17 @@ export class ProcurementManager extends BaseManager {
       recommendations: [
         'Improve cost competitiveness through negotiation',
         'Maintain excellent delivery performance',
-        'Continue quality improvement initiatives'
-      ]
+        'Continue quality improvement initiatives',
+      ],
     };
   }
 
   /**
    * Purchase Order Management
    */
-  async createPurchaseOrder(order: Omit<PurchaseOrder, 'id' | 'orderNumber' | 'createdDate' | 'status'>): Promise<PurchaseOrder> {
+  async createPurchaseOrder(
+    order: Omit<PurchaseOrder, 'id' | 'orderNumber' | 'createdDate' | 'status'>
+  ): Promise<PurchaseOrder> {
     const id = this.generateId('po');
     const orderNumber = `PO-${this.generateNumericId()}`;
     return {
@@ -81,7 +78,7 @@ export class ProcurementManager extends BaseManager {
       id,
       orderNumber,
       createdDate: new Date(),
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
   }
 
@@ -106,17 +103,17 @@ export class ProcurementManager extends BaseManager {
       topCategories: [
         { category: 'Raw Materials', spend: 2100000 },
         { category: 'IT Services', spend: 850000 },
-        { category: 'Facility Services', spend: 650000 }
+        { category: 'Facility Services', spend: 650000 },
       ],
       topSuppliers: [
         { supplierId: 'supp_001', name: 'ABC Materials Corp', spend: 980000 },
-        { supplierId: 'supp_002', name: 'TechServ Solutions', spend: 720000 }
+        { supplierId: 'supp_002', name: 'TechServ Solutions', spend: 720000 },
       ],
       purchaseOrderStats: {
         totalOrders: 416,
         averageProcessingTime: 2.8, // days
-        automationRate: 73.5 // percentage
-      }
+        automationRate: 73.5, // percentage
+      },
     };
   }
 
@@ -136,18 +133,18 @@ export class ProcurementManager extends BaseManager {
       breakdown: [
         { group: 'Raw Materials', spend: 2100000, percentage: 40.4 },
         { group: 'IT Services', spend: 850000, percentage: 16.3 },
-        { group: 'Facility Services', spend: 650000, percentage: 12.5 }
+        { group: 'Facility Services', spend: 650000, percentage: 12.5 },
       ],
       trends: [
         { period: '2024-Q1', spend: 1200000 },
         { period: '2024-Q2', spend: 1350000 },
-        { period: '2024-Q3', spend: 1300000 }
+        { period: '2024-Q3', spend: 1300000 },
       ],
       opportunities: [
         'Consolidate IT services with fewer suppliers for better rates',
         'Negotiate volume discounts for raw materials',
-        'Consider long-term contracts for facility services'
-      ]
+        'Consider long-term contracts for facility services',
+      ],
     };
   }
 }
@@ -220,7 +217,15 @@ export interface PurchaseOrder {
   supplierId: string;
   supplierName: string;
   buyerId: string;
-  status: 'DRAFT' | 'APPROVED' | 'SENT' | 'ACKNOWLEDGED' | 'PARTIALLY_RECEIVED' | 'FULLY_RECEIVED' | 'CLOSED' | 'CANCELLED';
+  status:
+    | 'DRAFT'
+    | 'APPROVED'
+    | 'SENT'
+    | 'ACKNOWLEDGED'
+    | 'PARTIALLY_RECEIVED'
+    | 'FULLY_RECEIVED'
+    | 'CLOSED'
+    | 'CANCELLED';
   type: 'STANDARD' | 'BLANKET' | 'PLANNED' | 'CONTRACT';
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
   currency: string;
@@ -437,6 +442,5 @@ export interface ContractPerformance {
   lastReviewDate?: Date;
   nextReviewDate?: Date;
 }
-
 
 export const procurementManager = new ProcurementManager();

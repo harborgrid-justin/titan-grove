@@ -11,7 +11,12 @@ export interface DemandForecast {
     startDate: Date;
     endDate: Date;
   };
-  forecastMethod: 'MOVING_AVERAGE' | 'EXPONENTIAL_SMOOTHING' | 'LINEAR_REGRESSION' | 'NEURAL_NETWORK' | 'ENSEMBLE';
+  forecastMethod:
+    | 'MOVING_AVERAGE'
+    | 'EXPONENTIAL_SMOOTHING'
+    | 'LINEAR_REGRESSION'
+    | 'NEURAL_NETWORK'
+    | 'ENSEMBLE';
   forecastedDemand: number;
   confidence: number;
   actualDemand?: number;
@@ -416,7 +421,11 @@ export interface RiskFactor {
 export interface MitigationStrategy {
   strategyId: string;
   riskId: string;
-  strategyType: 'DIVERSIFY_SUPPLIERS' | 'INCREASE_INVENTORY' | 'IMPROVE_FLEXIBILITY' | 'CONTINGENCY_PLAN';
+  strategyType:
+    | 'DIVERSIFY_SUPPLIERS'
+    | 'INCREASE_INVENTORY'
+    | 'IMPROVE_FLEXIBILITY'
+    | 'CONTINGENCY_PLAN';
   implementationCost: number;
   riskReduction: number;
   description: string;
@@ -561,12 +570,21 @@ export interface EfficiencyMetrics {
 
 export interface PlanningOptimization {
   optimizationId: string;
-  optimizationType: 'DEMAND_PLANNING' | 'SUPPLY_PLANNING' | 'PRODUCTION_PLANNING' | 'DISTRIBUTION_PLANNING' | 'NETWORK_OPTIMIZATION';
+  optimizationType:
+    | 'DEMAND_PLANNING'
+    | 'SUPPLY_PLANNING'
+    | 'PRODUCTION_PLANNING'
+    | 'DISTRIBUTION_PLANNING'
+    | 'NETWORK_OPTIMIZATION';
   objective: OptimizationObjective;
   constraints: OptimizationConstraint[];
   variables: OptimizationVariable[];
   solution: OptimizationSolution;
-  algorithm: 'LINEAR_PROGRAMMING' | 'GENETIC_ALGORITHM' | 'SIMULATED_ANNEALING' | 'MACHINE_LEARNING';
+  algorithm:
+    | 'LINEAR_PROGRAMMING'
+    | 'GENETIC_ALGORITHM'
+    | 'SIMULATED_ANNEALING'
+    | 'MACHINE_LEARNING';
   executionTime: number;
   status: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
 }

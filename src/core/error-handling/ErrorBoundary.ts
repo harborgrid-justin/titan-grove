@@ -10,7 +10,7 @@ export enum ErrorSeverity {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL'
+  CRITICAL = 'CRITICAL',
 }
 
 export interface ErrorContext {
@@ -79,7 +79,7 @@ export class ErrorBoundary {
     totalErrors: 0,
     errorRate: 0,
     retryAttempts: 0,
-    fallbackActivations: 0
+    fallbackActivations: 0,
   };
 
   constructor(private readonly config: ErrorBoundaryConfig) {
@@ -91,10 +91,7 @@ export class ErrorBoundary {
     }
   }
 
-  async execute<T>(
-    operation: () => Promise<T>,
-    context: ErrorContext
-  ): Promise<T> {
+  async execute<T>(operation: () => Promise<T>, context: ErrorContext): Promise<T> {
     this.metrics.totalRequests++;
 
     const executeWithRetry = async (): Promise<T> => {
@@ -120,13 +117,13 @@ export class ErrorBoundary {
   ): Promise<T> {
     const retryConfig = this.config.retryConfig!;
     let lastError: Error;
-    
+
     for (let attempt = 1; attempt <= retryConfig.maxAttempts; attempt++) {
       try {
         return await operation();
       } catch (error) {
         lastError = error as Error;
-        
+
         if (attempt === retryConfig.maxAttempts) {
           break;
         }
@@ -162,33 +159,30 @@ export class ErrorBoundary {
     this.updateErrorRate();
 
     const severity = this.config.errorClassification?.(error) || ErrorSeverity.MEDIUM;
-    
+
     this.metrics.lastError = {
       error,
       context,
       severity,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    this.config.logger?.error(
-      `Error in ${context.service}:${context.operation}`,
-      {
-        error: error.message,
-        stack: error.stack,
-        context,
-        severity
-      }
-    );
+    this.config.logger?.error(`Error in ${context.service}:${context.operation}`, {
+      error: error.message,
+      stack: error.stack,
+      context,
+      severity,
+    });
 
     // Try fallback strategies
     if (this.config.fallbackConfig?.enabled) {
       try {
         return await this.executeFallback(error, context);
       } catch (fallbackError) {
-        this.config.logger?.error(
-          `Fallback failed for ${context.service}:${context.operation}`,
-          { originalError: error.message, fallbackError: (fallbackError as Error).message }
-        );
+        this.config.logger?.error(`Fallback failed for ${context.service}:${context.operation}`, {
+          originalError: error.message,
+          fallbackError: (fallbackError as Error).message,
+        });
       }
     }
 
@@ -202,9 +196,9 @@ export class ErrorBoundary {
 
   private async executeFallback<T>(error: Error, context: ErrorContext): Promise<T> {
     this.metrics.fallbackActivations++;
-    
+
     const fallbackConfig = this.config.fallbackConfig!;
-    
+
     if (fallbackConfig.fallbackHandler) {
       this.config.logger?.info(
         `Executing fallback handler for ${context.service}:${context.operation}`,
@@ -212,7 +206,7 @@ export class ErrorBoundary {
       );
       return await fallbackConfig.fallbackHandler(context, error);
     }
-    
+
     if (fallbackConfig.degradedModeHandler) {
       this.config.logger?.info(
         `Executing degraded mode handler for ${context.service}:${context.operation}`,
@@ -231,7 +225,7 @@ export class ErrorBoundary {
   }
 
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   getMetrics(): ErrorBoundaryMetrics {
@@ -248,7 +242,7 @@ export class ErrorBoundary {
       totalErrors: 0,
       errorRate: 0,
       retryAttempts: 0,
-      fallbackActivations: 0
+      fallbackActivations: 0,
     };
     this.circuitBreaker?.reset();
   }
@@ -261,9 +255,9 @@ export function withErrorBoundary<T extends any[], R>(
 ): void {
   const originalMethod = descriptor.value!;
 
-  descriptor.value = async function(this: any, ...args: T): Promise<R> {
+  descriptor.value = async function (this: any, ...args: T): Promise<R> {
     const errorBoundary = this.errorBoundary as ErrorBoundary;
-    
+
     if (!errorBoundary) {
       throw new Error(`Error boundary not configured for ${target.constructor.name}`);
     }
@@ -272,12 +266,9 @@ export function withErrorBoundary<T extends any[], R>(
       service: target.constructor.name,
       operation: propertyKey,
       timestamp: new Date(),
-      correlationId: this.correlationId || crypto.randomUUID?.() || Math.random().toString(36)
+      correlationId: this.correlationId || crypto.randomUUID?.() || Math.random().toString(36),
     };
 
-    return await errorBoundary.execute(
-      () => originalMethod.apply(this, args),
-      context
-    );
+    return await errorBoundary.execute(() => originalMethod.apply(this, args), context);
   };
 }

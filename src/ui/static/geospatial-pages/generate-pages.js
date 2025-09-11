@@ -14,8 +14,8 @@ const geospatialPages = {
         'Real-time interactive map interface with multi-layer support',
         'Custom map styling and thematic mapping capabilities',
         'Spatial data overlay and analysis tools',
-        'Mobile-responsive mapping with touch controls'
-      ]
+        'Mobile-responsive mapping with touch controls',
+      ],
     },
     {
       name: 'spatial-dashboards',
@@ -25,8 +25,8 @@ const geospatialPages = {
         'Location-based business intelligence dashboards',
         'Spatial KPI monitoring and trend analysis',
         'Geographic performance metrics and reporting',
-        'Real-time location analytics and alerts'
-      ]
+        'Real-time location analytics and alerts',
+      ],
     },
     {
       name: 'map-visualization',
@@ -36,8 +36,8 @@ const geospatialPages = {
         'Heat map and cluster visualization techniques',
         'Choropleth and symbol mapping capabilities',
         'Time-series spatial data visualization',
-        '3D terrain and elevation mapping'
-      ]
+        '3D terrain and elevation mapping',
+      ],
     },
     {
       name: 'geospatial-reporting',
@@ -47,8 +47,8 @@ const geospatialPages = {
         'Automated spatial report generation',
         'Custom map layouts and cartographic design',
         'Spatial data export and sharing capabilities',
-        'Interactive report embedding and distribution'
-      ]
+        'Interactive report embedding and distribution',
+      ],
     },
     {
       name: 'location-search',
@@ -58,8 +58,8 @@ const geospatialPages = {
         'Global geocoding and reverse geocoding services',
         'Address validation and standardization',
         'Points of interest (POI) search and discovery',
-        'Spatial search with radius and polygon queries'
-      ]
+        'Spatial search with radius and polygon queries',
+      ],
     },
     {
       name: 'map-sharing',
@@ -69,9 +69,9 @@ const geospatialPages = {
         'Map sharing and collaborative editing',
         'Spatial annotation and markup tools',
         'Team-based map project management',
-        'Public and private map publishing'
-      ]
-    }
+        'Public and private map publishing',
+      ],
+    },
   ],
   'spatial-analytics': [
     {
@@ -82,8 +82,8 @@ const geospatialPages = {
         'Market area analysis and demographic profiling',
         'Customer location analytics and segmentation',
         'Competitive location intelligence',
-        'Site selection and trade area analysis'
-      ]
+        'Site selection and trade area analysis',
+      ],
     },
     {
       name: 'spatial-statistics',
@@ -93,8 +93,8 @@ const geospatialPages = {
         'Spatial pattern analysis and hotspot detection',
         'Geospatial correlation and regression analysis',
         'Spatial autocorrelation and clustering',
-        'Geographic weighted regression modeling'
-      ]
+        'Geographic weighted regression modeling',
+      ],
     },
     {
       name: 'predictive-spatial',
@@ -104,8 +104,8 @@ const geospatialPages = {
         'Spatial machine learning and AI modeling',
         'Location-based demand forecasting',
         'Risk prediction and spatial probability',
-        'Geospatial trend analysis and projection'
-      ]
+        'Geospatial trend analysis and projection',
+      ],
     },
     {
       name: 'proximity-analysis',
@@ -115,19 +115,20 @@ const geospatialPages = {
         'Network-based accessibility analysis',
         'Service area generation and optimization',
         'Drive time and walk time calculations',
-        'Multi-modal transportation accessibility'
-      ]
+        'Multi-modal transportation accessibility',
+      ],
     },
     {
       name: 'spatial-optimization',
       title: 'Spatial Optimization Engine',
-      description: 'Location optimization algorithms for facility placement and resource allocation',
+      description:
+        'Location optimization algorithms for facility placement and resource allocation',
       features: [
         'Facility location optimization algorithms',
         'Spatial resource allocation modeling',
         'Multi-criteria spatial decision analysis',
-        'Coverage optimization and gap analysis'
-      ]
+        'Coverage optimization and gap analysis',
+      ],
     },
     {
       name: 'geofencing-alerts',
@@ -137,9 +138,9 @@ const geospatialPages = {
         'Dynamic geofence creation and management',
         'Real-time entry/exit notifications',
         'Custom spatial alert conditions',
-        'Mobile geofencing and location triggers'
-      ]
-    }
+        'Mobile geofencing and location triggers',
+      ],
+    },
   ],
   'asset-tracking': [
     {
@@ -150,8 +151,8 @@ const geospatialPages = {
         'Real-time GPS vehicle tracking and monitoring',
         'Fleet route optimization and dispatch',
         'Driver behavior analysis and safety monitoring',
-        'Fuel consumption and efficiency tracking'
-      ]
+        'Fuel consumption and efficiency tracking',
+      ],
     },
     {
       name: 'asset-location',
@@ -161,8 +162,8 @@ const geospatialPages = {
         'Indoor and outdoor asset positioning',
         'RFID and IoT sensor integration',
         'Asset utilization and movement tracking',
-        'Maintenance scheduling based on location'
-      ]
+        'Maintenance scheduling based on location',
+      ],
     },
     {
       name: 'facility-management',
@@ -172,8 +173,8 @@ const geospatialPages = {
         'Interactive floor plans and space mapping',
         'Occupancy tracking and space utilization',
         'Facility maintenance and inspection routing',
-        'Emergency evacuation planning and management'
-      ]
+        'Emergency evacuation planning and management',
+      ],
     },
     {
       name: 'equipment-tracking',
@@ -183,8 +184,8 @@ const geospatialPages = {
         'Equipment location tracking and history',
         'Maintenance scheduling based on usage patterns',
         'Compliance monitoring and audit trails',
-        'Inventory optimization and replenishment'
-      ]
+        'Inventory optimization and replenishment',
+      ],
     },
     {
       name: 'mobile-workforce',
@@ -194,8 +195,8 @@ const geospatialPages = {
         'Field worker location tracking and dispatch',
         'Dynamic task assignment and routing',
         'Time and attendance with location verification',
-        'Mobile work order management and completion'
-      ]
+        'Mobile work order management and completion',
+      ],
     },
     {
       name: 'security-monitoring',
@@ -205,9 +206,9 @@ const geospatialPages = {
         'Perimeter monitoring and intrusion detection',
         'Access control with location verification',
         'Video surveillance integration and mapping',
-        'Incident response and emergency management'
-      ]
-    }
+        'Incident response and emergency management',
+      ],
+    },
   ],
   'supply-chain-geo': [
     {
@@ -218,8 +219,8 @@ const geospatialPages = {
         'Multi-stop route optimization and planning',
         'Load consolidation and delivery scheduling',
         'Dynamic routing with real-time traffic',
-        'Cost optimization and carbon footprint reduction'
-      ]
+        'Cost optimization and carbon footprint reduction',
+      ],
     },
     {
       name: 'warehouse-location',
@@ -229,8 +230,8 @@ const geospatialPages = {
         'Optimal warehouse location analysis',
         'Distribution network modeling and optimization',
         'Service level and cost trade-off analysis',
-        'Market coverage and accessibility planning'
-      ]
+        'Market coverage and accessibility planning',
+      ],
     },
     {
       name: 'supplier-mapping',
@@ -240,8 +241,8 @@ const geospatialPages = {
         'Global supplier location mapping and analysis',
         'Supply chain risk assessment and monitoring',
         'Supplier diversity and geographic distribution',
-        'Alternative supplier identification and sourcing'
-      ]
+        'Alternative supplier identification and sourcing',
+      ],
     },
     {
       name: 'delivery-tracking',
@@ -251,8 +252,8 @@ const geospatialPages = {
         'Real-time delivery tracking and updates',
         'Customer notification and delivery windows',
         'Last-mile optimization and planning',
-        'Delivery performance analytics and KPIs'
-      ]
+        'Delivery performance analytics and KPIs',
+      ],
     },
     {
       name: 'distribution-analysis',
@@ -262,8 +263,8 @@ const geospatialPages = {
         'Distribution center performance analysis',
         'Network flow optimization and modeling',
         'Capacity planning and demand forecasting',
-        'Cost-to-serve analysis by geography'
-      ]
+        'Cost-to-serve analysis by geography',
+      ],
     },
     {
       name: 'transportation-planning',
@@ -273,9 +274,9 @@ const geospatialPages = {
         'Multi-modal transportation planning',
         'Transportation cost modeling and optimization',
         'Carrier performance and route analysis',
-        'Freight consolidation and scheduling'
-      ]
-    }
+        'Freight consolidation and scheduling',
+      ],
+    },
   ],
   'customer-geo': [
     {
@@ -286,8 +287,8 @@ const geospatialPages = {
         'Sales territory design and optimization',
         'Workload balancing and quota allocation',
         'Territory performance analytics and reporting',
-        'Customer assignment and coverage analysis'
-      ]
+        'Customer assignment and coverage analysis',
+      ],
     },
     {
       name: 'customer-analytics',
@@ -297,30 +298,32 @@ const geospatialPages = {
         'Customer geographic distribution analysis',
         'Location-based customer segmentation',
         'Customer journey and movement patterns',
-        'Market penetration and opportunity mapping'
-      ]
+        'Market penetration and opportunity mapping',
+      ],
     },
     {
       name: 'market-analysis',
       title: 'Market Area Analysis',
-      description: 'Comprehensive market analysis with demographic profiling and competition mapping',
+      description:
+        'Comprehensive market analysis with demographic profiling and competition mapping',
       features: [
         'Market area definition and analysis',
         'Demographic and psychographic profiling',
         'Competitive landscape mapping',
-        'Market opportunity identification and sizing'
-      ]
+        'Market opportunity identification and sizing',
+      ],
     },
     {
       name: 'site-selection',
       title: 'Retail Site Selection',
-      description: 'Data-driven retail site selection with market analysis and cannibalization studies',
+      description:
+        'Data-driven retail site selection with market analysis and cannibalization studies',
       features: [
         'Retail site selection and evaluation',
         'Trade area analysis and customer catchment',
         'Cannibalization impact assessment',
-        'Revenue prediction and ROI modeling'
-      ]
+        'Revenue prediction and ROI modeling',
+      ],
     },
     {
       name: 'customer-proximity',
@@ -330,54 +333,58 @@ const geospatialPages = {
         'Proximity-based marketing and promotions',
         'Location-aware customer recommendations',
         'Nearby store and service locators',
-        'Customer check-in and loyalty programs'
-      ]
+        'Customer check-in and loyalty programs',
+      ],
     },
     {
       name: 'demographic-analysis',
       title: 'Demographic & Census Analysis',
-      description: 'Advanced demographic analysis with census data integration and population modeling',
+      description:
+        'Advanced demographic analysis with census data integration and population modeling',
       features: [
         'Census data integration and analysis',
         'Population growth and demographic trends',
         'Lifestyle and spending pattern analysis',
-        'Target market identification and profiling'
-      ]
-    }
+        'Target market identification and profiling',
+      ],
+    },
   ],
   'risk-compliance': [
     {
       name: 'environmental-monitoring',
       title: 'Environmental Risk Monitoring',
-      description: 'Environmental risk assessment with real-time monitoring and compliance tracking',
+      description:
+        'Environmental risk assessment with real-time monitoring and compliance tracking',
       features: [
         'Environmental hazard identification and mapping',
         'Air quality and pollution monitoring',
         'Water quality and contamination tracking',
-        'Climate change impact assessment'
-      ]
+        'Climate change impact assessment',
+      ],
     },
     {
       name: 'hazard-mapping',
       title: 'Natural Hazard Mapping',
-      description: 'Comprehensive natural hazard mapping with risk assessment and emergency planning',
+      description:
+        'Comprehensive natural hazard mapping with risk assessment and emergency planning',
       features: [
         'Flood, earthquake, and wildfire risk mapping',
         'Hurricane and storm surge modeling',
         'Landslide and geological hazard assessment',
-        'Climate vulnerability and adaptation planning'
-      ]
+        'Climate vulnerability and adaptation planning',
+      ],
     },
     {
       name: 'regulatory-compliance',
       title: 'Regulatory Compliance Mapping',
-      description: 'Regulatory compliance management with jurisdiction mapping and requirement tracking',
+      description:
+        'Regulatory compliance management with jurisdiction mapping and requirement tracking',
       features: [
         'Regulatory jurisdiction mapping and analysis',
         'Compliance requirement tracking by location',
         'Permit and license management with GIS',
-        'Environmental impact assessment and reporting'
-      ]
+        'Environmental impact assessment and reporting',
+      ],
     },
     {
       name: 'emergency-response',
@@ -387,19 +394,20 @@ const geospatialPages = {
         'Emergency incident mapping and response',
         'Resource allocation and deployment optimization',
         'Evacuation route planning and management',
-        'Communication and coordination systems'
-      ]
+        'Communication and coordination systems',
+      ],
     },
     {
       name: 'business-continuity',
       title: 'Business Continuity Planning',
-      description: 'Location-based business continuity planning with risk assessment and recovery strategies',
+      description:
+        'Location-based business continuity planning with risk assessment and recovery strategies',
       features: [
         'Business impact assessment by location',
         'Alternative site identification and planning',
         'Supply chain disruption risk modeling',
-        'Recovery time and cost optimization'
-      ]
+        'Recovery time and cost optimization',
+      ],
     },
     {
       name: 'insurance-mapping',
@@ -409,32 +417,34 @@ const geospatialPages = {
         'Property risk assessment and mapping',
         'Claims pattern analysis and prediction',
         'Underwriting decision support systems',
-        'Portfolio risk analysis and optimization'
-      ]
-    }
+        'Portfolio risk analysis and optimization',
+      ],
+    },
   ],
   'field-operations': [
     {
       name: 'field-service-routing',
       title: 'Field Service Route Optimization',
-      description: 'Intelligent field service routing with technician skill matching and scheduling',
+      description:
+        'Intelligent field service routing with technician skill matching and scheduling',
       features: [
         'Technician routing and schedule optimization',
         'Skill-based job assignment and matching',
         'Real-time route adjustment and dispatch',
-        'Service level agreement (SLA) monitoring'
-      ]
+        'Service level agreement (SLA) monitoring',
+      ],
     },
     {
       name: 'work-order-mapping',
       title: 'Work Order Location Management',
-      description: 'Location-based work order management with priority routing and resource allocation',
+      description:
+        'Location-based work order management with priority routing and resource allocation',
       features: [
         'Work order location mapping and visualization',
         'Priority-based routing and scheduling',
         'Resource allocation and capacity planning',
-        'Customer appointment and notification management'
-      ]
+        'Customer appointment and notification management',
+      ],
     },
     {
       name: 'inspection-tracking',
@@ -444,19 +454,20 @@ const geospatialPages = {
         'Inspection route optimization and scheduling',
         'Compliance checklist and documentation',
         'Photo and video capture with GPS tagging',
-        'Inspection history and trend analysis'
-      ]
+        'Inspection history and trend analysis',
+      ],
     },
     {
       name: 'maintenance-mapping',
       title: 'Maintenance Location Planning',
-      description: 'Preventive maintenance planning with location-based scheduling and optimization',
+      description:
+        'Preventive maintenance planning with location-based scheduling and optimization',
       features: [
         'Preventive maintenance route planning',
         'Equipment location and service history',
         'Maintenance schedule optimization',
-        'Parts inventory and logistics coordination'
-      ]
+        'Parts inventory and logistics coordination',
+      ],
     },
     {
       name: 'utilities-mapping',
@@ -466,19 +477,20 @@ const geospatialPages = {
         'Utility infrastructure mapping and modeling',
         'Outage detection and response coordination',
         'Asset condition assessment and planning',
-        'Customer impact analysis and communication'
-      ]
+        'Customer impact analysis and communication',
+      ],
     },
     {
       name: 'service-territory',
       title: 'Service Territory Optimization',
-      description: 'Service territory design and optimization with workload distribution and coverage analysis',
+      description:
+        'Service territory design and optimization with workload distribution and coverage analysis',
       features: [
         'Service territory boundary optimization',
         'Workload distribution and balancing',
         'Coverage gap analysis and improvement',
-        'Service time and response optimization'
-      ]
+        'Service time and response optimization',
+      ],
     },
     {
       name: 'emergency-dispatch',
@@ -488,65 +500,69 @@ const geospatialPages = {
         'Emergency incident location tracking',
         'Real-time dispatch and coordination',
         'Response time optimization',
-        'Emergency resource allocation'
-      ]
-    }
+        'Emergency resource allocation',
+      ],
+    },
   ],
   'environmental-gis': [
     {
       name: 'carbon-footprint',
       title: 'Carbon Footprint Mapping',
-      description: 'Carbon footprint analysis and mapping with emission tracking and reduction planning',
+      description:
+        'Carbon footprint analysis and mapping with emission tracking and reduction planning',
       features: [
         'Carbon emission mapping and visualization',
         'Emission source identification and tracking',
         'Reduction strategy planning and monitoring',
-        'Environmental impact assessment'
-      ]
+        'Environmental impact assessment',
+      ],
     },
     {
       name: 'ecosystem-monitoring',
       title: 'Ecosystem Health Monitoring',
-      description: 'Environmental ecosystem monitoring with biodiversity tracking and conservation planning',
+      description:
+        'Environmental ecosystem monitoring with biodiversity tracking and conservation planning',
       features: [
         'Ecosystem health assessment and monitoring',
         'Biodiversity tracking and conservation',
         'Habitat mapping and protection planning',
-        'Environmental change detection'
-      ]
+        'Environmental change detection',
+      ],
     },
     {
       name: 'water-resources',
       title: 'Water Resources Management',
-      description: 'Water resource mapping and management with quality monitoring and conservation planning',
+      description:
+        'Water resource mapping and management with quality monitoring and conservation planning',
       features: [
         'Water resource mapping and analysis',
         'Water quality monitoring and tracking',
         'Conservation planning and optimization',
-        'Watershed management and protection'
-      ]
+        'Watershed management and protection',
+      ],
     },
     {
       name: 'air-quality',
       title: 'Air Quality Monitoring',
-      description: 'Air quality monitoring and analysis with pollution source tracking and health impact assessment',
+      description:
+        'Air quality monitoring and analysis with pollution source tracking and health impact assessment',
       features: [
         'Air quality monitoring and mapping',
         'Pollution source identification and tracking',
         'Health impact assessment and reporting',
-        'Air quality forecasting and alerts'
-      ]
-    }
-  ]
+        'Air quality forecasting and alerts',
+      ],
+    },
+  ],
 };
 
 // Ensure directory structure exists
-Object.keys(geospatialPages).forEach(category => {
+Object.keys(geospatialPages).forEach((category) => {
   const categoryDir = path.join(__dirname, category);
   if (!fs.existsSync(categoryDir)) {
     fs.mkdirSync(categoryDir, { recursive: true });
   }
-  
+
   const scriptsDir = path.join(categoryDir, 'scripts');
   if (!fs.existsSync(scriptsDir)) {
     fs.mkdirSync(scriptsDir, { recursive: true });
@@ -566,7 +582,7 @@ if (!fs.existsSync(scriptsDir)) {
 
 function createGeospatialPage(category, pageData) {
   const template = fs.readFileSync(path.join(__dirname, 'page-template.html'), 'utf8');
-  
+
   let pageContent = template
     .replace(/\{\{PAGE_TITLE\}\}/g, pageData.title)
     .replace(/\{\{PAGE_DESCRIPTION\}\}/g, pageData.description)
@@ -578,7 +594,7 @@ function createGeospatialPage(category, pageData) {
 
   const filePath = path.join(__dirname, category, `${pageData.name}.html`);
   fs.writeFileSync(filePath, pageContent);
-  
+
   console.log(`Created: ${filePath}`);
 }
 
@@ -728,35 +744,35 @@ function setupBusinessLogic() {
 
   const scriptPath = path.join(__dirname, category, 'scripts', `${pageData.name}.js`);
   fs.writeFileSync(scriptPath, scriptContent);
-  
+
   console.log(`Created script: ${scriptPath}`);
 }
 
 // Generate all pages
 function generateAllPages() {
   let totalPages = 0;
-  
-  Object.keys(geospatialPages).forEach(category => {
+
+  Object.keys(geospatialPages).forEach((category) => {
     console.log(`\n📍 Generating ${category} pages...`);
-    
-    geospatialPages[category].forEach(pageData => {
+
+    geospatialPages[category].forEach((pageData) => {
       createGeospatialPage(category, pageData);
       createPageScript(category, pageData);
       totalPages++;
     });
   });
-  
+
   console.log(`\n🎉 Successfully generated ${totalPages} Geospatial pages!`);
-  
+
   // Generate index file
   generateIndexFile();
-  
+
   // Generate styles
   generateStyles();
-  
+
   // Generate common scripts
   generateCommonScripts();
-  
+
   // Display summary
   displayGenerationSummary(totalPages);
 }
@@ -951,12 +967,13 @@ function generateStatusItems() {
 }
 
 function generateCategoryCards() {
-  return Object.keys(geospatialPages).map(category => {
-    const pages = geospatialPages[category];
-    const categoryIcon = getCategoryIcon(category);
-    const categoryTitle = getCategoryTitle(category);
-    
-    return `
+  return Object.keys(geospatialPages)
+    .map((category) => {
+      const pages = geospatialPages[category];
+      const categoryIcon = getCategoryIcon(category);
+      const categoryTitle = getCategoryTitle(category);
+
+      return `
       <div class="category-card" data-category="${category}">
         <div class="category-header">
           <div class="category-icon">
@@ -968,15 +985,20 @@ function generateCategoryCards() {
           </div>
         </div>
         <div class="category-pages">
-          ${pages.map(page => `
+          ${pages
+            .map(
+              (page) => `
             <a href="${category}/${page.name}.html" class="page-link">
               <span>${page.title}</span>
               <i class="fas fa-arrow-right"></i>
             </a>
-          `).join('')}
+          `
+            )
+            .join('')}
         </div>
       </div>`;
-  }).join('');
+    })
+    .join('');
 }
 
 function getCategoryIcon(category) {
@@ -988,7 +1010,7 @@ function getCategoryIcon(category) {
     'customer-geo': 'fas fa-users',
     'risk-compliance': 'fas fa-shield-alt',
     'field-operations': 'fas fa-tools',
-    'environmental-gis': 'fas fa-leaf'
+    'environmental-gis': 'fas fa-leaf',
   };
   return icons[category] || 'fas fa-map';
 }
@@ -1002,9 +1024,9 @@ function getCategoryTitle(category) {
     'customer-geo': 'Customer Geospatial',
     'risk-compliance': 'Risk & Compliance',
     'field-operations': 'Field Operations',
-    'environmental-gis': 'Environmental GIS'
+    'environmental-gis': 'Environmental GIS',
   };
-  return titles[category] || category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  return titles[category] || category.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
 function generateStyles() {
@@ -1858,5 +1880,5 @@ if (require.main === module) {
 
 module.exports = {
   generateAllPages,
-  geospatialPages
+  geospatialPages,
 };

@@ -8,14 +8,14 @@ export enum ComplianceStatus {
   NON_COMPLIANT = 'NON_COMPLIANT',
   PENDING = 'PENDING',
   WAIVED = 'WAIVED',
-  NOT_APPLICABLE = 'NOT_APPLICABLE'
+  NOT_APPLICABLE = 'NOT_APPLICABLE',
 }
 
 export enum AlertSeverity {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL'
+  CRITICAL = 'CRITICAL',
 }
 
 export enum AlertType {
@@ -24,7 +24,7 @@ export enum AlertType {
   COST = 'COST',
   SCHEDULE = 'SCHEDULE',
   SECURITY = 'SECURITY',
-  OPERATIONAL = 'OPERATIONAL'
+  OPERATIONAL = 'OPERATIONAL',
 }
 
 export interface BaseEntity {
@@ -55,7 +55,14 @@ export interface ComplianceRule extends BaseEntity {
 export interface ValidationCriteria {
   criteriaType: 'DOCUMENT' | 'CERTIFICATION' | 'PROCESS' | 'DATA' | 'THRESHOLD';
   field: string;
-  operator: 'EQUALS' | 'NOT_EQUALS' | 'GREATER_THAN' | 'LESS_THAN' | 'CONTAINS' | 'REGEX' | 'EXISTS';
+  operator:
+    | 'EQUALS'
+    | 'NOT_EQUALS'
+    | 'GREATER_THAN'
+    | 'LESS_THAN'
+    | 'CONTAINS'
+    | 'REGEX'
+    | 'EXISTS';
   value: any;
   isRequired: boolean;
   errorMessage?: string;
@@ -226,7 +233,17 @@ export interface PaginationResponse<T> {
 
 export interface FilterCriteria {
   field: string;
-  operator: 'EQUALS' | 'NOT_EQUALS' | 'IN' | 'NOT_IN' | 'CONTAINS' | 'STARTS_WITH' | 'ENDS_WITH' | 'BETWEEN' | 'IS_NULL' | 'IS_NOT_NULL';
+  operator:
+    | 'EQUALS'
+    | 'NOT_EQUALS'
+    | 'IN'
+    | 'NOT_IN'
+    | 'CONTAINS'
+    | 'STARTS_WITH'
+    | 'ENDS_WITH'
+    | 'BETWEEN'
+    | 'IS_NULL'
+    | 'IS_NOT_NULL';
   value: any;
   values?: any[];
 }
@@ -240,21 +257,23 @@ export interface SearchRequest extends PaginationRequest {
   };
 }
 
-export type ServiceResponse<T> = {
-  success: true;
-  data: T;
-  timestamp: Date;
-  correlationId?: string;
-} | {
-  success: false;
-  error: {
-    code: string;
-    message: string;
-    details?: Record<string, any>;
-  };
-  timestamp: Date;
-  correlationId?: string;
-};
+export type ServiceResponse<T> =
+  | {
+      success: true;
+      data: T;
+      timestamp: Date;
+      correlationId?: string;
+    }
+  | {
+      success: false;
+      error: {
+        code: string;
+        message: string;
+        details?: Record<string, any>;
+      };
+      timestamp: Date;
+      correlationId?: string;
+    };
 
 export interface CacheConfig {
   ttl?: number;

@@ -11,8 +11,16 @@ export interface ConditionMonitoringSystem {
   monitoringId: string;
   assetId: string;
   systemName: string;
-  monitoringType: 'VIBRATION' | 'TEMPERATURE' | 'PRESSURE' | 'FLOW' | 'ELECTRICAL' | 'ACOUSTIC' | 'VISUAL' | 'MULTI_PARAMETER';
-  
+  monitoringType:
+    | 'VIBRATION'
+    | 'TEMPERATURE'
+    | 'PRESSURE'
+    | 'FLOW'
+    | 'ELECTRICAL'
+    | 'ACOUSTIC'
+    | 'VISUAL'
+    | 'MULTI_PARAMETER';
+
   // Sensor configuration
   sensors: {
     sensorId: string;
@@ -26,7 +34,7 @@ export interface ConditionMonitoringSystem {
     calibrationDate: Date;
     nextCalibrationDate: Date;
   }[];
-  
+
   // Data collection
   dataCollection: {
     collectionFrequency: 'CONTINUOUS' | 'HOURLY' | 'DAILY' | 'WEEKLY' | 'ON_DEMAND';
@@ -35,7 +43,7 @@ export interface ConditionMonitoringSystem {
     dataQuality: 'HIGH' | 'MEDIUM' | 'LOW';
     lastDataUpdate: Date;
   };
-  
+
   // Baseline and thresholds
   baseline: {
     establishedDate: Date;
@@ -43,7 +51,7 @@ export interface ConditionMonitoringSystem {
     normalOperatingRange: Record<string, { min: number; max: number }>;
     seasonalAdjustments?: Record<string, number>;
   };
-  
+
   // Alert thresholds
   alertThresholds: {
     parameter: string;
@@ -53,7 +61,7 @@ export interface ConditionMonitoringSystem {
     emergencyLevel: number;
     trendThreshold: number; // rate of change
   }[];
-  
+
   // Integration
   integration: {
     scadaSystem?: string;
@@ -62,9 +70,9 @@ export interface ConditionMonitoringSystem {
     maintenanceSystem: string;
     notificationSystem: string;
   };
-  
+
   status: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE' | 'CALIBRATION';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -75,8 +83,12 @@ export interface PredictiveMaintenanceModel {
   modelId: string;
   assetId: string;
   modelName: string;
-  modelType: 'FAILURE_PREDICTION' | 'PERFORMANCE_DEGRADATION' | 'REMAINING_USEFUL_LIFE' | 'ANOMALY_DETECTION';
-  
+  modelType:
+    | 'FAILURE_PREDICTION'
+    | 'PERFORMANCE_DEGRADATION'
+    | 'REMAINING_USEFUL_LIFE'
+    | 'ANOMALY_DETECTION';
+
   // Model configuration
   configuration: {
     algorithm: 'REGRESSION' | 'CLASSIFICATION' | 'TIME_SERIES' | 'NEURAL_NETWORK' | 'ENSEMBLE';
@@ -85,7 +97,7 @@ export interface PredictiveMaintenanceModel {
     predictionHorizon: number; // days
     updateFrequency: 'DAILY' | 'WEEKLY' | 'MONTHLY';
   };
-  
+
   // Training data
   trainingData: {
     dataSource: string;
@@ -95,7 +107,7 @@ export interface PredictiveMaintenanceModel {
     featureEngineering: string[];
     preprocessingSteps: string[];
   };
-  
+
   // Model performance
   performance: {
     accuracy: number; // percentage
@@ -106,7 +118,7 @@ export interface PredictiveMaintenanceModel {
     rootMeanSquareError?: number;
     lastEvaluationDate: Date;
   };
-  
+
   // Predictions
   currentPrediction: {
     predictionDate: Date;
@@ -116,7 +128,7 @@ export interface PredictiveMaintenanceModel {
     remainingUsefulLife?: number;
     recommendedAction: string;
   };
-  
+
   // Model validation
   validation: {
     crossValidationScore: number;
@@ -126,7 +138,7 @@ export interface PredictiveMaintenanceModel {
     retrainingRequired: boolean;
     lastRetrainingDate?: Date;
   };
-  
+
   // Alerts and notifications
   alerts: {
     alertType: 'PREDICTION_THRESHOLD' | 'MODEL_DRIFT' | 'DATA_QUALITY' | 'CONFIDENCE_LOW';
@@ -134,9 +146,9 @@ export interface PredictiveMaintenanceModel {
     recipients: string[];
     escalationRules: string[];
   }[];
-  
+
   status: 'TRAINING' | 'ACTIVE' | 'DEPRECATED' | 'FAILED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -147,12 +159,12 @@ export interface AssetHealthScore {
   healthScoreId: string;
   assetId: string;
   calculationDate: Date;
-  
+
   // Overall health score
   overallScore: number; // 0-100
   healthGrade: 'A' | 'B' | 'C' | 'D' | 'F';
   healthStatus: 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR' | 'CRITICAL';
-  
+
   // Component scores
   componentScores: {
     componentId: string;
@@ -163,7 +175,7 @@ export interface AssetHealthScore {
     lastInspectionDate?: Date;
     nextInspectionDue?: Date;
   }[];
-  
+
   // Health indicators
   healthIndicators: {
     indicator: string;
@@ -173,7 +185,7 @@ export interface AssetHealthScore {
     impact: 'HIGH' | 'MEDIUM' | 'LOW';
     dataSource: string;
   }[];
-  
+
   // Risk assessment
   riskAssessment: {
     failureRisk: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -186,7 +198,7 @@ export interface AssetHealthScore {
     overallRisk: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     mitigationRequired: boolean;
   };
-  
+
   // Trends and projections
   trends: {
     historicalScores: {
@@ -201,7 +213,7 @@ export interface AssetHealthScore {
       confidenceLevel: number; // percentage
     };
   };
-  
+
   // Recommendations
   recommendations: {
     priority: 'IMMEDIATE' | 'HIGH' | 'MEDIUM' | 'LOW';
@@ -211,7 +223,7 @@ export interface AssetHealthScore {
     timeline: string;
     responsible: string;
   }[];
-  
+
   // Calculation methodology
   methodology: {
     calculationMethod: string;
@@ -220,7 +232,7 @@ export interface AssetHealthScore {
     adjustmentFactors: Record<string, number>;
     lastCalibrationDate: Date;
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -228,8 +240,13 @@ export interface AssetHealthScore {
 export interface ConditionBasedAlert {
   alertId: string;
   assetId: string;
-  alertType: 'THRESHOLD_EXCEEDED' | 'TREND_DEVIATION' | 'ANOMALY_DETECTED' | 'PREDICTION_TRIGGERED' | 'HEALTH_DEGRADED';
-  
+  alertType:
+    | 'THRESHOLD_EXCEEDED'
+    | 'TREND_DEVIATION'
+    | 'ANOMALY_DETECTED'
+    | 'PREDICTION_TRIGGERED'
+    | 'HEALTH_DEGRADED';
+
   // Alert details
   alertDetails: {
     parameter: string;
@@ -240,7 +257,7 @@ export interface ConditionBasedAlert {
     detectedAt: Date;
     source: string;
   };
-  
+
   // Alert data
   triggerData: {
     sensorId?: string;
@@ -253,7 +270,7 @@ export interface ConditionBasedAlert {
     };
     contextData?: Record<string, any>;
   };
-  
+
   // Response requirements
   response: {
     responseRequired: boolean;
@@ -266,7 +283,7 @@ export interface ConditionBasedAlert {
       escalateTo: string;
     }[];
   };
-  
+
   // Resolution
   resolution?: {
     resolvedAt: Date;
@@ -277,7 +294,7 @@ export interface ConditionBasedAlert {
     preventiveActions?: string[];
     followUpRequired: boolean;
   };
-  
+
   // Impact assessment
   impact: {
     safetyImpact: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -286,7 +303,7 @@ export interface ConditionBasedAlert {
     financialImpact: number;
     reputationalImpact: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   };
-  
+
   // Notification log
   notifications: {
     notificationId: string;
@@ -297,9 +314,9 @@ export interface ConditionBasedAlert {
     acknowledgedAt?: Date;
     acknowledgedBy?: string;
   }[];
-  
+
   status: 'OPEN' | 'ACKNOWLEDGED' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED' | 'FALSE_ALARM';
-  
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -309,7 +326,7 @@ export interface MaintenanceOptimization {
   assetId: string;
   optimizationName: string;
   optimizationType: 'SCHEDULE' | 'STRATEGY' | 'RESOURCE' | 'COST' | 'RELIABILITY';
-  
+
   // Current state analysis
   currentState: {
     maintenanceStrategy: string;
@@ -324,10 +341,14 @@ export interface MaintenanceOptimization {
       repairRate: number;
     };
   };
-  
+
   // Optimization objectives
   objectives: {
-    primaryObjective: 'MINIMIZE_COST' | 'MAXIMIZE_AVAILABILITY' | 'OPTIMIZE_RELIABILITY' | 'REDUCE_RISK';
+    primaryObjective:
+      | 'MINIMIZE_COST'
+      | 'MAXIMIZE_AVAILABILITY'
+      | 'OPTIMIZE_RELIABILITY'
+      | 'REDUCE_RISK';
     targetMetrics: {
       costReduction: number; // percentage
       availabilityImprovement: number; // percentage
@@ -341,7 +362,7 @@ export interface MaintenanceOptimization {
       complianceRequirements?: string[];
     };
   };
-  
+
   // Optimization analysis
   analysis: {
     dataAnalysisPeriod: { startDate: Date; endDate: Date };
@@ -365,7 +386,7 @@ export interface MaintenanceOptimization {
       improvementPotential: number;
     }[];
   };
-  
+
   // Optimization scenarios
   scenarios: {
     scenarioName: string;
@@ -396,7 +417,7 @@ export interface MaintenanceOptimization {
       internalRateOfReturn: number;
     };
   }[];
-  
+
   // Recommended strategy
   recommendedStrategy: {
     strategyName: string;
@@ -422,7 +443,7 @@ export interface MaintenanceOptimization {
       }[];
     };
   };
-  
+
   // Performance tracking
   tracking: {
     kpis: {
@@ -444,9 +465,9 @@ export interface MaintenanceOptimization {
       stakeholders: string[];
     };
   };
-  
+
   status: 'ANALYSIS' | 'APPROVED' | 'IMPLEMENTATION' | 'MONITORING' | 'COMPLETED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -458,7 +479,7 @@ export interface ReliabilityCenteredMaintenance {
   assetId: string;
   rcmName: string;
   analysisDate: Date;
-  
+
   // RCM methodology
   methodology: {
     standard: 'SAE_JA1011' | 'MSG_3' | 'ISO_14224' | 'CUSTOM';
@@ -466,7 +487,7 @@ export interface ReliabilityCenteredMaintenance {
     facilitator: string;
     reviewBoard: string[];
   };
-  
+
   // Asset functions
   functions: {
     functionId: string;
@@ -479,7 +500,7 @@ export interface ReliabilityCenteredMaintenance {
     }[];
     operatingContext: string;
   }[];
-  
+
   // Functional failures
   functionalFailures: {
     failureId: string;
@@ -500,7 +521,7 @@ export interface ReliabilityCenteredMaintenance {
     };
     riskPriority: number; // 1-10
   }[];
-  
+
   // Maintenance tasks
   maintenanceTasks: {
     taskId: string;
@@ -529,18 +550,24 @@ export interface ReliabilityCenteredMaintenance {
       organizational: 'ACCEPTABLE' | 'CHALLENGING' | 'NOT_ACCEPTABLE';
     };
   }[];
-  
+
   // RCM decisions
   decisions: {
     decisionId: string;
     failureId: string;
     decisionLogic: string[];
-    selectedStrategy: 'SCHEDULED_RESTORATION' | 'SCHEDULED_DISCARD' | 'ON_CONDITION' | 'FAILURE_FINDING' | 'RUN_TO_FAILURE' | 'REDESIGN';
+    selectedStrategy:
+      | 'SCHEDULED_RESTORATION'
+      | 'SCHEDULED_DISCARD'
+      | 'ON_CONDITION'
+      | 'FAILURE_FINDING'
+      | 'RUN_TO_FAILURE'
+      | 'REDESIGN';
     justification: string;
     alternativesConsidered: string[];
     assumptions: string[];
   }[];
-  
+
   // Living program
   livingProgram: {
     reviewFrequency: 'ANNUAL' | 'BIENNIAL' | 'TRIENNIAL';
@@ -554,7 +581,7 @@ export interface ReliabilityCenteredMaintenance {
     changeTriggers: string[];
     updateProcess: string;
   };
-  
+
   // Cost-benefit analysis
   costBenefit: {
     currentMaintenanceCost: number;
@@ -565,9 +592,9 @@ export interface ReliabilityCenteredMaintenance {
     benefitCostRatio: number;
     paybackPeriod: number; // months
   };
-  
+
   status: 'INITIAL_ANALYSIS' | 'REVIEW' | 'APPROVED' | 'IMPLEMENTED' | 'LIVING_PROGRAM';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -579,7 +606,7 @@ export interface FailureModeAnalysis {
   assetId: string;
   analysisName: string;
   analysisType: 'DESIGN_FMEA' | 'PROCESS_FMEA' | 'MAINTENANCE_FMEA';
-  
+
   // Analysis scope
   scope: {
     systemBoundaries: string;
@@ -588,7 +615,7 @@ export interface FailureModeAnalysis {
     missionProfile: string;
     excludedItems: string[];
   };
-  
+
   // FMEA team
   team: {
     teamLeader: string;
@@ -600,7 +627,7 @@ export interface FailureModeAnalysis {
     reviewers: string[];
     approvers: string[];
   };
-  
+
   // Failure modes
   failureModes: {
     itemId: string;
@@ -609,7 +636,13 @@ export interface FailureModeAnalysis {
     failureMode: string;
     failureCauses: {
       cause: string;
-      causeCategory: 'DESIGN' | 'MANUFACTURING' | 'INSTALLATION' | 'OPERATION' | 'MAINTENANCE' | 'EXTERNAL';
+      causeCategory:
+        | 'DESIGN'
+        | 'MANUFACTURING'
+        | 'INSTALLATION'
+        | 'OPERATION'
+        | 'MAINTENANCE'
+        | 'EXTERNAL';
       likelihood: number; // 1-10
     }[];
     failureEffects: {
@@ -631,7 +664,11 @@ export interface FailureModeAnalysis {
     };
     recommendedActions: {
       action: string;
-      actionCategory: 'DESIGN_CHANGE' | 'PROCESS_CHANGE' | 'CONTROL_IMPROVEMENT' | 'MONITORING_ENHANCEMENT';
+      actionCategory:
+        | 'DESIGN_CHANGE'
+        | 'PROCESS_CHANGE'
+        | 'CONTROL_IMPROVEMENT'
+        | 'MONITORING_ENHANCEMENT';
       responsibility: string;
       targetDate: Date;
       status: 'OPEN' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
@@ -643,7 +680,7 @@ export interface FailureModeAnalysis {
       residualRPN: number;
     };
   }[];
-  
+
   // Risk matrix
   riskMatrix: {
     riskLevel: 'VERY_HIGH' | 'HIGH' | 'MEDIUM' | 'LOW' | 'VERY_LOW';
@@ -652,7 +689,7 @@ export interface FailureModeAnalysis {
     approvalRequired: boolean;
     count: number;
   }[];
-  
+
   // Critical failure modes
   criticalFailureModes: {
     failureModeId: string;
@@ -661,7 +698,7 @@ export interface FailureModeAnalysis {
     immediateActions: string[];
     longTermActions: string[];
   }[];
-  
+
   // Analysis results
   results: {
     totalFailureModes: number;
@@ -671,9 +708,9 @@ export interface FailureModeAnalysis {
     keyFindings: string[];
     lessons_learned: string[];
   };
-  
+
   status: 'DRAFT' | 'REVIEW' | 'APPROVED' | 'IMPLEMENTED' | 'UPDATED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -685,7 +722,7 @@ export interface MaintenanceStrategy {
   assetId: string;
   strategyName: string;
   strategyType: 'REACTIVE' | 'PREVENTIVE' | 'PREDICTIVE' | 'PROACTIVE' | 'RCM_BASED' | 'HYBRID';
-  
+
   // Strategy definition
   definition: {
     description: string;
@@ -694,7 +731,7 @@ export interface MaintenanceStrategy {
     businessObjectives: string[];
     constraints: string[];
   };
-  
+
   // Maintenance mix
   maintenanceMix: {
     reactive: {
@@ -721,7 +758,7 @@ export interface MaintenanceStrategy {
       operatingPractices: string[];
     };
   };
-  
+
   // Performance targets
   targets: {
     availability: number; // percentage
@@ -741,7 +778,7 @@ export interface MaintenanceStrategy {
       budgetVariance: number; // percentage
     };
   };
-  
+
   // Implementation plan
   implementation: {
     phases: {
@@ -770,7 +807,7 @@ export interface MaintenanceStrategy {
       documentation: string[];
     };
   };
-  
+
   // Resource requirements
   resources: {
     personnel: {
@@ -791,7 +828,7 @@ export interface MaintenanceStrategy {
       investmentRequired: number;
     }[];
   };
-  
+
   // Risk assessment
   risks: {
     risk: string;
@@ -801,7 +838,7 @@ export interface MaintenanceStrategy {
     mitigation: string;
     owner: string;
   }[];
-  
+
   // Success metrics
   successMetrics: {
     metric: string;
@@ -811,7 +848,7 @@ export interface MaintenanceStrategy {
     frequency: string;
     responsible: string;
   }[];
-  
+
   // Review and improvement
   review: {
     reviewFrequency: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
@@ -824,9 +861,9 @@ export interface MaintenanceStrategy {
       sources: string[];
     };
   };
-  
+
   status: 'DEVELOPMENT' | 'APPROVED' | 'PILOT' | 'IMPLEMENTATION' | 'ACTIVE' | 'REVIEW' | 'RETIRED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;

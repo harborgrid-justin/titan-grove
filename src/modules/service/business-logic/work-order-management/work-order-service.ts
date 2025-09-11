@@ -18,7 +18,7 @@ import type {
   WorkOrderTemplate,
   DateRange,
   DispatchBoard,
-  DispatchWorkOrder
+  DispatchWorkOrder,
 } from '../../types/work-order-types';
 
 import {
@@ -26,13 +26,12 @@ import {
   WorkOrderStatus,
   WorkOrderPriority,
   TaskStatus,
-  MaterialStatus
+  MaterialStatus,
 } from '../../types/work-order-types';
 
 import { Priority } from '../../types/field-service-types';
 
 export class WorkOrderService {
-
   // ================================
   // WORK ORDER LIFECYCLE MANAGEMENT
   // ================================
@@ -67,7 +66,7 @@ export class WorkOrderService {
   }): Promise<WorkOrder> {
     const workOrderId = `wo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const workOrderNumber = `WO${Date.now().toString().slice(-8)}`;
-    
+
     // Apply template if provided
     let templateData = null;
     if (workOrderData.templateId) {
@@ -82,79 +81,90 @@ export class WorkOrderService {
       type: workOrderData.type,
       status: WorkOrderStatus.DRAFT,
       priority: workOrderData.priority,
-      
+
       // Customer & Asset Information
       customerId: workOrderData.customerId,
       customerName: workOrderData.customerName,
       assetId: workOrderData.assetId,
-      
+
       // Service Information
       serviceType: workOrderData.serviceType,
-      
+
       // Scheduling Information
       requestedDate: workOrderData.requestedDate,
       estimatedDuration: workOrderData.estimatedDuration,
-      
+
       // Location & Contact
       serviceAddress: {
         ...workOrderData.serviceAddress,
-        formattedAddress: `${workOrderData.serviceAddress.street1}, ${workOrderData.serviceAddress.city}, ${workOrderData.serviceAddress.state} ${workOrderData.serviceAddress.zipCode}`
+        formattedAddress: `${workOrderData.serviceAddress.street1}, ${workOrderData.serviceAddress.city}, ${workOrderData.serviceAddress.state} ${workOrderData.serviceAddress.zipCode}`,
       },
       specialInstructions: workOrderData.specialInstructions,
-      
+
       // Tasks & Procedures
       tasks: templateData ? this.applyTemplateTasks(templateData.tasks) : [],
-      procedures: templateData ? templateData.procedures.map(procId => this.getServiceProcedure(procId)) : [],
+      procedures: templateData
+        ? templateData.procedures.map((procId) => this.getServiceProcedure(procId))
+        : [],
       checklist: templateData ? this.applyTemplateChecklist(templateData.checklist) : [],
-      
+
       // Materials & Parts
       materials: templateData ? this.applyTemplateMaterials(templateData.materials) : [],
       laborCharges: [],
-      
+
       // SLA & Contract Information
       contractId: workOrderData.contractId,
       slaDeadline: workOrderData.slaDeadline,
       responseTimeTarget: this.calculateResponseTimeTarget(workOrderData.priority),
-      resolutionTimeTarget: this.calculateResolutionTimeTarget(workOrderData.type, workOrderData.priority),
-      
+      resolutionTimeTarget: this.calculateResolutionTimeTarget(
+        workOrderData.type,
+        workOrderData.priority
+      ),
+
       // Financial Information
-      estimatedCost: templateData ? templateData.materials.reduce((sum, m) => sum + m.estimatedCost, 0) : 0,
+      estimatedCost: templateData
+        ? templateData.materials.reduce((sum, m) => sum + m.estimatedCost, 0)
+        : 0,
       actualCost: 0,
       laborCost: 0,
       materialCost: 0,
       travelCost: 0,
       billable: true,
-      
+
       // Quality & Completion
       followUpRequired: false,
-      
+
       // Tracking & Audit
       createdBy: workOrderData.createdBy,
       createdDate: new Date(),
       version: 1,
-      
+
       // Related Records
       childWorkOrderIds: [],
       relatedWorkOrderIds: [],
-      
+
       // Attachments & Documentation
       attachments: [],
       photos: [],
       documents: [],
-      
+
       // Workflow & Approvals
       approvals: [],
-      
+
       // Analytics
       tags: [workOrderData.type, workOrderData.priority],
-      customFields: {}
+      customFields: {},
     };
 
     console.log(`Created work order: ${workOrder.workOrderNumber} (${workOrder.id})`);
-    
+
     // Auto-transition to scheduled if all validations pass
     if (await this.validateWorkOrderForScheduling(workOrder)) {
-      await this.updateWorkOrderStatus(workOrderId, WorkOrderStatus.SCHEDULED, workOrderData.createdBy);
+      await this.updateWorkOrderStatus(
+        workOrderId,
+        WorkOrderStatus.SCHEDULED,
+        workOrderData.createdBy
+      );
     }
 
     return workOrder;
@@ -218,12 +228,12 @@ export class WorkOrderService {
           timestamp: new Date(),
           updatedBy,
           reason,
-          duration: 45 // Mock duration
-        }
+          duration: 45, // Mock duration
+        },
       ],
       automatedActions,
       nextPossibleStatuses,
-      notificationsTriggered
+      notificationsTriggered,
     };
   }
 
@@ -269,15 +279,15 @@ export class WorkOrderService {
     automatedNotifications: string[];
   }> {
     const assignmentId = `wa_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Assigning work order ${workOrderId} to technician/team`);
 
     // Perform intelligent skill matching
     const skillMatchAnalysis = await this.analyzeSkillMatch(workOrderId, assignment.technicianId);
-    
+
     // Analyze schedule impact
     const scheduleImpact = await this.analyzeScheduleImpact(assignment.technicianId, assignment);
-    
+
     // Assess SLA compliance
     const slaImpact = await this.assessSLAImpact(workOrderId, assignment);
 
@@ -292,25 +302,25 @@ export class WorkOrderService {
         technicianSkills: ['HVAC_ADVANCED', 'ELECTRICAL_BASIC', 'PLUMBING'],
         matchPercentage: 85,
         skillGaps: ['ELECTRICAL_ADVANCED'],
-        trainingRecommended: false
+        trainingRecommended: false,
       },
       scheduleImpact: {
         technicianUtilization: 78,
         conflictingAssignments: 0,
         travelTimeImpact: 25,
-        overtimeRequired: false
+        overtimeRequired: false,
       },
       slaImpact: {
         canMeetSLA: true,
         estimatedCompletion: new Date(assignment.scheduledEndDate.getTime() - 30 * 60 * 1000),
         riskLevel: 'LOW',
-        mitigation: []
+        mitigation: [],
       },
       automatedNotifications: [
         'Technician mobile app notification sent',
         'Customer arrival notification scheduled',
-        'Dispatch board updated'
-      ]
+        'Dispatch board updated',
+      ],
     };
   }
 
@@ -353,7 +363,7 @@ export class WorkOrderService {
       attachments: [],
       photos: [],
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     console.log(`Added task ${task.name} to work order ${workOrderId}`);
@@ -396,8 +406,8 @@ export class WorkOrderService {
       taskId,
       previousStatus: TaskStatus.PENDING,
       newStatus: status,
-      progressPercent: status === TaskStatus.COMPLETED ? 100 : 
-                      status === TaskStatus.IN_PROGRESS ? 50 : 0,
+      progressPercent:
+        status === TaskStatus.COMPLETED ? 100 : status === TaskStatus.IN_PROGRESS ? 50 : 0,
       completedBy: status === TaskStatus.COMPLETED ? updatedBy : undefined,
       completedDate: status === TaskStatus.COMPLETED ? new Date() : undefined,
       blockedTasks: [],
@@ -405,8 +415,8 @@ export class WorkOrderService {
       workOrderImpact: {
         overallProgress: 65,
         affectedSequence: false,
-        completionDelayed: false
-      }
+        completionDelayed: false,
+      },
     };
   }
 
@@ -447,25 +457,25 @@ export class WorkOrderService {
     return {
       taskId,
       dependencies: {
-        dependsOnTasks: dependencies.dependsOnTasks.map(depId => ({
+        dependsOnTasks: dependencies.dependsOnTasks.map((depId) => ({
           taskId: depId,
           taskName: `Task ${depId.slice(-3)}`,
           status: TaskStatus.COMPLETED,
-          blocking: false
+          blocking: false,
         })),
-        blocksTasks: dependencies.blocksTasks.map(blockId => ({
+        blocksTasks: dependencies.blocksTasks.map((blockId) => ({
           taskId: blockId,
           taskName: `Task ${blockId.slice(-3)}`,
-          canUnblock: true
-        }))
+          canUnblock: true,
+        })),
       },
       sequenceValidation: {
         isValid: true,
         circularDependencies: [],
         unreachableTasks: [],
-        criticalPath: ['task_001', 'task_002', 'task_005']
+        criticalPath: ['task_001', 'task_002', 'task_005'],
       },
-      recommendedAdjustments: []
+      recommendedAdjustments: [],
     };
   }
 
@@ -504,7 +514,7 @@ export class WorkOrderService {
       totalCost: materialData.quantityRequired * materialData.unitCost,
       status: MaterialStatus.AVAILABLE,
       warehouseId: materialData.warehouseId,
-      serialNumbers: []
+      serialNumbers: [],
     };
 
     console.log(`Added material ${material.partNumber} to work order ${workOrderId}`);
@@ -550,31 +560,34 @@ export class WorkOrderService {
     automatedActions: string[];
   }> {
     const issueId = `mi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Issuing materials for work order ${workOrderId}`);
 
     return {
       issueId,
       workOrderId,
-      issuedMaterials: materialIssues.map(issue => ({
+      issuedMaterials: materialIssues.map((issue) => ({
         materialId: issue.materialId,
         quantityIssued: issue.quantityToIssue,
         serialNumbers: issue.serialNumbers || [],
         reservationId: `res_${Date.now()}`,
-        estimatedDelivery: new Date(Date.now() + 24 * 60 * 60 * 1000) // Next day
+        estimatedDelivery: new Date(Date.now() + 24 * 60 * 60 * 1000), // Next day
       })),
       backorderedMaterials: [],
-      totalIssuedValue: materialIssues.reduce((sum, issue) => sum + (issue.quantityToIssue * 15.50), 0),
+      totalIssuedValue: materialIssues.reduce(
+        (sum, issue) => sum + issue.quantityToIssue * 15.5,
+        0
+      ),
       inventoryImpact: {
         locationsAffected: 2,
         quantityReserved: materialIssues.reduce((sum, issue) => sum + issue.quantityToIssue, 0),
-        reorderTriggered: []
+        reorderTriggered: [],
       },
       automatedActions: [
         'Inventory quantities updated',
         'Technician mobile notification sent',
-        'Pick list generated for warehouse'
-      ]
+        'Pick list generated for warehouse',
+      ],
     };
   }
 
@@ -600,8 +613,8 @@ export class WorkOrderService {
   ): Promise<LaborCharge> {
     const duration = (laborData.endTime.getTime() - laborData.startTime.getTime()) / (1000 * 60); // minutes
     const regularHours = Math.min(duration / 60, 8); // Regular hours capped at 8
-    const overtimeHours = Math.max((duration / 60) - 8, 0); // Overtime after 8 hours
-    
+    const overtimeHours = Math.max(duration / 60 - 8, 0); // Overtime after 8 hours
+
     const laborCharge: LaborCharge = {
       id: `lc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       workOrderId,
@@ -618,16 +631,19 @@ export class WorkOrderService {
       regularHours,
       overtimeHours,
       premiumHours: 0,
-      totalLaborCost: (regularHours * laborData.regularRate) + 
-                     (overtimeHours * (laborData.overtimeRate || laborData.regularRate * 1.5)),
+      totalLaborCost:
+        regularHours * laborData.regularRate +
+        overtimeHours * (laborData.overtimeRate || laborData.regularRate * 1.5),
       laborType: laborData.laborType,
       billable: laborData.billable !== false,
       approved: false,
       notes: laborData.description,
-      createdDate: new Date()
+      createdDate: new Date(),
     };
 
-    console.log(`Recorded labor charge for work order ${workOrderId}: ${laborCharge.totalLaborCost}`);
+    console.log(
+      `Recorded labor charge for work order ${workOrderId}: ${laborCharge.totalLaborCost}`
+    );
     return laborCharge;
   }
 
@@ -640,43 +656,43 @@ export class WorkOrderService {
     // Mock implementation - would aggregate from various sources
     const costBreakdown: CostBreakdown = {
       workOrderId,
-      
+
       // Labor Costs
       totalLaborHours: 6.5,
       regularLaborCost: 390,
       overtimeLaborCost: 0,
       premiumLaborCost: 0,
       totalLaborCost: 390,
-      
+
       // Material Costs
       partsCount: 4,
-      totalPartsCost: 156.50,
-      shippingCost: 15.00,
-      totalMaterialCost: 171.50,
-      
+      totalPartsCost: 156.5,
+      shippingCost: 15.0,
+      totalMaterialCost: 171.5,
+
       // Travel Costs
       travelDistance: 45.2,
       travelTime: 75,
       mileageRate: 0.56,
       totalTravelCost: 25.31,
-      
+
       // Other Costs
       equipmentRentalCost: 0,
       subcontractorCost: 0,
-      miscellaneousCost: 12.00,
-      
+      miscellaneousCost: 12.0,
+
       // Totals
       subtotal: 598.81,
-      taxAmount: 47.90,
+      taxAmount: 47.9,
       discountAmount: 0,
       totalCost: 646.71,
-      
+
       // Billing Information
       billable: true,
-      
+
       costCenter: 'CC-SERVICE-001',
       projectCode: 'MAINT-2024',
-      budgetCategory: 'Field Service'
+      budgetCategory: 'Field Service',
     };
 
     return costBreakdown;
@@ -711,10 +727,11 @@ export class WorkOrderService {
       photos?: string[];
     }
   ): Promise<QualityControl> {
-    const overallScore = inspectionData.criteria.reduce((sum, criterion) => {
-      return sum + (criterion.score * criterion.weight);
-    }, 0) / inspectionData.criteria.reduce((sum, criterion) => sum + criterion.weight, 0);
-    
+    const overallScore =
+      inspectionData.criteria.reduce((sum, criterion) => {
+        return sum + criterion.score * criterion.weight;
+      }, 0) / inspectionData.criteria.reduce((sum, criterion) => sum + criterion.weight, 0);
+
     const qualityControl: QualityControl = {
       id: `qc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       workOrderId,
@@ -722,28 +739,29 @@ export class WorkOrderService {
       inspectorName: inspectionData.inspectorName,
       inspectionDate: new Date(),
       overallScore: Math.round(overallScore * 100) / 100,
-      criteria: inspectionData.criteria.map(criterion => ({
+      criteria: inspectionData.criteria.map((criterion) => ({
         criterionId: `crit_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
         name: criterion.name,
         description: criterion.name,
         weight: criterion.weight,
         score: criterion.score,
         passed: criterion.score >= 7,
-        notes: criterion.notes
+        notes: criterion.notes,
       })),
       passed: overallScore >= 8.0,
-      defects: inspectionData.defects?.map(defect => ({
-        defectId: `def_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
-        type: defect.type,
-        severity: defect.severity,
-        description: defect.description,
-        location: defect.location,
-        photos: defect.photos || []
-      })) || [],
+      defects:
+        inspectionData.defects?.map((defect) => ({
+          defectId: `def_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+          type: defect.type,
+          severity: defect.severity,
+          description: defect.description,
+          location: defect.location,
+          photos: defect.photos || [],
+        })) || [],
       correctiveActions: [],
       reinspectionRequired: overallScore < 8.0,
       notes: inspectionData.overallNotes,
-      photos: inspectionData.photos || []
+      photos: inspectionData.photos || [],
     };
 
     // Generate corrective actions for failed inspection
@@ -754,12 +772,14 @@ export class WorkOrderService {
           description: 'Re-perform failed inspection criteria',
           assignedTo: 'Original technician',
           dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
-          status: 'PENDING'
-        }
+          status: 'PENDING',
+        },
       ];
     }
 
-    console.log(`Quality inspection completed for work order ${workOrderId}. Score: ${overallScore}, Passed: ${qualityControl.passed}`);
+    console.log(
+      `Quality inspection completed for work order ${workOrderId}. Score: ${overallScore}, Passed: ${qualityControl.passed}`
+    );
     return qualityControl;
   }
 
@@ -796,7 +816,7 @@ export class WorkOrderService {
       totalRevenue: 234500,
       profitMargin: 33.2, // percentage
       utilization: 82.4, // percentage
-      productivity: 13.2 // work orders per technician
+      productivity: 13.2, // work orders per technician
     };
   }
 
@@ -823,8 +843,8 @@ export class WorkOrderService {
           requiredSkills: ['HVAC'],
           requiredTools: ['Flashlight', 'Multimeter'],
           safetyRequirements: ['Safety glasses'],
-          isOptional: false
-        }
+          isOptional: false,
+        },
       ],
       materials: [
         {
@@ -833,9 +853,9 @@ export class WorkOrderService {
           description: 'Air Filter 16x20x1',
           quantity: 2,
           unitOfMeasure: 'EA',
-          estimatedCost: 12.50,
-          isOptional: false
-        }
+          estimatedCost: 12.5,
+          isOptional: false,
+        },
       ],
       procedures: ['proc_hvac_001'],
       checklist: [
@@ -844,20 +864,20 @@ export class WorkOrderService {
           item: 'Power shut off confirmed',
           required: true,
           photosRequired: false,
-          sequenceNumber: 1
-        }
+          sequenceNumber: 1,
+        },
       ],
       requiredSkills: ['HVAC'],
       isActive: true,
       version: 1,
       createdBy: 'system',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
   private applyTemplateTasks(taskTemplates: any[]): WorkOrderTask[] {
-    return taskTemplates.map(template => ({
+    return taskTemplates.map((template) => ({
       id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       workOrderId: '', // Will be set by caller
       sequenceNumber: template.sequenceNumber,
@@ -875,12 +895,12 @@ export class WorkOrderService {
       attachments: [],
       photos: [],
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     }));
   }
 
   private applyTemplateMaterials(materialTemplates: any[]): WorkOrderMaterial[] {
-    return materialTemplates.map(template => ({
+    return materialTemplates.map((template) => ({
       id: `wom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       workOrderId: '', // Will be set by caller
       materialId: template.materialId,
@@ -894,19 +914,19 @@ export class WorkOrderService {
       unitCost: template.estimatedCost / template.quantity,
       totalCost: template.estimatedCost,
       status: MaterialStatus.AVAILABLE,
-      serialNumbers: []
+      serialNumbers: [],
     }));
   }
 
   private applyTemplateChecklist(checklistTemplates: any[]): ChecklistItem[] {
-    return checklistTemplates.map(template => ({
+    return checklistTemplates.map((template) => ({
       id: `cl_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       category: template.category,
       item: template.item,
       required: template.required,
       completed: false,
       photosRequired: template.photosRequired,
-      photos: []
+      photos: [],
     }));
   }
 
@@ -922,18 +942,18 @@ export class WorkOrderService {
       requiredSkills: ['HVAC'],
       requiredTools: [],
       safetyNotes: [],
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
   private calculateResponseTimeTarget(priority: WorkOrderPriority): number {
     const targets = {
       [WorkOrderPriority.EMERGENCY]: 30, // 30 minutes
-      [WorkOrderPriority.CRITICAL]: 60,  // 1 hour
-      [WorkOrderPriority.URGENT]: 240,   // 4 hours
-      [WorkOrderPriority.HIGH]: 480,     // 8 hours
-      [WorkOrderPriority.NORMAL]: 1440,  // 24 hours
-      [WorkOrderPriority.LOW]: 2880      // 48 hours
+      [WorkOrderPriority.CRITICAL]: 60, // 1 hour
+      [WorkOrderPriority.URGENT]: 240, // 4 hours
+      [WorkOrderPriority.HIGH]: 480, // 8 hours
+      [WorkOrderPriority.NORMAL]: 1440, // 24 hours
+      [WorkOrderPriority.LOW]: 2880, // 48 hours
     };
     return targets[priority];
   }
@@ -941,15 +961,15 @@ export class WorkOrderService {
   private calculateResolutionTimeTarget(type: WorkOrderType, priority: WorkOrderPriority): number {
     // Base resolution times by type (in minutes)
     const baseTargets = {
-      [WorkOrderType.EMERGENCY]: 240,     // 4 hours
-      [WorkOrderType.CORRECTIVE]: 480,    // 8 hours
-      [WorkOrderType.PREVENTIVE]: 240,    // 4 hours
-      [WorkOrderType.INSTALLATION]: 480,  // 8 hours
-      [WorkOrderType.INSPECTION]: 120,    // 2 hours
-      [WorkOrderType.CALIBRATION]: 180,   // 3 hours
-      [WorkOrderType.MODIFICATION]: 960,  // 16 hours
-      [WorkOrderType.WARRANTY]: 480,      // 8 hours
-      [WorkOrderType.PROJECT]: 2880       // 48 hours
+      [WorkOrderType.EMERGENCY]: 240, // 4 hours
+      [WorkOrderType.CORRECTIVE]: 480, // 8 hours
+      [WorkOrderType.PREVENTIVE]: 240, // 4 hours
+      [WorkOrderType.INSTALLATION]: 480, // 8 hours
+      [WorkOrderType.INSPECTION]: 120, // 2 hours
+      [WorkOrderType.CALIBRATION]: 180, // 3 hours
+      [WorkOrderType.MODIFICATION]: 960, // 16 hours
+      [WorkOrderType.WARRANTY]: 480, // 8 hours
+      [WorkOrderType.PROJECT]: 2880, // 48 hours
     };
 
     // Priority multipliers
@@ -959,7 +979,7 @@ export class WorkOrderService {
       [WorkOrderPriority.URGENT]: 0.8,
       [WorkOrderPriority.HIGH]: 1.0,
       [WorkOrderPriority.NORMAL]: 1.2,
-      [WorkOrderPriority.LOW]: 2.0
+      [WorkOrderPriority.LOW]: 2.0,
     };
 
     return baseTargets[type] * priorityMultipliers[priority];
@@ -967,22 +987,27 @@ export class WorkOrderService {
 
   private async validateWorkOrderForScheduling(workOrder: WorkOrder): Promise<boolean> {
     // Validate required fields and business rules
-    return !!(workOrder.customerId && 
-           workOrder.serviceAddress && 
-           workOrder.estimatedDuration > 0);
+    return !!(workOrder.customerId && workOrder.serviceAddress && workOrder.estimatedDuration > 0);
   }
 
-  private async validateStatusTransition(currentStatus: WorkOrderStatus, newStatus: WorkOrderStatus): Promise<void> {
+  private async validateStatusTransition(
+    currentStatus: WorkOrderStatus,
+    newStatus: WorkOrderStatus
+  ): Promise<void> {
     const validTransitions: Record<WorkOrderStatus, WorkOrderStatus[]> = {
       [WorkOrderStatus.DRAFT]: [WorkOrderStatus.SCHEDULED, WorkOrderStatus.CANCELLED],
-      [WorkOrderStatus.SCHEDULED]: [WorkOrderStatus.DISPATCHED, WorkOrderStatus.ON_HOLD, WorkOrderStatus.CANCELLED],
+      [WorkOrderStatus.SCHEDULED]: [
+        WorkOrderStatus.DISPATCHED,
+        WorkOrderStatus.ON_HOLD,
+        WorkOrderStatus.CANCELLED,
+      ],
       [WorkOrderStatus.DISPATCHED]: [WorkOrderStatus.IN_PROGRESS, WorkOrderStatus.ON_HOLD],
       [WorkOrderStatus.IN_PROGRESS]: [WorkOrderStatus.COMPLETED, WorkOrderStatus.ON_HOLD],
       [WorkOrderStatus.ON_HOLD]: [WorkOrderStatus.SCHEDULED, WorkOrderStatus.CANCELLED],
       [WorkOrderStatus.COMPLETED]: [WorkOrderStatus.CLOSED],
       [WorkOrderStatus.CANCELLED]: [],
       [WorkOrderStatus.CLOSED]: [],
-      [WorkOrderStatus.REQUIRES_APPROVAL]: [WorkOrderStatus.SCHEDULED, WorkOrderStatus.CANCELLED]
+      [WorkOrderStatus.REQUIRES_APPROVAL]: [WorkOrderStatus.SCHEDULED, WorkOrderStatus.CANCELLED],
     };
 
     if (!validTransitions[currentStatus]?.includes(newStatus)) {
@@ -1035,7 +1060,7 @@ export class WorkOrderService {
       [WorkOrderStatus.ON_HOLD]: [WorkOrderStatus.SCHEDULED],
       [WorkOrderStatus.CANCELLED]: [],
       [WorkOrderStatus.CLOSED]: [],
-      [WorkOrderStatus.REQUIRES_APPROVAL]: [WorkOrderStatus.SCHEDULED]
+      [WorkOrderStatus.REQUIRES_APPROVAL]: [WorkOrderStatus.SCHEDULED],
     };
 
     return nextStatuses[currentStatus] || [];
@@ -1047,11 +1072,7 @@ export class WorkOrderService {
     updatedBy: string
   ): Promise<string[]> {
     // Mock notification triggers
-    return [
-      'Customer SMS notification',
-      'Technician mobile app push',
-      'Manager dashboard alert'
-    ];
+    return ['Customer SMS notification', 'Technician mobile app push', 'Manager dashboard alert'];
   }
 
   private async analyzeSkillMatch(workOrderId: string, technicianId?: string): Promise<any> {
@@ -1061,7 +1082,7 @@ export class WorkOrderService {
       technicianSkills: ['HVAC_ADVANCED'],
       matchPercentage: 95,
       skillGaps: [],
-      trainingRecommended: false
+      trainingRecommended: false,
     };
   }
 
@@ -1071,7 +1092,7 @@ export class WorkOrderService {
       technicianUtilization: 78,
       conflictingAssignments: 0,
       travelTimeImpact: 25,
-      overtimeRequired: false
+      overtimeRequired: false,
     };
   }
 
@@ -1081,7 +1102,7 @@ export class WorkOrderService {
       canMeetSLA: true,
       estimatedCompletion: assignment.scheduledEndDate,
       riskLevel: 'LOW' as const,
-      mitigation: []
+      mitigation: [],
     };
   }
 }

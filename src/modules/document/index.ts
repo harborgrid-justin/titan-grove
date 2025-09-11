@@ -1,5 +1,5 @@
 /**
- * Document Management Module - Native NAPI-RS Implementation  
+ * Document Management Module - Native NAPI-RS Implementation
  * High-performance document operations using Rust backend
  */
 
@@ -15,5 +15,5 @@ export {
   generateDocumentNumber,
   calculateRetentionExpiryDate,
   analyzeDocumentMetrics,
-  classifyDocumentByContent
+  classifyDocumentByContent,
 } from '../native';

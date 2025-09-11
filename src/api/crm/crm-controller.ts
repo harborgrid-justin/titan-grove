@@ -7,7 +7,6 @@ import { Request, Response } from 'express';
 import { BaseController } from '../base/base-controller';
 
 export class CrmController extends BaseController {
-
   /**
    * Get customer list
    */
@@ -20,7 +19,7 @@ export class CrmController extends BaseController {
         method: 'getCustomers',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get customer list retrieved successfully');
@@ -41,7 +40,7 @@ export class CrmController extends BaseController {
         method: 'createCustomer',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create new customer retrieved successfully');
@@ -62,7 +61,7 @@ export class CrmController extends BaseController {
         method: 'getCustomerById',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get customer by ID retrieved successfully');
@@ -83,7 +82,7 @@ export class CrmController extends BaseController {
         method: 'updateCustomer',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Update customer information retrieved successfully');
@@ -104,7 +103,7 @@ export class CrmController extends BaseController {
         method: 'getOpportunities',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get sales opportunities retrieved successfully');
@@ -125,7 +124,7 @@ export class CrmController extends BaseController {
         method: 'createOpportunity',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create new opportunity retrieved successfully');
@@ -146,7 +145,7 @@ export class CrmController extends BaseController {
         method: 'getContacts',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get contact list retrieved successfully');
@@ -167,7 +166,7 @@ export class CrmController extends BaseController {
         method: 'createContact',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create new contact retrieved successfully');
@@ -188,7 +187,7 @@ export class CrmController extends BaseController {
         method: 'getLeads',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get sales leads retrieved successfully');
@@ -209,7 +208,7 @@ export class CrmController extends BaseController {
         method: 'convertLead',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Convert lead to opportunity retrieved successfully');

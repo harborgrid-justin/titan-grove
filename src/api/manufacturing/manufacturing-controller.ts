@@ -7,7 +7,6 @@ import { Request, Response } from 'express';
 import { BaseController } from '../base/base-controller';
 
 export class ManufacturingController extends BaseController {
-
   /**
    * Get production planning data
    */
@@ -20,7 +19,7 @@ export class ManufacturingController extends BaseController {
         method: 'getProductionPlanning',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get production planning data retrieved successfully');
@@ -41,7 +40,7 @@ export class ManufacturingController extends BaseController {
         method: 'createProductionPlan',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create new production plan retrieved successfully');
@@ -62,7 +61,7 @@ export class ManufacturingController extends BaseController {
         method: 'getWorkOrders',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get work orders retrieved successfully');
@@ -83,7 +82,7 @@ export class ManufacturingController extends BaseController {
         method: 'createWorkOrder',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create new work order retrieved successfully');
@@ -104,7 +103,7 @@ export class ManufacturingController extends BaseController {
         method: 'getQualityMetrics',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get quality control metrics retrieved successfully');
@@ -125,7 +124,7 @@ export class ManufacturingController extends BaseController {
         method: 'recordQualityCheck',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Record quality check result retrieved successfully');
@@ -146,7 +145,7 @@ export class ManufacturingController extends BaseController {
         method: 'getInventoryTracking',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get inventory tracking data retrieved successfully');
@@ -167,7 +166,7 @@ export class ManufacturingController extends BaseController {
         method: 'updateInventoryLevel',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Update inventory level retrieved successfully');
@@ -188,7 +187,7 @@ export class ManufacturingController extends BaseController {
         method: 'getMachineMonitoring',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get machine monitoring data retrieved successfully');
@@ -209,7 +208,7 @@ export class ManufacturingController extends BaseController {
         method: 'recordMachineStatus',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Record machine status update retrieved successfully');

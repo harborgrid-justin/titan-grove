@@ -11,7 +11,7 @@ export abstract class BaseManufacturingRepository<T extends Record<string, any>>
   }
 
   async findById(id: string): Promise<T | null> {
-    return this.items.find(item => item.id === id) || null;
+    return this.items.find((item) => item.id === id) || null;
   }
 
   async findAll(): Promise<T[]> {
@@ -19,14 +19,14 @@ export abstract class BaseManufacturingRepository<T extends Record<string, any>>
   }
 
   async update(id: string, updates: Partial<T>): Promise<T | null> {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.items.findIndex((item) => item.id === id);
     if (index === -1) return null;
     this.items[index] = { ...this.items[index], ...updates };
     return this.items[index];
   }
 
   async delete(id: string): Promise<void> {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.items.findIndex((item) => item.id === id);
     if (index !== -1) this.items.splice(index, 1);
   }
 
@@ -39,7 +39,7 @@ export class ProductRepository extends BaseManufacturingRepository<any> {
   }
 
   async findByStatus(status: string): Promise<any[]> {
-    return this.items.filter(product => product.status === status);
+    return this.items.filter((product) => product.status === status);
   }
 }
 
@@ -50,7 +50,7 @@ export class WorkOrderRepository extends BaseManufacturingRepository<any> {
 
   async findOverdue(): Promise<any[]> {
     const now = new Date();
-    return this.items.filter(wo => new Date(wo.dueDate) < now && wo.status !== 'COMPLETED');
+    return this.items.filter((wo) => new Date(wo.dueDate) < now && wo.status !== 'COMPLETED');
   }
 }
 

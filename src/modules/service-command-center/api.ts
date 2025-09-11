@@ -5,11 +5,11 @@
  */
 
 import { Router } from 'express';
-import { 
+import {
   serviceCommandCenterService,
   serviceDashboardService,
   serviceAnalyticsService,
-  mobileCommandService
+  mobileCommandService,
 } from './index';
 
 const router: any = Router();
@@ -25,23 +25,23 @@ const router: any = Router();
 router.post('/initialize', async (req, res) => {
   try {
     const { name, region, serviceAreas, initialResources } = req.body;
-    
+
     const commandCenter = await serviceCommandCenterService.initializeCommandCenter({
       name,
       region,
       serviceAreas,
-      initialResources
+      initialResources,
     });
-    
+
     res.json({
       success: true,
       data: commandCenter,
-      message: `Service Command Center '${name}' initialized successfully`
+      message: `Service Command Center '${name}' initialized successfully`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -53,17 +53,17 @@ router.post('/initialize', async (req, res) => {
 router.get('/:commandCenterId/status', async (req, res) => {
   try {
     const { commandCenterId } = req.params;
-    
+
     const status = await serviceCommandCenterService.getCommandCenterStatus(commandCenterId);
-    
+
     res.json({
       success: true,
-      data: status
+      data: status,
     });
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -76,21 +76,21 @@ router.post('/:commandCenterId/optimize-dispatch', async (req, res) => {
   try {
     const { commandCenterId } = req.params;
     const { priority, serviceArea, emergencyMode } = req.body;
-    
+
     const optimization = await serviceCommandCenterService.optimizeServiceDispatch(
       commandCenterId,
       { priority, serviceArea, emergencyMode }
     );
-    
+
     res.json({
       success: true,
       data: optimization,
-      message: `Dispatch optimization completed for ${optimization.optimizedAssignments.length} assignments`
+      message: `Dispatch optimization completed for ${optimization.optimizedAssignments.length} assignments`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -103,21 +103,21 @@ router.post('/:commandCenterId/emergency-response', async (req, res) => {
   try {
     const { commandCenterId } = req.params;
     const emergency = req.body;
-    
+
     const response = await serviceCommandCenterService.coordinateEmergencyResponse(
       commandCenterId,
       emergency
     );
-    
+
     res.json({
       success: true,
       data: response,
-      message: `Emergency response coordinated - ETA: ${response.responseTeam.estimatedArrival}`
+      message: `Emergency response coordinated - ETA: ${response.responseTeam.estimatedArrival}`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -130,21 +130,21 @@ router.post('/:commandCenterId/resources', async (req, res) => {
   try {
     const { commandCenterId } = req.params;
     const resourceData = req.body;
-    
+
     const resource = await serviceCommandCenterService.registerServiceResource(
       commandCenterId,
       resourceData
     );
-    
+
     res.json({
       success: true,
       data: resource,
-      message: `Resource '${resource.name}' registered successfully`
+      message: `Resource '${resource.name}' registered successfully`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -160,18 +160,18 @@ router.post('/:commandCenterId/resources', async (req, res) => {
 router.post('/dashboard/create', async (req, res) => {
   try {
     const config = req.body;
-    
+
     const dashboard = await serviceDashboardService.createServiceDashboard(config);
-    
+
     res.json({
       success: true,
       data: dashboard,
-      message: `Dashboard created for ${config.role} role`
+      message: `Dashboard created for ${config.role} role`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -183,17 +183,17 @@ router.post('/dashboard/create', async (req, res) => {
 router.get('/:commandCenterId/kpis', async (req, res) => {
   try {
     const { commandCenterId } = req.params;
-    
+
     const kpis = await serviceDashboardService.generateRealTimeKPIs(commandCenterId);
-    
+
     res.json({
       success: true,
-      data: kpis
+      data: kpis,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -206,20 +206,21 @@ router.post('/:commandCenterId/heat-map', async (req, res) => {
   try {
     const { commandCenterId } = req.params;
     const { timeRange, metric, granularity } = req.body;
-    
-    const heatMap = await serviceDashboardService.generateServiceHeatMap(
-      commandCenterId,
-      { timeRange, metric, granularity }
-    );
-    
+
+    const heatMap = await serviceDashboardService.generateServiceHeatMap(commandCenterId, {
+      timeRange,
+      metric,
+      granularity,
+    });
+
     res.json({
       success: true,
-      data: heatMap
+      data: heatMap,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -235,18 +236,18 @@ router.post('/:commandCenterId/heat-map', async (req, res) => {
 router.post('/analytics/generate', async (req, res) => {
   try {
     const config = req.body;
-    
+
     const analytics = await serviceAnalyticsService.generateServiceAnalytics(config);
-    
+
     res.json({
       success: true,
       data: analytics,
-      message: `${config.reportType} analytics generated with ${analytics.insights.length} insights`
+      message: `${config.reportType} analytics generated with ${analytics.insights.length} insights`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -258,16 +259,16 @@ router.post('/analytics/generate', async (req, res) => {
 router.get('/oracle-comparison', async (req, res) => {
   try {
     const comparison = await serviceAnalyticsService.generateOracleEBSServiceComparison();
-    
+
     res.json({
       success: true,
       data: comparison,
-      message: `Competitive advantage: +${comparison.overallRating.competitiveAdvantage.toFixed(1)} points`
+      message: `Competitive advantage: +${comparison.overallRating.competitiveAdvantage.toFixed(1)} points`,
     });
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -280,20 +281,20 @@ router.post('/:commandCenterId/predictive-insights', async (req, res) => {
   try {
     const { commandCenterId } = req.params;
     const { predictionHorizon } = req.body;
-    
+
     const insights = await serviceAnalyticsService.generatePredictiveInsights(
       commandCenterId,
       predictionHorizon || 30
     );
-    
+
     res.json({
       success: true,
-      data: insights
+      data: insights,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -305,18 +306,18 @@ router.post('/:commandCenterId/predictive-insights', async (req, res) => {
 router.get('/:commandCenterId/benchmarks', async (req, res) => {
   try {
     const { commandCenterId } = req.params;
-    
+
     const benchmarks = await serviceAnalyticsService.generatePerformanceBenchmarks(commandCenterId);
-    
+
     res.json({
       success: true,
       data: benchmarks,
-      message: `Performance ranking: ${benchmarks.overallRanking.competitivePosition} (${benchmarks.overallRanking.percentile}th percentile)`
+      message: `Performance ranking: ${benchmarks.overallRanking.competitivePosition} (${benchmarks.overallRanking.percentile}th percentile)`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -332,18 +333,18 @@ router.get('/:commandCenterId/benchmarks', async (req, res) => {
 router.post('/mobile/initialize', async (req, res) => {
   try {
     const config = req.body;
-    
+
     const session = await mobileCommandService.initializeMobileSession(config);
-    
+
     res.json({
       success: true,
       data: session,
-      message: `Mobile session initialized for ${config.deviceInfo.platform} device`
+      message: `Mobile session initialized for ${config.deviceInfo.platform} device`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -355,17 +356,17 @@ router.post('/mobile/initialize', async (req, res) => {
 router.get('/mobile/:sessionId/dashboard', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    
+
     const dashboard = await mobileCommandService.getMobileCommandDashboard(sessionId);
-    
+
     res.json({
       success: true,
-      data: dashboard
+      data: dashboard,
     });
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -378,18 +379,18 @@ router.post('/mobile/:sessionId/emergency-dispatch', async (req, res) => {
   try {
     const { sessionId } = req.params;
     const emergency = req.body;
-    
+
     const dispatch = await mobileCommandService.executeEmergencyDispatch(sessionId, emergency);
-    
+
     res.json({
       success: true,
       data: dispatch,
-      message: `Emergency dispatch ${dispatch.dispatchId} initiated - ETA: ${dispatch.estimatedResponseTime} minutes`
+      message: `Emergency dispatch ${dispatch.dispatchId} initiated - ETA: ${dispatch.estimatedResponseTime} minutes`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -402,18 +403,18 @@ router.put('/mobile/:sessionId/location', async (req, res) => {
   try {
     const { sessionId } = req.params;
     const { location } = req.body;
-    
+
     const update = await mobileCommandService.updateMobileLocation(sessionId, location);
-    
+
     res.json({
       success: true,
       data: update,
-      message: `Location updated - ${update.nearbyResources.length} nearby resources found`
+      message: `Location updated - ${update.nearbyResources.length} nearby resources found`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -425,18 +426,18 @@ router.put('/mobile/:sessionId/location', async (req, res) => {
 router.post('/mobile/:sessionId/offline-mode', async (req, res) => {
   try {
     const { sessionId } = req.params;
-    
+
     const offlineMode = await mobileCommandService.enableOfflineMode(sessionId);
-    
+
     res.json({
       success: true,
       data: offlineMode,
-      message: `Offline mode enabled with ${offlineMode.offlineCapabilities.length} capabilities`
+      message: `Offline mode enabled with ${offlineMode.offlineCapabilities.length} capabilities`,
     });
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });

@@ -7,7 +7,6 @@ import type { AnalyticsMetric } from '../../types';
 import { DateUtils } from '../../../../shared/constants';
 
 export class MetricsService {
-  
   async getFinancialMetrics(period: 'MTD' | 'QTD' | 'YTD' = 'MTD'): Promise<AnalyticsMetric[]> {
     return [
       {
@@ -17,7 +16,7 @@ export class MetricsService {
         change: 8500,
         changePercentage: 7.3,
         period,
-        trend: 'UP'
+        trend: 'UP',
       },
       {
         name: 'Gross Profit Margin',
@@ -26,7 +25,7 @@ export class MetricsService {
         change: 1.2,
         changePercentage: 3.8,
         period,
-        trend: 'UP'
+        trend: 'UP',
       },
       {
         name: 'Operating Expenses',
@@ -35,8 +34,8 @@ export class MetricsService {
         change: -2100,
         changePercentage: -2.6,
         period,
-        trend: 'DOWN'
-      }
+        trend: 'DOWN',
+      },
     ];
   }
 
@@ -49,7 +48,7 @@ export class MetricsService {
         change: 8,
         changePercentage: 21.6,
         period,
-        trend: 'UP'
+        trend: 'UP',
       },
       {
         name: 'Conversion Rate',
@@ -58,7 +57,7 @@ export class MetricsService {
         change: 0.3,
         changePercentage: 10.3,
         period,
-        trend: 'UP'
+        trend: 'UP',
       },
       {
         name: 'Average Deal Size',
@@ -67,8 +66,8 @@ export class MetricsService {
         change: 150,
         changePercentage: 5.6,
         period,
-        trend: 'UP'
-      }
+        trend: 'UP',
+      },
     ];
   }
 
@@ -81,7 +80,7 @@ export class MetricsService {
         change: -2.1,
         changePercentage: -2.6,
         period,
-        trend: 'DOWN'
+        trend: 'DOWN',
       },
       {
         name: 'Customer Satisfaction',
@@ -90,7 +89,7 @@ export class MetricsService {
         change: 0.1,
         changePercentage: 2.4,
         period,
-        trend: 'UP'
+        trend: 'UP',
       },
       {
         name: 'Project Completion Rate',
@@ -99,43 +98,41 @@ export class MetricsService {
         change: 3.1,
         changePercentage: 3.7,
         period,
-        trend: 'UP'
-      }
+        trend: 'UP',
+      },
     ];
   }
 
   async getCustomMetrics(metricIds: string[]): Promise<AnalyticsMetric[]> {
     // Would fetch custom defined metrics
-    return metricIds.map(id => ({
+    return metricIds.map((id) => ({
       name: `Custom Metric ${id}`,
       value: Math.random() * 1000,
       unit: 'units',
       change: Math.random() * 100 - 50,
       changePercentage: Math.random() * 20 - 10,
       period: 'MTD',
-      trend: Math.random() > 0.5 ? 'UP' : 'DOWN'
+      trend: Math.random() > 0.5 ? 'UP' : 'DOWN',
     }));
   }
 
   async getForecast(metric: string, periods: number): Promise<any> {
     const baseValue = Math.random() * 100000;
-    
+
     return {
       metric,
       periods,
       forecast: Array.from({ length: periods }, (_, i) => ({
         period: i + 1,
-        periodName: DateUtils.addMonths(new Date(), i + 1).toISOString().substring(0, 7),
+        periodName: DateUtils.addMonths(new Date(), i + 1)
+          .toISOString()
+          .substring(0, 7),
         value: Math.round(baseValue * (1 + Math.random() * 0.2 - 0.1)),
-        confidence: Math.max(0.5, 0.95 - (i * 0.08))
+        confidence: Math.max(0.5, 0.95 - i * 0.08),
       })),
       accuracy: 0.87,
       model: 'LINEAR_REGRESSION',
-      factors: [
-        'Historical trend',
-        'Seasonal patterns',
-        'Market conditions'
-      ]
+      factors: ['Historical trend', 'Seasonal patterns', 'Market conditions'],
     };
   }
 
@@ -148,18 +145,14 @@ export class MetricsService {
         detected: true,
         pattern: 'MONTHLY',
         strength: 0.45,
-        peaks: ['December', 'March', 'June']
+        peaks: ['December', 'March', 'June'],
       },
-      outliers: [
-        { period: '2024-02', value: 85000, zScore: 2.3 }
-      ],
+      outliers: [{ period: '2024-02', value: 85000, zScore: 2.3 }],
       correlations: [
         { metric: 'Marketing Spend', correlation: 0.68 },
-        { metric: 'Customer Acquisition', correlation: 0.82 }
+        { metric: 'Customer Acquisition', correlation: 0.82 },
       ],
-      changePoints: [
-        { period: '2024-03', changeType: 'LEVEL_SHIFT', magnitude: 0.15 }
-      ]
+      changePoints: [{ period: '2024-03', changeType: 'LEVEL_SHIFT', magnitude: 0.15 }],
     };
   }
 
@@ -173,51 +166,53 @@ export class MetricsService {
           type: 'WARNING',
           message: 'Inventory levels below minimum threshold for Product A',
           priority: 'HIGH',
-          source: 'Inventory Management'
+          source: 'Inventory Management',
         },
         {
           type: 'INFO',
           message: 'Monthly revenue target achieved 5 days early',
           priority: 'MEDIUM',
-          source: 'Sales Analytics'
-        }
+          source: 'Sales Analytics',
+        },
       ],
       topPerformers: {
         salesReps: [
           { name: 'John Smith', value: 125000, metric: 'Revenue' },
-          { name: 'Sarah Johnson', value: 98000, metric: 'Revenue' }
+          { name: 'Sarah Johnson', value: 98000, metric: 'Revenue' },
         ],
         products: [
           { name: 'Product A', value: 45000, metric: 'Sales' },
-          { name: 'Product B', value: 38000, metric: 'Sales' }
+          { name: 'Product B', value: 38000, metric: 'Sales' },
         ],
         customers: [
           { name: 'Enterprise Corp', value: 75000, metric: 'Revenue' },
-          { name: 'Tech Solutions LLC', value: 65000, metric: 'Revenue' }
-        ]
+          { name: 'Tech Solutions LLC', value: 65000, metric: 'Revenue' },
+        ],
       },
       upcomingEvents: [
         {
           date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           event: 'Quarterly Business Review',
-          type: 'MEETING'
-        }
+          type: 'MEETING',
+        },
       ],
       systemHealth: {
         status: 'HEALTHY',
         uptime: '99.97%',
         responseTime: '120ms',
         activeUsers: 145,
-        dataFreshness: '5 minutes'
-      }
+        dataFreshness: '5 minutes',
+      },
     };
   }
 
   async getMetricHistory(metricName: string, periods: number): Promise<any> {
     const history = Array.from({ length: periods }, (_, i) => ({
-      period: DateUtils.addMonths(new Date(), -(periods - i)).toISOString().substring(0, 7),
+      period: DateUtils.addMonths(new Date(), -(periods - i))
+        .toISOString()
+        .substring(0, 7),
       value: Math.random() * 100000,
-      change: Math.random() * 20 - 10
+      change: Math.random() * 20 - 10,
     }));
 
     return {
@@ -225,10 +220,10 @@ export class MetricsService {
       history,
       statistics: {
         average: history.reduce((sum, h) => sum + h.value, 0) / history.length,
-        min: Math.min(...history.map(h => h.value)),
-        max: Math.max(...history.map(h => h.value)),
-        standardDeviation: 0 // Would calculate actual std dev
-      }
+        min: Math.min(...history.map((h) => h.value)),
+        max: Math.max(...history.map((h) => h.value)),
+        standardDeviation: 0, // Would calculate actual std dev
+      },
     };
   }
 
@@ -240,13 +235,13 @@ export class MetricsService {
     dataSources: string[];
   }): Promise<any> {
     const id = `custom_metric_${Date.now()}`;
-    
+
     return {
       id,
       ...metric,
       status: 'ACTIVE',
       createdDate: new Date(),
-      lastCalculated: new Date()
+      lastCalculated: new Date(),
     };
   }
 
@@ -256,10 +251,10 @@ export class MetricsService {
       correlations: [
         { metric: 'Marketing Spend', correlation: 0.68, significance: 'HIGH' },
         { metric: 'Customer Acquisition', correlation: 0.82, significance: 'HIGH' },
-        { metric: 'Season Index', correlation: 0.45, significance: 'MEDIUM' }
+        { metric: 'Season Index', correlation: 0.45, significance: 'MEDIUM' },
       ],
       timeframe: '12 months',
-      calculatedAt: new Date()
+      calculatedAt: new Date(),
     };
   }
 
@@ -272,12 +267,12 @@ export class MetricsService {
           expected: 95000,
           actual: 125000,
           severity: 'MEDIUM',
-          type: 'SPIKE'
-        }
+          type: 'SPIKE',
+        },
       ],
       model: 'ISOLATION_FOREST',
       sensitivity: 0.05,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
@@ -288,14 +283,14 @@ export class MetricsService {
         industryAverage: 75.5,
         topPercentile: 92.3,
         currentValue: 82.1,
-        percentileRank: 68
+        percentileRank: 68,
       },
       comparison: 'ABOVE_AVERAGE',
       recommendations: [
         'Performance is above industry average',
         'Consider targeting top percentile performance',
-        'Monitor for continued improvement'
-      ]
+        'Monitor for continued improvement',
+      ],
     };
   }
 
@@ -303,25 +298,25 @@ export class MetricsService {
     return {
       metricName,
       dimensions,
-      breakdown: dimensions.map(dim => ({
+      breakdown: dimensions.map((dim) => ({
         dimension: dim,
         values: [
           { segment: 'Segment A', value: Math.random() * 100 },
           { segment: 'Segment B', value: Math.random() * 100 },
-          { segment: 'Segment C', value: Math.random() * 100 }
-        ]
+          { segment: 'Segment C', value: Math.random() * 100 },
+        ],
       })),
       insights: [
         `${dimensions[0]} shows significant variation across segments`,
-        'Segment A consistently outperforms others'
-      ]
+        'Segment A consistently outperforms others',
+      ],
     };
   }
 
   async calculateMetricGoals(metricName: string, targetImprovement: number): Promise<any> {
     const currentValue = Math.random() * 100;
     const targetValue = currentValue * (1 + targetImprovement / 100);
-    
+
     return {
       metricName,
       currentValue,
@@ -331,12 +326,12 @@ export class MetricsService {
       milestones: [
         { month: 1, target: currentValue * 1.02, actions: ['Implement quick wins'] },
         { month: 3, target: currentValue * 1.05, actions: ['Execute improvement plan'] },
-        { month: 6, target: targetValue, actions: ['Full implementation'] }
+        { month: 6, target: targetValue, actions: ['Full implementation'] },
       ],
       riskFactors: [
         'Market conditions may impact performance',
-        'Resource availability constraints'
-      ]
+        'Resource availability constraints',
+      ],
     };
   }
 }

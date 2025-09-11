@@ -1,142 +1,146 @@
 // Api Orchestration Platform - Database Management System
 // This file provides business-ready functionality for Api Orchestration Platform
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Api Orchestration Platform page loaded');
-    
-    // Initialize page functionality
-    initApiOrchestrationPlatform();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadApiOrchestrationPlatformData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Api Orchestration Platform page loaded');
+
+  // Initialize page functionality
+  initApiOrchestrationPlatform();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadApiOrchestrationPlatformData();
 });
 
 async function loadApiOrchestrationPlatformData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/api-orchestration-platform');
-        if (response.ok) {
-            const data = await response.json();
-            updateApiOrchestrationPlatformDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Api Orchestration Platform data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/data-integration-etl/api-orchestration-platform');
+    if (response.ok) {
+      const data = await response.json();
+      updateApiOrchestrationPlatformDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Api Orchestration Platform data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initApiOrchestrationPlatform() {
-    console.log('Initializing Api Orchestration Platform');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Api Orchestration Platform');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Api Orchestration Platform');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Api Orchestration Platform');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Api Orchestration Platform');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Api Orchestration Platform');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Api Orchestration Platform');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Api Orchestration Platform');
 }
 
 function handleApiOrchestrationPlatformAction() {
-    console.log('Api Orchestration Platform action triggered');
-    showNotification('Api Orchestration Platform configured successfully', 'success');
+  console.log('Api Orchestration Platform action triggered');
+  showNotification('Api Orchestration Platform configured successfully', 'success');
 }
 
 function executeApiOrchestrationPlatform() {
-    console.log('Api Orchestration Platform execution started');
-    showNotification('Api Orchestration Platform executed successfully', 'success');
+  console.log('Api Orchestration Platform execution started');
+  showNotification('Api Orchestration Platform executed successfully', 'success');
 }
 
 function updateApiOrchestrationPlatformDisplay(data) {
-    console.log('Updating Api Orchestration Platform display:', data);
-    // Update UI with loaded data
+  console.log('Updating Api Orchestration Platform display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/api-orchestration-platform/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadApiOrchestrationPlatformData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleApiOrchestrationPlatformAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/api-orchestration-platform/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'api-orchestration-platform-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/api-orchestration-platform/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadApiOrchestrationPlatformData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleApiOrchestrationPlatformAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/api-orchestration-platform/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'api-orchestration-platform-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

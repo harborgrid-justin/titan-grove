@@ -8,14 +8,14 @@ import type { Logger } from 'winston';
 import { ComponentRegistry } from './ComponentRegistry';
 import { ThemeManager } from './ThemeManager';
 import { DashboardManager } from '../dashboards/DashboardManager';
-import { 
-  UIComponent, 
-  Dashboard, 
-  UITheme, 
-  UserPreferences, 
+import {
+  UIComponent,
+  Dashboard,
+  UITheme,
+  UserPreferences,
   UIEvent,
   DataSourceConfig,
-  UIManagerConfig 
+  UIManagerConfig,
 } from '../types';
 
 export class UIManager extends EventEmitter {
@@ -31,12 +31,12 @@ export class UIManager extends EventEmitter {
     super();
     this.config = config;
     this.logger = logger;
-    
+
     // Initialize core managers
     this.componentRegistry = new ComponentRegistry(logger);
     this.themeManager = new ThemeManager(logger);
     this.dashboardManager = new DashboardManager(config, logger);
-    
+
     this.setupEventHandlers();
   }
 
@@ -45,16 +45,16 @@ export class UIManager extends EventEmitter {
    */
   async initialize(): Promise<void> {
     this.logger.info('Initializing Titan Grove UI System...');
-    
+
     // Load built-in components
     await this.loadBuiltinComponents();
-    
+
     // Load built-in themes
     await this.loadBuiltinThemes();
-    
+
     // Initialize dashboard system
     await this.dashboardManager.initialize();
-    
+
     this.logger.info('UI System initialized successfully');
   }
 
@@ -72,19 +72,19 @@ export class UIManager extends EventEmitter {
   async getAvailableComponents(userId: string): Promise<UIComponent[]> {
     const preferences = await this.getUserPreferences(userId);
     const allComponents = await this.componentRegistry.getAll();
-    
+
     // Filter components based on user permissions and preferences
-    return allComponents.filter(component => {
+    return allComponents.filter((component) => {
       // Check permissions
       if (component.config.behavior?.permissions) {
         // TODO: Implement permission checking
       }
-      
+
       // Filter hidden components
       if (preferences.components.hidden.includes(component.id)) {
         return false;
       }
-      
+
       return true;
     });
   }
@@ -92,7 +92,9 @@ export class UIManager extends EventEmitter {
   /**
    * Create a new dashboard
    */
-  async createDashboard(dashboard: Omit<Dashboard, 'id' | 'createdAt' | 'updatedAt'>): Promise<Dashboard> {
+  async createDashboard(
+    dashboard: Omit<Dashboard, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Dashboard> {
     const newDashboard = await this.dashboardManager.create(dashboard);
     this.emit('dashboardCreated', newDashboard);
     return newDashboard;
@@ -111,10 +113,10 @@ export class UIManager extends EventEmitter {
   async updateDashboard(dashboardId: string, updates: Partial<Dashboard>): Promise<Dashboard> {
     const dashboard = await this.dashboardManager.update(dashboardId, updates);
     this.emit('dashboardUpdated', dashboard);
-    
+
     // Notify connected clients
     this.broadcastToUser(dashboard.userId, 'dashboardUpdated', dashboard);
-    
+
     return dashboard;
   }
 
@@ -122,8 +124,8 @@ export class UIManager extends EventEmitter {
    * Get component data with real-time updates
    */
   async getComponentData(
-    componentId: string, 
-    dataSource: DataSourceConfig, 
+    componentId: string,
+    dataSource: DataSourceConfig,
     userId: string
   ): Promise<any> {
     const component = await this.componentRegistry.get(componentId);
@@ -190,28 +192,28 @@ export class UIManager extends EventEmitter {
         dashboards: {
           default: '',
           favorites: [],
-          recent: []
+          recent: [],
         },
         components: {
           favorites: [],
-          hidden: []
+          hidden: [],
         },
         layout: {
           sidebarCollapsed: false,
-          density: 'normal'
+          density: 'normal',
         },
         accessibility: {
           highContrast: false,
           largeText: false,
-          reducedMotion: false
+          reducedMotion: false,
         },
         notifications: {
           enabled: true,
           types: ['system', 'alerts', 'updates'],
-          frequency: 'realtime'
-        }
+          frequency: 'realtime',
+        },
       };
-      
+
       this.userPreferences.set(userId, defaultPreferences);
     }
 
@@ -221,14 +223,17 @@ export class UIManager extends EventEmitter {
   /**
    * Update user preferences
    */
-  async updateUserPreferences(userId: string, preferences: Partial<UserPreferences>): Promise<UserPreferences> {
+  async updateUserPreferences(
+    userId: string,
+    preferences: Partial<UserPreferences>
+  ): Promise<UserPreferences> {
     const current = await this.getUserPreferences(userId);
     const updated = { ...current, ...preferences };
     this.userPreferences.set(userId, updated);
-    
+
     // Persist to storage
     // TODO: Implement persistence
-    
+
     this.emit('preferencesUpdated', userId, updated);
     return updated;
   }
@@ -238,7 +243,7 @@ export class UIManager extends EventEmitter {
    */
   handleWebSocketConnection(userId: string, connection: any): void {
     this.activeConnections.set(userId, connection);
-    
+
     connection.on('close', () => {
       this.activeConnections.delete(userId);
     });
@@ -248,7 +253,7 @@ export class UIManager extends EventEmitter {
         const event: UIEvent = JSON.parse(message);
         event.userId = userId;
         event.timestamp = new Date();
-        
+
         this.handleUIEvent(event);
       } catch (error) {
         this.logger.error('Invalid WebSocket message:', error);
@@ -263,7 +268,7 @@ export class UIManager extends EventEmitter {
    */
   private handleUIEvent(event: UIEvent): void {
     this.emit('uiEvent', event);
-    
+
     // Handle specific event types
     switch (event.type) {
       case 'widgetInteraction':
@@ -303,9 +308,9 @@ export class UIManager extends EventEmitter {
       config: {
         behavior: { interactive: true, realtime: true },
         responsive: {
-          breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }
-        }
-      }
+          breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 },
+        },
+      },
     });
 
     // Table component
@@ -317,9 +322,9 @@ export class UIManager extends EventEmitter {
       config: {
         behavior: { interactive: true, cacheable: true },
         responsive: {
-          breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }
-        }
-      }
+          breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 },
+        },
+      },
     });
 
     // KPI Card
@@ -331,9 +336,9 @@ export class UIManager extends EventEmitter {
       config: {
         behavior: { realtime: true },
         responsive: {
-          breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }
-        }
-      }
+          breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 },
+        },
+      },
     });
 
     this.logger.info('Built-in components loaded');
@@ -357,20 +362,20 @@ export class UIManager extends EventEmitter {
         text: {
           primary: '#0f172a',
           secondary: '#475569',
-          disabled: '#94a3b8'
+          disabled: '#94a3b8',
         },
         status: {
           success: '#10b981',
           warning: '#f59e0b',
           error: '#ef4444',
-          info: '#3b82f6'
-        }
+          info: '#3b82f6',
+        },
       },
       typography: {
         fontFamily: {
           primary: 'Inter, sans-serif',
           secondary: 'Inter, sans-serif',
-          monospace: 'JetBrains Mono, monospace'
+          monospace: 'JetBrains Mono, monospace',
         },
         fontSizes: {
           xs: '0.75rem',
@@ -378,19 +383,19 @@ export class UIManager extends EventEmitter {
           md: '1rem',
           lg: '1.125rem',
           xl: '1.25rem',
-          xxl: '1.5rem'
+          xxl: '1.5rem',
         },
         fontWeights: {
           light: 300,
           normal: 400,
           medium: 500,
-          bold: 700
+          bold: 700,
         },
         lineHeights: {
           tight: 1.25,
           normal: 1.5,
-          relaxed: 1.75
-        }
+          relaxed: 1.75,
+        },
       },
       spacing: {
         unit: 4,
@@ -399,8 +404,8 @@ export class UIManager extends EventEmitter {
           containerMaxWidth: '1200px',
           sidebarWidth: '280px',
           headerHeight: '64px',
-          footerHeight: '80px'
-        }
+          footerHeight: '80px',
+        },
       },
       components: {},
       responsive: {
@@ -408,15 +413,51 @@ export class UIManager extends EventEmitter {
           mobile: '320px',
           tablet: '768px',
           desktop: '1024px',
-          wide: '1440px'
+          wide: '1440px',
         },
         spacing: {
-          mobile: { unit: 4, scale: [0, 4, 8, 12, 16, 20], layouts: { containerMaxWidth: '100%', sidebarWidth: '240px', headerHeight: '56px', footerHeight: '64px' }},
-          tablet: { unit: 4, scale: [0, 4, 8, 12, 16, 20, 24], layouts: { containerMaxWidth: '100%', sidebarWidth: '260px', headerHeight: '60px', footerHeight: '72px' }},
-          desktop: { unit: 4, scale: [0, 4, 8, 12, 16, 20, 24, 32], layouts: { containerMaxWidth: '1200px', sidebarWidth: '280px', headerHeight: '64px', footerHeight: '80px' }},
-          wide: { unit: 4, scale: [0, 4, 8, 12, 16, 20, 24, 32, 40, 48], layouts: { containerMaxWidth: '1400px', sidebarWidth: '320px', headerHeight: '72px', footerHeight: '88px' }}
-        }
-      }
+          mobile: {
+            unit: 4,
+            scale: [0, 4, 8, 12, 16, 20],
+            layouts: {
+              containerMaxWidth: '100%',
+              sidebarWidth: '240px',
+              headerHeight: '56px',
+              footerHeight: '64px',
+            },
+          },
+          tablet: {
+            unit: 4,
+            scale: [0, 4, 8, 12, 16, 20, 24],
+            layouts: {
+              containerMaxWidth: '100%',
+              sidebarWidth: '260px',
+              headerHeight: '60px',
+              footerHeight: '72px',
+            },
+          },
+          desktop: {
+            unit: 4,
+            scale: [0, 4, 8, 12, 16, 20, 24, 32],
+            layouts: {
+              containerMaxWidth: '1200px',
+              sidebarWidth: '280px',
+              headerHeight: '64px',
+              footerHeight: '80px',
+            },
+          },
+          wide: {
+            unit: 4,
+            scale: [0, 4, 8, 12, 16, 20, 24, 32, 40, 48],
+            layouts: {
+              containerMaxWidth: '1400px',
+              sidebarWidth: '320px',
+              headerHeight: '72px',
+              footerHeight: '88px',
+            },
+          },
+        },
+      },
     });
 
     this.logger.info('Built-in themes loaded');

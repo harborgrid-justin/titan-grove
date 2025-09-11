@@ -17,13 +17,12 @@ import type {
   WorkOrderStatus,
   GeoLocation,
   DateRange,
-  TravelTimeMatrix
+  TravelTimeMatrix,
 } from '../../types/field-service-types';
 
 import type { WorkOrder } from '../../types/work-order-types';
 
 export class SchedulingOptimizationService {
-
   // ================================
   // ADVANCED SCHEDULING OPTIMIZATION
   // ================================
@@ -38,32 +37,32 @@ export class SchedulingOptimizationService {
 
     console.log('Starting advanced scheduling optimization...', {
       dateRange: parameters.dateRange,
-      objectives: parameters.objectives.map(o => o.type),
+      objectives: parameters.objectives.map((o) => o.type),
       constraints: parameters.constraints.length,
-      workOrders: parameters.workOrderIds?.length || 0
+      workOrders: parameters.workOrderIds?.length || 0,
     });
 
     // Step 1: Gather optimization data
     const optimizationData = await this.gatherOptimizationData(parameters);
-    
+
     // Step 2: Apply AI-powered optimization algorithms
     const result = await this.runOptimizationAlgorithms(optimizationData, parameters);
-    
+
     // Step 3: Generate alternative scenarios
     const alternatives = await this.generateAlternativeScenarios(optimizationData, result);
-    
+
     const processingTime = Date.now() - startTime;
-    
+
     return {
       optimizationId,
       requestDate: new Date(),
       parameters,
       results: {
         ...result,
-        alternativeScenarios: alternatives
+        alternativeScenarios: alternatives,
       },
       processingTime,
-      status: 'COMPLETED'
+      status: 'COMPLETED',
     };
   }
 
@@ -73,7 +72,12 @@ export class SchedulingOptimizationService {
   async adjustScheduleRealTime(
     currentAssignments: TechnicianAssignment[],
     disruption: {
-      type: 'EMERGENCY_WORK_ORDER' | 'TECHNICIAN_UNAVAILABLE' | 'TRAFFIC_DELAY' | 'WEATHER' | 'EQUIPMENT_FAILURE';
+      type:
+        | 'EMERGENCY_WORK_ORDER'
+        | 'TECHNICIAN_UNAVAILABLE'
+        | 'TRAFFIC_DELAY'
+        | 'WEATHER'
+        | 'EQUIPMENT_FAILURE';
       workOrderId?: string;
       technicianId?: string;
       estimatedDelay?: number; // minutes
@@ -98,26 +102,26 @@ export class SchedulingOptimizationService {
     confidenceScore: number; // 1-100
   }> {
     const adjustmentId = `adj_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Processing real-time schedule adjustment for ${disruption.type}`);
 
     // Analyze impact of disruption
     const impactAnalysis = await this.analyzeDisruptionImpact(currentAssignments, disruption);
-    
+
     // Generate adjusted assignments
     const adjustedAssignments = await this.generateAdjustedAssignments(
-      currentAssignments, 
-      disruption, 
+      currentAssignments,
+      disruption,
       impactAnalysis
     );
-    
+
     // Calculate confidence score based on multiple factors
     const confidenceScore = this.calculateAdjustmentConfidence(
       disruption,
       impactAnalysis,
       adjustedAssignments
     );
-    
+
     return {
       adjustmentId,
       disruptionType: disruption.type,
@@ -128,16 +132,16 @@ export class SchedulingOptimizationService {
         delayedWorkOrders: 2,
         totalDelayMinutes: 45,
         slaImpact: 'MINOR',
-        customerImpact: 2
+        customerImpact: 2,
       },
       recommendations: [
         'Notify affected customers of revised arrival times',
         'Consider overtime authorization for Tech #247',
         'Monitor traffic conditions for alternative routing',
-        'Prepare backup technician if delays persist'
+        'Prepare backup technician if delays persist',
       ],
       autoApplied: confidenceScore >= 80,
-      confidenceScore
+      confidenceScore,
     };
   }
 
@@ -155,30 +159,32 @@ export class SchedulingOptimizationService {
       fuelEfficiencyWeight: number; // 0-1
       timeEfficiencyWeight: number; // 0-1
     }
-  ): Promise<Array<{
-    technicianId: string;
-    originalRoute: RouteSegment[];
-    optimizedRoute: RouteSegment[];
-    improvements: {
-      timeSavings: number; // minutes
-      distanceSavings: number; // miles
-      fuelSavings: number; // gallons
-      costSavings: number; // dollars
-      slaImprovements: number; // count
-    };
-    routeScore: number; // 1-100
-    alternativeRoutes?: Array<{
-      routeId: string;
-      route: RouteSegment[];
-      score: number;
-      tradeoffs: string[];
-    }>;
-  }>> {
+  ): Promise<
+    Array<{
+      technicianId: string;
+      originalRoute: RouteSegment[];
+      optimizedRoute: RouteSegment[];
+      improvements: {
+        timeSavings: number; // minutes
+        distanceSavings: number; // miles
+        fuelSavings: number; // gallons
+        costSavings: number; // dollars
+        slaImprovements: number; // count
+      };
+      routeScore: number; // 1-100
+      alternativeRoutes?: Array<{
+        routeId: string;
+        route: RouteSegment[];
+        score: number;
+        tradeoffs: string[];
+      }>;
+    }>
+  > {
     console.log(`Optimizing routes for ${assignments.length} technicians`);
-    
-    return assignments.map(assignment => {
+
+    return assignments.map((assignment) => {
       const optimizedRoute = this.calculateOptimalRoute(assignment, options);
-      
+
       return {
         technicianId: assignment.technicianId,
         originalRoute: assignment.scheduledRoute,
@@ -187,8 +193,8 @@ export class SchedulingOptimizationService {
           timeSavings: 23,
           distanceSavings: 5.2,
           fuelSavings: 0.8,
-          costSavings: 28.50,
-          slaImprovements: 1
+          costSavings: 28.5,
+          slaImprovements: 1,
         },
         routeScore: 87,
         alternativeRoutes: [
@@ -196,9 +202,9 @@ export class SchedulingOptimizationService {
             routeId: 'alt_001',
             route: optimizedRoute,
             score: 82,
-            tradeoffs: ['Slightly longer travel time', 'Better customer satisfaction']
-          }
-        ]
+            tradeoffs: ['Slightly longer travel time', 'Better customer satisfaction'],
+          },
+        ],
       };
     });
   }
@@ -241,7 +247,11 @@ export class SchedulingOptimizationService {
       }>;
     };
     optimization: {
-      recommendedSchedulingStrategy: 'BALANCED' | 'EFFICIENCY_FOCUSED' | 'CUSTOMER_FOCUSED' | 'COST_OPTIMIZED';
+      recommendedSchedulingStrategy:
+        | 'BALANCED'
+        | 'EFFICIENCY_FOCUSED'
+        | 'CUSTOMER_FOCUSED'
+        | 'COST_OPTIMIZED';
       suggestedAdjustments: Array<{
         type: 'STAFF_INCREASE' | 'SKILL_DEVELOPMENT' | 'SCHEDULE_CHANGE' | 'EQUIPMENT_UPGRADE';
         description: string;
@@ -270,26 +280,26 @@ export class SchedulingOptimizationService {
             predictedVolume: 47,
             confidenceInterval: { lower: 42, upper: 52 },
             breakdown: {
-              'MAINTENANCE': 18,
-              'REPAIR': 15,
-              'INSTALLATION': 8,
-              'INSPECTION': 6
-            }
-          }
+              MAINTENANCE: 18,
+              REPAIR: 15,
+              INSTALLATION: 8,
+              INSPECTION: 6,
+            },
+          },
         ],
         resourceRequirements: [
           {
             date: new Date(Date.now() + 24 * 60 * 60 * 1000),
             requiredTechnicians: 12,
             skillRequirements: {
-              'HVAC': 4,
-              'ELECTRICAL': 3,
-              'PLUMBING': 3,
-              'GENERAL': 2
+              HVAC: 4,
+              ELECTRICAL: 3,
+              PLUMBING: 3,
+              GENERAL: 2,
             },
             overtimePrediction: 8,
-            subcontractorNeeds: 2
-          }
+            subcontractorNeeds: 2,
+          },
         ],
         performanceForecasts: [
           {
@@ -297,12 +307,12 @@ export class SchedulingOptimizationService {
             predictedMetrics: {
               efficiency: 87,
               customerSatisfaction: 4.3,
-              utilizationRate: 82
+              utilizationRate: 82,
             },
             riskFactors: ['High workload may lead to fatigue'],
-            recommendations: ['Schedule lighter day on Friday', 'Provide additional training']
-          }
-        ]
+            recommendations: ['Schedule lighter day on Friday', 'Provide additional training'],
+          },
+        ],
       },
       optimization: {
         recommendedSchedulingStrategy: 'BALANCED',
@@ -312,15 +322,15 @@ export class SchedulingOptimizationService {
             description: 'Add 2 part-time technicians for peak periods',
             impact: 'Reduce overtime by 30%, improve SLA compliance',
             cost: 85000,
-            roi: 24
+            roi: 24,
           },
           {
             type: 'SKILL_DEVELOPMENT',
             description: 'Cross-train 3 technicians in HVAC systems',
             impact: 'Increase scheduling flexibility by 25%',
             cost: 12000,
-            roi: 180
-          }
+            roi: 180,
+          },
         ],
         alternativeStrategies: [
           {
@@ -328,15 +338,15 @@ export class SchedulingOptimizationService {
             pros: ['Higher satisfaction scores', 'Better retention'],
             cons: ['Slightly higher costs', 'Lower utilization'],
             expectedOutcomes: {
-              'customerSatisfaction': 4.6,
-              'slaCompliance': 96,
-              'profitMargin': 18.2
-            }
-          }
-        ]
+              customerSatisfaction: 4.6,
+              slaCompliance: 96,
+              profitMargin: 18.2,
+            },
+          },
+        ],
       },
       confidence: 87,
-      modelAccuracy: 92.3
+      modelAccuracy: 92.3,
     };
   }
 
@@ -382,32 +392,32 @@ export class SchedulingOptimizationService {
     console.log('Analyzing scheduling constraints', {
       workOrders: workOrders.length,
       technicians: technicians.length,
-      constraints: constraints.length
+      constraints: constraints.length,
     });
 
     // Process each constraint type
     const constraintResults = await Promise.all(
-      constraints.map(constraint => this.evaluateConstraint(constraint, workOrders, technicians))
+      constraints.map((constraint) => this.evaluateConstraint(constraint, workOrders, technicians))
     );
 
     return {
-      feasibleAssignments: workOrders.map(wo => ({
+      feasibleAssignments: workOrders.map((wo) => ({
         workOrderId: wo.id,
-        candidateTechnicians: technicians.slice(0, 3).map(tech => ({
+        candidateTechnicians: technicians.slice(0, 3).map((tech) => ({
           technicianId: tech.id,
           constraintScore: 85,
           violatedConstraints: [],
           satisfiedConstraints: ['SKILL_REQUIREMENT', 'LOCATION', 'TIME_WINDOW'],
-          assignmentScore: 92
-        }))
+          assignmentScore: 92,
+        })),
       })),
       infeasibleWorkOrders: [],
       constraintAnalysis: {
         totalConstraints: constraints.length,
-        mandatoryConstraints: constraints.filter(c => c.isMandatory).length,
-        preferenceConstraints: constraints.filter(c => !c.isMandatory).length,
-        conflictingConstraints: []
-      }
+        mandatoryConstraints: constraints.filter((c) => c.isMandatory).length,
+        preferenceConstraints: constraints.filter((c) => !c.isMandatory).length,
+        conflictingConstraints: [],
+      },
     };
   }
 
@@ -440,9 +450,9 @@ export class SchedulingOptimizationService {
     console.log(`Applying constraint relaxation strategy: ${relaxationStrategy}`);
 
     return {
-      relaxedConstraints: originalConstraints.map(c => ({
+      relaxedConstraints: originalConstraints.map((c) => ({
         ...c,
-        weight: c.isMandatory ? c.weight : c.weight * 0.8 // Relax non-mandatory constraints
+        weight: c.isMandatory ? c.weight : c.weight * 0.8, // Relax non-mandatory constraints
       })),
       relaxationSteps: [
         {
@@ -452,9 +462,9 @@ export class SchedulingOptimizationService {
             slaImpact: 2.5,
             costImpact: 150,
             customerImpact: -0.1,
-            operationalImpact: 'Minimal - mostly affects customer convenience'
+            operationalImpact: 'Minimal - mostly affects customer convenience',
           },
-          feasibilityImprovement: 15
+          feasibilityImprovement: 15,
         },
         {
           step: 2,
@@ -463,10 +473,10 @@ export class SchedulingOptimizationService {
             slaImpact: 1.0,
             costImpact: 75,
             customerImpact: 0,
-            operationalImpact: 'May reduce technician satisfaction slightly'
+            operationalImpact: 'May reduce technician satisfaction slightly',
           },
-          feasibilityImprovement: 28
-        }
+          feasibilityImprovement: 28,
+        },
       ],
       finalSolution: {
         totalFeasibleAssignments: 42,
@@ -474,9 +484,9 @@ export class SchedulingOptimizationService {
         overallOptimality: 87,
         tradeoffsAccepted: [
           'Extended service windows for 3 low-priority work orders',
-          'Assigned non-preferred technician to 2 routine maintenance tasks'
-        ]
-      }
+          'Assigned non-preferred technician to 2 routine maintenance tasks',
+        ],
+      },
     };
   }
 
@@ -559,23 +569,23 @@ export class SchedulingOptimizationService {
             currentCapacity: 32,
             requiredCapacity: 48,
             gap: 16,
-            priority: 'HIGH'
+            priority: 'HIGH',
           },
           {
             skill: 'ELECTRICAL_COMMERCIAL',
             currentCapacity: 24,
             requiredCapacity: 36,
             gap: 12,
-            priority: 'MEDIUM'
-          }
+            priority: 'MEDIUM',
+          },
         ],
         utilizationDistribution: {
           'Under 60%': 2,
           '60-80%': 8,
           '80-90%': 12,
-          'Over 90%': 3
+          'Over 90%': 3,
         },
-        bottlenecks: ['HVAC specialists during peak season', 'Emergency response capacity']
+        bottlenecks: ['HVAC specialists during peak season', 'Emergency response capacity'],
       },
       optimizationRecommendations: [
         {
@@ -583,25 +593,25 @@ export class SchedulingOptimizationService {
           description: 'Hire 2 senior HVAC technicians',
           impact: {
             capacityIncrease: 16,
-            skillGapReduction: { 'HVAC_ADVANCED': 16 },
+            skillGapReduction: { HVAC_ADVANCED: 16 },
             costImpact: 120000,
-            timeToImplement: 45
+            timeToImplement: 45,
           },
           priority: 9,
-          roi: 34
+          roi: 34,
         },
         {
           type: 'TRAIN',
           description: 'Cross-train 4 technicians in commercial electrical',
           impact: {
             capacityIncrease: 12,
-            skillGapReduction: { 'ELECTRICAL_COMMERCIAL': 12 },
+            skillGapReduction: { ELECTRICAL_COMMERCIAL: 12 },
             costImpact: 18000,
-            timeToImplement: 30
+            timeToImplement: 30,
           },
           priority: 7,
-          roi: 67
-        }
+          roi: 67,
+        },
       ],
       scenarioAnalysis: [
         {
@@ -612,11 +622,11 @@ export class SchedulingOptimizationService {
             skillGapsClosed: 75,
             additionalCapacity: 24,
             totalCost: 89000,
-            customerSatisfactionImpact: 0.3
+            customerSatisfactionImpact: 0.3,
           },
-          feasibility: 88
-        }
-      ]
+          feasibility: 88,
+        },
+      ],
     };
   }
 
@@ -631,18 +641,21 @@ export class SchedulingOptimizationService {
       technicians: [], // Would fetch technician data
       travelTimes: {}, // Would fetch travel time matrix
       constraints: parameters.constraints,
-      historicalData: {} // Performance and scheduling history
+      historicalData: {}, // Performance and scheduling history
     };
   }
 
-  private async runOptimizationAlgorithms(data: any, parameters: OptimizationParameters): Promise<OptimizationResult> {
+  private async runOptimizationAlgorithms(
+    data: any,
+    parameters: OptimizationParameters
+  ): Promise<OptimizationResult> {
     // Mock implementation of AI optimization algorithms
     // In reality, would use advanced algorithms like:
     // - Genetic Algorithm
-    // - Simulated Annealing  
+    // - Simulated Annealing
     // - Constraint Programming
     // - Machine Learning models
-    
+
     return {
       totalScore: 87.3,
       assignments: [
@@ -654,17 +667,17 @@ export class SchedulingOptimizationService {
               sequenceNumber: 1,
               type: 'WORK_ORDER',
               workOrderId: 'wo_001',
-              location: { latitude: 40.7128, longitude: -74.0060, timestamp: new Date() },
+              location: { latitude: 40.7128, longitude: -74.006, timestamp: new Date() },
               startTime: new Date(),
-              endTime: new Date(Date.now() + 2 * 60 * 60 * 1000)
-            }
+              endTime: new Date(Date.now() + 2 * 60 * 60 * 1000),
+            },
           ],
           totalTravelTime: 45,
           totalServiceTime: 240,
           utilizationRate: 85,
           overtimeRequired: false,
-          estimatedCompletionTime: new Date(Date.now() + 5 * 60 * 60 * 1000)
-        }
+          estimatedCompletionTime: new Date(Date.now() + 5 * 60 * 60 * 1000),
+        },
       ],
       unassignedWorkOrders: [],
       metrics: {
@@ -674,17 +687,20 @@ export class SchedulingOptimizationService {
         slaComplianceRate: 94.5,
         totalOvertimeHours: 0,
         costEfficiency: 87.2,
-        customerSatisfactionPrediction: 4.2
+        customerSatisfactionPrediction: 4.2,
       },
       recommendations: [
         'Consider staggered start times to reduce travel conflicts',
         'Schedule preventive maintenance during low-demand periods',
-        'Implement dynamic pricing for off-peak service windows'
-      ]
+        'Implement dynamic pricing for off-peak service windows',
+      ],
     };
   }
 
-  private async generateAlternativeScenarios(data: any, baseResult: OptimizationResult): Promise<AlternativeScenario[]> {
+  private async generateAlternativeScenarios(
+    data: any,
+    baseResult: OptimizationResult
+  ): Promise<AlternativeScenario[]> {
     return [
       {
         scenarioId: 'scenario_001',
@@ -692,17 +708,20 @@ export class SchedulingOptimizationService {
         description: 'Prioritize customer preferences over efficiency',
         score: 83.1,
         tradeoffs: ['5% increase in travel time', '2% decrease in utilization'],
-        assignments: baseResult.assignments
-      }
+        assignments: baseResult.assignments,
+      },
     ];
   }
 
-  private async analyzeDisruptionImpact(assignments: TechnicianAssignment[], disruption: any): Promise<any> {
+  private async analyzeDisruptionImpact(
+    assignments: TechnicianAssignment[],
+    disruption: any
+  ): Promise<any> {
     // Analyze impact of disruption on current assignments
     return {
       severity: 'MODERATE',
       affectedAssignments: assignments.length > 0 ? 1 : 0,
-      rippleEffects: []
+      rippleEffects: [],
     };
   }
 
@@ -715,18 +734,22 @@ export class SchedulingOptimizationService {
     return original; // Mock - return original for now
   }
 
-  private calculateAdjustmentConfidence(disruption: any, impact: any, adjustments: TechnicianAssignment[]): number {
+  private calculateAdjustmentConfidence(
+    disruption: any,
+    impact: any,
+    adjustments: TechnicianAssignment[]
+  ): number {
     // Calculate confidence based on multiple factors
     let confidence = 100;
-    
+
     // Reduce confidence based on disruption severity
     if (disruption.type === 'EMERGENCY_WORK_ORDER') confidence -= 20;
     if (disruption.type === 'TECHNICIAN_UNAVAILABLE') confidence -= 15;
-    
+
     // Adjust based on impact analysis
     if (impact.severity === 'HIGH') confidence -= 25;
     if (impact.severity === 'MODERATE') confidence -= 10;
-    
+
     return Math.max(confidence, 0);
   }
 
@@ -735,13 +758,17 @@ export class SchedulingOptimizationService {
     return assignment.scheduledRoute;
   }
 
-  private async evaluateConstraint(constraint: SchedulingConstraint, workOrders: WorkOrder[], technicians: Technician[]): Promise<any> {
+  private async evaluateConstraint(
+    constraint: SchedulingConstraint,
+    workOrders: WorkOrder[],
+    technicians: Technician[]
+  ): Promise<any> {
     // Evaluate how well each constraint can be satisfied
     return {
       constraintId: constraint.constraintId,
       feasibilityScore: 85,
       violations: [],
-      recommendations: []
+      recommendations: [],
     };
   }
 }

@@ -42,9 +42,9 @@ export class KPICard {
       animated: true,
       showTrend: true,
       showTarget: true,
-      theme: 'auto'
+      theme: 'auto',
     };
-    
+
     this.initializeCard();
   }
 
@@ -306,7 +306,7 @@ export class KPICard {
         }
       }
     `;
-    
+
     if (!document.head.querySelector('#titan-kpi-styles')) {
       style.id = 'titan-kpi-styles';
       document.head.appendChild(style);
@@ -379,13 +379,13 @@ export class KPICard {
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing function (ease-out)
       const easeOut = 1 - Math.pow(1 - progress, 3);
-      const currentValue = startValue + (difference * easeOut);
-      
+      const currentValue = startValue + difference * easeOut;
+
       element.textContent = this.formatValue(currentValue);
-      
+
       if (progress < 1) {
         this.animationFrame = requestAnimationFrame(animate);
       }
@@ -396,16 +396,16 @@ export class KPICard {
 
   private formatValue(value: number | string): string {
     if (typeof value === 'string') return value;
-    
+
     if (!this.data) return value.toString();
-    
+
     switch (this.data.format) {
       case 'currency':
-        return new Intl.NumberFormat('en-US', { 
-          style: 'currency', 
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
           currency: 'USD',
           minimumFractionDigits: 0,
-          maximumFractionDigits: 0
+          maximumFractionDigits: 0,
         }).format(value);
       case 'percentage':
         return `${value.toFixed(1)}%`;
@@ -438,7 +438,7 @@ export class KPICard {
 
     const targetEl = this.container.querySelector('.titan-kpi-target') as HTMLElement;
     const targetValue = this.container.querySelector('.titan-kpi-target-value') as HTMLElement;
-    
+
     if (targetValue) {
       targetValue.textContent = this.formatValue(this.data.target);
       targetEl.style.display = 'flex';
@@ -447,10 +447,10 @@ export class KPICard {
     // Update progress bar
     const progressFill = this.container.querySelector('.titan-kpi-progress-fill') as HTMLElement;
     const progressText = this.container.querySelector('.titan-kpi-progress-text') as HTMLElement;
-    
+
     if (progressFill && progressText && typeof this.data.value === 'number' && this.data.target) {
       const percentage = Math.min((this.data.value / this.data.target) * 100, 100);
-      
+
       setTimeout(() => {
         progressFill.style.width = `${percentage}%`;
         progressText.textContent = `${Math.round(percentage)}%`;

@@ -5,7 +5,7 @@
 
 async function benchmark() {
   const baseUrl = 'http://localhost:3000';
-  
+
   console.log('🔬 Titan Grove Performance Benchmark');
   console.log('=====================================\n');
 
@@ -13,17 +13,17 @@ async function benchmark() {
   console.log('📊 Testing /health endpoint...');
   const healthStart = Date.now();
   const healthPromises = [];
-  
+
   for (let i = 0; i < 100; i++) {
     healthPromises.push(fetch(`${baseUrl}/health`));
   }
-  
+
   try {
     const healthResults = await Promise.all(healthPromises);
     const healthEnd = Date.now();
     const healthTime = healthEnd - healthStart;
-    const healthSuccess = healthResults.filter(r => r.ok).length;
-    
+    const healthSuccess = healthResults.filter((r) => r.ok).length;
+
     console.log(`✅ Health endpoint results:`);
     console.log(`   • Total requests: 100`);
     console.log(`   • Successful requests: ${healthSuccess}`);
@@ -38,17 +38,17 @@ async function benchmark() {
   console.log('📊 Testing /api/info endpoint...');
   const infoStart = Date.now();
   const infoPromises = [];
-  
+
   for (let i = 0; i < 100; i++) {
     infoPromises.push(fetch(`${baseUrl}/api/info`));
   }
-  
+
   try {
     const infoResults = await Promise.all(infoPromises);
     const infoEnd = Date.now();
     const infoTime = infoEnd - infoStart;
-    const infoSuccess = infoResults.filter(r => r.ok).length;
-    
+    const infoSuccess = infoResults.filter((r) => r.ok).length;
+
     console.log(`✅ API info endpoint results:`);
     console.log(`   • Total requests: 100`);
     console.log(`   • Successful requests: ${infoSuccess}`);
@@ -63,11 +63,11 @@ async function benchmark() {
   console.log('📊 Testing /api/database/query endpoint...');
   const queryStart = Date.now();
   const queryPromises = [];
-  
+
   const queryBody = JSON.stringify({
-    sql: "SELECT 'Hello World' as message, datetime('now') as timestamp"
+    sql: "SELECT 'Hello World' as message, datetime('now') as timestamp",
   });
-  
+
   for (let i = 0; i < 50; i++) {
     queryPromises.push(
       fetch(`${baseUrl}/api/database/query`, {
@@ -77,13 +77,13 @@ async function benchmark() {
       })
     );
   }
-  
+
   try {
     const queryResults = await Promise.all(queryPromises);
     const queryEnd = Date.now();
     const queryTime = queryEnd - queryStart;
-    const querySuccess = queryResults.filter(r => r.ok).length;
-    
+    const querySuccess = queryResults.filter((r) => r.ok).length;
+
     console.log(`✅ Database query endpoint results:`);
     console.log(`   • Total requests: 50`);
     console.log(`   • Successful requests: ${querySuccess}`);

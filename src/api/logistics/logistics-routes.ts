@@ -15,19 +15,40 @@ const router: RouterType = Router();
 router.use(authenticate);
 
 // Transportation Management Routes
-router.get('/transportation/transportation-planning', logisticsController.getTransportationPlanning);
-router.post('/transportation/transportation-planning', logisticsController.createTransportationPlan);
-router.put('/transportation/transportation-planning/:id', validateIdParam, logisticsController.updateTransportationPlan);
-router.delete('/transportation/transportation-planning/:id', logisticsController.deleteTransportationPlan);
+router.get(
+  '/transportation/transportation-planning',
+  logisticsController.getTransportationPlanning
+);
+router.post(
+  '/transportation/transportation-planning',
+  logisticsController.createTransportationPlan
+);
+router.put(
+  '/transportation/transportation-planning/:id',
+  validateIdParam,
+  logisticsController.updateTransportationPlan
+);
+router.delete(
+  '/transportation/transportation-planning/:id',
+  logisticsController.deleteTransportationPlan
+);
 
 router.get('/transportation/carrier-management', logisticsController.getCarrierManagement);
 router.post('/transportation/carrier-management', logisticsController.createCarrier);
-router.put('/transportation/carrier-management/:id', validateIdParam, logisticsController.updateCarrier);
+router.put(
+  '/transportation/carrier-management/:id',
+  validateIdParam,
+  logisticsController.updateCarrier
+);
 router.delete('/transportation/carrier-management/:id', logisticsController.deleteCarrier);
 
 router.get('/transportation/shipment-execution', logisticsController.getShipmentExecution);
 router.post('/transportation/shipment-execution', logisticsController.createShipment);
-router.put('/transportation/shipment-execution/:id', validateIdParam, logisticsController.updateShipment);
+router.put(
+  '/transportation/shipment-execution/:id',
+  validateIdParam,
+  logisticsController.updateShipment
+);
 router.delete('/transportation/shipment-execution/:id', logisticsController.deleteShipment);
 
 router.get('/transportation/bid-management', logisticsController.getBidManagement);
@@ -37,20 +58,35 @@ router.delete('/transportation/bid-management/:id', logisticsController.deleteBi
 
 router.get('/transportation/fleet-management', logisticsController.getFleetManagement);
 router.post('/transportation/fleet-management', logisticsController.createFleetVehicle);
-router.put('/transportation/fleet-management/:id', validateIdParam, logisticsController.updateFleetVehicle);
+router.put(
+  '/transportation/fleet-management/:id',
+  validateIdParam,
+  logisticsController.updateFleetVehicle
+);
 router.delete('/transportation/fleet-management/:id', logisticsController.deleteFleetVehicle);
 
-router.get('/transportation/transportation-analytics', logisticsController.getTransportationAnalytics);
+router.get(
+  '/transportation/transportation-analytics',
+  logisticsController.getTransportationAnalytics
+);
 
 // Warehouse Management Routes
 router.get('/warehouse/warehouse-operations', logisticsController.getWarehouseOperations);
 router.post('/warehouse/warehouse-operations', logisticsController.createWarehouseOperation);
-router.put('/warehouse/warehouse-operations/:id', validateIdParam, logisticsController.updateWarehouseOperation);
+router.put(
+  '/warehouse/warehouse-operations/:id',
+  validateIdParam,
+  logisticsController.updateWarehouseOperation
+);
 router.delete('/warehouse/warehouse-operations/:id', logisticsController.deleteWarehouseOperation);
 
 router.get('/warehouse/inventory-management', logisticsController.getInventoryManagement);
 router.post('/warehouse/inventory-management', logisticsController.createInventoryItem);
-router.put('/warehouse/inventory-management/:id', validateIdParam, logisticsController.updateInventoryItem);
+router.put(
+  '/warehouse/inventory-management/:id',
+  validateIdParam,
+  logisticsController.updateInventoryItem
+);
 router.delete('/warehouse/inventory-management/:id', logisticsController.deleteInventoryItem);
 
 router.get('/warehouse/slotting-optimization', logisticsController.getSlottingOptimization);
@@ -58,12 +94,20 @@ router.post('/warehouse/slotting-optimization', logisticsController.optimizeSlot
 
 router.get('/warehouse/labor-management', logisticsController.getLaborManagement);
 router.post('/warehouse/labor-management', logisticsController.createLaborRecord);
-router.put('/warehouse/labor-management/:id', validateIdParam, logisticsController.updateLaborRecord);
+router.put(
+  '/warehouse/labor-management/:id',
+  validateIdParam,
+  logisticsController.updateLaborRecord
+);
 router.delete('/warehouse/labor-management/:id', logisticsController.deleteLaborRecord);
 
 router.get('/warehouse/warehouse-automation', logisticsController.getWarehouseAutomation);
 router.post('/warehouse/warehouse-automation', logisticsController.createAutomationRule);
-router.put('/warehouse/warehouse-automation/:id', validateIdParam, logisticsController.updateAutomationRule);
+router.put(
+  '/warehouse/warehouse-automation/:id',
+  validateIdParam,
+  logisticsController.updateAutomationRule
+);
 router.delete('/warehouse/warehouse-automation/:id', logisticsController.deleteAutomationRule);
 
 router.get('/warehouse/warehouse-analytics', logisticsController.getWarehouseAnalytics);
@@ -74,7 +118,11 @@ router.post('/routing/route-optimization', logisticsController.optimizeRoute);
 
 router.get('/routing/delivery-planning', logisticsController.getDeliveryPlanning);
 router.post('/routing/delivery-planning', logisticsController.createDeliveryPlan);
-router.put('/routing/delivery-planning/:id', validateIdParam, logisticsController.updateDeliveryPlan);
+router.put(
+  '/routing/delivery-planning/:id',
+  validateIdParam,
+  logisticsController.updateDeliveryPlan
+);
 router.delete('/routing/delivery-planning/:id', logisticsController.deleteDeliveryPlan);
 
 router.get('/routing/load-optimization', logisticsController.getLoadOptimization);
@@ -88,28 +136,50 @@ router.get('/routing/routing-analytics', logisticsController.getRoutingAnalytics
 // Distribution Management Routes
 router.get('/distribution/network-design', logisticsController.getNetworkDesign);
 router.post('/distribution/network-design', logisticsController.createNetworkDesign);
-router.put('/distribution/network-design/:id', validateIdParam, logisticsController.updateNetworkDesign);
+router.put(
+  '/distribution/network-design/:id',
+  validateIdParam,
+  logisticsController.updateNetworkDesign
+);
 router.delete('/distribution/network-design/:id', logisticsController.deleteNetworkDesign);
 
 router.get('/distribution/fulfillment-strategy', logisticsController.getFulfillmentStrategy);
 router.post('/distribution/fulfillment-strategy', logisticsController.createFulfillmentStrategy);
-router.put('/distribution/fulfillment-strategy/:id', validateIdParam, logisticsController.updateFulfillmentStrategy);
-router.delete('/distribution/fulfillment-strategy/:id', logisticsController.deleteFulfillmentStrategy);
+router.put(
+  '/distribution/fulfillment-strategy/:id',
+  validateIdParam,
+  logisticsController.updateFulfillmentStrategy
+);
+router.delete(
+  '/distribution/fulfillment-strategy/:id',
+  logisticsController.deleteFulfillmentStrategy
+);
 
 router.get('/distribution/supply-chain-visibility', logisticsController.getSupplyChainVisibility);
 
-router.get('/distribution/distribution-optimization', logisticsController.getDistributionOptimization);
+router.get(
+  '/distribution/distribution-optimization',
+  logisticsController.getDistributionOptimization
+);
 router.post('/distribution/distribution-optimization', logisticsController.optimizeDistribution);
 
 router.get('/distribution/demand-planning', logisticsController.getDemandPlanning);
 router.post('/distribution/demand-planning', logisticsController.createDemandPlan);
-router.put('/distribution/demand-planning/:id', validateIdParam, logisticsController.updateDemandPlan);
+router.put(
+  '/distribution/demand-planning/:id',
+  validateIdParam,
+  logisticsController.updateDemandPlan
+);
 router.delete('/distribution/demand-planning/:id', logisticsController.deleteDemandPlan);
 
 // Freight Management Routes
 router.get('/freight/freight-management', logisticsController.getFreightManagement);
 router.post('/freight/freight-management', logisticsController.createFreightRecord);
-router.put('/freight/freight-management/:id', validateIdParam, logisticsController.updateFreightRecord);
+router.put(
+  '/freight/freight-management/:id',
+  validateIdParam,
+  logisticsController.updateFreightRecord
+);
 router.delete('/freight/freight-management/:id', logisticsController.deleteFreightRecord);
 
 router.get('/freight/rate-optimization', logisticsController.getRateOptimization);
@@ -140,12 +210,12 @@ router.get('/analytics/business-intelligence', logisticsController.getBusinessIn
 
 // Health check endpoint
 router.get('/health', (req, res) => {
-    res.json({
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        service: 'logistics-api',
-        version: '1.0.0'
-    });
+  res.json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    service: 'logistics-api',
+    version: '1.0.0',
+  });
 });
 
 export { router as logisticsRoutes };

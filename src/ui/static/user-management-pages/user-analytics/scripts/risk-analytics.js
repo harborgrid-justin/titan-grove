@@ -1,128 +1,128 @@
 // User Risk Analytics - User Management System
 // This file provides business-ready functionality for User Risk Analytics
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('User Risk Analytics page loaded');
-    
-    // Initialize page functionality
-    initriskanalytics();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadriskanalyticsData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('User Risk Analytics page loaded');
+
+  // Initialize page functionality
+  initriskanalytics();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadriskanalyticsData();
 });
 
 async function loadriskanalyticsData() {
-    try {
-        // Simulate API call to backend
-        const response = await fetch('/api/user-management/user-analytics/risk-analytics');
-        const data = await response.json();
-        
-        console.log('User Risk Analytics data loaded:', data);
-        updateriskanalyticsDisplay(data);
-    } catch (error) {
-        console.error('Error loading User Risk Analytics data:', error);
-        showNotification('Failed to load User Risk Analytics data', 'error');
-    }
+  try {
+    // Simulate API call to backend
+    const response = await fetch('/api/user-management/user-analytics/risk-analytics');
+    const data = await response.json();
+
+    console.log('User Risk Analytics data loaded:', data);
+    updateriskanalyticsDisplay(data);
+  } catch (error) {
+    console.error('Error loading User Risk Analytics data:', error);
+    showNotification('Failed to load User Risk Analytics data', 'error');
+  }
 }
 
 function initriskanalytics() {
-    // Initialize User Risk Analytics functionality
-    console.log('Initializing User Risk Analytics');
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
-    
-    // Initialize dashboard components
-    initializeDashboard();
+  // Initialize User Risk Analytics functionality
+  console.log('Initializing User Risk Analytics');
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
+
+  // Initialize dashboard components
+  initializeDashboard();
 }
 
 function initializeDashboard() {
-    // Initialize dashboard widgets and components
-    console.log('Dashboard initialized for User Risk Analytics');
+  // Initialize dashboard widgets and components
+  console.log('Dashboard initialized for User Risk Analytics');
 }
 
 function setupRealTimeUpdates() {
-    // Set up WebSocket or polling for real-time updates
-    console.log('Real-time updates configured for User Risk Analytics');
+  // Set up WebSocket or polling for real-time updates
+  console.log('Real-time updates configured for User Risk Analytics');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for User Risk Analytics');
+  // Business-specific logic implementation
+  console.log('Business logic configured for User Risk Analytics');
 }
 
 function handleriskanalyticsAction() {
-    console.log('User Risk Analytics action triggered');
-    showNotification('User Risk Analytics configured successfully', 'success');
+  console.log('User Risk Analytics action triggered');
+  showNotification('User Risk Analytics configured successfully', 'success');
 }
 
 function executeriskanalytics() {
-    console.log('User Risk Analytics execution started');
-    showNotification('User Risk Analytics executed successfully', 'success');
+  console.log('User Risk Analytics execution started');
+  showNotification('User Risk Analytics executed successfully', 'success');
 }
 
 function updateriskanalyticsDisplay(data) {
-    console.log('Updating User Risk Analytics display:', data);
-    // Update UI with loaded data
+  console.log('Updating User Risk Analytics display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/user-management/user-analytics/risk-analytics/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadriskanalyticsData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleriskanalyticsAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', function() {
-            window.userManagement.exportData('risk-analytics');
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch('/api/user-management/user-analytics/risk-analytics/test');
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadriskanalyticsData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleriskanalyticsAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', function () {
+      window.userManagement.exportData('risk-analytics');
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
 }
 
 // Add notification styles
@@ -170,10 +170,10 @@ document.head.appendChild(styleSheet);
 
 // Export page-specific functions for testing
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        initriskanalytics,
-        handleriskanalyticsAction,
-        executeriskanalytics,
-        loadriskanalyticsData
-    };
+  module.exports = {
+    initriskanalytics,
+    handleriskanalyticsAction,
+    executeriskanalytics,
+    loadriskanalyticsData,
+  };
 }

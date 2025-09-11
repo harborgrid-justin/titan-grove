@@ -1,142 +1,142 @@
 // Batch Processing & Scheduling - Database Management System
 // This file provides business-ready functionality for Batch Processing & Scheduling
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Batch Processing & Scheduling page loaded');
-    
-    // Initialize page functionality
-    initbatchprocessing();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadbatchprocessingData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Batch Processing & Scheduling page loaded');
+
+  // Initialize page functionality
+  initbatchprocessing();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadbatchprocessingData();
 });
 
 async function loadbatchprocessingData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/batch-processing');
-        if (response.ok) {
-            const data = await response.json();
-            updatebatchprocessingDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Batch Processing & Scheduling data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/data-integration-etl/batch-processing');
+    if (response.ok) {
+      const data = await response.json();
+      updatebatchprocessingDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Batch Processing & Scheduling data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initbatchprocessing() {
-    console.log('Initializing Batch Processing & Scheduling');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Batch Processing & Scheduling');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Batch Processing & Scheduling');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Batch Processing & Scheduling');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Batch Processing & Scheduling');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Batch Processing & Scheduling');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Batch Processing & Scheduling');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Batch Processing & Scheduling');
 }
 
 function handlebatchprocessingAction() {
-    console.log('Batch Processing & Scheduling action triggered');
-    showNotification('Batch Processing & Scheduling configured successfully', 'success');
+  console.log('Batch Processing & Scheduling action triggered');
+  showNotification('Batch Processing & Scheduling configured successfully', 'success');
 }
 
 function executebatchprocessing() {
-    console.log('Batch Processing & Scheduling execution started');
-    showNotification('Batch Processing & Scheduling executed successfully', 'success');
+  console.log('Batch Processing & Scheduling execution started');
+  showNotification('Batch Processing & Scheduling executed successfully', 'success');
 }
 
 function updatebatchprocessingDisplay(data) {
-    console.log('Updating Batch Processing & Scheduling display:', data);
-    // Update UI with loaded data
+  console.log('Updating Batch Processing & Scheduling display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/batch-processing/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadbatchprocessingData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handlebatchprocessingAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/batch-processing/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'batch-processing-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch('/api/database/data-integration-etl/batch-processing/test');
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadbatchprocessingData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handlebatchprocessingAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch('/api/database/data-integration-etl/batch-processing/export');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'batch-processing-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

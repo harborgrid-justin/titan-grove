@@ -1,142 +1,142 @@
 // Data Masking & Anonymization - Database Management System
 // This file provides business-ready functionality for Data Masking & Anonymization
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Data Masking & Anonymization page loaded');
-    
-    // Initialize page functionality
-    initdatamasking();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loaddatamaskingData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Data Masking & Anonymization page loaded');
+
+  // Initialize page functionality
+  initdatamasking();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loaddatamaskingData();
 });
 
 async function loaddatamaskingData() {
-    try {
-        const response = await fetch('/api/database/security-access-control/data-masking');
-        if (response.ok) {
-            const data = await response.json();
-            updatedatamaskingDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Data Masking & Anonymization data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/security-access-control/data-masking');
+    if (response.ok) {
+      const data = await response.json();
+      updatedatamaskingDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Data Masking & Anonymization data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initdatamasking() {
-    console.log('Initializing Data Masking & Anonymization');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Data Masking & Anonymization');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Data Masking & Anonymization');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Data Masking & Anonymization');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Data Masking & Anonymization');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Data Masking & Anonymization');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Data Masking & Anonymization');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Data Masking & Anonymization');
 }
 
 function handledatamaskingAction() {
-    console.log('Data Masking & Anonymization action triggered');
-    showNotification('Data Masking & Anonymization configured successfully', 'success');
+  console.log('Data Masking & Anonymization action triggered');
+  showNotification('Data Masking & Anonymization configured successfully', 'success');
 }
 
 function executedatamasking() {
-    console.log('Data Masking & Anonymization execution started');
-    showNotification('Data Masking & Anonymization executed successfully', 'success');
+  console.log('Data Masking & Anonymization execution started');
+  showNotification('Data Masking & Anonymization executed successfully', 'success');
 }
 
 function updatedatamaskingDisplay(data) {
-    console.log('Updating Data Masking & Anonymization display:', data);
-    // Update UI with loaded data
+  console.log('Updating Data Masking & Anonymization display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/security-access-control/data-masking/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loaddatamaskingData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handledatamaskingAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/security-access-control/data-masking/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'data-masking-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch('/api/database/security-access-control/data-masking/test');
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loaddatamaskingData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handledatamaskingAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch('/api/database/security-access-control/data-masking/export');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data-masking-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

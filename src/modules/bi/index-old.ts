@@ -160,22 +160,24 @@ export class BIManager {
   /**
    * Dashboard Management
    */
-  async createDashboard(dashboard: Omit<Dashboard, 'id' | 'createdDate' | 'lastModified'>): Promise<Dashboard> {
+  async createDashboard(
+    dashboard: Omit<Dashboard, 'id' | 'createdDate' | 'lastModified'>
+  ): Promise<Dashboard> {
     const id = `dash_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date();
-    
+
     return {
       ...dashboard,
       id,
       createdDate: now,
-      lastModified: now
+      lastModified: now,
     };
   }
 
   async addWidgetToDashboard(dashboardId: string, widget: Omit<Widget, 'id'>): Promise<Widget> {
     const id = `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newWidget = { ...widget, id };
-    
+
     console.log(`Adding widget ${id} to dashboard ${dashboardId}`);
     return newWidget;
   }
@@ -207,25 +209,25 @@ export class BIManager {
    */
   async createReport(report: Omit<Report, 'id' | 'createdDate'>): Promise<Report> {
     const id = `rpt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...report,
       id,
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
   async runReport(reportId: string, parameters?: { [key: string]: any }): Promise<any> {
     console.log(`Running report ${reportId}`, parameters);
-    
+
     return {
       reportId,
       runDate: new Date(),
       data: [],
       summary: {
         recordCount: 0,
-        executionTime: 150 // milliseconds
-      }
+        executionTime: 150, // milliseconds
+      },
     };
   }
 
@@ -243,25 +245,30 @@ export class BIManager {
    */
   async createKPI(kpi: Omit<KPI, 'id' | 'lastUpdated'>): Promise<KPI> {
     const id = `kpi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...kpi,
       id,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
   async updateKPI(kpiId: string): Promise<KPI> {
     console.log(`Updating KPI ${kpiId}`);
-    
+
     // Example KPI calculation
     const currentValue = Math.random() * 100;
     const targetValue = 80;
     const trend = currentValue > 75 ? 'UP' : 'DOWN';
-    const status = currentValue >= targetValue ? 'EXCELLENT' : 
-                   currentValue >= targetValue * 0.9 ? 'GOOD' :
-                   currentValue >= targetValue * 0.7 ? 'WARNING' : 'CRITICAL';
-    
+    const status =
+      currentValue >= targetValue
+        ? 'EXCELLENT'
+        : currentValue >= targetValue * 0.9
+          ? 'GOOD'
+          : currentValue >= targetValue * 0.7
+            ? 'WARNING'
+            : 'CRITICAL';
+
     return {
       id: kpiId,
       name: 'Customer Satisfaction',
@@ -277,7 +284,7 @@ export class BIManager {
       thresholds: [],
       owner: 'user123',
       updateFrequency: 60,
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
@@ -299,8 +306,8 @@ export class BIManager {
         thresholds: [],
         owner: 'finance_manager',
         updateFrequency: 1440, // daily
-        lastUpdated: new Date()
-      }
+        lastUpdated: new Date(),
+      },
     ];
   }
 
@@ -316,7 +323,7 @@ export class BIManager {
         change: 8500,
         changePercentage: 7.3,
         period,
-        trend: 'UP'
+        trend: 'UP',
       },
       {
         name: 'Gross Profit Margin',
@@ -325,8 +332,8 @@ export class BIManager {
         change: 1.2,
         changePercentage: 3.8,
         period,
-        trend: 'UP'
-      }
+        trend: 'UP',
+      },
     ];
   }
 
@@ -339,7 +346,7 @@ export class BIManager {
         change: 8,
         changePercentage: 21.6,
         period,
-        trend: 'UP'
+        trend: 'UP',
       },
       {
         name: 'Conversion Rate',
@@ -348,8 +355,8 @@ export class BIManager {
         change: 0.3,
         changePercentage: 10.3,
         period,
-        trend: 'UP'
-      }
+        trend: 'UP',
+      },
     ];
   }
 
@@ -362,7 +369,7 @@ export class BIManager {
         change: -2.1,
         changePercentage: -2.6,
         period,
-        trend: 'DOWN'
+        trend: 'DOWN',
       },
       {
         name: 'Customer Satisfaction',
@@ -371,8 +378,8 @@ export class BIManager {
         change: 0.1,
         changePercentage: 2.4,
         period,
-        trend: 'UP'
-      }
+        trend: 'UP',
+      },
     ];
   }
 
@@ -386,10 +393,10 @@ export class BIManager {
       forecast: Array.from({ length: periods }, (_, i) => ({
         period: i + 1,
         value: Math.random() * 100000,
-        confidence: 0.85 - (i * 0.05)
+        confidence: 0.85 - i * 0.05,
       })),
       accuracy: 0.87,
-      model: 'LINEAR_REGRESSION'
+      model: 'LINEAR_REGRESSION',
     };
   }
 
@@ -401,10 +408,10 @@ export class BIManager {
       seasonality: {
         detected: true,
         pattern: 'MONTHLY',
-        strength: 0.45
+        strength: 0.45,
       },
       outliers: [],
-      correlations: []
+      correlations: [],
     };
   }
 
@@ -420,20 +427,20 @@ export class BIManager {
         {
           type: 'WARNING',
           message: 'Inventory levels below minimum threshold for Product A',
-          priority: 'HIGH'
-        }
+          priority: 'HIGH',
+        },
       ],
       topPerformers: {
         salesReps: [],
         products: [],
-        customers: []
+        customers: [],
       },
       upcomingEvents: [],
       systemHealth: {
         status: 'HEALTHY',
         uptime: '99.97%',
-        responseTime: '120ms'
-      }
+        responseTime: '120ms',
+      },
     };
   }
 }

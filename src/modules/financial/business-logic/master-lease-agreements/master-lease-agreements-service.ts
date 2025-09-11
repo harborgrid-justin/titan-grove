@@ -90,11 +90,14 @@ export class MasterLeaseAgreementsService {
    * Create a new master lease agreement
    */
   async createMasterLeaseAgreement(
-    agreement: Omit<MasterLeaseAgreement, 'id' | 'agreementNumber' | 'createdDate' | 'modifiedDate' | 'approvals'>
+    agreement: Omit<
+      MasterLeaseAgreement,
+      'id' | 'agreementNumber' | 'createdDate' | 'modifiedDate' | 'approvals'
+    >
   ): Promise<MasterLeaseAgreement> {
     const agreementId = `mla_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const agreementNumber = `MLA-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-    
+
     return {
       ...agreement,
       id: agreementId,
@@ -110,11 +113,16 @@ export class MasterLeaseAgreementsService {
    */
   async updateMasterLeaseAgreement(
     agreementId: string,
-    updates: Partial<Pick<MasterLeaseAgreement, 'standardTerms' | 'customTerms' | 'creditTerms' | 'operationalTerms'>>
+    updates: Partial<
+      Pick<
+        MasterLeaseAgreement,
+        'standardTerms' | 'customTerms' | 'creditTerms' | 'operationalTerms'
+      >
+    >
   ): Promise<MasterLeaseAgreement> {
     // Implementation would fetch existing agreement and apply updates
     const existingAgreement = await this.getMasterLeaseAgreement(agreementId);
-    
+
     return {
       ...existingAgreement,
       ...updates,
@@ -130,14 +138,14 @@ export class MasterLeaseAgreementsService {
     agreementId: string,
     approvalTypes: AgreementApproval['approvalType'][]
   ): Promise<AgreementApproval[]> {
-    const approvals: AgreementApproval[] = approvalTypes.map(type => ({
+    const approvals: AgreementApproval[] = approvalTypes.map((type) => ({
       id: `aa_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       approvalType: type,
       approver: 'pending_assignment',
       approvalDate: new Date(),
       status: 'APPROVED', // Would be 'PENDING' in real implementation
     }));
-    
+
     return approvals;
   }
 
@@ -151,7 +159,7 @@ export class MasterLeaseAgreementsService {
   ): Promise<string> {
     // Implementation would create individual lease based on master template
     const leaseId = `lease_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return leaseId;
   }
 

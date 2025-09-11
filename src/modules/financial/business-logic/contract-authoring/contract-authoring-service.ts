@@ -118,7 +118,7 @@ export class ContractAuthoringService {
   ): Promise<Contract> {
     const contractId = `ct_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const contractNumber = `CT-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-    
+
     // Implementation would fetch template and substitute variables
     return {
       id: contractId,
@@ -145,7 +145,7 @@ export class ContractAuthoringService {
     template: Omit<ContractTemplate, 'id' | 'createdDate' | 'modifiedDate'>
   ): Promise<ContractTemplate> {
     const templateId = `tpl_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...template,
       id: templateId,
@@ -162,7 +162,7 @@ export class ContractAuthoringService {
     party: Omit<ContractParty, 'id'>
   ): Promise<ContractParty> {
     const partyId = `cp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...party,
       id: partyId,
@@ -190,7 +190,7 @@ export class ContractAuthoringService {
         status: 'PENDING',
       },
     ];
-    
+
     return approvals;
   }
 
@@ -235,7 +235,7 @@ export class ContractAuthoringService {
   ): Promise<string> {
     // Implementation would create a new version of the contract
     const versionId = `cv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return versionId;
   }
 
@@ -247,7 +247,7 @@ export class ContractAuthoringService {
     variables: Record<string, any>
   ): Promise<ValidationResult[]> {
     const results: ValidationResult[] = [];
-    
+
     // Implementation would validate each variable against template rules
     return results;
   }
@@ -263,7 +263,7 @@ export class ContractAuthoringService {
     agency: string
   ): Promise<FederalComplianceCheck[]> {
     const checks: FederalComplianceCheck[] = [];
-    
+
     // FAR compliance checks
     checks.push({
       checkId: `far_check_${Date.now()}`,
@@ -272,7 +272,7 @@ export class ContractAuthoringService {
       description: 'Basic Safeguarding of Covered Contractor Information Systems',
       status: contractValue > 0 ? 'COMPLIANT' : 'NEEDS_REVIEW',
       severity: 'HIGH',
-      recommendation: 'Ensure FAR 52.204-21 clause is included in all contracts'
+      recommendation: 'Ensure FAR 52.204-21 clause is included in all contracts',
     });
 
     // Small business requirements for applicable contracts
@@ -284,7 +284,7 @@ export class ContractAuthoringService {
         description: 'Small Business Subcontracting Plan Required',
         status: 'NEEDS_REVIEW',
         severity: 'MEDIUM',
-        recommendation: 'Include small business subcontracting plan for contracts over $750,000'
+        recommendation: 'Include small business subcontracting plan for contracts over $750,000',
       });
     }
 
@@ -297,7 +297,7 @@ export class ContractAuthoringService {
         description: 'Disclosure of Information',
         status: 'COMPLIANT',
         severity: 'HIGH',
-        recommendation: 'DFARS disclosure requirements properly addressed'
+        recommendation: 'DFARS disclosure requirements properly addressed',
       });
     }
 
@@ -314,22 +314,22 @@ export class ContractAuthoringService {
         systemName: 'Oracle Financials',
         dataExchanged: ['Contract Value', 'Budget Codes', 'Payment Terms'],
         lastSyncTime: new Date(),
-        status: 'CONNECTED'
+        status: 'CONNECTED',
       },
       {
         integrationId: `ebs_int_${Date.now()}_purchasing`,
         systemName: 'Oracle Purchasing',
         dataExchanged: ['Supplier Information', 'Purchase Orders', 'Receipts'],
         lastSyncTime: new Date(),
-        status: 'CONNECTED'
+        status: 'CONNECTED',
       },
       {
         integrationId: `ebs_int_${Date.now()}_payables`,
         systemName: 'Oracle Payables',
         dataExchanged: ['Invoice Processing', 'Payment Status', 'Vendor Management'],
         lastSyncTime: new Date(),
-        status: 'CONNECTED'
-      }
+        status: 'CONNECTED',
+      },
     ];
 
     return integrations;
@@ -351,29 +351,29 @@ export class ContractAuthoringService {
       bottlenecks: [
         'Manual approval processes taking 5+ days',
         'Template selection requires expert knowledge',
-        'Compliance validation is time-consuming'
+        'Compliance validation is time-consuming',
       ],
       recommendations: [
         'Implement automated approval routing based on contract value',
         'Create intelligent template recommendation engine',
         'Integrate real-time compliance checking during authoring',
-        'Establish contract type standardization'
+        'Establish contract type standardization',
       ],
       costSavingsOpportunities: [
         {
           description: 'Automate routine contract generation',
-          estimatedSavings: 150000
+          estimatedSavings: 150000,
         },
         {
           description: 'Standardize contract templates',
-          estimatedSavings: 75000
+          estimatedSavings: 75000,
         },
         {
           description: 'Implement electronic signature workflow',
-          estimatedSavings: 50000
-        }
+          estimatedSavings: 50000,
+        },
       ],
-      complianceScore: 95
+      complianceScore: 95,
     };
   }
 
@@ -394,7 +394,7 @@ export class ContractAuthoringService {
         'Oracle Financials',
         'Supplier Database',
         'Compliance Repository',
-        'Federal Regulations Database'
+        'Federal Regulations Database',
       ],
       lastUpdated: new Date(),
       auditTrail: [
@@ -402,38 +402,38 @@ export class ContractAuthoringService {
           action: 'Contract Created',
           timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
           user: 'contracting_officer_1',
-          impact: 'New contract record established'
+          impact: 'New contract record established',
         },
         {
           action: 'Template Applied',
           timestamp: new Date(Date.now() - 23 * 60 * 60 * 1000),
           user: 'system',
-          impact: 'Standard clauses and terms populated'
+          impact: 'Standard clauses and terms populated',
         },
         {
           action: 'Compliance Check',
           timestamp: new Date(Date.now() - 22 * 60 * 60 * 1000),
           user: 'compliance_engine',
-          impact: 'FAR/DFARS compliance validated'
-        }
+          impact: 'FAR/DFARS compliance validated',
+        },
       ],
       integrityChecks: [
         {
           check: 'Required Fields Validation',
           status: 'PASS',
-          details: 'All mandatory contract fields are populated'
+          details: 'All mandatory contract fields are populated',
         },
         {
           check: 'Clause Consistency',
           status: 'PASS',
-          details: 'Contract clauses are consistent with template'
+          details: 'Contract clauses are consistent with template',
         },
         {
           check: 'Regulatory Compliance',
           status: 'WARNING',
-          details: 'Minor DFARS clause update available'
-        }
-      ]
+          details: 'Minor DFARS clause update available',
+        },
+      ],
     };
   }
 }

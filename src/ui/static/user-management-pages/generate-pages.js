@@ -9,604 +9,1118 @@ const userManagementPages = {
     {
       name: 'user-account-management',
       title: 'User Account Management',
-      description: 'Comprehensive user account lifecycle management with automated provisioning and deprovisioning',
-      stats: { value1: '12,847', label1: 'Active Users', subtext1: 'All Systems', value2: '98.5%', label2: 'Account Accuracy', subtext2: 'Data Quality', value3: '2.3sec', label3: 'Provision Time', subtext3: 'Average Speed' },
+      description:
+        'Comprehensive user account lifecycle management with automated provisioning and deprovisioning',
+      stats: {
+        value1: '12,847',
+        label1: 'Active Users',
+        subtext1: 'All Systems',
+        value2: '98.5%',
+        label2: 'Account Accuracy',
+        subtext2: 'Data Quality',
+        value3: '2.3sec',
+        label3: 'Provision Time',
+        subtext3: 'Average Speed',
+      },
       features: [
         'Automated user account provisioning workflows',
         'Self-service account recovery and management',
         'Bulk user operations and batch processing',
-        'Account lifecycle automation and compliance'
-      ]
+        'Account lifecycle automation and compliance',
+      ],
     },
     {
       name: 'user-profile-management',
       title: 'User Profile Management',
-      description: 'Centralized user profile management with 360-degree user view and data synchronization',
-      stats: { value1: '15,234', label1: 'User Profiles', subtext1: 'Managed', value2: '99.1%', label2: 'Profile Completion', subtext2: 'Rate', value3: '45', label3: 'Data Points', subtext3: 'Per Profile' },
+      description:
+        'Centralized user profile management with 360-degree user view and data synchronization',
+      stats: {
+        value1: '15,234',
+        label1: 'User Profiles',
+        subtext1: 'Managed',
+        value2: '99.1%',
+        label2: 'Profile Completion',
+        subtext2: 'Rate',
+        value3: '45',
+        label3: 'Data Points',
+        subtext3: 'Per Profile',
+      },
       features: [
         'Comprehensive user profile data management',
         'Profile synchronization across systems',
         'Custom profile fields and metadata',
-        'Profile analytics and insights dashboard'
-      ]
+        'Profile analytics and insights dashboard',
+      ],
     },
     {
       name: 'user-group-management',
       title: 'User Group Management',
-      description: 'Dynamic user group management with automated membership and role-based grouping',
-      stats: { value1: '1,456', label1: 'Active Groups', subtext1: 'All Categories', value2: '8.7', label2: 'Avg Members', subtext2: 'Per Group', value3: '95%', label3: 'Auto Assignment', subtext3: 'Success Rate' },
+      description:
+        'Dynamic user group management with automated membership and role-based grouping',
+      stats: {
+        value1: '1,456',
+        label1: 'Active Groups',
+        subtext1: 'All Categories',
+        value2: '8.7',
+        label2: 'Avg Members',
+        subtext2: 'Per Group',
+        value3: '95%',
+        label3: 'Auto Assignment',
+        subtext3: 'Success Rate',
+      },
       features: [
         'Dynamic group membership management',
         'Nested group hierarchies and inheritance',
         'Automated group assignment rules',
-        'Group analytics and optimization tools'
-      ]
+        'Group analytics and optimization tools',
+      ],
     },
     {
       name: 'bulk-user-operations',
       title: 'Bulk User Operations',
       description: 'Mass user management operations with batch processing and validation',
-      stats: { value1: '5,000+', label1: 'Batch Size', subtext1: 'Max Users', value2: '99.8%', label2: 'Operation Success', subtext2: 'Rate', value3: '15min', label3: 'Processing Time', subtext3: '1000 Users' },
+      stats: {
+        value1: '5,000+',
+        label1: 'Batch Size',
+        subtext1: 'Max Users',
+        value2: '99.8%',
+        label2: 'Operation Success',
+        subtext2: 'Rate',
+        value3: '15min',
+        label3: 'Processing Time',
+        subtext3: '1000 Users',
+      },
       features: [
         'Bulk user import and export functionality',
         'Mass user update and modification tools',
         'Batch validation and error handling',
-        'Operation scheduling and automation'
-      ]
+        'Operation scheduling and automation',
+      ],
     },
     {
       name: 'user-provisioning',
       title: 'Automated User Provisioning',
       description: 'Enterprise user provisioning with workflow automation and approval processes',
-      stats: { value1: '847', label1: 'Provisions/Month', subtext1: 'Average', value2: '3.2min', label2: 'Avg Time', subtext2: 'Full Provision', value3: '99.2%', label3: 'Success Rate', subtext3: 'Automation' },
+      stats: {
+        value1: '847',
+        label1: 'Provisions/Month',
+        subtext1: 'Average',
+        value2: '3.2min',
+        label2: 'Avg Time',
+        subtext2: 'Full Provision',
+        value3: '99.2%',
+        label3: 'Success Rate',
+        subtext3: 'Automation',
+      },
       features: [
         'Automated provisioning workflows',
         'Approval process management',
         'Integration with HR systems',
-        'Provisioning analytics and reporting'
-      ]
+        'Provisioning analytics and reporting',
+      ],
     },
     {
       name: 'user-deprovisioning',
       title: 'User Deprovisioning & Offboarding',
       description: 'Secure user deprovisioning with data retention and access revocation',
-      stats: { value1: '234', label1: 'Deprovisions/Month', subtext1: 'Average', value2: '<5min', label2: 'Access Revocation', subtext2: 'Time', value3: '100%', label3: 'Data Security', subtext3: 'Compliance' },
+      stats: {
+        value1: '234',
+        label1: 'Deprovisions/Month',
+        subtext1: 'Average',
+        value2: '<5min',
+        label2: 'Access Revocation',
+        subtext2: 'Time',
+        value3: '100%',
+        label3: 'Data Security',
+        subtext3: 'Compliance',
+      },
       features: [
         'Automated access revocation workflows',
         'Data retention policy enforcement',
         'Asset recovery and tracking',
-        'Exit interview and feedback collection'
-      ]
+        'Exit interview and feedback collection',
+      ],
     },
     {
       name: 'user-administration-dashboard',
       title: 'User Administration Dashboard',
-      description: 'Comprehensive user administration dashboard with real-time monitoring and analytics',
-      stats: { value1: '25+', label1: 'Key Metrics', subtext1: 'Monitored', value2: '99.9%', label2: 'System Uptime', subtext2: 'Availability', value3: '12', label3: 'Alert Types', subtext3: 'Configured' },
+      description:
+        'Comprehensive user administration dashboard with real-time monitoring and analytics',
+      stats: {
+        value1: '25+',
+        label1: 'Key Metrics',
+        subtext1: 'Monitored',
+        value2: '99.9%',
+        label2: 'System Uptime',
+        subtext2: 'Availability',
+        value3: '12',
+        label3: 'Alert Types',
+        subtext3: 'Configured',
+      },
       features: [
         'Real-time user administration metrics',
         'Administrative workflow automation',
         'User activity monitoring and alerts',
-        'Performance analytics and optimization'
-      ]
-    }
+        'Performance analytics and optimization',
+      ],
+    },
   ],
   'access-control': [
     {
       name: 'role-based-access-control',
       title: 'Role-Based Access Control (RBAC)',
       description: 'Enterprise RBAC system with hierarchical roles and dynamic permissions',
-      stats: { value1: '456', label1: 'Defined Roles', subtext1: 'Active', value2: '2,847', label2: 'Permissions', subtext2: 'Managed', value3: '99.7%', label3: 'Access Accuracy', subtext3: 'Rate' },
+      stats: {
+        value1: '456',
+        label1: 'Defined Roles',
+        subtext1: 'Active',
+        value2: '2,847',
+        label2: 'Permissions',
+        subtext2: 'Managed',
+        value3: '99.7%',
+        label3: 'Access Accuracy',
+        subtext3: 'Rate',
+      },
       features: [
         'Hierarchical role definition and management',
         'Dynamic permission assignment and inheritance',
         'Role-based workflow automation',
-        'Access control analytics and optimization'
-      ]
+        'Access control analytics and optimization',
+      ],
     },
     {
       name: 'attribute-based-access-control',
       title: 'Attribute-Based Access Control (ABAC)',
       description: 'Advanced ABAC system with context-aware access decisions and policy management',
-      stats: { value1: '1,234', label1: 'Access Policies', subtext1: 'Active', value2: '15+', label2: 'Attribute Types', subtext2: 'Supported', value3: '< 100ms', label3: 'Decision Time', subtext3: 'Average' },
+      stats: {
+        value1: '1,234',
+        label1: 'Access Policies',
+        subtext1: 'Active',
+        value2: '15+',
+        label2: 'Attribute Types',
+        subtext2: 'Supported',
+        value3: '< 100ms',
+        label3: 'Decision Time',
+        subtext3: 'Average',
+      },
       features: [
         'Context-aware access control policies',
         'Multi-attribute decision engines',
         'Dynamic policy evaluation and enforcement',
-        'Policy simulation and testing tools'
-      ]
+        'Policy simulation and testing tools',
+      ],
     },
     {
       name: 'permission-management',
       title: 'Permission Management System',
       description: 'Granular permission management with inheritance and delegation capabilities',
-      stats: { value1: '5,678', label1: 'Permissions', subtext1: 'Total', value2: '89%', label2: 'Inherited', subtext2: 'Permissions', value3: '234', label3: 'Permission Groups', subtext3: 'Defined' },
+      stats: {
+        value1: '5,678',
+        label1: 'Permissions',
+        subtext1: 'Total',
+        value2: '89%',
+        label2: 'Inherited',
+        subtext2: 'Permissions',
+        value3: '234',
+        label3: 'Permission Groups',
+        subtext3: 'Defined',
+      },
       features: [
         'Granular permission definition and assignment',
         'Permission inheritance and delegation',
         'Temporary permission grants and revocation',
-        'Permission analytics and compliance reporting'
-      ]
+        'Permission analytics and compliance reporting',
+      ],
     },
     {
       name: 'access-request-management',
       title: 'Access Request Management',
       description: 'Self-service access request system with approval workflows and automation',
-      stats: { value1: '1,847', label1: 'Requests/Month', subtext1: 'Average', value2: '2.3hrs', label2: 'Avg Approval', subtext2: 'Time', value3: '94%', label3: 'Auto-Approval', subtext3: 'Rate' },
+      stats: {
+        value1: '1,847',
+        label1: 'Requests/Month',
+        subtext1: 'Average',
+        value2: '2.3hrs',
+        label2: 'Avg Approval',
+        subtext2: 'Time',
+        value3: '94%',
+        label3: 'Auto-Approval',
+        subtext3: 'Rate',
+      },
       features: [
         'Self-service access request portal',
         'Automated approval workflow engine',
         'Request tracking and status updates',
-        'Access justification and documentation'
-      ]
+        'Access justification and documentation',
+      ],
     },
     {
       name: 'privileged-access-management',
       title: 'Privileged Access Management (PAM)',
       description: 'Enterprise PAM solution with just-in-time access and session monitoring',
-      stats: { value1: '567', label1: 'Privileged Accounts', subtext1: 'Managed', value2: '100%', label2: 'Session Recording', subtext2: 'Coverage', value3: '15min', label3: 'Max Session', subtext3: 'Duration' },
+      stats: {
+        value1: '567',
+        label1: 'Privileged Accounts',
+        subtext1: 'Managed',
+        value2: '100%',
+        label2: 'Session Recording',
+        subtext2: 'Coverage',
+        value3: '15min',
+        label3: 'Max Session',
+        subtext3: 'Duration',
+      },
       features: [
         'Just-in-time privileged access provisioning',
         'Session recording and monitoring',
         'Privileged account lifecycle management',
-        'Break-glass access procedures'
-      ]
+        'Break-glass access procedures',
+      ],
     },
     {
       name: 'access-certification',
       title: 'Access Certification & Review',
       description: 'Automated access certification with periodic reviews and attestation workflows',
-      stats: { value1: '4x/Year', label1: 'Certification Cycles', subtext1: 'Scheduled', value2: '97%', label2: 'Completion Rate', subtext2: 'Certifications', value3: '5days', label3: 'Avg Review Time', subtext3: 'Per Manager' },
+      stats: {
+        value1: '4x/Year',
+        label1: 'Certification Cycles',
+        subtext1: 'Scheduled',
+        value2: '97%',
+        label2: 'Completion Rate',
+        subtext2: 'Certifications',
+        value3: '5days',
+        label3: 'Avg Review Time',
+        subtext3: 'Per Manager',
+      },
       features: [
         'Automated access certification campaigns',
         'Manager attestation workflows',
         'Risk-based certification prioritization',
-        'Certification analytics and reporting'
-      ]
+        'Certification analytics and reporting',
+      ],
     },
     {
       name: 'access-governance',
       title: 'Access Governance Framework',
-      description: 'Comprehensive access governance with policy enforcement and compliance monitoring',
-      stats: { value1: '99.5%', label1: 'Policy Compliance', subtext1: 'Rate', value2: '45', label2: 'Governance Rules', subtext2: 'Active', value3: '24/7', label3: 'Monitoring', subtext3: 'Coverage' },
+      description:
+        'Comprehensive access governance with policy enforcement and compliance monitoring',
+      stats: {
+        value1: '99.5%',
+        label1: 'Policy Compliance',
+        subtext1: 'Rate',
+        value2: '45',
+        label2: 'Governance Rules',
+        subtext2: 'Active',
+        value3: '24/7',
+        label3: 'Monitoring',
+        subtext3: 'Coverage',
+      },
       features: [
         'Access governance policy management',
         'Compliance monitoring and reporting',
         'Segregation of duties enforcement',
-        'Risk-based access analytics'
-      ]
-    }
+        'Risk-based access analytics',
+      ],
+    },
   ],
   'identity-management': [
     {
       name: 'identity-lifecycle-management',
       title: 'Identity Lifecycle Management',
-      description: 'End-to-end identity lifecycle management with automated workflows and governance',
-      stats: { value1: '18,456', label1: 'Digital Identities', subtext1: 'Managed', value2: '99.8%', label2: 'Sync Accuracy', subtext2: 'Cross-System', value3: '5sec', label3: 'Identity Creation', subtext3: 'Time' },
+      description:
+        'End-to-end identity lifecycle management with automated workflows and governance',
+      stats: {
+        value1: '18,456',
+        label1: 'Digital Identities',
+        subtext1: 'Managed',
+        value2: '99.8%',
+        label2: 'Sync Accuracy',
+        subtext2: 'Cross-System',
+        value3: '5sec',
+        label3: 'Identity Creation',
+        subtext3: 'Time',
+      },
       features: [
         'Automated identity provisioning and deprovisioning',
         'Identity synchronization across systems',
         'Lifecycle workflow automation',
-        'Identity analytics and governance'
-      ]
+        'Identity analytics and governance',
+      ],
     },
     {
       name: 'single-sign-on-management',
       title: 'Single Sign-On (SSO) Management',
-      description: 'Enterprise SSO solution with federated authentication and seamless user experience',
-      stats: { value1: '245', label1: 'Connected Apps', subtext1: 'SSO Enabled', value2: '99.9%', label2: 'SSO Uptime', subtext2: 'Availability', value3: '< 2sec', label3: 'Login Time', subtext3: 'Average' },
+      description:
+        'Enterprise SSO solution with federated authentication and seamless user experience',
+      stats: {
+        value1: '245',
+        label1: 'Connected Apps',
+        subtext1: 'SSO Enabled',
+        value2: '99.9%',
+        label2: 'SSO Uptime',
+        subtext2: 'Availability',
+        value3: '< 2sec',
+        label3: 'Login Time',
+        subtext3: 'Average',
+      },
       features: [
         'SAML and OAuth 2.0 federation',
         'Seamless application integration',
         'SSO session management',
-        'Authentication analytics and monitoring'
-      ]
+        'Authentication analytics and monitoring',
+      ],
     },
     {
       name: 'multi-factor-authentication',
       title: 'Multi-Factor Authentication (MFA)',
       description: 'Advanced MFA system with multiple authentication methods and adaptive security',
-      stats: { value1: '8', label1: 'Auth Methods', subtext1: 'Supported', value2: '98.7%', label2: 'MFA Adoption', subtext2: 'Rate', value3: '99.95%', label3: 'Auth Success', subtext3: 'Rate' },
+      stats: {
+        value1: '8',
+        label1: 'Auth Methods',
+        subtext1: 'Supported',
+        value2: '98.7%',
+        label2: 'MFA Adoption',
+        subtext2: 'Rate',
+        value3: '99.95%',
+        label3: 'Auth Success',
+        subtext3: 'Rate',
+      },
       features: [
         'Multiple authentication factor support',
         'Adaptive authentication policies',
         'Risk-based authentication decisions',
-        'MFA analytics and user experience optimization'
-      ]
+        'MFA analytics and user experience optimization',
+      ],
     },
     {
       name: 'identity-federation',
       title: 'Identity Federation & Integration',
-      description: 'Cross-domain identity federation with partner organizations and external systems',
-      stats: { value1: '34', label1: 'Federated Partners', subtext1: 'Connected', value2: '99.2%', label2: 'Federation Uptime', subtext2: 'Availability', value3: '15+', label3: 'Integration Types', subtext3: 'Supported' },
+      description:
+        'Cross-domain identity federation with partner organizations and external systems',
+      stats: {
+        value1: '34',
+        label1: 'Federated Partners',
+        subtext1: 'Connected',
+        value2: '99.2%',
+        label2: 'Federation Uptime',
+        subtext2: 'Availability',
+        value3: '15+',
+        label3: 'Integration Types',
+        subtext3: 'Supported',
+      },
       features: [
         'Cross-domain identity federation',
         'Partner identity integration',
         'Federation protocol support (SAML, WS-Fed)',
-        'Trust relationship management'
-      ]
+        'Trust relationship management',
+      ],
     },
     {
       name: 'identity-verification',
       title: 'Identity Verification & Validation',
-      description: 'Automated identity verification with document validation and biometric authentication',
-      stats: { value1: '99.3%', label1: 'Verification Success', subtext1: 'Rate', value2: '12sec', label2: 'Avg Verification', subtext2: 'Time', value3: '15+', label3: 'Verification Methods', subtext3: 'Available' },
+      description:
+        'Automated identity verification with document validation and biometric authentication',
+      stats: {
+        value1: '99.3%',
+        label1: 'Verification Success',
+        subtext1: 'Rate',
+        value2: '12sec',
+        label2: 'Avg Verification',
+        subtext2: 'Time',
+        value3: '15+',
+        label3: 'Verification Methods',
+        subtext3: 'Available',
+      },
       features: [
         'Document-based identity verification',
         'Biometric authentication integration',
         'Identity proofing workflows',
-        'Verification analytics and fraud detection'
-      ]
+        'Verification analytics and fraud detection',
+      ],
     },
     {
       name: 'password-management',
       title: 'Enterprise Password Management',
-      description: 'Comprehensive password management with policy enforcement and self-service capabilities',
-      stats: { value1: '99.1%', label1: 'Policy Compliance', subtext1: 'Rate', value2: '234', label2: 'Password Resets', subtext2: 'Daily Avg', value3: '45sec', label3: 'Reset Time', subtext3: 'Self-Service' },
+      description:
+        'Comprehensive password management with policy enforcement and self-service capabilities',
+      stats: {
+        value1: '99.1%',
+        label1: 'Policy Compliance',
+        subtext1: 'Rate',
+        value2: '234',
+        label2: 'Password Resets',
+        subtext2: 'Daily Avg',
+        value3: '45sec',
+        label3: 'Reset Time',
+        subtext3: 'Self-Service',
+      },
       features: [
         'Password policy management and enforcement',
         'Self-service password reset capabilities',
         'Password strength analytics',
-        'Credential security monitoring'
-      ]
+        'Credential security monitoring',
+      ],
     },
     {
       name: 'digital-identity-wallet',
       title: 'Digital Identity Wallet',
       description: 'Secure digital identity wallet with credential management and privacy controls',
-      stats: { value1: '5,678', label1: 'Digital Credentials', subtext1: 'Stored', value2: '100%', label2: 'Encryption', subtext2: 'Coverage', value3: '99.8%', label3: 'Wallet Availability', subtext3: 'Uptime' },
+      stats: {
+        value1: '5,678',
+        label1: 'Digital Credentials',
+        subtext1: 'Stored',
+        value2: '100%',
+        label2: 'Encryption',
+        subtext2: 'Coverage',
+        value3: '99.8%',
+        label3: 'Wallet Availability',
+        subtext3: 'Uptime',
+      },
       features: [
         'Secure credential storage and management',
         'Privacy-preserving identity sharing',
         'Verifiable credential support',
-        'Wallet analytics and usage monitoring'
-      ]
-    }
+        'Wallet analytics and usage monitoring',
+      ],
+    },
   ],
   'security-management': [
     {
       name: 'user-behavior-analytics',
       title: 'User Behavior Analytics (UBA)',
       description: 'Advanced user behavior analysis with anomaly detection and risk scoring',
-      stats: { value1: '24/7', label1: 'Monitoring', subtext1: 'Coverage', value2: '99.2%', label2: 'Anomaly Detection', subtext2: 'Accuracy', value3: '15sec', label3: 'Alert Response', subtext3: 'Time' },
+      stats: {
+        value1: '24/7',
+        label1: 'Monitoring',
+        subtext1: 'Coverage',
+        value2: '99.2%',
+        label2: 'Anomaly Detection',
+        subtext2: 'Accuracy',
+        value3: '15sec',
+        label3: 'Alert Response',
+        subtext3: 'Time',
+      },
       features: [
         'Real-time user behavior monitoring',
         'Machine learning anomaly detection',
         'Risk scoring and threat assessment',
-        'Behavioral analytics and insights'
-      ]
+        'Behavioral analytics and insights',
+      ],
     },
     {
       name: 'threat-detection-response',
       title: 'User Threat Detection & Response',
       description: 'Automated threat detection with incident response and remediation workflows',
-      stats: { value1: '45', label1: 'Threat Indicators', subtext1: 'Monitored', value2: '< 3min', label2: 'Detection Time', subtext2: 'Average', value3: '98.7%', label3: 'Auto-Response', subtext3: 'Rate' },
+      stats: {
+        value1: '45',
+        label1: 'Threat Indicators',
+        subtext1: 'Monitored',
+        value2: '< 3min',
+        label2: 'Detection Time',
+        subtext2: 'Average',
+        value3: '98.7%',
+        label3: 'Auto-Response',
+        subtext3: 'Rate',
+      },
       features: [
         'Automated threat detection and analysis',
         'Incident response workflow automation',
         'Threat intelligence integration',
-        'Security orchestration and remediation'
-      ]
+        'Security orchestration and remediation',
+      ],
     },
     {
       name: 'security-incident-management',
       title: 'Security Incident Management',
-      description: 'Comprehensive security incident management with forensics and compliance reporting',
-      stats: { value1: '156', label1: 'Incidents/Month', subtext1: 'Average', value2: '2.3hrs', label2: 'Avg Resolution', subtext2: 'Time', value3: '100%', label3: 'Compliance', subtext3: 'Reporting' },
+      description:
+        'Comprehensive security incident management with forensics and compliance reporting',
+      stats: {
+        value1: '156',
+        label1: 'Incidents/Month',
+        subtext1: 'Average',
+        value2: '2.3hrs',
+        label2: 'Avg Resolution',
+        subtext2: 'Time',
+        value3: '100%',
+        label3: 'Compliance',
+        subtext3: 'Reporting',
+      },
       features: [
         'Incident tracking and management workflows',
         'Digital forensics and evidence collection',
         'Compliance reporting and documentation',
-        'Incident analytics and trend analysis'
-      ]
+        'Incident analytics and trend analysis',
+      ],
     },
     {
       name: 'vulnerability-assessment',
       title: 'User Security Vulnerability Assessment',
-      description: 'Continuous vulnerability assessment with risk prioritization and remediation tracking',
-      stats: { value1: '1,234', label1: 'Assets Scanned', subtext1: 'Daily', value2: '97%', label2: 'Vuln Coverage', subtext2: 'Detection', value3: '5days', label3: 'Avg Remediation', subtext3: 'Time' },
+      description:
+        'Continuous vulnerability assessment with risk prioritization and remediation tracking',
+      stats: {
+        value1: '1,234',
+        label1: 'Assets Scanned',
+        subtext1: 'Daily',
+        value2: '97%',
+        label2: 'Vuln Coverage',
+        subtext2: 'Detection',
+        value3: '5days',
+        label3: 'Avg Remediation',
+        subtext3: 'Time',
+      },
       features: [
         'Continuous vulnerability scanning',
         'Risk-based vulnerability prioritization',
         'Remediation tracking and workflows',
-        'Vulnerability analytics and reporting'
-      ]
+        'Vulnerability analytics and reporting',
+      ],
     },
     {
       name: 'security-awareness-training',
       title: 'Security Awareness Training',
-      description: 'Interactive security training with phishing simulations and awareness campaigns',
-      stats: { value1: '89%', label1: 'Training Completion', subtext1: 'Rate', value2: '456', label2: 'Phishing Tests', subtext2: 'Monthly', value3: '12%', label3: 'Click Rate', subtext3: 'Improvement' },
+      description:
+        'Interactive security training with phishing simulations and awareness campaigns',
+      stats: {
+        value1: '89%',
+        label1: 'Training Completion',
+        subtext1: 'Rate',
+        value2: '456',
+        label2: 'Phishing Tests',
+        subtext2: 'Monthly',
+        value3: '12%',
+        label3: 'Click Rate',
+        subtext3: 'Improvement',
+      },
       features: [
         'Interactive security training modules',
         'Phishing simulation campaigns',
         'Awareness metrics and analytics',
-        'Personalized training recommendations'
-      ]
+        'Personalized training recommendations',
+      ],
     },
     {
       name: 'data-loss-prevention',
       title: 'Data Loss Prevention (DLP)',
-      description: 'User-centric data loss prevention with content inspection and policy enforcement',
-      stats: { value1: '99.8%', label1: 'Data Protection', subtext1: 'Rate', value2: '1,456', label2: 'Policy Rules', subtext2: 'Active', value3: '< 50ms', label3: 'Inspection Time', subtext3: 'Average' },
+      description:
+        'User-centric data loss prevention with content inspection and policy enforcement',
+      stats: {
+        value1: '99.8%',
+        label1: 'Data Protection',
+        subtext1: 'Rate',
+        value2: '1,456',
+        label2: 'Policy Rules',
+        subtext2: 'Active',
+        value3: '< 50ms',
+        label3: 'Inspection Time',
+        subtext3: 'Average',
+      },
       features: [
         'Content inspection and classification',
         'Policy-based data protection',
         'User education and awareness',
-        'DLP analytics and reporting'
-      ]
+        'DLP analytics and reporting',
+      ],
     },
     {
       name: 'compliance-monitoring',
       title: 'Security Compliance Monitoring',
       description: 'Continuous compliance monitoring with automated reporting and remediation',
-      stats: { value1: '99.5%', label1: 'Compliance Score', subtext1: 'Current', value2: '25+', label2: 'Frameworks', subtext2: 'Supported', value3: '24/7', label3: 'Monitoring', subtext3: 'Coverage' },
+      stats: {
+        value1: '99.5%',
+        label1: 'Compliance Score',
+        subtext1: 'Current',
+        value2: '25+',
+        label2: 'Frameworks',
+        subtext2: 'Supported',
+        value3: '24/7',
+        label3: 'Monitoring',
+        subtext3: 'Coverage',
+      },
       features: [
         'Multi-framework compliance monitoring',
         'Automated compliance reporting',
         'Remediation workflow automation',
-        'Compliance analytics and trending'
-      ]
-    }
+        'Compliance analytics and trending',
+      ],
+    },
   ],
   'user-analytics': [
     {
       name: 'user-activity-analytics',
       title: 'User Activity Analytics',
       description: 'Comprehensive user activity analysis with behavior patterns and insights',
-      stats: { value1: '15TB+', label1: 'Activity Data', subtext1: 'Processed', value2: '99.9%', label2: 'Data Accuracy', subtext2: 'Rate', value3: '< 1sec', label3: 'Query Response', subtext3: 'Time' },
+      stats: {
+        value1: '15TB+',
+        label1: 'Activity Data',
+        subtext1: 'Processed',
+        value2: '99.9%',
+        label2: 'Data Accuracy',
+        subtext2: 'Rate',
+        value3: '< 1sec',
+        label3: 'Query Response',
+        subtext3: 'Time',
+      },
       features: [
         'Real-time activity data collection',
         'Advanced analytics and visualization',
         'Behavior pattern recognition',
-        'Predictive analytics and insights'
-      ]
+        'Predictive analytics and insights',
+      ],
     },
     {
       name: 'access-pattern-analysis',
       title: 'Access Pattern Analysis',
-      description: 'Intelligent access pattern analysis with anomaly detection and optimization recommendations',
-      stats: { value1: '12M+', label1: 'Access Events', subtext1: 'Daily', value2: '98.5%', label2: 'Pattern Accuracy', subtext2: 'Detection', value3: '456', label3: 'Access Patterns', subtext3: 'Identified' },
+      description:
+        'Intelligent access pattern analysis with anomaly detection and optimization recommendations',
+      stats: {
+        value1: '12M+',
+        label1: 'Access Events',
+        subtext1: 'Daily',
+        value2: '98.5%',
+        label2: 'Pattern Accuracy',
+        subtext2: 'Detection',
+        value3: '456',
+        label3: 'Access Patterns',
+        subtext3: 'Identified',
+      },
       features: [
         'Access pattern identification and analysis',
         'Anomaly detection and alerting',
         'Access optimization recommendations',
-        'Pattern-based policy suggestions'
-      ]
+        'Pattern-based policy suggestions',
+      ],
     },
     {
       name: 'user-productivity-metrics',
       title: 'User Productivity Metrics',
-      description: 'User productivity analytics with performance insights and optimization recommendations',
-      stats: { value1: '8,456', label1: 'Users Analyzed', subtext1: 'Daily', value2: '45+', label2: 'Productivity Metrics', subtext2: 'Tracked', value3: '89%', label3: 'User Satisfaction', subtext3: 'Score' },
+      description:
+        'User productivity analytics with performance insights and optimization recommendations',
+      stats: {
+        value1: '8,456',
+        label1: 'Users Analyzed',
+        subtext1: 'Daily',
+        value2: '45+',
+        label2: 'Productivity Metrics',
+        subtext2: 'Tracked',
+        value3: '89%',
+        label3: 'User Satisfaction',
+        subtext3: 'Score',
+      },
       features: [
         'Productivity metrics collection and analysis',
         'Performance benchmarking and comparisons',
         'Optimization recommendations',
-        'User satisfaction and experience tracking'
-      ]
+        'User satisfaction and experience tracking',
+      ],
     },
     {
       name: 'system-usage-analytics',
       title: 'System Usage Analytics',
-      description: 'Comprehensive system usage analytics with capacity planning and optimization insights',
-      stats: { value1: '245', label1: 'Systems Monitored', subtext1: 'Active', value2: '99.7%', label2: 'Usage Tracking', subtext2: 'Coverage', value3: '12hrs', label3: 'Retention Period', subtext3: 'Analytics Data' },
+      description:
+        'Comprehensive system usage analytics with capacity planning and optimization insights',
+      stats: {
+        value1: '245',
+        label1: 'Systems Monitored',
+        subtext1: 'Active',
+        value2: '99.7%',
+        label2: 'Usage Tracking',
+        subtext2: 'Coverage',
+        value3: '12hrs',
+        label3: 'Retention Period',
+        subtext3: 'Analytics Data',
+      },
       features: [
         'System usage monitoring and analytics',
         'Capacity planning and forecasting',
         'Usage optimization recommendations',
-        'Cost analysis and optimization'
-      ]
+        'Cost analysis and optimization',
+      ],
     },
     {
       name: 'risk-analytics',
       title: 'User Risk Analytics',
       description: 'Advanced user risk analytics with predictive modeling and risk scoring',
-      stats: { value1: '99.3%', label1: 'Risk Prediction', subtext1: 'Accuracy', value2: '15+', label2: 'Risk Factors', subtext2: 'Analyzed', value3: '< 5min', label3: 'Risk Assessment', subtext3: 'Time' },
+      stats: {
+        value1: '99.3%',
+        label1: 'Risk Prediction',
+        subtext1: 'Accuracy',
+        value2: '15+',
+        label2: 'Risk Factors',
+        subtext2: 'Analyzed',
+        value3: '< 5min',
+        label3: 'Risk Assessment',
+        subtext3: 'Time',
+      },
       features: [
         'Predictive risk modeling and scoring',
         'Risk factor analysis and correlation',
         'Risk mitigation recommendations',
-        'Risk trend analysis and forecasting'
-      ]
+        'Risk trend analysis and forecasting',
+      ],
     },
     {
       name: 'performance-analytics',
       title: 'User Performance Analytics',
       description: 'User performance analytics with KPI tracking and improvement recommendations',
-      stats: { value1: '67+', label1: 'Performance KPIs', subtext1: 'Tracked', value2: '94%', label2: 'Goal Achievement', subtext2: 'Rate', value3: '25%', label3: 'Performance Gain', subtext3: 'Average' },
+      stats: {
+        value1: '67+',
+        label1: 'Performance KPIs',
+        subtext1: 'Tracked',
+        value2: '94%',
+        label2: 'Goal Achievement',
+        subtext2: 'Rate',
+        value3: '25%',
+        label3: 'Performance Gain',
+        subtext3: 'Average',
+      },
       features: [
         'Performance KPI tracking and analysis',
         'Goal achievement monitoring',
         'Performance improvement recommendations',
-        'Benchmarking and peer comparisons'
-      ]
+        'Benchmarking and peer comparisons',
+      ],
     },
     {
       name: 'predictive-analytics',
       title: 'Predictive User Analytics',
       description: 'Machine learning-powered predictive analytics for user behavior and trends',
-      stats: { value1: '12', label1: 'ML Models', subtext1: 'Active', value2: '96.8%', label2: 'Prediction Accuracy', subtext2: 'Rate', value3: '30days', label3: 'Forecast Horizon', subtext3: 'Maximum' },
+      stats: {
+        value1: '12',
+        label1: 'ML Models',
+        subtext1: 'Active',
+        value2: '96.8%',
+        label2: 'Prediction Accuracy',
+        subtext2: 'Rate',
+        value3: '30days',
+        label3: 'Forecast Horizon',
+        subtext3: 'Maximum',
+      },
       features: [
         'Machine learning model development',
         'Predictive behavior analysis',
         'Trend forecasting and planning',
-        'Automated insight generation'
-      ]
-    }
+        'Automated insight generation',
+      ],
+    },
   ],
   'compliance-audit': [
     {
       name: 'audit-trail-management',
       title: 'Comprehensive Audit Trail Management',
-      description: 'Complete audit trail management with tamper-proof logging and compliance reporting',
-      stats: { value1: '50M+', label1: 'Log Entries', subtext1: 'Daily', value2: '100%', label2: 'Tamper Protection', subtext2: 'Coverage', value3: '7years', label3: 'Retention Period', subtext3: 'Compliance' },
+      description:
+        'Complete audit trail management with tamper-proof logging and compliance reporting',
+      stats: {
+        value1: '50M+',
+        label1: 'Log Entries',
+        subtext1: 'Daily',
+        value2: '100%',
+        label2: 'Tamper Protection',
+        subtext2: 'Coverage',
+        value3: '7years',
+        label3: 'Retention Period',
+        subtext3: 'Compliance',
+      },
       features: [
         'Tamper-proof audit log collection',
         'Comprehensive activity tracking',
         'Audit trail analytics and search',
-        'Compliance reporting and export'
-      ]
+        'Compliance reporting and export',
+      ],
     },
     {
       name: 'regulatory-compliance',
       title: 'Regulatory Compliance Management',
-      description: 'Multi-regulation compliance management with automated assessments and reporting',
-      stats: { value1: '15+', label1: 'Regulations', subtext1: 'Supported', value2: '99.8%', label2: 'Compliance Rate', subtext2: 'Current', value3: '24hrs', label3: 'Report Generation', subtext3: 'Time' },
+      description:
+        'Multi-regulation compliance management with automated assessments and reporting',
+      stats: {
+        value1: '15+',
+        label1: 'Regulations',
+        subtext1: 'Supported',
+        value2: '99.8%',
+        label2: 'Compliance Rate',
+        subtext2: 'Current',
+        value3: '24hrs',
+        label3: 'Report Generation',
+        subtext3: 'Time',
+      },
       features: [
         'Multi-regulation compliance tracking',
         'Automated compliance assessments',
         'Regulatory change management',
-        'Compliance reporting and documentation'
-      ]
+        'Compliance reporting and documentation',
+      ],
     },
     {
       name: 'privacy-compliance',
       title: 'Privacy Compliance (GDPR/CCPA)',
       description: 'Privacy regulation compliance with data subject rights and consent management',
-      stats: { value1: '100%', label1: 'GDPR Compliance', subtext1: 'Rate', value2: '234', label2: 'Data Requests', subtext2: 'Monthly', value3: '< 72hrs', label3: 'Response Time', subtext3: 'Guaranteed' },
+      stats: {
+        value1: '100%',
+        label1: 'GDPR Compliance',
+        subtext1: 'Rate',
+        value2: '234',
+        label2: 'Data Requests',
+        subtext2: 'Monthly',
+        value3: '< 72hrs',
+        label3: 'Response Time',
+        subtext3: 'Guaranteed',
+      },
       features: [
         'Data subject rights management',
         'Consent tracking and management',
         'Privacy impact assessments',
-        'Data processing compliance monitoring'
-      ]
+        'Data processing compliance monitoring',
+      ],
     },
     {
       name: 'soc-compliance',
       title: 'SOC Compliance Management',
       description: 'SOC 1/2 compliance management with control testing and evidence collection',
-      stats: { value1: '156', label1: 'Controls Tested', subtext1: 'Monthly', value2: '99.5%', label2: 'Control Effectiveness', subtext2: 'Rate', value3: '100%', label3: 'Evidence Collection', subtext3: 'Automation' },
+      stats: {
+        value1: '156',
+        label1: 'Controls Tested',
+        subtext1: 'Monthly',
+        value2: '99.5%',
+        label2: 'Control Effectiveness',
+        subtext2: 'Rate',
+        value3: '100%',
+        label3: 'Evidence Collection',
+        subtext3: 'Automation',
+      },
       features: [
         'SOC control testing automation',
         'Evidence collection and management',
         'Control effectiveness monitoring',
-        'SOC reporting and documentation'
-      ]
+        'SOC reporting and documentation',
+      ],
     },
     {
       name: 'risk-assessment',
       title: 'Compliance Risk Assessment',
-      description: 'Comprehensive compliance risk assessment with mitigation planning and monitoring',
-      stats: { value1: '89', label1: 'Risk Assessments', subtext1: 'Completed', value2: '95%', label2: 'Risk Mitigation', subtext2: 'Rate', value3: '15days', label3: 'Assessment Cycle', subtext3: 'Time' },
+      description:
+        'Comprehensive compliance risk assessment with mitigation planning and monitoring',
+      stats: {
+        value1: '89',
+        label1: 'Risk Assessments',
+        subtext1: 'Completed',
+        value2: '95%',
+        label2: 'Risk Mitigation',
+        subtext2: 'Rate',
+        value3: '15days',
+        label3: 'Assessment Cycle',
+        subtext3: 'Time',
+      },
       features: [
         'Automated risk assessment workflows',
         'Risk mitigation planning and tracking',
         'Compliance risk monitoring',
-        'Risk reporting and analytics'
-      ]
+        'Risk reporting and analytics',
+      ],
     },
     {
       name: 'control-testing',
       title: 'Automated Control Testing',
       description: 'Automated control testing with continuous monitoring and exception reporting',
-      stats: { value1: '245', label1: 'Controls Automated', subtext1: 'Total', value2: '99.7%', label2: 'Test Reliability', subtext2: 'Rate', value3: '24/7', label3: 'Monitoring', subtext3: 'Coverage' },
+      stats: {
+        value1: '245',
+        label1: 'Controls Automated',
+        subtext1: 'Total',
+        value2: '99.7%',
+        label2: 'Test Reliability',
+        subtext2: 'Rate',
+        value3: '24/7',
+        label3: 'Monitoring',
+        subtext3: 'Coverage',
+      },
       features: [
         'Automated control testing framework',
         'Continuous control monitoring',
         'Exception detection and reporting',
-        'Control effectiveness analytics'
-      ]
+        'Control effectiveness analytics',
+      ],
     },
     {
       name: 'compliance-reporting',
       title: 'Advanced Compliance Reporting',
-      description: 'Automated compliance reporting with customizable templates and stakeholder distribution',
-      stats: { value1: '25+', label1: 'Report Templates', subtext1: 'Available', value2: '100%', label2: 'Report Automation', subtext2: 'Rate', value3: '156', label3: 'Reports Generated', subtext3: 'Monthly' },
+      description:
+        'Automated compliance reporting with customizable templates and stakeholder distribution',
+      stats: {
+        value1: '25+',
+        label1: 'Report Templates',
+        subtext1: 'Available',
+        value2: '100%',
+        label2: 'Report Automation',
+        subtext2: 'Rate',
+        value3: '156',
+        label3: 'Reports Generated',
+        subtext3: 'Monthly',
+      },
       features: [
         'Automated report generation and distribution',
         'Customizable reporting templates',
         'Stakeholder-specific reporting',
-        'Compliance dashboard and visualization'
-      ]
-    }
+        'Compliance dashboard and visualization',
+      ],
+    },
   ],
   'user-experience': [
     {
       name: 'self-service-portal',
       title: 'User Self-Service Portal',
-      description: 'Comprehensive self-service portal with personalized user experience and automation',
-      stats: { value1: '89%', label1: 'Self-Service Rate', subtext1: 'User Adoption', value2: '< 30sec', label2: 'Task Completion', subtext2: 'Average', value3: '4.8/5', label3: 'User Satisfaction', subtext3: 'Rating' },
+      description:
+        'Comprehensive self-service portal with personalized user experience and automation',
+      stats: {
+        value1: '89%',
+        label1: 'Self-Service Rate',
+        subtext1: 'User Adoption',
+        value2: '< 30sec',
+        label2: 'Task Completion',
+        subtext2: 'Average',
+        value3: '4.8/5',
+        label3: 'User Satisfaction',
+        subtext3: 'Rating',
+      },
       features: [
         'Personalized user dashboard and portal',
         'Self-service request and approval workflows',
         'Knowledge base and help integration',
-        'User experience analytics and optimization'
-      ]
+        'User experience analytics and optimization',
+      ],
     },
     {
       name: 'mobile-user-experience',
       title: 'Mobile User Experience',
       description: 'Native mobile user experience with offline capabilities and responsive design',
-      stats: { value1: '78%', label1: 'Mobile Usage', subtext1: 'Adoption Rate', value2: '99.9%', label2: 'App Uptime', subtext2: 'Availability', value3: '4.7/5', label3: 'App Store Rating', subtext3: 'User Reviews' },
+      stats: {
+        value1: '78%',
+        label1: 'Mobile Usage',
+        subtext1: 'Adoption Rate',
+        value2: '99.9%',
+        label2: 'App Uptime',
+        subtext2: 'Availability',
+        value3: '4.7/5',
+        label3: 'App Store Rating',
+        subtext3: 'User Reviews',
+      },
       features: [
         'Native mobile application development',
         'Offline capability and synchronization',
         'Mobile-optimized user interfaces',
-        'Mobile analytics and performance monitoring'
-      ]
+        'Mobile analytics and performance monitoring',
+      ],
     },
     {
       name: 'user-onboarding',
       title: 'User Onboarding Experience',
       description: 'Guided user onboarding with interactive tutorials and progress tracking',
-      stats: { value1: '94%', label1: 'Onboarding Completion', subtext1: 'Rate', value2: '12min', label2: 'Avg Onboarding', subtext2: 'Time', value3: '4.6/5', label3: 'Experience Rating', subtext3: 'New Users' },
+      stats: {
+        value1: '94%',
+        label1: 'Onboarding Completion',
+        subtext1: 'Rate',
+        value2: '12min',
+        label2: 'Avg Onboarding',
+        subtext2: 'Time',
+        value3: '4.6/5',
+        label3: 'Experience Rating',
+        subtext3: 'New Users',
+      },
       features: [
         'Interactive onboarding tutorials and guides',
         'Progress tracking and milestone completion',
         'Personalized onboarding experiences',
-        'Onboarding analytics and optimization'
-      ]
+        'Onboarding analytics and optimization',
+      ],
     },
     {
       name: 'personalization-engine',
       title: 'User Personalization Engine',
-      description: 'AI-powered personalization with adaptive interfaces and content recommendations',
-      stats: { value1: '67%', label1: 'Personalization', subtext1: 'Adoption', value2: '34%', label2: 'Engagement Increase', subtext2: 'Average', value3: '12', label3: 'Personalization Types', subtext3: 'Available' },
+      description:
+        'AI-powered personalization with adaptive interfaces and content recommendations',
+      stats: {
+        value1: '67%',
+        label1: 'Personalization',
+        subtext1: 'Adoption',
+        value2: '34%',
+        label2: 'Engagement Increase',
+        subtext2: 'Average',
+        value3: '12',
+        label3: 'Personalization Types',
+        subtext3: 'Available',
+      },
       features: [
         'AI-powered user personalization',
         'Adaptive user interface optimization',
         'Content and workflow recommendations',
-        'Personalization analytics and insights'
-      ]
+        'Personalization analytics and insights',
+      ],
     },
     {
       name: 'accessibility-compliance',
       title: 'Accessibility Compliance',
       description: 'WCAG 2.1 AA accessibility compliance with assistive technology support',
-      stats: { value1: 'WCAG 2.1 AA', label1: 'Compliance Level', subtext1: 'Certified', value2: '100%', label2: 'Screen Reader', subtext2: 'Compatibility', value3: '15+', label3: 'Assistive Tools', subtext3: 'Supported' },
+      stats: {
+        value1: 'WCAG 2.1 AA',
+        label1: 'Compliance Level',
+        subtext1: 'Certified',
+        value2: '100%',
+        label2: 'Screen Reader',
+        subtext2: 'Compatibility',
+        value3: '15+',
+        label3: 'Assistive Tools',
+        subtext3: 'Supported',
+      },
       features: [
         'WCAG 2.1 AA compliance implementation',
         'Assistive technology integration',
         'Accessibility testing and validation',
-        'Accessibility analytics and monitoring'
-      ]
+        'Accessibility analytics and monitoring',
+      ],
     },
     {
       name: 'user-feedback-system',
       title: 'User Feedback & Improvement',
-      description: 'Comprehensive user feedback system with sentiment analysis and improvement tracking',
-      stats: { value1: '2,847', label1: 'Feedback Items', subtext1: 'Monthly', value2: '87%', label2: 'Response Rate', subtext2: 'User Surveys', value3: '4.5/5', label3: 'Overall Satisfaction', subtext3: 'Score' },
+      description:
+        'Comprehensive user feedback system with sentiment analysis and improvement tracking',
+      stats: {
+        value1: '2,847',
+        label1: 'Feedback Items',
+        subtext1: 'Monthly',
+        value2: '87%',
+        label2: 'Response Rate',
+        subtext2: 'User Surveys',
+        value3: '4.5/5',
+        label3: 'Overall Satisfaction',
+        subtext3: 'Score',
+      },
       features: [
         'Multi-channel feedback collection',
         'Sentiment analysis and categorization',
         'Improvement tracking and implementation',
-        'Feedback analytics and insights'
-      ]
+        'Feedback analytics and insights',
+      ],
     },
     {
       name: 'user-training-support',
       title: 'User Training & Support',
       description: 'Integrated training and support system with knowledge management and help desk',
-      stats: { value1: '456', label1: 'Training Modules', subtext1: 'Available', value2: '92%', label2: 'Training Completion', subtext2: 'Rate', value3: '< 2hrs', label3: 'Support Response', subtext3: 'Time' },
+      stats: {
+        value1: '456',
+        label1: 'Training Modules',
+        subtext1: 'Available',
+        value2: '92%',
+        label2: 'Training Completion',
+        subtext2: 'Rate',
+        value3: '< 2hrs',
+        label3: 'Support Response',
+        subtext3: 'Time',
+      },
       features: [
         'Interactive training module library',
         'Integrated help desk and support system',
         'Knowledge management and search',
-        'Training analytics and effectiveness tracking'
-      ]
-    }
-  ]
+        'Training analytics and effectiveness tracking',
+      ],
+    },
+  ],
 };
 
 // Generate HTML page content
@@ -744,7 +1258,7 @@ function generatePage(category, pageData) {
                         <div class="implementation-features">
                             <h4>Key ${pageData.title} Features:</h4>
                             <ul>
-${pageData.features.map(feature => `                                <li>✅ ${feature}</li>`).join('\n')}
+${pageData.features.map((feature) => `                                <li>✅ ${feature}</li>`).join('\n')}
                             </ul>
                         </div>
 
@@ -1033,13 +1547,13 @@ if (typeof module !== 'undefined' && module.exports) {
 // Generate all pages
 function generateAllPages() {
   console.log('🏗️ Generating 49 User Management pages...');
-  
+
   let totalPages = 0;
-  
-  Object.keys(userManagementPages).forEach(category => {
+
+  Object.keys(userManagementPages).forEach((category) => {
     const categoryDir = path.join(__dirname, category);
     const scriptsDir = path.join(categoryDir, 'scripts');
-    
+
     // Create category and scripts directories
     if (!fs.existsSync(categoryDir)) {
       fs.mkdirSync(categoryDir, { recursive: true });
@@ -1047,25 +1561,25 @@ function generateAllPages() {
     if (!fs.existsSync(scriptsDir)) {
       fs.mkdirSync(scriptsDir, { recursive: true });
     }
-    
-    userManagementPages[category].forEach(pageData => {
+
+    userManagementPages[category].forEach((pageData) => {
       // Generate HTML page
       const pageContent = generatePage(category, pageData);
       const pagePath = path.join(categoryDir, `${pageData.name}.html`);
       fs.writeFileSync(pagePath, pageContent);
-      
+
       // Generate JavaScript file
       const scriptContent = generatePageScript(category, pageData);
       const scriptPath = path.join(scriptsDir, `${pageData.name}.js`);
       fs.writeFileSync(scriptPath, scriptContent);
-      
+
       totalPages++;
       console.log(`✅ Generated: ${category}/${pageData.name}.html`);
     });
   });
-  
+
   console.log(`🎉 Successfully generated ${totalPages} User Management pages!`);
-  
+
   // Generate index file
   generateIndexFile();
 }
@@ -1092,14 +1606,18 @@ function generateIndexFile() {
         </header>
         
         <main class="index-main">
-            ${Object.keys(userManagementPages).map(category => `
+            ${Object.keys(userManagementPages)
+              .map(
+                (category) => `
             <section class="category-section">
                 <h2 class="category-title">
                     <i class="fas fa-${getCategoryIcon(category)}"></i>
-                    ${category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    ${category.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
                 </h2>
                 <div class="pages-grid">
-                    ${userManagementPages[category].map(page => `
+                    ${userManagementPages[category]
+                      .map(
+                        (page) => `
                     <div class="page-card">
                         <div class="page-header">
                             <h3 class="page-title">${page.title}</h3>
@@ -1121,7 +1639,10 @@ function generateIndexFile() {
                         </div>
                         <div class="page-features">
                             <ul>
-                                ${page.features.slice(0, 2).map(feature => `<li>${feature}</li>`).join('')}
+                                ${page.features
+                                  .slice(0, 2)
+                                  .map((feature) => `<li>${feature}</li>`)
+                                  .join('')}
                             </ul>
                         </div>
                         <div class="page-status">
@@ -1133,10 +1654,14 @@ function generateIndexFile() {
                             <a href="${category}/${page.name}.html" class="page-link">View Page</a>
                         </div>
                     </div>
-                    `).join('')}
+                    `
+                      )
+                      .join('')}
                 </div>
             </section>
-            `).join('')}
+            `
+              )
+              .join('')}
         </main>
     </div>
 
@@ -1299,7 +1824,7 @@ function generateIndexFile() {
     </style>
 </body>
 </html>`;
-  
+
   fs.writeFileSync(path.join(__dirname, 'index.html'), indexContent);
   console.log('✅ Generated: index.html');
 }
@@ -1313,7 +1838,7 @@ function getCategoryIcon(category) {
     'security-management': 'lock',
     'user-analytics': 'chart-line',
     'compliance-audit': 'clipboard-check',
-    'user-experience': 'smile'
+    'user-experience': 'smile',
   };
   return icons[category] || 'cog';
 }

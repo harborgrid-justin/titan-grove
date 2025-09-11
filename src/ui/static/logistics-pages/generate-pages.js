@@ -5,28 +5,30 @@ const path = require('path');
 
 // Logistics pages data structure
 const logisticsPages = {
-  'transportation': [
+  transportation: [
     {
       name: 'transportation-planning',
       title: 'Transportation Planning & Optimization',
-      description: 'Multi-modal transportation planning with AI-driven route optimization and carrier selection',
+      description:
+        'Multi-modal transportation planning with AI-driven route optimization and carrier selection',
       features: [
         'Multi-modal transportation planning (LTL, FTL, parcel, air, ocean)',
         'AI-driven route optimization and carrier selection',
         'Load consolidation and shipment optimization',
-        'Real-time transportation cost analysis'
-      ]
+        'Real-time transportation cost analysis',
+      ],
     },
     {
       name: 'carrier-management',
       title: 'Carrier Management & Performance',
-      description: 'Comprehensive carrier onboarding, contract management, and performance tracking',
+      description:
+        'Comprehensive carrier onboarding, contract management, and performance tracking',
       features: [
         'Carrier onboarding and certification workflows',
         'Contract lifecycle management and negotiation',
         'Performance tracking and KPI monitoring',
-        'Carrier scorecards and compliance reporting'
-      ]
+        'Carrier scorecards and compliance reporting',
+      ],
     },
     {
       name: 'shipment-execution',
@@ -36,8 +38,8 @@ const logisticsPages = {
         'Automated shipment creation and processing',
         'Real-time tracking and visibility',
         'Exception management and alerts',
-        'Proof of delivery and documentation'
-      ]
+        'Proof of delivery and documentation',
+      ],
     },
     {
       name: 'bid-management',
@@ -47,8 +49,8 @@ const logisticsPages = {
         'Automated bid request generation',
         'Carrier bid evaluation and scoring',
         'Award automation and notifications',
-        'Bid history and analytics'
-      ]
+        'Bid history and analytics',
+      ],
     },
     {
       name: 'fleet-management',
@@ -58,8 +60,8 @@ const logisticsPages = {
         'Vehicle fleet tracking and monitoring',
         'Maintenance scheduling and management',
         'Driver management and performance',
-        'Fleet utilization optimization'
-      ]
+        'Fleet utilization optimization',
+      ],
     },
     {
       name: 'transportation-analytics',
@@ -69,21 +71,22 @@ const logisticsPages = {
         'Transportation KPI dashboards',
         'Cost analysis and optimization insights',
         'Carrier performance analytics',
-        'Predictive transportation planning'
-      ]
-    }
+        'Predictive transportation planning',
+      ],
+    },
   ],
-  'warehouse': [
+  warehouse: [
     {
       name: 'warehouse-operations',
       title: 'Warehouse Operations Management',
-      description: 'Complete warehouse operations including receiving, put-away, picking, and shipping',
+      description:
+        'Complete warehouse operations including receiving, put-away, picking, and shipping',
       features: [
         'Receiving and put-away optimization',
         'Pick path optimization and wave planning',
         'Packing and shipping automation',
-        'Cross-docking operations'
-      ]
+        'Cross-docking operations',
+      ],
     },
     {
       name: 'inventory-management',
@@ -93,19 +96,20 @@ const logisticsPages = {
         'Real-time inventory tracking and visibility',
         'Automated cycle counting and reconciliation',
         'ABC analysis and inventory classification',
-        'Inventory optimization and replenishment'
-      ]
+        'Inventory optimization and replenishment',
+      ],
     },
     {
       name: 'slotting-optimization',
       title: 'Slotting & Layout Optimization',
-      description: 'AI-driven warehouse slotting optimization to minimize travel time and maximize efficiency',
+      description:
+        'AI-driven warehouse slotting optimization to minimize travel time and maximize efficiency',
       features: [
         'AI-driven slotting optimization algorithms',
         'Pick path optimization and heat mapping',
         'Seasonal slotting adjustments',
-        'Warehouse layout optimization'
-      ]
+        'Warehouse layout optimization',
+      ],
     },
     {
       name: 'labor-management',
@@ -115,8 +119,8 @@ const logisticsPages = {
         'Labor productivity tracking and analytics',
         'Workforce planning and scheduling',
         'Performance incentive management',
-        'Training and skill development tracking'
-      ]
+        'Training and skill development tracking',
+      ],
     },
     {
       name: 'warehouse-automation',
@@ -126,8 +130,8 @@ const logisticsPages = {
         'Robotics integration and control',
         'Automated storage and retrieval systems',
         'Conveyor system optimization',
-        'Voice picking and wearable technology'
-      ]
+        'Voice picking and wearable technology',
+      ],
     },
     {
       name: 'warehouse-analytics',
@@ -137,32 +141,34 @@ const logisticsPages = {
         'Warehouse KPI dashboards and scorecards',
         'Productivity analysis and benchmarking',
         'Space utilization optimization',
-        'Operational cost analysis'
-      ]
-    }
+        'Operational cost analysis',
+      ],
+    },
   ],
-  'routing': [
+  routing: [
     {
       name: 'route-optimization',
       title: 'Advanced Route Optimization',
-      description: 'AI-powered route optimization using multiple algorithms for optimal delivery planning',
+      description:
+        'AI-powered route optimization using multiple algorithms for optimal delivery planning',
       features: [
         'Multi-algorithm route optimization (GA, SA, Tabu Search)',
         'Vehicle routing problem (VRP) solving',
         'Time window and capacity constraints',
-        'Dynamic route re-optimization'
-      ]
+        'Dynamic route re-optimization',
+      ],
     },
     {
       name: 'delivery-planning',
       title: 'Delivery Planning & Scheduling',
-      description: 'Intelligent delivery planning with customer preferences and service level optimization',
+      description:
+        'Intelligent delivery planning with customer preferences and service level optimization',
       features: [
         'Customer delivery preference management',
         'Service level optimization',
         'Appointment scheduling and management',
-        'Delivery window optimization'
-      ]
+        'Delivery window optimization',
+      ],
     },
     {
       name: 'load-optimization',
@@ -172,8 +178,8 @@ const logisticsPages = {
         '3D bin packing and load optimization',
         'Weight and dimension constraints',
         'Load consolidation strategies',
-        'Mixed commodity load planning'
-      ]
+        'Mixed commodity load planning',
+      ],
     },
     {
       name: 'dynamic-routing',
@@ -183,8 +189,8 @@ const logisticsPages = {
         'Real-time traffic and weather integration',
         'Dynamic route re-optimization',
         'Exception-based route adjustments',
-        'Mobile driver communication'
-      ]
+        'Mobile driver communication',
+      ],
     },
     {
       name: 'routing-analytics',
@@ -194,11 +200,11 @@ const logisticsPages = {
         'Route performance KPI tracking',
         'Fuel consumption and emission analysis',
         'Driver performance optimization',
-        'Route cost optimization insights'
-      ]
-    }
+        'Route cost optimization insights',
+      ],
+    },
   ],
-  'distribution': [
+  distribution: [
     {
       name: 'network-design',
       title: 'Distribution Network Design',
@@ -207,8 +213,8 @@ const logisticsPages = {
         'Network optimization and facility location',
         'Service area analysis and optimization',
         'Capacity planning and demand modeling',
-        'Multi-echelon inventory optimization'
-      ]
+        'Multi-echelon inventory optimization',
+      ],
     },
     {
       name: 'fulfillment-strategy',
@@ -218,19 +224,20 @@ const logisticsPages = {
         'Order allocation and fulfillment rules',
         'Inventory allocation optimization',
         'Fulfillment cost optimization',
-        'Service level balancing'
-      ]
+        'Service level balancing',
+      ],
     },
     {
       name: 'supply-chain-visibility',
       title: 'Supply Chain Control Tower',
-      description: 'End-to-end supply chain visibility with real-time monitoring and exception management',
+      description:
+        'End-to-end supply chain visibility with real-time monitoring and exception management',
       features: [
         'Real-time supply chain visibility',
         'Exception monitoring and alerts',
         'Performance dashboard and KPIs',
-        'Collaborative planning and execution'
-      ]
+        'Collaborative planning and execution',
+      ],
     },
     {
       name: 'distribution-optimization',
@@ -240,8 +247,8 @@ const logisticsPages = {
         'DC capacity planning and optimization',
         'Throughput analysis and improvement',
         'Resource allocation optimization',
-        'Cross-docking efficiency optimization'
-      ]
+        'Cross-docking efficiency optimization',
+      ],
     },
     {
       name: 'demand-planning',
@@ -251,11 +258,11 @@ const logisticsPages = {
         'AI-driven demand forecasting',
         'Seasonal and promotional planning',
         'Collaborative demand planning',
-        'Forecast accuracy tracking and improvement'
-      ]
-    }
+        'Forecast accuracy tracking and improvement',
+      ],
+    },
   ],
-  'freight': [
+  freight: [
     {
       name: 'freight-management',
       title: 'Comprehensive Freight Management',
@@ -264,8 +271,8 @@ const logisticsPages = {
         'LTL and FTL shipment management',
         'Parcel and small package optimization',
         'Freight consolidation strategies',
-        'Multi-modal freight coordination'
-      ]
+        'Multi-modal freight coordination',
+      ],
     },
     {
       name: 'rate-optimization',
@@ -275,8 +282,8 @@ const logisticsPages = {
         'Automated rate shopping and comparison',
         'Dynamic pricing and negotiation',
         'Carrier selection optimization',
-        'Freight cost benchmarking'
-      ]
+        'Freight cost benchmarking',
+      ],
     },
     {
       name: 'freight-audit',
@@ -286,8 +293,8 @@ const logisticsPages = {
         'Automated freight bill auditing',
         'Payment processing and approval workflows',
         'Billing exception management',
-        'Freight spend analysis and reporting'
-      ]
+        'Freight spend analysis and reporting',
+      ],
     },
     {
       name: 'contract-management',
@@ -297,8 +304,8 @@ const logisticsPages = {
         'Contract lifecycle management',
         'Rate table management and updates',
         'Performance monitoring and compliance',
-        'Contract renewal and negotiation support'
-      ]
+        'Contract renewal and negotiation support',
+      ],
     },
     {
       name: 'freight-analytics',
@@ -308,11 +315,11 @@ const logisticsPages = {
         'Freight spend analysis and reporting',
         'Carrier performance analytics',
         'Cost optimization recommendations',
-        'Freight market intelligence'
-      ]
-    }
+        'Freight market intelligence',
+      ],
+    },
   ],
-  'analytics': [
+  analytics: [
     {
       name: 'logistics-kpis',
       title: 'Logistics KPI Management',
@@ -321,8 +328,8 @@ const logisticsPages = {
         'Real-time KPI dashboards and scorecards',
         'Performance benchmarking and trending',
         'SLA monitoring and compliance tracking',
-        'Executive reporting and insights'
-      ]
+        'Executive reporting and insights',
+      ],
     },
     {
       name: 'predictive-analytics',
@@ -332,19 +339,20 @@ const logisticsPages = {
         'AI-driven demand and capacity forecasting',
         'Predictive maintenance scheduling',
         'Risk prediction and mitigation',
-        'Optimization opportunity identification'
-      ]
+        'Optimization opportunity identification',
+      ],
     },
     {
       name: 'cost-analytics',
       title: 'Logistics Cost Analytics',
-      description: 'Detailed cost analysis and optimization recommendations for all logistics operations',
+      description:
+        'Detailed cost analysis and optimization recommendations for all logistics operations',
       features: [
         'Total cost of ownership analysis',
         'Activity-based costing for logistics',
         'Cost optimization recommendations',
-        'Budget planning and variance analysis'
-      ]
+        'Budget planning and variance analysis',
+      ],
     },
     {
       name: 'performance-optimization',
@@ -354,8 +362,8 @@ const logisticsPages = {
         'AI-powered optimization recommendations',
         'Continuous improvement tracking',
         'Best practice identification and sharing',
-        'Performance gap analysis'
-      ]
+        'Performance gap analysis',
+      ],
     },
     {
       name: 'business-intelligence',
@@ -365,21 +373,22 @@ const logisticsPages = {
         'Custom report builder and scheduler',
         'Advanced data visualization',
         'Self-service analytics platform',
-        'Data integration and ETL processes'
-      ]
-    }
+        'Data integration and ETL processes',
+      ],
+    },
   ],
-  'procurement': [
+  procurement: [
     {
       name: 'supplier-management',
       title: 'Strategic Supplier Management',
-      description: 'Comprehensive supplier lifecycle management with performance tracking and risk assessment',
+      description:
+        'Comprehensive supplier lifecycle management with performance tracking and risk assessment',
       features: [
         'Supplier onboarding and qualification workflows',
         'Performance scorecards and risk assessment',
         'Contract lifecycle and compliance management',
-        'Supplier diversity and sustainability tracking'
-      ]
+        'Supplier diversity and sustainability tracking',
+      ],
     },
     {
       name: 'sourcing-optimization',
@@ -389,8 +398,8 @@ const logisticsPages = {
         'Category management and spend analysis',
         'RFP/RFQ automation and evaluation',
         'Should-cost modeling and market intelligence',
-        'Sourcing event management and auctions'
-      ]
+        'Sourcing event management and auctions',
+      ],
     },
     {
       name: 'purchase-order-management',
@@ -400,8 +409,8 @@ const logisticsPages = {
         'Automated PO creation and processing',
         'Multi-level approval workflows',
         'Receipt matching and three-way matching',
-        'PO change management and version control'
-      ]
+        'PO change management and version control',
+      ],
     },
     {
       name: 'vendor-portal',
@@ -411,8 +420,8 @@ const logisticsPages = {
         'Vendor self-service portal and registration',
         'Order acknowledgment and status updates',
         'Invoice submission and payment tracking',
-        'Document sharing and communication tools'
-      ]
+        'Document sharing and communication tools',
+      ],
     },
     {
       name: 'contract-lifecycle',
@@ -422,8 +431,8 @@ const logisticsPages = {
         'Contract authoring and template management',
         'Approval workflows and digital signatures',
         'Contract performance and milestone tracking',
-        'Automated renewal alerts and management'
-      ]
+        'Automated renewal alerts and management',
+      ],
     },
     {
       name: 'spend-analytics',
@@ -433,8 +442,8 @@ const logisticsPages = {
         'Spend cube analysis and visualization',
         'Cost savings tracking and reporting',
         'Procurement KPI dashboards',
-        'Supplier performance analytics'
-      ]
+        'Supplier performance analytics',
+      ],
     },
     {
       name: 'risk-management',
@@ -444,8 +453,8 @@ const logisticsPages = {
         'Financial and operational risk assessment',
         'Geopolitical and regulatory risk monitoring',
         'Business continuity and contingency planning',
-        'Risk scoring and mitigation workflows'
-      ]
+        'Risk scoring and mitigation workflows',
+      ],
     },
     {
       name: 'compliance-management',
@@ -455,32 +464,34 @@ const logisticsPages = {
         'Regulatory compliance monitoring',
         'Audit trail and documentation management',
         'Policy enforcement and exception handling',
-        'Compliance reporting and certification'
-      ]
-    }
+        'Compliance reporting and certification',
+      ],
+    },
   ],
-  'sustainability': [
+  sustainability: [
     {
       name: 'carbon-footprint',
       title: 'Carbon Footprint Tracking',
-      description: 'Comprehensive carbon footprint measurement and reduction planning across supply chain',
+      description:
+        'Comprehensive carbon footprint measurement and reduction planning across supply chain',
       features: [
         'Scope 1, 2, and 3 emissions tracking',
         'Transportation carbon footprint analysis',
         'Supplier carbon assessment and reporting',
-        'Carbon reduction goal setting and tracking'
-      ]
+        'Carbon reduction goal setting and tracking',
+      ],
     },
     {
       name: 'circular-economy',
       title: 'Circular Economy Management',
-      description: 'Circular economy initiatives with waste reduction and material recovery tracking',
+      description:
+        'Circular economy initiatives with waste reduction and material recovery tracking',
       features: [
         'Waste stream analysis and optimization',
         'Material recovery and recycling tracking',
         'Product lifecycle assessment (LCA)',
-        'Circular supply chain design'
-      ]
+        'Circular supply chain design',
+      ],
     },
     {
       name: 'sustainable-sourcing',
@@ -490,8 +501,8 @@ const logisticsPages = {
         'ESG criteria integration and scoring',
         'Sustainable supplier certification tracking',
         'Ethical sourcing compliance monitoring',
-        'Social impact assessment and reporting'
-      ]
+        'Social impact assessment and reporting',
+      ],
     },
     {
       name: 'green-logistics',
@@ -501,8 +512,8 @@ const logisticsPages = {
         'Green transportation mode optimization',
         'Fuel consumption and emission tracking',
         'Eco-friendly packaging optimization',
-        'Sustainable last-mile delivery solutions'
-      ]
+        'Sustainable last-mile delivery solutions',
+      ],
     },
     {
       name: 'energy-management',
@@ -512,22 +523,23 @@ const logisticsPages = {
         'Energy consumption monitoring and optimization',
         'Renewable energy tracking and reporting',
         'Energy efficiency improvement programs',
-        'Utility cost management and forecasting'
-      ]
+        'Utility cost management and forecasting',
+      ],
     },
     {
       name: 'sustainability-reporting',
       title: 'Sustainability Reporting & ESG',
-      description: 'Comprehensive sustainability reporting with ESG metrics and stakeholder communication',
+      description:
+        'Comprehensive sustainability reporting with ESG metrics and stakeholder communication',
       features: [
         'ESG metrics collection and reporting',
         'Sustainability goal tracking and progress',
         'Stakeholder communication and transparency',
-        'Regulatory sustainability compliance'
-      ]
-    }
+        'Regulatory sustainability compliance',
+      ],
+    },
   ],
-  'quality': [
+  quality: [
     {
       name: 'quality-control',
       title: 'Quality Control Management',
@@ -536,19 +548,20 @@ const logisticsPages = {
         'Inspection planning and scheduling',
         'Quality control checkpoints and workflows',
         'Defect tracking and root cause analysis',
-        'Quality metrics and performance dashboards'
-      ]
+        'Quality metrics and performance dashboards',
+      ],
     },
     {
       name: 'supplier-quality',
       title: 'Supplier Quality Management',
-      description: 'Supplier quality assurance with certification tracking and performance monitoring',
+      description:
+        'Supplier quality assurance with certification tracking and performance monitoring',
       features: [
         'Supplier quality certification tracking',
         'Incoming inspection and testing protocols',
         'Supplier quality performance scorecards',
-        'Quality agreement management'
-      ]
+        'Quality agreement management',
+      ],
     },
     {
       name: 'corrective-actions',
@@ -558,8 +571,8 @@ const logisticsPages = {
         'Non-conformance reporting and tracking',
         'Corrective action planning and implementation',
         'Root cause analysis methodologies',
-        'Preventive action planning'
-      ]
+        'Preventive action planning',
+      ],
     },
     {
       name: 'quality-audits',
@@ -569,8 +582,8 @@ const logisticsPages = {
         'Audit planning and scheduling',
         'Audit checklist and protocol management',
         'Finding tracking and resolution',
-        'Audit report generation and distribution'
-      ]
+        'Audit report generation and distribution',
+      ],
     },
     {
       name: 'document-control',
@@ -580,8 +593,8 @@ const logisticsPages = {
         'Document version control and approval',
         'Change request management',
         'Document distribution and access control',
-        'Training record and competency tracking'
-      ]
+        'Training record and competency tracking',
+      ],
     },
     {
       name: 'quality-analytics',
@@ -591,21 +604,22 @@ const logisticsPages = {
         'Quality trend analysis and reporting',
         'Statistical process control (SPC)',
         'Predictive quality analytics',
-        'Quality cost analysis and optimization'
-      ]
-    }
+        'Quality cost analysis and optimization',
+      ],
+    },
   ],
-  'safety': [
+  safety: [
     {
       name: 'incident-management',
       title: 'Safety Incident Management',
-      description: 'Comprehensive incident reporting and investigation with corrective action tracking',
+      description:
+        'Comprehensive incident reporting and investigation with corrective action tracking',
       features: [
         'Incident reporting and investigation workflows',
         'Injury and near-miss tracking',
         'Root cause analysis and corrective actions',
-        'Safety performance metrics and dashboards'
-      ]
+        'Safety performance metrics and dashboards',
+      ],
     },
     {
       name: 'hazmat-management',
@@ -615,19 +629,20 @@ const logisticsPages = {
         'Hazmat classification and labeling',
         'Transportation safety compliance',
         'Chemical inventory and tracking',
-        'Emergency response planning'
-      ]
+        'Emergency response planning',
+      ],
     },
     {
       name: 'training-compliance',
       title: 'Safety Training & Compliance',
-      description: 'Safety training management with certification tracking and compliance monitoring',
+      description:
+        'Safety training management with certification tracking and compliance monitoring',
       features: [
         'Safety training program management',
         'Certification tracking and renewals',
         'Compliance monitoring and reporting',
-        'Training effectiveness assessment'
-      ]
+        'Training effectiveness assessment',
+      ],
     },
     {
       name: 'risk-assessment',
@@ -637,8 +652,8 @@ const logisticsPages = {
         'Workplace hazard identification',
         'Risk assessment and scoring',
         'Mitigation planning and implementation',
-        'Safety inspection and monitoring'
-      ]
+        'Safety inspection and monitoring',
+      ],
     },
     {
       name: 'emergency-response',
@@ -648,8 +663,8 @@ const logisticsPages = {
         'Emergency response plan development',
         'Crisis communication and coordination',
         'Resource allocation and deployment',
-        'Post-incident analysis and improvement'
-      ]
+        'Post-incident analysis and improvement',
+      ],
     },
     {
       name: 'safety-analytics',
@@ -659,11 +674,11 @@ const logisticsPages = {
         'Safety KPI tracking and reporting',
         'Predictive safety analytics',
         'Benchmarking and trend analysis',
-        'Regulatory compliance reporting'
-      ]
-    }
+        'Regulatory compliance reporting',
+      ],
+    },
   ],
-  'planning': [
+  planning: [
     {
       name: 'demand-sensing',
       title: 'Real-time Demand Sensing',
@@ -672,8 +687,8 @@ const logisticsPages = {
         'Real-time market signal integration',
         'AI-driven demand pattern recognition',
         'Point-of-sale data integration',
-        'Weather and event impact analysis'
-      ]
+        'Weather and event impact analysis',
+      ],
     },
     {
       name: 'supply-planning',
@@ -683,30 +698,32 @@ const logisticsPages = {
         'Capacity planning and modeling',
         'Supply constraint optimization',
         'Supplier capacity collaboration',
-        'Long-term supply strategy development'
-      ]
+        'Long-term supply strategy development',
+      ],
     },
     {
       name: 'inventory-optimization',
       title: 'Multi-echelon Inventory Optimization',
-      description: 'Advanced inventory optimization across multiple echelons with service level balancing',
+      description:
+        'Advanced inventory optimization across multiple echelons with service level balancing',
       features: [
         'Multi-echelon inventory modeling',
         'Service level optimization',
         'Safety stock optimization',
-        'Inventory deployment strategies'
-      ]
+        'Inventory deployment strategies',
+      ],
     },
     {
       name: 'sales-operations',
       title: 'Sales & Operations Planning',
-      description: 'Integrated S&OP process with cross-functional collaboration and scenario planning',
+      description:
+        'Integrated S&OP process with cross-functional collaboration and scenario planning',
       features: [
         'S&OP process workflow management',
         'Cross-functional collaboration tools',
         'Scenario planning and what-if analysis',
-        'Executive dashboard and reporting'
-      ]
+        'Executive dashboard and reporting',
+      ],
     },
     {
       name: 'capacity-planning',
@@ -716,8 +733,8 @@ const logisticsPages = {
         'Production capacity modeling',
         'Distribution capacity planning',
         'Bottleneck identification and resolution',
-        'Capacity utilization optimization'
-      ]
+        'Capacity utilization optimization',
+      ],
     },
     {
       name: 'new-product-planning',
@@ -727,65 +744,70 @@ const logisticsPages = {
         'Product launch planning and coordination',
         'Supply chain readiness assessment',
         'Supplier onboarding for new products',
-        'Launch risk assessment and mitigation'
-      ]
-    }
+        'Launch risk assessment and mitigation',
+      ],
+    },
   ],
-  'visibility': [
+  visibility: [
     {
       name: 'real-time-tracking',
       title: 'Real-time Asset Tracking',
-      description: 'IoT-enabled real-time tracking of assets, shipments, and inventory across the supply chain',
+      description:
+        'IoT-enabled real-time tracking of assets, shipments, and inventory across the supply chain',
       features: [
         'IoT sensor integration and monitoring',
         'GPS tracking and geofencing',
         'Temperature and humidity monitoring',
-        'Real-time alert and notification system'
-      ]
+        'Real-time alert and notification system',
+      ],
     },
     {
       name: 'digital-twin',
       title: 'Supply Chain Digital Twin',
-      description: 'Digital twin modeling of supply chain with simulation and optimization capabilities',
+      description:
+        'Digital twin modeling of supply chain with simulation and optimization capabilities',
       features: [
         'Supply chain modeling and simulation',
         'What-if scenario analysis',
         'Optimization recommendation engine',
-        'Digital twin synchronization'
-      ]
+        'Digital twin synchronization',
+      ],
     },
     {
       name: 'blockchain-traceability',
       title: 'Blockchain Traceability',
-      description: 'Blockchain-based product traceability with provenance tracking and verification',
+      description:
+        'Blockchain-based product traceability with provenance tracking and verification',
       features: [
         'Product provenance and traceability',
         'Blockchain transaction recording',
         'Authentication and verification',
-        'Supply chain transparency reporting'
-      ]
+        'Supply chain transparency reporting',
+      ],
     },
     {
       name: 'predictive-monitoring',
       title: 'Predictive Supply Chain Monitoring',
-      description: 'AI-powered predictive monitoring with anomaly detection and early warning systems',
+      description:
+        'AI-powered predictive monitoring with anomaly detection and early warning systems',
       features: [
         'Anomaly detection and alerts',
         'Predictive maintenance scheduling',
         'Supply chain health monitoring',
-        'Early warning system implementation'
-      ]
+        'Early warning system implementation',
+      ],
     },
     {
       name: 'collaboration-platform',
       title: 'Supply Chain Collaboration Platform',
-      description: 'Multi-party collaboration platform with shared visibility and communication tools',
+      description:
+        'Multi-party collaboration platform with shared visibility and communication tools',
       features: [
         'Multi-party information sharing',
         'Collaborative planning tools',
         'Shared dashboard and reporting',
-        'Communication and messaging platform'
-      ]
+        'Communication and messaging platform',
+      ],
     },
     {
       name: 'exception-management',
@@ -795,19 +817,19 @@ const logisticsPages = {
         'Exception detection and classification',
         'Automated resolution workflows',
         'Escalation and notification management',
-        'Exception analytics and learning'
-      ]
-    }
-  ]
+        'Exception analytics and learning',
+      ],
+    },
+  ],
 };
 
 // Ensure directory structure exists
-Object.keys(logisticsPages).forEach(category => {
+Object.keys(logisticsPages).forEach((category) => {
   const categoryDir = path.join(__dirname, category);
   if (!fs.existsSync(categoryDir)) {
     fs.mkdirSync(categoryDir, { recursive: true });
   }
-  
+
   const scriptsDir = path.join(categoryDir, 'scripts');
   if (!fs.existsSync(scriptsDir)) {
     fs.mkdirSync(scriptsDir, { recursive: true });
@@ -827,7 +849,7 @@ if (!fs.existsSync(scriptsDir)) {
 
 function createLogisticsPage(category, pageData) {
   const template = fs.readFileSync(path.join(__dirname, 'page-template.html'), 'utf8');
-  
+
   let pageContent = template
     .replace(/\{\{PAGE_TITLE\}\}/g, pageData.title)
     .replace(/\{\{PAGE_DESCRIPTION\}\}/g, pageData.description)
@@ -839,7 +861,7 @@ function createLogisticsPage(category, pageData) {
 
   const filePath = path.join(__dirname, category, `${pageData.name}.html`);
   fs.writeFileSync(filePath, pageContent);
-  
+
   console.log(`Created: ${filePath}`);
 }
 
@@ -961,7 +983,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
   const scriptPath = path.join(__dirname, category, 'scripts', `${pageData.name}.js`);
   fs.writeFileSync(scriptPath, scriptContent);
-  
+
   console.log(`Created script: ${scriptPath}`);
 }
 
@@ -969,11 +991,11 @@ if (typeof module !== 'undefined' && module.exports) {
 console.log('🚀 Generating 80 business-ready logistics pages...\n');
 
 let totalPages = 0;
-Object.keys(logisticsPages).forEach(category => {
+Object.keys(logisticsPages).forEach((category) => {
   const categoryPages = logisticsPages[category].length;
   totalPages += categoryPages;
   console.log(`📁 Creating ${category} category pages (${categoryPages} pages):`);
-  logisticsPages[category].forEach(pageData => {
+  logisticsPages[category].forEach((pageData) => {
     createLogisticsPage(category, pageData);
     createPageScript(category, pageData);
   });

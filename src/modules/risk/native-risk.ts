@@ -1,11 +1,11 @@
 // Updated Risk Management Module - Using NAPI-RS Native Functions
-import { 
+import {
   calculateRiskScore,
   determineRiskLevel,
   createRiskAssessment,
   calculateResidualRisk,
   generateRiskMetrics,
-  assessPortfolioRisk
+  assessPortfolioRisk,
 } from '../native';
 
 // Export all types from native module
@@ -50,7 +50,9 @@ export class RiskManager {
   /**
    * Create a new risk assessment using high-performance native calculations
    */
-  async createRiskAssessment(assessment: Omit<RiskAssessment, 'id' | 'riskScore' | 'riskLevel'>): Promise<RiskAssessment> {
+  async createRiskAssessment(
+    assessment: Omit<RiskAssessment, 'id' | 'riskScore' | 'riskLevel'>
+  ): Promise<RiskAssessment> {
     // Use native function for fast calculation
     const nativeAssessment = createRiskAssessment(
       assessment.assessmentName,
@@ -61,12 +63,12 @@ export class RiskManager {
       assessment.owner,
       assessment.status
     );
-    
+
     return {
       ...assessment,
       id: nativeAssessment.id,
       riskScore: nativeAssessment.riskScore,
-      riskLevel: nativeAssessment.riskLevel as 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
+      riskLevel: nativeAssessment.riskLevel as 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
     };
   }
 
@@ -103,7 +105,7 @@ export class RiskManager {
     portfolioRiskScore: number;
   }> {
     console.log(`Generating native-powered risk report for category: ${category || 'All'}`);
-    
+
     // This would normally fetch real data from database
     const mockRisks = [
       {
@@ -116,7 +118,7 @@ export class RiskManager {
         riskScore: 12.0,
         riskLevel: 'HIGH',
         owner: 'risk_manager',
-        status: 'ASSESSED'
+        status: 'ASSESSED',
       },
       {
         id: 'risk_2',
@@ -128,26 +130,26 @@ export class RiskManager {
         riskScore: 6.0,
         riskLevel: 'MEDIUM',
         owner: 'risk_manager',
-        status: 'ASSESSED'
-      }
+        status: 'ASSESSED',
+      },
     ];
 
     // Use native functions for high-performance calculations
     const metrics = generateRiskMetrics(mockRisks);
     const portfolioRiskScore = assessPortfolioRisk(mockRisks);
-    
+
     return {
       totalRisks: metrics.totalRisks,
       riskDistribution: {
-        LOW: metrics.riskDistribution.find(d => d.level === 'LOW')?.count || 0,
-        MEDIUM: metrics.riskDistribution.find(d => d.level === 'MEDIUM')?.count || 0,
-        HIGH: metrics.riskDistribution.find(d => d.level === 'HIGH')?.count || 0,
-        CRITICAL: metrics.riskDistribution.find(d => d.level === 'CRITICAL')?.count || 0,
+        LOW: metrics.riskDistribution.find((d) => d.level === 'LOW')?.count || 0,
+        MEDIUM: metrics.riskDistribution.find((d) => d.level === 'MEDIUM')?.count || 0,
+        HIGH: metrics.riskDistribution.find((d) => d.level === 'HIGH')?.count || 0,
+        CRITICAL: metrics.riskDistribution.find((d) => d.level === 'CRITICAL')?.count || 0,
       },
       highRisks: [], // Would map from native results
       overdueMitigations: metrics.overdueMitigations,
       averageRiskScore: metrics.averageRiskScore,
-      portfolioRiskScore
+      portfolioRiskScore,
     };
   }
 

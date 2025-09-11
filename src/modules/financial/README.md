@@ -34,6 +34,7 @@ financial/
 ## Domain Organization
 
 This module is part of the **Financial & Administrative Domain** which consolidates:
+
 - Financial operations
 - Risk management
 - Compliance
@@ -47,21 +48,22 @@ import { financialManager } from '../modules/financial';
 // Create an invoice
 const invoice = await financialManager.createInvoice({
   customerId: 'cust_001',
-  amount: 1250.00,
-  description: 'Professional services'
+  amount: 1250.0,
+  description: 'Professional services',
 });
 
 // Process payment
 const payment = await financialManager.processPayment({
   invoiceId: invoice.id,
-  amount: 1250.00,
-  method: 'CREDIT_CARD'
+  amount: 1250.0,
+  method: 'CREDIT_CARD',
 });
 ```
 
 ## Business Logic
 
 The financial module implements sophisticated business logic including:
+
 - Complex pricing calculations
 - Multi-currency support
 - Tax calculations

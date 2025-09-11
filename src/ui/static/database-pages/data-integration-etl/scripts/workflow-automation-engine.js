@@ -1,142 +1,146 @@
 // Workflow Automation Engine - Database Management System
 // This file provides business-ready functionality for Workflow Automation Engine
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Workflow Automation Engine page loaded');
-    
-    // Initialize page functionality
-    initWorkflowAutomationEngine();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadWorkflowAutomationEngineData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Workflow Automation Engine page loaded');
+
+  // Initialize page functionality
+  initWorkflowAutomationEngine();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadWorkflowAutomationEngineData();
 });
 
 async function loadWorkflowAutomationEngineData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/workflow-automation-engine');
-        if (response.ok) {
-            const data = await response.json();
-            updateWorkflowAutomationEngineDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Workflow Automation Engine data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/data-integration-etl/workflow-automation-engine');
+    if (response.ok) {
+      const data = await response.json();
+      updateWorkflowAutomationEngineDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Workflow Automation Engine data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initWorkflowAutomationEngine() {
-    console.log('Initializing Workflow Automation Engine');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Workflow Automation Engine');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Workflow Automation Engine');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Workflow Automation Engine');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Workflow Automation Engine');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Workflow Automation Engine');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Workflow Automation Engine');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Workflow Automation Engine');
 }
 
 function handleWorkflowAutomationEngineAction() {
-    console.log('Workflow Automation Engine action triggered');
-    showNotification('Workflow Automation Engine configured successfully', 'success');
+  console.log('Workflow Automation Engine action triggered');
+  showNotification('Workflow Automation Engine configured successfully', 'success');
 }
 
 function executeWorkflowAutomationEngine() {
-    console.log('Workflow Automation Engine execution started');
-    showNotification('Workflow Automation Engine executed successfully', 'success');
+  console.log('Workflow Automation Engine execution started');
+  showNotification('Workflow Automation Engine executed successfully', 'success');
 }
 
 function updateWorkflowAutomationEngineDisplay(data) {
-    console.log('Updating Workflow Automation Engine display:', data);
-    // Update UI with loaded data
+  console.log('Updating Workflow Automation Engine display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/workflow-automation-engine/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadWorkflowAutomationEngineData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleWorkflowAutomationEngineAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/workflow-automation-engine/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'workflow-automation-engine-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/workflow-automation-engine/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadWorkflowAutomationEngineData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleWorkflowAutomationEngineAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/workflow-automation-engine/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'workflow-automation-engine-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

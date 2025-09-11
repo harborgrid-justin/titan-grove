@@ -1,128 +1,132 @@
 // Single Sign-On (SSO) Management - User Management System
 // This file provides business-ready functionality for Single Sign-On (SSO) Management
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Single Sign-On (SSO) Management page loaded');
-    
-    // Initialize page functionality
-    initsinglesignonmanagement();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadsinglesignonmanagementData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Single Sign-On (SSO) Management page loaded');
+
+  // Initialize page functionality
+  initsinglesignonmanagement();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadsinglesignonmanagementData();
 });
 
 async function loadsinglesignonmanagementData() {
-    try {
-        // Simulate API call to backend
-        const response = await fetch('/api/user-management/identity-management/single-sign-on-management');
-        const data = await response.json();
-        
-        console.log('Single Sign-On (SSO) Management data loaded:', data);
-        updatesinglesignonmanagementDisplay(data);
-    } catch (error) {
-        console.error('Error loading Single Sign-On (SSO) Management data:', error);
-        showNotification('Failed to load Single Sign-On (SSO) Management data', 'error');
-    }
+  try {
+    // Simulate API call to backend
+    const response = await fetch(
+      '/api/user-management/identity-management/single-sign-on-management'
+    );
+    const data = await response.json();
+
+    console.log('Single Sign-On (SSO) Management data loaded:', data);
+    updatesinglesignonmanagementDisplay(data);
+  } catch (error) {
+    console.error('Error loading Single Sign-On (SSO) Management data:', error);
+    showNotification('Failed to load Single Sign-On (SSO) Management data', 'error');
+  }
 }
 
 function initsinglesignonmanagement() {
-    // Initialize Single Sign-On (SSO) Management functionality
-    console.log('Initializing Single Sign-On (SSO) Management');
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
-    
-    // Initialize dashboard components
-    initializeDashboard();
+  // Initialize Single Sign-On (SSO) Management functionality
+  console.log('Initializing Single Sign-On (SSO) Management');
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
+
+  // Initialize dashboard components
+  initializeDashboard();
 }
 
 function initializeDashboard() {
-    // Initialize dashboard widgets and components
-    console.log('Dashboard initialized for Single Sign-On (SSO) Management');
+  // Initialize dashboard widgets and components
+  console.log('Dashboard initialized for Single Sign-On (SSO) Management');
 }
 
 function setupRealTimeUpdates() {
-    // Set up WebSocket or polling for real-time updates
-    console.log('Real-time updates configured for Single Sign-On (SSO) Management');
+  // Set up WebSocket or polling for real-time updates
+  console.log('Real-time updates configured for Single Sign-On (SSO) Management');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Single Sign-On (SSO) Management');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Single Sign-On (SSO) Management');
 }
 
 function handlesinglesignonmanagementAction() {
-    console.log('Single Sign-On (SSO) Management action triggered');
-    showNotification('Single Sign-On (SSO) Management configured successfully', 'success');
+  console.log('Single Sign-On (SSO) Management action triggered');
+  showNotification('Single Sign-On (SSO) Management configured successfully', 'success');
 }
 
 function executesinglesignonmanagement() {
-    console.log('Single Sign-On (SSO) Management execution started');
-    showNotification('Single Sign-On (SSO) Management executed successfully', 'success');
+  console.log('Single Sign-On (SSO) Management execution started');
+  showNotification('Single Sign-On (SSO) Management executed successfully', 'success');
 }
 
 function updatesinglesignonmanagementDisplay(data) {
-    console.log('Updating Single Sign-On (SSO) Management display:', data);
-    // Update UI with loaded data
+  console.log('Updating Single Sign-On (SSO) Management display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/user-management/identity-management/single-sign-on-management/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadsinglesignonmanagementData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handlesinglesignonmanagementAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', function() {
-            window.userManagement.exportData('single-sign-on-management');
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/user-management/identity-management/single-sign-on-management/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadsinglesignonmanagementData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handlesinglesignonmanagementAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', function () {
+      window.userManagement.exportData('single-sign-on-management');
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
 }
 
 // Add notification styles
@@ -170,10 +174,10 @@ document.head.appendChild(styleSheet);
 
 // Export page-specific functions for testing
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        initsinglesignonmanagement,
-        handlesinglesignonmanagementAction,
-        executesinglesignonmanagement,
-        loadsinglesignonmanagementData
-    };
+  module.exports = {
+    initsinglesignonmanagement,
+    handlesinglesignonmanagementAction,
+    executesinglesignonmanagement,
+    loadsinglesignonmanagementData,
+  };
 }

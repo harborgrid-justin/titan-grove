@@ -9,7 +9,7 @@ export * from './types';
 // Export data access layer
 export * from './data-access/repositories';
 
-// Export business logic services  
+// Export business logic services
 export * from './business-logic/integration-service';
 
 // Re-export existing interfaces for backward compatibility
@@ -105,15 +105,17 @@ export interface JobExecution {
 }
 
 export class IntegrationManager {
-  async createEndpoint(endpoint: Omit<IntegrationEndpoint, 'id' | 'status' | 'connectionRetries' | 'createdDate'>): Promise<IntegrationEndpoint> {
+  async createEndpoint(
+    endpoint: Omit<IntegrationEndpoint, 'id' | 'status' | 'connectionRetries' | 'createdDate'>
+  ): Promise<IntegrationEndpoint> {
     const id = `ep_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...endpoint,
       id,
       status: 'INACTIVE',
       connectionRetries: 0,
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
@@ -127,45 +129,52 @@ export class IntegrationManager {
     return {
       success: true,
       responseTime: 150, // milliseconds
-      statusCode: 200
+      statusCode: 200,
     };
   }
 
-  async createDataMapping(mapping: Omit<DataMapping, 'id' | 'status' | 'createdDate'>): Promise<DataMapping> {
+  async createDataMapping(
+    mapping: Omit<DataMapping, 'id' | 'status' | 'createdDate'>
+  ): Promise<DataMapping> {
     const id = `dm_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...mapping,
       id,
       status: 'DRAFT',
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
-  async createIntegrationJob(job: Omit<IntegrationJob, 'id' | 'status' | 'executionHistory' | 'createdDate'>): Promise<IntegrationJob> {
+  async createIntegrationJob(
+    job: Omit<IntegrationJob, 'id' | 'status' | 'executionHistory' | 'createdDate'>
+  ): Promise<IntegrationJob> {
     const id = `job_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...job,
       id,
       status: 'SCHEDULED',
       executionHistory: [],
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
-  async executeIntegrationJob(jobId: string, immediate: boolean = false): Promise<{
+  async executeIntegrationJob(
+    jobId: string,
+    immediate: boolean = false
+  ): Promise<{
     executionId: string;
     status: 'STARTED' | 'QUEUED' | 'ERROR';
     estimatedCompletion?: Date;
   }> {
     const executionId = `exec_${Date.now()}`;
     console.log(`${immediate ? 'Immediately executing' : 'Scheduling'} integration job ${jobId}`);
-    
+
     return {
       executionId,
       status: immediate ? 'STARTED' : 'QUEUED',
-      estimatedCompletion: immediate ? new Date(Date.now() + 30 * 60 * 1000) : undefined
+      estimatedCompletion: immediate ? new Date(Date.now() + 30 * 60 * 1000) : undefined,
     };
   }
 
@@ -186,7 +195,7 @@ export class IntegrationManager {
       jobsRunToday: 45,
       successRate: 97.8,
       averageExecutionTime: 12.5,
-      dataVolumeToday: 125000
+      dataVolumeToday: 125000,
     };
   }
 
@@ -205,8 +214,8 @@ export class IntegrationManager {
       qualityScore: 98.45,
       commonIssues: [
         { issue: 'Missing required field', count: 89 },
-        { issue: 'Invalid date format', count: 42 }
-      ]
+        { issue: 'Invalid date format', count: 42 },
+      ],
     };
   }
 }

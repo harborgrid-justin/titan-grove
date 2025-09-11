@@ -31,7 +31,7 @@ export class ComponentRegistry extends EventEmitter {
 
     // Register component
     this.components.set(component.id, component);
-    
+
     this.logger.info(`Component registered: ${component.name} (${component.id})`);
     this.emit('componentRegistered', component);
   }
@@ -54,7 +54,7 @@ export class ComponentRegistry extends EventEmitter {
    * Get components by type
    */
   async getByType(type: string): Promise<UIComponent[]> {
-    return Array.from(this.components.values()).filter(c => c.type === type);
+    return Array.from(this.components.values()).filter((c) => c.type === type);
   }
 
   /**
@@ -76,7 +76,7 @@ export class ComponentRegistry extends EventEmitter {
 
     this.components.delete(componentId);
     this.dependencies.delete(componentId);
-    
+
     this.logger.info(`Component unregistered: ${component.name} (${componentId})`);
     this.emit('componentUnregistered', component);
   }
@@ -98,12 +98,12 @@ export class ComponentRegistry extends EventEmitter {
       }
 
       visiting.add(id);
-      
+
       const deps = this.dependencies.get(id) || [];
       for (const dep of deps) {
         visit(dep);
       }
-      
+
       visiting.delete(id);
       visited.add(id);
       order.push(id);
@@ -152,13 +152,13 @@ export class ComponentRegistry extends EventEmitter {
    */
   private findDependents(componentId: string): string[] {
     const dependents: string[] = [];
-    
+
     for (const [id, deps] of this.dependencies) {
       if (deps.includes(componentId)) {
         dependents.push(id);
       }
     }
-    
+
     return dependents;
   }
 }

@@ -12,7 +12,7 @@ export interface EquipmentCostProfile {
   equipmentId: string;
   equipmentName: string;
   equipmentCategory: string;
-  
+
   // Cost classification
   costClassification: {
     primaryCostCenter: string;
@@ -21,7 +21,7 @@ export interface EquipmentCostProfile {
     budgetCategory: string;
     accountingCode: string;
   };
-  
+
   // Acquisition costs
   acquisitionCosts: {
     purchasePrice: number;
@@ -33,7 +33,7 @@ export interface EquipmentCostProfile {
     warrantyExtension?: number;
     totalAcquisitionCost: number;
   };
-  
+
   // Operating costs (annual)
   operatingCosts: {
     energy: {
@@ -69,7 +69,7 @@ export interface EquipmentCostProfile {
     };
     totalOperatingCosts: number;
   };
-  
+
   // Maintenance costs (annual)
   maintenanceCosts: {
     preventive: {
@@ -104,7 +104,7 @@ export interface EquipmentCostProfile {
     };
     totalMaintenanceCosts: number;
   };
-  
+
   // Downtime costs
   downtimeCosts: {
     plannedDowntime: {
@@ -123,7 +123,7 @@ export interface EquipmentCostProfile {
     };
     totalDowntimeCosts: number;
   };
-  
+
   // End-of-life costs
   endOfLifeCosts: {
     decommissioningCosts: number;
@@ -133,7 +133,7 @@ export interface EquipmentCostProfile {
     residualValue: number; // negative if equipment has salvage value
     totalEndOfLifeCosts: number;
   };
-  
+
   // Cost performance metrics
   performanceMetrics: {
     costPerUnit: number; // cost per unit of production
@@ -143,7 +143,7 @@ export interface EquipmentCostProfile {
     efficiencyCost: number; // cost of inefficiency
     complianceCost: number; // regulatory and compliance costs
   };
-  
+
   // Time period for analysis
   analysisPeriod: {
     startDate: Date;
@@ -152,7 +152,7 @@ export interface EquipmentCostProfile {
     discountRate: number;
     inflationRate: number;
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -164,7 +164,7 @@ export interface TotalCostOfOwnership {
   equipmentId: string;
   analysisName: string;
   analysisDate: Date;
-  
+
   // Analysis parameters
   parameters: {
     analysisHorizon: number; // years
@@ -173,7 +173,7 @@ export interface TotalCostOfOwnership {
     taxRate: number; // percentage
     analysisMethod: 'NPV' | 'LEVELIZED' | 'SIMPLE';
   };
-  
+
   // Cost components summary
   costSummary: {
     totalAcquisitionCost: number;
@@ -183,7 +183,7 @@ export interface TotalCostOfOwnership {
     totalEndOfLifeCosts: number; // NPV
     totalCostOfOwnership: number; // NPV
   };
-  
+
   // Annual cost breakdown
   annualCosts: {
     year: number;
@@ -196,7 +196,7 @@ export interface TotalCostOfOwnership {
     presentValue: number;
     cumulativePV: number;
   }[];
-  
+
   // Cost per unit analysis
   unitCostAnalysis: {
     unitsProduced: number; // total over lifecycle
@@ -205,7 +205,7 @@ export interface TotalCostOfOwnership {
     utilizationRate: number; // percentage
     costPerCapacityUnit: number;
   };
-  
+
   // Sensitivity analysis
   sensitivityAnalysis: {
     scenarios: {
@@ -225,7 +225,7 @@ export interface TotalCostOfOwnership {
       }[];
     }[];
   };
-  
+
   // Risk analysis
   riskAnalysis: {
     costRisks: {
@@ -238,7 +238,7 @@ export interface TotalCostOfOwnership {
     contingencyRecommendation: number; // percentage of total cost
     confidenceLevel: number; // percentage
   };
-  
+
   // Benchmarking
   benchmarking: {
     industryAverage: number;
@@ -248,7 +248,7 @@ export interface TotalCostOfOwnership {
     benchmarkSource: string;
     competitivePosition: 'BEST_IN_CLASS' | 'ABOVE_AVERAGE' | 'AVERAGE' | 'BELOW_AVERAGE';
   };
-  
+
   // Recommendations
   recommendations: {
     immediate: {
@@ -269,7 +269,7 @@ export interface TotalCostOfOwnership {
       strategicValue: string;
     }[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -281,7 +281,7 @@ export interface CostBenchmark {
   benchmarkName: string;
   equipmentCategory: string;
   industrySegment: string;
-  
+
   // Benchmark data
   benchmarkData: {
     dataPoints: number;
@@ -290,7 +290,7 @@ export interface CostBenchmark {
     lastUpdated: Date;
     geographicScope: string[];
   };
-  
+
   // Cost metrics
   costMetrics: {
     metric: string;
@@ -305,7 +305,7 @@ export interface CostBenchmark {
     average: number;
     standardDeviation: number;
   }[];
-  
+
   // Performance correlation
   performanceCorrelation: {
     metric: string;
@@ -321,7 +321,7 @@ export interface CostBenchmark {
       high: number;
     };
   }[];
-  
+
   // Industry factors
   industryFactors: {
     factor: string;
@@ -329,7 +329,7 @@ export interface CostBenchmark {
     description: string;
     quantification?: number;
   }[];
-  
+
   // Regional variations
   regionalVariations: {
     region: string;
@@ -337,7 +337,7 @@ export interface CostBenchmark {
     factors: string[];
     dataPoints: number;
   }[];
-  
+
   // Trending data
   trends: {
     year: number;
@@ -345,7 +345,7 @@ export interface CostBenchmark {
     change: number; // percentage year over year
     drivingFactors: string[];
   }[];
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -356,7 +356,7 @@ export interface LifecycleCostAnalysis {
   analysisId: string;
   equipmentId: string;
   analysisName: string;
-  
+
   // Lifecycle phases
   phases: {
     phaseName: string;
@@ -372,7 +372,7 @@ export interface LifecycleCostAnalysis {
       totalPhaseCost: number; // NPV
     };
   }[];
-  
+
   // Cost evolution
   costEvolution: {
     year: number;
@@ -384,7 +384,7 @@ export interface LifecycleCostAnalysis {
     inflationAdjustedCosts: number;
     presentValue: number;
   }[];
-  
+
   // Key cost drivers by phase
   costDrivers: {
     phase: string;
@@ -396,7 +396,7 @@ export interface LifecycleCostAnalysis {
       optimization_potential: number; // percentage
     }[];
   }[];
-  
+
   // Lifecycle optimization
   optimization: {
     currentStrategy: string;
@@ -411,7 +411,7 @@ export interface LifecycleCostAnalysis {
     }[];
     recommendedStrategy: string;
   };
-  
+
   // Replacement analysis
   replacementAnalysis: {
     optimalReplacementYear: number;
@@ -428,7 +428,7 @@ export interface LifecycleCostAnalysis {
       totalValue: number; // NPV
     }[];
   };
-  
+
   // Economic indicators
   economicIndicators: {
     netPresentValue: number;
@@ -438,7 +438,7 @@ export interface LifecycleCostAnalysis {
     profitabilityIndex: number;
     economicLife: number; // years
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -450,7 +450,7 @@ export interface CostOptimization {
   equipmentId?: string;
   fleetId?: string;
   optimizationName: string;
-  
+
   // Current state analysis
   currentState: {
     totalAnnualCost: number;
@@ -466,7 +466,7 @@ export interface CostOptimization {
     }[];
     benchmarkPosition: string;
   };
-  
+
   // Optimization objectives
   objectives: {
     costReductionTarget: number; // percentage
@@ -476,7 +476,7 @@ export interface CostOptimization {
     riskTolerance: 'LOW' | 'MEDIUM' | 'HIGH';
     strategicPriorities: string[];
   };
-  
+
   // Optimization opportunities
   opportunities: {
     opportunityId: string;
@@ -491,7 +491,7 @@ export interface CostOptimization {
     dependencies: string[];
     prerequisites: string[];
   }[];
-  
+
   // Optimization scenarios
   scenarios: {
     scenarioName: string;
@@ -504,7 +504,7 @@ export interface CostOptimization {
     implementationTimeline: number; // months
     successProbability: number; // percentage
   }[];
-  
+
   // Implementation roadmap
   roadmap: {
     selectedScenario: string;
@@ -529,7 +529,7 @@ export interface CostOptimization {
       cost: number;
     }[];
   };
-  
+
   // Performance tracking
   tracking: {
     kpis: {
@@ -550,7 +550,7 @@ export interface CostOptimization {
       action: string;
     }[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -566,7 +566,7 @@ export interface CostBreakdown {
     endDate: Date;
     periodType: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
   };
-  
+
   // Hierarchical cost structure
   costHierarchy: {
     level1: {
@@ -586,7 +586,7 @@ export interface CostBreakdown {
       }[];
     }[];
   };
-  
+
   // Cost by function
   functionalBreakdown: {
     function: string;
@@ -597,7 +597,7 @@ export interface CostBreakdown {
     percentage: number;
     costDriver: string;
   }[];
-  
+
   // Cost by time period
   temporalBreakdown: {
     period: string;
@@ -608,7 +608,7 @@ export interface CostBreakdown {
     totalCost: number;
     variance: number; // compared to budget/previous period
   }[];
-  
+
   // Variable vs fixed costs
   variabilityAnalysis: {
     fixedCosts: {
@@ -626,7 +626,7 @@ export interface CostBreakdown {
     totalVariableCosts: number;
     breakEvenPoint?: number;
   };
-  
+
   // Cost allocation methods
   allocationMethods: {
     method: string;
@@ -634,7 +634,7 @@ export interface CostBreakdown {
     allocationBasis: string;
     accuracy: 'HIGH' | 'MEDIUM' | 'LOW';
   }[];
-  
+
   // Trend analysis
   trendAnalysis: {
     category: string;
@@ -645,7 +645,7 @@ export interface CostBreakdown {
     trend: 'INCREASING' | 'STABLE' | 'DECREASING';
     drivingFactors: string[];
   }[];
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -658,7 +658,7 @@ export interface CostVarianceAnalysis {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Budget vs actual analysis
   budgetVariance: {
     category: string;
@@ -669,7 +669,7 @@ export interface CostVarianceAnalysis {
     varianceType: 'FAVORABLE' | 'UNFAVORABLE';
     significanceLevel: 'MATERIAL' | 'MODERATE' | 'MINOR';
   }[];
-  
+
   // Volume variance
   volumeVariance: {
     category: string;
@@ -680,7 +680,7 @@ export interface CostVarianceAnalysis {
     varianceImpact: number;
     explanation: string;
   }[];
-  
+
   // Price/rate variance
   priceVariance: {
     category: string;
@@ -691,7 +691,7 @@ export interface CostVarianceAnalysis {
     varianceImpact: number;
     marketFactors: string[];
   }[];
-  
+
   // Efficiency variance
   efficiencyVariance: {
     category: string;
@@ -702,7 +702,7 @@ export interface CostVarianceAnalysis {
     rootCauses: string[];
     corrective_actions: string[];
   }[];
-  
+
   // Mix variance (for multi-product scenarios)
   mixVariance?: {
     product: string;
@@ -712,7 +712,7 @@ export interface CostVarianceAnalysis {
     mixVariance: number;
     varianceImpact: number;
   }[];
-  
+
   // Variance root cause analysis
   rootCauseAnalysis: {
     variance: string;
@@ -725,7 +725,7 @@ export interface CostVarianceAnalysis {
     systemicIssues: string[];
     oneTimeEvents: string[];
   }[];
-  
+
   // Corrective actions
   correctiveActions: {
     action: string;
@@ -737,7 +737,7 @@ export interface CostVarianceAnalysis {
     priority: 'HIGH' | 'MEDIUM' | 'LOW';
     status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED';
   }[];
-  
+
   // Performance indicators
   performanceIndicators: {
     indicator: string;
@@ -746,7 +746,7 @@ export interface CostVarianceAnalysis {
     variance: number;
     trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
   }[];
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -759,7 +759,7 @@ export interface CostForecast {
   equipmentCategory?: string;
   forecastName: string;
   forecastDate: Date;
-  
+
   // Forecast parameters
   parameters: {
     forecastHorizon: number; // years
@@ -768,7 +768,7 @@ export interface CostForecast {
     modelType: 'STATISTICAL' | 'CAUSAL' | 'JUDGMENTAL' | 'HYBRID';
     assumptions: string[];
   };
-  
+
   // Historical data basis
   historicalBasis: {
     dataPoints: number;
@@ -780,7 +780,7 @@ export interface CostForecast {
       endDate: Date;
     };
   };
-  
+
   // Cost forecasts by category
   costForecasts: {
     category: string;
@@ -795,7 +795,7 @@ export interface CostForecast {
       growthRate: number; // percentage
     }[];
   }[];
-  
+
   // Total cost forecast
   totalForecast: {
     period: string;
@@ -811,7 +811,7 @@ export interface CostForecast {
     };
     keyAssumptions: string[];
   }[];
-  
+
   // Scenario forecasts
   scenarios: {
     scenarioName: string;
@@ -824,7 +824,7 @@ export interface CostForecast {
       variance: number; // percentage from base case
     }[];
   }[];
-  
+
   // Cost drivers and factors
   costDrivers: {
     driver: string;
@@ -834,7 +834,7 @@ export interface CostForecast {
     confidenceLevel: number;
     dataSource: string;
   }[];
-  
+
   // Forecast accuracy tracking
   accuracyTracking: {
     previousForecasts: {
@@ -848,7 +848,7 @@ export interface CostForecast {
     averageBias: number; // percentage
     improvementAreas: string[];
   };
-  
+
   // Risk factors
   riskFactors: {
     risk: string;
@@ -857,7 +857,7 @@ export interface CostForecast {
     costImpact: number;
     mitigation: string;
   }[];
-  
+
   // Forecast recommendations
   recommendations: {
     immediate: string[];
@@ -865,7 +865,7 @@ export interface CostForecast {
     riskMitigation: string[];
     processImprovements: string[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -877,7 +877,7 @@ export interface CostCenter {
   costCenterName: string;
   costCenterCode: string;
   description: string;
-  
+
   // Organizational hierarchy
   hierarchy: {
     parentCostCenter?: string;
@@ -887,7 +887,7 @@ export interface CostCenter {
     manager: string;
     budgetOwner: string;
   };
-  
+
   // Budget information
   budget: {
     annualBudget: number;
@@ -905,7 +905,7 @@ export interface CostCenter {
       available: number;
     }[];
   };
-  
+
   // Cost allocation
   costAllocation: {
     directCosts: {
@@ -922,7 +922,7 @@ export interface CostCenter {
     }[];
     totalAllocatedCosts: number;
   };
-  
+
   // Equipment assignments
   equipmentAssignments: {
     equipmentId: string;
@@ -931,7 +931,7 @@ export interface CostCenter {
     allocationPercentage: number;
     costResponsibility: 'FULL' | 'PARTIAL' | 'NONE';
   }[];
-  
+
   // Performance metrics
   performanceMetrics: {
     budgetUtilization: number; // percentage
@@ -944,7 +944,7 @@ export interface CostCenter {
       variance: number;
     }[];
   };
-  
+
   // Approval authorities
   approvalAuthorities: {
     level: string;
@@ -953,9 +953,9 @@ export interface CostCenter {
     requiresSecondaryApproval: boolean;
     delegationAllowed: boolean;
   }[];
-  
+
   status: 'ACTIVE' | 'INACTIVE' | 'CLOSED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -966,7 +966,7 @@ export interface CostDriver {
   driverId: string;
   driverName: string;
   driverType: 'VOLUME' | 'COMPLEXITY' | 'CAPABILITY' | 'EFFICIENCY' | 'EXTERNAL';
-  
+
   // Driver characteristics
   characteristics: {
     unit: string;
@@ -975,7 +975,7 @@ export interface CostDriver {
     predictability: 'HIGH' | 'MEDIUM' | 'LOW';
     dataAvailability: 'REAL_TIME' | 'PERIODIC' | 'LIMITED';
   };
-  
+
   // Cost relationships
   costRelationships: {
     affectedCostCategories: string[];
@@ -984,7 +984,7 @@ export interface CostDriver {
     correlationCoefficient: number;
     statisticalSignificance: number; // p-value
   };
-  
+
   // Historical data
   historicalData: {
     period: string;
@@ -992,7 +992,7 @@ export interface CostDriver {
     relatedCosts: number;
     costPerDriverUnit: number;
   }[];
-  
+
   // Benchmarking
   benchmarking: {
     industryAverage: number;
@@ -1001,7 +1001,7 @@ export interface CostDriver {
     percentileRanking: number;
     improvementPotential: number;
   };
-  
+
   // Optimization opportunities
   optimization: {
     currentEfficiency: number; // percentage
@@ -1014,7 +1014,7 @@ export interface CostDriver {
     }[];
     riskFactors: string[];
   };
-  
+
   // Forecasting
   forecasting: {
     forecastMethod: string;
@@ -1026,7 +1026,7 @@ export interface CostDriver {
     }[];
     assumptions: string[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1038,7 +1038,7 @@ export interface CostReduction {
   initiativeName: string;
   equipmentId?: string;
   costCenterId?: string;
-  
+
   // Initiative details
   initiative: {
     description: string;
@@ -1049,7 +1049,7 @@ export interface CostReduction {
     champion: string;
     team: string[];
   };
-  
+
   // Financial impact
   financialImpact: {
     targetSavings: {
@@ -1071,7 +1071,7 @@ export interface CostReduction {
     netPresentValue: number;
     internalRateOfReturn: number;
   };
-  
+
   // Implementation plan
   implementationPlan: {
     phases: {
@@ -1098,7 +1098,7 @@ export interface CostReduction {
       risk: 'LOW' | 'MEDIUM' | 'HIGH';
     }[];
   };
-  
+
   // Risk assessment
   risks: {
     risk: string;
@@ -1109,7 +1109,7 @@ export interface CostReduction {
     contingency: string;
     owner: string;
   }[];
-  
+
   // Performance tracking
   tracking: {
     kpis: {
@@ -1133,7 +1133,7 @@ export interface CostReduction {
       owner: string;
     }[];
   };
-  
+
   // Benefits realization
   benefitsRealization: {
     realizationRate: number; // percentage of target achieved
@@ -1141,9 +1141,9 @@ export interface CostReduction {
     sustainabilityRisk: 'LOW' | 'MEDIUM' | 'HIGH';
     sustainabilityPlan: string[];
   };
-  
+
   status: 'IDENTIFIED' | 'APPROVED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'ON_HOLD';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1154,7 +1154,7 @@ export interface EquipmentProcurementCost {
   procurementCostId: string;
   equipmentId: string;
   procurementId?: string;
-  
+
   // Procurement details
   procurement: {
     procurementMethod: 'RFP' | 'RFQ' | 'DIRECT' | 'AUCTION' | 'FRAMEWORK';
@@ -1162,7 +1162,7 @@ export interface EquipmentProcurementCost {
     selectedSupplier: string;
     contractType: 'LUMP_SUM' | 'UNIT_PRICE' | 'COST_PLUS' | 'TIME_MATERIALS';
   };
-  
+
   // Cost breakdown
   costs: {
     equipmentCost: number;
@@ -1180,7 +1180,7 @@ export interface EquipmentProcurementCost {
     contingency: number;
     totalCost: number;
   };
-  
+
   // Cost comparison
   comparison: {
     budgetedCost: number;
@@ -1190,7 +1190,7 @@ export interface EquipmentProcurementCost {
     valueEngineering: number;
     totalSavings: number;
   };
-  
+
   // Payment terms
   paymentTerms: {
     paymentSchedule: {
@@ -1203,7 +1203,7 @@ export interface EquipmentProcurementCost {
     latePenalty?: number;
     retentionPercentage?: number;
   };
-  
+
   // Cost risks
   risks: {
     risk: string;
@@ -1211,7 +1211,7 @@ export interface EquipmentProcurementCost {
     costImpact: number;
     mitigation: string;
   }[];
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1226,7 +1226,7 @@ export interface OperatingCostAnalysis {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Energy costs
   energyCosts: {
     electricity: {
@@ -1250,7 +1250,7 @@ export interface OperatingCostAnalysis {
     }[];
     totalEnergyCost: number;
   };
-  
+
   // Labor costs
   laborCosts: {
     operators: {
@@ -1271,7 +1271,7 @@ export interface OperatingCostAnalysis {
     };
     totalLaborCost: number;
   };
-  
+
   // Material costs
   materialCosts: {
     consumables: {
@@ -1288,7 +1288,7 @@ export interface OperatingCostAnalysis {
     }[];
     totalMaterialCost: number;
   };
-  
+
   // Overhead costs
   overheadCosts: {
     facility: {
@@ -1307,7 +1307,7 @@ export interface OperatingCostAnalysis {
     };
     totalOverheadCost: number;
   };
-  
+
   // Cost per unit analysis
   unitCostAnalysis: {
     unitsProduced: number;
@@ -1316,7 +1316,7 @@ export interface OperatingCostAnalysis {
     targetCostPerUnit: number;
     variance: number; // percentage
   };
-  
+
   // Benchmarking
   benchmarking: {
     industryAverage: number;
@@ -1324,7 +1324,7 @@ export interface OperatingCostAnalysis {
     percentileRanking: number;
     competitiveGap: number;
   };
-  
+
   // Improvement opportunities
   improvements: {
     category: string;
@@ -1334,7 +1334,7 @@ export interface OperatingCostAnalysis {
     paybackPeriod: number; // months
     difficulty: 'LOW' | 'MEDIUM' | 'HIGH';
   }[];
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -1347,7 +1347,7 @@ export interface MaintenanceCostAnalysis {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Maintenance cost breakdown
   costBreakdown: {
     preventiveMaintenance: {
@@ -1372,7 +1372,7 @@ export interface MaintenanceCostAnalysis {
     };
     totalMaintenanceCost: number;
   };
-  
+
   // Maintenance metrics
   metrics: {
     maintenanceRatio: number; // maintenance cost / asset value
@@ -1381,7 +1381,7 @@ export interface MaintenanceCostAnalysis {
     preventiveRatio: number; // preventive / total maintenance
     emergencyRatio: number; // emergency / total maintenance
   };
-  
+
   // Cost drivers
   costDrivers: {
     driver: string;
@@ -1391,7 +1391,7 @@ export interface MaintenanceCostAnalysis {
     totalCost: number;
     controllability: 'HIGH' | 'MEDIUM' | 'LOW';
   }[];
-  
+
   // Failure cost analysis
   failureCostAnalysis: {
     failureMode: string;
@@ -1402,7 +1402,7 @@ export interface MaintenanceCostAnalysis {
     preventionCost: number; // to prevent this failure mode
     costBenefit: number; // prevention vs failure cost
   }[];
-  
+
   // Optimization opportunities
   optimizationOpportunities: {
     opportunity: string;
@@ -1414,7 +1414,7 @@ export interface MaintenanceCostAnalysis {
     riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
     timeline: number; // months
   }[];
-  
+
   // Benchmarking
   benchmarking: {
     metric: string;
@@ -1424,7 +1424,7 @@ export interface MaintenanceCostAnalysis {
     gap: number;
     improvementPotential: number;
   }[];
-  
+
   // Recommendations
   recommendations: {
     immediate: string[];
@@ -1437,7 +1437,7 @@ export interface MaintenanceCostAnalysis {
       payback: number; // months
     }[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -1446,7 +1446,7 @@ export interface CostPerformanceIndicator {
   kpiId: string;
   kpiName: string;
   category: 'FINANCIAL' | 'OPERATIONAL' | 'STRATEGIC' | 'QUALITY';
-  
+
   // KPI definition
   definition: {
     description: string;
@@ -1455,7 +1455,7 @@ export interface CostPerformanceIndicator {
     frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
     dataSource: string;
   };
-  
+
   // Performance data
   performance: {
     period: string;
@@ -1470,7 +1470,7 @@ export interface CostPerformanceIndicator {
     variance: number; // percentage
     trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
   }[];
-  
+
   // Benchmarking
   benchmarking: {
     industryAverage: number;
@@ -1479,7 +1479,7 @@ export interface CostPerformanceIndicator {
     ourPerformance: number;
     percentileRanking: number;
   };
-  
+
   // Action triggers
   actionTriggers: {
     triggerCondition: string;
@@ -1488,7 +1488,7 @@ export interface CostPerformanceIndicator {
     escalationLevel: string;
     responsible: string;
   }[];
-  
+
   // Improvement tracking
   improvements: {
     initiativeName: string;
@@ -1497,7 +1497,7 @@ export interface CostPerformanceIndicator {
     actualImpact?: number;
     status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED';
   }[];
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;

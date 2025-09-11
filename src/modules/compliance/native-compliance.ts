@@ -1,12 +1,12 @@
 // Updated Compliance Management Module - Using NAPI-RS Native Functions
-import { 
+import {
   calculateComplianceScore,
   determineComplianceRiskLevel,
   assessFrameworkCompliance,
   calculateTrainingComplianceRate,
   validateRequirementCompliance,
   generateComplianceMetrics,
-  calculateAuditScore
+  calculateAuditScore,
 } from '../native';
 
 // Re-export native types and functions
@@ -47,7 +47,11 @@ export class ComplianceManager {
     employeesWithCurrentTraining: number,
     overdueRenewals: number
   ): number {
-    return calculateTrainingComplianceRate(totalEmployees, employeesWithCurrentTraining, overdueRenewals);
+    return calculateTrainingComplianceRate(
+      totalEmployees,
+      employeesWithCurrentTraining,
+      overdueRenewals
+    );
   }
 
   /**

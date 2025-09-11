@@ -19,7 +19,6 @@ export interface ProductionCrmService {
 }
 
 export class CrmProductionIntegrationService implements ProductionCrmService {
-  
   /**
    * Customer Data Validation with Advanced Error Handling
    */
@@ -27,7 +26,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
     try {
       // Call native Rust validation with comprehensive checks
       const validationResult = native.validateCustomerData(customer);
-      
+
       // Log validation activity
       await this.logCrmActivity(
         'system',
@@ -35,7 +34,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
         customer.customer_id || 'unknown',
         '127.0.0.1'
       );
-      
+
       return validationResult;
     } catch (error) {
       console.error('Customer validation error:', error);
@@ -68,12 +67,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       );
 
       // Log the prediction for monitoring
-      await this.logCrmActivity(
-        'ai_system',
-        'CHURN_PREDICTION',
-        customerId,
-        '127.0.0.1'
-      );
+      await this.logCrmActivity('ai_system', 'CHURN_PREDICTION', customerId, '127.0.0.1');
 
       // Generate alert if high churn risk
       if (churnProbability > 0.7) {
@@ -107,12 +101,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       const enhancedInsights = await this.enhanceInsightsWithContext(insights, customer);
 
       // Log insight generation
-      await this.logCrmActivity(
-        'ai_system',
-        'GENERATE_INSIGHTS',
-        customerId,
-        '127.0.0.1'
-      );
+      await this.logCrmActivity('ai_system', 'GENERATE_INSIGHTS', customerId, '127.0.0.1');
 
       return enhancedInsights;
     } catch (error) {
@@ -138,16 +127,11 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
         businessContext: await this.addBusinessContext(journey),
         nextBestActions: await this.generateNextBestActions(journey),
         expectedRevenue: await this.calculateExpectedRevenue(journey),
-        timelineProjection: await this.projectJourneyTimeline(journey)
+        timelineProjection: await this.projectJourneyTimeline(journey),
       };
 
       // Log journey tracking
-      await this.logCrmActivity(
-        'journey_tracker',
-        'TRACK_JOURNEY',
-        customerId,
-        '127.0.0.1'
-      );
+      await this.logCrmActivity('journey_tracker', 'TRACK_JOURNEY', customerId, '127.0.0.1');
 
       return enhancedJourney;
     } catch (error) {
@@ -169,20 +153,13 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       const alerts = native.generateCrmAlerts(customer, recentActivity, performanceMetrics);
 
       // Process and route alerts
-      const processedAlerts = await Promise.all(
-        alerts.map(alert => this.processAlert(alert))
-      );
+      const processedAlerts = await Promise.all(alerts.map((alert) => this.processAlert(alert)));
 
       // Send notifications to appropriate channels
       await this.sendAlertNotifications(processedAlerts);
 
       // Log alert generation
-      await this.logCrmActivity(
-        'alert_system',
-        'GENERATE_ALERTS',
-        customerId,
-        '127.0.0.1'
-      );
+      await this.logCrmActivity('alert_system', 'GENERATE_ALERTS', customerId, '127.0.0.1');
 
       return processedAlerts;
     } catch (error) {
@@ -213,12 +190,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       await this.updateSyncHistory(customerId, system, syncResult);
 
       // Log sync activity
-      await this.logCrmActivity(
-        'integration_service',
-        'EXTERNAL_SYNC',
-        customerId,
-        '127.0.0.1'
-      );
+      await this.logCrmActivity('integration_service', 'EXTERNAL_SYNC', customerId, '127.0.0.1');
 
       return syncResult;
     } catch (error) {
@@ -237,7 +209,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
         active_users: await this.getActiveUserCount(),
         leads_processed: await this.getLeadsProcessedToday(),
         conversion_rate: await this.getCurrentConversionRate(),
-        response_time_ms: await this.getAverageResponseTime()
+        response_time_ms: await this.getAverageResponseTime(),
       };
 
       // Call native Rust metrics collection
@@ -254,7 +226,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
         trends: await this.calculateMetricsTrends(metrics),
         benchmarks: await this.getIndustryBenchmarks(),
         recommendations: await this.generatePerformanceRecommendations(metrics),
-        alerts: await this.checkPerformanceThresholds(metrics)
+        alerts: await this.checkPerformanceThresholds(metrics),
       };
 
       // Store metrics for historical analysis
@@ -276,11 +248,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       const sensitivity = await this.getResourceSensitivity(action);
 
       // Call native Rust permission validation
-      const hasPermission = native.validateCrmPermissions(
-        userRole,
-        action,
-        sensitivity
-      );
+      const hasPermission = native.validateCrmPermissions(userRole, action, sensitivity);
 
       // Log permission check
       if (!hasPermission) {
@@ -308,7 +276,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       company: 'Acme Corp',
       total_purchases: 15000.0,
       last_purchase_date: '2024-01-15',
-      customer_tier: 'LOYAL'
+      customer_tier: 'LOYAL',
     };
   }
 
@@ -317,15 +285,13 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
     return [
       { type: 'EMAIL_OPEN', date: '2024-01-10' },
       { type: 'WEBSITE_VISIT', date: '2024-01-12' },
-      { type: 'PHONE_CALL', date: '2024-01-14' }
+      { type: 'PHONE_CALL', date: '2024-01-14' },
     ];
   }
 
   private async getCustomerSupportTickets(customerId: string): Promise<any[]> {
     // Mock support tickets
-    return [
-      { id: 'TICKET-001', status: 'RESOLVED', priority: 'MEDIUM' }
-    ];
+    return [{ id: 'TICKET-001', status: 'RESOLVED', priority: 'MEDIUM' }];
   }
 
   private async getDaysSinceLastPurchase(customerId: string): Promise<number> {
@@ -352,7 +318,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
         interaction_type: 'NEWSLETTER',
         timestamp: '2024-01-10T10:00:00Z',
         engagement_score: 0.8,
-        conversion_value: 0.3
+        conversion_value: 0.3,
       },
       {
         touchpoint_id: 'tp_002',
@@ -360,8 +326,8 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
         interaction_type: 'PAGE_VIEW',
         timestamp: '2024-01-12T14:30:00Z',
         engagement_score: 0.6,
-        conversion_value: 0.5
-      }
+        conversion_value: 0.5,
+      },
     ];
   }
 
@@ -379,29 +345,36 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       conversion_rate: 0.23,
       response_time_ms: 450.0,
       cache_hit_rate: 0.87,
-      error_count: 2
+      error_count: 2,
     };
   }
 
-  private async logCrmActivity(userId: string, action: string, resourceId: string, ipAddress: string): Promise<void> {
+  private async logCrmActivity(
+    userId: string,
+    action: string,
+    resourceId: string,
+    ipAddress: string
+  ): Promise<void> {
     // Call native Rust logging
     const auditLog = native.logCrmActivity(userId, action, resourceId, ipAddress);
     console.log('CRM Activity Logged:', auditLog);
   }
 
   private async triggerChurnRiskAlert(customerId: string, churnProbability: number): Promise<void> {
-    console.log(`CHURN ALERT: Customer ${customerId} has ${(churnProbability * 100).toFixed(1)}% churn risk`);
+    console.log(
+      `CHURN ALERT: Customer ${customerId} has ${(churnProbability * 100).toFixed(1)}% churn risk`
+    );
     // In production, this would trigger notifications to account managers
   }
 
   private async enhanceInsightsWithContext(insights: string[], customer: any): Promise<string[]> {
     const enhanced = [...insights];
-    
+
     // Add business context
     if (customer.customer_tier === 'CHAMPION') {
       enhanced.push('VIP customer: Assign dedicated account manager');
     }
-    
+
     return enhanced;
   }
 
@@ -409,18 +382,18 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
     return {
       industry_trend: 'Growing market segment',
       competitive_pressure: 'Medium',
-      seasonal_factors: 'Q1 budget planning season'
+      seasonal_factors: 'Q1 budget planning season',
     };
   }
 
   private async generateNextBestActions(journey: any): Promise<string[]> {
     const actions = [];
-    
+
     if (journey.stage === 'CONSIDERATION') {
       actions.push('Send product comparison guide');
       actions.push('Schedule demo call');
     }
-    
+
     return actions;
   }
 
@@ -436,8 +409,8 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       confidence_level: 0.78,
       milestone_dates: {
         next_touchpoint: '2024-01-25',
-        decision_point: '2024-02-10'
-      }
+        decision_point: '2024-02-10',
+      },
     };
   }
 
@@ -446,32 +419,38 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       ...alert,
       processed_at: new Date().toISOString(),
       notification_channels: this.determineNotificationChannels(alert),
-      escalation_path: this.getEscalationPath(alert.severity)
+      escalation_path: this.getEscalationPath(alert.severity),
     };
   }
 
   private determineNotificationChannels(alert: any): string[] {
     const channels = ['email'];
-    
+
     if (alert.severity === 'HIGH' || alert.severity === 'CRITICAL') {
       channels.push('slack', 'sms');
     }
-    
+
     return channels;
   }
 
   private getEscalationPath(severity: string): string[] {
     switch (severity) {
-      case 'CRITICAL': return ['account_manager', 'sales_director', 'vp_sales'];
-      case 'HIGH': return ['account_manager', 'sales_director'];
-      case 'MEDIUM': return ['account_manager'];
-      default: return ['support_team'];
+      case 'CRITICAL':
+        return ['account_manager', 'sales_director', 'vp_sales'];
+      case 'HIGH':
+        return ['account_manager', 'sales_director'];
+      case 'MEDIUM':
+        return ['account_manager'];
+      default:
+        return ['support_team'];
     }
   }
 
   private async sendAlertNotifications(alerts: any[]): Promise<void> {
     for (const alert of alerts) {
-      console.log(`Sending ${alert.alert_type} alert via ${alert.notification_channels.join(', ')}`);
+      console.log(
+        `Sending ${alert.alert_type} alert via ${alert.notification_channels.join(', ')}`
+      );
       // In production, this would send actual notifications
     }
   }
@@ -482,7 +461,11 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
     return allowedSystems.includes(system.toUpperCase());
   }
 
-  private async updateSyncHistory(customerId: string, system: string, result: string): Promise<void> {
+  private async updateSyncHistory(
+    customerId: string,
+    system: string,
+    result: string
+  ): Promise<void> {
     console.log(`Sync History: ${customerId} - ${system} - ${result}`);
     // In production, this would update sync tracking database
   }
@@ -507,7 +490,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
     return {
       conversion_rate_trend: '+5.2%',
       response_time_trend: '-12.3%',
-      user_growth_trend: '+8.7%'
+      user_growth_trend: '+8.7%',
     };
   }
 
@@ -515,35 +498,35 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
     return {
       conversion_rate_benchmark: 0.18,
       response_time_benchmark: 600.0,
-      churn_rate_benchmark: 0.15
+      churn_rate_benchmark: 0.15,
     };
   }
 
   private async generatePerformanceRecommendations(metrics: any): Promise<string[]> {
     const recommendations = [];
-    
+
     if (metrics.response_time_ms > 500) {
       recommendations.push('Consider optimizing database queries to improve response time');
     }
-    
+
     if (metrics.conversion_rate < 0.2) {
       recommendations.push('Review lead scoring algorithm to improve conversion rates');
     }
-    
+
     return recommendations;
   }
 
   private async checkPerformanceThresholds(metrics: any): Promise<any[]> {
     const alerts = [];
-    
+
     if (metrics.response_time_ms > 1000) {
       alerts.push({
         type: 'PERFORMANCE',
         message: 'Response time exceeds threshold',
-        severity: 'HIGH'
+        severity: 'HIGH',
       });
     }
-    
+
     return alerts;
   }
 
@@ -554,7 +537,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
 
   private async getResourceSensitivity(action: string): Promise<string> {
     const highSensitivityActions = ['DELETE', 'EXPORT', 'ADMIN'];
-    return highSensitivityActions.some(a => action.includes(a)) ? 'HIGH' : 'MEDIUM';
+    return highSensitivityActions.some((a) => action.includes(a)) ? 'HIGH' : 'MEDIUM';
   }
 
   private async logSecurityEvent(userRole: string, action: string, event: string): Promise<void> {

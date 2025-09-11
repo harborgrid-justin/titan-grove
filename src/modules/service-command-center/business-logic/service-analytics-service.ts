@@ -9,14 +9,14 @@ import type {
   ServiceMetrics,
   ServiceInsight,
   ServiceRecommendation,
-  OracleEBSComparison
+  OracleEBSComparison,
 } from '../types';
 import { SERVICE_ANALYTICS_CONSTANTS, ServiceAnalyticsUtils } from '../../../shared/constants';
 
 export class ServiceAnalyticsService {
   private analytics: Map<string, ServiceAnalytics> = new Map();
   private insights: Map<string, ServiceInsight[]> = new Map();
-  
+
   constructor(
     private logger?: any,
     private mlService?: any,
@@ -33,23 +33,24 @@ export class ServiceAnalyticsService {
   async generateServiceAnalytics(config: {
     commandCenterId: string;
     reportType: 'OPERATIONAL' | 'FINANCIAL' | 'PERFORMANCE' | 'PREDICTIVE' | 'COMPARATIVE';
-    period: { start: Date; end: Date; };
+    period: { start: Date; end: Date };
     includeOracleComparison?: boolean;
   }): Promise<ServiceAnalytics> {
     const analyticsId = `analytics_${Date.now()}`;
-    
+
     // Generate comprehensive metrics
     const metrics = await this.calculateServiceMetrics(config.commandCenterId, config.period);
-    
+
     // Generate AI-powered insights
     const insights = await this.generateServiceInsights(metrics, config.reportType);
-    
+
     // Generate actionable recommendations
     const recommendations = await this.generateServiceRecommendations(insights, metrics);
-    
+
     // Generate Oracle EBS comparison if requested
-    const oracleComparison = config.includeOracleComparison ? 
-      await this.generateOracleEBSServiceComparison() : undefined;
+    const oracleComparison = config.includeOracleComparison
+      ? await this.generateOracleEBSServiceComparison()
+      : undefined;
 
     const analytics: ServiceAnalytics = {
       analyticsId,
@@ -57,23 +58,23 @@ export class ServiceAnalyticsService {
       period: {
         start: config.period.start,
         end: config.period.end,
-        granularity: 'DAILY'
+        granularity: 'DAILY',
       },
       metrics,
       insights,
       recommendations,
       oracleComparison,
       generatedDate: new Date(),
-      generatedBy: 'ServiceAnalyticsService'
+      generatedBy: 'ServiceAnalyticsService',
     };
 
     this.analytics.set(analyticsId, analytics);
-    
+
     this.logger?.info('Service analytics generated', {
       analyticsId,
       reportType: config.reportType,
       insightCount: insights.length,
-      recommendationCount: recommendations.length
+      recommendationCount: recommendations.length,
     });
 
     return analytics;
@@ -84,7 +85,7 @@ export class ServiceAnalyticsService {
    */
   async calculateServiceMetrics(
     commandCenterId: string,
-    period: { start: Date; end: Date; }
+    period: { start: Date; end: Date }
   ): Promise<ServiceMetrics> {
     // In real implementation, this would query actual operational data
     const metrics: ServiceMetrics = ServiceAnalyticsUtils.generateMockServiceMetrics();
@@ -100,7 +101,7 @@ export class ServiceAnalyticsService {
     reportType: string
   ): Promise<ServiceInsight[]> {
     const insights: ServiceInsight[] = [];
-    
+
     // Analyze trends and patterns
     if (metrics.firstTimeFixRate < 90) {
       insights.push({
@@ -112,7 +113,7 @@ export class ServiceAnalyticsService {
         confidence: 87,
         actionable: true,
         relatedMetrics: ['firstTimeFixRate', 'customerSatisfaction'],
-        generatedDate: new Date()
+        generatedDate: new Date(),
       });
     }
 
@@ -126,7 +127,7 @@ export class ServiceAnalyticsService {
         confidence: 93,
         actionable: true,
         relatedMetrics: ['resourceUtilization', 'averageResolutionTime'],
-        generatedDate: new Date()
+        generatedDate: new Date(),
       });
     }
 
@@ -140,7 +141,7 @@ export class ServiceAnalyticsService {
         confidence: 95,
         actionable: false,
         relatedMetrics: ['profitMargin', 'serviceCosts'],
-        generatedDate: new Date()
+        generatedDate: new Date(),
       });
     }
 
@@ -150,12 +151,13 @@ export class ServiceAnalyticsService {
         insightId: `insight_${Date.now()}_4`,
         type: 'TREND',
         title: 'Predictive Workload Increase',
-        description: 'ML models predict 15% increase in service requests over next quarter based on seasonal patterns and customer growth.',
+        description:
+          'ML models predict 15% increase in service requests over next quarter based on seasonal patterns and customer growth.',
         impact: 'HIGH',
         confidence: 84,
         actionable: true,
         relatedMetrics: ['totalServiceRequests'],
-        generatedDate: new Date()
+        generatedDate: new Date(),
       });
     }
 
@@ -172,17 +174,21 @@ export class ServiceAnalyticsService {
     const recommendations: ServiceRecommendation[] = [];
 
     // Generate recommendations based on insights
-    const highImpactInsights = insights.filter(insight => 
-      insight.impact === 'HIGH' && insight.actionable
+    const highImpactInsights = insights.filter(
+      (insight) => insight.impact === 'HIGH' && insight.actionable
     );
 
     for (const insight of highImpactInsights) {
       if (insight.type === 'OPPORTUNITY') {
-        recommendations.push(ServiceAnalyticsUtils.generateRecommendation('QUALITY_ENHANCEMENT', insight.insightId));
+        recommendations.push(
+          ServiceAnalyticsUtils.generateRecommendation('QUALITY_ENHANCEMENT', insight.insightId)
+        );
       }
-      
+
       if (insight.type === 'RISK' && insight.title.includes('Resource Utilization')) {
-        recommendations.push(ServiceAnalyticsUtils.generateRecommendation('RESOURCE_OPTIMIZATION', insight.insightId));
+        recommendations.push(
+          ServiceAnalyticsUtils.generateRecommendation('RESOURCE_OPTIMIZATION', insight.insightId)
+        );
       }
     }
 
@@ -197,7 +203,7 @@ export class ServiceAnalyticsService {
    */
   async generateOracleEBSServiceComparison(): Promise<OracleEBSComparison> {
     const comparisonId = `oracle_service_compare_${Date.now()}`;
-    
+
     const featureComparison = [
       ServiceAnalyticsUtils.generateOracleComparisonFeature(
         'Real-time Service Dashboard',
@@ -246,7 +252,7 @@ export class ServiceAnalyticsService {
         7.2, // This wasn't in our original constants, keeping as-is
         9.2, // This wasn't in our original constants, keeping as-is
         'Real-time analytics vs batch reports'
-      )
+      ),
     ];
 
     const overallRating = ServiceAnalyticsUtils.calculateCompetitiveAdvantage(featureComparison);
@@ -257,7 +263,7 @@ export class ServiceAnalyticsService {
       featureComparison,
       overallRating,
       businessValue: ServiceAnalyticsUtils.getOracleEBSBusinessValue(),
-      ...ServiceAnalyticsUtils.getOracleEBSMigrationMetrics()
+      ...ServiceAnalyticsUtils.getOracleEBSMigrationMetrics(),
     };
   }
 
@@ -294,7 +300,7 @@ export class ServiceAnalyticsService {
     const workloadPrediction = Array.from({ length: predictionHorizon }, (_, i) => ({
       date: new Date(Date.now() + i * 24 * 60 * 60 * 1000),
       predictedWorkOrders: Math.floor(25 + Math.sin(i * 0.1) * 5 + Math.random() * 10),
-      confidence: 75 + Math.random() * 20 // 75-95% confidence
+      confidence: 75 + Math.random() * 20, // 75-95% confidence
     }));
 
     const resourceDemandForecast = [
@@ -302,34 +308,34 @@ export class ServiceAnalyticsService {
         resourceType: 'Electrical Technicians',
         requiredCapacity: 12,
         currentCapacity: 10,
-        shortage: 2
+        shortage: 2,
       },
       {
         resourceType: 'HVAC Specialists',
         requiredCapacity: 8,
         currentCapacity: 9,
-        shortage: 0
+        shortage: 0,
       },
       {
         resourceType: 'General Maintenance',
         requiredCapacity: 15,
         currentCapacity: 14,
-        shortage: 1
-      }
+        shortage: 1,
+      },
     ];
 
     const qualityRiskAssessment = {
       riskFactors: [
         'High resource utilization (>85%)',
         'Increased emergency calls (+15%)',
-        'New technician onboarding'
+        'New technician onboarding',
       ],
       probabilityOfIssues: 23.5, // percentage
       preventiveMeasures: [
         'Schedule additional training sessions',
         'Implement buddy system for new technicians',
-        'Pre-position inventory in high-demand areas'
-      ]
+        'Pre-position inventory in high-demand areas',
+      ],
     };
 
     const customerSatisfactionTrends = {
@@ -338,15 +344,15 @@ export class ServiceAnalyticsService {
       influencingFactors: [
         'Improved response times',
         'Enhanced mobile communication',
-        'Proactive service notifications'
-      ]
+        'Proactive service notifications',
+      ],
     };
 
     return {
       workloadPrediction,
       resourceDemandForecast,
       qualityRiskAssessment,
-      customerSatisfactionTrends
+      customerSatisfactionTrends,
     };
   }
 
@@ -380,7 +386,7 @@ export class ServiceAnalyticsService {
         currentValue: 18.5,
         industryBenchmark: 22.0,
         bestInClass: 12.0,
-        position: 'ABOVE' as const
+        position: 'ABOVE' as const,
       },
       {
         category: 'Quality',
@@ -388,7 +394,7 @@ export class ServiceAnalyticsService {
         currentValue: 89.3,
         industryBenchmark: 85.0,
         bestInClass: 95.0,
-        position: 'ABOVE' as const
+        position: 'ABOVE' as const,
       },
       {
         category: 'Customer Experience',
@@ -396,7 +402,7 @@ export class ServiceAnalyticsService {
         currentValue: 4.7,
         industryBenchmark: 4.2,
         bestInClass: 4.9,
-        position: 'ABOVE' as const
+        position: 'ABOVE' as const,
       },
       {
         category: 'Efficiency',
@@ -404,7 +410,7 @@ export class ServiceAnalyticsService {
         currentValue: 78.9,
         industryBenchmark: 72.0,
         bestInClass: 82.0,
-        position: 'ABOVE' as const
+        position: 'ABOVE' as const,
       },
       {
         category: 'Financial',
@@ -412,43 +418,54 @@ export class ServiceAnalyticsService {
         currentValue: 1694,
         industryBenchmark: 1850,
         bestInClass: 1450,
-        position: 'ABOVE' as const
-      }
+        position: 'ABOVE' as const,
+      },
     ];
 
     // Calculate overall percentile
-    const aboveBenchmarkCount = benchmarks.filter(b => b.position === 'ABOVE' || b.position === 'BEST_IN_CLASS').length;
+    const aboveBenchmarkCount = benchmarks.filter(
+      (b) => b.position === 'ABOVE' || b.position === 'BEST_IN_CLASS'
+    ).length;
     const percentile = (aboveBenchmarkCount / benchmarks.length) * 100;
 
     const overallRanking = {
       percentile,
-      competitivePosition: percentile >= 90 ? 'BEST_IN_CLASS' as const :
-                          percentile >= 75 ? 'LEADING' as const :
-                          percentile >= 50 ? 'COMPETITIVE' as const : 'LAGGING' as const
+      competitivePosition:
+        percentile >= 90
+          ? ('BEST_IN_CLASS' as const)
+          : percentile >= 75
+            ? ('LEADING' as const)
+            : percentile >= 50
+              ? ('COMPETITIVE' as const)
+              : ('LAGGING' as const),
     };
 
     // Identify improvement opportunities - exclude best in class benchmarks
     const improvementOpportunities = benchmarks
-      .filter(b => b.currentValue < b.bestInClass) // Filter by actual performance gap
-      .map(benchmark => ({
+      .filter((b) => b.currentValue < b.bestInClass) // Filter by actual performance gap
+      .map((benchmark) => ({
         metric: benchmark.metric,
         currentGap: benchmark.bestInClass - benchmark.currentValue,
-        improvementPotential: (benchmark.bestInClass - benchmark.currentValue) / benchmark.currentValue * 100,
-        difficulty: benchmark.category === 'Financial' ? 'HIGH' as const :
-                   benchmark.category === 'Efficiency' ? 'MEDIUM' as const : 'LOW' as const
+        improvementPotential:
+          ((benchmark.bestInClass - benchmark.currentValue) / benchmark.currentValue) * 100,
+        difficulty:
+          benchmark.category === 'Financial'
+            ? ('HIGH' as const)
+            : benchmark.category === 'Efficiency'
+              ? ('MEDIUM' as const)
+              : ('LOW' as const),
       }));
 
     return {
       benchmarks,
       overallRanking,
-      improvementOpportunities
+      improvementOpportunities,
     };
   }
 
   // ================================
   // PRIVATE HELPER METHODS
   // ================================
-
 }
 
 // Export service instance

@@ -3,58 +3,58 @@
  * Central hub for managing all 8 domain areas with consolidated business logic
  */
 
-import { 
-  FinancialAdministrativeDomainManager, 
+import {
+  FinancialAdministrativeDomainManager,
   financialAdministrativeDomainManager,
-  FinancialAdministrativeDomainConfig 
+  FinancialAdministrativeDomainConfig,
 } from './financial-administrative';
 
-import { 
-  SupplyChainOperationsDomainManager, 
+import {
+  SupplyChainOperationsDomainManager,
   supplyChainOperationsDomainManager,
-  SupplyChainOperationsDomainConfig 
+  SupplyChainOperationsDomainConfig,
 } from './supply-chain-operations';
 
-import { 
-  ManufacturingProductionDomainManager, 
+import {
+  ManufacturingProductionDomainManager,
   manufacturingProductionDomainManager,
-  ManufacturingProductionDomainConfig 
+  ManufacturingProductionDomainConfig,
 } from './manufacturing-production';
 
-import { 
-  HumanCapitalDomainManager, 
+import {
+  HumanCapitalDomainManager,
   humanCapitalDomainManager,
-  HumanCapitalDomainConfig 
+  HumanCapitalDomainConfig,
 } from './human-capital';
 
-import { 
-  CustomerSalesDomainManager, 
+import {
+  CustomerSalesDomainManager,
   customerSalesDomainManager,
-  CustomerSalesDomainConfig 
+  CustomerSalesDomainConfig,
 } from './customer-sales';
 
-import { 
-  AssetMaintenanceDomainManager, 
+import {
+  AssetMaintenanceDomainManager,
   assetMaintenanceDomainManager,
-  AssetMaintenanceDomainConfig 
+  AssetMaintenanceDomainConfig,
 } from './asset-maintenance';
 
-import { 
-  ProjectServiceDomainManager, 
+import {
+  ProjectServiceDomainManager,
   projectServiceDomainManager,
-  ProjectServiceDomainConfig 
+  ProjectServiceDomainConfig,
 } from './project-service';
 
-import { 
-  TechnologyIntegrationDomainManager, 
+import {
+  TechnologyIntegrationDomainManager,
   technologyIntegrationDomainManager,
-  TechnologyIntegrationDomainConfig 
+  TechnologyIntegrationDomainConfig,
 } from './technology-integration';
 
-import { 
-  HealthMedicalDomainManager, 
+import {
+  HealthMedicalDomainManager,
   healthMedicalDomainManager,
-  HealthMedicalDomainConfig 
+  HealthMedicalDomainConfig,
 } from './health-medical';
 
 export interface DomainConfiguration {
@@ -91,22 +91,22 @@ export class CentralBusinessLogicRegistry {
     DEFAULT_DISCOUNT_RATE: 0.08,
     DEFAULT_TAX_RATE: 0.21,
     DEFAULT_INFLATION_RATE: 0.025,
-    
+
     // Operations Constants
     DEFAULT_CAPACITY_UTILIZATION: 0.85,
-    DEFAULT_SAFETY_STOCK_FACTOR: 0.20,
+    DEFAULT_SAFETY_STOCK_FACTOR: 0.2,
     DEFAULT_LEAD_TIME_BUFFER: 1.25,
-    
+
     // Quality Constants
     SIX_SIGMA_TARGET: 0.999997, // 3.4 DPMO
     DEFAULT_DEFECT_RATE_THRESHOLD: 0.01,
     CONTROL_LIMIT_SIGMA: 3.0,
-    
+
     // Project Constants
     DEFAULT_PROJECT_BUFFER: 0.15,
-    RESOURCE_UTILIZATION_TARGET: 0.80,
+    RESOURCE_UTILIZATION_TARGET: 0.8,
     PROFITABILITY_THRESHOLD: 0.15,
-    
+
     // Service Constants
     SLA_TARGET_AVAILABILITY: 0.999,
     RESPONSE_TIME_THRESHOLD: 4, // hours
@@ -134,25 +134,25 @@ export class CentralBusinessLogicRegistry {
 
     const totalReturns = returns.reduce((sum, ret) => sum + ret, 0);
     const simpleROI = (totalReturns - investment) / investment;
-    
+
     const annualizedROI = Math.pow(1 + simpleROI, 1 / timeHorizon) - 1;
-    
+
     // Calculate NPV
     const discountRate = this.BUSINESS_CONSTANTS.DEFAULT_DISCOUNT_RATE + riskAdjustment;
     let npv = -investment;
     for (let i = 0; i < returns.length; i++) {
       npv += returns[i] / Math.pow(1 + discountRate, i + 1);
     }
-    
+
     // Simplified IRR calculation (would use Newton-Raphson in practice)
-    let irr = 0.10; // Initial guess
+    let irr = 0.1; // Initial guess
     for (let iteration = 0; iteration < 100; iteration++) {
       let f = -investment;
       let df = 0;
       for (let i = 0; i < returns.length; i++) {
         const period = i + 1;
         f += returns[i] / Math.pow(1 + irr, period);
-        df -= returns[i] * period / Math.pow(1 + irr, period + 1);
+        df -= (returns[i] * period) / Math.pow(1 + irr, period + 1);
       }
       if (Math.abs(f) < 0.001 || Math.abs(df) < 0.001) break;
       irr = irr - f / df;
@@ -162,7 +162,7 @@ export class CentralBusinessLogicRegistry {
       simpleROI,
       annualizedROI,
       npv,
-      irr: isFinite(irr) ? irr : 0
+      irr: isFinite(irr) ? irr : 0,
     };
   }
 
@@ -170,9 +170,9 @@ export class CentralBusinessLogicRegistry {
    * Universal Performance Score Calculator
    * Standardized performance scoring across all domains
    */
-  static calculatePerformanceScore(
-    metrics: { [key: string]: { value: number; target: number; weight: number } }
-  ): {
+  static calculatePerformanceScore(metrics: {
+    [key: string]: { value: number; target: number; weight: number };
+  }): {
     overallScore: number;
     categoryScores: { [key: string]: number };
     recommendations: string[];
@@ -185,7 +185,7 @@ export class CentralBusinessLogicRegistry {
     for (const [category, metric] of Object.entries(metrics)) {
       const performance = metric.target > 0 ? metric.value / metric.target : 0;
       const score = Math.min(100, Math.max(0, performance * 100));
-      
+
       categoryScores[category] = score;
       weightedSum += score * metric.weight;
       totalWeight += metric.weight;
@@ -203,7 +203,7 @@ export class CentralBusinessLogicRegistry {
     return {
       overallScore,
       categoryScores,
-      recommendations
+      recommendations,
     };
   }
 
@@ -212,8 +212,8 @@ export class CentralBusinessLogicRegistry {
    * Standardized cost-benefit analysis across all domains
    */
   static calculateCostBenefitAnalysis(
-    costs: { initial: number; recurring: number[]; },
-    benefits: { tangible: number[]; intangible: number; },
+    costs: { initial: number; recurring: number[] },
+    benefits: { tangible: number[]; intangible: number },
     timeHorizon: number
   ): {
     totalCosts: number;
@@ -225,10 +225,10 @@ export class CentralBusinessLogicRegistry {
     const totalCosts = costs.initial + costs.recurring.reduce((sum, cost) => sum + cost, 0);
     const totalTangibleBenefits = benefits.tangible.reduce((sum, benefit) => sum + benefit, 0);
     const totalBenefits = totalTangibleBenefits + benefits.intangible;
-    
+
     const netBenefit = totalBenefits - totalCosts;
     const benefitCostRatio = totalCosts > 0 ? totalBenefits / totalCosts : 0;
-    
+
     // Calculate payback period
     let cumulativeBenefits = 0;
     let paybackPeriod = 0;
@@ -245,7 +245,7 @@ export class CentralBusinessLogicRegistry {
       totalBenefits,
       netBenefit,
       benefitCostRatio,
-      paybackPeriod: paybackPeriod || timeHorizon
+      paybackPeriod: paybackPeriod || timeHorizon,
     };
   }
 
@@ -276,7 +276,7 @@ export class DomainOrchestrator {
       assetMaintenance: assetMaintenanceDomainManager,
       projectService: projectServiceDomainManager,
       technologyIntegration: technologyIntegrationDomainManager,
-      healthMedical: healthMedicalDomainManager
+      healthMedical: healthMedicalDomainManager,
     };
 
     this.businessLogicRegistry = CentralBusinessLogicRegistry;
@@ -295,21 +295,21 @@ export class DomainOrchestrator {
     const [financial, operations, manufacturing] = await Promise.all([
       this.domainManagers.financialAdministrative.performFinancialAnalysis('company-001'),
       this.domainManagers.supplyChainOperations.optimizeSupplyChain(),
-      this.domainManagers.manufacturingProduction.optimizeManufacturing()
+      this.domainManagers.manufacturingProduction.optimizeManufacturing(),
     ]);
 
     // Calculate cross-domain metrics
     const crossDomainMetrics = this.calculateCrossDomainMetrics({
       financial,
       operations,
-      manufacturing
+      manufacturing,
     });
 
     return {
       financial,
       operations,
       manufacturing,
-      crossDomainMetrics
+      crossDomainMetrics,
     };
   }
 
@@ -320,12 +320,25 @@ export class DomainOrchestrator {
     // Example: Calculate overall business health score
     const performanceMetrics = {
       financial: { value: domainResults.financial.healthScore, target: 80, weight: 0.3 },
-      operational: { value: domainResults.operations.inventoryAnalytics.overallTurnover * 10, target: 60, weight: 0.25 },
-      manufacturing: { value: domainResults.manufacturing.oeeAnalysis.oee, target: 85, weight: 0.25 },
-      quality: { value: (1 - domainResults.manufacturing.qualityMetrics.defectRate) * 100, target: 99, weight: 0.2 }
+      operational: {
+        value: domainResults.operations.inventoryAnalytics.overallTurnover * 10,
+        target: 60,
+        weight: 0.25,
+      },
+      manufacturing: {
+        value: domainResults.manufacturing.oeeAnalysis.oee,
+        target: 85,
+        weight: 0.25,
+      },
+      quality: {
+        value: (1 - domainResults.manufacturing.qualityMetrics.defectRate) * 100,
+        target: 99,
+        weight: 0.2,
+      },
     };
 
-    const overallPerformance = this.businessLogicRegistry.calculatePerformanceScore(performanceMetrics);
+    const overallPerformance =
+      this.businessLogicRegistry.calculatePerformanceScore(performanceMetrics);
 
     // Example: Calculate enterprise ROI
     const enterpriseROI = this.businessLogicRegistry.calculateROI(
@@ -338,7 +351,7 @@ export class DomainOrchestrator {
     return {
       overallPerformance,
       enterpriseROI,
-      businessConstants: this.businessLogicRegistry.getBusinessConstants()
+      businessConstants: this.businessLogicRegistry.getBusinessConstants(),
     };
   }
 
@@ -365,32 +378,36 @@ export class DomainOrchestrator {
     recommendations: string[];
   }> {
     const analysis = await this.executeComprehensiveAnalysis();
-    
+
     const recommendations: string[] = [];
-    
+
     // Financial recommendations
     if (analysis.financial.healthScore < 70) {
-      recommendations.push('Financial health below target - review cost structure and revenue optimization');
+      recommendations.push(
+        'Financial health below target - review cost structure and revenue optimization'
+      );
     }
-    
+
     // Operations recommendations
     if (analysis.operations.inventoryAnalytics.overallTurnover < 6) {
       recommendations.push('Inventory turnover low - optimize stock levels and demand forecasting');
     }
-    
+
     // Manufacturing recommendations
     if (analysis.manufacturing.oeeAnalysis.oee < 75) {
-      recommendations.push('Manufacturing efficiency below standard - investigate equipment and process improvements');
+      recommendations.push(
+        'Manufacturing efficiency below standard - investigate equipment and process improvements'
+      );
     }
-    
+
     return {
       domains: {
         financial: analysis.financial,
         operations: analysis.operations,
-        manufacturing: analysis.manufacturing
+        manufacturing: analysis.manufacturing,
       },
       consolidated: analysis.crossDomainMetrics,
-      recommendations
+      recommendations,
     };
   }
 }
@@ -401,49 +418,31 @@ export const domainOrchestrator = new DomainOrchestrator();
 // Export all domain managers and business logic
 export {
   FinancialAdministrativeDomainManager,
-  SupplyChainOperationsDomainManager, 
+  SupplyChainOperationsDomainManager,
   ManufacturingProductionDomainManager,
   HumanCapitalDomainManager,
   CustomerSalesDomainManager,
   AssetMaintenanceDomainManager,
   ProjectServiceDomainManager,
   TechnologyIntegrationDomainManager,
-  HealthMedicalDomainManager
+  HealthMedicalDomainManager,
 };
 
 // Export business logic classes for testing and external use
-export {
-  FinancialAdministrativeBusinessLogic
-} from './financial-administrative';
+export { FinancialAdministrativeBusinessLogic } from './financial-administrative';
 
-export {
-  SupplyChainOperationsBusinessLogic
-} from './supply-chain-operations';
+export { SupplyChainOperationsBusinessLogic } from './supply-chain-operations';
 
-export {
-  ManufacturingProductionBusinessLogic
-} from './manufacturing-production';
+export { ManufacturingProductionBusinessLogic } from './manufacturing-production';
 
-export {
-  HumanCapitalBusinessLogic
-} from './human-capital';
+export { HumanCapitalBusinessLogic } from './human-capital';
 
-export {
-  CustomerSalesBusinessLogic
-} from './customer-sales';
+export { CustomerSalesBusinessLogic } from './customer-sales';
 
-export {
-  AssetMaintenanceBusinessLogic
-} from './asset-maintenance';
+export { AssetMaintenanceBusinessLogic } from './asset-maintenance';
 
-export {
-  ProjectServiceBusinessLogic
-} from './project-service';
+export { ProjectServiceBusinessLogic } from './project-service';
 
-export {
-  TechnologyIntegrationBusinessLogic
-} from './technology-integration';
+export { TechnologyIntegrationBusinessLogic } from './technology-integration';
 
-export {
-  HealthMedicalBusinessLogic
-} from './health-medical';
+export { HealthMedicalBusinessLogic } from './health-medical';

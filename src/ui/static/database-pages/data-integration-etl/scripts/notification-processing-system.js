@@ -1,142 +1,148 @@
 // Notification Processing System - Database Management System
 // This file provides business-ready functionality for Notification Processing System
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Notification Processing System page loaded');
-    
-    // Initialize page functionality
-    initNotificationProcessingSystem();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadNotificationProcessingSystemData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Notification Processing System page loaded');
+
+  // Initialize page functionality
+  initNotificationProcessingSystem();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadNotificationProcessingSystemData();
 });
 
 async function loadNotificationProcessingSystemData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/notification-processing-system');
-        if (response.ok) {
-            const data = await response.json();
-            updateNotificationProcessingSystemDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Notification Processing System data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch(
+      '/api/database/data-integration-etl/notification-processing-system'
+    );
+    if (response.ok) {
+      const data = await response.json();
+      updateNotificationProcessingSystemDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Notification Processing System data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initNotificationProcessingSystem() {
-    console.log('Initializing Notification Processing System');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Notification Processing System');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Notification Processing System');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Notification Processing System');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Notification Processing System');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Notification Processing System');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Notification Processing System');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Notification Processing System');
 }
 
 function handleNotificationProcessingSystemAction() {
-    console.log('Notification Processing System action triggered');
-    showNotification('Notification Processing System configured successfully', 'success');
+  console.log('Notification Processing System action triggered');
+  showNotification('Notification Processing System configured successfully', 'success');
 }
 
 function executeNotificationProcessingSystem() {
-    console.log('Notification Processing System execution started');
-    showNotification('Notification Processing System executed successfully', 'success');
+  console.log('Notification Processing System execution started');
+  showNotification('Notification Processing System executed successfully', 'success');
 }
 
 function updateNotificationProcessingSystemDisplay(data) {
-    console.log('Updating Notification Processing System display:', data);
-    // Update UI with loaded data
+  console.log('Updating Notification Processing System display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/notification-processing-system/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadNotificationProcessingSystemData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleNotificationProcessingSystemAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/notification-processing-system/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'notification-processing-system-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/notification-processing-system/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadNotificationProcessingSystemData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleNotificationProcessingSystemAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/notification-processing-system/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'notification-processing-system-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

@@ -14,7 +14,6 @@ const router: RouterType = Router();
 // Apply standard middleware
 applyStandardMiddleware(router);
 
-
 // Employee Management Routes
 router.get('/employees', hrController.getEmployees);
 router.post('/employees', hrController.createEmployee);

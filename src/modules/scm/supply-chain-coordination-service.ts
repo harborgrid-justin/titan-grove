@@ -27,7 +27,12 @@ export interface EnterpriseSupplyChainPlan {
 
 export interface BusinessObjective {
   objectiveId: string;
-  objectiveType: 'COST_REDUCTION' | 'SERVICE_IMPROVEMENT' | 'RISK_MITIGATION' | 'GROWTH' | 'SUSTAINABILITY';
+  objectiveType:
+    | 'COST_REDUCTION'
+    | 'SERVICE_IMPROVEMENT'
+    | 'RISK_MITIGATION'
+    | 'GROWTH'
+    | 'SUSTAINABILITY';
   description: string;
   target: number;
   unit: string;
@@ -55,7 +60,12 @@ export interface FinancialPlan {
 export interface RiskAssessment {
   overallRiskScore: number;
   riskCategories: Array<{
-    category: 'SUPPLY_DISRUPTION' | 'DEMAND_VOLATILITY' | 'REGULATORY' | 'FINANCIAL' | 'OPERATIONAL';
+    category:
+      | 'SUPPLY_DISRUPTION'
+      | 'DEMAND_VOLATILITY'
+      | 'REGULATORY'
+      | 'FINANCIAL'
+      | 'OPERATIONAL';
     riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
     probability: number;
     impact: number;
@@ -111,17 +121,19 @@ export interface GlobalPerformanceMetrics {
 }
 
 export class SupplyChainCoordinationService {
-  
   /**
    * Enterprise Supply Chain Planning
    */
   async createEnterpriseSupplyChainPlan(
-    planData: Omit<EnterpriseSupplyChainPlan, 'planId' | 'demandPlan' | 'supplyPlan' | 'productionPlan' | 'distributionPlan'>
+    planData: Omit<
+      EnterpriseSupplyChainPlan,
+      'planId' | 'demandPlan' | 'supplyPlan' | 'productionPlan' | 'distributionPlan'
+    >
   ): Promise<EnterpriseSupplyChainPlan> {
     const planId = `esp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Creating enterprise supply chain plan: ${planData.planName}`);
-    
+
     // Create integrated demand plan
     const demandPlan = await supplyChainPlanningService.createDemandPlan({
       planName: `${planData.planName} - Demand`,
@@ -138,13 +150,13 @@ export class SupplyChainCoordinationService {
           forecastedDemand: 5000,
           confidence: 0.89,
           createdDate: new Date(),
-          lastUpdated: new Date()
-        }
+          lastUpdated: new Date(),
+        },
       ],
       status: 'ACTIVE',
-      createdBy: 'Enterprise Planning'
+      createdBy: 'Enterprise Planning',
     });
-    
+
     // Create supply plan
     const supplyPlan = await supplyChainPlanningService.createSupplyPlan(demandPlan.id, {
       planName: `${planData.planName} - Supply`,
@@ -159,8 +171,8 @@ export class SupplyChainCoordinationService {
           plannedStartDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           plannedEndDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           resourceRequirements: [],
-          estimatedCost: 200000
-        }
+          estimatedCost: 200000,
+        },
       ],
       plannedPurchases: [
         {
@@ -171,55 +183,60 @@ export class SupplyChainCoordinationService {
           plannedReceiptDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
           supplierId: 'SUPP_001',
           supplierName: 'Steel Corp',
-          estimatedCost: 125000
-        }
+          estimatedCost: 125000,
+        },
       ],
       inventoryPlan: [],
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     });
-    
+
     // Create production plan (integrated with manufacturing)
     const productionPlan = await this.createIntegratedProductionPlan(supplyPlan.id);
-    
+
     // Create distribution plan
-    const distributionPlan = await supplyChainPlanningService.createDistributionPlan(supplyPlan.id, {
-      planName: `${planData.planName} - Distribution`,
-      supplyPlanId: supplyPlan.id,
-      networkOptimization: {
-        optimizationObjective: 'BALANCED',
-        facilityOptimization: [],
-        routeOptimization: [],
-        inventoryOptimization: {
-          productId: 'PROD_001',
-          locationId: 'DC_001',
-          optimalInventoryLevel: 500,
-          reorderPoint: 125,
-          safetyStock: 50,
-          carryCost: 25,
-          stockoutCost: 250
-        }
-      },
-      distributionStrategy: {
-        strategyType: 'WAREHOUSE_FULFILLMENT',
-        serviceLevelTarget: 0.95,
-        costTarget: 50000,
-        leadTimeTarget: 3
-      },
-      shipmentPlan: [],
-      inventoryPolicy: [],
-      status: 'ACTIVE'
-    });
-    
+    const distributionPlan = await supplyChainPlanningService.createDistributionPlan(
+      supplyPlan.id,
+      {
+        planName: `${planData.planName} - Distribution`,
+        supplyPlanId: supplyPlan.id,
+        networkOptimization: {
+          optimizationObjective: 'BALANCED',
+          facilityOptimization: [],
+          routeOptimization: [],
+          inventoryOptimization: {
+            productId: 'PROD_001',
+            locationId: 'DC_001',
+            optimalInventoryLevel: 500,
+            reorderPoint: 125,
+            safetyStock: 50,
+            carryCost: 25,
+            stockoutCost: 250,
+          },
+        },
+        distributionStrategy: {
+          strategyType: 'WAREHOUSE_FULFILLMENT',
+          serviceLevelTarget: 0.95,
+          costTarget: 50000,
+          leadTimeTarget: 3,
+        },
+        shipmentPlan: [],
+        inventoryPolicy: [],
+        status: 'ACTIVE',
+      }
+    );
+
     const enterprisePlan: EnterpriseSupplyChainPlan = {
       planId,
       demandPlan,
       supplyPlan,
       productionPlan,
       distributionPlan,
-      ...planData
+      ...planData,
     };
-    
-    console.log(`Created enterprise supply chain plan: ${enterprisePlan.planName} with ID: ${planId}`);
+
+    console.log(
+      `Created enterprise supply chain plan: ${enterprisePlan.planName} with ID: ${planId}`
+    );
     return enterprisePlan;
   }
 
@@ -234,32 +251,30 @@ export class SupplyChainCoordinationService {
       plannedEndDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       routingId: 'RT_001',
       bomId: 'BOM_001',
-      costCenter: 'CC_PROD'
+      costCenter: 'CC_PROD',
     });
-    
+
     return {
       planId: `pp_${Date.now()}`,
       workOrders: [workOrder],
       totalCapacityUtilization: 0.78,
-      feasible: true
+      feasible: true,
     };
   }
 
   /**
    * Global Supply Chain Orchestration
    */
-  async orchestrateGlobalSupplyChain(
-    orchestrationConfig: {
-      regions: string[];
-      coordinationLevel: 'AUTONOMOUS' | 'SEMI_AUTONOMOUS' | 'CENTRALIZED';
-      optimizationObjectives: string[];
-      performanceTargets: any;
-    }
-  ): Promise<GlobalSupplyChainOrchestration> {
+  async orchestrateGlobalSupplyChain(orchestrationConfig: {
+    regions: string[];
+    coordinationLevel: 'AUTONOMOUS' | 'SEMI_AUTONOMOUS' | 'CENTRALIZED';
+    optimizationObjectives: string[];
+    performanceTargets: any;
+  }): Promise<GlobalSupplyChainOrchestration> {
     const orchestrationId = `gsc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Orchestrating global supply chain: ${orchestrationId}`);
-    
+
     return {
       orchestrationId,
       regions: [
@@ -269,7 +284,7 @@ export class SupplyChainCoordinationService {
           facilities: 15,
           suppliers: 125,
           customers: 2500,
-          coordinator: 'Regional Supply Chain Manager'
+          coordinator: 'Regional Supply Chain Manager',
         },
         {
           regionCode: 'EMEA',
@@ -277,7 +292,7 @@ export class SupplyChainCoordinationService {
           facilities: 12,
           suppliers: 95,
           customers: 1800,
-          coordinator: 'EMEA Supply Chain Director'
+          coordinator: 'EMEA Supply Chain Director',
         },
         {
           regionCode: 'APAC',
@@ -285,28 +300,28 @@ export class SupplyChainCoordinationService {
           facilities: 18,
           suppliers: 180,
           customers: 3200,
-          coordinator: 'APAC Supply Chain Manager'
-        }
+          coordinator: 'APAC Supply Chain Manager',
+        },
       ],
       synchronizationSchedule: [
         {
           syncPoint: 'Global Demand Consensus',
           frequency: 'WEEKLY',
           participants: ['Regional Demand Planners', 'Sales Directors'],
-          dataTypes: ['Demand Forecasts', 'Market Intelligence', 'Promotional Plans']
+          dataTypes: ['Demand Forecasts', 'Market Intelligence', 'Promotional Plans'],
         },
         {
           syncPoint: 'Capacity Allocation',
           frequency: 'DAILY',
           participants: ['Production Planners', 'Manufacturing Managers'],
-          dataTypes: ['Capacity Updates', 'Work Order Status', 'Constraint Information']
+          dataTypes: ['Capacity Updates', 'Work Order Status', 'Constraint Information'],
         },
         {
           syncPoint: 'Inventory Rebalancing',
           frequency: 'TWICE_DAILY',
           participants: ['Inventory Managers', 'Logistics Coordinators'],
-          dataTypes: ['Inventory Levels', 'Transfer Orders', 'Allocation Rules']
-        }
+          dataTypes: ['Inventory Levels', 'Transfer Orders', 'Allocation Rules'],
+        },
       ],
       performanceMetrics: {
         globalFillRate: 0.94,
@@ -315,8 +330,8 @@ export class SupplyChainCoordinationService {
         customerSatisfaction: 0.87,
         costEfficiency: 0.91,
         sustainabilityScore: 0.76,
-        regionalBalance: 0.82
-      }
+        regionalBalance: 0.82,
+      },
     };
   }
 
@@ -347,9 +362,9 @@ export class SupplyChainCoordinationService {
     };
   }> {
     const intelligenceSystemId = `sci_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Implementing supply chain intelligence system: ${intelligenceSystemId}`);
-    
+
     return {
       intelligenceSystemId,
       aiCapabilities: [
@@ -357,26 +372,26 @@ export class SupplyChainCoordinationService {
           capability: 'Demand Forecasting',
           maturityLevel: 'ADVANCED',
           accuracy: 0.89,
-          businessImpact: 'Reduced stockouts and excess inventory'
+          businessImpact: 'Reduced stockouts and excess inventory',
         },
         {
           capability: 'Supply Risk Prediction',
           maturityLevel: 'INTERMEDIATE',
           accuracy: 0.82,
-          businessImpact: 'Proactive risk mitigation and supplier diversification'
+          businessImpact: 'Proactive risk mitigation and supplier diversification',
         },
         {
           capability: 'Network Optimization',
           maturityLevel: 'ADVANCED',
           accuracy: 0.91,
-          businessImpact: 'Optimized distribution costs and service levels'
+          businessImpact: 'Optimized distribution costs and service levels',
         },
         {
           capability: 'Production Scheduling',
           maturityLevel: 'EXPERT',
           accuracy: 0.94,
-          businessImpact: 'Maximized throughput and resource utilization'
-        }
+          businessImpact: 'Maximized throughput and resource utilization',
+        },
       ],
       predictiveModels: [
         {
@@ -384,23 +399,23 @@ export class SupplyChainCoordinationService {
           modelType: 'Deep Learning Neural Network',
           accuracy: 0.89,
           predictionHorizon: 90, // days
-          lastTraining: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+          lastTraining: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
         },
         {
           modelName: 'Supply Risk Classifier',
           modelType: 'Random Forest',
           accuracy: 0.82,
           predictionHorizon: 30,
-          lastTraining: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
-        }
+          lastTraining: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+        },
       ],
       automationLevel: 0.85, // 85% automated decision making
       expectedBenefits: {
         forecastAccuracy: 0.15, // 15% improvement
-        planningEfficiency: 0.40, // 40% faster planning cycles
-        responsiveness: 0.60, // 60% faster response to changes
-        costOptimization: 0.12 // 12% cost reduction
-      }
+        planningEfficiency: 0.4, // 40% faster planning cycles
+        responsiveness: 0.6, // 60% faster response to changes
+        costOptimization: 0.12, // 12% cost reduction
+      },
     };
   }
 
@@ -436,7 +451,7 @@ export class SupplyChainCoordinationService {
     }>;
   }> {
     console.log('Generating enterprise supply chain dashboard');
-    
+
     return {
       executiveSummary: {
         overallHealth: 'GOOD',
@@ -446,44 +461,44 @@ export class SupplyChainCoordinationService {
             value: 94.2,
             target: 95.0,
             status: 'WARNING',
-            trend: 'IMPROVING'
+            trend: 'IMPROVING',
           },
           {
             metric: 'Inventory Turnover',
             value: 6.8,
             target: 8.0,
             status: 'WARNING',
-            trend: 'STABLE'
+            trend: 'STABLE',
           },
           {
             metric: 'On-Time Delivery',
             value: 91.5,
             target: 95.0,
             status: 'WARNING',
-            trend: 'IMPROVING'
+            trend: 'IMPROVING',
           },
           {
             metric: 'Cost Efficiency',
             value: 89.3,
             target: 92.0,
             status: 'WARNING',
-            trend: 'DECLINING'
-          }
+            trend: 'DECLINING',
+          },
         ],
         alerts: 5,
-        opportunities: 12
+        opportunities: 12,
       },
       operationalMetrics: {
         supplyChainVelocity: 12.5, // days
         planningAccuracy: 0.87,
         executionAccuracy: 0.91,
-        integrationEfficiency: 0.89
+        integrationEfficiency: 0.89,
       },
       strategicInsights: [
         'Manufacturing efficiency improvements driving overall performance gains',
         'Supply chain integration showing strong ROI with 15% planning cycle reduction',
         'AI-powered demand forecasting improving accuracy by 18% vs traditional methods',
-        'Global coordination reducing inventory by $2.5M while maintaining service levels'
+        'Global coordination reducing inventory by $2.5M while maintaining service levels',
       ],
       actionItems: [
         {
@@ -491,23 +506,23 @@ export class SupplyChainCoordinationService {
           category: 'Supplier Management',
           description: 'Address supplier capacity constraints in APAC region',
           owner: 'APAC Supply Chain Manager',
-          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         },
         {
           priority: 'HIGH',
           category: 'Inventory Optimization',
           description: 'Implement dynamic safety stock optimization',
           owner: 'Global Inventory Manager',
-          dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
+          dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         },
         {
           priority: 'MEDIUM',
           category: 'Process Improvement',
           description: 'Deploy advanced analytics to all regions',
           owner: 'Chief Digital Officer',
-          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-        }
-      ]
+          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
+      ],
     };
   }
 
@@ -538,7 +553,7 @@ export class SupplyChainCoordinationService {
     };
   }> {
     console.log('Generating Oracle EBS competitive analysis');
-    
+
     return {
       competitivePositioning: {
         overallRating: 'SUPERIOR',
@@ -552,8 +567,8 @@ export class SupplyChainCoordinationService {
               'AI/ML-native forecasting vs add-on modules',
               'Real-time constraint optimization',
               'Cloud-native scalability',
-              'Modern API architecture'
-            ]
+              'Modern API architecture',
+            ],
           },
           {
             category: 'Manufacturing Management',
@@ -564,8 +579,8 @@ export class SupplyChainCoordinationService {
               'Real-time shop floor integration',
               'Advanced quality analytics',
               'IoT-ready architecture',
-              'Mobile-first operator interfaces'
-            ]
+              'Mobile-first operator interfaces',
+            ],
           },
           {
             category: 'Integration & Connectivity',
@@ -576,10 +591,10 @@ export class SupplyChainCoordinationService {
               'Microservices architecture',
               'RESTful APIs vs proprietary protocols',
               'Real-time data streaming',
-              'Open-source extensibility'
-            ]
-          }
-        ]
+              'Open-source extensibility',
+            ],
+          },
+        ],
       },
       migrationValue: {
         costSavings: 2500000, // Annual savings vs Oracle licensing and maintenance
@@ -589,8 +604,8 @@ export class SupplyChainCoordinationService {
           'Faster time-to-market for new features',
           'Custom industry-specific adaptations',
           'Advanced analytics and AI capabilities',
-          'Modern user experience and mobility'
-        ]
+          'Modern user experience and mobility',
+        ],
       },
       implementationRoadmap: {
         phase1: {
@@ -599,9 +614,9 @@ export class SupplyChainCoordinationService {
             'Core supply chain planning implementation',
             'Basic manufacturing module deployment',
             'Data migration from Oracle EBS',
-            'User training and change management'
+            'User training and change management',
           ],
-          investment: 750000
+          investment: 750000,
         },
         phase2: {
           duration: 180,
@@ -609,9 +624,9 @@ export class SupplyChainCoordinationService {
             'Advanced analytics and AI implementation',
             'Full integration with existing systems',
             'Mobile applications deployment',
-            'Performance optimization'
+            'Performance optimization',
           ],
-          investment: 500000
+          investment: 500000,
         },
         phase3: {
           duration: 240,
@@ -619,11 +634,11 @@ export class SupplyChainCoordinationService {
             'Industry 4.0 capabilities',
             'Global rollout completion',
             'Advanced customizations',
-            'Continuous improvement program'
+            'Continuous improvement program',
           ],
-          investment: 350000
-        }
-      }
+          investment: 350000,
+        },
+      },
     };
   }
 
@@ -654,27 +669,27 @@ export class SupplyChainCoordinationService {
     strategicBenefits: string[];
   }> {
     console.log('Calculating ROI and business case');
-    
+
     return {
       investmentSummary: {
         totalInvestment: 1600000,
         implementationCost: 950000,
         trainingCost: 200000,
         migrationCost: 300000,
-        contingency: 150000
+        contingency: 150000,
       },
       benefitsSummary: {
         annualSavings: 2500000,
         productivityGains: 35, // percent
         qualityImprovements: 40, // percent defect reduction
         customerSatisfactionGains: 25, // percent improvement
-        riskMitigationValue: 500000 // annual risk reduction value
+        riskMitigationValue: 500000, // annual risk reduction value
       },
       financialAnalysis: {
         paybackPeriod: 7.7, // months
         roi: 156.25, // percent over 3 years
         npv: 4200000, // 3-year NPV
-        irr: 0.42 // 42% IRR
+        irr: 0.42, // 42% IRR
       },
       strategicBenefits: [
         'Modern technology platform enabling future innovation',
@@ -682,8 +697,8 @@ export class SupplyChainCoordinationService {
         'Enhanced competitive advantage through AI/ML capabilities',
         'Improved agility and responsiveness to market changes',
         'Foundation for digital transformation initiatives',
-        'Attraction and retention of top technology talent'
-      ]
+        'Attraction and retention of top technology talent',
+      ],
     };
   }
 
@@ -712,7 +727,7 @@ export class SupplyChainCoordinationService {
     };
   }> {
     console.log('Coordinating advanced manufacturing integration with supply chain');
-    
+
     return {
       leanIntegration: {
         status: 'ACTIVE',
@@ -722,22 +737,22 @@ export class SupplyChainCoordinationService {
           'Reduced inventory through pull systems',
           'Improved supplier collaboration',
           'Faster response to demand changes',
-          'Better quality upstream visibility'
-        ]
+          'Better quality upstream visibility',
+        ],
       },
       industry40Integration: {
         status: 'ACTIVE',
         iotDataIntegration: true,
         predictiveAnalyticsImpact: 25.8, // % improvement in forecasting
         autonomousDecisionSupport: true,
-        digitalTwinValue: 1250000 // annual value from digital twin insights
+        digitalTwinValue: 1250000, // annual value from digital twin insights
       },
       integratedValue: {
         totalValue: 4250000, // Total annual value
         efficiencyGains: 28.5, // % overall efficiency gain
         riskReduction: 45.2, // % supply chain risk reduction
-        innovationCapability: 186.5 // Innovation index (100 = baseline)
-      }
+        innovationCapability: 186.5, // Innovation index (100 = baseline)
+      },
     };
   }
 }

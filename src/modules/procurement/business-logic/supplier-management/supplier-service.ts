@@ -3,27 +3,28 @@
  * Business logic for supplier management operations
  */
 
-import { 
-  Supplier, 
+import {
+  Supplier,
   SupplierSearchCriteria,
   SupplierStatus,
   PerformanceLevel,
-  RiskLevel
+  RiskLevel,
 } from '../../types';
 import { supplierRepository } from '../../data-access/repositories';
 import { PaginatedResponse, SearchParams } from '../../../../types/common';
 
 export class SupplierService {
-  
   /**
    * Create a new supplier
    */
-  async createSupplier(data: Omit<Supplier, 'id' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>): Promise<Supplier> {
+  async createSupplier(
+    data: Omit<Supplier, 'id' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>
+  ): Promise<Supplier> {
     this.validateSupplierData(data);
-    
+
     // Generate supplier number
     const supplierNumber = await this.generateSupplierNumber();
-    
+
     const supplierData = {
       ...data,
       supplierNumber,
@@ -38,9 +39,9 @@ export class SupplierService {
       certifications: data.certifications || [],
       insurancePolicies: data.insurancePolicies || [],
       createdBy: 'system',
-      updatedBy: 'system'
+      updatedBy: 'system',
     };
-    
+
     return await supplierRepository.create(supplierData);
   }
 
@@ -66,12 +67,12 @@ export class SupplierService {
     if (!existing) {
       throw new Error(`Supplier with ID ${id} not found`);
     }
-    
+
     // Validate updates if they include critical fields
     if (updates.legalName || updates.taxId || updates.category) {
       this.validateSupplierData({ ...existing, ...updates } as any);
     }
-    
+
     return await supplierRepository.update(id, updates);
   }
 
@@ -83,13 +84,13 @@ export class SupplierService {
     if (!existing) {
       throw new Error(`Supplier with ID ${id} not found`);
     }
-    
+
     // Check if supplier has active contracts or orders
     const hasActiveRelationships = await this.checkActiveRelationships(id);
     if (hasActiveRelationships) {
       throw new Error('Cannot delete supplier with active contracts or purchase orders');
     }
-    
+
     await supplierRepository.delete(id);
   }
 
@@ -97,7 +98,7 @@ export class SupplierService {
    * Search suppliers with criteria and pagination
    */
   async searchSuppliers(
-    criteria: SupplierSearchCriteria, 
+    criteria: SupplierSearchCriteria,
     params?: SearchParams
   ): Promise<PaginatedResponse<Supplier>> {
     return await supplierRepository.search(criteria, params);
@@ -138,7 +139,7 @@ export class SupplierService {
     // - Quality metrics
     // - Cost competitiveness
     // - Service levels
-    
+
     return {
       overallRating: PerformanceLevel.HIGH,
       qualityScore: 8.5,
@@ -148,8 +149,8 @@ export class SupplierService {
       recommendations: [
         'Consider for preferred supplier status',
         'Negotiate better pricing terms',
-        'Expand to additional categories'
-      ]
+        'Expand to additional categories',
+      ],
     };
   }
 
@@ -172,22 +173,22 @@ export class SupplierService {
     // - Regulatory compliance
     // - Operational risks
     // - Cyber security risks
-    
+
     return {
       riskRating: RiskLevel.LOW,
       riskFactors: [
         {
           factor: 'Financial Stability',
           severity: 'LOW',
-          mitigation: 'Monitor quarterly financial reports'
+          mitigation: 'Monitor quarterly financial reports',
         },
         {
           factor: 'Geographic Concentration',
           severity: 'MEDIUM',
-          mitigation: 'Develop alternative suppliers in different regions'
-        }
+          mitigation: 'Develop alternative suppliers in different regions',
+        },
       ],
-      overallScore: 7.5
+      overallScore: 7.5,
     };
   }
 
@@ -227,7 +228,7 @@ export class SupplierService {
 
     return await this.updateSupplier(supplierId, {
       status: SupplierStatus.ACTIVE,
-      approvedCategories
+      approvedCategories,
     });
   }
 
@@ -241,29 +242,29 @@ export class SupplierService {
     }
 
     return await this.updateSupplier(supplierId, {
-      status: SupplierStatus.SUSPENDED
+      status: SupplierStatus.SUSPENDED,
     });
   }
 
   // Private helper methods
-  
+
   private validateSupplierData(data: Partial<Supplier>): void {
     if (!data.legalName || data.legalName.trim() === '') {
       throw new Error('Legal name is required');
     }
-    
+
     if (!data.taxId || data.taxId.trim() === '') {
       throw new Error('Tax ID is required');
     }
-    
+
     if (!data.category) {
       throw new Error('Supplier category is required');
     }
-    
+
     if (!data.primaryContact || !data.primaryContact.firstName || !data.primaryContact.lastName) {
       throw new Error('Primary contact information is required');
     }
-    
+
     if (!data.businessAddress || !data.businessAddress.street || !data.businessAddress.city) {
       throw new Error('Business address is required');
     }
@@ -282,7 +283,7 @@ export class SupplierService {
     // - Active contracts
     // - Pending RFQs
     // - Outstanding invoices
-    
+
     return false; // Mock implementation
   }
 }

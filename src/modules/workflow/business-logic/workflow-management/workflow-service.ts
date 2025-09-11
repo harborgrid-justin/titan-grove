@@ -7,8 +7,9 @@ import type { WorkflowEntity } from '../../types';
 import { workflowRepository } from '../../data-access/repositories';
 
 export class WorkflowService {
-  
-  async createWorkflow(data: Omit<WorkflowEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<WorkflowEntity> {
+  async createWorkflow(
+    data: Omit<WorkflowEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<WorkflowEntity> {
     this.validateWorkflowData(data);
     return await workflowRepository.create(data);
   }
@@ -22,7 +23,7 @@ export class WorkflowService {
     if (!existing) {
       throw new Error(`Workflow with ID ${id} not found`);
     }
-    
+
     return await workflowRepository.update(id, updates);
   }
 
@@ -31,7 +32,7 @@ export class WorkflowService {
     if (!existing) {
       throw new Error(`Workflow with ID ${id} not found`);
     }
-    
+
     await workflowRepository.delete(id);
   }
 
@@ -39,7 +40,9 @@ export class WorkflowService {
     return await workflowRepository.getAll();
   }
 
-  private validateWorkflowData(data: Omit<WorkflowEntity, 'id' | 'createdDate' | 'modifiedDate'>): void {
+  private validateWorkflowData(
+    data: Omit<WorkflowEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): void {
     if (!data.name || data.name.trim() === '') {
       throw new Error('Name is required');
     }

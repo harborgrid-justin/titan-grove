@@ -14,10 +14,13 @@ const router: RouterType = Router();
 // Apply standard middleware
 applyStandardMiddleware(router);
 
-
 // General Ledger Routes
 router.get('/ledger', financeController.getGeneralLedger);
-router.post('/ledger/entry', validateBusiness('createJournalEntry'), financeController.createJournalEntry);
+router.post(
+  '/ledger/entry',
+  validateBusiness('createJournalEntry'),
+  financeController.createJournalEntry
+);
 
 // Accounts Payable Routes
 router.get('/payable', financeController.getAccountsPayable);
@@ -29,7 +32,11 @@ router.post('/payments', validateBusiness('recordPayment'), financeController.re
 
 // Financial Reporting Routes
 router.get('/reports', financeController.getFinancialReports);
-router.post('/reports/generate', validateBusiness('generateReport'), financeController.generateReport);
+router.post(
+  '/reports/generate',
+  validateBusiness('generateReport'),
+  financeController.generateReport
+);
 
 // Budget Management Routes
 router.get('/budget/analysis', financeController.getBudgetAnalysis);

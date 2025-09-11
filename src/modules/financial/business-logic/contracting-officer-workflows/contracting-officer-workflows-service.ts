@@ -31,7 +31,12 @@ export interface ContractingWarrant {
 
 export interface ProcurementWorkflow {
   id: string;
-  workflowType: 'ACQUISITION_PLANNING' | 'SOURCE_SELECTION' | 'CONTRACT_AWARD' | 'CONTRACT_ADMINISTRATION' | 'CLOSEOUT';
+  workflowType:
+    | 'ACQUISITION_PLANNING'
+    | 'SOURCE_SELECTION'
+    | 'CONTRACT_AWARD'
+    | 'CONTRACT_ADMINISTRATION'
+    | 'CLOSEOUT';
   contractId: string;
   currentStage: WorkflowStage;
   stages: WorkflowStage[];
@@ -123,7 +128,12 @@ export interface EvaluationCriteria {
 
 export interface TeamMember {
   userId: string;
-  role: 'SOURCE_SELECTION_AUTHORITY' | 'CONTRACTING_OFFICER' | 'EVALUATOR' | 'TECHNICAL_ADVISOR' | 'LEGAL_COUNSEL';
+  role:
+    | 'SOURCE_SELECTION_AUTHORITY'
+    | 'CONTRACTING_OFFICER'
+    | 'EVALUATOR'
+    | 'TECHNICAL_ADVISOR'
+    | 'LEGAL_COUNSEL';
   responsibilities: string[];
   conflictOfInterestCleared: boolean;
   clearanceDate?: Date;
@@ -215,7 +225,7 @@ export class ContractingOfficerWorkflowsService {
     assignedOfficer: string
   ): Promise<ProcurementWorkflow> {
     const stages = this.generateWorkflowStages(workflowType);
-    
+
     const workflow: ProcurementWorkflow = {
       id: `workflow_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       workflowType,
@@ -225,9 +235,9 @@ export class ContractingOfficerWorkflowsService {
       assignedOfficer,
       priority: 'MEDIUM',
       estimatedCompletionDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days
-      status: 'NOT_STARTED'
+      status: 'NOT_STARTED',
     };
-    
+
     return workflow;
   }
 
@@ -255,12 +265,12 @@ export class ContractingOfficerWorkflowsService {
         scheduleRisk: 'MEDIUM',
         costRisk: 'MEDIUM',
         riskFactors: ['Market volatility', 'Technical complexity'],
-        mitigationStrategies: ['Detailed specifications', 'Performance monitoring']
+        mitigationStrategies: ['Detailed specifications', 'Performance monitoring'],
       },
       approvedBy: '',
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
-    
+
     return plan;
   }
 
@@ -282,9 +292,9 @@ export class ContractingOfficerWorkflowsService {
       competitionFeasibility: 'FULL_OPEN',
       findings: 'Market research in progress',
       recommendations: [],
-      documentedBy: 'system_user'
+      documentedBy: 'system_user',
     };
-    
+
     return research;
   }
 
@@ -304,9 +314,9 @@ export class ContractingOfficerWorkflowsService {
       sourceSelectionTeam: [],
       proposalsReceived: 0,
       evaluationStartDate: new Date(),
-      status: 'PLANNING'
+      status: 'PLANNING',
     };
-    
+
     return sourceSelection;
   }
 
@@ -328,20 +338,22 @@ export class ContractingOfficerWorkflowsService {
         lastReviewDate: new Date(),
         nextReviewDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
         performanceIssues: [],
-        correctiveActions: []
+        correctiveActions: [],
       },
       modificationHistory: [],
       invoiceProcessing: [],
-      deliverableTracking: []
+      deliverableTracking: [],
     };
-    
+
     return administration;
   }
 
   /**
    * Generate workflow stages based on type
    */
-  private generateWorkflowStages(workflowType: ProcurementWorkflow['workflowType']): WorkflowStage[] {
+  private generateWorkflowStages(
+    workflowType: ProcurementWorkflow['workflowType']
+  ): WorkflowStage[] {
     const commonStages = {
       planning: {
         id: 'stage_planning',
@@ -354,7 +366,7 @@ export class ContractingOfficerWorkflowsService {
         estimatedDuration: 30,
         status: 'PENDING' as const,
         assignedTo: [],
-        prerequisites: []
+        prerequisites: [],
       },
       approval: {
         id: 'stage_approval',
@@ -367,8 +379,8 @@ export class ContractingOfficerWorkflowsService {
         estimatedDuration: 15,
         status: 'PENDING' as const,
         assignedTo: [],
-        prerequisites: ['stage_planning']
-      }
+        prerequisites: ['stage_planning'],
+      },
     };
 
     switch (workflowType) {
@@ -378,10 +390,10 @@ export class ContractingOfficerWorkflowsService {
           {
             ...commonStages.approval,
             sequence: 2,
-            description: 'Market research and acquisition strategy approval'
-          }
+            description: 'Market research and acquisition strategy approval',
+          },
         ];
-      
+
       case 'SOURCE_SELECTION':
         return [
           commonStages.planning,
@@ -396,7 +408,7 @@ export class ContractingOfficerWorkflowsService {
             estimatedDuration: 45,
             status: 'PENDING',
             assignedTo: [],
-            prerequisites: ['stage_planning']
+            prerequisites: ['stage_planning'],
           },
           {
             id: 'stage_evaluation',
@@ -409,10 +421,10 @@ export class ContractingOfficerWorkflowsService {
             estimatedDuration: 60,
             status: 'PENDING',
             assignedTo: [],
-            prerequisites: ['stage_solicitation']
-          }
+            prerequisites: ['stage_solicitation'],
+          },
         ];
-      
+
       default:
         return [commonStages.planning, commonStages.approval];
     }
@@ -436,14 +448,17 @@ export class ContractingOfficerWorkflowsService {
       hasAuthority: true,
       warrantLimit: 10000000,
       requiredApprovals: [],
-      reasons: ['Officer has sufficient warrant authority for this action']
+      reasons: ['Officer has sufficient warrant authority for this action'],
     };
   }
 
   /**
    * Generate operational excellence metrics for contracting officers
    */
-  async generateOperationalMetrics(officerId: string, timeframe: 'MONTHLY' | 'QUARTERLY' | 'YEARLY'): Promise<{
+  async generateOperationalMetrics(
+    officerId: string,
+    timeframe: 'MONTHLY' | 'QUARTERLY' | 'YEARLY'
+  ): Promise<{
     contractsProcessed: number;
     averageProcessingTime: number;
     complianceScore: number;
@@ -463,8 +478,8 @@ export class ContractingOfficerWorkflowsService {
       recommendations: [
         'Continue focus on increasing competition rates',
         'Consider streamlining documentation processes',
-        'Maintain high compliance standards'
-      ]
+        'Maintain high compliance standards',
+      ],
     };
   }
 }

@@ -14,5 +14,5 @@ export {
   calculateTrainingComplianceRate,
   validateRequirementCompliance,
   generateComplianceMetrics,
-  calculateAuditScore
+  calculateAuditScore,
 } from '../native';

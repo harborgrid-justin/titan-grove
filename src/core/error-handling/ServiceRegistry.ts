@@ -58,7 +58,7 @@ export abstract class BaseService extends EventEmitter {
       status: 'healthy',
       lastCheck: new Date(),
       errorBoundaryMetrics: this.errorBoundary?.getMetrics(),
-      circuitBreakerMetrics: this.errorBoundary?.getCircuitBreakerMetrics()
+      circuitBreakerMetrics: this.errorBoundary?.getCircuitBreakerMetrics(),
     };
   }
 
@@ -88,26 +88,23 @@ export class ServiceRegistry extends EventEmitter {
     super();
   }
 
-  register<T extends BaseService>(
-    serviceFactory: () => T,
-    config: ServiceConfig
-  ): void {
+  register<T extends BaseService>(serviceFactory: () => T, config: ServiceConfig): void {
     const serviceName = config.metadata.name;
-    
+
     if (this.serviceFactories.has(serviceName)) {
       throw new Error(`Service ${serviceName} is already registered`);
     }
 
     this.serviceFactories.set(serviceName, serviceFactory);
     this.serviceConfigs.set(serviceName, config);
-    
+
     this.logger?.info(`Service registered: ${serviceName}`, { metadata: config.metadata });
     this.emit('service:registered', serviceName, config);
   }
 
   getService<T extends BaseService>(serviceName: string): T {
     let service = this.services.get(serviceName) as T;
-    
+
     if (!service) {
       service = this.createService<T>(serviceName);
     }
@@ -118,22 +115,22 @@ export class ServiceRegistry extends EventEmitter {
   private createService<T extends BaseService>(serviceName: string): T {
     const factory = this.serviceFactories.get(serviceName);
     const config = this.serviceConfigs.get(serviceName);
-    
+
     if (!factory || !config) {
       throw new Error(`Service ${serviceName} not found in registry`);
     }
 
     this.logger?.info(`Creating service instance: ${serviceName}`);
-    
+
     const service = factory() as T;
     service.setLogger(this.logger!);
-    
+
     // Set up error boundary if configured
     if (config.errorBoundaryConfig) {
       const errorBoundary = new ErrorBoundary({
         ...config.errorBoundaryConfig,
         serviceName,
-        logger: this.logger
+        logger: this.logger,
       });
       service.setErrorBoundary(errorBoundary);
     }
@@ -165,9 +162,9 @@ export class ServiceRegistry extends EventEmitter {
     }
 
     this.logger?.info(`Initializing service: ${serviceName}`);
-    
+
     const service = this.getService(serviceName);
-    
+
     try {
       await service.initialize();
       this.initializedServices.add(serviceName);
@@ -182,7 +179,7 @@ export class ServiceRegistry extends EventEmitter {
 
   async initializeAll(): Promise<void> {
     const serviceNames = Array.from(this.serviceConfigs.keys());
-    
+
     for (const serviceName of serviceNames) {
       const config = this.serviceConfigs.get(serviceName);
       if (config && !config.lazy) {
@@ -195,7 +192,7 @@ export class ServiceRegistry extends EventEmitter {
     const service = this.services.get(serviceName);
     if (service) {
       this.logger?.info(`Destroying service: ${serviceName}`);
-      
+
       try {
         await service.destroy();
         this.services.delete(serviceName);
@@ -212,7 +209,7 @@ export class ServiceRegistry extends EventEmitter {
 
   async destroyAll(): Promise<void> {
     const serviceNames = Array.from(this.services.keys());
-    
+
     for (const serviceName of serviceNames) {
       await this.destroyService(serviceName);
     }
@@ -220,7 +217,7 @@ export class ServiceRegistry extends EventEmitter {
 
   async healthCheck(): Promise<ServiceHealth[]> {
     const healthChecks: ServiceHealth[] = [];
-    
+
     for (const [serviceName, service] of this.services.entries()) {
       try {
         const health = await service.healthCheck();
@@ -230,7 +227,7 @@ export class ServiceRegistry extends EventEmitter {
           serviceName,
           status: 'unhealthy',
           lastCheck: new Date(),
-          details: { error: (error as Error).message }
+          details: { error: (error as Error).message },
         });
       }
     }

@@ -3,5 +3,5 @@
  */
 
 export const SearchComponents = {
-  // TODO: Implement search components  
+  // TODO: Implement search components
 };

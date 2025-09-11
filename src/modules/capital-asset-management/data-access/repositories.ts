@@ -20,7 +20,7 @@ export abstract class BaseModuleRepository<T extends Record<string, any>> {
   }
 
   async findById(id: string): Promise<T | null> {
-    return this.items.find(item => item.id === id) || null;
+    return this.items.find((item) => item.id === id) || null;
   }
 
   async findAll(): Promise<T[]> {
@@ -28,22 +28,22 @@ export abstract class BaseModuleRepository<T extends Record<string, any>> {
   }
 
   async update(id: string, updates: Partial<T>): Promise<T | null> {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.items.findIndex((item) => item.id === id);
     if (index === -1) return null;
-    
+
     this.items[index] = { ...this.items[index], ...updates };
     return this.items[index];
   }
 
   async delete(id: string): Promise<void> {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.items.findIndex((item) => item.id === id);
     if (index !== -1) {
       this.items.splice(index, 1);
     }
   }
 
   async findByField(field: keyof T, value: any): Promise<T[]> {
-    return this.items.filter(item => item[field] === value);
+    return this.items.filter((item) => item[field] === value);
   }
 
   async count(): Promise<number> {
@@ -68,10 +68,10 @@ export class CapitalAssetRepository extends BaseModuleRepository<any> {
   async findAssetsNearingReplacement(): Promise<any[]> {
     const sixMonthsFromNow = new Date();
     sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
-    
-    return this.items.filter(asset => 
-      asset.plannedReplacementDate && 
-      new Date(asset.plannedReplacementDate) <= sixMonthsFromNow
+
+    return this.items.filter(
+      (asset) =>
+        asset.plannedReplacementDate && new Date(asset.plannedReplacementDate) <= sixMonthsFromNow
     );
   }
 

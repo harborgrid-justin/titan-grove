@@ -46,61 +46,62 @@ export interface WorkOrderCostAnalysis {
 }
 
 export class WorkOrderManagementService {
-  
   async createWorkOrder(
     workOrderData: Omit<WorkOrder, 'id' | 'workOrderNumber' | 'completedQuantity' | 'scrapQuantity'>
   ): Promise<WorkOrder> {
     const id = `wo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const workOrderNumber = `WO${Date.now().toString().slice(-6)}`;
-    
+
     const workOrder: WorkOrder = {
       ...workOrderData,
       id,
       workOrderNumber,
       completedQuantity: 0,
-      scrapQuantity: 0
+      scrapQuantity: 0,
     };
 
-    console.log(`Created work order: ${workOrder.workOrderNumber} for product ${workOrder.productId}`);
+    console.log(
+      `Created work order: ${workOrder.workOrderNumber} for product ${workOrder.productId}`
+    );
     return workOrder;
   }
 
   async getWorkOrderStatus(workOrderId: string): Promise<WorkOrderStatus> {
     console.log(`Getting status for work order: ${workOrderId}`);
-    
+
     return {
       workOrderId,
       currentStatus: 'IN_PROGRESS',
       completionPercentage: 65,
       actualCost: 1875.25,
-      standardCost: 1750.00,
-      variance: 125.25
+      standardCost: 1750.0,
+      variance: 125.25,
     };
   }
 
   async calculateWorkOrderCosts(workOrderId: string): Promise<WorkOrderCostAnalysis> {
     console.log(`Calculating costs for work order: ${workOrderId}`);
-    
+
     return {
       workOrderId,
       standardCosts: {
-        materialCost: 1500.00,
-        laborCost: 400.00,
-        overheadCost: 300.00,
-        totalStandardCost: 2200.00
+        materialCost: 1500.0,
+        laborCost: 400.0,
+        overheadCost: 300.0,
+        totalStandardCost: 2200.0,
       },
       actualCosts: {
-        materialCost: 1575.00,
-        laborCost: 450.00,
-        overheadCost: 337.50,
-        totalActualCost: 2362.50
+        materialCost: 1575.0,
+        laborCost: 450.0,
+        overheadCost: 337.5,
+        totalActualCost: 2362.5,
       },
       variances: {
-        materialVariance: 75.00,
-        laborVariance: 50.00,
-        overheadVariance: 37.50,
-        totalVariance: 162.50
-      }
+        materialVariance: 75.0,
+        laborVariance: 50.0,
+        overheadVariance: 37.5,
+        totalVariance: 162.5,
+      },
     };
   }
 
@@ -116,14 +117,14 @@ export class WorkOrderManagementService {
     costVariance: number;
   }> {
     console.log(`Generating work order performance analytics`);
-    
+
     return {
       totalWorkOrders: 145,
       completedWorkOrders: 132,
       completionRate: 91.0,
       averageCycleTime: 52.3,
       onTimeDeliveryRate: 87.5,
-      costVariance: 4.2
+      costVariance: 4.2,
     };
   }
 }

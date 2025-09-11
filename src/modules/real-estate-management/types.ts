@@ -12,12 +12,12 @@ export interface RealEstateProperty {
   propertyNumber: string;
   propertyName: string;
   description: string;
-  
+
   // Property classification
   propertyType: 'OFFICE' | 'WAREHOUSE' | 'MANUFACTURING' | 'RETAIL' | 'MIXED_USE' | 'LAND';
   propertySubtype: string;
   assetClass: 'CORE' | 'CORE_PLUS' | 'VALUE_ADD' | 'OPPORTUNISTIC';
-  
+
   // Location details
   location: {
     address: {
@@ -37,7 +37,7 @@ export interface RealEstateProperty {
     accessibilityRating: number;
     transportationScore: number;
   };
-  
+
   // Physical characteristics
   physical: {
     totalArea: number; // square feet
@@ -50,7 +50,7 @@ export interface RealEstateProperty {
     condition: 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR';
     certifications: string[]; // LEED, Energy Star, etc.
   };
-  
+
   // Financial information
   financial: {
     purchasePrice?: number;
@@ -63,7 +63,7 @@ export interface RealEstateProperty {
     insurance: number;
     totalCostOfOwnership: number;
   };
-  
+
   // Ownership details
   ownership: {
     ownershipType: 'OWNED' | 'LEASED' | 'JOINT_VENTURE' | 'PARTNERSHIP';
@@ -73,7 +73,7 @@ export interface RealEstateProperty {
     percentOwned: number;
     jointVenturePartners?: string[];
   };
-  
+
   // Operational status
   operations: {
     operationalStatus: 'OPERATIONAL' | 'UNDER_CONSTRUCTION' | 'RENOVATION' | 'VACANT' | 'DISPOSED';
@@ -83,7 +83,7 @@ export interface RealEstateProperty {
     parkingSpaces: number;
     amenities: string[];
   };
-  
+
   // Performance metrics
   performance: {
     occupancyRate: number; // percentage
@@ -95,7 +95,7 @@ export interface RealEstateProperty {
     irr: number; // internal rate of return
     cashOnCashReturn: number;
   };
-  
+
   // ESG and sustainability
   sustainability: {
     energyEfficiencyRating: string;
@@ -108,7 +108,7 @@ export interface RealEstateProperty {
       water: number; // gallons per year
     };
   };
-  
+
   // Risk assessment
   risk: {
     riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
@@ -122,7 +122,7 @@ export interface RealEstateProperty {
       businessInterruption: number;
     };
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -134,7 +134,7 @@ export interface LeaseAgreement {
   propertyId: string;
   leaseNumber: string;
   leaseName: string;
-  
+
   // Tenant information
   tenant: {
     tenantId: string;
@@ -149,7 +149,7 @@ export interface LeaseAgreement {
       address: string;
     };
   };
-  
+
   // Lease terms
   terms: {
     leaseType: 'GROSS' | 'NET' | 'DOUBLE_NET' | 'TRIPLE_NET' | 'MODIFIED_GROSS';
@@ -167,7 +167,7 @@ export interface LeaseAgreement {
       penaltyType: 'FIXED' | 'PERCENTAGE';
     };
   };
-  
+
   // Space details
   space: {
     leasedArea: number; // square feet
@@ -178,7 +178,7 @@ export interface LeaseAgreement {
     exclusiveUseAreas?: string[];
     sharedAreas?: string[];
   };
-  
+
   // Rent structure
   rent: {
     baseRent: number; // annual
@@ -199,7 +199,7 @@ export interface LeaseAgreement {
     securityDeposit: number;
     keyMoney?: number;
   };
-  
+
   // Payment terms
   payment: {
     paymentFrequency: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
@@ -208,7 +208,7 @@ export interface LeaseAgreement {
     gracePeriodDays: number;
     paymentMethod: string[];
   };
-  
+
   // Responsibilities
   responsibilities: {
     landlordResponsibilities: string[];
@@ -221,7 +221,7 @@ export interface LeaseAgreement {
       businessInterruption?: number;
     };
   };
-  
+
   // Special clauses
   clauses: {
     useRestrictions: string[];
@@ -235,7 +235,7 @@ export interface LeaseAgreement {
     exclusivityClause?: string;
     coTenancyRequirements?: string[];
   };
-  
+
   // Lease status and tracking
   status: {
     leaseStatus: 'DRAFT' | 'NEGOTIATING' | 'EXECUTED' | 'ACTIVE' | 'EXPIRED' | 'TERMINATED';
@@ -246,7 +246,7 @@ export interface LeaseAgreement {
     noticeToVacateReceived?: Date;
     renewalNoticeDate?: Date;
   };
-  
+
   // Performance tracking
   performance: {
     paymentHistory: {
@@ -259,7 +259,7 @@ export interface LeaseAgreement {
     maintenanceRequests: number;
     renewalProbability: number; // percentage
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -270,7 +270,7 @@ export interface PropertyPortfolio {
   portfolioId: string;
   portfolioName: string;
   description: string;
-  
+
   // Portfolio composition
   properties: {
     propertyId: string;
@@ -281,7 +281,7 @@ export interface PropertyPortfolio {
     acquisitionDate: Date;
     performanceRank: number;
   }[];
-  
+
   // Portfolio metrics
   metrics: {
     totalValue: number;
@@ -295,7 +295,7 @@ export interface PropertyPortfolio {
     riskAdjustedReturn: number;
     sharpeRatio: number;
   };
-  
+
   // Geographic diversification
   geographic: {
     regions: {
@@ -312,7 +312,7 @@ export interface PropertyPortfolio {
     }[];
     concentrationRisk: number;
   };
-  
+
   // Property type diversification
   propertyTypes: {
     propertyType: string;
@@ -323,7 +323,7 @@ export interface PropertyPortfolio {
     avgCapRate: number;
     percentage: number;
   }[];
-  
+
   // Performance analysis
   performance: {
     bestPerformers: {
@@ -345,7 +345,7 @@ export interface PropertyPortfolio {
       outperformance: number;
     }[];
   };
-  
+
   // Risk analysis
   risk: {
     portfolioRisk: 'LOW' | 'MEDIUM' | 'HIGH';
@@ -362,7 +362,7 @@ export interface PropertyPortfolio {
       concentrationIndex: number;
     };
   };
-  
+
   // Strategic objectives
   objectives: {
     targetReturn: number;
@@ -380,7 +380,7 @@ export interface PropertyPortfolio {
       targetTimeline: string;
     };
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -391,7 +391,7 @@ export interface FacilityManagement {
   facilityId: string;
   propertyId: string;
   facilityName: string;
-  
+
   // Facility details
   facility: {
     facilityType: 'OFFICE' | 'WAREHOUSE' | 'MANUFACTURING' | 'DATA_CENTER' | 'LABORATORY';
@@ -409,7 +409,7 @@ export interface FacilityManagement {
       availability247?: boolean;
     };
   };
-  
+
   // Space management
   spaceManagement: {
     spaceAllocation: {
@@ -431,7 +431,7 @@ export interface FacilityManagement {
       expansionPlan?: string;
     };
   };
-  
+
   // Building systems
   buildingSystems: {
     hvac: {
@@ -461,7 +461,7 @@ export interface FacilityManagement {
       nextInspection: Date;
     };
   };
-  
+
   // Services and amenities
   services: {
     cleaning: {
@@ -491,7 +491,7 @@ export interface FacilityManagement {
       childcare: boolean;
     };
   };
-  
+
   // Compliance and certifications
   compliance: {
     buildingCodes: {
@@ -512,7 +512,7 @@ export interface FacilityManagement {
       improvements: string[];
     };
   };
-  
+
   // Performance metrics
   performance: {
     operationalEfficiency: number; // percentage
@@ -522,7 +522,7 @@ export interface FacilityManagement {
     maintenanceResponseTime: number; // hours
     uptimePercentage: number;
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -533,7 +533,7 @@ export interface SpaceOptimization {
   optimizationId: string;
   propertyId: string;
   optimizationName: string;
-  
+
   // Current state analysis
   currentState: {
     totalArea: number;
@@ -544,7 +544,7 @@ export interface SpaceOptimization {
     costPerSquareFoot: number;
     occupancyRate: number;
   };
-  
+
   // Optimization objectives
   objectives: {
     targetUtilization: number;
@@ -553,7 +553,7 @@ export interface SpaceOptimization {
     occupancyImprovement: number; // percentage
     priorities: ('COST_REDUCTION' | 'EFFICIENCY' | 'EMPLOYEE_SATISFACTION' | 'FLEXIBILITY')[];
   };
-  
+
   // Space analysis
   spaceAnalysis: {
     spaceTypes: {
@@ -575,7 +575,7 @@ export interface SpaceOptimization {
       solution: string;
     }[];
   };
-  
+
   // Optimization scenarios
   scenarios: {
     scenarioName: string;
@@ -605,7 +605,7 @@ export interface SpaceOptimization {
       internalRateOfReturn: number;
     };
   }[];
-  
+
   // Recommendations
   recommendations: {
     immediate: string[];
@@ -613,7 +613,7 @@ export interface SpaceOptimization {
     longTerm: string[]; // 6+ months
     considerForFuture: string[];
   };
-  
+
   // Implementation plan
   implementationPlan?: {
     selectedScenario: string;
@@ -630,7 +630,7 @@ export interface SpaceOptimization {
     totalTimeline: number; // weeks
     riskMitigation: string[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -641,7 +641,7 @@ export interface MarketAnalysis {
   analysisId: string;
   marketArea: string;
   analysisDate: Date;
-  
+
   // Market overview
   market: {
     marketName: string;
@@ -653,7 +653,7 @@ export interface MarketAnalysis {
     majorEmployers: string[];
     economicDrivers: string[];
   };
-  
+
   // Supply analysis
   supply: {
     totalInventory: number; // square feet
@@ -668,7 +668,7 @@ export interface MarketAnalysis {
     absorptionRate: number; // square feet per year
     months_of_supply: number;
   };
-  
+
   // Demand analysis
   demand: {
     demandDrivers: string[];
@@ -685,7 +685,7 @@ export interface MarketAnalysis {
       growthRate: number;
     }[];
   };
-  
+
   // Pricing analysis
   pricing: {
     averageRent: number; // per square foot
@@ -706,7 +706,7 @@ export interface MarketAnalysis {
       otherConcessions: string[];
     };
   };
-  
+
   // Investment analysis
   investment: {
     averageCapRate: number;
@@ -716,7 +716,7 @@ export interface MarketAnalysis {
     investmentActivityLevel: 'HIGH' | 'MEDIUM' | 'LOW';
     majorInvestors: string[];
   };
-  
+
   // Competitive analysis
   competition: {
     directCompetitors: {
@@ -730,7 +730,7 @@ export interface MarketAnalysis {
     marketShare: number; // percentage
     differentiators: string[];
   };
-  
+
   // Market trends
   trends: {
     emergingTrends: string[];
@@ -739,7 +739,7 @@ export interface MarketAnalysis {
     regulatoryChanges: string[];
     sustainabilityTrends: string[];
   };
-  
+
   // Risk factors
   risks: {
     marketRisks: string[];
@@ -748,7 +748,7 @@ export interface MarketAnalysis {
     regulatoryRisks: string[];
     environmentalRisks: string[];
   };
-  
+
   // Opportunities
   opportunities: {
     growthOpportunities: string[];
@@ -756,7 +756,7 @@ export interface MarketAnalysis {
     valueAddOpportunities: string[];
     developmentOpportunities: string[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -766,7 +766,7 @@ export interface PropertyValuation {
   propertyId: string;
   valuationType: 'APPRAISAL' | 'BROKER_OPINION' | 'AUTOMATED_VALUATION' | 'INTERNAL_ASSESSMENT';
   valuationDate: Date;
-  
+
   // Valuation approaches
   approaches: {
     costApproach?: {
@@ -794,7 +794,7 @@ export interface PropertyValuation {
       confidence: number;
     };
   };
-  
+
   // Final valuation
   finalValuation: {
     lowEstimate: number;
@@ -807,7 +807,7 @@ export interface PropertyValuation {
       sales: number;
     };
   };
-  
+
   // Valuation assumptions
   assumptions: {
     marketConditions: string;
@@ -819,7 +819,7 @@ export interface PropertyValuation {
     capRate: number;
     discountRate: number;
   };
-  
+
   // Market data
   marketData: {
     comparableSales: number;
@@ -827,7 +827,7 @@ export interface PropertyValuation {
     marketTrend: 'INCREASING' | 'STABLE' | 'DECREASING';
     marketConditions: 'BUYER' | 'SELLER' | 'BALANCED';
   };
-  
+
   // Risk assessment
   riskAssessment: {
     marketRisk: 'LOW' | 'MEDIUM' | 'HIGH';
@@ -836,7 +836,7 @@ export interface PropertyValuation {
     overallRisk: 'LOW' | 'MEDIUM' | 'HIGH';
     riskFactors: string[];
   };
-  
+
   // Valuation confidence
   confidence: {
     overallConfidence: number; // percentage
@@ -845,7 +845,7 @@ export interface PropertyValuation {
     propertyInspection: boolean;
     limitations: string[];
   };
-  
+
   // Appraiser information (if applicable)
   appraiser?: {
     name: string;
@@ -854,7 +854,7 @@ export interface PropertyValuation {
     experience: number; // years
     specializations: string[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -869,7 +869,7 @@ export interface OccupancyAnalysis {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Current occupancy metrics
   currentOccupancy: {
     totalSpace: number; // square feet
@@ -879,7 +879,7 @@ export interface OccupancyAnalysis {
     economicOccupancy: number; // percentage (accounting for rent loss)
     physicalOccupancy: number; // percentage
   };
-  
+
   // Tenant analysis
   tenantAnalysis: {
     tenantCount: number;
@@ -901,7 +901,7 @@ export interface OccupancyAnalysis {
       churnRate: number; // percentage
     };
   };
-  
+
   // Lease expiration analysis
   leaseExpirations: {
     year: number;
@@ -910,7 +910,7 @@ export interface OccupancyAnalysis {
     percentOfIncome: number;
     renewalProbability: number; // percentage
   }[];
-  
+
   // Vacancy analysis
   vacancyAnalysis: {
     vacantUnits: {
@@ -929,7 +929,7 @@ export interface OccupancyAnalysis {
     averageTimeToLease: number; // days
     difficultToLease: string[]; // unit numbers
   };
-  
+
   // Market positioning
   positioning: {
     competitivePosition: 'PREMIUM' | 'COMPETITIVE' | 'VALUE';
@@ -937,7 +937,7 @@ export interface OccupancyAnalysis {
     amenityCompetitiveness: 'SUPERIOR' | 'COMPETITIVE' | 'BELOW_MARKET';
     locationAdvantage: 'PRIME' | 'GOOD' | 'AVERAGE' | 'POOR';
   };
-  
+
   // Occupancy trends
   trends: {
     historicalOccupancy: {
@@ -956,7 +956,7 @@ export interface OccupancyAnalysis {
       rentTrend: 'INCREASING' | 'STABLE' | 'DECREASING';
     };
   };
-  
+
   // Performance metrics
   performance: {
     netOperatingIncome: number;
@@ -966,7 +966,7 @@ export interface OccupancyAnalysis {
     occupancyVsMarket: number; // percentage variance
     rentVsMarket: number; // percentage variance
   };
-  
+
   // Optimization recommendations
   recommendations: {
     immediate: string[];
@@ -979,7 +979,7 @@ export interface OccupancyAnalysis {
       timeline: string;
     }[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -993,14 +993,14 @@ export interface RealEstateForecast {
   marketArea?: string;
   propertyId?: string;
   portfolioId?: string;
-  
+
   // Forecast horizon
   forecastPeriod: {
     startDate: Date;
     endDate: Date;
     forecastHorizon: number; // years
   };
-  
+
   // Economic assumptions
   assumptions: {
     gdpGrowthRate: number;
@@ -1014,7 +1014,7 @@ export interface RealEstateForecast {
     populationGrowth: number;
     employmentGrowth: number;
   };
-  
+
   // Demand forecast
   demandForecast: {
     annualDemand: {
@@ -1035,7 +1035,7 @@ export interface RealEstateForecast {
       growthRate: number;
     }[];
   };
-  
+
   // Supply forecast
   supplyForecast: {
     newSupply: {
@@ -1052,7 +1052,7 @@ export interface RealEstateForecast {
       constructionCosts: number;
     }[];
   };
-  
+
   // Rent forecast
   rentForecast: {
     rentProjections: {
@@ -1068,7 +1068,7 @@ export interface RealEstateForecast {
       forecastedRent: number[];
     }[];
   };
-  
+
   // Occupancy forecast
   occupancyForecast: {
     occupancyProjections: {
@@ -1080,7 +1080,7 @@ export interface RealEstateForecast {
     occupancyDrivers: string[];
     cyclicalFactors: string[];
   };
-  
+
   // Investment forecast
   investmentForecast: {
     capRateProjections: {
@@ -1099,7 +1099,7 @@ export interface RealEstateForecast {
       activityLevel: 'HIGH' | 'MEDIUM' | 'LOW';
     }[];
   };
-  
+
   // Scenario analysis
   scenarios: {
     scenarioName: string;
@@ -1113,7 +1113,7 @@ export interface RealEstateForecast {
       capRate: number;
     };
   }[];
-  
+
   // Risk assessment
   risks: {
     forecastRisks: string[];
@@ -1126,7 +1126,7 @@ export interface RealEstateForecast {
       impact: 'HIGH' | 'MEDIUM' | 'LOW';
     }[];
   };
-  
+
   // Model confidence
   confidence: {
     overallConfidence: number; // percentage
@@ -1139,7 +1139,7 @@ export interface RealEstateForecast {
       bias: number;
     }[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1150,7 +1150,7 @@ export interface PropertyInvestment {
   investmentId: string;
   propertyId: string;
   investmentType: 'ACQUISITION' | 'DEVELOPMENT' | 'RENOVATION' | 'CAPITAL_IMPROVEMENT';
-  
+
   // Investment details
   investment: {
     totalInvestment: number;
@@ -1161,7 +1161,7 @@ export interface PropertyInvestment {
     holdingPeriod: number; // years
     exitStrategy: 'HOLD' | 'SELL' | 'REFINANCE';
   };
-  
+
   // Financial projections
   projections: {
     year: number;
@@ -1172,7 +1172,7 @@ export interface PropertyInvestment {
     cashFlow: number;
     propertyValue: number;
   }[];
-  
+
   // Return metrics
   returns: {
     irr: number; // internal rate of return
@@ -1182,7 +1182,7 @@ export interface PropertyInvestment {
     totalReturn: number;
     riskAdjustedReturn: number;
   };
-  
+
   // Performance tracking
   performance: {
     actualVsProjected: {
@@ -1198,7 +1198,7 @@ export interface PropertyInvestment {
       totalReturn: number;
     };
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1209,7 +1209,7 @@ export interface MaintenanceContract {
   contractId: string;
   propertyId: string;
   contractName: string;
-  
+
   // Contractor information
   contractor: {
     contractorId: string;
@@ -1228,7 +1228,7 @@ export interface MaintenanceContract {
       certifications: string[];
     };
   };
-  
+
   // Contract terms
   terms: {
     contractType: 'SERVICE_AGREEMENT' | 'MAINTENANCE_CONTRACT' | 'WORK_ORDER';
@@ -1245,7 +1245,7 @@ export interface MaintenanceContract {
       conditions: string[];
     };
   };
-  
+
   // Services covered
   services: {
     serviceCategory: string;
@@ -1256,7 +1256,7 @@ export interface MaintenanceContract {
     hourlyRate?: number;
     materialMarkup?: number;
   }[];
-  
+
   // Pricing structure
   pricing: {
     contractValue: number;
@@ -1268,7 +1268,7 @@ export interface MaintenanceContract {
       escalationFrequency: 'ANNUAL' | 'BIENNIAL';
     };
   };
-  
+
   // Performance standards
   performanceStandards: {
     responseTime: {
@@ -1288,7 +1288,7 @@ export interface MaintenanceContract {
       measurement: string;
     }[];
   };
-  
+
   // Contract performance
   performance: {
     responseTimeCompliance: number; // percentage
@@ -1301,9 +1301,9 @@ export interface MaintenanceContract {
       variance: number;
     };
   };
-  
+
   status: 'DRAFT' | 'ACTIVE' | 'EXPIRED' | 'TERMINATED' | 'RENEWED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1315,13 +1315,18 @@ export interface CapitalImprovement {
   propertyId: string;
   improvementName: string;
   description: string;
-  
+
   // Improvement classification
   improvementType: 'RENOVATION' | 'EXPANSION' | 'UPGRADE' | 'REPLACEMENT' | 'NEW_CONSTRUCTION';
-  improvementCategory: 'BUILDING_SYSTEMS' | 'INTERIOR' | 'EXTERIOR' | 'INFRASTRUCTURE' | 'AMENITIES';
+  improvementCategory:
+    | 'BUILDING_SYSTEMS'
+    | 'INTERIOR'
+    | 'EXTERIOR'
+    | 'INFRASTRUCTURE'
+    | 'AMENITIES';
   priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   urgency: 'IMMEDIATE' | 'WITHIN_MONTH' | 'WITHIN_QUARTER' | 'WITHIN_YEAR' | 'PLANNED';
-  
+
   // Business justification
   justification: {
     businessNeed: string;
@@ -1330,13 +1335,18 @@ export interface CapitalImprovement {
     strategicAlignment: string;
     regulatoryRequirement: boolean;
   };
-  
+
   // Financial details
   financial: {
     estimatedCost: number;
     approvedBudget?: number;
     actualCost?: number;
-    fundingSource: 'OPERATING_BUDGET' | 'CAPITAL_BUDGET' | 'RESERVE_FUND' | 'LOAN' | 'TENANT_ALLOWANCE';
+    fundingSource:
+      | 'OPERATING_BUDGET'
+      | 'CAPITAL_BUDGET'
+      | 'RESERVE_FUND'
+      | 'LOAN'
+      | 'TENANT_ALLOWANCE';
     costBreakdown: {
       materials: number;
       labor: number;
@@ -1345,7 +1355,7 @@ export interface CapitalImprovement {
       contingency: number;
     };
   };
-  
+
   // Project details
   project: {
     scope: string[];
@@ -1354,7 +1364,7 @@ export interface CapitalImprovement {
     impactOnOperations: 'NO_IMPACT' | 'MINIMAL' | 'MODERATE' | 'SIGNIFICANT';
     tenantImpact: 'NO_IMPACT' | 'MINIMAL' | 'MODERATE' | 'SIGNIFICANT';
   };
-  
+
   // Timeline
   timeline: {
     plannedStartDate: Date;
@@ -1369,7 +1379,7 @@ export interface CapitalImprovement {
       status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'DELAYED';
     }[];
   };
-  
+
   // Contractors and vendors
   contractors: {
     contractorType: 'GENERAL' | 'SPECIALIZED' | 'SUBCONTRACTOR';
@@ -1383,7 +1393,7 @@ export interface CapitalImprovement {
       budgetCompliance: number;
     };
   }[];
-  
+
   // Permits and approvals
   permitsApprovals: {
     permitType: string;
@@ -1394,7 +1404,7 @@ export interface CapitalImprovement {
     permitNumber?: string;
     status: 'NOT_REQUIRED' | 'APPLIED' | 'APPROVED' | 'EXPIRED' | 'REJECTED';
   }[];
-  
+
   // Quality and compliance
   quality: {
     inspections: {
@@ -1412,7 +1422,7 @@ export interface CapitalImprovement {
       endDate: Date;
     }[];
   };
-  
+
   // Performance impact
   performanceImpact: {
     energyEfficiency: {
@@ -1435,7 +1445,7 @@ export interface CapitalImprovement {
       improvementAreas: string[];
     };
   };
-  
+
   // Return on investment
   roi: {
     totalInvestment: number;
@@ -1445,9 +1455,9 @@ export interface CapitalImprovement {
     netPresentValue: number;
     internalRateOfReturn: number;
   };
-  
+
   status: 'PLANNED' | 'APPROVED' | 'IN_PROGRESS' | 'COMPLETED' | 'ON_HOLD' | 'CANCELLED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1462,7 +1472,7 @@ export interface PropertyPerformance {
     endDate: Date;
     periodType: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
   };
-  
+
   // Financial performance
   financial: {
     grossRent: number;
@@ -1474,7 +1484,7 @@ export interface PropertyPerformance {
     capRate: number;
     operatingMargin: number; // percentage
   };
-  
+
   // Operational performance
   operational: {
     occupancyRate: number; // percentage
@@ -1484,7 +1494,7 @@ export interface PropertyPerformance {
     tenantRetentionRate: number; // percentage
     averageLeaseLength: number; // months
   };
-  
+
   // Expense analysis
   expenses: {
     category: string;
@@ -1493,7 +1503,7 @@ export interface PropertyPerformance {
     perSquareFoot: number;
     budgetVariance: number; // percentage
   }[];
-  
+
   // Benchmarking
   benchmarks: {
     peerComparison: {
@@ -1510,7 +1520,7 @@ export interface PropertyPerformance {
       variance: number; // percentage
     }[];
   };
-  
+
   // Key performance indicators
   kpis: {
     name: string;
@@ -1520,7 +1530,7 @@ export interface PropertyPerformance {
     trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
     priority: 'HIGH' | 'MEDIUM' | 'LOW';
   }[];
-  
+
   // Performance trends
   trends: {
     metric: string;
@@ -1530,7 +1540,7 @@ export interface PropertyPerformance {
     trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
     analysisComment: string;
   }[];
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -1544,7 +1554,7 @@ export interface LocationAnalysis {
     state: string;
     zipCode: string;
   };
-  
+
   // Location scoring
   locationScore: {
     overallScore: number; // 1-100
@@ -1554,7 +1564,7 @@ export interface LocationAnalysis {
     safetyScore: number;
     economicScore: number;
   };
-  
+
   // Demographics
   demographics: {
     population: number;
@@ -1568,7 +1578,7 @@ export interface LocationAnalysis {
     };
     employmentRate: number;
   };
-  
+
   // Economic factors
   economic: {
     majorEmployers: { name: string; employees: number; industry: string }[];
@@ -1578,7 +1588,7 @@ export interface LocationAnalysis {
     economicGrowthRate: number; // annual percentage
     businessClimate: 'EXCELLENT' | 'GOOD' | 'AVERAGE' | 'POOR';
   };
-  
+
   // Transportation and accessibility
   transportation: {
     publicTransitAccess: boolean;
@@ -1591,7 +1601,7 @@ export interface LocationAnalysis {
     };
     airportDistance: number; // miles
   };
-  
+
   // Amenities and services
   amenities: {
     shoppingCenters: number;
@@ -1602,7 +1612,7 @@ export interface LocationAnalysis {
     educationalInstitutions: number;
     qualityOfLife: 'HIGH' | 'MEDIUM' | 'LOW';
   };
-  
+
   // Market characteristics
   marketCharacteristics: {
     marketMaturity: 'EMERGING' | 'GROWTH' | 'MATURE' | 'DECLINING';
@@ -1610,7 +1620,7 @@ export interface LocationAnalysis {
     barrierToEntry: 'LOW' | 'MEDIUM' | 'HIGH';
     regulatoryEnvironment: 'FAVORABLE' | 'NEUTRAL' | 'RESTRICTIVE';
   };
-  
+
   // Risk factors
   risks: {
     naturalDisasterRisk: string[];
@@ -1618,7 +1628,7 @@ export interface LocationAnalysis {
     environmentalConcerns: string[];
     regulatoryRisks: string[];
   };
-  
+
   // Future outlook
   outlook: {
     growthPotential: 'HIGH' | 'MEDIUM' | 'LOW';
@@ -1626,7 +1636,7 @@ export interface LocationAnalysis {
     infrastructureInvestments: string[];
     economicForecast: 'POSITIVE' | 'NEUTRAL' | 'NEGATIVE';
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1637,7 +1647,7 @@ export interface RentalYield {
   yieldId: string;
   propertyId: string;
   calculationDate: Date;
-  
+
   // Rental income
   rentalIncome: {
     grossRentalIncome: number; // annual
@@ -1645,7 +1655,7 @@ export interface RentalYield {
     rentCollectionRate: number; // percentage
     otherIncome: number; // parking, laundry, etc.
   };
-  
+
   // Property costs
   propertyCosts: {
     propertyTaxes: number; // annual
@@ -1656,7 +1666,7 @@ export interface RentalYield {
     otherExpenses: number; // annual
     totalExpenses: number; // annual
   };
-  
+
   // Yield calculations
   yields: {
     grossRentalYield: number; // percentage
@@ -1665,7 +1675,7 @@ export interface RentalYield {
     totalReturn: number; // percentage
     riskAdjustedReturn: number; // percentage
   };
-  
+
   // Comparison metrics
   comparison: {
     marketAverageYield: number;
@@ -1673,7 +1683,7 @@ export interface RentalYield {
     benchmarkYield: number;
     relativePerformance: 'OUTPERFORMING' | 'MARKET' | 'UNDERPERFORMING';
   };
-  
+
   // Factors affecting yield
   yieldFactors: {
     occupancyRate: number;
@@ -1682,7 +1692,7 @@ export interface RentalYield {
     marketRentPremium: number; // percentage above/below market
     tenantQuality: 'HIGH' | 'MEDIUM' | 'LOW';
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;

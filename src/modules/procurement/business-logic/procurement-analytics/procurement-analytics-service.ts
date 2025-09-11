@@ -3,7 +3,7 @@
  * Business logic for procurement analytics and reporting
  */
 
-import { 
+import {
   ProcurementAnalytics,
   CategorySpend,
   SupplierSpend,
@@ -11,45 +11,35 @@ import {
   CycleTimeMetrics,
   QualityMetrics,
   ComplianceMetrics,
-  RiskAnalytics
+  RiskAnalytics,
 } from '../../types';
 import { procurementAnalyticsRepository } from '../../data-access/repositories';
 
 export class ProcurementAnalyticsService {
-  
   /**
    * Get comprehensive procurement dashboard data
    */
-  async getProcurementDashboard(
-    startDate: Date,
-    endDate: Date
-  ): Promise<ProcurementAnalytics> {
+  async getProcurementDashboard(startDate: Date, endDate: Date): Promise<ProcurementAnalytics> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getDashboardData(startDate, endDate);
   }
 
   /**
    * Get spend analytics by category
    */
-  async getSpendByCategory(
-    startDate: Date,
-    endDate: Date
-  ): Promise<CategorySpend[]> {
+  async getSpendByCategory(startDate: Date, endDate: Date): Promise<CategorySpend[]> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getSpendByCategory(startDate, endDate);
   }
 
   /**
    * Get spend analytics by supplier
    */
-  async getSpendBySupplier(
-    startDate: Date,
-    endDate: Date
-  ): Promise<SupplierSpend[]> {
+  async getSpendBySupplier(startDate: Date, endDate: Date): Promise<SupplierSpend[]> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getSpendBySupplier(startDate, endDate);
   }
 
@@ -62,55 +52,43 @@ export class ProcurementAnalyticsService {
     granularity: 'DAILY' | 'WEEKLY' | 'MONTHLY' = 'MONTHLY'
   ): Promise<SpendTrend[]> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getSpendTrend(startDate, endDate, granularity);
   }
 
   /**
    * Get procurement cycle time metrics
    */
-  async getCycleTimeMetrics(
-    startDate: Date,
-    endDate: Date
-  ): Promise<CycleTimeMetrics> {
+  async getCycleTimeMetrics(startDate: Date, endDate: Date): Promise<CycleTimeMetrics> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getCycleTimeMetrics(startDate, endDate);
   }
 
   /**
    * Get quality metrics
    */
-  async getQualityMetrics(
-    startDate: Date,
-    endDate: Date
-  ): Promise<QualityMetrics> {
+  async getQualityMetrics(startDate: Date, endDate: Date): Promise<QualityMetrics> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getQualityMetrics(startDate, endDate);
   }
 
   /**
    * Get compliance metrics
    */
-  async getComplianceMetrics(
-    startDate: Date,
-    endDate: Date
-  ): Promise<ComplianceMetrics> {
+  async getComplianceMetrics(startDate: Date, endDate: Date): Promise<ComplianceMetrics> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getComplianceMetrics(startDate, endDate);
   }
 
   /**
    * Get risk analytics
    */
-  async getRiskAnalytics(
-    startDate: Date,
-    endDate: Date
-  ): Promise<RiskAnalytics> {
+  async getRiskAnalytics(startDate: Date, endDate: Date): Promise<RiskAnalytics> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getRiskAnalytics(startDate, endDate);
   }
 
@@ -127,7 +105,7 @@ export class ProcurementAnalyticsService {
     savingsFromCompetition: { amount: number; currency: string };
   }> {
     this.validateDateRange(startDate, endDate);
-    
+
     return await procurementAnalyticsRepository.getSavingsAnalytics(startDate, endDate);
   }
 
@@ -153,7 +131,7 @@ export class ProcurementAnalyticsService {
     const cycleMetrics = await this.getCycleTimeMetrics(startDate, endDate);
     const qualityMetrics = await this.getQualityMetrics(startDate, endDate);
     const complianceMetrics = await this.getComplianceMetrics(startDate, endDate);
-    
+
     // Mock executive summary - in real implementation would analyze trends
     return {
       totalSpend: dashboard.totalSpend,
@@ -168,14 +146,14 @@ export class ProcurementAnalyticsService {
         'Procurement spend increased 8% compared to previous period',
         'Supplier diversity improved with 15% more diverse suppliers',
         'Contract compliance rate improved to 94.5%',
-        'Average cycle time reduced by 2.3 days'
+        'Average cycle time reduced by 2.3 days',
       ],
       recommendations: [
         'Focus on strategic sourcing for top spend categories',
         'Implement supplier development programs for key suppliers',
         'Standardize procurement processes across departments',
-        'Increase use of framework agreements to reduce cycle times'
-      ]
+        'Increase use of framework agreements to reduce cycle times',
+      ],
     };
   }
 
@@ -183,7 +161,7 @@ export class ProcurementAnalyticsService {
     if (startDate >= endDate) {
       throw new Error('Start date must be before end date');
     }
-    
+
     const maxRange = 365 * 24 * 60 * 60 * 1000; // 1 year in milliseconds
     if (endDate.getTime() - startDate.getTime() > maxRange) {
       throw new Error('Date range cannot exceed 1 year');

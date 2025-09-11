@@ -127,7 +127,6 @@ export interface QualitySpecification {
  * Enables efficient shop floor operations with comprehensive monitoring
  */
 export class ProcessManufacturingMESService {
-
   // ================================
   // BATCH MANAGEMENT
   // ================================
@@ -144,9 +143,9 @@ export class ProcessManufacturingMESService {
   ): Promise<ProcessBatch> {
     const batchId = `batch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const batchNumber = `PB${Date.now().toString().slice(-6)}`;
-    
+
     console.log(`Creating process batch: ${batchNumber} for product ${productId}`);
-    
+
     const batch: ProcessBatch = {
       batchId,
       batchNumber,
@@ -160,7 +159,7 @@ export class ProcessManufacturingMESService {
       operatorId,
       equipmentId,
       parameters: [],
-      qualityData: []
+      qualityData: [],
     };
 
     return batch;
@@ -186,23 +185,23 @@ export class ProcessManufacturingMESService {
     alerts: ProcessAlarm[];
   }> {
     console.log(`Executing batch phase ${phaseId} for batch ${batchId}`);
-    
+
     // Validate parameters are within specification
-    const outOfSpecParameters = executionData.actualParameters.filter(p => 
-      p.actualValue < p.tolerance.min || p.actualValue > p.tolerance.max
+    const outOfSpecParameters = executionData.actualParameters.filter(
+      (p) => p.actualValue < p.tolerance.min || p.actualValue > p.tolerance.max
     );
-    
+
     const alerts: ProcessAlarm[] = [];
-    
+
     if (outOfSpecParameters.length > 0) {
       alerts.push({
         alarmId: `alarm_${Date.now()}`,
         equipmentId: 'EQ001',
         severity: 'HIGH',
         alarmType: 'PARAMETER',
-        message: `Parameters out of specification: ${outOfSpecParameters.map(p => p.parameterName).join(', ')}`,
+        message: `Parameters out of specification: ${outOfSpecParameters.map((p) => p.parameterName).join(', ')}`,
         timestamp: new Date(),
-        acknowledged: false
+        acknowledged: false,
       });
     }
 
@@ -212,9 +211,9 @@ export class ProcessManufacturingMESService {
       qualityStatus: outOfSpecParameters.length === 0 ? 'PASS' : 'FAIL',
       recommendations: [
         'Monitor temperature closely in next phase',
-        'Adjust agitation speed if viscosity increases'
+        'Adjust agitation speed if viscosity increases',
       ],
-      alerts
+      alerts,
     };
   }
 
@@ -232,7 +231,7 @@ export class ProcessManufacturingMESService {
     alarms: ProcessAlarm[];
   }> {
     console.log(`Monitoring process parameters for equipment ${equipmentId}`);
-    
+
     const equipmentStatus: ProcessEquipment = {
       equipmentId,
       equipmentCode: 'REACTOR_001',
@@ -246,7 +245,7 @@ export class ProcessManufacturingMESService {
       efficiency: 92.3,
       lastMaintenance: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
       nextMaintenance: new Date(Date.now() + 23 * 24 * 60 * 60 * 1000),
-      alarms: []
+      alarms: [],
     };
 
     const currentParameters: ProcessParameter[] = [
@@ -259,7 +258,7 @@ export class ProcessManufacturingMESService {
         tolerance: { min: 83.0, max: 87.0 },
         timestamp: new Date(),
         status: 'IN_SPEC',
-        operatorId: 'OP001'
+        operatorId: 'OP001',
       },
       {
         parameterId: 'PRESS_001',
@@ -270,8 +269,8 @@ export class ProcessManufacturingMESService {
         tolerance: { min: 2.2, max: 2.8 },
         timestamp: new Date(),
         status: 'IN_SPEC',
-        operatorId: 'OP001'
-      }
+        operatorId: 'OP001',
+      },
     ];
 
     return {
@@ -281,10 +280,10 @@ export class ProcessManufacturingMESService {
         {
           parameterId: 'TEMP_001',
           trend: 'STABLE',
-          recommendation: 'Temperature within normal range'
-        }
+          recommendation: 'Temperature within normal range',
+        },
       ],
-      alarms: []
+      alarms: [],
     };
   }
 
@@ -324,14 +323,14 @@ export class ProcessManufacturingMESService {
     recommendations: string[];
   }> {
     console.log(`Generating process analytics from ${timeframe.startDate} to ${timeframe.endDate}`);
-    
+
     return {
       batchStatistics: {
         totalBatches: 156,
         successfulBatches: 148,
         averageYield: 94.7,
         averageCycleTime: 7.3,
-        firstPassSuccess: 89.4
+        firstPassSuccess: 89.4,
       },
       equipmentPerformance: {
         overallUtilization: 87.2,
@@ -339,20 +338,20 @@ export class ProcessManufacturingMESService {
         downtimeAnalysis: [
           { reason: 'Scheduled Maintenance', totalMinutes: 240, frequency: 4 },
           { reason: 'Equipment Fault', totalMinutes: 85, frequency: 2 },
-          { reason: 'Material Shortage', totalMinutes: 45, frequency: 3 }
-        ]
+          { reason: 'Material Shortage', totalMinutes: 45, frequency: 3 },
+        ],
       },
       qualityTrends: {
         averageQuality: 96.2,
         outOfSpecEvents: 12,
         criticalDeviations: 3,
-        qualityTrend: 'STABLE'
+        qualityTrend: 'STABLE',
       },
       recommendations: [
         'Implement predictive maintenance to reduce unplanned downtime',
         'Review material supply chain to minimize shortages',
-        'Consider process optimization for temperature control'
-      ]
+        'Consider process optimization for temperature control',
+      ],
     };
   }
 }

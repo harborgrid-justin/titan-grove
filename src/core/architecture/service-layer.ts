@@ -53,7 +53,7 @@ export abstract class BaseService {
       requestCount: 0,
       averageResponseTime: 0,
       errorRate: 0,
-      lastExecuted: new Date()
+      lastExecuted: new Date(),
     };
   }
 
@@ -68,15 +68,14 @@ export abstract class BaseService {
       this.logger.debug(`Executing ${this.serviceName} operation`, {
         requestId: context.requestId,
         userId: context.userId,
-        tenantId: context.tenantId
+        tenantId: context.tenantId,
       });
 
       const result = await operation();
       const executionTime = Date.now() - startTime;
-      
+
       // Update metrics
-      this.metrics.averageResponseTime = 
-        (this.metrics.averageResponseTime + executionTime) / 2;
+      this.metrics.averageResponseTime = (this.metrics.averageResponseTime + executionTime) / 2;
       this.metrics.lastExecuted = new Date();
 
       return {
@@ -84,8 +83,8 @@ export abstract class BaseService {
         data: result,
         metadata: {
           executionTime,
-          cacheHit: false
-        }
+          cacheHit: false,
+        },
       };
     } catch (error) {
       const executionTime = Date.now() - startTime;
@@ -94,7 +93,7 @@ export abstract class BaseService {
       this.logger.error(`Error in ${this.serviceName}`, {
         error: error instanceof Error ? error.message : String(error),
         requestId: context.requestId,
-        executionTime
+        executionTime,
       });
 
       return {
@@ -102,11 +101,11 @@ export abstract class BaseService {
         error: {
           code: error instanceof Error ? error.constructor.name : 'UNKNOWN_ERROR',
           message: error instanceof Error ? error.message : String(error),
-          details: error
+          details: error,
         },
         metadata: {
-          executionTime
-        }
+          executionTime,
+        },
       };
     }
   }
@@ -141,7 +140,7 @@ export abstract class BaseService {
     return {
       status,
       metrics: this.metrics,
-      issues
+      issues,
     };
   }
 }
@@ -210,14 +209,14 @@ export class ValidationService {
         error: {
           code: 'VALIDATION_ERROR',
           message: 'Validation failed',
-          details: errors
-        }
+          details: errors,
+        },
       };
     }
 
     return {
       success: true,
-      data
+      data,
     };
   }
 }

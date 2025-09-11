@@ -10,7 +10,15 @@ export interface LeanMetric {
   currentValue: number;
   target: number;
   trend: 'IMPROVING' | 'DECLINING' | 'STABLE';
-  wasteCategory: 'OVERPRODUCTION' | 'WAITING' | 'TRANSPORTATION' | 'OVER_PROCESSING' | 'INVENTORY' | 'MOTION' | 'DEFECTS' | 'UNDERUTILIZED_TALENT';
+  wasteCategory:
+    | 'OVERPRODUCTION'
+    | 'WAITING'
+    | 'TRANSPORTATION'
+    | 'OVER_PROCESSING'
+    | 'INVENTORY'
+    | 'MOTION'
+    | 'DEFECTS'
+    | 'UNDERUTILIZED_TALENT';
 }
 
 export interface KaizenEvent {
@@ -71,7 +79,6 @@ export interface ValueStreamStep {
 }
 
 export class LeanManufacturingService {
-  
   /**
    * Waste Identification and Elimination
    */
@@ -94,7 +101,7 @@ export class LeanManufacturingService {
     recommendations: string[];
   }> {
     console.log(`Identifying waste in area ${areaId}`);
-    
+
     return {
       wasteAssessment: {
         totalWasteValue: 125000,
@@ -103,54 +110,54 @@ export class LeanManufacturingService {
             category: 'WAITING',
             amount: 45000,
             percentage: 36,
-            examples: ['Machine setup delays', 'Material shortages', 'Approval bottlenecks']
+            examples: ['Machine setup delays', 'Material shortages', 'Approval bottlenecks'],
           },
           {
             category: 'OVERPRODUCTION',
             amount: 32000,
             percentage: 25.6,
-            examples: ['Excess inventory', 'Batch size optimization needed', 'Demand misalignment']
+            examples: ['Excess inventory', 'Batch size optimization needed', 'Demand misalignment'],
           },
           {
             category: 'DEFECTS',
             amount: 28000,
             percentage: 22.4,
-            examples: ['Rework costs', 'Scrap material', 'Quality inspection delays']
+            examples: ['Rework costs', 'Scrap material', 'Quality inspection delays'],
           },
           {
             category: 'TRANSPORTATION',
             amount: 20000,
             percentage: 16,
-            examples: ['Excessive material handling', 'Poor layout design', 'Multiple transfers']
-          }
+            examples: ['Excessive material handling', 'Poor layout design', 'Multiple transfers'],
+          },
         ],
         prioritizedImprovements: [
           {
             improvement: 'Implement single-minute exchange of dies (SMED)',
             potentialSavings: 35000,
             difficulty: 'MEDIUM',
-            timeline: '3 months'
+            timeline: '3 months',
           },
           {
             improvement: 'Deploy pull system (Kanban)',
             potentialSavings: 28000,
             difficulty: 'MEDIUM',
-            timeline: '4 months'
+            timeline: '4 months',
           },
           {
             improvement: 'Implement poka-yoke (error proofing)',
             potentialSavings: 25000,
             difficulty: 'HIGH',
-            timeline: '6 months'
-          }
-        ]
+            timeline: '6 months',
+          },
+        ],
       },
       recommendations: [
         'Focus on setup time reduction first for highest impact',
         'Implement visual management systems',
         'Establish standard work procedures',
-        'Create cross-functional improvement teams'
-      ]
+        'Create cross-functional improvement teams',
+      ],
     };
   }
 
@@ -159,11 +166,11 @@ export class LeanManufacturingService {
    */
   async implement5S(workCenterId: string): Promise<{
     assessment: {
-      sort: { score: number; issues: string[]; };
-      setInOrder: { score: number; issues: string[]; };
-      shine: { score: number; issues: string[]; };
-      standardize: { score: number; issues: string[]; };
-      sustain: { score: number; issues: string[]; };
+      sort: { score: number; issues: string[] };
+      setInOrder: { score: number; issues: string[] };
+      shine: { score: number; issues: string[] };
+      standardize: { score: number; issues: string[] };
+      sustain: { score: number; issues: string[] };
       overallScore: number;
     };
     actionPlan: Array<{
@@ -174,51 +181,59 @@ export class LeanManufacturingService {
     }>;
   }> {
     console.log(`Implementing 5S in work center ${workCenterId}`);
-    
+
     return {
       assessment: {
         sort: {
           score: 3.2,
-          issues: ['Unused tools and materials present', 'Mix of personal and work items']
+          issues: ['Unused tools and materials present', 'Mix of personal and work items'],
         },
         setInOrder: {
           score: 3.8,
-          issues: ['Some tools not in designated locations', 'Shadow boards incomplete']
+          issues: ['Some tools not in designated locations', 'Shadow boards incomplete'],
         },
         shine: {
           score: 4.1,
-          issues: ['Equipment cleaning schedule inconsistent', 'Oil stains on floor']
+          issues: ['Equipment cleaning schedule inconsistent', 'Oil stains on floor'],
         },
         standardize: {
           score: 3.5,
-          issues: ['Procedures not fully documented', 'Training gaps identified']
+          issues: ['Procedures not fully documented', 'Training gaps identified'],
         },
         sustain: {
           score: 3.0,
-          issues: ['Audit schedule irregular', 'Management support needed']
+          issues: ['Audit schedule irregular', 'Management support needed'],
         },
-        overallScore: 3.5
+        overallScore: 3.5,
       },
       actionPlan: [
         {
           step: 'Sort (Seiri)',
-          actions: ['Remove unnecessary items', 'Tag questionable items', 'Create disposition plan'],
+          actions: [
+            'Remove unnecessary items',
+            'Tag questionable items',
+            'Create disposition plan',
+          ],
           timeline: '2 weeks',
-          responsible: 'Production Supervisor'
+          responsible: 'Production Supervisor',
         },
         {
           step: 'Set in Order (Seiton)',
           actions: ['Create shadow boards', 'Label storage locations', 'Establish home positions'],
           timeline: '3 weeks',
-          responsible: 'Production Team'
+          responsible: 'Production Team',
         },
         {
           step: 'Shine (Seiso)',
-          actions: ['Deep clean work area', 'Create cleaning standards', 'Assign cleaning responsibilities'],
+          actions: [
+            'Deep clean work area',
+            'Create cleaning standards',
+            'Assign cleaning responsibilities',
+          ],
           timeline: '2 weeks',
-          responsible: 'All Team Members'
-        }
-      ]
+          responsible: 'All Team Members',
+        },
+      ],
     };
   }
 
@@ -238,7 +253,7 @@ export class LeanManufacturingService {
     }>;
   }> {
     console.log('Managing Kaizen continuous improvement events');
-    
+
     const activeEvent: KaizenEvent = {
       eventId: 'KAIZEN_001',
       title: 'Setup Time Reduction for CNC Machines',
@@ -247,17 +262,18 @@ export class LeanManufacturingService {
       teamMembers: ['Operator_001', 'Maintenance_Tech_001', 'Process_Engineer_001'],
       problemStatement: 'Current setup time is 45 minutes causing production delays',
       rootCause: 'Tools not organized, procedures not standardized, multiple adjustments needed',
-      proposedSolution: 'Implement SMED methodology with preset tooling and standardized procedures',
+      proposedSolution:
+        'Implement SMED methodology with preset tooling and standardized procedures',
       expectedBenefit: {
         costSavings: 35000,
         timeReduction: 67, // 67% reduction
-        qualityImprovement: 15
+        qualityImprovement: 15,
       },
       implementation: {
         status: 'IN_PROGRESS',
         startDate: new Date('2024-01-15'),
         targetDate: new Date('2024-04-15'),
-      }
+      },
     };
 
     const completedEvent: KaizenEvent = {
@@ -272,26 +288,26 @@ export class LeanManufacturingService {
       expectedBenefit: {
         costSavings: 22000,
         timeReduction: 40,
-        qualityImprovement: 8
+        qualityImprovement: 8,
       },
       implementation: {
         status: 'COMPLETED',
         startDate: new Date('2023-10-01'),
         targetDate: new Date('2023-12-31'),
-        actualDate: new Date('2023-12-15')
+        actualDate: new Date('2023-12-15'),
       },
       results: {
         actualBenefit: {
           costSavings: 25000, // Exceeded expectation
           timeReduction: 42,
-          qualityImprovement: 10
+          qualityImprovement: 10,
         },
         lessonsLearned: [
           'Employee involvement crucial for success',
           'Small trials before full implementation',
-          'Regular follow-up maintains gains'
-        ]
-      }
+          'Regular follow-up maintains gains',
+        ],
+      },
     };
 
     return {
@@ -304,15 +320,15 @@ export class LeanManufacturingService {
           proposedTitle: 'Visual Management Implementation',
           targetArea: 'FINAL_ASSEMBLY',
           proposedDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-          priority: 'HIGH'
+          priority: 'HIGH',
         },
         {
           proposedTitle: 'Pull System Implementation',
           targetArea: 'COMPONENT_PREPARATION',
           proposedDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
-          priority: 'MEDIUM'
-        }
-      ]
+          priority: 'MEDIUM',
+        },
+      ],
     };
   }
 
@@ -321,7 +337,7 @@ export class LeanManufacturingService {
    */
   async createValueStreamMap(processId: string): Promise<ValueStreamMap> {
     console.log(`Creating value stream map for process ${processId}`);
-    
+
     return {
       processId,
       processName: 'Product Assembly Process',
@@ -333,7 +349,7 @@ export class LeanManufacturingService {
           duration: 15,
           resources: ['Operator_A', 'Prep_Station'],
           wasteIdentified: [],
-          improvementOpportunities: ['Standardize prep procedures']
+          improvementOpportunities: ['Standardize prep procedures'],
         },
         {
           stepId: 'VSM_002',
@@ -342,7 +358,7 @@ export class LeanManufacturingService {
           duration: 8,
           resources: ['Material_Handler'],
           wasteIdentified: ['Excessive transportation'],
-          improvementOpportunities: ['Point-of-use storage', 'Gravity feed systems']
+          improvementOpportunities: ['Point-of-use storage', 'Gravity feed systems'],
         },
         {
           stepId: 'VSM_003',
@@ -351,7 +367,7 @@ export class LeanManufacturingService {
           duration: 25,
           resources: ['Operator_B', 'Assembly_Station'],
           wasteIdentified: [],
-          improvementOpportunities: ['Ergonomic improvements', 'Tool organization']
+          improvementOpportunities: ['Ergonomic improvements', 'Tool organization'],
         },
         {
           stepId: 'VSM_004',
@@ -360,14 +376,14 @@ export class LeanManufacturingService {
           duration: 7,
           resources: ['QC_Inspector'],
           wasteIdentified: [],
-          improvementOpportunities: ['In-line inspection', 'Poka-yoke implementation']
-        }
+          improvementOpportunities: ['In-line inspection', 'Poka-yoke implementation'],
+        },
       ],
       currentMetrics: {
         totalLeadTime: 55,
         valueAddedTime: 40,
         wasteTime: 15,
-        efficiency: 72.7
+        efficiency: 72.7,
       },
       futureStateMetrics: {
         targetLeadTime: 42,
@@ -375,9 +391,9 @@ export class LeanManufacturingService {
         improvementOpportunities: [
           'Reduce transportation waste by 75%',
           'Implement single-piece flow',
-          'Add visual management systems'
-        ]
-      }
+          'Add visual management systems',
+        ],
+      },
     };
   }
 
@@ -402,7 +418,7 @@ export class LeanManufacturingService {
     };
   }> {
     console.log(`Calculating Lean OEE for equipment ${equipmentId}`);
-    
+
     const availability = 85.2; // % of planned production time
     const performance = 78.5; // % of maximum possible speed
     const quality = 94.3; // % of good parts produced
@@ -417,29 +433,26 @@ export class LeanManufacturingService {
         availabilityLosses: [
           'Unplanned maintenance (8.2%)',
           'Setup/changeover time (4.8%)',
-          'Material shortages (1.8%)'
+          'Material shortages (1.8%)',
         ],
         performanceLosses: [
           'Speed losses due to wear (12.5%)',
           'Minor stoppages (6.2%)',
-          'Operator efficiency (2.8%)'
+          'Operator efficiency (2.8%)',
         ],
-        qualityLosses: [
-          'Process defects (3.8%)',
-          'Startup rejects (1.9%)'
-        ],
+        qualityLosses: ['Process defects (3.8%)', 'Startup rejects (1.9%)'],
         improvementActions: [
           'Implement predictive maintenance',
           'Apply SMED for setup reduction',
           'Establish preventive maintenance schedule',
-          'Implement poka-yoke for quality'
-        ]
+          'Implement poka-yoke for quality',
+        ],
       },
       benchmarking: {
         industryAverage: 60,
         worldClass: 85,
-        gap: 22.0 // Gap to world class
-      }
+        gap: 22.0, // Gap to world class
+      },
     };
   }
 
@@ -472,7 +485,7 @@ export class LeanManufacturingService {
     };
   }> {
     console.log(`Implementing standard work for work center ${workCenterId}`);
-    
+
     return {
       standardWorkSheets: [
         {
@@ -486,35 +499,35 @@ export class LeanManufacturingService {
               description: 'Retrieve components from kanban',
               duration: 8,
               safetyPoints: ['Verify component orientation'],
-              qualityChecks: ['Visual inspection for damage']
+              qualityChecks: ['Visual inspection for damage'],
             },
             {
               step: 2,
               description: 'Perform assembly operation',
               duration: 32,
               safetyPoints: ['Use proper lifting technique', 'Ensure safety guards in place'],
-              qualityChecks: ['Torque verification', 'Alignment check']
+              qualityChecks: ['Torque verification', 'Alignment check'],
             },
             {
               step: 3,
               description: 'Quality verification and handoff',
               duration: 5,
               safetyPoints: ['Clear work area'],
-              qualityChecks: ['Final functional test']
-            }
+              qualityChecks: ['Final functional test'],
+            },
           ],
           balancing: {
             isBalanced: true,
             variance: 6.25, // % variance from takt time
-            recommendations: ['Consider automation for step 2']
-          }
-        }
+            recommendations: ['Consider automation for step 2'],
+          },
+        },
       ],
       lineBalance: {
         efficiency: 93.75,
         bottleneck: 'OP_001',
-        balanceLoss: 6.25
-      }
+        balanceLoss: 6.25,
+      },
     };
   }
 
@@ -546,7 +559,7 @@ export class LeanManufacturingService {
     }>;
   }> {
     console.log('Managing pull system (Kanban)');
-    
+
     return {
       kanbanCards: [
         {
@@ -557,7 +570,7 @@ export class LeanManufacturingService {
           status: 'SIGNAL',
           quantity: 50,
           leadTime: 2,
-          supplier: 'INTERNAL_MACHINING'
+          supplier: 'INTERNAL_MACHINING',
         },
         {
           cardId: 'KB_002',
@@ -567,23 +580,23 @@ export class LeanManufacturingService {
           status: 'FULL',
           quantity: 100,
           leadTime: 1,
-          supplier: 'EXTERNAL_SUPPLIER_A'
-        }
+          supplier: 'EXTERNAL_SUPPLIER_A',
+        },
       ],
       systemMetrics: {
         inventoryTurns: 24, // times per year
         stockouts: 2, // incidents this month
         overstock: 3, // parts with excess inventory
-        flowEfficiency: 87.5
+        flowEfficiency: 87.5,
       },
       signals: [
         {
           signalType: 'REPLENISH',
           partNumber: 'COMP_001',
           urgency: 'MEDIUM',
-          message: 'Kanban card KB_001 has triggered replenishment signal'
-        }
-      ]
+          message: 'Kanban card KB_001 has triggered replenishment signal',
+        },
+      ],
     };
   }
 
@@ -606,12 +619,12 @@ export class LeanManufacturingService {
     recommendations: string[];
   }> {
     console.log('Generating Lean metrics dashboard');
-    
+
     return {
       overallPerformance: {
         leanScore: 78.5,
         trend: 'IMPROVING',
-        vsLastPeriod: 5.2
+        vsLastPeriod: 5.2,
       },
       keyMetrics: [
         {
@@ -620,7 +633,7 @@ export class LeanManufacturingService {
           currentValue: 42,
           target: 35,
           trend: 'IMPROVING',
-          wasteCategory: 'WAITING'
+          wasteCategory: 'WAITING',
         },
         {
           metricId: 'LEAN_002',
@@ -628,7 +641,7 @@ export class LeanManufacturingService {
           currentValue: 28,
           target: 15,
           trend: 'IMPROVING',
-          wasteCategory: 'WAITING'
+          wasteCategory: 'WAITING',
         },
         {
           metricId: 'LEAN_003',
@@ -636,7 +649,7 @@ export class LeanManufacturingService {
           currentValue: 24,
           target: 30,
           trend: 'STABLE',
-          wasteCategory: 'INVENTORY'
+          wasteCategory: 'INVENTORY',
         },
         {
           metricId: 'LEAN_004',
@@ -644,21 +657,21 @@ export class LeanManufacturingService {
           currentValue: 94.3,
           target: 98,
           trend: 'IMPROVING',
-          wasteCategory: 'DEFECTS'
-        }
+          wasteCategory: 'DEFECTS',
+        },
       ],
       improvements: {
         implemented: 12,
         inProgress: 5,
         planned: 8,
-        totalValue: 485000
+        totalValue: 485000,
       },
       recommendations: [
         'Focus on setup time reduction initiatives',
         'Implement visual management in all areas',
         'Expand kaizen activity to indirect areas',
-        'Develop lean leadership capabilities'
-      ]
+        'Develop lean leadership capabilities',
+      ],
     };
   }
 }

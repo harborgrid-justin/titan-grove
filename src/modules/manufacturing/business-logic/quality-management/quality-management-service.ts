@@ -50,18 +50,15 @@ export interface QualityAnalytics {
 }
 
 export class QualityManagementService {
-  
   /**
    * Quality Planning
    */
-  async createQualityPlan(
-    planData: Omit<QualityPlan, 'planId'>
-  ): Promise<QualityPlan> {
+  async createQualityPlan(planData: Omit<QualityPlan, 'planId'>): Promise<QualityPlan> {
     const planId = `qp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const qualityPlan: QualityPlan = {
       ...planData,
-      planId
+      planId,
     };
 
     console.log(`Created quality plan: ${qualityPlan.planId} for product ${qualityPlan.productId}`);
@@ -76,14 +73,16 @@ export class QualityManagementService {
   ): Promise<QualityInspection> {
     const id = `qi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const inspectionNumber = `QI${Date.now().toString().slice(-6)}`;
-    
+
     const inspection: QualityInspection = {
       ...inspectionData,
       id,
-      inspectionNumber
+      inspectionNumber,
     };
 
-    console.log(`Created quality inspection: ${inspection.inspectionNumber} for work order ${inspection.workOrderId}`);
+    console.log(
+      `Created quality inspection: ${inspection.inspectionNumber} for work order ${inspection.workOrderId}`
+    );
     return inspection;
   }
 
@@ -101,21 +100,20 @@ export class QualityManagementService {
     certificateNumber?: string;
   }> {
     console.log(`Executing quality inspection: ${inspectionId}`);
-    
+
     const totalQuantity = inspectionResults.acceptedQuantity + inspectionResults.rejectedQuantity;
     const passRate = (inspectionResults.acceptedQuantity / totalQuantity) * 100;
-    
-    const overallResult = passRate >= 98 ? 'PASS' : 
-                         passRate >= 90 ? 'CONDITIONAL' : 'FAIL';
-    
+
+    const overallResult = passRate >= 98 ? 'PASS' : passRate >= 90 ? 'CONDITIONAL' : 'FAIL';
+
     const certificateGenerated = overallResult === 'PASS';
     const certificateNumber = certificateGenerated ? `COC_${Date.now()}` : undefined;
-    
+
     return {
       inspectionCompleted: true,
       overallResult,
       certificateGenerated,
-      certificateNumber
+      certificateNumber,
     };
   }
 
@@ -123,7 +121,11 @@ export class QualityManagementService {
    * Quality Analytics & Reporting
    */
   async generateQualityReport(
-    reportType: 'DEFECT_ANALYSIS' | 'PROCESS_CAPABILITY' | 'SUPPLIER_SCORECARD' | 'CUSTOMER_COMPLAINTS',
+    reportType:
+      | 'DEFECT_ANALYSIS'
+      | 'PROCESS_CAPABILITY'
+      | 'SUPPLIER_SCORECARD'
+      | 'CUSTOMER_COMPLAINTS',
     parameters: {
       startDate: Date;
       endDate: Date;
@@ -137,9 +139,9 @@ export class QualityManagementService {
     recommendations: string[];
   }> {
     const reportId = `qr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Generating ${reportType} quality report: ${reportId}`);
-    
+
     return {
       reportId,
       reportType,
@@ -149,14 +151,14 @@ export class QualityManagementService {
         defectRate: 2.1,
         topDefects: [
           { defectCode: 'DIM_001', occurrences: 12, percentage: 35.3 },
-          { defectCode: 'SURF_002', occurrences: 8, percentage: 23.5 }
+          { defectCode: 'SURF_002', occurrences: 8, percentage: 23.5 },
         ],
         trends: ['Improving quality over last quarter', 'Dimensional defects trending down'],
         recommendations: [
           'Focus improvement efforts on dimensional quality',
           'Implement automated dimensional checking',
-          'Review tooling condition and calibration schedule'
-        ]
+          'Review tooling condition and calibration schedule',
+        ],
       },
       details: [
         {
@@ -164,14 +166,14 @@ export class QualityManagementService {
           inspections: 150,
           passRate: 96.0,
           defectRate: 1.8,
-          trends: 'IMPROVING'
-        }
+          trends: 'IMPROVING',
+        },
       ],
       recommendations: [
         'Continue quality improvement initiatives',
         'Implement statistical process control',
-        'Enhance operator training programs'
-      ]
+        'Enhance operator training programs',
+      ],
     };
   }
 
@@ -188,23 +190,23 @@ export class QualityManagementService {
     actionItems: string[];
   }> {
     console.log(`Analyzing quality trends for product ${productId}`);
-    
+
     return {
       trendAnalysis: {
         passRateTrend: 'IMPROVING',
         defectRateTrend: 'IMPROVING',
-        overallTrend: 'POSITIVE'
+        overallTrend: 'POSITIVE',
       },
       keyInsights: [
         'Quality improving consistently over last 3 months',
         'Main improvement in dimensional accuracy',
-        'Operator training program showing positive results'
+        'Operator training program showing positive results',
       ],
       actionItems: [
         'Continue current improvement initiatives',
         'Expand training program to other shifts',
-        'Implement best practices across all production lines'
-      ]
+        'Implement best practices across all production lines',
+      ],
     };
   }
 
@@ -220,17 +222,17 @@ export class QualityManagementService {
     recommendations: string[];
   }> {
     const controlChartId = `cc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Implementing SPC for process ${processId}, characteristic ${characteristicId}`);
-    
+
     return {
       controlChartId,
       processCapable: true,
       recommendations: [
         'Process is capable and under control',
         'Continue monitoring for any shifts',
-        'Review control limits quarterly'
-      ]
+        'Review control limits quarterly',
+      ],
     };
   }
 
@@ -243,14 +245,14 @@ export class QualityManagementService {
     qualityRatio: number;
   }> {
     console.log('Calculating cost of quality');
-    
+
     return {
       totalCostOfQuality: 485000,
       preventionCosts: 125000, // Training, quality planning
-      appraisalCosts: 180000,  // Inspection, testing
+      appraisalCosts: 180000, // Inspection, testing
       internalFailureCosts: 145000, // Scrap, rework
-      externalFailureCosts: 35000,  // Warranty, returns
-      qualityRatio: 2.4 // 2.4% of sales
+      externalFailureCosts: 35000, // Warranty, returns
+      qualityRatio: 2.4, // 2.4% of sales
     };
   }
 }

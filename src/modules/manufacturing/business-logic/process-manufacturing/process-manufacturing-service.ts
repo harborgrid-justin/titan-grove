@@ -167,26 +167,64 @@ export interface ProcessDeviation {
 }
 
 // Additional supporting interfaces
-export interface IngredientSpecification { property: string; value: number; }
-export interface ComplianceStatus { status: string; lastAudit: Date; }
-export interface DocumentationRequirement { document: string; required: boolean; }
-export interface RegulatorySubmission { submissionId: string; status: string; }
-export interface ControlAction { action: string; timestamp: Date; }
-export interface ProcessObservation { observation: string; severity: string; }
-export interface MaterialInput { materialId: string; quantity: number; }
-export interface MaterialOutput { materialId: string; quantity: number; }
-export interface MaterialLoss { reason: string; quantity: number; }
-export interface InProcessTest { testId: string; result: string; }
-export interface FinalTest { testId: string; result: string; }
-export interface CertificateOfAnalysis { coaId: string; tests: any[]; }
-export interface BatchRecord { recordId: string; data: any; }
+export interface IngredientSpecification {
+  property: string;
+  value: number;
+}
+export interface ComplianceStatus {
+  status: string;
+  lastAudit: Date;
+}
+export interface DocumentationRequirement {
+  document: string;
+  required: boolean;
+}
+export interface RegulatorySubmission {
+  submissionId: string;
+  status: string;
+}
+export interface ControlAction {
+  action: string;
+  timestamp: Date;
+}
+export interface ProcessObservation {
+  observation: string;
+  severity: string;
+}
+export interface MaterialInput {
+  materialId: string;
+  quantity: number;
+}
+export interface MaterialOutput {
+  materialId: string;
+  quantity: number;
+}
+export interface MaterialLoss {
+  reason: string;
+  quantity: number;
+}
+export interface InProcessTest {
+  testId: string;
+  result: string;
+}
+export interface FinalTest {
+  testId: string;
+  result: string;
+}
+export interface CertificateOfAnalysis {
+  coaId: string;
+  tests: any[];
+}
+export interface BatchRecord {
+  recordId: string;
+  data: any;
+}
 
 /**
  * Process Manufacturing Service
  * Comprehensive process manufacturing capabilities
  */
 export class ProcessManufacturingService {
-
   // ================================
   // PRODUCT DEVELOPMENT
   // ================================
@@ -194,14 +232,12 @@ export class ProcessManufacturingService {
   /**
    * Accelerate innovation to market
    */
-  async createProductDevelopmentProject(
-    productData: {
-      productName: string;
-      productType: string;
-      targetMarket: string;
-      developmentObjectives: string[];
-    }
-  ): Promise<{
+  async createProductDevelopmentProject(productData: {
+    productName: string;
+    productType: string;
+    targetMarket: string;
+    developmentObjectives: string[];
+  }): Promise<{
     projectId: string;
     developmentPhases: Array<{
       phaseName: string;
@@ -214,9 +250,11 @@ export class ProcessManufacturingService {
     riskFactors: string[];
   }> {
     const projectId = `pd_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log(`Creating product development project: ${projectId} for ${productData.productName}`);
-    
+
+    console.log(
+      `Creating product development project: ${projectId} for ${productData.productName}`
+    );
+
     return {
       projectId,
       developmentPhases: [
@@ -224,34 +262,30 @@ export class ProcessManufacturingService {
           phaseName: 'Concept Development',
           duration: 30,
           deliverables: ['Concept specification', 'Market analysis', 'Feasibility study'],
-          gateReview: true
+          gateReview: true,
         },
         {
           phaseName: 'Formulation Development',
           duration: 60,
           deliverables: ['Initial formulation', 'Lab testing results', 'Stability data'],
-          gateReview: true
+          gateReview: true,
         },
         {
           phaseName: 'Process Development',
           duration: 90,
           deliverables: ['Process design', 'Pilot testing', 'Scale-up plan'],
-          gateReview: true
+          gateReview: true,
         },
         {
           phaseName: 'Commercialization',
           duration: 45,
           deliverables: ['Commercial process', 'Regulatory approval', 'Launch plan'],
-          gateReview: true
-        }
+          gateReview: true,
+        },
       ],
       timeline: 225, // days
       estimatedCost: 850000,
-      riskFactors: [
-        'Regulatory approval timeline',
-        'Scale-up complexity',
-        'Market acceptance'
-      ]
+      riskFactors: ['Regulatory approval timeline', 'Scale-up complexity', 'Market acceptance'],
     };
   }
 
@@ -262,13 +296,11 @@ export class ProcessManufacturingService {
   /**
    * Enterprise-wide coordination to balance material supply with demand
    */
-  async createProcessPlan(
-    planningData: {
-      productId: string;
-      demandForecast: Array<{ period: Date; quantity: number }>;
-      constraintsIds: string[];
-    }
-  ): Promise<{
+  async createProcessPlan(planningData: {
+    productId: string;
+    demandForecast: Array<{ period: Date; quantity: number }>;
+    constraintsIds: string[];
+  }): Promise<{
     planId: string;
     materialRequirements: Array<{
       materialId: string;
@@ -294,9 +326,9 @@ export class ProcessManufacturingService {
     };
   }> {
     const planId = `pp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Creating process plan: ${planId} for product ${planningData.productId}`);
-    
+
     return {
       planId,
       materialRequirements: [
@@ -305,34 +337,34 @@ export class ProcessManufacturingService {
           totalRequirement: 5000,
           timeline: [
             { period: new Date(), quantity: 1250 },
-            { period: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), quantity: 1250 }
+            { period: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), quantity: 1250 },
           ],
           supplierAllocation: [
             { supplierId: 'SUP_001', quantity: 3000 },
-            { supplierId: 'SUP_002', quantity: 2000 }
-          ]
-        }
+            { supplierId: 'SUP_002', quantity: 2000 },
+          ],
+        },
       ],
       capacityPlan: [
         {
           equipmentId: 'REACTOR_001',
           utilization: 87.5,
           bottleneck: false,
-          recommendation: 'Maintain current schedule'
-        }
+          recommendation: 'Maintain current schedule',
+        },
       ],
       productionSchedule: [
         {
           period: new Date(),
           plannedProduction: 1000,
-          equipmentAssignment: ['REACTOR_001', 'MIXER_001']
-        }
+          equipmentAssignment: ['REACTOR_001', 'MIXER_001'],
+        },
       ],
       riskAnalysis: {
         supplyRisks: ['Material shortage from Supplier A'],
         demandRisks: ['Market volatility in Q3'],
-        mitigationStrategies: ['Maintain safety stock', 'Diversify supplier base']
-      }
+        mitigationStrategies: ['Maintain safety stock', 'Diversify supplier base'],
+      },
     };
   }
 
@@ -343,18 +375,16 @@ export class ProcessManufacturingService {
   /**
    * Integrated control for uniformity and flexibility
    */
-  async executeProcessBatch(
-    batchData: {
-      productId: string;
-      recipeId: string;
-      batchSize: number;
-      equipmentTrain: string[];
-    }
-  ): Promise<ProcessManufacturingExecution> {
+  async executeProcessBatch(batchData: {
+    productId: string;
+    recipeId: string;
+    batchSize: number;
+    equipmentTrain: string[];
+  }): Promise<ProcessManufacturingExecution> {
     const executionId = `pe_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Executing process batch: ${executionId}`);
-    
+
     const execution: ProcessManufacturingExecution = {
       executionId,
       batchId: `batch_${executionId}`,
@@ -370,25 +400,25 @@ export class ProcessManufacturingService {
           endTime: new Date(Date.now() - 30 * 60 * 1000),
           parameters: [],
           controlActions: [],
-          observations: []
-        }
+          observations: [],
+        },
       ],
       materialBalance: {
         inputs: [{ materialId: 'MAT_001', quantity: 1000 }],
         outputs: [{ materialId: batchData.productId, quantity: 945 }],
         losses: [{ reason: 'Evaporation', quantity: 55 }],
         yield: 94.5,
-        massBalance: 99.8
+        massBalance: 99.8,
       },
       qualityControl: {
         inProcessTests: [],
         finalTests: [],
         releaseDecision: 'PENDING',
         releaseBy: 'QA_MANAGER',
-        certificateOfAnalysis: { coaId: 'coa_001', tests: [] }
+        certificateOfAnalysis: { coaId: 'coa_001', tests: [] },
       },
       deviations: [],
-      batchRecord: { recordId: 'br_001', data: {} }
+      batchRecord: { recordId: 'br_001', data: {} },
     };
 
     return execution;
@@ -401,9 +431,7 @@ export class ProcessManufacturingService {
   /**
    * Product consistency and proactive quality assurance
    */
-  async performQualityManagement(
-    batchId: string
-  ): Promise<{
+  async performQualityManagement(batchId: string): Promise<{
     qualityAssessment: {
       overallQuality: 'EXCELLENT' | 'GOOD' | 'ACCEPTABLE' | 'POOR';
       qualityScore: number;
@@ -429,7 +457,7 @@ export class ProcessManufacturingService {
     };
   }> {
     console.log(`Performing quality management for batch ${batchId}`);
-    
+
     return {
       qualityAssessment: {
         overallQuality: 'GOOD',
@@ -438,28 +466,28 @@ export class ProcessManufacturingService {
           {
             parameter: 'Purity',
             status: 'PASS',
-            deviation: 0.2
+            deviation: 0.2,
           },
           {
             parameter: 'Viscosity',
             status: 'PASS',
-            deviation: -1.5
-          }
-        ]
+            deviation: -1.5,
+          },
+        ],
       },
       correctiveActions: [],
       preventiveActions: [
         'Implement continuous monitoring for temperature control',
-        'Enhance raw material inspection procedures'
+        'Enhance raw material inspection procedures',
       ],
       trendAnalysis: {
         qualityTrend: 'STABLE',
         riskIndicators: ['Seasonal temperature variation'],
         recommendations: [
           'Consider installing environmental controls',
-          'Update process parameters for seasonal adjustments'
-        ]
-      }
+          'Update process parameters for seasonal adjustments',
+        ],
+      },
     };
   }
 
@@ -470,9 +498,7 @@ export class ProcessManufacturingService {
   /**
    * Compliance with industry and government regulations for safety documentation
    */
-  async manageRegulatoryCompliance(
-    productId: string
-  ): Promise<{
+  async manageRegulatoryCompliance(productId: string): Promise<{
     complianceStatus: {
       overallStatus: 'COMPLIANT' | 'NON_COMPLIANT' | 'CONDITIONAL' | 'UNDER_REVIEW';
       regulationCompliance: Array<{
@@ -506,7 +532,7 @@ export class ProcessManufacturingService {
     }>;
   }> {
     console.log(`Managing regulatory compliance for product ${productId}`);
-    
+
     return {
       complianceStatus: {
         overallStatus: 'COMPLIANT',
@@ -516,16 +542,16 @@ export class ProcessManufacturingService {
             status: 'COMPLIANT',
             lastAudit: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
             nextAudit: new Date(Date.now() + 275 * 24 * 60 * 60 * 1000),
-            findings: ['All requirements met', 'Documentation complete']
+            findings: ['All requirements met', 'Documentation complete'],
           },
           {
             regulation: 'EPA TSCA',
             status: 'COMPLIANT',
             lastAudit: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
             nextAudit: new Date(Date.now() + 305 * 24 * 60 * 60 * 1000),
-            findings: ['Chemical inventory updated', 'Notifications current']
-          }
-        ]
+            findings: ['Chemical inventory updated', 'Notifications current'],
+          },
+        ],
       },
       safetyDocumentation: {
         sdsAvailable: true,
@@ -533,22 +559,22 @@ export class ProcessManufacturingService {
         storageRequirements: [
           'Store in cool, dry place',
           'Keep away from heat sources',
-          'Use approved containers only'
+          'Use approved containers only',
         ],
         handlingProcedures: [
           'Wear appropriate PPE',
           'Use in well-ventilated area',
-          'Avoid skin contact'
+          'Avoid skin contact',
         ],
         emergencyProcedures: [
           'In case of spill: contain and absorb',
           'In case of fire: use CO2 or foam extinguisher',
-          'First aid: rinse with water if contact occurs'
+          'First aid: rinse with water if contact occurs',
         ],
         transportationRestrictions: [
           'DOT Hazmat shipping required',
-          'Limited quantity per package'
-        ]
+          'Limited quantity per package',
+        ],
       },
       submissionsTracking: [
         {
@@ -556,17 +582,17 @@ export class ProcessManufacturingService {
           type: 'RENEWAL',
           authority: 'FDA',
           status: 'SUBMITTED',
-          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-        }
+          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
       ],
       actionItems: [
         {
           priority: 'MEDIUM',
           description: 'Update SDS with new storage requirements',
           responsible: 'REGULATORY_SPECIALIST',
-          dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000)
-        }
-      ]
+          dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+        },
+      ],
     };
   }
 
@@ -577,9 +603,7 @@ export class ProcessManufacturingService {
   /**
    * Detailed cost-tracking with flexible analytical tools
    */
-  async calculateProcessCosts(
-    batchId: string
-  ): Promise<{
+  async calculateProcessCosts(batchId: string): Promise<{
     costBreakdown: {
       materialCosts: number;
       laborCosts: number;
@@ -607,16 +631,16 @@ export class ProcessManufacturingService {
     };
   }> {
     console.log(`Calculating process costs for batch ${batchId}`);
-    
+
     return {
       costBreakdown: {
-        materialCosts: 650.00,
-        laborCosts: 125.50,
+        materialCosts: 650.0,
+        laborCosts: 125.5,
         utilityCosts: 45.75,
         equipmentCosts: 85.25,
-        overheadCosts: 95.50,
-        qualityCosts: 23.00,
-        totalCost: 1025.00
+        overheadCosts: 95.5,
+        qualityCosts: 23.0,
+        totalCost: 1025.0,
       },
       costPerUnit: 1.025,
       costAnalysis: {
@@ -625,15 +649,15 @@ export class ProcessManufacturingService {
         costDrivers: [
           { driver: 'Raw materials', impact: 63.4, variance: 2.1 },
           { driver: 'Energy consumption', impact: 8.2, variance: -1.5 },
-          { driver: 'Labor efficiency', impact: 12.2, variance: 3.2 }
-        ]
+          { driver: 'Labor efficiency', impact: 12.2, variance: 3.2 },
+        ],
       },
       benchmarking: {
         industryAverage: 1.15,
         bestInClass: 0.92,
         currentPosition: 1.025,
-        improvementOpportunity: 0.105
-      }
+        improvementOpportunity: 0.105,
+      },
     };
   }
 }

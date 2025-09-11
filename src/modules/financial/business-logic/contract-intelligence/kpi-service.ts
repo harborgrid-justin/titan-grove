@@ -3,11 +3,7 @@
  * Handles KPI generation and financial summaries for contract intelligence
  */
 
-import {
-  KPIWidget,
-  FinancialSummary,
-  RiskAlert
-} from './types';
+import { KPIWidget, FinancialSummary, RiskAlert } from './types';
 
 export class KPIService {
   /**
@@ -22,7 +18,7 @@ export class KPIService {
         targetValue: 140000000,
         unit: 'USD',
         trend: 'UP',
-        performanceIndicator: 'EXCEEDS'
+        performanceIndicator: 'EXCEEDS',
       },
       {
         kpiId: 'kpi_cost_savings',
@@ -31,7 +27,7 @@ export class KPIService {
         targetValue: 2000000,
         unit: 'USD',
         trend: 'UP',
-        performanceIndicator: 'EXCEEDS'
+        performanceIndicator: 'EXCEEDS',
       },
       {
         kpiId: 'kpi_competition_rate',
@@ -40,7 +36,7 @@ export class KPIService {
         targetValue: 85,
         unit: 'Percentage',
         trend: 'UP',
-        performanceIndicator: 'MEETS'
+        performanceIndicator: 'MEETS',
       },
       {
         kpiId: 'kpi_compliance_score',
@@ -49,8 +45,8 @@ export class KPIService {
         targetValue: 95,
         unit: 'Score',
         trend: 'STABLE',
-        performanceIndicator: 'MEETS'
-      }
+        performanceIndicator: 'MEETS',
+      },
     ];
   }
 
@@ -67,7 +63,7 @@ export class KPIService {
       actualSavings: 2500000,
       costAvoidance: 1200000,
       budgetVariance: -500000,
-      forecastAccuracy: 92
+      forecastAccuracy: 92,
     };
   }
 
@@ -86,9 +82,9 @@ export class KPIService {
         recommendedActions: [
           'Schedule compliance review meeting',
           'Review FAR requirements for modifications',
-          'Update contract documentation'
+          'Update contract documentation',
         ],
-        escalationRequired: true
+        escalationRequired: true,
       },
       {
         alertId: 'alert_002',
@@ -100,26 +96,30 @@ export class KPIService {
         recommendedActions: [
           'Review contract performance metrics',
           'Initiate cost control measures',
-          'Meet with contracting officers'
+          'Meet with contracting officers',
         ],
-        escalationRequired: true
-      }
+        escalationRequired: true,
+      },
     ];
   }
 
   /**
    * Calculate KPI variance
    */
-  async calculateKPIVariance(kpiId: string, currentValue: number, targetValue: number): Promise<{
+  async calculateKPIVariance(
+    kpiId: string,
+    currentValue: number,
+    targetValue: number
+  ): Promise<{
     variance: number;
     variancePercent: number;
     performanceStatus: 'EXCEEDS' | 'MEETS' | 'BELOW' | 'CRITICAL';
   }> {
     const variance = currentValue - targetValue;
     const variancePercent = targetValue !== 0 ? (variance / targetValue) * 100 : 0;
-    
+
     let performanceStatus: 'EXCEEDS' | 'MEETS' | 'BELOW' | 'CRITICAL' = 'MEETS';
-    
+
     if (variancePercent > 10) {
       performanceStatus = 'EXCEEDS';
     } else if (variancePercent >= -5) {
@@ -133,7 +133,7 @@ export class KPIService {
     return {
       variance,
       variancePercent,
-      performanceStatus
+      performanceStatus,
     };
   }
 
@@ -152,26 +152,26 @@ export class KPIService {
     return {
       totalSavings: 2500000,
       savingsByCategory: {
-        'Competition': 1200000,
-        'Negotiations': 800000,
+        Competition: 1200000,
+        Negotiations: 800000,
         'Economies of Scale': 300000,
-        'Process Improvements': 200000
+        'Process Improvements': 200000,
       },
       savingsMethodology: [
         'Price comparison analysis',
         'Historical benchmarking',
         'Market rate validation',
-        'Supplier cost analysis'
+        'Supplier cost analysis',
       ],
       verificationStatus: 'VERIFIED',
       savingsTrends: [
         { period: 'Q1 FY24', amount: 500000 },
         { period: 'Q2 FY24', amount: 750000 },
         { period: 'Q3 FY24', amount: 600000 },
-        { period: 'Q4 FY24', amount: 650000 }
+        { period: 'Q4 FY24', amount: 650000 },
       ],
       projectedSavings: 3200000,
-      riskAdjustedSavings: 2750000
+      riskAdjustedSavings: 2750000,
     };
   }
 
@@ -197,55 +197,56 @@ export class KPIService {
   }> {
     const dataPoints = this.generateMockTrendData(timeframe);
     const changeRate = this.calculateChangeRate(dataPoints);
-    
+
     return {
-      trendDirection: changeRate > 2 ? 'UP' : (changeRate < -2 ? 'DOWN' : 'STABLE'),
+      trendDirection: changeRate > 2 ? 'UP' : changeRate < -2 ? 'DOWN' : 'STABLE',
       changeRate,
       dataPoints,
-      forecast: this.generateForecast(dataPoints, 3) // 3 period forecast
+      forecast: this.generateForecast(dataPoints, 3), // 3 period forecast
     };
   }
 
-  private generateMockTrendData(timeframe: 'MONTHLY' | 'QUARTERLY' | 'YEARLY'): 
-    { date: Date; value: number }[] {
+  private generateMockTrendData(
+    timeframe: 'MONTHLY' | 'QUARTERLY' | 'YEARLY'
+  ): { date: Date; value: number }[] {
     const data = [];
-    const periods = timeframe === 'YEARLY' ? 3 : (timeframe === 'QUARTERLY' ? 8 : 12);
+    const periods = timeframe === 'YEARLY' ? 3 : timeframe === 'QUARTERLY' ? 8 : 12;
     const baseValue = 95;
-    
+
     for (let i = 0; i < periods; i++) {
       const date = new Date();
       date.setMonth(date.getMonth() - (periods - 1 - i));
       const value = baseValue + Math.random() * 10 - 5; // +/- 5 variation
       data.push({ date, value });
     }
-    
+
     return data;
   }
 
   private calculateChangeRate(dataPoints: { date: Date; value: number }[]): number {
     if (dataPoints.length < 2) return 0;
-    
+
     const firstValue = dataPoints[0].value;
     const lastValue = dataPoints[dataPoints.length - 1].value;
-    
+
     return ((lastValue - firstValue) / firstValue) * 100;
   }
 
   private generateForecast(
-    dataPoints: { date: Date; value: number }[], 
+    dataPoints: { date: Date; value: number }[],
     periods: number
   ): { date: Date; projectedValue: number }[] {
     const forecast = [];
     const lastValue = dataPoints[dataPoints.length - 1].value;
     const trend = this.calculateChangeRate(dataPoints) / dataPoints.length; // per period trend
-    
+
     for (let i = 1; i <= periods; i++) {
       const date = new Date(dataPoints[dataPoints.length - 1].date);
       date.setMonth(date.getMonth() + i);
       const projectedValue = lastValue * (1 + (trend * i) / 100);
       forecast.push({ date, projectedValue });
     }
-    
+
     return forecast;
   }
 }

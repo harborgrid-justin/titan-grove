@@ -3,19 +3,17 @@
  * Comprehensive RMA processing and return lifecycle management with Oracle EBS competitive features
  */
 
-import type { 
+import type {
   Return,
   ReturnLineItem,
   ReturnApproval,
   ReturnWorkflow,
   OrderAddress,
   SalesOrder,
-  Shipment
+  Shipment,
 } from '../../types';
 
-import {
-  ReturnStatus
-} from '../../types';
+import { ReturnStatus } from '../../types';
 
 export interface ReturnAuthorization {
   id: string;
@@ -24,7 +22,13 @@ export interface ReturnAuthorization {
   customerName: string;
   orderId?: string;
   shipmentId?: string;
-  authorizationType: 'DEFECTIVE' | 'WRONG_ITEM' | 'DAMAGED_IN_TRANSIT' | 'CUSTOMER_CHANGE_MIND' | 'WARRANTY' | 'GOODWILL';
+  authorizationType:
+    | 'DEFECTIVE'
+    | 'WRONG_ITEM'
+    | 'DAMAGED_IN_TRANSIT'
+    | 'CUSTOMER_CHANGE_MIND'
+    | 'WARRANTY'
+    | 'GOODWILL';
   authorizationDate: Date;
   expirationDate: Date;
   authorizedBy: string;
@@ -128,11 +132,18 @@ export interface ReturnInspectionLineItem {
 }
 
 export class ReturnManagementService {
-  
   /**
    * Map return types from parameter to ReturnAuthorization types
    */
-  private mapReturnType(returnType: 'DEFECTIVE' | 'WRONG_ITEM' | 'EXCESS' | 'CREDIT_ONLY' | 'WARRANTY' | 'GOODWILL'): 'DEFECTIVE' | 'WRONG_ITEM' | 'DAMAGED_IN_TRANSIT' | 'CUSTOMER_CHANGE_MIND' | 'WARRANTY' | 'GOODWILL' {
+  private mapReturnType(
+    returnType: 'DEFECTIVE' | 'WRONG_ITEM' | 'EXCESS' | 'CREDIT_ONLY' | 'WARRANTY' | 'GOODWILL'
+  ):
+    | 'DEFECTIVE'
+    | 'WRONG_ITEM'
+    | 'DAMAGED_IN_TRANSIT'
+    | 'CUSTOMER_CHANGE_MIND'
+    | 'WARRANTY'
+    | 'GOODWILL' {
     switch (returnType) {
       case 'EXCESS':
         return 'CUSTOMER_CHANGE_MIND';
@@ -146,7 +157,9 @@ export class ReturnManagementService {
   /**
    * Map disposition from auth to return line item
    */
-  private mapDisposition(disposition?: 'RESTOCK' | 'REPAIR' | 'REPLACE' | 'SCRAP' | 'RETURN_TO_VENDOR' | 'CREDIT_ONLY'): 'RESTOCK' | 'REPAIR' | 'REPLACE' | 'SCRAP' | 'RETURN_TO_VENDOR' {
+  private mapDisposition(
+    disposition?: 'RESTOCK' | 'REPAIR' | 'REPLACE' | 'SCRAP' | 'RETURN_TO_VENDOR' | 'CREDIT_ONLY'
+  ): 'RESTOCK' | 'REPAIR' | 'REPLACE' | 'SCRAP' | 'RETURN_TO_VENDOR' {
     if (!disposition) return 'RESTOCK'; // Default disposition
     switch (disposition) {
       case 'CREDIT_ONLY':
@@ -159,7 +172,15 @@ export class ReturnManagementService {
   /**
    * Map return authorization type back to Return type
    */
-  private mapReturnTypeReverse(authType: 'DEFECTIVE' | 'WRONG_ITEM' | 'DAMAGED_IN_TRANSIT' | 'CUSTOMER_CHANGE_MIND' | 'WARRANTY' | 'GOODWILL'): 'DEFECTIVE' | 'WRONG_ITEM' | 'EXCESS' | 'CREDIT_ONLY' | 'WARRANTY' | 'GOODWILL' {
+  private mapReturnTypeReverse(
+    authType:
+      | 'DEFECTIVE'
+      | 'WRONG_ITEM'
+      | 'DAMAGED_IN_TRANSIT'
+      | 'CUSTOMER_CHANGE_MIND'
+      | 'WARRANTY'
+      | 'GOODWILL'
+  ): 'DEFECTIVE' | 'WRONG_ITEM' | 'EXCESS' | 'CREDIT_ONLY' | 'WARRANTY' | 'GOODWILL' {
     switch (authType) {
       case 'DAMAGED_IN_TRANSIT':
         return 'DEFECTIVE';
@@ -169,7 +190,7 @@ export class ReturnManagementService {
         return authType as 'DEFECTIVE' | 'WRONG_ITEM' | 'WARRANTY' | 'GOODWILL';
     }
   }
-  
+
   // ================================
   // RETURN AUTHORIZATION
   // ================================
@@ -200,7 +221,6 @@ export class ReturnManagementService {
     customerNotes?: string;
     requestedBy: string;
   }): Promise<ReturnAuthorization> {
-    
     // Validate return eligibility
     await this.validateReturnEligibility(authData);
 
@@ -208,33 +228,38 @@ export class ReturnManagementService {
     const rmaNumber = `RMA${Date.now().toString().slice(-8)}`;
 
     // Determine restocking fee
-    const restockingFeePercent = this.calculateRestockingFee(authData.returnType, authData.lineItems);
+    const restockingFeePercent = this.calculateRestockingFee(
+      authData.returnType,
+      authData.lineItems
+    );
 
     // Calculate expiration date (typically 30 days)
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 30);
 
     // Process line items
-    const processedLineItems: ReturnAuthorizationLineItem[] = authData.lineItems.map((item, index) => {
-      const returnValue = item.unitPrice * item.returnQuantity;
-      const restockingFee = returnValue * (restockingFeePercent / 100);
-      
-      return {
-        id: `rali_${Date.now()}_${index}`,
-        orderLineItemId: item.orderLineItemId,
-        itemId: item.itemId,
-        itemCode: item.itemCode,
-        itemDescription: item.itemDescription,
-        authorizedQuantity: item.returnQuantity,
-        unitPrice: item.unitPrice,
-        returnValue: Math.round(returnValue * 100) / 100,
-        restockingFee: Math.round(restockingFee * 100) / 100,
-        reason: item.reason,
-        disposition: item.preferredDisposition || 'RESTOCK',
-        requiresInspection: item.requiresInspection ?? true,
-        notes: item.defectDescription
-      };
-    });
+    const processedLineItems: ReturnAuthorizationLineItem[] = authData.lineItems.map(
+      (item, index) => {
+        const returnValue = item.unitPrice * item.returnQuantity;
+        const restockingFee = returnValue * (restockingFeePercent / 100);
+
+        return {
+          id: `rali_${Date.now()}_${index}`,
+          orderLineItemId: item.orderLineItemId,
+          itemId: item.itemId,
+          itemCode: item.itemCode,
+          itemDescription: item.itemDescription,
+          authorizedQuantity: item.returnQuantity,
+          unitPrice: item.unitPrice,
+          returnValue: Math.round(returnValue * 100) / 100,
+          restockingFee: Math.round(restockingFee * 100) / 100,
+          reason: item.reason,
+          disposition: item.preferredDisposition || 'RESTOCK',
+          requiresInspection: item.requiresInspection ?? true,
+          notes: item.defectDescription,
+        };
+      }
+    );
 
     const returnAuth: ReturnAuthorization = {
       id: rmaId,
@@ -256,7 +281,7 @@ export class ReturnManagementService {
       status: 'PENDING',
       notes: authData.customerNotes,
       createdDate: new Date(),
-      modifiedDate: new Date()
+      modifiedDate: new Date(),
     };
 
     // Start approval workflow if required
@@ -285,7 +310,6 @@ export class ReturnManagementService {
       }>;
     }
   ): Promise<ReturnAuthorization> {
-    
     const returnAuth = await this.getReturnAuthorizationById(rmaId);
     if (!returnAuth) {
       throw new Error(`Return authorization ${rmaId} not found`);
@@ -294,14 +318,14 @@ export class ReturnManagementService {
     // Apply modifications if provided
     let updatedLineItems = returnAuth.lineItems;
     if (modifications?.lineItemModifications) {
-      updatedLineItems = returnAuth.lineItems.map(item => {
-        const mod = modifications.lineItemModifications!.find(m => m.lineItemId === item.id);
+      updatedLineItems = returnAuth.lineItems.map((item) => {
+        const mod = modifications.lineItemModifications!.find((m) => m.lineItemId === item.id);
         if (mod) {
           return {
             ...item,
             authorizedQuantity: mod.authorizedQuantity ?? item.authorizedQuantity,
             disposition: (mod.disposition as any) ?? item.disposition,
-            restockingFee: mod.restockingFee ?? item.restockingFee
+            restockingFee: mod.restockingFee ?? item.restockingFee,
           };
         }
         return item;
@@ -314,8 +338,10 @@ export class ReturnManagementService {
       restockingFeePercent: modifications?.restockingFeePercent ?? returnAuth.restockingFeePercent,
       returnShippingPaid: modifications?.returnShippingPaid ?? returnAuth.returnShippingPaid,
       status: 'APPROVED',
-      notes: approvalComments ? `${returnAuth.notes || ''}\nApproval: ${approvalComments}`.trim() : returnAuth.notes,
-      modifiedDate: new Date()
+      notes: approvalComments
+        ? `${returnAuth.notes || ''}\nApproval: ${approvalComments}`.trim()
+        : returnAuth.notes,
+      modifiedDate: new Date(),
     };
 
     return approvedAuth;
@@ -337,7 +363,6 @@ export class ReturnManagementService {
     },
     createdBy: string
   ): Promise<Return> {
-    
     const returnAuth = await this.getReturnAuthorizationById(rmaId);
     if (!returnAuth || returnAuth.status !== 'APPROVED') {
       throw new Error('Return authorization must be approved before creating return');
@@ -346,7 +371,7 @@ export class ReturnManagementService {
     const returnId = `ret_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     // Convert authorization line items to return line items
-    const returnLineItems: ReturnLineItem[] = returnAuth.lineItems.map(authItem => ({
+    const returnLineItems: ReturnLineItem[] = returnAuth.lineItems.map((authItem) => ({
       id: `rli_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
       orderLineItemId: authItem.orderLineItemId,
       itemId: authItem.itemId,
@@ -365,7 +390,7 @@ export class ReturnManagementService {
       condition: 'UNKNOWN',
       defectCode: undefined,
       defectDescription: authItem.notes,
-      notes: authItem.notes
+      notes: authItem.notes,
     }));
 
     const totalReturnValue = returnLineItems.reduce((sum, item) => sum + item.returnValue, 0);
@@ -396,7 +421,7 @@ export class ReturnManagementService {
       createdDate: new Date(),
       modifiedDate: new Date(),
       createdBy,
-      modifiedBy: createdBy
+      modifiedBy: createdBy,
     };
 
     // Start return processing workflow
@@ -432,7 +457,6 @@ export class ReturnManagementService {
     },
     receivedBy: string
   ): Promise<ReturnReceipt> {
-    
     const returnRecord = await this.getReturnById(returnId);
     if (!returnRecord) {
       throw new Error(`Return ${returnId} not found`);
@@ -442,8 +466,10 @@ export class ReturnManagementService {
     const receiptNumber = receiptData.receiptNumber || `RR${Date.now().toString().slice(-8)}`;
 
     // Process receipt line items
-    const receiptLineItems: ReturnReceiptLineItem[] = receiptData.lineItems.map(receiptItem => {
-      const returnLineItem = returnRecord.lineItems.find(rli => rli.id === receiptItem.returnLineItemId);
+    const receiptLineItems: ReturnReceiptLineItem[] = receiptData.lineItems.map((receiptItem) => {
+      const returnLineItem = returnRecord.lineItems.find(
+        (rli) => rli.id === receiptItem.returnLineItemId
+      );
       return {
         returnLineItemId: receiptItem.returnLineItemId,
         itemCode: returnLineItem?.itemCode || '',
@@ -454,14 +480,16 @@ export class ReturnManagementService {
         lotNumbers: receiptItem.lotNumbers,
         expirationDates: receiptItem.expirationDates,
         defectDescription: receiptItem.defectDescription,
-        photoUrls: receiptItem.photoUrls
+        photoUrls: receiptItem.photoUrls,
       };
     });
 
     // Identify discrepancies
     const discrepancies: ReturnDiscrepancy[] = [];
     for (const receiptItem of receiptLineItems) {
-      const returnLineItem = returnRecord.lineItems.find(rli => rli.id === receiptItem.returnLineItemId);
+      const returnLineItem = returnRecord.lineItems.find(
+        (rli) => rli.id === receiptItem.returnLineItemId
+      );
       if (returnLineItem && receiptItem.receivedQuantity !== returnLineItem.returnQuantity) {
         discrepancies.push({
           type: 'QUANTITY_VARIANCE',
@@ -469,7 +497,10 @@ export class ReturnManagementService {
           itemCode: receiptItem.itemCode,
           expectedValue: returnLineItem.returnQuantity,
           actualValue: receiptItem.receivedQuantity,
-          impact: Math.abs(receiptItem.receivedQuantity - returnLineItem.returnQuantity) > 1 ? 'HIGH' : 'LOW'
+          impact:
+            Math.abs(receiptItem.receivedQuantity - returnLineItem.returnQuantity) > 1
+              ? 'HIGH'
+              : 'LOW',
         });
       }
     }
@@ -488,14 +519,14 @@ export class ReturnManagementService {
       lineItems: receiptLineItems,
       discrepancies,
       notes: receiptData.notes,
-      attachments: receiptData.attachments || []
+      attachments: receiptData.attachments || [],
     };
 
     // Update return status
     await this.updateReturnStatus(returnId, ReturnStatus.RECEIVED, receivedBy);
 
     // Schedule inspection if required
-    if (returnRecord.lineItems.some(item => item.disposition !== 'RETURN_TO_VENDOR')) {
+    if (returnRecord.lineItems.some((item) => item.disposition !== 'RETURN_TO_VENDOR')) {
       await this.scheduleReturnInspection(returnId, receiptData.warehouseId);
     }
 
@@ -515,7 +546,13 @@ export class ReturnManagementService {
         acceptedQuantity: number;
         rejectedQuantity: number;
         finalCondition: 'NEW' | 'REFURBISHED' | 'SCRAP' | 'REPAIR_REQUIRED';
-        finalDisposition: 'RESTOCK' | 'REPAIR' | 'REPLACE' | 'SCRAP' | 'RETURN_TO_VENDOR' | 'CREDIT_ONLY';
+        finalDisposition:
+          | 'RESTOCK'
+          | 'REPAIR'
+          | 'REPLACE'
+          | 'SCRAP'
+          | 'RETURN_TO_VENDOR'
+          | 'CREDIT_ONLY';
         defectCodes?: string[];
         repairCost?: number;
         scrapValue?: number;
@@ -528,14 +565,13 @@ export class ReturnManagementService {
     },
     inspectedBy: string
   ): Promise<ReturnInspection> {
-    
     const inspection: ReturnInspection = {
       id: `ri_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       returnId,
       inspectionDate: new Date(),
       inspectedBy,
       inspectionType: inspectionData.inspectionType,
-      lineItems: inspectionData.lineItems.map(item => ({
+      lineItems: inspectionData.lineItems.map((item) => ({
         returnLineItemId: item.returnLineItemId,
         itemCode: '', // Would be populated from return line item
         inspectedQuantity: item.inspectedQuantity,
@@ -546,12 +582,12 @@ export class ReturnManagementService {
         defectCodes: item.defectCodes,
         repairCost: item.repairCost,
         scrapValue: item.scrapValue,
-        notes: item.notes
+        notes: item.notes,
       })),
       overallResult: inspectionData.overallResult,
       notes: inspectionData.notes,
       attachments: inspectionData.attachments || [],
-      certificationRequired: inspectionData.certificationRequired || false
+      certificationRequired: inspectionData.certificationRequired || false,
     };
 
     // Update return status
@@ -583,7 +619,6 @@ export class ReturnManagementService {
     creditDate: Date;
     status: 'PROCESSED' | 'PENDING' | 'FAILED';
   }> {
-    
     const returnRecord = await this.getReturnById(returnId);
     if (!returnRecord) {
       throw new Error(`Return ${returnId} not found`);
@@ -591,7 +626,7 @@ export class ReturnManagementService {
 
     const creditId = `credit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const creditNumber = `CR${Date.now().toString().slice(-8)}`;
-    
+
     const finalCreditAmount = creditData.creditAmount + (creditData.adjustmentAmount || 0);
 
     // Process credit through financial system
@@ -610,7 +645,7 @@ export class ReturnManagementService {
       creditNumber,
       creditAmount: finalCreditAmount,
       creditDate: new Date(),
-      status: creditResult.success ? 'PROCESSED' : 'FAILED'
+      status: creditResult.success ? 'PROCESSED' : 'FAILED',
     };
   }
 
@@ -625,8 +660,10 @@ export class ReturnManagementService {
       if (!order) {
         throw new Error('Original order not found');
       }
-      
-      const daysSinceOrder = Math.floor((Date.now() - order.orderDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      const daysSinceOrder = Math.floor(
+        (Date.now() - order.orderDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
       if (daysSinceOrder > 30) {
         throw new Error('Return period has expired (30 days)');
       }
@@ -635,13 +672,13 @@ export class ReturnManagementService {
 
   private calculateRestockingFee(returnType: string, lineItems: any[]): number {
     const restockingFees = {
-      'DEFECTIVE': 0,
-      'WRONG_ITEM': 0,
-      'DAMAGED_IN_TRANSIT': 0,
-      'WARRANTY': 0,
-      'CUSTOMER_CHANGE_MIND': 15,
-      'EXCESS': 10,
-      'GOODWILL': 0
+      DEFECTIVE: 0,
+      WRONG_ITEM: 0,
+      DAMAGED_IN_TRANSIT: 0,
+      WARRANTY: 0,
+      CUSTOMER_CHANGE_MIND: 15,
+      EXCESS: 10,
+      GOODWILL: 0,
     };
     return restockingFees[returnType as keyof typeof restockingFees] || 10;
   }
@@ -667,7 +704,7 @@ export class ReturnManagementService {
       postalCode: '12345',
       country: 'USA',
       phone: '555-RETURNS',
-      instructions: 'Package returns securely with RMA number visible'
+      instructions: 'Package returns securely with RMA number visible',
     };
   }
 
@@ -681,7 +718,7 @@ export class ReturnManagementService {
       5. Items must be returned within 30 days
       
       ${returnType === 'DEFECTIVE' ? 'Note: Include description of defect or problem' : ''}
-      ${lineItems.some(item => item.requiresInspection) ? 'Note: Items will be inspected upon receipt' : ''}
+      ${lineItems.some((item) => item.requiresInspection) ? 'Note: Items will be inspected upon receipt' : ''}
     `.trim();
   }
 
@@ -693,7 +730,11 @@ export class ReturnManagementService {
     // Implementation would start return processing workflow
   }
 
-  private async updateReturnStatus(returnId: string, status: ReturnStatus, updatedBy: string): Promise<void> {
+  private async updateReturnStatus(
+    returnId: string,
+    status: ReturnStatus,
+    updatedBy: string
+  ): Promise<void> {
     // Implementation would update return status in database
   }
 
@@ -701,7 +742,10 @@ export class ReturnManagementService {
     // Implementation would schedule inspection appointment
   }
 
-  private async processReturnDisposition(returnId: string, inspection: ReturnInspection): Promise<void> {
+  private async processReturnDisposition(
+    returnId: string,
+    inspection: ReturnInspection
+  ): Promise<void> {
     // Implementation would process items based on disposition (restock, scrap, etc.)
     for (const inspectionItem of inspection.lineItems) {
       switch (inspectionItem.finalDisposition) {
@@ -719,7 +763,12 @@ export class ReturnManagementService {
     }
   }
 
-  private async processFinancialCredit(customerId: string, amount: number, method: string, reference: string): Promise<{
+  private async processFinancialCredit(
+    customerId: string,
+    amount: number,
+    method: string,
+    reference: string
+  ): Promise<{
     success: boolean;
     transactionId?: string;
     errorMessage?: string;
@@ -727,7 +776,7 @@ export class ReturnManagementService {
     // Implementation would integrate with financial/billing system
     return {
       success: true,
-      transactionId: `txn_${Date.now()}`
+      transactionId: `txn_${Date.now()}`,
     };
   }
 

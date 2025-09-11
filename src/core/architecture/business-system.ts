@@ -57,7 +57,7 @@ export class BusinessSystemService extends BaseService {
     this.logger.info(`Registered business operation: ${operation.operationId}`, {
       category: operation.category,
       requiresApproval: operation.requiresApproval,
-      securityLevel: operation.securityLevel
+      securityLevel: operation.securityLevel,
     });
   }
 
@@ -75,8 +75,8 @@ export class BusinessSystemService extends BaseService {
         success: false,
         error: {
           code: 'OPERATION_NOT_FOUND',
-          message: `Business operation ${operationId} not found`
-        }
+          message: `Business operation ${operationId} not found`,
+        },
       };
     }
 
@@ -97,10 +97,10 @@ export class BusinessSystemService extends BaseService {
     // Execute with audit logging
     return this.executeWithMetrics(async () => {
       const startTime = Date.now();
-      
+
       try {
         const result = await operation.execute(input, context);
-        
+
         // Log successful operation
         if (this.config.enableAuditLog && operation.auditRequired) {
           this.logAuditEntry({
@@ -113,7 +113,7 @@ export class BusinessSystemService extends BaseService {
             inputData: this.sanitizeForAudit(input),
             outputData: this.sanitizeForAudit(result.data),
             success: result.success,
-            errorMessage: result.error?.message
+            errorMessage: result.error?.message,
           });
         }
 
@@ -130,7 +130,7 @@ export class BusinessSystemService extends BaseService {
             action: 'EXECUTE',
             inputData: this.sanitizeForAudit(input),
             success: false,
-            errorMessage: error instanceof Error ? error.message : String(error)
+            errorMessage: error instanceof Error ? error.message : String(error),
           });
         }
         throw error;
@@ -148,8 +148,8 @@ export class BusinessSystemService extends BaseService {
         success: false,
         error: {
           code: 'INSUFFICIENT_PERMISSIONS',
-          message: 'User does not have required permissions'
-        }
+          message: 'User does not have required permissions',
+        },
       };
     }
 
@@ -160,8 +160,8 @@ export class BusinessSystemService extends BaseService {
         success: false,
         error: {
           code: 'INSUFFICIENT_SECURITY_LEVEL',
-          message: 'Operation requires maximum security clearance'
-        }
+          message: 'Operation requires maximum security clearance',
+        },
       };
     }
 
@@ -171,28 +171,36 @@ export class BusinessSystemService extends BaseService {
   /**
    * Validate compliance requirements
    */
-  private validateCompliance(operation: BusinessOperation, input: any, context: ServiceContext): ServiceResult {
+  private validateCompliance(
+    operation: BusinessOperation,
+    input: any,
+    context: ServiceContext
+  ): ServiceResult {
     // Basic compliance checks
     if (!context.userId) {
       return {
         success: false,
         error: {
           code: 'COMPLIANCE_VIOLATION',
-          message: 'User identification required for compliance'
-        }
+          message: 'User identification required for compliance',
+        },
       };
     }
 
     // Financial operations compliance
     if (operation.category === 'financial') {
       // Add specific financial compliance checks
-      if (input.amount && input.amount > 10000 && !context.permissions?.includes('financial:high-value')) {
+      if (
+        input.amount &&
+        input.amount > 10000 &&
+        !context.permissions?.includes('financial:high-value')
+      ) {
         return {
           success: false,
           error: {
             code: 'FINANCIAL_COMPLIANCE_VIOLATION',
-            message: 'High-value financial operations require special authorization'
-          }
+            message: 'High-value financial operations require special authorization',
+          },
         };
       }
     }
@@ -205,7 +213,7 @@ export class BusinessSystemService extends BaseService {
    */
   private logAuditEntry(entry: AuditLogEntry): void {
     this.auditLog.push(entry);
-    
+
     // Keep only configured number of entries in memory
     if (this.auditLog.length > memoryLimits.audit.maxLogEntries) {
       this.auditLog.splice(0, memoryLimits.audit.cleanupBatchSize);
@@ -219,9 +227,9 @@ export class BusinessSystemService extends BaseService {
    */
   private sanitizeForAudit(data: any): any {
     if (!data) return data;
-    
+
     const sanitized = { ...data };
-    
+
     // Remove common sensitive fields
     const sensitiveFields = ['password', 'ssn', 'creditCard', 'bankAccount', 'apiKey', 'token'];
     for (const field of sensitiveFields) {
@@ -229,7 +237,7 @@ export class BusinessSystemService extends BaseService {
         sanitized[field] = '[REDACTED]';
       }
     }
-    
+
     return sanitized;
   }
 
@@ -246,7 +254,7 @@ export class BusinessSystemService extends BaseService {
     let filteredLog = this.auditLog;
 
     if (filters) {
-      filteredLog = this.auditLog.filter(entry => {
+      filteredLog = this.auditLog.filter((entry) => {
         if (filters.operationId && entry.operationId !== filters.operationId) return false;
         if (filters.userId && entry.userId !== filters.userId) return false;
         if (filters.category && entry.category !== filters.category) return false;
@@ -268,11 +276,9 @@ export class BusinessSystemService extends BaseService {
     recentFailures: number;
     complianceStatus: 'compliant' | 'warning' | 'violation';
   } {
-    const recentFailures = this.auditLog
-      .filter(entry => 
-        !entry.success && 
-        entry.timestamp > new Date(Date.now() - 24 * 60 * 60 * 1000)
-      ).length;
+    const recentFailures = this.auditLog.filter(
+      (entry) => !entry.success && entry.timestamp > new Date(Date.now() - 24 * 60 * 60 * 1000)
+    ).length;
 
     let complianceStatus: 'compliant' | 'warning' | 'violation' = 'compliant';
     if (recentFailures > 10) {
@@ -285,7 +291,7 @@ export class BusinessSystemService extends BaseService {
       operationsRegistered: this.operations.size,
       auditLogSize: this.auditLog.length,
       recentFailures,
-      complianceStatus
+      complianceStatus,
     };
   }
 }
@@ -309,7 +315,7 @@ export class BusinessOperationFactory {
       requiresApproval: options.requiresApproval ?? true,
       securityLevel: options.securityLevel ?? 'elevated',
       auditRequired: true,
-      execute: handler
+      execute: handler,
     };
   }
 
@@ -327,7 +333,7 @@ export class BusinessOperationFactory {
       requiresApproval: options.requiresApproval ?? false,
       securityLevel: options.securityLevel ?? 'standard',
       auditRequired: true,
-      execute: handler
+      execute: handler,
     };
   }
 
@@ -345,7 +351,7 @@ export class BusinessOperationFactory {
       requiresApproval: options.requiresApproval ?? false,
       securityLevel: options.securityLevel ?? 'standard',
       auditRequired: false,
-      execute: handler
+      execute: handler,
     };
   }
 }

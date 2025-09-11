@@ -9,14 +9,14 @@
 
 export enum WorkOrderType {
   CORRECTIVE = 'CORRECTIVE',
-  PREVENTIVE = 'PREVENTIVE', 
+  PREVENTIVE = 'PREVENTIVE',
   INSTALLATION = 'INSTALLATION',
   INSPECTION = 'INSPECTION',
   CALIBRATION = 'CALIBRATION',
   MODIFICATION = 'MODIFICATION',
   EMERGENCY = 'EMERGENCY',
   WARRANTY = 'WARRANTY',
-  PROJECT = 'PROJECT'
+  PROJECT = 'PROJECT',
 }
 
 export enum WorkOrderStatus {
@@ -28,7 +28,7 @@ export enum WorkOrderStatus {
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
   CLOSED = 'CLOSED',
-  REQUIRES_APPROVAL = 'REQUIRES_APPROVAL'
+  REQUIRES_APPROVAL = 'REQUIRES_APPROVAL',
 }
 
 export enum WorkOrderPriority {
@@ -37,7 +37,7 @@ export enum WorkOrderPriority {
   HIGH = 'HIGH',
   URGENT = 'URGENT',
   CRITICAL = 'CRITICAL',
-  EMERGENCY = 'EMERGENCY'
+  EMERGENCY = 'EMERGENCY',
 }
 
 export enum TaskStatus {
@@ -46,7 +46,7 @@ export enum TaskStatus {
   COMPLETED = 'COMPLETED',
   SKIPPED = 'SKIPPED',
   FAILED = 'FAILED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export enum MaterialStatus {
@@ -54,7 +54,7 @@ export enum MaterialStatus {
   RESERVED = 'RESERVED',
   ISSUED = 'ISSUED',
   BACKORDERED = 'BACKORDERED',
-  RETURNED = 'RETURNED'
+  RETURNED = 'RETURNED',
 }
 
 // ================================
@@ -69,21 +69,21 @@ export interface WorkOrder {
   type: WorkOrderType;
   status: WorkOrderStatus;
   priority: WorkOrderPriority;
-  
+
   // Customer & Asset Information
   customerId: string;
   customerName: string;
   assetId?: string;
   installBaseId?: string;
   serialNumber?: string;
-  
+
   // Service Information
   serviceType: string;
   problemCode?: string;
   symptomCode?: string;
   causeCode?: string;
   resolutionCode?: string;
-  
+
   // Scheduling Information
   requestedDate: Date;
   scheduledStartDate?: Date;
@@ -92,7 +92,7 @@ export interface WorkOrder {
   actualEndDate?: Date;
   estimatedDuration: number; // minutes
   actualDuration?: number; // minutes
-  
+
   // Location & Contact
   serviceAddress: ServiceAddress;
   siteContactName?: string;
@@ -100,29 +100,29 @@ export interface WorkOrder {
   siteContactEmail?: string;
   accessInstructions?: string;
   specialInstructions?: string;
-  
+
   // Resource Assignment
   assignedTechnicianId?: string;
   assignedTeamId?: string;
   backupTechnicianId?: string;
   assignedDate?: Date;
   assignedBy?: string;
-  
+
   // Tasks & Procedures
   tasks: WorkOrderTask[];
   procedures: ServiceProcedure[];
   checklist: ChecklistItem[];
-  
+
   // Materials & Parts
   materials: WorkOrderMaterial[];
   laborCharges: LaborCharge[];
-  
+
   // SLA & Contract Information
   contractId?: string;
   slaDeadline?: Date;
   responseTimeTarget?: number; // minutes
   resolutionTimeTarget?: number; // minutes
-  
+
   // Financial Information
   estimatedCost: number;
   actualCost: number;
@@ -131,36 +131,36 @@ export interface WorkOrder {
   travelCost: number;
   billable: boolean;
   billingStatus?: 'PENDING' | 'INVOICED' | 'PAID' | 'DISPUTED';
-  
+
   // Quality & Completion
   completionNotes?: string;
   customerSignature?: string;
   customerSatisfactionRating?: number;
   followUpRequired: boolean;
   followUpDate?: Date;
-  
+
   // Tracking & Audit
   createdBy: string;
   createdDate: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
   version: number;
-  
+
   // Related Records
   parentWorkOrderId?: string;
   childWorkOrderIds: string[];
   relatedWorkOrderIds: string[];
   serviceRequestId?: string;
-  
+
   // Attachments & Documentation
   attachments: WorkOrderAttachment[];
   photos: string[];
   documents: string[];
-  
+
   // Workflow & Approvals
   workflowStatus?: string;
   approvals: WorkOrderApproval[];
-  
+
   // Analytics
   tags: string[];
   customFields: Record<string, any>;
@@ -174,37 +174,37 @@ export interface WorkOrderTask {
   description: string;
   status: TaskStatus;
   type: 'STANDARD' | 'SAFETY' | 'DIAGNOSTIC' | 'REPAIR' | 'TESTING' | 'DOCUMENTATION';
-  
+
   // Timing
   estimatedDuration: number; // minutes
   actualDuration?: number; // minutes
   startTime?: Date;
   endTime?: Date;
-  
+
   // Assignment
   assignedTo?: string;
   completedBy?: string;
   verifiedBy?: string;
-  
+
   // Requirements
   skillsRequired: string[];
   toolsRequired: string[];
   materialsRequired: TaskMaterial[];
   safetyRequirements: string[];
-  
+
   // Results
   result?: string;
   notes?: string;
   qualityScore?: number;
-  
+
   // Dependencies
   dependsOnTasks: string[];
   blocksTasks: string[];
-  
+
   // Documentation
   attachments: string[];
   photos: string[];
-  
+
   createdDate: Date;
   lastUpdated: Date;
 }
@@ -275,25 +275,25 @@ export interface WorkOrderMaterial {
   unitCost: number;
   totalCost: number;
   status: MaterialStatus;
-  
+
   // Inventory Information
   warehouseId?: string;
   locationId?: string;
   lotNumber?: string;
   serialNumbers: string[];
-  
+
   // Procurement
   supplierId?: string;
   purchaseOrderId?: string;
   expectedDeliveryDate?: Date;
   actualDeliveryDate?: Date;
-  
+
   // Tracking
   issuedBy?: string;
   issuedDate?: Date;
   returnedBy?: string;
   returnedDate?: Date;
-  
+
   // Warranty
   warrantyPeriod?: number; // months
   warrantyStartDate?: Date;
@@ -305,34 +305,34 @@ export interface LaborCharge {
   workOrderId: string;
   technicianId: string;
   technicianName: string;
-  
+
   // Time Tracking
   startTime: Date;
   endTime: Date;
   duration: number; // minutes
   breakTime: number; // minutes
   billableTime: number; // minutes
-  
+
   // Rates
   regularRate: number;
   overtimeRate: number;
   premiumRate: number;
-  
+
   // Costs
   regularHours: number;
   overtimeHours: number;
   premiumHours: number;
   totalLaborCost: number;
-  
+
   // Classification
   laborType: 'TRAVEL' | 'SERVICE' | 'DIAGNOSTIC' | 'REPAIR' | 'TESTING' | 'DOCUMENTATION';
   billable: boolean;
-  
+
   // Approval
   approved: boolean;
   approvedBy?: string;
   approvedDate?: Date;
-  
+
   notes?: string;
   createdDate: Date;
 }
@@ -473,43 +473,43 @@ export interface DispatchMetrics {
 
 export interface CostBreakdown {
   workOrderId: string;
-  
+
   // Labor Costs
   totalLaborHours: number;
   regularLaborCost: number;
   overtimeLaborCost: number;
   premiumLaborCost: number;
   totalLaborCost: number;
-  
+
   // Material Costs
   partsCount: number;
   totalPartsCost: number;
   shippingCost: number;
   totalMaterialCost: number;
-  
+
   // Travel Costs
   travelDistance: number;
   travelTime: number; // minutes
   mileageRate: number;
   totalTravelCost: number;
-  
+
   // Other Costs
   equipmentRentalCost: number;
   subcontractorCost: number;
   miscellaneousCost: number;
-  
+
   // Totals
   subtotal: number;
   taxAmount: number;
   discountAmount: number;
   totalCost: number;
-  
+
   // Billing Information
   billable: boolean;
   invoiceId?: string;
   billingDate?: Date;
   paymentDate?: Date;
-  
+
   costCenter?: string;
   projectCode?: string;
   budgetCategory?: string;

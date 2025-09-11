@@ -1,142 +1,148 @@
 // Database Security Policies - Database Management System
 // This file provides business-ready functionality for Database Security Policies
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Database Security Policies page loaded');
-    
-    // Initialize page functionality
-    initdatabasesecuritypolicies();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loaddatabasesecuritypoliciesData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Database Security Policies page loaded');
+
+  // Initialize page functionality
+  initdatabasesecuritypolicies();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loaddatabasesecuritypoliciesData();
 });
 
 async function loaddatabasesecuritypoliciesData() {
-    try {
-        const response = await fetch('/api/database/security-access-control/database-security-policies');
-        if (response.ok) {
-            const data = await response.json();
-            updatedatabasesecuritypoliciesDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Database Security Policies data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch(
+      '/api/database/security-access-control/database-security-policies'
+    );
+    if (response.ok) {
+      const data = await response.json();
+      updatedatabasesecuritypoliciesDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Database Security Policies data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initdatabasesecuritypolicies() {
-    console.log('Initializing Database Security Policies');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Database Security Policies');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Database Security Policies');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Database Security Policies');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Database Security Policies');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Database Security Policies');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Database Security Policies');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Database Security Policies');
 }
 
 function handledatabasesecuritypoliciesAction() {
-    console.log('Database Security Policies action triggered');
-    showNotification('Database Security Policies configured successfully', 'success');
+  console.log('Database Security Policies action triggered');
+  showNotification('Database Security Policies configured successfully', 'success');
 }
 
 function executedatabasesecuritypolicies() {
-    console.log('Database Security Policies execution started');
-    showNotification('Database Security Policies executed successfully', 'success');
+  console.log('Database Security Policies execution started');
+  showNotification('Database Security Policies executed successfully', 'success');
 }
 
 function updatedatabasesecuritypoliciesDisplay(data) {
-    console.log('Updating Database Security Policies display:', data);
-    // Update UI with loaded data
+  console.log('Updating Database Security Policies display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/security-access-control/database-security-policies/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loaddatabasesecuritypoliciesData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handledatabasesecuritypoliciesAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/security-access-control/database-security-policies/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'database-security-policies-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/security-access-control/database-security-policies/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loaddatabasesecuritypoliciesData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handledatabasesecuritypoliciesAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/security-access-control/database-security-policies/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'database-security-policies-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

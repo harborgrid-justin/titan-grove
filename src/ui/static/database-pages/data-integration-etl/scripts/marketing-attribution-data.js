@@ -1,142 +1,146 @@
 // Marketing Attribution Data - Database Management System
 // This file provides business-ready functionality for Marketing Attribution Data
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Marketing Attribution Data page loaded');
-    
-    // Initialize page functionality
-    initMarketingAttributionData();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadMarketingAttributionDataData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Marketing Attribution Data page loaded');
+
+  // Initialize page functionality
+  initMarketingAttributionData();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadMarketingAttributionDataData();
 });
 
 async function loadMarketingAttributionDataData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/marketing-attribution-data');
-        if (response.ok) {
-            const data = await response.json();
-            updateMarketingAttributionDataDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Marketing Attribution Data data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/data-integration-etl/marketing-attribution-data');
+    if (response.ok) {
+      const data = await response.json();
+      updateMarketingAttributionDataDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Marketing Attribution Data data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initMarketingAttributionData() {
-    console.log('Initializing Marketing Attribution Data');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Marketing Attribution Data');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Marketing Attribution Data');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Marketing Attribution Data');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Marketing Attribution Data');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Marketing Attribution Data');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Marketing Attribution Data');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Marketing Attribution Data');
 }
 
 function handleMarketingAttributionDataAction() {
-    console.log('Marketing Attribution Data action triggered');
-    showNotification('Marketing Attribution Data configured successfully', 'success');
+  console.log('Marketing Attribution Data action triggered');
+  showNotification('Marketing Attribution Data configured successfully', 'success');
 }
 
 function executeMarketingAttributionData() {
-    console.log('Marketing Attribution Data execution started');
-    showNotification('Marketing Attribution Data executed successfully', 'success');
+  console.log('Marketing Attribution Data execution started');
+  showNotification('Marketing Attribution Data executed successfully', 'success');
 }
 
 function updateMarketingAttributionDataDisplay(data) {
-    console.log('Updating Marketing Attribution Data display:', data);
-    // Update UI with loaded data
+  console.log('Updating Marketing Attribution Data display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/marketing-attribution-data/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadMarketingAttributionDataData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleMarketingAttributionDataAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/marketing-attribution-data/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'marketing-attribution-data-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/marketing-attribution-data/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadMarketingAttributionDataData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleMarketingAttributionDataAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/marketing-attribution-data/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'marketing-attribution-data-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

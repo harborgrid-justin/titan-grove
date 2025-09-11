@@ -123,59 +123,68 @@ export interface CompensationMetrics {
 }
 
 export class CompensationWorkbenchService {
-
   /**
    * Strategic Compensation Management
    */
-  async createGlobalCompensationStrategy(strategy: Omit<GlobalCompensationStrategy, 'id'>): Promise<GlobalCompensationStrategy> {
+  async createGlobalCompensationStrategy(
+    strategy: Omit<GlobalCompensationStrategy, 'id'>
+  ): Promise<GlobalCompensationStrategy> {
     const id = `strategy_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const newStrategy: GlobalCompensationStrategy = {
       ...strategy,
       id,
-      approvalStatus: 'DRAFT'
+      approvalStatus: 'DRAFT',
     };
 
     // Validate budget allocations
     await this.validateBudgetAllocations(newStrategy);
-    
+
     console.log(`Created global compensation strategy ${id} for FY${strategy.fiscalYear}`);
     return newStrategy;
   }
 
   async analyzeCompensationGaps(): Promise<{
     payEquityGaps: Array<{ demographic: string; gapPercent: number; affectedEmployees: number }>;
-    marketGaps: Array<{ jobFamily: string; percentileDifference: number; recommendedAdjustment: number }>;
-    internalEquityIssues: Array<{ department: string; issueType: string; severity: 'LOW' | 'MEDIUM' | 'HIGH' }>;
+    marketGaps: Array<{
+      jobFamily: string;
+      percentileDifference: number;
+      recommendedAdjustment: number;
+    }>;
+    internalEquityIssues: Array<{
+      department: string;
+      issueType: string;
+      severity: 'LOW' | 'MEDIUM' | 'HIGH';
+    }>;
     retentionRisks: Array<{ employeeId: string; riskLevel: string; recommendedAction: string }>;
   }> {
     console.log('Analyzing compensation gaps across organization');
-    
+
     return {
       payEquityGaps: await this.analyzePayEquityGaps(),
       marketGaps: await this.analyzeMarketGaps(),
       internalEquityIssues: await this.analyzeInternalEquityIssues(),
-      retentionRisks: await this.analyzeRetentionRisks()
+      retentionRisks: await this.analyzeRetentionRisks(),
     };
   }
 
   async generateCompensationRecommendations(employeeId: string): Promise<CompensationAnalysis> {
     console.log(`Generating compensation recommendations for employee ${employeeId}`);
-    
+
     const currentComp = await this.getCurrentCompensation(employeeId);
     const marketData = await this.getMarketCompensationData(employeeId);
     const performanceData = await this.getPerformanceData(employeeId);
-    
+
     const analysis: CompensationAnalysis = {
       employeeId,
       currentCompensation: currentComp,
       marketPosition: {
         compaRatio: currentComp.baseSalary / marketData.percentile50,
         marketPercentile: this.calculateMarketPercentile(currentComp.baseSalary, marketData),
-        payEquityIndex: await this.calculatePayEquityIndex(employeeId)
+        payEquityIndex: await this.calculatePayEquityIndex(employeeId),
       },
       recommendations: await this.generateRecommendations(currentComp, marketData, performanceData),
-      retentionRisk: await this.assessRetentionRisk(employeeId)
+      retentionRisk: await this.assessRetentionRisk(employeeId),
     };
 
     return analysis;
@@ -196,7 +205,7 @@ export class CompensationWorkbenchService {
     }>;
   }> {
     console.log('Analyzing compensation impact on productivity and morale');
-    
+
     return {
       compensationProductivityCorrelation: 0.73, // 73% correlation
       topPerformersCompensationGap: 0.15, // 15% below market
@@ -206,34 +215,36 @@ export class CompensationWorkbenchService {
           action: 'Increase top performer salaries to market median',
           expectedImpact: 'Reduce turnover risk by 40%',
           estimatedCost: 250000,
-          affectedEmployees: 25
+          affectedEmployees: 25,
         },
         {
           action: 'Implement spot bonus program for high achievers',
           expectedImpact: 'Improve morale by 15%',
           estimatedCost: 50000,
-          affectedEmployees: 100
-        }
-      ]
+          affectedEmployees: 100,
+        },
+      ],
     };
   }
 
   /**
    * Fiscal Discipline and Corporate Policy Enforcement
    */
-  async validateCompensationChanges(changes: Array<{
-    employeeId: string;
-    changeType: 'SALARY_INCREASE' | 'PROMOTION' | 'BONUS' | 'EQUITY';
-    proposedAmount: number;
-    effectiveDate: Date;
-  }>): Promise<{
+  async validateCompensationChanges(
+    changes: Array<{
+      employeeId: string;
+      changeType: 'SALARY_INCREASE' | 'PROMOTION' | 'BONUS' | 'EQUITY';
+      proposedAmount: number;
+      effectiveDate: Date;
+    }>
+  ): Promise<{
     approvedChanges: any[];
     rejectedChanges: any[];
     budgetImpact: number;
     policyViolations: string[];
   }> {
     console.log(`Validating ${changes.length} compensation changes`);
-    
+
     const approvedChanges = [];
     const rejectedChanges = [];
     let budgetImpact = 0;
@@ -241,7 +252,7 @@ export class CompensationWorkbenchService {
 
     for (const change of changes) {
       const validation = await this.validateSingleCompensationChange(change);
-      
+
       if (validation.approved) {
         approvedChanges.push(change);
         budgetImpact += validation.budgetImpact;
@@ -255,7 +266,7 @@ export class CompensationWorkbenchService {
       approvedChanges,
       rejectedChanges,
       budgetImpact,
-      policyViolations
+      policyViolations,
     };
   }
 
@@ -264,40 +275,58 @@ export class CompensationWorkbenchService {
    */
   private async validateBudgetAllocations(strategy: GlobalCompensationStrategy): Promise<void> {
     const totalAllocated = strategy.allocations.reduce((sum, alloc) => sum + alloc.budgetAmount, 0);
-    
+
     if (totalAllocated > strategy.totalBudget) {
-      throw new Error(`Budget allocations exceed total budget: ${totalAllocated} > ${strategy.totalBudget}`);
+      throw new Error(
+        `Budget allocations exceed total budget: ${totalAllocated} > ${strategy.totalBudget}`
+      );
     }
-    
+
     console.log(`Budget allocations validated: ${totalAllocated} of ${strategy.totalBudget}`);
   }
 
-  private async analyzePayEquityGaps(): Promise<Array<{ demographic: string; gapPercent: number; affectedEmployees: number }>> {
+  private async analyzePayEquityGaps(): Promise<
+    Array<{ demographic: string; gapPercent: number; affectedEmployees: number }>
+  > {
     // Implementation would analyze pay equity across demographics
     return [
       { demographic: 'Gender', gapPercent: 5.2, affectedEmployees: 45 },
-      { demographic: 'Ethnicity', gapPercent: 3.1, affectedEmployees: 28 }
+      { demographic: 'Ethnicity', gapPercent: 3.1, affectedEmployees: 28 },
     ];
   }
 
-  private async analyzeMarketGaps(): Promise<Array<{ jobFamily: string; percentileDifference: number; recommendedAdjustment: number }>> {
+  private async analyzeMarketGaps(): Promise<
+    Array<{ jobFamily: string; percentileDifference: number; recommendedAdjustment: number }>
+  > {
     return [
       { jobFamily: 'Engineering', percentileDifference: -12.5, recommendedAdjustment: 8500 },
-      { jobFamily: 'Sales', percentileDifference: 8.2, recommendedAdjustment: -3200 }
+      { jobFamily: 'Sales', percentileDifference: 8.2, recommendedAdjustment: -3200 },
     ];
   }
 
-  private async analyzeInternalEquityIssues(): Promise<Array<{ department: string; issueType: string; severity: 'LOW' | 'MEDIUM' | 'HIGH' }>> {
+  private async analyzeInternalEquityIssues(): Promise<
+    Array<{ department: string; issueType: string; severity: 'LOW' | 'MEDIUM' | 'HIGH' }>
+  > {
     return [
       { department: 'IT', issueType: 'Senior vs Junior pay compression', severity: 'HIGH' },
-      { department: 'Marketing', issueType: 'Geographic pay disparity', severity: 'MEDIUM' }
+      { department: 'Marketing', issueType: 'Geographic pay disparity', severity: 'MEDIUM' },
     ];
   }
 
-  private async analyzeRetentionRisks(): Promise<Array<{ employeeId: string; riskLevel: string; recommendedAction: string }>> {
+  private async analyzeRetentionRisks(): Promise<
+    Array<{ employeeId: string; riskLevel: string; recommendedAction: string }>
+  > {
     return [
-      { employeeId: 'emp_001', riskLevel: 'HIGH', recommendedAction: 'Immediate 15% salary increase' },
-      { employeeId: 'emp_002', riskLevel: 'MEDIUM', recommendedAction: 'Consider for promotion cycle' }
+      {
+        employeeId: 'emp_001',
+        riskLevel: 'HIGH',
+        recommendedAction: 'Immediate 15% salary increase',
+      },
+      {
+        employeeId: 'emp_002',
+        riskLevel: 'MEDIUM',
+        recommendedAction: 'Consider for promotion cycle',
+      },
     ];
   }
 
@@ -307,7 +336,7 @@ export class CompensationWorkbenchService {
       baseSalary: 75000,
       totalCompensation: 95000,
       lastIncreaseDate: new Date('2023-01-01'),
-      lastIncreasePercent: 3.5
+      lastIncreasePercent: 3.5,
     };
   }
 
@@ -321,7 +350,7 @@ export class CompensationWorkbenchService {
       percentile75: 85000,
       percentile90: 95000,
       industry: 'Technology',
-      geography: 'US-CA-SF'
+      geography: 'US-CA-SF',
     };
   }
 
@@ -331,7 +360,7 @@ export class CompensationWorkbenchService {
       currentRating: 4.2,
       potentialRating: 'HIGH',
       keyAchievements: [],
-      developmentAreas: []
+      developmentAreas: [],
     };
   }
 
@@ -349,9 +378,13 @@ export class CompensationWorkbenchService {
     return 1.02; // Slightly above peer average
   }
 
-  private async generateRecommendations(currentComp: any, marketData: any, performanceData: any): Promise<CompensationRecommendation[]> {
+  private async generateRecommendations(
+    currentComp: any,
+    marketData: any,
+    performanceData: any
+  ): Promise<CompensationRecommendation[]> {
     const recommendations: CompensationRecommendation[] = [];
-    
+
     // Market-based recommendation
     if (currentComp.baseSalary < marketData.percentile50) {
       recommendations.push({
@@ -361,27 +394,29 @@ export class CompensationWorkbenchService {
         priority: 1,
         estimatedCost: marketData.percentile50 - currentComp.baseSalary,
         retentionImpact: 0.8,
-        budgetImpact: (marketData.percentile50 - currentComp.baseSalary) * 12
+        budgetImpact: (marketData.percentile50 - currentComp.baseSalary) * 12,
       });
     }
-    
+
     // Performance-based recommendation
     if (performanceData.currentRating >= 4.0) {
       recommendations.push({
         type: 'BONUS',
-        recommendedAmount: currentComp.baseSalary * 0.10,
+        recommendedAmount: currentComp.baseSalary * 0.1,
         justification: 'High performance bonus',
         priority: 2,
-        estimatedCost: currentComp.baseSalary * 0.10,
+        estimatedCost: currentComp.baseSalary * 0.1,
         retentionImpact: 0.6,
-        budgetImpact: currentComp.baseSalary * 0.10
+        budgetImpact: currentComp.baseSalary * 0.1,
       });
     }
-    
+
     return recommendations;
   }
 
-  private async assessRetentionRisk(employeeId: string): Promise<'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'> {
+  private async assessRetentionRisk(
+    employeeId: string
+  ): Promise<'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'> {
     // Implementation would assess retention risk based on various factors
     console.log(`Assessing retention risk for employee ${employeeId}`);
     return 'MEDIUM';
@@ -394,38 +429,39 @@ export class CompensationWorkbenchService {
     policyViolations: string[];
   }> {
     console.log(`Validating compensation change for employee ${change.employeeId}`);
-    
+
     const policyViolations: string[] = [];
     let approved = true;
     let rejectionReason: string | undefined;
-    
+
     // Check budget availability
     const budgetImpact = this.calculateBudgetImpact(change);
     const budgetAvailable = await this.checkBudgetAvailability(budgetImpact);
-    
+
     if (!budgetAvailable) {
       approved = false;
       rejectionReason = 'Insufficient budget';
       policyViolations.push('Budget constraint violation');
     }
-    
+
     // Check policy limits (e.g., max increase percentage)
     const currentSalary = await this.getCurrentSalary(change.employeeId);
     const increasePercent = (change.proposedAmount - currentSalary) / currentSalary;
-    
-    if (increasePercent > 0.20) { // 20% max increase policy
+
+    if (increasePercent > 0.2) {
+      // 20% max increase policy
       policyViolations.push('Exceeds maximum salary increase policy (20%)');
       if (approved) {
         approved = false;
         rejectionReason = 'Exceeds policy limits';
       }
     }
-    
+
     return {
       approved,
       rejectionReason,
       budgetImpact,
-      policyViolations
+      policyViolations,
     };
   }
 

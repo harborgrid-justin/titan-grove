@@ -11,12 +11,15 @@ import type {
   MaintenanceOptimization,
   ReliabilityCenteredMaintenance,
   FailureModeAnalysis,
-  MaintenanceStrategy
+  MaintenanceStrategy,
 } from './condition-based-types';
 
 export interface ConditionBasedManagementService {
   // Condition monitoring
-  setupConditionMonitoring(assetId: string, monitoringConfig: Partial<ConditionMonitoringSystem>): Promise<{
+  setupConditionMonitoring(
+    assetId: string,
+    monitoringConfig: Partial<ConditionMonitoringSystem>
+  ): Promise<{
     success: boolean;
     monitoringSystem: ConditionMonitoringSystem;
     baselineEstablished: boolean;
@@ -24,7 +27,10 @@ export interface ConditionBasedManagementService {
   }>;
 
   // Predictive analytics
-  createPredictiveModel(assetId: string, modelType: 'FAILURE_PREDICTION' | 'PERFORMANCE_DEGRADATION' | 'REMAINING_LIFE'): Promise<{
+  createPredictiveModel(
+    assetId: string,
+    modelType: 'FAILURE_PREDICTION' | 'PERFORMANCE_DEGRADATION' | 'REMAINING_LIFE'
+  ): Promise<{
     success: boolean;
     model: PredictiveMaintenanceModel;
     accuracy: number;

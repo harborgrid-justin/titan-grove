@@ -81,13 +81,17 @@ export class LeaseSalesQuotesService {
   ): Promise<LeaseSalesQuote> {
     const quoteId = `lsq_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const quoteNumber = `Q-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
-    
-    const totalAssetValue = assets.reduce((sum, asset) => sum + (asset.assetValue * asset.quantity), 0);
-    
+
+    const totalAssetValue = assets.reduce(
+      (sum, asset) => sum + asset.assetValue * asset.quantity,
+      0
+    );
+
     // Calculate pricing (simplified calculation)
     const monthlyRate = 0.04 / 12; // 4% annual rate
-    const monthlyPayment = (totalAssetValue * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -leaseTerms.termMonths));
-    
+    const monthlyPayment =
+      (totalAssetValue * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -leaseTerms.termMonths));
+
     const pricing: QuotePricing = {
       totalAssetValue,
       monthlyPayment: Math.round(monthlyPayment * 100) / 100,
@@ -95,10 +99,10 @@ export class LeaseSalesQuotesService {
       totalCost: Math.round(monthlyPayment * leaseTerms.termMonths * 100) / 100,
       implicitRate: 0.04,
     };
-    
+
     const validUntil = new Date();
     validUntil.setDate(validUntil.getDate() + 30); // Valid for 30 days
-    
+
     return {
       id: quoteId,
       quoteNumber,
@@ -125,7 +129,7 @@ export class LeaseSalesQuotesService {
     // Implementation would fetch existing quote and apply updates
     // For now, return a mock updated quote
     const existingQuote = await this.getLeaseSalesQuote(quoteId);
-    
+
     return {
       ...existingQuote,
       ...updates,
@@ -146,9 +150,9 @@ export class LeaseSalesQuotesService {
         approverId: 'mgr_001',
         approverName: 'Sales Manager',
         status: 'PENDING',
-      }
+      },
     ];
-    
+
     return approvals;
   }
 
@@ -158,10 +162,10 @@ export class LeaseSalesQuotesService {
   async convertQuoteToLease(quoteId: string): Promise<string> {
     // Implementation would create a lease agreement from the quote
     const leaseId = `lease_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Update quote status to converted
     // Create lease agreement record
-    
+
     return leaseId;
   }
 

@@ -3,13 +3,7 @@
  * Comprehensive carrier integration and transportation management with Oracle EBS competitive features
  */
 
-import type { 
-  Shipment,
-  ShipmentStatus,
-  PackageDetail,
-  OrderAddress,
-  Priority
-} from '../../types';
+import type { Shipment, ShipmentStatus, PackageDetail, OrderAddress, Priority } from '../../types';
 
 export interface Carrier {
   id: string;
@@ -143,7 +137,13 @@ export interface ShippingLabel {
 export interface TrackingInfo {
   trackingNumber: string;
   carrierId: string;
-  status: 'LABEL_CREATED' | 'IN_TRANSIT' | 'OUT_FOR_DELIVERY' | 'DELIVERED' | 'EXCEPTION' | 'RETURNED';
+  status:
+    | 'LABEL_CREATED'
+    | 'IN_TRANSIT'
+    | 'OUT_FOR_DELIVERY'
+    | 'DELIVERED'
+    | 'EXCEPTION'
+    | 'RETURNED';
   statusDescription: string;
   estimatedDeliveryDate?: Date;
   actualDeliveryDate?: Date;
@@ -203,7 +203,6 @@ export interface ManifestShipment {
 }
 
 export class ShippingManagementService {
-  
   // ================================
   // CARRIER MANAGEMENT
   // ================================
@@ -222,9 +221,8 @@ export class ShippingManagementService {
     operatingRegions: string[];
     integrationConfig: CarrierIntegrationConfig;
   }): Promise<Carrier> {
-    
     const carrierId = `carrier_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
-    
+
     const carrier: Carrier = {
       id: carrierId,
       name: carrierData.name,
@@ -235,7 +233,7 @@ export class ShippingManagementService {
       contractRates: carrierData.contractRates || false,
       services: carrierData.services.map((service, index) => ({
         ...service,
-        serviceId: `${carrierId}_service_${index + 1}`
+        serviceId: `${carrierId}_service_${index + 1}`,
       })),
       capabilities: carrierData.capabilities,
       operatingRegions: carrierData.operatingRegions,
@@ -249,8 +247,8 @@ export class ShippingManagementService {
         averageTransitTime: 0,
         customerSatisfactionScore: 0,
         costPerShipment: 0,
-        lastUpdated: new Date()
-      }
+        lastUpdated: new Date(),
+      },
     };
 
     return carrier;
@@ -271,12 +269,11 @@ export class ShippingManagementService {
     saturdayDelivery?: boolean;
     residentialDelivery?: boolean;
   }): Promise<ShippingRate[]> {
-    
     const rates: ShippingRate[] = [];
-    
+
     // Get list of carriers to quote
     const carriers = await this.getActiveCarriers(rateRequest.carrierIds);
-    
+
     for (const carrier of carriers) {
       try {
         const carrierRates = await this.getCarrierRates(carrier, rateRequest);
@@ -306,28 +303,27 @@ export class ShippingManagementService {
       preferredCarriers?: string[];
     }
   ): Promise<ShippingRate> {
-    
     let filteredRates = rates;
 
     // Apply filters
     if (criteria.maxCost) {
-      filteredRates = filteredRates.filter(rate => rate.totalCost <= criteria.maxCost!);
+      filteredRates = filteredRates.filter((rate) => rate.totalCost <= criteria.maxCost!);
     }
 
     if (criteria.maxTransitDays) {
-      filteredRates = filteredRates.filter(rate => rate.transitDays <= criteria.maxTransitDays!);
+      filteredRates = filteredRates.filter((rate) => rate.transitDays <= criteria.maxTransitDays!);
     }
 
     if (criteria.requireGuarantee) {
-      filteredRates = filteredRates.filter(rate => rate.guaranteedDelivery);
+      filteredRates = filteredRates.filter((rate) => rate.guaranteedDelivery);
     }
 
     if (criteria.requireTracking) {
-      filteredRates = filteredRates.filter(rate => rate.trackingIncluded);
+      filteredRates = filteredRates.filter((rate) => rate.trackingIncluded);
     }
 
     if (criteria.preferredCarriers && criteria.preferredCarriers.length > 0) {
-      const preferredRates = filteredRates.filter(rate => 
+      const preferredRates = filteredRates.filter((rate) =>
         criteria.preferredCarriers!.includes(rate.carrierId)
       );
       if (preferredRates.length > 0) {
@@ -343,22 +339,24 @@ export class ShippingManagementService {
     switch (criteria.optimizeFor) {
       case 'COST':
         return filteredRates.sort((a, b) => a.totalCost - b.totalCost)[0];
-      
+
       case 'SPEED':
         return filteredRates.sort((a, b) => a.transitDays - b.transitDays)[0];
-      
+
       case 'RELIABILITY':
         // Would use carrier performance metrics
-        return filteredRates.sort((a, b) => b.guaranteedDelivery === a.guaranteedDelivery ? 0 : b.guaranteedDelivery ? 1 : -1)[0];
-      
+        return filteredRates.sort((a, b) =>
+          b.guaranteedDelivery === a.guaranteedDelivery ? 0 : b.guaranteedDelivery ? 1 : -1
+        )[0];
+
       case 'BALANCED':
         // Weighted score combining cost, speed, and reliability
-        const scoredRates = filteredRates.map(rate => ({
+        const scoredRates = filteredRates.map((rate) => ({
           rate,
-          score: this.calculateBalancedScore(rate)
+          score: this.calculateBalancedScore(rate),
         }));
         return scoredRates.sort((a, b) => b.score - a.score)[0].rate;
-      
+
       default:
         return filteredRates[0];
     }
@@ -381,9 +379,8 @@ export class ShippingManagementService {
       includeCommercialInvoice?: boolean;
     }
   ): Promise<ShippingLabel[]> {
-    
     const labels: ShippingLabel[] = [];
-    
+
     for (const packageDetail of shipment.packageDetails) {
       try {
         const label = await this.generatePackageLabel(
@@ -394,7 +391,10 @@ export class ShippingManagementService {
         );
         labels.push(label);
       } catch (error) {
-        console.error(`Failed to generate label for package ${packageDetail.packageNumber}:`, error);
+        console.error(
+          `Failed to generate label for package ${packageDetail.packageNumber}:`,
+          error
+        );
         throw error;
       }
     }
@@ -415,18 +415,14 @@ export class ShippingManagementService {
       includeReturnLabel?: boolean;
     }
   ): Promise<ShippingLabel> {
-    
     // Integrate with carrier API to generate label
-    const carrierResponse = await this.callCarrierLabelAPI(
-      shippingRate.carrierId,
-      {
-        shipment,
-        packageDetail,
-        serviceId: shippingRate.serviceId,
-        labelFormat: labelOptions?.labelFormat || 'PDF',
-        labelSize: labelOptions?.labelSize || '4x6'
-      }
-    );
+    const carrierResponse = await this.callCarrierLabelAPI(shippingRate.carrierId, {
+      shipment,
+      packageDetail,
+      serviceId: shippingRate.serviceId,
+      labelFormat: labelOptions?.labelFormat || 'PDF',
+      labelSize: labelOptions?.labelSize || '4x6',
+    });
 
     const label: ShippingLabel = {
       labelId: `label_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
@@ -441,7 +437,7 @@ export class ShippingManagementService {
       postage: carrierResponse.postage,
       zone: carrierResponse.zone,
       createdDate: new Date(),
-      expirationDate: carrierResponse.expirationDate
+      expirationDate: carrierResponse.expirationDate,
     };
 
     return label;
@@ -455,17 +451,16 @@ export class ShippingManagementService {
    * Track shipment status
    */
   async trackShipment(trackingNumber: string, carrierId?: string): Promise<TrackingInfo> {
-    
-    const carrier = carrierId ? 
-      await this.getCarrierById(carrierId) : 
-      await this.identifyCarrierByTrackingNumber(trackingNumber);
+    const carrier = carrierId
+      ? await this.getCarrierById(carrierId)
+      : await this.identifyCarrierByTrackingNumber(trackingNumber);
 
     if (!carrier) {
       throw new Error('Unable to identify carrier for tracking number');
     }
 
     const trackingInfo = await this.callCarrierTrackingAPI(carrier, trackingNumber);
-    
+
     return trackingInfo;
   }
 
@@ -473,9 +468,8 @@ export class ShippingManagementService {
    * Track multiple shipments
    */
   async trackMultipleShipments(trackingNumbers: string[]): Promise<TrackingInfo[]> {
-    
     const trackingResults: TrackingInfo[] = [];
-    
+
     for (const trackingNumber of trackingNumbers) {
       try {
         const trackingInfo = await this.trackShipment(trackingNumber);
@@ -489,7 +483,7 @@ export class ShippingManagementService {
           status: 'EXCEPTION',
           statusDescription: 'Tracking information unavailable',
           events: [],
-          lastUpdated: new Date()
+          lastUpdated: new Date(),
         });
       }
     }
@@ -508,11 +502,10 @@ export class ShippingManagementService {
     deliveryLocation?: string;
     proofOfDelivery?: string;
   }> {
-    
     const trackingInfo = await this.trackShipment(trackingNumber);
-    
+
     const isDelivered = trackingInfo.status === 'DELIVERED';
-    const deliveryEvent = trackingInfo.events.find(event => event.eventType === 'DELIVERY');
+    const deliveryEvent = trackingInfo.events.find((event) => event.eventType === 'DELIVERY');
 
     return {
       delivered: isDelivered,
@@ -520,7 +513,7 @@ export class ShippingManagementService {
       deliveryTime: deliveryEvent?.eventTime,
       signedBy: trackingInfo.signedBy,
       deliveryLocation: trackingInfo.deliveryLocation,
-      proofOfDelivery: undefined // Would be URL to POD image if available
+      proofOfDelivery: undefined, // Would be URL to POD image if available
     };
   }
 
@@ -536,10 +529,9 @@ export class ShippingManagementService {
     shipmentIds: string[],
     manifestDate?: Date
   ): Promise<ShippingManifest> {
-    
     const manifestId = `manifest_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
     const manifestNumber = `MAN${Date.now().toString().slice(-8)}`;
-    
+
     const manifestShipments: ManifestShipment[] = [];
     let totalPackages = 0;
     let totalWeight = 0;
@@ -557,7 +549,7 @@ export class ShippingManagementService {
           declaredValue: shipment.insuredValue || 0,
           postage: shipment.shippingCost,
           destinationZip: shipment.shippingAddress.postalCode,
-          serviceType: shipment.shippingMethod
+          serviceType: shipment.shippingMethod,
         };
 
         manifestShipments.push(manifestShipment);
@@ -578,7 +570,7 @@ export class ShippingManagementService {
       totalPackages,
       totalWeight,
       totalValue,
-      totalPostage
+      totalPostage,
     };
 
     return manifest;
@@ -588,7 +580,6 @@ export class ShippingManagementService {
    * Close and transmit manifest to carrier
    */
   async closeManifest(manifestId: string): Promise<ShippingManifest> {
-    
     const manifest = await this.getManifestById(manifestId);
     if (!manifest) {
       throw new Error('Manifest not found');
@@ -601,7 +592,7 @@ export class ShippingManagementService {
       ...manifest,
       status: 'CLOSED',
       closedDate: new Date(),
-      transmissionId
+      transmissionId,
     };
 
     return closedManifest;
@@ -626,8 +617,8 @@ export class ShippingManagementService {
     const costScore = 100 / rate.totalCost; // Lower cost = higher score
     const speedScore = 10 / rate.transitDays; // Faster = higher score
     const reliabilityScore = rate.guaranteedDelivery ? 10 : 5;
-    
-    return (costScore * 0.4) + (speedScore * 0.4) + (reliabilityScore * 0.2);
+
+    return costScore * 0.4 + speedScore * 0.4 + reliabilityScore * 0.2;
   }
 
   private async callCarrierLabelAPI(carrierId: string, labelRequest: any): Promise<any> {
@@ -636,13 +627,16 @@ export class ShippingManagementService {
       trackingNumber: `1Z999AA1${Date.now().toString().slice(-10)}`,
       labelUrl: 'https://example.com/label.pdf',
       labelData: 'base64-encoded-label-data',
-      postage: 12.50,
+      postage: 12.5,
       zone: '5',
-      expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+      expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     };
   }
 
-  private async callCarrierTrackingAPI(carrier: Carrier, trackingNumber: string): Promise<TrackingInfo> {
+  private async callCarrierTrackingAPI(
+    carrier: Carrier,
+    trackingNumber: string
+  ): Promise<TrackingInfo> {
     // Implementation would integrate with carrier tracking APIs
     return {
       trackingNumber,
@@ -651,7 +645,7 @@ export class ShippingManagementService {
       statusDescription: 'Package is in transit',
       estimatedDeliveryDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
       events: [],
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 

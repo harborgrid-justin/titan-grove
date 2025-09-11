@@ -12,5 +12,5 @@ export { ProcurementPlanningService, procurementPlanningService } from './main-s
 // Legacy compatibility - re-export main service as the original name
 export {
   ProcurementPlanningService as ProcurementPlanningServiceLegacy,
-  procurementPlanningService as procurementPlanningServiceLegacy
+  procurementPlanningService as procurementPlanningServiceLegacy,
 } from './main-service';

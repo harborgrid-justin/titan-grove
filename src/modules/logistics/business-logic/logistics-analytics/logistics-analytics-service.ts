@@ -15,7 +15,10 @@ export interface PerformanceAnalytics {
 }
 
 export class LogisticsAnalyticsService {
-  async calculateLogisticsKPIs(dateRange?: { startDate: Date; endDate: Date }): Promise<LogisticsKPI[]> {
+  async calculateLogisticsKPIs(dateRange?: {
+    startDate: Date;
+    endDate: Date;
+  }): Promise<LogisticsKPI[]> {
     // Return sample KPIs for now
     return [
       {
@@ -34,8 +37,8 @@ export class LogisticsAnalyticsService {
         dataSource: 'Transportation Management',
         alertThresholds: [],
         lastCalculated: new Date(),
-        lastUpdated: new Date()
-      }
+        lastUpdated: new Date(),
+      },
     ];
   }
 

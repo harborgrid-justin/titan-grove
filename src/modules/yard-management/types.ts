@@ -13,7 +13,7 @@ export interface YardFacility {
   facilityType: 'DISTRIBUTION_CENTER' | 'MANUFACTURING' | 'CROSS_DOCK' | 'TERMINAL';
   location: {
     address: string;
-    coordinates: { lat: number; lng: number; };
+    coordinates: { lat: number; lng: number };
     timezone: string;
   };
   yardConfiguration: {
@@ -24,9 +24,9 @@ export interface YardFacility {
     dockDoors: DockDoor[];
   };
   operatingHours: {
-    standard: { start: string; end: string; };
-    weekend?: { start: string; end: string; };
-    holiday?: { start: string; end: string; };
+    standard: { start: string; end: string };
+    weekend?: { start: string; end: string };
+    holiday?: { start: string; end: string };
   };
   securityConfiguration: {
     gateAccess: boolean;
@@ -72,7 +72,7 @@ export interface YardSpace {
   facilityId: string;
   spaceType: 'PARKING' | 'STAGING' | 'INSPECTION' | 'MAINTENANCE' | 'RESERVED';
   location: {
-    coordinates: { x: number; y: number; };
+    coordinates: { x: number; y: number };
     zone: string;
     accessibility: 'DRIVE_THROUGH' | 'BACK_IN' | 'PARALLEL';
   };
@@ -157,7 +157,7 @@ export interface AppointmentSchedule {
   appointmentType: 'PICKUP' | 'DELIVERY' | 'LIVE_LOAD' | 'LIVE_UNLOAD' | 'DROP_TRAILER';
   scheduledTime: {
     date: Date;
-    timeSlot: { start: string; end: string; };
+    timeSlot: { start: string; end: string };
     duration: number; // minutes
   };
   requirements: {
@@ -202,8 +202,8 @@ export interface GateOperation {
   facilityId: string;
   gateType: 'INBOUND' | 'OUTBOUND' | 'BIDIRECTIONAL';
   operatingHours: {
-    weekday: { start: string; end: string; };
-    weekend?: { start: string; end: string; };
+    weekday: { start: string; end: string };
+    weekend?: { start: string; end: string };
   };
   security: {
     accessControl: boolean;
@@ -252,7 +252,7 @@ export interface YardEquipment {
     estimatedEndTime: Date;
   };
   location: {
-    currentPosition: { x: number; y: number; };
+    currentPosition: { x: number; y: number };
     zone: string;
     lastKnownPosition: Date;
   };
@@ -329,7 +329,7 @@ export interface YardPerformanceMetrics {
   dockUtilization: {
     averageUtilization: number;
     peakUtilization: number;
-    utilizationByDoor: { doorId: string; utilization: number; }[];
+    utilizationByDoor: { doorId: string; utilization: number }[];
   };
   yardUtilization: {
     averageOccupancy: number;

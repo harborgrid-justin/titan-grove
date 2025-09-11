@@ -3,12 +3,12 @@
  * Business logic for purchase requisition management
  */
 
-import { 
-  PurchaseRequisition, 
+import {
+  PurchaseRequisition,
   RequisitionStatus,
   RequisitionLineItem,
   ApprovalRecord,
-  ProcurementSearchCriteria
+  ProcurementSearchCriteria,
 } from '../../types';
 import { purchaseRequisitionRepository } from '../../data-access/repositories';
 import { PaginatedResponse, SearchParams, Priority } from '../../../../types/common';
@@ -16,21 +16,31 @@ import type { QuoteManagementConfig } from '../../../../types/business-config';
 import { FinancialUtils } from '../../../../shared/constants';
 
 export class PurchaseRequisitionService {
-  
   /**
    * Create a new purchase requisition
    */
   async createPurchaseRequisition(
-    data: Omit<PurchaseRequisition, 'id' | 'requisitionNumber' | 'status' | 'approvals' | 'currentApprovalLevel' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>
+    data: Omit<
+      PurchaseRequisition,
+      | 'id'
+      | 'requisitionNumber'
+      | 'status'
+      | 'approvals'
+      | 'currentApprovalLevel'
+      | 'createdAt'
+      | 'updatedAt'
+      | 'createdBy'
+      | 'updatedBy'
+    >
   ): Promise<PurchaseRequisition> {
     this.validateRequisitionData(data);
-    
+
     // Generate requisition number
     const requisitionNumber = await this.generateRequisitionNumber();
-    
+
     // Calculate totals
     const { subtotal, tax, total } = this.calculateTotals(data.lineItems);
-    
+
     const requisitionData = {
       ...data,
       requisitionNumber,
@@ -42,9 +52,9 @@ export class PurchaseRequisitionService {
       total,
       priority: data.priority || Priority.MEDIUM,
       createdBy: 'system',
-      updatedBy: 'system'
+      updatedBy: 'system',
     };
-    
+
     return await purchaseRequisitionRepository.create(requisitionData);
   }
 
@@ -65,17 +75,20 @@ export class PurchaseRequisitionService {
   /**
    * Update requisition
    */
-  async updateRequisition(id: string, updates: Partial<PurchaseRequisition>): Promise<PurchaseRequisition> {
+  async updateRequisition(
+    id: string,
+    updates: Partial<PurchaseRequisition>
+  ): Promise<PurchaseRequisition> {
     const existing = await purchaseRequisitionRepository.getById(id);
     if (!existing) {
       throw new Error(`Purchase requisition with ID ${id} not found`);
     }
-    
+
     // Don't allow updates to submitted or approved requisitions
     if (existing.status !== RequisitionStatus.DRAFT) {
       throw new Error('Cannot modify requisition that has been submitted');
     }
-    
+
     // Recalculate totals if line items are updated
     if (updates.lineItems) {
       const { subtotal, tax, total } = this.calculateTotals(updates.lineItems);
@@ -83,7 +96,7 @@ export class PurchaseRequisitionService {
       updates.tax = tax;
       updates.total = total;
     }
-    
+
     return await purchaseRequisitionRepository.update(id, updates);
   }
 
@@ -95,12 +108,12 @@ export class PurchaseRequisitionService {
     if (!existing) {
       throw new Error(`Purchase requisition with ID ${id} not found`);
     }
-    
+
     // Only allow deletion of draft requisitions
     if (existing.status !== RequisitionStatus.DRAFT) {
       throw new Error('Cannot delete requisition that has been submitted');
     }
-    
+
     await purchaseRequisitionRepository.delete(id);
   }
 
@@ -116,31 +129,31 @@ export class PurchaseRequisitionService {
     if (!requisition) {
       throw new Error(`Purchase requisition with ID ${requisitionId} not found`);
     }
-    
+
     if (requisition.status !== RequisitionStatus.DRAFT) {
       throw new Error('Requisition has already been submitted');
     }
-    
+
     // Validate requisition before submission
     this.validateRequisitionForSubmission(requisition);
-    
+
     // Determine approval workflow
     const approvalWorkflow = await this.determineApprovalWorkflow(requisition);
     const nextApprover = approvalWorkflow.approvers[0];
-    
+
     // Update status
     await this.updateRequisition(requisitionId, {
       status: RequisitionStatus.SUBMITTED,
-      currentApprovalLevel: 1
+      currentApprovalLevel: 1,
     });
-    
+
     // Create approval record
     await this.createApprovalRecord(requisitionId, nextApprover, 'PENDING');
-    
+
     return {
       status: 'SUBMITTED',
       nextApprover: nextApprover,
-      estimatedApprovalTime: approvalWorkflow.estimatedHours
+      estimatedApprovalTime: approvalWorkflow.estimatedHours,
     };
   }
 
@@ -148,51 +161,51 @@ export class PurchaseRequisitionService {
    * Approve requisition
    */
   async approveRequisition(
-    requisitionId: string, 
-    approverId: string, 
+    requisitionId: string,
+    approverId: string,
     comments?: string
   ): Promise<void> {
     const requisition = await this.getRequisitionById(requisitionId);
     if (!requisition) {
       throw new Error(`Purchase requisition with ID ${requisitionId} not found`);
     }
-    
+
     // Find pending approval record
     const pendingApproval = requisition.approvals.find(
-      a => a.status === 'PENDING' && a.approverRole === approverId
+      (a) => a.status === 'PENDING' && a.approverRole === approverId
     );
-    
+
     if (!pendingApproval) {
       throw new Error('No pending approval found for this approver');
     }
-    
+
     // Update approval record
     pendingApproval.status = 'APPROVED';
     pendingApproval.approvedBy = approverId;
     pendingApproval.approvedAt = new Date();
     pendingApproval.comments = comments;
-    
+
     // Check if all required approvals are complete
     const workflow = await this.determineApprovalWorkflow(requisition);
-    const allApproved = workflow.approvers.every(approver =>
-      requisition.approvals.some(a => a.approverRole === approver && a.status === 'APPROVED')
+    const allApproved = workflow.approvers.every((approver) =>
+      requisition.approvals.some((a) => a.approverRole === approver && a.status === 'APPROVED')
     );
-    
+
     if (allApproved) {
       // Final approval - update status
       await this.updateRequisition(requisitionId, {
         status: RequisitionStatus.APPROVED,
-        approvals: requisition.approvals
+        approvals: requisition.approvals,
       });
     } else {
       // More approvals needed
-      const nextApproverIndex = workflow.approvers.findIndex(a => a === approverId) + 1;
+      const nextApproverIndex = workflow.approvers.findIndex((a) => a === approverId) + 1;
       const nextApprover = workflow.approvers[nextApproverIndex];
-      
+
       await this.createApprovalRecord(requisitionId, nextApprover, 'PENDING');
       await this.updateRequisition(requisitionId, {
         currentApprovalLevel: nextApproverIndex + 1,
-        approvals: requisition.approvals
+        approvals: requisition.approvals,
       });
     }
   }
@@ -201,34 +214,34 @@ export class PurchaseRequisitionService {
    * Reject requisition
    */
   async rejectRequisition(
-    requisitionId: string, 
-    rejectorId: string, 
+    requisitionId: string,
+    rejectorId: string,
     reason: string
   ): Promise<void> {
     const requisition = await this.getRequisitionById(requisitionId);
     if (!requisition) {
       throw new Error(`Purchase requisition with ID ${requisitionId} not found`);
     }
-    
+
     // Find pending approval record
     const pendingApproval = requisition.approvals.find(
-      a => a.status === 'PENDING' && a.approverRole === rejectorId
+      (a) => a.status === 'PENDING' && a.approverRole === rejectorId
     );
-    
+
     if (!pendingApproval) {
       throw new Error('No pending approval found for this approver');
     }
-    
+
     // Update approval record
     pendingApproval.status = 'REJECTED';
     pendingApproval.rejectedBy = rejectorId;
     pendingApproval.rejectedAt = new Date();
     pendingApproval.comments = reason;
-    
+
     // Update requisition status
     await this.updateRequisition(requisitionId, {
       status: RequisitionStatus.REJECTED,
-      approvals: requisition.approvals
+      approvals: requisition.approvals,
     });
   }
 
@@ -240,17 +253,17 @@ export class PurchaseRequisitionService {
     if (!requisition) {
       throw new Error(`Purchase requisition with ID ${requisitionId} not found`);
     }
-    
+
     if (requisition.status !== RequisitionStatus.APPROVED) {
       throw new Error('Only approved requisitions can be converted to purchase orders');
     }
-    
+
     // In real implementation, this would create a purchase order
     // For now, just update the status
     await this.updateRequisition(requisitionId, {
-      status: RequisitionStatus.CONVERTED_TO_PO
+      status: RequisitionStatus.CONVERTED_TO_PO,
     });
-    
+
     // Return mock PO ID
     return `po_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
@@ -259,7 +272,7 @@ export class PurchaseRequisitionService {
    * Search requisitions
    */
   async searchRequisitions(
-    criteria: ProcurementSearchCriteria, 
+    criteria: ProcurementSearchCriteria,
     params?: SearchParams
   ): Promise<PaginatedResponse<PurchaseRequisition>> {
     return await purchaseRequisitionRepository.search(criteria, params);
@@ -287,38 +300,38 @@ export class PurchaseRequisitionService {
   }
 
   // Private helper methods
-  
+
   private validateRequisitionData(data: Partial<PurchaseRequisition>): void {
     if (!data.title || data.title.trim() === '') {
       throw new Error('Requisition title is required');
     }
-    
+
     if (!data.requestorId) {
       throw new Error('Requestor ID is required');
     }
-    
+
     if (!data.departmentId) {
       throw new Error('Department ID is required');
     }
-    
+
     if (!data.businessJustification || data.businessJustification.trim() === '') {
       throw new Error('Business justification is required');
     }
-    
+
     if (!data.lineItems || data.lineItems.length === 0) {
       throw new Error('At least one line item is required');
     }
-    
+
     // Validate line items
     data.lineItems.forEach((item, index) => {
       if (!item.description || item.description.trim() === '') {
         throw new Error(`Line item ${index + 1}: Description is required`);
       }
-      
+
       if (item.quantity <= 0) {
         throw new Error(`Line item ${index + 1}: Quantity must be greater than 0`);
       }
-      
+
       if (item.unitPrice.amount <= 0) {
         throw new Error(`Line item ${index + 1}: Unit price must be greater than 0`);
       }
@@ -330,7 +343,7 @@ export class PurchaseRequisitionService {
     if (requisition.total.amount <= 0) {
       throw new Error('Requisition total must be greater than 0');
     }
-    
+
     // Check for required approvals based on amount
     const totalAmount = requisition.total.amount;
     if (totalAmount > 10000 && !requisition.costCenterId) {
@@ -344,21 +357,21 @@ export class PurchaseRequisitionService {
     total: any;
   } {
     const subtotalAmount = lineItems.reduce((sum, item) => sum + item.totalPrice.amount, 0);
-    
+
     // Load config for tax calculation
     const { loadBusinessConfig } = require('../../../../utils/business-config');
     const config = loadBusinessConfig().quoteManagement;
-    
+
     const taxAmount = FinancialUtils.calculateTax(subtotalAmount, config.standardTaxRate);
     const totalAmount = subtotalAmount + taxAmount;
-    
+
     // Use the currency from the first line item (assuming all items use same currency)
     const currency = lineItems[0]?.totalPrice?.currency || 'USD';
-    
+
     return {
       subtotal: { amount: subtotalAmount, currency },
       tax: { amount: taxAmount, currency },
-      total: { amount: totalAmount, currency }
+      total: { amount: totalAmount, currency },
     };
   }
 
@@ -373,29 +386,29 @@ export class PurchaseRequisitionService {
     estimatedHours: number;
   }> {
     const totalAmount = requisition.total.amount;
-    
+
     // Simple approval workflow based on amount
     if (totalAmount < 1000) {
       return {
         approvers: ['manager'],
-        estimatedHours: 4
+        estimatedHours: 4,
       };
     } else if (totalAmount < 10000) {
       return {
         approvers: ['manager', 'director'],
-        estimatedHours: 24
+        estimatedHours: 24,
       };
     } else {
       return {
         approvers: ['manager', 'director', 'vp'],
-        estimatedHours: 48
+        estimatedHours: 48,
       };
     }
   }
 
   private async createApprovalRecord(
-    requisitionId: string, 
-    approverId: string, 
+    requisitionId: string,
+    approverId: string,
     status: 'PENDING' | 'APPROVED' | 'REJECTED'
   ): Promise<void> {
     // In real implementation, this would create an approval record

@@ -1,6 +1,6 @@
 /**
  * Work in Process (WIP) Management Service
- * Oracle EBS competitive complete production management system that improves productivity, 
+ * Oracle EBS competitive complete production management system that improves productivity,
  * quality, and responsiveness while maximizing throughput and production
  */
 
@@ -142,7 +142,11 @@ export interface WIPState {
 
 export interface WIPRecommendation {
   recommendationId: string;
-  type: 'CAPACITY_INCREASE' | 'PROCESS_IMPROVEMENT' | 'QUALITY_ENHANCEMENT' | 'WORKFLOW_OPTIMIZATION';
+  type:
+    | 'CAPACITY_INCREASE'
+    | 'PROCESS_IMPROVEMENT'
+    | 'QUALITY_ENHANCEMENT'
+    | 'WORKFLOW_OPTIMIZATION';
   description: string;
   targetArea: string;
   expectedBenefit: number;
@@ -168,7 +172,6 @@ export interface OptimizationStep {
  * Complete production management system for productivity and quality
  */
 export class WorkInProcessService {
-
   // ================================
   // WIP TRACKING AND MANAGEMENT
   // ================================
@@ -193,7 +196,7 @@ export class WorkInProcessService {
     };
   }> {
     console.log(`Tracking WIP items for work center: ${workCenterId || 'ALL'}`);
-    
+
     const wipItems: WorkInProcessItem[] = [
       {
         wipId: 'wip_001',
@@ -206,17 +209,17 @@ export class WorkInProcessService {
         quantity: 100,
         quantityCompleted: 75,
         quantityRejected: 2,
-        standardCost: 12550.00,
-        actualCost: 13125.50,
+        standardCost: 12550.0,
+        actualCost: 13125.5,
         laborHours: 25.5,
         machineHours: 18.0,
-        materialCost: 8500.00,
-        overheadCost: 2125.50,
+        materialCost: 8500.0,
+        overheadCost: 2125.5,
         startDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
         currentStationArrival: new Date(Date.now() - 2 * 60 * 60 * 1000),
         estimatedCompletion: new Date(Date.now() + 4 * 60 * 60 * 1000),
         priority: 'HIGH',
-        hold: false
+        hold: false,
       },
       {
         wipId: 'wip_002',
@@ -229,18 +232,18 @@ export class WorkInProcessService {
         quantity: 50,
         quantityCompleted: 0,
         quantityRejected: 0,
-        standardCost: 6275.00,
-        actualCost: 6275.00,
+        standardCost: 6275.0,
+        actualCost: 6275.0,
         laborHours: 0,
         machineHours: 0,
-        materialCost: 4250.00,
+        materialCost: 4250.0,
         overheadCost: 1062.75,
         startDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         currentStationArrival: new Date(Date.now() - 1 * 60 * 60 * 1000),
         estimatedCompletion: new Date(Date.now() + 6 * 60 * 60 * 1000),
         priority: 'MEDIUM',
-        hold: false
-      }
+        hold: false,
+      },
     ];
 
     const totalWIPValue = wipItems.reduce((sum, item) => sum + item.actualCost, 0);
@@ -253,36 +256,36 @@ export class WorkInProcessService {
         {
           workCenter: 'WC002',
           queueDepth: 8,
-          averageWaitTime: 2.5
-        }
+          averageWaitTime: 2.5,
+        },
       ],
       throughputAnalysis: {
         currentThroughput: 67.5,
         targetThroughput: 75.0,
         efficiency: 90.0,
-        constrainingFactors: ['Work center WC002 capacity', 'Setup time optimization']
-      }
+        constrainingFactors: ['Work center WC002 capacity', 'Setup time optimization'],
+      },
     };
   }
 
   /**
    * Process WIP transaction
    */
-  async processWIPTransaction(
-    transactionData: {
-      wipId: string;
-      transactionType: string;
-      fromWorkCenter?: string;
-      toWorkCenter?: string;
-      quantity: number;
-      employeeId: string;
-      qualityData?: any;
-    }
-  ): Promise<WIPTransaction> {
+  async processWIPTransaction(transactionData: {
+    wipId: string;
+    transactionType: string;
+    fromWorkCenter?: string;
+    toWorkCenter?: string;
+    quantity: number;
+    employeeId: string;
+    qualityData?: any;
+  }): Promise<WIPTransaction> {
     const transactionId = `wt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log(`Processing WIP transaction: ${transactionData.transactionType} for ${transactionData.wipId}`);
-    
+
+    console.log(
+      `Processing WIP transaction: ${transactionData.transactionType} for ${transactionData.wipId}`
+    );
+
     const transaction: WIPTransaction = {
       transactionId,
       wipId: transactionData.wipId,
@@ -297,14 +300,14 @@ export class WorkInProcessService {
       reason: 'Standard operation completion',
       qualityData: transactionData.qualityData,
       costImpact: {
-        laborCost: 85.50,
+        laborCost: 85.5,
         materialCost: 0,
         overheadCost: 25.65,
         qualityCost: 0,
         totalCost: 111.15,
         variance: -5.25,
-        explanation: 'Efficient operation completion'
-      }
+        explanation: 'Efficient operation completion',
+      },
     };
 
     return transaction;
@@ -317,8 +320,10 @@ export class WorkInProcessService {
     timeframe: { startDate: Date; endDate: Date },
     workCenterId?: string
   ): Promise<WIPAnalytics> {
-    console.log(`Generating WIP analytics for timeframe: ${timeframe.startDate} to ${timeframe.endDate}`);
-    
+    console.log(
+      `Generating WIP analytics for timeframe: ${timeframe.startDate} to ${timeframe.endDate}`
+    );
+
     return {
       performanceMetrics: {
         throughput: 67.5,
@@ -326,29 +331,29 @@ export class WorkInProcessService {
         wipTurns: 21.7,
         productivity: 89.2,
         quality: 96.8,
-        onTimeDelivery: 94.3
+        onTimeDelivery: 94.3,
       },
       costMetrics: {
         wipValue: 2847500,
         costPerUnit: 125.75,
         varianceToStandard: -3.2,
         costTrends: [
-          { period: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), cost: 128.90, variance: 2.5 },
-          { period: new Date(), cost: 125.75, variance: -3.2 }
-        ]
+          { period: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), cost: 128.9, variance: 2.5 },
+          { period: new Date(), cost: 125.75, variance: -3.2 },
+        ],
       },
       operationalMetrics: {
         averageQueueTime: 2.5,
         averageSetupTime: 0.8,
         averageProcessTime: 13.5,
-        utilizationRate: 87.2
+        utilizationRate: 87.2,
       },
       qualityMetrics: {
         firstPassYield: 96.8,
         reworkRate: 2.1,
         scrapRate: 1.1,
-        customerComplaints: 0.05
-      }
+        customerComplaints: 0.05,
+      },
     };
   }
 
@@ -357,9 +362,9 @@ export class WorkInProcessService {
    */
   async optimizeWIPFlow(workCenterId?: string): Promise<WIPOptimization> {
     const optimizationId = `wip_opt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Optimizing WIP flow for work center: ${workCenterId || 'ALL'}`);
-    
+
     const currentState: WIPState = {
       totalWIPValue: 2847500,
       totalWIPQuantity: 22650,
@@ -369,17 +374,17 @@ export class WorkInProcessService {
           workCenter: 'WC002',
           queueTime: 2.5,
           utilizationRate: 97.5,
-          impact: 8.2
-        }
+          impact: 8.2,
+        },
       ],
       flows: [
         {
           fromWorkCenter: 'WC001',
           toWorkCenter: 'WC002',
           volume: 1250,
-          averageTime: 1.2
-        }
-      ]
+          averageTime: 1.2,
+        },
+      ],
     };
 
     const recommendations: WIPRecommendation[] = [
@@ -392,7 +397,7 @@ export class WorkInProcessService {
         implementationEffort: 'MEDIUM',
         investmentRequired: 125000,
         paybackPeriod: 8,
-        riskLevel: 'LOW'
+        riskLevel: 'LOW',
       },
       {
         recommendationId: 'rec_002',
@@ -403,8 +408,8 @@ export class WorkInProcessService {
         implementationEffort: 'LOW',
         investmentRequired: 25000,
         paybackPeriod: 4,
-        riskLevel: 'LOW'
-      }
+        riskLevel: 'LOW',
+      },
     ];
 
     const implementationPlan: OptimizationStep[] = [
@@ -416,7 +421,7 @@ export class WorkInProcessService {
         dependencies: [],
         responsible: 'INDUSTRIAL_ENGINEER',
         resources: ['Timing equipment', 'Analysis software'],
-        successCriteria: ['Accurate cycle time data', 'Bottleneck identification']
+        successCriteria: ['Accurate cycle time data', 'Bottleneck identification'],
       },
       {
         stepId: 'step_002',
@@ -426,8 +431,8 @@ export class WorkInProcessService {
         dependencies: ['step_001'],
         responsible: 'PROCESS_ENGINEER',
         resources: ['Simulation software', 'Layout design tools'],
-        successCriteria: ['Validated design', 'Stakeholder approval']
-      }
+        successCriteria: ['Validated design', 'Stakeholder approval'],
+      },
     ];
 
     return {
@@ -439,9 +444,9 @@ export class WorkInProcessService {
         throughputIncrease: 18.5,
         cycleTimeReduction: 22.3,
         costSavings: 285000,
-        qualityImprovement: 4.2
+        qualityImprovement: 4.2,
       },
-      implementationPlan
+      implementationPlan,
     };
   }
 
@@ -480,14 +485,14 @@ export class WorkInProcessService {
     };
   }> {
     console.log('Getting real-time WIP status');
-    
+
     return {
       summary: {
         totalWIPItems: 1247,
         totalWIPValue: 2847500,
         averageAge: 3.8,
         urgentItems: 23,
-        onHoldItems: 5
+        onHoldItems: 5,
       },
       workCenterStatus: [
         {
@@ -497,7 +502,7 @@ export class WorkInProcessService {
           averageWaitTime: 1.5,
           utilization: 85.7,
           efficiency: 92.3,
-          activeOperators: 3
+          activeOperators: 3,
         },
         {
           workCenterId: 'WC002',
@@ -506,8 +511,8 @@ export class WorkInProcessService {
           averageWaitTime: 2.8,
           utilization: 97.5,
           efficiency: 89.1,
-          activeOperators: 5
-        }
+          activeOperators: 5,
+        },
       ],
       alerts: [
         {
@@ -515,15 +520,15 @@ export class WorkInProcessService {
           severity: 'MEDIUM',
           description: 'Queue building at Assembly Center',
           workCenter: 'WC002',
-          recommendedAction: 'Consider overtime or additional resources'
-        }
+          recommendedAction: 'Consider overtime or additional resources',
+        },
       ],
       kpis: {
         wipVelocity: 4.2,
         wipAccuracy: 98.7,
         planAdherence: 94.5,
-        resourceUtilization: 89.2
-      }
+        resourceUtilization: 89.2,
+      },
     };
   }
 }

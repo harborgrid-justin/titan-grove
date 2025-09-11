@@ -38,8 +38,8 @@ app.get('/health', (req, res) => {
       service: 'titan-grove-ui',
       status: 'healthy',
       timestamp: new Date().toISOString(),
-      version: '1.0.0'
-    }
+      version: '1.0.0',
+    },
   });
 });
 
@@ -59,9 +59,9 @@ app.get('/api/info', (req, res) => {
         'Advanced theming',
         'Interactive widgets',
         'Modern data tables',
-        'Live KPI cards'
-      ]
-    }
+        'Live KPI cards',
+      ],
+    },
   });
 });
 
@@ -78,19 +78,19 @@ app.get('/api/ui/components', (req, res) => {
         description: 'Interactive line chart with real-time updates',
         config: {
           behavior: { interactive: true, realtime: true },
-          responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
-        }
+          responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 } },
+        },
       },
       {
         id: 'data-table',
         type: 'table',
-        name: 'Data Table', 
+        name: 'Data Table',
         version: '1.0.0',
         description: 'Advanced data table with sorting, filtering, and export',
         config: {
           behavior: { interactive: true, cacheable: true },
-          responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
-        }
+          responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 } },
+        },
       },
       {
         id: 'kpi-card',
@@ -100,10 +100,10 @@ app.get('/api/ui/components', (req, res) => {
         description: 'Real-time KPI display with trends and targets',
         config: {
           behavior: { realtime: true },
-          responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 }}
-        }
-      }
-    ]
+          responsive: { breakpoints: { mobile: 320, tablet: 768, desktop: 1024, wide: 1440 } },
+        },
+      },
+    ],
   });
 });
 
@@ -117,8 +117,8 @@ app.get('/api/financial/revenue', (req, res) => {
       trend: 'up',
       trendValue: 12.5,
       target: 2500000,
-      format: 'currency'
-    }
+      format: 'currency',
+    },
   });
 });
 
@@ -128,11 +128,11 @@ app.get('/api/financial/profit', (req, res) => {
     data: {
       current: 18.7,
       previous: 16.4,
-      trend: 'up', 
+      trend: 'up',
       trendValue: 2.3,
       target: 20,
-      format: 'percentage'
-    }
+      format: 'percentage',
+    },
   });
 });
 
@@ -145,8 +145,8 @@ app.get('/api/crm/customers', (req, res) => {
       trend: 'up',
       trendValue: 8.4,
       target: 1500,
-      format: 'number'
-    }
+      format: 'number',
+    },
   });
 });
 
@@ -159,8 +159,8 @@ app.get('/api/project/active', (req, res) => {
       trend: 'stable',
       trendValue: 0,
       target: 40,
-      format: 'number'
-    }
+      format: 'number',
+    },
   });
 });
 
@@ -174,41 +174,41 @@ app.get('/api/data/transactions', (req, res) => {
           customer: 'Acme Corporation',
           amount: '$45,250.00',
           date: '2024-01-15',
-          status: 'Completed'
+          status: 'Completed',
         },
         {
-          id: 'TXN-2024-002', 
+          id: 'TXN-2024-002',
           customer: 'TechStart Inc.',
           amount: '$12,800.00',
           date: '2024-01-14',
-          status: 'Pending'
+          status: 'Pending',
         },
         {
           id: 'TXN-2024-003',
           customer: 'Global Solutions Ltd.',
           amount: '$78,900.00',
           date: '2024-01-13',
-          status: 'Completed'
+          status: 'Completed',
         },
         {
           id: 'TXN-2024-004',
           customer: 'Innovation Corp.',
           amount: '$23,450.00',
           date: '2024-01-12',
-          status: 'Processing'
+          status: 'Processing',
         },
         {
           id: 'TXN-2024-005',
           customer: 'Digital Dynamics',
           amount: '$156,780.00',
           date: '2024-01-11',
-          status: 'Completed'
-        }
+          status: 'Completed',
+        },
       ],
       totalCount: 127,
       page: 1,
-      pageSize: 25
-    }
+      pageSize: 25,
+    },
   });
 });
 
@@ -217,15 +217,17 @@ app.get('/api/data/revenue-trend', (req, res) => {
     success: true,
     data: {
       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-      datasets: [{
-        label: 'Revenue',
-        data: [2100000, 2250000, 2180000, 2420000, 2350000, 2450000],
-        backgroundColor: '#2563eb',
-        borderColor: '#2563eb',
-        borderWidth: 2,
-        fill: false
-      }]
-    }
+      datasets: [
+        {
+          label: 'Revenue',
+          data: [2100000, 2250000, 2180000, 2420000, 2350000, 2450000],
+          backgroundColor: '#2563eb',
+          borderColor: '#2563eb',
+          borderWidth: 2,
+          fill: false,
+        },
+      ],
+    },
   });
 });
 
@@ -243,9 +245,9 @@ app.get('/api/ui/themes', (req, res) => {
           secondary: '#64748b',
           accent: '#f59e0b',
           background: '#ffffff',
-          surface: '#f8fafc'
+          surface: '#f8fafc',
         },
-        preview: '/ui/themes/modern-preview.jpg'
+        preview: '/ui/themes/modern-preview.jpg',
       },
       {
         id: 'dark',
@@ -256,11 +258,11 @@ app.get('/api/ui/themes', (req, res) => {
           secondary: '#6b7280',
           accent: '#fbbf24',
           background: '#111827',
-          surface: '#1f2937'
+          surface: '#1f2937',
         },
-        preview: '/ui/themes/dark-preview.jpg'
-      }
-    ]
+        preview: '/ui/themes/dark-preview.jpg',
+      },
+    ],
   });
 });
 
@@ -276,7 +278,7 @@ app.get('/api/ui/dashboard/templates', (req, res) => {
         category: 'Management',
         preview: '/ui/templates/executive-preview.jpg',
         widgets: 6,
-        complexity: 'Simple'
+        complexity: 'Simple',
       },
       {
         id: 'financial',
@@ -285,7 +287,7 @@ app.get('/api/ui/dashboard/templates', (req, res) => {
         category: 'Finance',
         preview: '/ui/templates/financial-preview.jpg',
         widgets: 8,
-        complexity: 'Advanced'
+        complexity: 'Advanced',
       },
       {
         id: 'sales',
@@ -294,9 +296,9 @@ app.get('/api/ui/dashboard/templates', (req, res) => {
         category: 'Sales',
         preview: '/ui/templates/sales-preview.jpg',
         widgets: 10,
-        complexity: 'Intermediate'
-      }
-    ]
+        complexity: 'Intermediate',
+      },
+    ],
   });
 });
 
@@ -306,8 +308,8 @@ app.use((req, res) => {
     success: false,
     error: {
       code: 'NOT_FOUND',
-      message: `Route ${req.originalUrl} not found`
-    }
+      message: `Route ${req.originalUrl} not found`,
+    },
   });
 });
 
@@ -317,8 +319,8 @@ app.use((error: Error, req: express.Request, res: express.Response, next: expres
     success: false,
     error: {
       code: 'INTERNAL_ERROR',
-      message: process.env.NODE_ENV === 'production' ? 'An internal error occurred' : error.message
-    }
+      message: process.env.NODE_ENV === 'production' ? 'An internal error occurred' : error.message,
+    },
   });
 });
 

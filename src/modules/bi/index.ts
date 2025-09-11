@@ -26,13 +26,14 @@ import type {
   Report,
   ReportSchedule,
   KPI,
-  AnalyticsMetric
+  AnalyticsMetric,
 } from './types';
 
 export class BIManager extends BaseManager {
-  
   // Dashboard Management Methods - delegate to dashboard service
-  async createDashboard(dashboard: Omit<Dashboard, 'id' | 'createdDate' | 'lastModified'>): Promise<Dashboard> {
+  async createDashboard(
+    dashboard: Omit<Dashboard, 'id' | 'createdDate' | 'lastModified'>
+  ): Promise<Dashboard> {
     this.logAction('createDashboard', { name: dashboard.name });
     return dashboardService.createDashboard(dashboard);
   }
@@ -41,7 +42,10 @@ export class BIManager extends BaseManager {
     return dashboardService.getDashboard(dashboardId);
   }
 
-  async updateDashboard(dashboardId: string, updates: Partial<Dashboard>): Promise<Dashboard | null> {
+  async updateDashboard(
+    dashboardId: string,
+    updates: Partial<Dashboard>
+  ): Promise<Dashboard | null> {
     return dashboardService.updateDashboard(dashboardId, updates);
   }
 
@@ -78,7 +82,10 @@ export class BIManager extends BaseManager {
     return dataSourcesService.getDataSource(dataSourceId);
   }
 
-  async updateDataSource(dataSourceId: string, updates: Partial<DataSource>): Promise<DataSource | null> {
+  async updateDataSource(
+    dataSourceId: string,
+    updates: Partial<DataSource>
+  ): Promise<DataSource | null> {
     return dataSourcesService.updateDataSource(dataSourceId, updates);
   }
 
@@ -230,11 +237,11 @@ export class BIManager extends BaseManager {
         dashboards: 'ACTIVE',
         reports: 'ACTIVE',
         analytics: 'ACTIVE',
-        dataSources: 'ACTIVE'
+        dataSources: 'ACTIVE',
       },
       uptime: '99.97%',
       responseTime: '120ms',
-      lastCheck: new Date()
+      lastCheck: new Date(),
     };
   }
 }
@@ -242,10 +249,4 @@ export class BIManager extends BaseManager {
 export const biManager = new BIManager();
 
 // Export business logic services for direct access if needed
-export {
-  dashboardService,
-  dataSourcesService,
-  reportsService,
-  kpiService,
-  metricsService
-};
+export { dashboardService, dataSourcesService, reportsService, kpiService, metricsService };

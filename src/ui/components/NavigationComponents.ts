@@ -1,5 +1,5 @@
 /**
- * Navigation Components - Modern navigation patterns  
+ * Navigation Components - Modern navigation patterns
  */
 
 export const NavigationComponents = {

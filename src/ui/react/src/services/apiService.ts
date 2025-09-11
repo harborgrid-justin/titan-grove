@@ -5,18 +5,25 @@
 
 // Enhanced API configuration with fallbacks for browser environment
 const API_CONFIG = {
-  baseURL: (typeof process !== 'undefined' && process.env?.REACT_APP_API_URL) || 
-           (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) ||
-           (window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api'),
-  timeout: parseInt((typeof process !== 'undefined' && process.env?.REACT_APP_API_TIMEOUT) || 
-                   (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_TIMEOUT) || 
-                   '30000'),
-  retryAttempts: parseInt((typeof process !== 'undefined' && process.env?.REACT_APP_API_RETRY_ATTEMPTS) || 
-                         (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_RETRY_ATTEMPTS) || 
-                         '3'),
-  retryDelay: parseInt((typeof process !== 'undefined' && process.env?.REACT_APP_API_RETRY_DELAY) || 
-                      (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_RETRY_DELAY) || 
-                      '1000')
+  baseURL:
+    (typeof process !== 'undefined' && process.env?.REACT_APP_API_URL) ||
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) ||
+    (window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api'),
+  timeout: parseInt(
+    (typeof process !== 'undefined' && process.env?.REACT_APP_API_TIMEOUT) ||
+      (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_TIMEOUT) ||
+      '30000'
+  ),
+  retryAttempts: parseInt(
+    (typeof process !== 'undefined' && process.env?.REACT_APP_API_RETRY_ATTEMPTS) ||
+      (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_RETRY_ATTEMPTS) ||
+      '3'
+  ),
+  retryDelay: parseInt(
+    (typeof process !== 'undefined' && process.env?.REACT_APP_API_RETRY_DELAY) ||
+      (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_RETRY_DELAY) ||
+      '1000'
+  ),
 };
 
 const API_BASE_URL = API_CONFIG.baseURL;
@@ -175,7 +182,7 @@ export interface Transaction {
 
 class ApiService {
   private async makeRequest<T>(
-    endpoint: string, 
+    endpoint: string,
     options: RequestInit = {},
     retryCount = 0
   ): Promise<ApiResponse<T>> {
@@ -204,22 +211,26 @@ class ApiService {
       return data;
     } catch (error) {
       // Enhanced error handling with retry logic
-      const isNetworkError = error instanceof TypeError || 
-                           (error as any)?.name === 'AbortError' ||
-                           (error as any)?.code === 'NETWORK_ERROR';
-      
+      const isNetworkError =
+        error instanceof TypeError ||
+        (error as any)?.name === 'AbortError' ||
+        (error as any)?.code === 'NETWORK_ERROR';
+
       if (isNetworkError && retryCount < API_CONFIG.retryAttempts) {
-        console.warn(`API Error [${endpoint}] - Retrying (${retryCount + 1}/${API_CONFIG.retryAttempts}):`, error);
-        
+        console.warn(
+          `API Error [${endpoint}] - Retrying (${retryCount + 1}/${API_CONFIG.retryAttempts}):`,
+          error
+        );
+
         // Exponential backoff
         const delay = API_CONFIG.retryDelay * Math.pow(2, retryCount);
-        await new Promise(resolve => setTimeout(resolve, delay));
-        
+        await new Promise((resolve) => setTimeout(resolve, delay));
+
         return this.makeRequest(endpoint, options, retryCount + 1);
       }
 
       console.error(`API Error [${endpoint}] (final):`, error);
-      
+
       // Return structured error response
       const errorMessage = this.getErrorMessage(error);
       return {
@@ -228,8 +239,8 @@ class ApiService {
         meta: {
           endpoint,
           retryCount,
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       };
     }
   }
@@ -253,10 +264,10 @@ class ApiService {
   }
 
   // Field Service APIs
-  async getWorkOrders(params?: { 
-    status?: string; 
-    priority?: string; 
-    technicianId?: string 
+  async getWorkOrders(params?: {
+    status?: string;
+    priority?: string;
+    technicianId?: string;
   }): Promise<ApiResponse<WorkOrder[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/field-service/work-orders${queryParams}`);
@@ -297,7 +308,9 @@ class ApiService {
     return this.makeRequest('/maintenance/orders');
   }
 
-  async createMaintenanceOrder(order: Omit<MaintenanceOrder, 'id'>): Promise<ApiResponse<MaintenanceOrder>> {
+  async createMaintenanceOrder(
+    order: Omit<MaintenanceOrder, 'id'>
+  ): Promise<ApiResponse<MaintenanceOrder>> {
     return this.makeRequest('/maintenance/orders', {
       method: 'POST',
       body: JSON.stringify(order),
@@ -317,7 +330,7 @@ class ApiService {
   // Real-time KPI updates using Server-Sent Events
   subscribeToKPIUpdates(callback: (data: KPIData) => void): EventSource {
     const eventSource = this.createEventSource('/realtime/stream');
-    
+
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
@@ -337,23 +350,28 @@ class ApiService {
   }
 
   // Manufacturing APIs
-  async getProductionOrders(params?: { 
-    status?: string; 
-    priority?: string; 
-    workCenter?: string 
+  async getProductionOrders(params?: {
+    status?: string;
+    priority?: string;
+    workCenter?: string;
   }): Promise<ApiResponse<ProductionOrder[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/manufacturing/production-orders${queryParams}`);
   }
 
-  async createProductionOrder(order: Omit<ProductionOrder, 'id'>): Promise<ApiResponse<ProductionOrder>> {
+  async createProductionOrder(
+    order: Omit<ProductionOrder, 'id'>
+  ): Promise<ApiResponse<ProductionOrder>> {
     return this.makeRequest('/manufacturing/production-orders', {
       method: 'POST',
       body: JSON.stringify(order),
     });
   }
 
-  async updateProductionOrder(id: string, updates: Partial<ProductionOrder>): Promise<ApiResponse<ProductionOrder>> {
+  async updateProductionOrder(
+    id: string,
+    updates: Partial<ProductionOrder>
+  ): Promise<ApiResponse<ProductionOrder>> {
     return this.makeRequest(`/manufacturing/production-orders/${id}`, {
       method: 'PUT',
       body: JSON.stringify(updates),
@@ -367,10 +385,10 @@ class ApiService {
   }
 
   // Project Management APIs
-  async getProjects(params?: { 
-    status?: string; 
-    priority?: string; 
-    manager?: string 
+  async getProjects(params?: {
+    status?: string;
+    priority?: string;
+    manager?: string;
   }): Promise<ApiResponse<Project[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/projects${queryParams}`);
@@ -397,10 +415,10 @@ class ApiService {
   }
 
   // HR Management APIs
-  async getEmployees(params?: { 
-    department?: string; 
-    status?: string; 
-    position?: string 
+  async getEmployees(params?: {
+    department?: string;
+    status?: string;
+    position?: string;
   }): Promise<ApiResponse<Employee[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/hr/employees${queryParams}`);
@@ -427,9 +445,9 @@ class ApiService {
   }
 
   // CRM APIs
-  async getCustomers(params?: { 
-    status?: string; 
-    industry?: string 
+  async getCustomers(params?: {
+    status?: string;
+    industry?: string;
   }): Promise<ApiResponse<Customer[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/crm/customers${queryParams}`);
@@ -456,9 +474,9 @@ class ApiService {
   }
 
   // Supply Chain APIs
-  async getPurchaseOrders(params?: { 
-    status?: string; 
-    supplier?: string 
+  async getPurchaseOrders(params?: {
+    status?: string;
+    supplier?: string;
   }): Promise<ApiResponse<PurchaseOrder[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/supply-chain/purchase-orders${queryParams}`);
@@ -471,7 +489,10 @@ class ApiService {
     });
   }
 
-  async updatePurchaseOrder(id: string, updates: Partial<PurchaseOrder>): Promise<ApiResponse<PurchaseOrder>> {
+  async updatePurchaseOrder(
+    id: string,
+    updates: Partial<PurchaseOrder>
+  ): Promise<ApiResponse<PurchaseOrder>> {
     return this.makeRequest(`/supply-chain/purchase-orders/${id}`, {
       method: 'PUT',
       body: JSON.stringify(updates),
@@ -485,10 +506,10 @@ class ApiService {
   }
 
   // Asset Management APIs
-  async getAssets(params?: { 
-    category?: string; 
-    status?: string; 
-    location?: string 
+  async getAssets(params?: {
+    category?: string;
+    status?: string;
+    location?: string;
   }): Promise<ApiResponse<Asset[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/assets${queryParams}`);
@@ -515,23 +536,28 @@ class ApiService {
   }
 
   // Compliance APIs
-  async getComplianceItems(params?: { 
-    type?: string; 
-    status?: string; 
-    severity?: string 
+  async getComplianceItems(params?: {
+    type?: string;
+    status?: string;
+    severity?: string;
   }): Promise<ApiResponse<ComplianceItem[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/compliance/items${queryParams}`);
   }
 
-  async createComplianceItem(item: Omit<ComplianceItem, 'id'>): Promise<ApiResponse<ComplianceItem>> {
+  async createComplianceItem(
+    item: Omit<ComplianceItem, 'id'>
+  ): Promise<ApiResponse<ComplianceItem>> {
     return this.makeRequest('/compliance/items', {
       method: 'POST',
       body: JSON.stringify(item),
     });
   }
 
-  async updateComplianceItem(id: string, updates: Partial<ComplianceItem>): Promise<ApiResponse<ComplianceItem>> {
+  async updateComplianceItem(
+    id: string,
+    updates: Partial<ComplianceItem>
+  ): Promise<ApiResponse<ComplianceItem>> {
     return this.makeRequest(`/compliance/items/${id}`, {
       method: 'PUT',
       body: JSON.stringify(updates),
@@ -545,10 +571,7 @@ class ApiService {
   }
 
   // Business Intelligence APIs
-  async getReports(params?: { 
-    type?: string; 
-    status?: string 
-  }): Promise<ApiResponse<Report[]>> {
+  async getReports(params?: { type?: string; status?: string }): Promise<ApiResponse<Report[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/bi/reports${queryParams}`);
   }
@@ -574,10 +597,10 @@ class ApiService {
   }
 
   // Enhanced Financial APIs
-  async getTransactions(params?: { 
-    startDate?: string; 
-    endDate?: string; 
-    accountId?: string 
+  async getTransactions(params?: {
+    startDate?: string;
+    endDate?: string;
+    accountId?: string;
   }): Promise<ApiResponse<Transaction[]>> {
     const queryParams = params ? '?' + new URLSearchParams(params).toString() : '';
     return this.makeRequest(`/financial/transactions${queryParams}`);
@@ -590,7 +613,10 @@ class ApiService {
     });
   }
 
-  async updateTransaction(id: string, updates: Partial<Transaction>): Promise<ApiResponse<Transaction>> {
+  async updateTransaction(
+    id: string,
+    updates: Partial<Transaction>
+  ): Promise<ApiResponse<Transaction>> {
     return this.makeRequest(`/financial/transactions/${id}`, {
       method: 'PUT',
       body: JSON.stringify(updates),

@@ -8,12 +8,11 @@ import type { ProjectConfig } from '../../../../types/business-config';
 import { FinancialUtils } from '../../../../shared/constants';
 
 export class ProjectCostingService {
-  
   async implementActivityBasedCosting(projectId: string): Promise<any> {
     // Load config for rate calculations
     const { loadBusinessConfig } = require('../../../../utils/business-config');
     const config = loadBusinessConfig().project;
-    
+
     // Activity-based costing allocates costs based on activities and their cost drivers
     const activities = [
       {
@@ -23,7 +22,7 @@ export class ProjectCostingService {
         costDriverQuantity: 40,
         costPerUnit: config.billing.defaultHourlyRate * 0.96, // Business Analyst rate (slightly below default)
         totalCost: 40 * (config.billing.defaultHourlyRate * 0.96),
-        resources: ['business_analyst', 'senior_developer']
+        resources: ['business_analyst', 'senior_developer'],
       },
       {
         activityId: 'act_002',
@@ -32,7 +31,7 @@ export class ProjectCostingService {
         costDriverQuantity: 60,
         costPerUnit: config.financials.defaultLaborRate, // Senior rate
         totalCost: 60 * config.financials.defaultLaborRate,
-        resources: ['architect', 'senior_developer']
+        resources: ['architect', 'senior_developer'],
       },
       {
         activityId: 'act_003',
@@ -41,7 +40,7 @@ export class ProjectCostingService {
         costDriverQuantity: 200,
         costPerUnit: config.billing.defaultHourlyRate * 0.8, // Developer rate (80% of default)
         totalCost: 200 * (config.billing.defaultHourlyRate * 0.8),
-        resources: ['developer', 'junior_developer']
+        resources: ['developer', 'junior_developer'],
       },
       {
         activityId: 'act_004',
@@ -50,12 +49,12 @@ export class ProjectCostingService {
         costDriverQuantity: 80,
         costPerUnit: config.billing.defaultHourlyRate * 0.72, // QA rate (72% of default)
         totalCost: 80 * (config.billing.defaultHourlyRate * 0.72),
-        resources: ['qa_engineer', 'test_automation']
-      }
+        resources: ['qa_engineer', 'test_automation'],
+      },
     ];
-    
+
     const totalProjectCost = activities.reduce((sum, activity) => sum + activity.totalCost, 0);
-    
+
     return {
       projectId,
       costingMethod: 'Activity-Based Costing',
@@ -64,12 +63,13 @@ export class ProjectCostingService {
       costBreakdown: {
         directLabor: totalProjectCost * 0.75,
         overhead: FinancialUtils.calculateOverhead(totalProjectCost, 0.15), // Use reasonable default
-        materials: totalProjectCost * 0.10
+        materials: totalProjectCost * 0.1,
       },
       costPerformanceMetrics: {
-        costPerHour: totalProjectCost / activities.reduce((sum, act) => sum + act.costDriverQuantity, 0),
-        efficiencyRatio: 0.92 // Use reasonable default efficiency
-      }
+        costPerHour:
+          totalProjectCost / activities.reduce((sum, act) => sum + act.costDriverQuantity, 0),
+        efficiencyRatio: 0.92, // Use reasonable default efficiency
+      },
     };
   }
 
@@ -77,7 +77,7 @@ export class ProjectCostingService {
     // Load config for budget calculations
     const { loadBusinessConfig } = require('../../../../utils/business-config');
     const config = loadBusinessConfig().project;
-    
+
     const baseBudget = config.financials.defaultMaterialCostPerProject * 10; // 10x base for realistic budget
     const costCategories = [
       {
@@ -86,7 +86,7 @@ export class ProjectCostingService {
         actual: baseBudget * 0.95, // 5% under budget
         committed: baseBudget * 1.04, // 4% over committed
         variance: baseBudget * -0.05,
-        variancePercentage: -5.0
+        variancePercentage: -5.0,
       },
       {
         category: 'MATERIALS',
@@ -94,7 +94,7 @@ export class ProjectCostingService {
         actual: config.financials.defaultMaterialCostPerProject * 3.24, // 8% over
         committed: config.financials.defaultMaterialCostPerProject * 3.16,
         variance: config.financials.defaultMaterialCostPerProject * 0.24,
-        variancePercentage: 8.0
+        variancePercentage: 8.0,
       },
       {
         category: 'EQUIPMENT',
@@ -102,7 +102,7 @@ export class ProjectCostingService {
         actual: baseBudget * 0.156, // Slightly under
         committed: baseBudget * 0.16,
         variance: baseBudget * -0.004,
-        variancePercentage: -2.5
+        variancePercentage: -2.5,
       },
       {
         category: 'TRAVEL',
@@ -110,14 +110,14 @@ export class ProjectCostingService {
         actual: baseBudget * 0.084, // 16% under
         committed: baseBudget * 0.09,
         variance: baseBudget * -0.016,
-        variancePercentage: -16.0
-      }
+        variancePercentage: -16.0,
+      },
     ];
-    
+
     const totalBudgeted = costCategories.reduce((sum, cat) => sum + cat.budgeted, 0);
     const totalActual = costCategories.reduce((sum, cat) => sum + cat.actual, 0);
     const totalVariance = totalActual - totalBudgeted;
-    
+
     return {
       projectId,
       costTrackingDate: new Date(),
@@ -128,15 +128,15 @@ export class ProjectCostingService {
         totalCommitted: costCategories.reduce((sum, cat) => sum + cat.committed, 0),
         totalVariance,
         variancePercentage: (totalVariance / totalBudgeted) * 100,
-        costPerformanceIndex: totalBudgeted / totalActual
+        costPerformanceIndex: totalBudgeted / totalActual,
       },
-      alerts: this.generateCostAlerts(costCategories)
+      alerts: this.generateCostAlerts(costCategories),
     };
   }
 
   private generateCostAlerts(costCategories: any[]): any[] {
     const alerts = [];
-    
+
     for (const category of costCategories) {
       if (Math.abs(category.variancePercentage) > 10) {
         alerts.push({
@@ -145,35 +145,35 @@ export class ProjectCostingService {
           variancePercentage: category.variancePercentage,
           message: `${category.category} is ${Math.abs(category.variancePercentage).toFixed(1)}% ${
             category.variancePercentage > 0 ? 'over' : 'under'
-          } budget`
+          } budget`,
         });
       }
     }
-    
+
     return alerts;
   }
 
   async analyzeExpenditureVsForecast(projectId: string): Promise<any> {
     const monthlyData = [];
     const startDate = new Date(2024, 0, 1); // January 2024
-    
+
     for (let i = 0; i < 12; i++) {
       const month = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
       const forecasted = 10000 + (Math.random() * 2000 - 1000); // Base forecast with variation
       const actual = forecasted + (Math.random() * 4000 - 2000); // Actual with variance
-      
+
       monthlyData.push({
         month: month.toISOString().substring(0, 7),
         forecasted: Math.round(forecasted),
         actual: Math.round(actual),
         variance: Math.round(actual - forecasted),
-        variancePercentage: ((actual - forecasted) / forecasted * 100).toFixed(1)
+        variancePercentage: (((actual - forecasted) / forecasted) * 100).toFixed(1),
       });
     }
-    
+
     const totalForecasted = monthlyData.reduce((sum, item) => sum + item.forecasted, 0);
     const totalActual = monthlyData.reduce((sum, item) => sum + item.actual, 0);
-    
+
     return {
       projectId,
       analysisType: 'Expenditure vs Forecast Analysis',
@@ -183,15 +183,16 @@ export class ProjectCostingService {
         totalActual,
         totalVariance: totalActual - totalForecasted,
         forecastAccuracy: (1 - Math.abs(totalActual - totalForecasted) / totalForecasted) * 100,
-        trendAnalysis: this.analyzeCostTrend(monthlyData)
-      }
+        trendAnalysis: this.analyzeCostTrend(monthlyData),
+      },
     };
   }
 
   private analyzeCostTrend(monthlyData: any[]): string {
     const recentMonths = monthlyData.slice(-3);
-    const averageVariance = recentMonths.reduce((sum, item) => sum + parseFloat(item.variancePercentage), 0) / 3;
-    
+    const averageVariance =
+      recentMonths.reduce((sum, item) => sum + parseFloat(item.variancePercentage), 0) / 3;
+
     if (averageVariance > 5) return 'OVER_BUDGET_TREND';
     if (averageVariance < -5) return 'UNDER_BUDGET_TREND';
     return 'ON_TRACK';
@@ -201,60 +202,60 @@ export class ProjectCostingService {
     const currentProgress = await this.calculateProjectProgress(projectId);
     const budgetUtilization = 0.68; // 68% of budget used
     const timeElapsed = 0.75; // 75% of project timeline elapsed
-    
+
     const performanceIndicators = {
       schedulePerformanceIndex: currentProgress / (timeElapsed * 100), // SPI
-      costPerformanceIndex: (currentProgress / 100) / budgetUtilization, // CPI
+      costPerformanceIndex: currentProgress / 100 / budgetUtilization, // CPI
       estimateAtCompletion: 100000 / (currentProgress / 100), // EAC
-      estimateToComplete: (100000 / (currentProgress / 100)) - (100000 * budgetUtilization) // ETC
+      estimateToComplete: 100000 / (currentProgress / 100) - 100000 * budgetUtilization, // ETC
     };
-    
+
     return {
       projectId,
       progressTracking: {
         currentProgress,
         budgetUtilization,
         timeElapsed,
-        performanceIndicators
+        performanceIndicators,
       },
       profitabilityTracking: {
-        riskFactors: this.assessProfitabilityRisk(performanceIndicators)
+        riskFactors: this.assessProfitabilityRisk(performanceIndicators),
       },
-      recommendations: this.generateCostRecommendations(performanceIndicators)
+      recommendations: this.generateCostRecommendations(performanceIndicators),
     };
   }
 
   private assessProfitabilityRisk(indicators: any): string[] {
     const risks = [];
-    
+
     if (indicators.costPerformanceIndex < 0.9) {
       risks.push('Cost overrun risk - CPI below 0.9');
     }
-    
+
     if (indicators.schedulePerformanceIndex < 0.9) {
       risks.push('Schedule delay risk - SPI below 0.9');
     }
-    
+
     if (indicators.estimateAtCompletion > 110000) {
       risks.push('Budget overrun risk - EAC exceeds approved budget');
     }
-    
+
     return risks;
   }
 
   private generateCostRecommendations(indicators: any): string[] {
     const recommendations = [];
-    
+
     if (indicators.costPerformanceIndex < 1.0) {
       recommendations.push('Review cost control measures and identify cost-saving opportunities');
     }
-    
+
     if (indicators.schedulePerformanceIndex < 1.0) {
       recommendations.push('Consider resource reallocation to accelerate critical path activities');
     }
-    
+
     recommendations.push('Monitor cost trends weekly and adjust forecasts accordingly');
-    
+
     return recommendations;
   }
 
@@ -269,9 +270,11 @@ export class ProjectCostingService {
       projectId,
       breakdown: costData.costCategories,
       totalCosts: costData.summary.totalActual,
-      largestCategory: costData.costCategories.reduce((max: any, cat: any) => 
-        cat.actual > max.actual ? cat : max, costData.costCategories[0]),
-      generatedAt: new Date()
+      largestCategory: costData.costCategories.reduce(
+        (max: any, cat: any) => (cat.actual > max.actual ? cat : max),
+        costData.costCategories[0]
+      ),
+      generatedAt: new Date(),
     };
   }
 
@@ -287,7 +290,7 @@ export class ProjectCostingService {
   async generateCostForecast(projectId: string, periodMonths: number = 6): Promise<any> {
     const currentCosts = await this.trackProjectBasedCosts(projectId);
     const monthlyBurn = currentCosts.summary.totalActual / 6; // Assuming 6 months elapsed
-    
+
     const forecast = [];
     for (let i = 1; i <= periodMonths; i++) {
       const month = new Date();
@@ -295,16 +298,16 @@ export class ProjectCostingService {
       forecast.push({
         month: month.toISOString().substring(0, 7),
         forecastedCost: Math.round(monthlyBurn * (1 + Math.random() * 0.1)), // +/-10% variation
-        cumulativeCost: Math.round(currentCosts.summary.totalActual + (monthlyBurn * i))
+        cumulativeCost: Math.round(currentCosts.summary.totalActual + monthlyBurn * i),
       });
     }
-    
+
     return {
       projectId,
       forecastPeriod: `${periodMonths} months`,
       monthlyBurnRate: Math.round(monthlyBurn),
       forecast,
-      generatedAt: new Date()
+      generatedAt: new Date(),
     };
   }
 }

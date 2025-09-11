@@ -7,7 +7,7 @@ import {
   ServiceCommandCenterService,
   ServiceDashboardService,
   ServiceAnalyticsService,
-  MobileCommandService
+  MobileCommandService,
 } from '../src/modules/service-command-center';
 
 describe('Service Command Center - Oracle EBS Competitive Implementation', () => {
@@ -34,9 +34,9 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
             resourceType: 'TECHNICIAN',
             name: 'Test Technician',
             skills: ['electrical'],
-            serviceRadius: 25
-          }
-        ]
+            serviceRadius: 25,
+          },
+        ],
       });
 
       expect(commandCenter.commandCenterId).toBeDefined();
@@ -52,7 +52,7 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         name: 'Test Center',
         region: 'Test',
         serviceAreas: ['Area1'],
-        initialResources: []
+        initialResources: [],
       });
 
       const resource = await commandCenterService.registerServiceResource(
@@ -61,7 +61,7 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
           resourceType: 'TECHNICIAN',
           name: 'John Doe',
           skills: ['hvac', 'electrical'],
-          certifications: ['EPA', 'OSHA']
+          certifications: ['EPA', 'OSHA'],
         }
       );
 
@@ -81,16 +81,16 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
           {
             resourceType: 'TECHNICIAN',
             name: 'Tech 1',
-            skills: ['electrical']
-          }
-        ]
+            skills: ['electrical'],
+          },
+        ],
       });
 
       const optimization = await commandCenterService.optimizeServiceDispatch(
         commandCenter.commandCenterId,
         {
           priority: 'RESPONSE_TIME',
-          emergencyMode: false
+          emergencyMode: false,
         }
       );
 
@@ -109,9 +109,9 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
           {
             resourceType: 'TECHNICIAN',
             name: 'Emergency Tech',
-            skills: ['emergency_response', 'electrical']
-          }
-        ]
+            skills: ['emergency_response', 'electrical'],
+          },
+        ],
       });
 
       const emergency = await commandCenterService.coordinateEmergencyResponse(
@@ -119,9 +119,9 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         {
           type: 'EQUIPMENT_FAILURE',
           severity: 'CRITICAL',
-          location: { lat: 40.7128, lng: -74.0060, address: '123 Test St' },
+          location: { lat: 40.7128, lng: -74.006, address: '123 Test St' },
           description: 'Critical system failure',
-          requiredSkills: ['emergency_response']
+          requiredSkills: ['emergency_response'],
         }
       );
 
@@ -138,7 +138,7 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
       const dashboard = await dashboardService.createServiceDashboard({
         userId: 'test_user',
         role: 'DISPATCHER',
-        commandCenterId: 'test_command_center'
+        commandCenterId: 'test_command_center',
       });
 
       expect(dashboard.dashboardId).toBeDefined();
@@ -162,17 +162,14 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
     });
 
     test('should generate service heat map', async () => {
-      const heatMap = await dashboardService.generateServiceHeatMap(
-        'test_command_center',
-        {
-          timeRange: {
-            start: new Date('2024-01-01'),
-            end: new Date('2024-01-31')
-          },
-          metric: 'WORKLOAD',
-          granularity: 'DAILY'
-        }
-      );
+      const heatMap = await dashboardService.generateServiceHeatMap('test_command_center', {
+        timeRange: {
+          start: new Date('2024-01-01'),
+          end: new Date('2024-01-31'),
+        },
+        metric: 'WORKLOAD',
+        granularity: 'DAILY',
+      });
 
       expect(heatMap.heatMapData).toBeInstanceOf(Array);
       expect(heatMap.heatMapData.length).toBeGreaterThan(0);
@@ -188,9 +185,9 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         reportType: 'OPERATIONAL',
         period: {
           start: new Date('2024-01-01'),
-          end: new Date('2024-01-31')
+          end: new Date('2024-01-31'),
         },
-        includeOracleComparison: true
+        includeOracleComparison: true,
       });
 
       expect(analytics.analyticsId).toBeDefined();
@@ -225,9 +222,8 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
     });
 
     test('should generate performance benchmarks', async () => {
-      const benchmarks = await analyticsService.generatePerformanceBenchmarks(
-        'test_command_center'
-      );
+      const benchmarks =
+        await analyticsService.generatePerformanceBenchmarks('test_command_center');
 
       expect(benchmarks.benchmarks).toBeInstanceOf(Array);
       expect(benchmarks.benchmarks.length).toBeGreaterThan(0);
@@ -245,9 +241,9 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         deviceInfo: {
           deviceId: 'test_device',
           platform: 'iOS',
-          version: '17.0'
+          version: '17.0',
         },
-        location: { lat: 40.7128, lng: -74.0060, accuracy: 5 }
+        location: { lat: 40.7128, lng: -74.006, accuracy: 5 },
       });
 
       expect(session.sessionId).toBeDefined();
@@ -264,8 +260,8 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         deviceInfo: {
           deviceId: 'test_device',
           platform: 'Android',
-          version: '14.0'
-        }
+          version: '14.0',
+        },
       });
 
       const dashboard = await mobileService.getMobileCommandDashboard(session.sessionId);
@@ -283,19 +279,16 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         deviceInfo: {
           deviceId: 'emergency_device',
           platform: 'iOS',
-          version: '17.0'
+          version: '17.0',
         },
-        location: { lat: 40.7128, lng: -74.0060, accuracy: 5 }
+        location: { lat: 40.7128, lng: -74.006, accuracy: 5 },
       });
 
-      const emergency = await mobileService.executeEmergencyDispatch(
-        session.sessionId,
-        {
-          type: 'EQUIPMENT_FAILURE',
-          description: 'Critical system failure',
-          priority: 'CRITICAL'
-        }
-      );
+      const emergency = await mobileService.executeEmergencyDispatch(session.sessionId, {
+        type: 'EQUIPMENT_FAILURE',
+        description: 'Critical system failure',
+        priority: 'CRITICAL',
+      });
 
       expect(emergency.dispatchId).toBeDefined();
       expect(emergency.responseInitiated).toBe(true);
@@ -310,8 +303,8 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         deviceInfo: {
           deviceId: 'offline_device',
           platform: 'Android',
-          version: '14.0'
-        }
+          version: '14.0',
+        },
       });
 
       const offlineMode = await mobileService.enableOfflineMode(session.sessionId);
@@ -330,14 +323,15 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         deviceInfo: {
           deviceId: 'location_device',
           platform: 'Web',
-          version: '1.0'
-        }
+          version: '1.0',
+        },
       });
 
-      const locationUpdate = await mobileService.updateMobileLocation(
-        session.sessionId,
-        { lat: 40.7589, lng: -73.9851, accuracy: 10 }
-      );
+      const locationUpdate = await mobileService.updateMobileLocation(session.sessionId, {
+        lat: 40.7589,
+        lng: -73.9851,
+        accuracy: 10,
+      });
 
       expect(locationUpdate.locationUpdated).toBe(true);
       expect(locationUpdate.nearbyResources).toBeInstanceOf(Array);
@@ -348,20 +342,19 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
 
   describe('Oracle EBS Competitive Analysis', () => {
     test('should generate comprehensive Oracle EBS comparison', async () => {
-      const comparison = await commandCenterService.generateOracleEBSCompetitiveAnalysis(
-        'test_command_center'
-      );
+      const comparison =
+        await commandCenterService.generateOracleEBSCompetitiveAnalysis('test_command_center');
 
       expect(comparison.comparisonId).toBeDefined();
       expect(comparison.featureComparison).toBeInstanceOf(Array);
       expect(comparison.featureComparison.length).toBeGreaterThan(0);
-      
+
       // Verify competitive advantages
-      const avgAdvantage = comparison.featureComparison.reduce(
-        (sum, feature) => sum + feature.advantage, 0
-      ) / comparison.featureComparison.length;
+      const avgAdvantage =
+        comparison.featureComparison.reduce((sum, feature) => sum + feature.advantage, 0) /
+        comparison.featureComparison.length;
       expect(avgAdvantage).toBeGreaterThan(1.0); // Should be superior to Oracle EBS
-      
+
       expect(comparison.businessValue.costSavings).toBeGreaterThan(1000000); // Significant savings
       expect(comparison.expectedROI).toBeLessThan(24); // ROI within 2 years
     });
@@ -386,7 +379,7 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         name: 'Performance Test Center',
         region: 'Test',
         serviceAreas: ['Area1'],
-        initialResources: []
+        initialResources: [],
       });
 
       const status = await commandCenterService.getCommandCenterStatus(
@@ -422,14 +415,14 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
           name: 'East Coast Center',
           region: 'East',
           serviceAreas: ['NYC', 'Boston', 'DC'],
-          initialResources: []
+          initialResources: [],
         }),
         commandCenterService.initializeCommandCenter({
           name: 'West Coast Center',
           region: 'West',
           serviceAreas: ['LA', 'SF', 'Seattle'],
-          initialResources: []
-        })
+          initialResources: [],
+        }),
       ]);
 
       expect(commandCenters).toHaveLength(2);
@@ -447,9 +440,9 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         reportType: 'COMPARATIVE',
         period: {
           start: new Date('2024-01-01'),
-          end: new Date('2024-12-31')
+          end: new Date('2024-12-31'),
         },
-        includeOracleComparison: true
+        includeOracleComparison: true,
       });
 
       expect(analytics.oracleComparison).toBeDefined();
@@ -466,8 +459,8 @@ describe('Service Command Center - Oracle EBS Competitive Implementation', () =>
         deviceInfo: {
           deviceId: 'sync_device',
           platform: 'Android',
-          version: '14.0'
-        }
+          version: '14.0',
+        },
       });
 
       const syncResult = await mobileService.syncMobileData(session.sessionId);

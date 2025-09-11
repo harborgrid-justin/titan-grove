@@ -3,19 +3,9 @@
  * Comprehensive reporting, KPIs, and business intelligence for order management with Oracle EBS competitive features
  */
 
-import type { 
-  OrderMetrics,
-  QuoteMetrics,
-  SalesOrder,
-  Quote,
-  Return
-} from '../../types';
+import type { OrderMetrics, QuoteMetrics, SalesOrder, Quote, Return } from '../../types';
 
-import {
-  Priority,
-  OrderStatus,
-  QuoteStatus
-} from '../../types';
+import { Priority, OrderStatus, QuoteStatus } from '../../types';
 
 import type { OrderAnalyticsConfig } from '../../../../types/business-config';
 
@@ -84,7 +74,15 @@ export interface FilterOption {
 
 export interface AnalyticsFilter {
   field: string;
-  operator: 'EQUALS' | 'NOT_EQUALS' | 'IN' | 'NOT_IN' | 'GREATER_THAN' | 'LESS_THAN' | 'BETWEEN' | 'CONTAINS';
+  operator:
+    | 'EQUALS'
+    | 'NOT_EQUALS'
+    | 'IN'
+    | 'NOT_IN'
+    | 'GREATER_THAN'
+    | 'LESS_THAN'
+    | 'BETWEEN'
+    | 'CONTAINS';
   value: any;
 }
 
@@ -262,7 +260,12 @@ export interface ForecastAnalysis {
     endDate: Date;
     granularity: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY';
   };
-  methodology: 'LINEAR_REGRESSION' | 'EXPONENTIAL_SMOOTHING' | 'ARIMA' | 'SEASONAL_DECOMPOSITION' | 'MACHINE_LEARNING';
+  methodology:
+    | 'LINEAR_REGRESSION'
+    | 'EXPONENTIAL_SMOOTHING'
+    | 'ARIMA'
+    | 'SEASONAL_DECOMPOSITION'
+    | 'MACHINE_LEARNING';
   confidence: number;
   forecastData: Array<{
     period: Date;
@@ -275,16 +278,15 @@ export interface ForecastAnalysis {
   accuracy: {
     mape: number; // Mean Absolute Percentage Error
     rmse: number; // Root Mean Square Error
-    mad: number;  // Mean Absolute Deviation
+    mad: number; // Mean Absolute Deviation
   };
   assumptions: string[];
   risks: string[];
 }
 
 export class OrderAnalyticsService {
-  
   constructor(private config: OrderAnalyticsConfig) {}
-  
+
   // ================================
   // KPI CALCULATION
   // ================================
@@ -301,10 +303,9 @@ export class OrderAnalyticsService {
     productCategory?: string;
     orderType?: string;
   }): Promise<OrderMetrics> {
-    
     // Implementation would query database with filters
     // This is a mock implementation with comprehensive metrics
-    
+
     const mockMetrics: OrderMetrics = {
       totalOrders: 2450,
       totalRevenue: 18750000,
@@ -319,8 +320,8 @@ export class OrderAnalyticsService {
       periodComparison: {
         ordersGrowth: 0.18,
         revenueGrowth: 0.25,
-        fulfillmentImprovement: 0.07
-      }
+        fulfillmentImprovement: 0.07,
+      },
     };
 
     return mockMetrics;
@@ -337,7 +338,6 @@ export class OrderAnalyticsService {
     quoteType?: string;
     customerSegment?: string;
   }): Promise<QuoteMetrics> {
-    
     const mockMetrics: QuoteMetrics = {
       totalQuotes: 890,
       totalQuoteValue: 12500000,
@@ -350,8 +350,8 @@ export class OrderAnalyticsService {
         { reason: 'Lost to competitor', count: 67, percentage: 26.5 },
         { reason: 'Budget constraints', count: 45, percentage: 17.8 },
         { reason: 'Timeline not suitable', count: 32, percentage: 12.6 },
-        { reason: 'Product not suitable', count: 20, percentage: 7.9 }
-      ]
+        { reason: 'Product not suitable', count: 20, percentage: 7.9 },
+      ],
     };
 
     return mockMetrics;
@@ -365,13 +365,12 @@ export class OrderAnalyticsService {
     endDate: Date,
     compareWithPreviousPeriod: boolean = true
   ): Promise<OrderPerformanceMetrics> {
-    
     // Mock implementation with comprehensive metrics
     const metrics: OrderPerformanceMetrics = {
       period: {
         startDate,
         endDate,
-        periodName: `${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`
+        periodName: `${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`,
       },
       orderVolume: {
         totalOrders: 1245,
@@ -380,13 +379,13 @@ export class OrderAnalyticsService {
         orderCount: {
           new: 456,
           repeat: 789,
-          rush: 123
+          rush: 123,
         },
         growthMetrics: {
           orderCountGrowth: 0.15,
           orderValueGrowth: 0.22,
-          avgOrderValueGrowth: 0.06
-        }
+          avgOrderValueGrowth: 0.06,
+        },
       },
       fulfillmentMetrics: {
         fulfillmentRate: 0.94,
@@ -395,7 +394,7 @@ export class OrderAnalyticsService {
         perfectOrderRate: 0.85,
         orderCycleTime: 4.2,
         backOrderRate: 0.08,
-        fillRate: 0.92
+        fillRate: 0.92,
       },
       qualityMetrics: {
         orderAccuracy: 0.985,
@@ -403,7 +402,7 @@ export class OrderAnalyticsService {
         returnRate: 0.025,
         customerSatisfaction: 4.2,
         complaintRate: 0.015,
-        defectRate: 0.008
+        defectRate: 0.008,
       },
       financialMetrics: {
         totalRevenue: 8750000,
@@ -411,8 +410,8 @@ export class OrderAnalyticsService {
         shippingCost: 125000,
         fulfillmentCost: 187500,
         returnCost: 21875,
-        profitMargin: 0.28
-      }
+        profitMargin: 0.28,
+      },
     };
 
     return metrics;
@@ -430,7 +429,6 @@ export class OrderAnalyticsService {
     endDate: Date,
     groupBy?: 'PRODUCT' | 'CUSTOMER' | 'TERRITORY' | 'TIME'
   ): Promise<SalesPerformanceAnalysis> {
-    
     // Mock implementation
     const analysis: SalesPerformanceAnalysis = {
       period: { startDate, endDate },
@@ -442,8 +440,8 @@ export class OrderAnalyticsService {
           orderCount: 156,
           totalQuantity: 1245,
           totalRevenue: 124500,
-          averageSellingPrice: 100.00,
-          marginPercent: 35.0
+          averageSellingPrice: 100.0,
+          marginPercent: 35.0,
         },
         {
           itemId: 'item_002',
@@ -452,9 +450,9 @@ export class OrderAnalyticsService {
           orderCount: 132,
           totalQuantity: 890,
           totalRevenue: 178000,
-          averageSellingPrice: 200.00,
-          marginPercent: 42.0
-        }
+          averageSellingPrice: 200.0,
+          marginPercent: 42.0,
+        },
       ],
       topCustomers: [
         {
@@ -464,7 +462,7 @@ export class OrderAnalyticsService {
           totalRevenue: 450000,
           averageOrderValue: 10000,
           loyaltyScore: 0.95,
-          lastOrderDate: new Date()
+          lastOrderDate: new Date(),
         },
         {
           customerId: 'cust_002',
@@ -473,8 +471,8 @@ export class OrderAnalyticsService {
           totalRevenue: 380000,
           averageOrderValue: 10000,
           loyaltyScore: 0.89,
-          lastOrderDate: new Date()
-        }
+          lastOrderDate: new Date(),
+        },
       ],
       salesTrends: {
         daily: [],
@@ -484,27 +482,27 @@ export class OrderAnalyticsService {
             season: 'Q1',
             orderCount: 310,
             orderValue: 2187500,
-            yearOverYear: 0.15
+            yearOverYear: 0.15,
           },
           {
             season: 'Q2',
             orderCount: 325,
             orderValue: 2275000,
-            yearOverYear: 0.18
+            yearOverYear: 0.18,
           },
           {
             season: 'Q3',
             orderCount: 298,
             orderValue: 2086000,
-            yearOverYear: 0.12
+            yearOverYear: 0.12,
           },
           {
             season: 'Q4',
             orderCount: 312,
             orderValue: 2201500,
-            yearOverYear: 0.20
-          }
-        ]
+            yearOverYear: 0.2,
+          },
+        ],
       },
       geographicAnalysis: [
         {
@@ -513,7 +511,7 @@ export class OrderAnalyticsService {
           city: 'Los Angeles',
           orderCount: 123,
           totalRevenue: 1230000,
-          marketShare: 0.15
+          marketShare: 0.15,
         },
         {
           territory: 'EAST',
@@ -521,9 +519,9 @@ export class OrderAnalyticsService {
           city: 'New York',
           orderCount: 98,
           totalRevenue: 980000,
-          marketShare: 0.12
-        }
-      ]
+          marketShare: 0.12,
+        },
+      ],
     };
 
     return analysis;
@@ -536,7 +534,6 @@ export class OrderAnalyticsService {
     customerId?: string,
     segment?: string
   ): Promise<CustomerAnalytics[]> {
-    
     // Mock implementation
     const customerAnalytics: CustomerAnalytics[] = [
       {
@@ -554,20 +551,20 @@ export class OrderAnalyticsService {
         paymentBehavior: {
           averageDaysToPay: 28,
           creditUtilization: this.config.defaultCreditUtilization,
-          paymentMethods: ['NET_30', 'CREDIT_CARD']
+          paymentMethods: ['NET_30', 'CREDIT_CARD'],
         },
         preferences: {
           preferredProducts: ['WIDGET-PRO-001', 'GADGET-DELUXE-002'],
           preferredShippingMethod: 'EXPRESS',
           pricesensitivity: 'LOW',
-          promotionResponsiveness: 0.15
+          promotionResponsiveness: 0.15,
         },
         riskProfile: {
           creditRisk: 'LOW',
           churnRisk: 0.05,
-          satisfactionScore: 4.7
-        }
-      }
+          satisfactionScore: 4.7,
+        },
+      },
     ];
 
     return customerAnalytics;
@@ -584,9 +581,12 @@ export class OrderAnalyticsService {
     itemId?: string,
     territory?: string,
     forecastPeriods: number = 12,
-    methodology: 'LINEAR_REGRESSION' | 'EXPONENTIAL_SMOOTHING' | 'ARIMA' | 'SEASONAL_DECOMPOSITION' = 'EXPONENTIAL_SMOOTHING'
+    methodology:
+      | 'LINEAR_REGRESSION'
+      | 'EXPONENTIAL_SMOOTHING'
+      | 'ARIMA'
+      | 'SEASONAL_DECOMPOSITION' = 'EXPONENTIAL_SMOOTHING'
   ): Promise<ForecastAnalysis> {
-    
     const startDate = new Date();
     const endDate = new Date();
     endDate.setMonth(endDate.getMonth() + forecastPeriods);
@@ -596,19 +596,19 @@ export class OrderAnalyticsService {
     for (let i = 0; i < forecastPeriods; i++) {
       const period = new Date();
       period.setMonth(period.getMonth() + i + 1);
-      
+
       const baseValue = 1000 + Math.sin(i * 0.5) * 200; // Seasonal pattern
       const trend = i * 50; // Growth trend
       const noise = (Math.random() - 0.5) * 100;
-      
+
       const forecastValue = baseValue + trend + noise;
-      
+
       forecastData.push({
         period,
         forecastValue: Math.round(forecastValue),
         upperBound: Math.round(forecastValue * 1.2),
         lowerBound: Math.round(forecastValue * 0.8),
-        variance: Math.round(Math.abs(noise))
+        variance: Math.round(Math.abs(noise)),
       });
     }
 
@@ -617,7 +617,7 @@ export class OrderAnalyticsService {
       forecastPeriod: {
         startDate,
         endDate,
-        granularity: 'MONTHLY'
+        granularity: 'MONTHLY',
       },
       methodology,
       confidence: 0.85,
@@ -625,18 +625,14 @@ export class OrderAnalyticsService {
       accuracy: {
         mape: 8.5,
         rmse: 125.3,
-        mad: 98.7
+        mad: 98.7,
       },
       assumptions: [
         'Historical trends continue',
         'No major market disruptions',
-        'Seasonal patterns remain consistent'
+        'Seasonal patterns remain consistent',
       ],
-      risks: [
-        'Economic downturn',
-        'Competitive pressure',
-        'Supply chain disruptions'
-      ]
+      risks: ['Economic downturn', 'Competitive pressure', 'Supply chain disruptions'],
     };
 
     return forecast;
@@ -649,28 +645,30 @@ export class OrderAnalyticsService {
   /**
    * Create analytics dashboard
    */
-  async createDashboard(dashboardData: {
-    name: string;
-    description: string;
-    widgets: Omit<AnalyticsWidget, 'id'>[];
-    filters?: DashboardFilter[];
-    refreshInterval?: number;
-  }, createdBy: string): Promise<OrderAnalyticsDashboard> {
-    
+  async createDashboard(
+    dashboardData: {
+      name: string;
+      description: string;
+      widgets: Omit<AnalyticsWidget, 'id'>[];
+      filters?: DashboardFilter[];
+      refreshInterval?: number;
+    },
+    createdBy: string
+  ): Promise<OrderAnalyticsDashboard> {
     const dashboard: OrderAnalyticsDashboard = {
       id: `dash_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
       name: dashboardData.name,
       description: dashboardData.description,
       widgets: dashboardData.widgets.map((widget, index) => ({
         ...widget,
-        id: `widget_${Date.now()}_${index}`
+        id: `widget_${Date.now()}_${index}`,
       })),
       filters: dashboardData.filters || [],
       refreshInterval: dashboardData.refreshInterval || 300, // 5 minutes
       isActive: true,
       createdBy,
       createdDate: new Date(),
-      modifiedDate: new Date()
+      modifiedDate: new Date(),
     };
 
     return dashboard;
@@ -690,7 +688,6 @@ export class OrderAnalyticsService {
     data: any;
     downloadUrl?: string;
   }> {
-    
     const report = await this.getReportById(reportId);
     if (!report) {
       throw new Error('Report not found');
@@ -705,7 +702,10 @@ export class OrderAnalyticsService {
       generatedDate: new Date(),
       format: report.format,
       data: reportData,
-      downloadUrl: report.format !== 'TABLE' ? `https://example.com/reports/${reportId}.${report.format.toLowerCase()}` : undefined
+      downloadUrl:
+        report.format !== 'TABLE'
+          ? `https://example.com/reports/${reportId}.${report.format.toLowerCase()}`
+          : undefined,
     };
   }
 
@@ -725,7 +725,6 @@ export class OrderAnalyticsService {
       averageProcessingTime: number;
     };
   }> {
-    
     // Mock real-time data
     return {
       ordersToday: 67,
@@ -733,7 +732,7 @@ export class OrderAnalyticsService {
       averageOrderValue: 1335.82,
       topSellingProducts: [
         { itemCode: 'WIDGET-PRO-001', quantity: 45, revenue: 4500 },
-        { itemCode: 'GADGET-DELUXE-002', quantity: 23, revenue: 4600 }
+        { itemCode: 'GADGET-DELUXE-002', quantity: 23, revenue: 4600 },
       ],
       orderStatusBreakdown: {
         [OrderStatus.DRAFT]: 5,
@@ -745,14 +744,14 @@ export class OrderAnalyticsService {
         [OrderStatus.SHIPPED]: 45,
         [OrderStatus.CLOSED]: 156,
         [OrderStatus.CANCELLED]: 2,
-        [OrderStatus.ON_HOLD]: 3
+        [OrderStatus.ON_HOLD]: 3,
       },
       fulfillmentPerformance: {
         pickingQueue: 23,
         packingQueue: 18,
         shippingQueue: 12,
-        averageProcessingTime: 3.2
-      }
+        averageProcessingTime: 3.2,
+      },
     };
   }
 
@@ -765,7 +764,10 @@ export class OrderAnalyticsService {
     return null;
   }
 
-  private async executeReportQuery(report: AnalyticsReport, parameters: Record<string, any>): Promise<any> {
+  private async executeReportQuery(
+    report: AnalyticsReport,
+    parameters: Record<string, any>
+  ): Promise<any> {
     // Implementation would execute the report query with parameters
     return {};
   }
@@ -776,7 +778,7 @@ export const orderAnalyticsService = new OrderAnalyticsService({
   performanceThresholds: {
     scopeCompletion: 0.65,
     qualityScore: 0.85,
-    deliveryPerformance: 0.90,
+    deliveryPerformance: 0.9,
   },
 });
 

@@ -3,31 +3,31 @@
  * Core interfaces and types for procurement management system
  */
 
-import { 
-  CommonStatus, 
-  AuditFields, 
-  Address, 
-  ContactInfo, 
-  Money, 
+import {
+  CommonStatus,
+  AuditFields,
+  Address,
+  ContactInfo,
+  Money,
   Attachment,
   ApprovalStatus,
   Priority,
   RiskLevel,
-  PerformanceLevel 
+  PerformanceLevel,
 } from '../../types/common';
 
 // Re-export common types for convenience
-export { 
-  CommonStatus, 
-  AuditFields, 
-  Address, 
-  ContactInfo, 
-  Money, 
+export {
+  CommonStatus,
+  AuditFields,
+  Address,
+  ContactInfo,
+  Money,
   Attachment,
   ApprovalStatus,
   Priority,
   RiskLevel,
-  PerformanceLevel 
+  PerformanceLevel,
 };
 
 // Core Procurement Types
@@ -55,28 +55,28 @@ export interface Supplier extends AuditFields {
   yearEstablished?: number;
   employeeCount?: number;
   annualRevenue?: Money;
-  
+
   // Contact Information
   primaryContact: SupplierContact;
   contacts: SupplierContact[];
-  
+
   // Addresses
   businessAddress: SupplierAddress;
   addresses: SupplierAddress[];
-  
+
   // Financial Information
   bankDetails: BankDetails[];
   taxInfo: TaxInfo;
-  
+
   // Performance & Risk
   performanceRating: PerformanceLevel;
   riskRating: RiskLevel;
   creditRating?: string;
-  
+
   // Certifications & Compliance
   certifications: SupplierCertification[];
   insurancePolicies: InsurancePolicy[];
-  
+
   // Business Relationship
   preferredSupplier: boolean;
   approvedCategories: string[];
@@ -89,7 +89,7 @@ export enum SupplierStatus {
   INACTIVE = 'INACTIVE',
   PENDING_APPROVAL = 'PENDING_APPROVAL',
   SUSPENDED = 'SUSPENDED',
-  BLACKLISTED = 'BLACKLISTED'
+  BLACKLISTED = 'BLACKLISTED',
 }
 
 export enum SupplierCategory {
@@ -99,7 +99,7 @@ export enum SupplierCategory {
   PROFESSIONAL_SERVICES = 'PROFESSIONAL_SERVICES',
   IT_SERVICES = 'IT_SERVICES',
   MAINTENANCE = 'MAINTENANCE',
-  CONSULTING = 'CONSULTING'
+  CONSULTING = 'CONSULTING',
 }
 
 export interface SupplierContact extends ContactInfo {
@@ -175,22 +175,22 @@ export interface PurchaseRequisition extends AuditFields {
   departmentId: string;
   costCenterId?: string;
   budgetCode?: string;
-  
+
   // Line Items
   lineItems: RequisitionLineItem[];
-  
+
   // Totals
   subtotal: Money;
   tax: Money;
   total: Money;
-  
+
   // Dates
   requestedDeliveryDate?: Date;
-  
+
   // Approval
   approvals: ApprovalRecord[];
   currentApprovalLevel: number;
-  
+
   // Justification
   businessJustification: string;
   attachments: Attachment[];
@@ -203,7 +203,7 @@ export enum RequisitionStatus {
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED',
   CANCELLED = 'CANCELLED',
-  CONVERTED_TO_PO = 'CONVERTED_TO_PO'
+  CONVERTED_TO_PO = 'CONVERTED_TO_PO',
 }
 
 export interface RequisitionLineItem {
@@ -239,44 +239,44 @@ export interface PurchaseOrder extends AuditFields {
   description?: string;
   status: PurchaseOrderStatus;
   type: POType;
-  
+
   // Supplier Information
   supplierId: string;
   supplierContact?: string;
-  
+
   // Requestor Information
   requestorId: string;
   departmentId: string;
   costCenterId?: string;
-  
+
   // Line Items
   lineItems: PurchaseOrderLineItem[];
-  
+
   // Totals
   subtotal: Money;
   tax: Money;
   shipping: Money;
   discount: Money;
   total: Money;
-  
+
   // Terms and Conditions
   paymentTerms: string;
   deliveryTerms: string;
   shippingMethod?: string;
-  
+
   // Addresses
   shippingAddress: ShippingAddress;
   billingAddress: BillingAddress;
-  
+
   // Dates
   orderDate: Date;
   requestedDeliveryDate?: Date;
   promisedDeliveryDate?: Date;
-  
+
   // Approval and Revisions
   approvals: ApprovalRecord[];
   revisions: PORevision[];
-  
+
   // Attachments
   attachments: Attachment[];
 }
@@ -290,14 +290,14 @@ export enum PurchaseOrderStatus {
   PARTIALLY_RECEIVED = 'PARTIALLY_RECEIVED',
   FULLY_RECEIVED = 'FULLY_RECEIVED',
   CLOSED = 'CLOSED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export enum POType {
   STANDARD = 'STANDARD',
   BLANKET = 'BLANKET',
   CONTRACT = 'CONTRACT',
-  PLANNED = 'PLANNED'
+  PLANNED = 'PLANNED',
 }
 
 export interface PurchaseOrderLineItem {
@@ -358,30 +358,30 @@ export interface RFQ extends AuditFields {
   description: string;
   status: RFQStatus;
   category: string;
-  
+
   // Supplier Information
   invitedSuppliers: RFQSupplier[];
-  
+
   // Line Items
   lineItems: RFQLineItem[];
-  
+
   // Evaluation Criteria
   evaluationCriteria: EvaluationCriteria[];
-  
+
   // Dates
   publishedDate?: Date;
   responseDeadline: Date;
   evaluationDate?: Date;
   awardDate?: Date;
-  
+
   // Terms and Conditions
   termsAndConditions: string;
   paymentTerms: string;
   deliveryTerms: string;
-  
+
   // Attachments
   attachments: Attachment[];
-  
+
   // Responses
   responses: RFQResponse[];
 }
@@ -392,7 +392,7 @@ export enum RFQStatus {
   RESPONSE_PERIOD = 'RESPONSE_PERIOD',
   EVALUATION = 'EVALUATION',
   AWARDED = 'AWARDED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export interface RFQSupplier {
@@ -422,21 +422,21 @@ export interface RFQResponse extends AuditFields {
   supplierId: string;
   submittedDate: Date;
   status: 'DRAFT' | 'SUBMITTED' | 'WITHDRAWN';
-  
+
   // Response Line Items
   responseLineItems: RFQResponseLineItem[];
-  
+
   // Alternative Proposals
   alternativeProposals: AlternativeProposal[];
-  
+
   // Totals
   totalAmount: Money;
-  
+
   // Terms
   paymentTerms?: string;
   deliveryTerms?: string;
   validityPeriod: number; // days
-  
+
   // Additional Information
   comments?: string;
   attachments: Attachment[];
@@ -482,33 +482,33 @@ export interface Contract extends AuditFields {
   description?: string;
   status: ContractStatus;
   type: ContractType;
-  
+
   // Parties
   supplierId: string;
   contractManager: string;
-  
+
   // Contract Terms
   terms: ContractTerms;
-  
+
   // Financial
   totalValue: Money;
   actualSpend: Money;
   remainingValue: Money;
-  
+
   // Dates
   effectiveDate: Date;
   expirationDate: Date;
   noticePeriod: number; // days
-  
+
   // Performance
   performance: ContractPerformance;
-  
+
   // Amendments
   amendments: ContractAmendment[];
-  
+
   // Attachments
   attachments: Attachment[];
-  
+
   // Compliance
   complianceChecks: ComplianceCheck[];
 }
@@ -520,7 +520,7 @@ export enum ContractStatus {
   ACTIVE = 'ACTIVE',
   EXPIRED = 'EXPIRED',
   TERMINATED = 'TERMINATED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export enum ContractType {
@@ -528,7 +528,7 @@ export enum ContractType {
   PURCHASE_AGREEMENT = 'PURCHASE_AGREEMENT',
   SERVICE_AGREEMENT = 'SERVICE_AGREEMENT',
   BLANKET_ORDER = 'BLANKET_ORDER',
-  FRAMEWORK_AGREEMENT = 'FRAMEWORK_AGREEMENT'
+  FRAMEWORK_AGREEMENT = 'FRAMEWORK_AGREEMENT',
 }
 
 export interface ContractTerms {
@@ -596,24 +596,24 @@ export interface ProcurementAnalytics {
     endDate: Date;
     periodType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY';
   };
-  
+
   // Spend Analytics
   totalSpend: Money;
   spendByCategory: CategorySpend[];
   spendBySupplier: SupplierSpend[];
   spendTrend: SpendTrend[];
-  
+
   // Savings Analytics
   totalSavings: Money;
   savingsByCategory: CategorySavings[];
   savingsFromNegotiation: Money;
   savingsFromCompetition: Money;
-  
+
   // Performance Metrics
   cycleTimeMetrics: CycleTimeMetrics;
   qualityMetrics: QualityMetrics;
   complianceMetrics: ComplianceMetrics;
-  
+
   // Risk Analytics
   riskAnalytics: RiskAnalytics;
 }

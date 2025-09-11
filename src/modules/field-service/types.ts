@@ -20,11 +20,17 @@ export interface ServiceRequest {
   };
   serviceAddress: {
     address: string;
-    coordinates: { lat: number; lng: number; };
+    coordinates: { lat: number; lng: number };
     accessInstructions?: string;
     siteContact?: string;
   };
-  requestType: 'INSTALLATION' | 'REPAIR' | 'MAINTENANCE' | 'INSPECTION' | 'EMERGENCY' | 'CONSULTATION';
+  requestType:
+    | 'INSTALLATION'
+    | 'REPAIR'
+    | 'MAINTENANCE'
+    | 'INSPECTION'
+    | 'EMERGENCY'
+    | 'CONSULTATION';
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'EMERGENCY';
   description: string;
   problemCategory: string;
@@ -38,14 +44,21 @@ export interface ServiceRequest {
   };
   preferredSchedule: {
     preferredDate?: Date;
-    timeWindow?: { start: string; end: string; };
+    timeWindow?: { start: string; end: string };
     availability: string;
   };
   skillsRequired: string[];
   estimatedDuration: number; // minutes
   contractId?: string;
   serviceLevel: 'STANDARD' | 'PREMIUM' | 'EMERGENCY' | 'CONTRACT';
-  status: 'NEW' | 'ACKNOWLEDGED' | 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'ON_HOLD';
+  status:
+    | 'NEW'
+    | 'ACKNOWLEDGED'
+    | 'SCHEDULED'
+    | 'IN_PROGRESS'
+    | 'COMPLETED'
+    | 'CANCELLED'
+    | 'ON_HOLD';
   createdBy: string;
   createdDate: Date;
   lastUpdated: Date;
@@ -61,7 +74,7 @@ export interface WorkOrder {
   description: string;
   instructions: string;
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'EMERGENCY';
-  
+
   // Asset information
   assetId?: string;
   assetDetails?: {
@@ -70,7 +83,7 @@ export interface WorkOrder {
     location: string;
     condition: 'GOOD' | 'FAIR' | 'POOR' | 'CRITICAL';
   };
-  
+
   // Assignment and scheduling
   assignedTechnician?: {
     technicianId: string;
@@ -83,11 +96,11 @@ export interface WorkOrder {
     teamMembers: string[];
     leadTechnician: string;
   };
-  
+
   scheduledStart: Date;
   scheduledEnd: Date;
   estimatedDuration: number; // minutes
-  
+
   // Parts and materials
   requiredParts: {
     partNumber: string;
@@ -96,32 +109,39 @@ export interface WorkOrder {
     unitPrice: number;
     availability: 'IN_STOCK' | 'ORDER_REQUIRED' | 'BACKORDERED';
   }[];
-  
+
   materialCost: number;
   laborCost: number;
   totalCost: number;
-  
+
   // Tools and equipment
   requiredTools: string[];
   specialEquipment?: string[];
-  
+
   // Service location
   serviceAddress: {
     address: string;
-    coordinates: { lat: number; lng: number; };
+    coordinates: { lat: number; lng: number };
     accessInstructions?: string;
     siteContact?: string;
   };
-  
+
   // Status and tracking
-  status: 'CREATED' | 'SCHEDULED' | 'DISPATCHED' | 'IN_PROGRESS' | 'ON_HOLD' | 'COMPLETED' | 'CANCELLED';
-  
+  status:
+    | 'CREATED'
+    | 'SCHEDULED'
+    | 'DISPATCHED'
+    | 'IN_PROGRESS'
+    | 'ON_HOLD'
+    | 'COMPLETED'
+    | 'CANCELLED';
+
   // Execution details
   actualStart?: Date;
   actualEnd?: Date;
   actualDuration?: number;
   travelTime?: number;
-  
+
   // Resolution
   resolutionCode?: string;
   resolutionDescription?: string;
@@ -131,12 +151,12 @@ export interface WorkOrder {
     quantity: number;
     serialNumbers?: string[];
   }[];
-  
+
   // Follow-up
   followUpRequired: boolean;
   followUpDate?: Date;
   followUpInstructions?: string;
-  
+
   // Quality and satisfaction
   qualityCheckPassed?: boolean;
   customerSignature?: string;
@@ -144,14 +164,14 @@ export interface WorkOrder {
     rating: number;
     comments: string;
   };
-  
+
   // Integration
   integrationData?: {
     externalSystemId?: string;
     syncStatus: 'PENDING' | 'SYNCED' | 'FAILED';
     lastSync?: Date;
   };
-  
+
   createdBy: string;
   createdDate: Date;
   lastUpdated: Date;
@@ -165,7 +185,7 @@ export interface ServiceTechnician {
   email: string;
   phone: string;
   mobilePhone: string;
-  
+
   // Qualifications
   skills: {
     skillId: string;
@@ -173,7 +193,7 @@ export interface ServiceTechnician {
     proficiencyLevel: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT';
     yearsExperience: number;
   }[];
-  
+
   certifications: {
     certificationId: string;
     certificationName: string;
@@ -182,7 +202,7 @@ export interface ServiceTechnician {
     expirationDate?: Date;
     status: 'ACTIVE' | 'EXPIRED' | 'SUSPENDED';
   }[];
-  
+
   // Work assignment
   serviceTerritory: {
     territoryId: string;
@@ -190,20 +210,20 @@ export interface ServiceTechnician {
     geoFence: any; // GeoJSON polygon
     travelRadius: number; // miles/km
   };
-  
+
   homeBase: {
     address: string;
-    coordinates: { lat: number; lng: number; };
+    coordinates: { lat: number; lng: number };
   };
-  
+
   workingHours: {
     schedule: {
-      [key: string]: { start: string; end: string; }; // Monday, Tuesday, etc.
+      [key: string]: { start: string; end: string }; // Monday, Tuesday, etc.
     };
     availability: 'FULL_TIME' | 'PART_TIME' | 'ON_CALL' | 'CONTRACTOR';
     timeZone: string;
   };
-  
+
   // Equipment and inventory
   assignedVehicle?: {
     vehicleId: string;
@@ -213,7 +233,7 @@ export interface ServiceTechnician {
     year: number;
     gpsEnabled: boolean;
   };
-  
+
   mobileInventory: {
     capacity: number;
     currentStock: {
@@ -223,14 +243,14 @@ export interface ServiceTechnician {
     }[];
     stockValue: number;
   };
-  
+
   tools: {
     toolId: string;
     toolName: string;
     serialNumber?: string;
     condition: 'GOOD' | 'FAIR' | 'NEEDS_REPAIR';
   }[];
-  
+
   // Performance metrics
   performance: {
     completionRate: number;
@@ -239,21 +259,21 @@ export interface ServiceTechnician {
     customerSatisfactionScore: number;
     utilizationRate: number;
   };
-  
+
   // Current status
   currentStatus: 'AVAILABLE' | 'BUSY' | 'UNAVAILABLE' | 'OFF_DUTY';
   currentLocation?: {
-    coordinates: { lat: number; lng: number; };
+    coordinates: { lat: number; lng: number };
     address: string;
     timestamp: Date;
   };
-  
+
   currentAssignment?: {
     workOrderId: string;
     estimatedCompletion: Date;
     status: 'EN_ROUTE' | 'ON_SITE' | 'IN_PROGRESS';
   };
-  
+
   emergencyContact: {
     name: string;
     relationship: string;
@@ -271,7 +291,7 @@ export interface ServiceContract {
   customerId: string;
   customerName: string;
   contractType: 'MAINTENANCE' | 'WARRANTY' | 'SERVICE_LEVEL' | 'PARTS_LABOR' | 'COMPREHENSIVE';
-  
+
   // Contract terms
   startDate: Date;
   endDate: Date;
@@ -280,7 +300,7 @@ export interface ServiceContract {
     renewalPeriod?: number; // months
     renewalNotice?: number; // days
   };
-  
+
   // Service coverage
   serviceLevel: {
     responseTime: number; // hours
@@ -288,7 +308,7 @@ export interface ServiceContract {
     availability: '8x5' | '24x7' | 'BUSINESS_HOURS' | 'CUSTOM';
     coverage: 'REMOTE' | 'ON_SITE' | 'BOTH';
   };
-  
+
   // Assets covered
   coveredAssets: {
     assetId: string;
@@ -297,12 +317,12 @@ export interface ServiceContract {
     location: string;
     coverage: 'PARTS' | 'LABOR' | 'PARTS_LABOR' | 'PREVENTIVE' | 'COMPREHENSIVE';
   }[];
-  
+
   // Financial terms
   contractValue: number;
   billingFrequency: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
   paymentTerms: string;
-  
+
   // Service inclusions
   includedServices: {
     serviceType: string;
@@ -310,9 +330,9 @@ export interface ServiceContract {
     quantity?: number;
     frequency?: string;
   }[];
-  
+
   excludedServices: string[];
-  
+
   // Performance metrics
   performanceMetrics: {
     metricName: string;
@@ -320,7 +340,7 @@ export interface ServiceContract {
     current: number;
     unit: string;
   }[];
-  
+
   // Contact information
   customerContacts: {
     contactType: 'PRIMARY' | 'BILLING' | 'TECHNICAL' | 'ESCALATION';
@@ -329,7 +349,7 @@ export interface ServiceContract {
     phone: string;
     email: string;
   }[];
-  
+
   status: 'DRAFT' | 'ACTIVE' | 'SUSPENDED' | 'EXPIRED' | 'TERMINATED';
   createdBy: string;
   approvedBy?: string;
@@ -342,7 +362,7 @@ export interface ServiceAppointment {
   workOrderId: string;
   technicianId: string;
   customerId: string;
-  
+
   // Scheduling details
   scheduledDate: Date;
   timeWindow: {
@@ -350,17 +370,17 @@ export interface ServiceAppointment {
     end: string;
     duration: number; // minutes
   };
-  
+
   appointmentType: 'INSTALLATION' | 'REPAIR' | 'MAINTENANCE' | 'CONSULTATION' | 'FOLLOW_UP';
-  
+
   // Location
   serviceAddress: {
     address: string;
-    coordinates: { lat: number; lng: number; };
+    coordinates: { lat: number; lng: number };
     accessInstructions?: string;
     parkingInstructions?: string;
   };
-  
+
   // Requirements
   skillsRequired: string[];
   toolsRequired: string[];
@@ -369,7 +389,7 @@ export interface ServiceAppointment {
     quantity: number;
     critical: boolean;
   }[];
-  
+
   // Customer preferences
   customerPreferences: {
     preferredTechnician?: string;
@@ -377,16 +397,25 @@ export interface ServiceAppointment {
     specialInstructions?: string;
     contactMethod: 'PHONE' | 'SMS' | 'EMAIL';
   };
-  
+
   // Status and tracking
-  status: 'SCHEDULED' | 'CONFIRMED' | 'EN_ROUTE' | 'ARRIVED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'RESCHEDULED' | 'NO_SHOW';
-  
+  status:
+    | 'SCHEDULED'
+    | 'CONFIRMED'
+    | 'EN_ROUTE'
+    | 'ARRIVED'
+    | 'IN_PROGRESS'
+    | 'COMPLETED'
+    | 'CANCELLED'
+    | 'RESCHEDULED'
+    | 'NO_SHOW';
+
   // Actual execution
   actualArrival?: Date;
   actualStart?: Date;
   actualEnd?: Date;
   travelTime?: number;
-  
+
   // Communication
   notifications: {
     confirmationSent: boolean;
@@ -394,7 +423,7 @@ export interface ServiceAppointment {
     arrivalNotificationSent: boolean;
     completionNotificationSent: boolean;
   };
-  
+
   // Rescheduling history
   rescheduleHistory: {
     originalDate: Date;
@@ -403,7 +432,7 @@ export interface ServiceAppointment {
     requestedBy: 'CUSTOMER' | 'TECHNICIAN' | 'DISPATCHER';
     timestamp: Date;
   }[];
-  
+
   createdBy: string;
   createdDate: Date;
   lastUpdated: Date;
@@ -413,15 +442,15 @@ export interface FieldInventory {
   inventoryId: string;
   locationId: string;
   locationType: 'WAREHOUSE' | 'VAN' | 'TECHNICIAN' | 'CUSTOMER_SITE';
-  
+
   // Location details
   locationDetails: {
     name: string;
     address?: string;
-    coordinates?: { lat: number; lng: number; };
+    coordinates?: { lat: number; lng: number };
     managerId?: string;
   };
-  
+
   // Inventory items
   items: {
     partNumber: string;
@@ -429,33 +458,33 @@ export interface FieldInventory {
     category: string;
     manufacturer: string;
     unitOfMeasure: string;
-    
+
     // Stock levels
     currentStock: number;
     minimumStock: number;
     maximumStock: number;
     reorderPoint: number;
     reorderQuantity: number;
-    
+
     // Financial
     unitCost: number;
     totalValue: number;
-    
+
     // Tracking
     serialNumbers?: string[];
     batchNumbers?: string[];
     expirationDate?: Date;
-    
+
     // Location specifics
     binLocation?: string;
     status: 'AVAILABLE' | 'RESERVED' | 'QUARANTINE' | 'OBSOLETE';
   }[];
-  
+
   // Capacity and utilization
   totalCapacity: number;
   currentUtilization: number;
   utilizationPercentage: number;
-  
+
   // Replenishment
   replenishmentSchedule: {
     frequency: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'ON_DEMAND';
@@ -467,7 +496,7 @@ export interface FieldInventory {
       leadTime: number; // days
     };
   };
-  
+
   // Movement tracking
   recentMovements: {
     movementId: string;
@@ -481,7 +510,7 @@ export interface FieldInventory {
     timestamp: Date;
     reason: string;
   }[];
-  
+
   lastUpdated: Date;
 }
 
@@ -491,7 +520,7 @@ export interface ServicePerformance {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Service metrics
   serviceMetrics: {
     totalServiceRequests: number;
@@ -502,7 +531,7 @@ export interface ServicePerformance {
     firstTimeFixRate: number;
     reopenRate: number;
   };
-  
+
   // Technician performance
   technicianMetrics: {
     technicianId: string;
@@ -513,7 +542,7 @@ export interface ServicePerformance {
     utilizationRate: number;
     productivityScore: number;
   }[];
-  
+
   // Customer satisfaction
   customerSatisfaction: {
     totalSurveys: number;
@@ -525,7 +554,7 @@ export interface ServicePerformance {
     }[];
     netPromoterScore?: number;
   };
-  
+
   // Financial metrics
   financialMetrics: {
     totalRevenue: number;
@@ -535,7 +564,7 @@ export interface ServicePerformance {
     totalCosts: number;
     profitMargin: number;
   };
-  
+
   // Asset metrics
   assetMetrics: {
     totalAssetsServiced: number;
@@ -543,7 +572,7 @@ export interface ServicePerformance {
     assetAvailability: number;
     maintenanceCostPerAsset: number;
   };
-  
+
   // Operational efficiency
   operationalMetrics: {
     scheduleEfficiency: number;
@@ -551,14 +580,14 @@ export interface ServicePerformance {
     partsAvailability: number;
     toolUtilization: number;
   };
-  
+
   lastUpdated: Date;
 }
 
 export interface CustomerPortal {
   portalId: string;
   customerId: string;
-  
+
   // Portal configuration
   configuration: {
     branding: {
@@ -575,7 +604,7 @@ export interface CustomerPortal {
       chatSupport: boolean;
     };
   };
-  
+
   // User accounts
   users: {
     userId: string;
@@ -586,7 +615,7 @@ export interface CustomerPortal {
     lastLogin?: Date;
     status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
   }[];
-  
+
   // Service requests
   serviceRequests: {
     requestId: string;
@@ -597,7 +626,7 @@ export interface CustomerPortal {
     assignedTechnician?: string;
     scheduledDate?: Date;
   }[];
-  
+
   // Knowledge base
   knowledgeBase: {
     articles: {
@@ -610,7 +639,7 @@ export interface CustomerPortal {
       notHelpful: number;
       lastUpdated: Date;
     }[];
-    
+
     faqs: {
       question: string;
       answer: string;
@@ -618,7 +647,7 @@ export interface CustomerPortal {
       views: number;
     }[];
   };
-  
+
   // Communication
   notifications: {
     notificationId: string;
@@ -628,7 +657,7 @@ export interface CustomerPortal {
     read: boolean;
     timestamp: Date;
   }[];
-  
+
   // Analytics
   usageAnalytics: {
     totalLogins: number;
@@ -637,7 +666,7 @@ export interface CustomerPortal {
     supportTicketsCreated: number;
     satisfactionRating?: number;
   };
-  
+
   status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
   createdDate: Date;
   lastUpdated: Date;
@@ -650,7 +679,7 @@ export interface ServiceAnalytics {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Operational analytics
   operationalData?: {
     totalServiceRequests: number;
@@ -660,7 +689,7 @@ export interface ServiceAnalytics {
     averageResolutionTime: number;
     slaComplianceRate: number;
   };
-  
+
   // Financial analytics
   financialData?: {
     totalRevenue: number;
@@ -672,7 +701,7 @@ export interface ServiceAnalytics {
     profitMargin: number;
     costPerServiceRequest: number;
   };
-  
+
   // Customer analytics
   customerData?: {
     totalCustomers: number;
@@ -683,7 +712,7 @@ export interface ServiceAnalytics {
     complaintsReceived: number;
     complaintResolutionTime: number;
   };
-  
+
   // Technician analytics
   technicianData?: {
     totalTechnicians: number;
@@ -693,7 +722,7 @@ export interface ServiceAnalytics {
     trainingCompletionRate: number;
     turnoverRate: number;
   };
-  
+
   // Asset analytics
   assetData?: {
     totalAssetsManaged: number;
@@ -703,7 +732,7 @@ export interface ServiceAnalytics {
     maintenanceCostTrends: any[];
     assetDowntime: number;
   };
-  
+
   // Predictive analytics
   predictiveData?: {
     demandForecast: any[];
@@ -712,7 +741,7 @@ export interface ServiceAnalytics {
     resourceOptimization: any[];
     riskAssessment: any[];
   };
-  
+
   // Insights and recommendations
   insights: {
     insightType: 'OPPORTUNITY' | 'RISK' | 'EFFICIENCY' | 'COST_SAVING';
@@ -722,14 +751,14 @@ export interface ServiceAnalytics {
     recommendedAction: string;
     estimatedBenefit?: number;
   }[];
-  
+
   generatedDate: Date;
   lastUpdated: Date;
 }
 
 export interface MobileWorkforce {
   workforceId: string;
-  
+
   // Mobile application configuration
   mobileAppConfig: {
     version: string;
@@ -741,14 +770,14 @@ export interface MobileWorkforce {
       photoCapture: boolean;
       timeTracking: boolean;
     };
-    
+
     syncSettings: {
       syncFrequency: number; // minutes
       offlineStorageLimit: number; // MB
       dataRetentionPeriod: number; // days
     };
   };
-  
+
   // Technician devices
   devices: {
     deviceId: string;
@@ -763,12 +792,12 @@ export interface MobileWorkforce {
     gpsEnabled: boolean;
     status: 'ACTIVE' | 'INACTIVE' | 'LOST' | 'DAMAGED';
   }[];
-  
+
   // Real-time tracking
   realTimeTracking: {
     technicianId: string;
     currentLocation: {
-      coordinates: { lat: number; lng: number; };
+      coordinates: { lat: number; lng: number };
       accuracy: number; // meters
       timestamp: Date;
     };
@@ -776,7 +805,7 @@ export interface MobileWorkforce {
     currentWorkOrder?: string;
     estimatedArrival?: Date;
   }[];
-  
+
   // Communication channels
   communication: {
     channels: {
@@ -784,7 +813,7 @@ export interface MobileWorkforce {
       enabled: boolean;
       configuration: Record<string, any>;
     }[];
-    
+
     emergencyProtocol: {
       escalationLevels: {
         level: number;
@@ -794,7 +823,7 @@ export interface MobileWorkforce {
       }[];
     };
   };
-  
+
   // Performance monitoring
   performanceMonitoring: {
     responseTimeTracking: boolean;
@@ -802,14 +831,14 @@ export interface MobileWorkforce {
     customerFeedbackCollection: boolean;
     qualityAssurance: boolean;
   };
-  
+
   lastUpdated: Date;
 }
 
 export interface DispatchOptimization {
   optimizationId: string;
   optimizationDate: Date;
-  
+
   // Optimization parameters
   parameters: {
     timeHorizon: number; // hours
@@ -820,7 +849,7 @@ export interface DispatchOptimization {
       prioritizeUrgent: boolean;
       minimizeCost: boolean;
     };
-    
+
     constraints: {
       technicianSkills: boolean;
       workingHours: boolean;
@@ -829,27 +858,27 @@ export interface DispatchOptimization {
       partAvailability: boolean;
     };
   };
-  
+
   // Input data
   inputData: {
     availableTechnicians: {
       technicianId: string;
-      location: { lat: number; lng: number; };
+      location: { lat: number; lng: number };
       skills: string[];
-      workingHours: { start: string; end: string; };
+      workingHours: { start: string; end: string };
       currentWorkload: number;
     }[];
-    
+
     pendingWorkOrders: {
       workOrderId: string;
-      location: { lat: number; lng: number; };
+      location: { lat: number; lng: number };
       priority: string;
       estimatedDuration: number;
       skillsRequired: string[];
-      timeWindow?: { start: string; end: string; };
+      timeWindow?: { start: string; end: string };
     }[];
   };
-  
+
   // Optimization results
   results: {
     assignments: {
@@ -864,13 +893,13 @@ export interface DispatchOptimization {
       totalTravelTime: number;
       utilizationRate: number;
     }[];
-    
+
     unassignedWorkOrders: {
       workOrderId: string;
       reason: string;
       suggestedAction: string;
     }[];
-    
+
     optimizationMetrics: {
       totalTravelTime: number;
       averageUtilization: number;
@@ -879,12 +908,12 @@ export interface DispatchOptimization {
       serviceLevel: number;
     };
   };
-  
+
   // Implementation
   implementationStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | 'IMPLEMENTED';
   approvedBy?: string;
   implementationDate?: Date;
-  
+
   // Performance tracking
   actualResults?: {
     actualTravelTime: number;
@@ -892,7 +921,7 @@ export interface DispatchOptimization {
     varianceFromOptimal: number;
     customerSatisfaction: number;
   };
-  
+
   lastUpdated: Date;
 }
 
@@ -901,10 +930,10 @@ export interface ServiceWarranty {
   warrantyNumber: string;
   assetId: string;
   customerId: string;
-  
+
   // Warranty details
   warrantyType: 'MANUFACTURER' | 'EXTENDED' | 'SERVICE_PLAN' | 'COMPREHENSIVE';
-  
+
   coverage: {
     parts: boolean;
     labor: boolean;
@@ -912,7 +941,7 @@ export interface ServiceWarranty {
     emergencyService: boolean;
     preventiveMaintenance: boolean;
   };
-  
+
   terms: {
     startDate: Date;
     endDate: Date;
@@ -920,7 +949,7 @@ export interface ServiceWarranty {
     transferable: boolean;
     renewable: boolean;
   };
-  
+
   // Service level
   serviceLevel: {
     responseTime: number; // hours
@@ -928,12 +957,12 @@ export interface ServiceWarranty {
     availability: string; // e.g., "24x7", "8x5"
     onSiteService: boolean;
   };
-  
+
   // Financial terms
   cost: number;
   deductible?: number;
   maxClaimAmount?: number;
-  
+
   // Warranty provider
   provider: {
     providerId: string;
@@ -944,7 +973,7 @@ export interface ServiceWarranty {
       website?: string;
     };
   };
-  
+
   // Claims history
   claims: {
     claimId: string;
@@ -956,7 +985,7 @@ export interface ServiceWarranty {
     resolution?: string;
     closureDate?: Date;
   }[];
-  
+
   // Asset information
   assetDetails: {
     serialNumber: string;
@@ -965,16 +994,16 @@ export interface ServiceWarranty {
     installationDate: Date;
     purchasePrice: number;
   };
-  
+
   status: 'ACTIVE' | 'EXPIRED' | 'CANCELLED' | 'CLAIMED' | 'SUSPENDED';
-  
+
   // Notifications
   expirationReminders: {
     notificationDate: Date;
     notificationSent: boolean;
     recipient: string;
   }[];
-  
+
   createdBy: string;
   createdDate: Date;
   lastUpdated: Date;

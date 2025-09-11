@@ -15,16 +15,12 @@ import type {
   WorkSchedule,
   AvailabilityWindow,
   GeoLocation,
-  DateRange
+  DateRange,
 } from '../../types/field-service-types';
 
-import {
-  TechnicianStatus,
-  SkillLevel
-} from '../../types/field-service-types';
+import { TechnicianStatus, SkillLevel } from '../../types/field-service-types';
 
 export class TechnicianManagementService {
-
   // ================================
   // TECHNICIAN LIFECYCLE MANAGEMENT
   // ================================
@@ -66,7 +62,7 @@ export class TechnicianManagementService {
     hireDate: Date;
   }): Promise<Technician> {
     const id = `tech_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const technician: Technician = {
       id,
       employeeId: technicianData.employeeId,
@@ -84,7 +80,7 @@ export class TechnicianManagementService {
         level: skill.level,
         certificationRequired: skill.certificationRequired,
         lastAssessed: new Date(),
-        assessmentScore: 0 // Will be updated during assessment
+        assessmentScore: 0, // Will be updated during assessment
       })),
       certifications: [],
       tools: [],
@@ -93,18 +89,18 @@ export class TechnicianManagementService {
         technicianId: id,
         scheduleType: technicianData.workSchedule.scheduleType,
         startDate: new Date(),
-        workingHours: technicianData.workSchedule.workingHours.map(wh => ({
+        workingHours: technicianData.workSchedule.workingHours.map((wh) => ({
           dayOfWeek: wh.dayOfWeek as any,
           startTime: wh.startTime,
           endTime: wh.endTime,
-          isWorkingDay: wh.isWorkingDay
+          isWorkingDay: wh.isWorkingDay,
         })),
         timeZone: technicianData.workSchedule.timeZone,
         maxHoursPerDay: technicianData.workSchedule.maxHoursPerDay,
         maxHoursPerWeek: technicianData.workSchedule.maxHoursPerWeek,
         breakDuration: 15, // Default 15 minutes
         lunchDuration: 30, // Default 30 minutes
-        overtimeEligible: true
+        overtimeEligible: true,
       },
       performance: await this.initializePerformanceMetrics(id),
       availability: [],
@@ -113,7 +109,7 @@ export class TechnicianManagementService {
       emergencyContact: technicianData.emergencyContact,
       hireDate: technicianData.hireDate,
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     console.log(`Created technician: ${technician.name} (${technician.id})`);
@@ -137,21 +133,24 @@ export class TechnicianManagementService {
     reason?: string;
   }> {
     console.log(`Updating technician ${technicianId} status to ${status}`);
-    
+
     return {
       technicianId,
       previousStatus: TechnicianStatus.AVAILABLE,
       newStatus: status,
       location,
       timestamp: new Date(),
-      reason
+      reason,
     };
   }
 
   /**
    * Assign vehicle to technician
    */
-  async assignVehicle(technicianId: string, vehicleId: string): Promise<{
+  async assignVehicle(
+    technicianId: string,
+    vehicleId: string
+  ): Promise<{
     assignmentId: string;
     technicianId: string;
     vehicleId: string;
@@ -159,13 +158,13 @@ export class TechnicianManagementService {
     status: 'ASSIGNED' | 'PENDING' | 'REJECTED';
   }> {
     const assignmentId = `va_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       assignmentId,
       technicianId,
       vehicleId,
       assignedDate: new Date(),
-      status: 'ASSIGNED'
+      status: 'ASSIGNED',
     };
   }
 
@@ -193,7 +192,7 @@ export class TechnicianManagementService {
       level: skill.level,
       certificationRequired: skill.certificationRequired,
       lastAssessed: new Date(),
-      assessmentScore: skill.assessmentScore || 0
+      assessmentScore: skill.assessmentScore || 0,
     };
 
     console.log(`Added skill ${skill.skillName} to technician ${technicianId}`);
@@ -225,7 +224,7 @@ export class TechnicianManagementService {
       assessmentScore,
       assessmentDate: new Date(),
       assessorId,
-      certificationRecommended: newLevel === SkillLevel.EXPERT || newLevel === SkillLevel.MASTER
+      certificationRecommended: newLevel === SkillLevel.EXPERT || newLevel === SkillLevel.MASTER,
     };
   }
 
@@ -251,10 +250,14 @@ export class TechnicianManagementService {
       issueDate: certification.issueDate,
       expirationDate: certification.expirationDate,
       renewalRequired: !!certification.expirationDate,
-      renewalPeriod: certification.expirationDate ? 
-        Math.ceil((certification.expirationDate.getTime() - certification.issueDate.getTime()) / (1000 * 60 * 60 * 24 * 30)) : undefined,
+      renewalPeriod: certification.expirationDate
+        ? Math.ceil(
+            (certification.expirationDate.getTime() - certification.issueDate.getTime()) /
+              (1000 * 60 * 60 * 24 * 30)
+          )
+        : undefined,
       status: 'ACTIVE',
-      attachments: certification.attachments || []
+      attachments: certification.attachments || [],
     };
 
     console.log(`Added certification ${cert.name} to technician ${technicianId}`);
@@ -267,14 +270,16 @@ export class TechnicianManagementService {
   async checkExpiringCertifications(
     technicianId?: string,
     daysAhead: number = 30
-  ): Promise<Array<{
-    technicianId: string;
-    technicianName: string;
-    certification: Certification;
-    daysUntilExpiration: number;
-    renewalRequired: boolean;
-    renewalProcess?: string;
-  }>> {
+  ): Promise<
+    Array<{
+      technicianId: string;
+      technicianName: string;
+      certification: Certification;
+      daysUntilExpiration: number;
+      renewalRequired: boolean;
+      renewalProcess?: string;
+    }>
+  > {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() + daysAhead);
 
@@ -293,12 +298,12 @@ export class TechnicianManagementService {
           renewalRequired: true,
           renewalPeriod: 24,
           status: 'ACTIVE',
-          attachments: []
+          attachments: [],
         },
         daysUntilExpiration: 25,
         renewalRequired: true,
-        renewalProcess: 'Complete 16 hours continuing education and pass renewal exam'
-      }
+        renewalProcess: 'Complete 16 hours continuing education and pass renewal exam',
+      },
     ];
   }
 
@@ -328,10 +333,12 @@ export class TechnicianManagementService {
       endTime: availability.endTime,
       availabilityType: availability.availabilityType,
       reason: availability.reason,
-      location: availability.location
+      location: availability.location,
     };
 
-    console.log(`Set availability for technician ${technicianId} on ${availability.date.toDateString()}`);
+    console.log(
+      `Set availability for technician ${technicianId} on ${availability.date.toDateString()}`
+    );
     return availabilityWindow;
   }
 
@@ -351,14 +358,16 @@ export class TechnicianManagementService {
       minSkillLevel?: SkillLevel;
       excludeTechnicianIds?: string[];
     }
-  ): Promise<Array<{
-    technician: Technician;
-    availabilityScore: number; // 1-100
-    travelTime?: number; // minutes
-    distance?: number; // miles
-    skillMatch: number; // percentage
-    utilizationRate: number; // percentage
-  }>> {
+  ): Promise<
+    Array<{
+      technician: Technician;
+      availabilityScore: number; // 1-100
+      travelTime?: number; // minutes
+      distance?: number; // miles
+      skillMatch: number; // percentage
+      utilizationRate: number; // percentage
+    }>
+  > {
     // Mock available technicians with scoring
     return [
       {
@@ -367,7 +376,7 @@ export class TechnicianManagementService {
         travelTime: 15,
         distance: 8.5,
         skillMatch: 88,
-        utilizationRate: 72
+        utilizationRate: 72,
       },
       {
         technician: await this.getMockTechnician('tech_002'),
@@ -375,8 +384,8 @@ export class TechnicianManagementService {
         travelTime: 25,
         distance: 14.2,
         skillMatch: 95,
-        utilizationRate: 68
-      }
+        utilizationRate: 68,
+      },
     ];
   }
 
@@ -412,7 +421,7 @@ export class TechnicianManagementService {
     };
   }> {
     const technician = await this.getMockTechnician(technicianId);
-    
+
     return {
       technicianId,
       technicianName: technician.name,
@@ -427,7 +436,7 @@ export class TechnicianManagementService {
               type: 'WORK_ORDER',
               workOrderId: 'wo_001',
               description: 'HVAC Maintenance - Office Building',
-              location: { latitude: 40.7128, longitude: -74.0060, timestamp: new Date() }
+              location: { latitude: 40.7128, longitude: -74.006, timestamp: new Date() },
             },
             {
               startTime: new Date(Date.now() + 13 * 60 * 60 * 1000), // 1 PM
@@ -435,20 +444,20 @@ export class TechnicianManagementService {
               type: 'WORK_ORDER',
               workOrderId: 'wo_002',
               description: 'Equipment Installation',
-              location: { latitude: 40.7589, longitude: -73.9851, timestamp: new Date() }
-            }
+              location: { latitude: 40.7589, longitude: -73.9851, timestamp: new Date() },
+            },
           ],
           totalHours: 8,
-          utilisationRate: 100
-        }
+          utilisationRate: 100,
+        },
       ],
       summary: {
         totalWorkingDays: 5,
         totalScheduledHours: 40,
         totalAvailableHours: 40,
         utilizationRate: 85,
-        overtimeHours: 0
-      }
+        overtimeHours: 0,
+      },
     };
   }
 
@@ -479,7 +488,7 @@ export class TechnicianManagementService {
         milesDriven: 1250,
         revenueGenerated: 34500,
         costsIncurred: 12800,
-        profitMargin: 63 // percentage
+        profitMargin: 63, // percentage
       },
       kpis: [
         {
@@ -490,7 +499,7 @@ export class TechnicianManagementService {
           targetValue: 30,
           unit: 'minutes',
           trend: 'IMPROVING',
-          lastMeasured: new Date()
+          lastMeasured: new Date(),
         },
         {
           kpiId: 'kpi_customer_satisfaction',
@@ -500,8 +509,8 @@ export class TechnicianManagementService {
           targetValue: 4.0,
           unit: 'score',
           trend: 'IMPROVING',
-          lastMeasured: new Date()
-        }
+          lastMeasured: new Date(),
+        },
       ],
       trends: [
         {
@@ -509,11 +518,11 @@ export class TechnicianManagementService {
           values: [
             { date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), value: 32 },
             { date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000), value: 28 },
-            { date: new Date(), value: 25 }
+            { date: new Date(), value: 25 },
           ],
           trendDirection: 'UP',
-          changePercent: -21.9 // Negative because lower response time is better
-        }
+          changePercent: -21.9, // Negative because lower response time is better
+        },
       ],
       goals: [
         {
@@ -525,10 +534,10 @@ export class TechnicianManagementService {
           currentValue: 87,
           deadline: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days
           status: 'ON_TRACK',
-          weight: 8
-        }
+          weight: 8,
+        },
       ],
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     return performance;
@@ -547,17 +556,19 @@ export class TechnicianManagementService {
       deadline: Date;
       weight: number;
     }>
-  ): Promise<Array<{
-    goalId: string;
-    name: string;
-    status: 'CREATED' | 'APPROVED' | 'ACTIVE';
-    createdDate: Date;
-  }>> {
+  ): Promise<
+    Array<{
+      goalId: string;
+      name: string;
+      status: 'CREATED' | 'APPROVED' | 'ACTIVE';
+      createdDate: Date;
+    }>
+  > {
     return goals.map((goal, index) => ({
       goalId: `goal_${technicianId}_${Date.now()}_${index}`,
       name: goal.name,
       status: 'CREATED' as const,
-      createdDate: new Date()
+      createdDate: new Date(),
     }));
   }
 
@@ -582,7 +593,7 @@ export class TechnicianManagementService {
       technicianId,
       location,
       distanceMoved: 2.3,
-      updated: new Date()
+      updated: new Date(),
     };
   }
 
@@ -597,28 +608,30 @@ export class TechnicianManagementService {
       requiredSkills?: string[];
       maxWorkload?: number;
     }
-  ): Promise<Array<{
-    technician: Technician;
-    distance: number; // miles
-    estimatedTravelTime: number; // minutes
-    currentWorkload: number; // percentage
-    availableNow: boolean;
-  }>> {
+  ): Promise<
+    Array<{
+      technician: Technician;
+      distance: number; // miles
+      estimatedTravelTime: number; // minutes
+      currentWorkload: number; // percentage
+      availableNow: boolean;
+    }>
+  > {
     return [
       {
         technician: await this.getMockTechnician('tech_001'),
         distance: 3.2,
         estimatedTravelTime: 12,
         currentWorkload: 75,
-        availableNow: true
+        availableNow: true,
       },
       {
         technician: await this.getMockTechnician('tech_002'),
         distance: 5.8,
         estimatedTravelTime: 18,
         currentWorkload: 90,
-        availableNow: false
-      }
+        availableNow: false,
+      },
     ];
   }
 
@@ -647,7 +660,7 @@ export class TechnicianManagementService {
     createdDate: Date;
   }> {
     const teamId = `team_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       teamId,
       name: teamData.name,
@@ -656,7 +669,7 @@ export class TechnicianManagementService {
       specialization: teamData.specialization,
       serviceAreas: teamData.serviceAreaIds,
       status: 'ACTIVE',
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
@@ -678,7 +691,7 @@ export class TechnicianManagementService {
     status: 'ASSIGNED' | 'ACCEPTED' | 'REJECTED';
   }> {
     const assignmentId = `ta_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       assignmentId,
       teamId,
@@ -686,7 +699,7 @@ export class TechnicianManagementService {
       leadTechnicianId,
       assistantIds,
       assignedDate: new Date(),
-      status: 'ASSIGNED'
+      status: 'ASSIGNED',
     };
   }
 
@@ -698,8 +711,8 @@ export class TechnicianManagementService {
     // Mock implementation
     return {
       latitude: 40.7128,
-      longitude: -74.0060,
-      timestamp: new Date()
+      longitude: -74.006,
+      timestamp: new Date(),
     };
   }
 
@@ -714,12 +727,17 @@ export class TechnicianManagementService {
         city: 'New York',
         state: 'NY',
         zipCode: '10001',
-        country: 'USA'
+        country: 'USA',
       },
-      location: { latitude: 40.7128, longitude: -74.0060, timestamp: new Date() },
+      location: { latitude: 40.7128, longitude: -74.006, timestamp: new Date() },
       contactInfo: { primaryPhone: '555-0100' },
-      operatingHours: { timezone: 'America/New_York', schedule: [], holidays: [], specialHours: [] },
-      facilities: []
+      operatingHours: {
+        timezone: 'America/New_York',
+        schedule: [],
+        holidays: [],
+        specialHours: [],
+      },
+      facilities: [],
     };
   }
 
@@ -731,12 +749,12 @@ export class TechnicianManagementService {
       description: 'Lower and Midtown Manhattan coverage',
       boundaries: [
         { latitude: 40.7589, longitude: -73.9851 },
-        { latitude: 40.7128, longitude: -74.0060 }
+        { latitude: 40.7128, longitude: -74.006 },
       ],
       zipCodes: ['10001', '10002', '10003'],
       isActive: true,
       assignedTechnicians: [],
-      travelTimes: {}
+      travelTimes: {},
     };
   }
 
@@ -757,19 +775,19 @@ export class TechnicianManagementService {
         milesDriven: 0,
         revenueGenerated: 0,
         costsIncurred: 0,
-        profitMargin: 0
+        profitMargin: 0,
       },
       kpis: [],
       trends: [],
       goals: [],
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
   private async getMockTechnician(technicianId: string): Promise<Technician> {
     const homeBase = await this.getServiceLocation('depot_001');
     const serviceArea = await this.getServiceArea('area_001');
-    
+
     return {
       id: technicianId,
       employeeId: `EMP${technicianId.substring(5)}`,
@@ -777,7 +795,7 @@ export class TechnicianManagementService {
       email: 'john.smith@company.com',
       phone: '555-0123',
       status: TechnicianStatus.AVAILABLE,
-      location: { latitude: 40.7128, longitude: -74.0060, timestamp: new Date() },
+      location: { latitude: 40.7128, longitude: -74.006, timestamp: new Date() },
       homeBase,
       serviceArea,
       skills: [],
@@ -794,7 +812,7 @@ export class TechnicianManagementService {
         maxHoursPerWeek: 40,
         breakDuration: 15,
         lunchDuration: 30,
-        overtimeEligible: true
+        overtimeEligible: true,
       },
       performance: await this.initializePerformanceMetrics(technicianId),
       availability: [],
@@ -803,11 +821,11 @@ export class TechnicianManagementService {
       emergencyContact: {
         name: 'Jane Smith',
         relationship: 'Spouse',
-        phone: '555-0124'
+        phone: '555-0124',
       },
       hireDate: new Date('2020-01-15'),
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 }

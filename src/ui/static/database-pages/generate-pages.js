@@ -9,24 +9,26 @@ const databasePages = {
     {
       name: 'database-server-management',
       title: 'Database Server Management',
-      description: 'Comprehensive database server monitoring and management with real-time performance insights',
+      description:
+        'Comprehensive database server monitoring and management with real-time performance insights',
       features: [
         'Multi-database server monitoring and control',
         'Resource utilization tracking and optimization',
         'Connection pool management and scaling',
-        'Real-time performance metrics and alerting'
-      ]
+        'Real-time performance metrics and alerting',
+      ],
     },
     {
       name: 'schema-management',
       title: 'Schema Management & Evolution',
-      description: 'Advanced database schema management with version control and migration automation',
+      description:
+        'Advanced database schema management with version control and migration automation',
       features: [
         'Schema versioning and change tracking',
         'Automated migration deployment and rollback',
         'Cross-environment schema synchronization',
-        'Impact analysis for schema changes'
-      ]
+        'Impact analysis for schema changes',
+      ],
     },
     {
       name: 'user-access-management',
@@ -36,19 +38,20 @@ const databasePages = {
         'Role-based access control (RBAC) implementation',
         'User privilege management and auditing',
         'Database connection security and monitoring',
-        'Access request workflow automation'
-      ]
+        'Access request workflow automation',
+      ],
     },
     {
       name: 'maintenance-automation',
       title: 'Database Maintenance Automation',
-      description: 'Automated database maintenance tasks with scheduling and monitoring capabilities',
+      description:
+        'Automated database maintenance tasks with scheduling and monitoring capabilities',
       features: [
         'Automated index maintenance and optimization',
         'Statistics update scheduling and management',
         'Database cleanup and space reclamation',
-        'Maintenance window planning and execution'
-      ]
+        'Maintenance window planning and execution',
+      ],
     },
     {
       name: 'configuration-management',
@@ -58,8 +61,8 @@ const databasePages = {
         'Configuration drift detection and remediation',
         'Parameter optimization recommendations',
         'Compliance policy enforcement',
-        'Configuration baseline management'
-      ]
+        'Configuration baseline management',
+      ],
     },
     {
       name: 'database-provisioning',
@@ -69,8 +72,8 @@ const databasePages = {
         'Infrastructure as code (IaC) database deployment',
         'Environment provisioning automation',
         'Resource allocation and scaling',
-        'Deployment pipeline integration'
-      ]
+        'Deployment pipeline integration',
+      ],
     },
     {
       name: 'patching-updates',
@@ -80,32 +83,34 @@ const databasePages = {
         'Patch management and vulnerability assessment',
         'Rolling update deployment strategies',
         'Compatibility testing automation',
-        'Rollback and recovery procedures'
-      ]
+        'Rollback and recovery procedures',
+      ],
     },
     {
       name: 'database-clustering',
       title: 'Database Clustering & High Availability',
-      description: 'Advanced clustering and high availability configuration with failover management',
+      description:
+        'Advanced clustering and high availability configuration with failover management',
       features: [
         'Cluster configuration and management',
         'Automated failover and recovery',
         'Load balancing and connection routing',
-        'Split-brain detection and resolution'
-      ]
-    }
+        'Split-brain detection and resolution',
+      ],
+    },
   ],
   'performance-management': [
     {
       name: 'query-performance-tuning',
       title: 'Query Performance Tuning',
-      description: 'Advanced query optimization with AI-powered performance analysis and recommendations',
+      description:
+        'Advanced query optimization with AI-powered performance analysis and recommendations',
       features: [
         'Intelligent query plan analysis and optimization',
         'Index recommendation engine with cost analysis',
         'Query rewrite suggestions and automation',
-        'Performance regression detection and alerting'
-      ]
+        'Performance regression detection and alerting',
+      ],
     },
     {
       name: 'index-optimization',
@@ -115,8 +120,8 @@ const databasePages = {
         'Automated index usage analysis and optimization',
         'Missing index identification and creation',
         'Index fragmentation monitoring and maintenance',
-        'Composite index recommendation engine'
-      ]
+        'Composite index recommendation engine',
+      ],
     },
     {
       name: 'resource-monitoring',
@@ -126,19 +131,20 @@ const databasePages = {
         'CPU, memory, and I/O performance monitoring',
         'Predictive resource utilization analytics',
         'Capacity planning and growth forecasting',
-        'Resource bottleneck identification and resolution'
-      ]
+        'Resource bottleneck identification and resolution',
+      ],
     },
     {
       name: 'workload-analysis',
       title: 'Workload Analysis & Optimization',
-      description: 'Comprehensive workload analysis with pattern recognition and optimization insights',
+      description:
+        'Comprehensive workload analysis with pattern recognition and optimization insights',
       features: [
         'Workload pattern analysis and classification',
         'Peak usage identification and optimization',
         'Query workload distribution analysis',
-        'Performance baseline establishment and tracking'
-      ]
+        'Performance baseline establishment and tracking',
+      ],
     },
     {
       name: 'connection-pooling',
@@ -148,30 +154,32 @@ const databasePages = {
         'Dynamic connection pool sizing and optimization',
         'Connection routing and load balancing',
         'Connection leak detection and prevention',
-        'Pool performance monitoring and tuning'
-      ]
+        'Pool performance monitoring and tuning',
+      ],
     },
     {
       name: 'caching-strategies',
       title: 'Database Caching Strategies',
-      description: 'Intelligent caching implementation with hit ratio optimization and cache warming',
+      description:
+        'Intelligent caching implementation with hit ratio optimization and cache warming',
       features: [
         'Query result caching and invalidation strategies',
         'Cache hit ratio optimization and monitoring',
         'Intelligent cache warming and preloading',
-        'Distributed caching coordination'
-      ]
+        'Distributed caching coordination',
+      ],
     },
     {
       name: 'deadlock-analysis',
       title: 'Deadlock Detection & Analysis',
-      description: 'Advanced deadlock monitoring with root cause analysis and prevention strategies',
+      description:
+        'Advanced deadlock monitoring with root cause analysis and prevention strategies',
       features: [
         'Real-time deadlock detection and resolution',
         'Deadlock pattern analysis and prevention',
         'Transaction isolation level optimization',
-        'Lock contention monitoring and mitigation'
-      ]
+        'Lock contention monitoring and mitigation',
+      ],
     },
     {
       name: 'performance-benchmarking',
@@ -181,9 +189,9 @@ const databasePages = {
         'Automated performance testing and benchmarking',
         'Load testing and stress testing capabilities',
         'Performance comparison and regression testing',
-        'Synthetic workload generation and analysis'
-      ]
-    }
+        'Synthetic workload generation and analysis',
+      ],
+    },
   ],
   'backup-recovery': [
     {
@@ -194,19 +202,20 @@ const databasePages = {
         'Multi-tier backup strategy implementation',
         'Automated backup scheduling and orchestration',
         'Retention policy management and compliance',
-        'Backup validation and integrity verification'
-      ]
+        'Backup validation and integrity verification',
+      ],
     },
     {
       name: 'disaster-recovery-planning',
       title: 'Disaster Recovery Planning',
-      description: 'Comprehensive disaster recovery with automated failover and recovery procedures',
+      description:
+        'Comprehensive disaster recovery with automated failover and recovery procedures',
       features: [
         'Disaster recovery plan automation and testing',
         'RTO/RPO monitoring and optimization',
         'Cross-region replication and failover',
-        'Recovery procedure validation and documentation'
-      ]
+        'Recovery procedure validation and documentation',
+      ],
     },
     {
       name: 'point-in-time-recovery',
@@ -216,8 +225,8 @@ const databasePages = {
         'Transaction log analysis and replay capabilities',
         'Granular point-in-time recovery options',
         'Recovery timeline visualization and selection',
-        'Partial database recovery and restoration'
-      ]
+        'Partial database recovery and restoration',
+      ],
     },
     {
       name: 'backup-monitoring',
@@ -227,19 +236,20 @@ const databasePages = {
         'Backup job monitoring and status tracking',
         'Proactive failure detection and alerting',
         'Backup performance metrics and optimization',
-        'Recovery readiness testing and validation'
-      ]
+        'Recovery readiness testing and validation',
+      ],
     },
     {
       name: 'cloud-backup-integration',
       title: 'Cloud Backup Integration',
-      description: 'Seamless cloud backup integration with multi-cloud support and cost optimization',
+      description:
+        'Seamless cloud backup integration with multi-cloud support and cost optimization',
       features: [
         'Multi-cloud backup storage integration',
         'Cost optimization and storage tiering',
         'Encrypted backup transmission and storage',
-        'Cloud backup lifecycle management'
-      ]
+        'Cloud backup lifecycle management',
+      ],
     },
     {
       name: 'backup-compression',
@@ -249,8 +259,8 @@ const databasePages = {
         'Intelligent compression algorithm selection',
         'End-to-end encryption key management',
         'Compression ratio optimization and monitoring',
-        'Encrypted backup verification and validation'
-      ]
+        'Encrypted backup verification and validation',
+      ],
     },
     {
       name: 'recovery-testing',
@@ -260,8 +270,8 @@ const databasePages = {
         'Automated recovery testing procedures',
         'Recovery validation and integrity checking',
         'Recovery time measurement and optimization',
-        'Recovery documentation and compliance reporting'
-      ]
+        'Recovery documentation and compliance reporting',
+      ],
     },
     {
       name: 'archival-management',
@@ -271,32 +281,34 @@ const databasePages = {
         'Automated data lifecycle management',
         'Compliance-driven archival policies',
         'Archive storage optimization and retrieval',
-        'Legal hold and retention management'
-      ]
-    }
+        'Legal hold and retention management',
+      ],
+    },
   ],
   'security-access-control': [
     {
       name: 'database-security-policies',
       title: 'Database Security Policies',
-      description: 'Comprehensive security policy management with compliance monitoring and enforcement',
+      description:
+        'Comprehensive security policy management with compliance monitoring and enforcement',
       features: [
         'Security policy template library and customization',
         'Automated policy enforcement and monitoring',
         'Compliance framework mapping and reporting',
-        'Security policy violation detection and remediation'
-      ]
+        'Security policy violation detection and remediation',
+      ],
     },
     {
       name: 'encryption-key-management',
       title: 'Encryption & Key Management',
-      description: 'Enterprise encryption management with automated key rotation and HSM integration',
+      description:
+        'Enterprise encryption management with automated key rotation and HSM integration',
       features: [
         'Transparent data encryption (TDE) management',
         'Automated key rotation and lifecycle management',
         'Hardware security module (HSM) integration',
-        'Encryption performance monitoring and optimization'
-      ]
+        'Encryption performance monitoring and optimization',
+      ],
     },
     {
       name: 'audit-trail-management',
@@ -306,8 +318,8 @@ const databasePages = {
         'Comprehensive audit trail collection and storage',
         'Intelligent audit log analysis and alerting',
         'Compliance reporting automation',
-        'Audit trail integrity verification and protection'
-      ]
+        'Audit trail integrity verification and protection',
+      ],
     },
     {
       name: 'vulnerability-assessment',
@@ -317,8 +329,8 @@ const databasePages = {
         'Automated vulnerability scanning and assessment',
         'Risk scoring and prioritization algorithms',
         'Remediation guidance and tracking',
-        'Security baseline compliance monitoring'
-      ]
+        'Security baseline compliance monitoring',
+      ],
     },
     {
       name: 'data-masking',
@@ -328,8 +340,8 @@ const databasePages = {
         'Intelligent data masking and anonymization',
         'Referential integrity preservation algorithms',
         'Consistent masking across environments',
-        'Privacy regulation compliance automation'
-      ]
+        'Privacy regulation compliance automation',
+      ],
     },
     {
       name: 'access-control-matrix',
@@ -339,8 +351,8 @@ const databasePages = {
         'Fine-grained access control matrix management',
         'Dynamic permission assignment and revocation',
         'Access pattern behavioral analysis',
-        'Privileged access monitoring and alerting'
-      ]
+        'Privileged access monitoring and alerting',
+      ],
     },
     {
       name: 'database-firewall',
@@ -350,8 +362,8 @@ const databasePages = {
         'SQL injection detection and prevention',
         'Database activity monitoring and blocking',
         'Threat intelligence integration and analysis',
-        'Custom security rule creation and management'
-      ]
+        'Custom security rule creation and management',
+      ],
     },
     {
       name: 'compliance-automation',
@@ -361,21 +373,22 @@ const databasePages = {
         'Multi-regulatory framework compliance automation',
         'Automated compliance reporting and attestation',
         'Control testing and evidence collection',
-        'Compliance gap analysis and remediation'
-      ]
-    }
+        'Compliance gap analysis and remediation',
+      ],
+    },
   ],
   'data-integration-etl': [
     {
       name: 'etl-pipeline-management',
       title: 'ETL Pipeline Management',
-      description: 'Enterprise ETL pipeline orchestration with automated monitoring and optimization',
+      description:
+        'Enterprise ETL pipeline orchestration with automated monitoring and optimization',
       features: [
         'Visual ETL pipeline design and orchestration',
         'Data transformation logic automation',
         'Pipeline performance monitoring and optimization',
-        'Error handling and recovery automation'
-      ]
+        'Error handling and recovery automation',
+      ],
     },
     {
       name: 'data-quality-management',
@@ -385,8 +398,8 @@ const databasePages = {
         'Automated data quality profiling and assessment',
         'Data cleansing and standardization rules',
         'Quality metrics monitoring and alerting',
-        'Data quality scorecard and reporting'
-      ]
+        'Data quality scorecard and reporting',
+      ],
     },
     {
       name: 'real-time-integration',
@@ -396,8 +409,8 @@ const databasePages = {
         'Change data capture (CDC) implementation',
         'Real-time streaming data processing',
         'Event-driven data integration workflows',
-        'Low-latency data replication and synchronization'
-      ]
+        'Low-latency data replication and synchronization',
+      ],
     },
     {
       name: 'data-mapping-transformation',
@@ -407,8 +420,8 @@ const databasePages = {
         'Intelligent data mapping and schema matching',
         'Complex data transformation logic automation',
         'Data lineage tracking and visualization',
-        'Transformation rule library and reusability'
-      ]
+        'Transformation rule library and reusability',
+      ],
     },
     {
       name: 'api-integration-management',
@@ -418,30 +431,32 @@ const databasePages = {
         'RESTful and GraphQL API integration',
         'API rate limiting and throttling management',
         'Authentication and authorization handling',
-        'API versioning and compatibility management'
-      ]
+        'API versioning and compatibility management',
+      ],
     },
     {
       name: 'data-synchronization',
       title: 'Multi-Source Data Synchronization',
-      description: 'Advanced data synchronization with conflict resolution and consistency management',
+      description:
+        'Advanced data synchronization with conflict resolution and consistency management',
       features: [
         'Multi-directional data synchronization',
         'Conflict detection and resolution algorithms',
         'Data consistency validation and monitoring',
-        'Synchronization performance optimization'
-      ]
+        'Synchronization performance optimization',
+      ],
     },
     {
       name: 'batch-processing',
       title: 'Batch Processing & Scheduling',
-      description: 'Enterprise batch processing with intelligent scheduling and resource optimization',
+      description:
+        'Enterprise batch processing with intelligent scheduling and resource optimization',
       features: [
         'Intelligent batch job scheduling and optimization',
         'Resource allocation and load balancing',
         'Dependency management and orchestration',
-        'Batch processing performance monitoring'
-      ]
+        'Batch processing performance monitoring',
+      ],
     },
     {
       name: 'data-catalog-management',
@@ -451,32 +466,34 @@ const databasePages = {
         'Automated metadata discovery and cataloging',
         'Data asset search and discovery capabilities',
         'Data governance and stewardship workflows',
-        'Business glossary and data dictionary management'
-      ]
-    }
+        'Business glossary and data dictionary management',
+      ],
+    },
   ],
   'monitoring-analytics': [
     {
       name: 'database-health-monitoring',
       title: 'Database Health Monitoring',
-      description: 'Comprehensive database health monitoring with predictive analytics and alerting',
+      description:
+        'Comprehensive database health monitoring with predictive analytics and alerting',
       features: [
         'Real-time database health scoring and monitoring',
         'Predictive failure analysis and prevention',
         'Health trend analysis and forecasting',
-        'Automated health check scheduling and reporting'
-      ]
+        'Automated health check scheduling and reporting',
+      ],
     },
     {
       name: 'performance-analytics',
       title: 'Performance Analytics Dashboard',
-      description: 'Advanced performance analytics with machine learning insights and recommendations',
+      description:
+        'Advanced performance analytics with machine learning insights and recommendations',
       features: [
         'Machine learning-powered performance insights',
         'Interactive performance analytics dashboards',
         'Performance trend analysis and forecasting',
-        'Anomaly detection and root cause analysis'
-      ]
+        'Anomaly detection and root cause analysis',
+      ],
     },
     {
       name: 'capacity-planning',
@@ -486,8 +503,8 @@ const databasePages = {
         'Automated capacity planning and forecasting',
         'Resource growth prediction algorithms',
         'Cost optimization recommendations',
-        'Capacity alert thresholds and notifications'
-      ]
+        'Capacity alert thresholds and notifications',
+      ],
     },
     {
       name: 'alerting-notification',
@@ -497,8 +514,8 @@ const databasePages = {
         'Smart alerting with machine learning noise reduction',
         'Customizable notification channels and templates',
         'Escalation workflows and on-call management',
-        'Alert correlation and root cause grouping'
-      ]
+        'Alert correlation and root cause grouping',
+      ],
     },
     {
       name: 'database-inventory',
@@ -508,19 +525,20 @@ const databasePages = {
         'Automated database discovery and inventory',
         'Asset lifecycle tracking and management',
         'License compliance monitoring and optimization',
-        'Database dependency mapping and visualization'
-      ]
+        'Database dependency mapping and visualization',
+      ],
     },
     {
       name: 'cost-optimization',
       title: 'Cost Optimization & Analysis',
-      description: 'Database cost optimization with resource utilization analysis and recommendations',
+      description:
+        'Database cost optimization with resource utilization analysis and recommendations',
       features: [
         'Resource utilization cost analysis',
         'Right-sizing recommendations and automation',
         'Cloud cost optimization strategies',
-        'Cost allocation and chargeback reporting'
-      ]
+        'Cost allocation and chargeback reporting',
+      ],
     },
     {
       name: 'sla-monitoring',
@@ -530,8 +548,8 @@ const databasePages = {
         'SLA definition and threshold management',
         'Automated SLA compliance monitoring',
         'SLA breach detection and escalation',
-        'Executive SLA dashboard and reporting'
-      ]
+        'Executive SLA dashboard and reporting',
+      ],
     },
     {
       name: 'trend-analysis',
@@ -541,10 +559,10 @@ const databasePages = {
         'Historical trend analysis and visualization',
         'Predictive modeling and forecasting',
         'Business intelligence integration',
-        'Custom trend reporting and analytics'
-      ]
-    }
-  ]
+        'Custom trend reporting and analytics',
+      ],
+    },
+  ],
 };
 
 // Read the template
@@ -566,10 +584,10 @@ function createDatabasePage(category, pageData) {
   if (!fs.existsSync(categoryDir)) {
     fs.mkdirSync(categoryDir, { recursive: true });
   }
-  
+
   const filePath = path.join(categoryDir, `${pageData.name}.html`);
   fs.writeFileSync(filePath, pageContent);
-  
+
   console.log(`Created page: ${filePath}`);
 }
 
@@ -749,10 +767,10 @@ document.head.appendChild(styleSheet);`;
   if (!fs.existsSync(scriptsDir)) {
     fs.mkdirSync(scriptsDir, { recursive: true });
   }
-  
+
   const scriptPath = path.join(scriptsDir, `${pageData.name}.js`);
   fs.writeFileSync(scriptPath, scriptContent);
-  
+
   console.log(`Created script: ${scriptPath}`);
 }
 
@@ -763,8 +781,8 @@ Object.entries(databasePages).forEach(([category, pages]) => {
   if (!fs.existsSync(categoryDir)) {
     fs.mkdirSync(categoryDir, { recursive: true });
   }
-  
-  pages.forEach(pageData => {
+
+  pages.forEach((pageData) => {
     createDatabasePage(category, pageData);
     createPageScript(category, pageData);
   });
@@ -785,4 +803,6 @@ console.log('   ✅ Business-ready functionality');
 console.log('   ✅ Customer-ready interface');
 console.log('   ✅ Real-time monitoring and analytics');
 console.log('   ✅ Enterprise security and compliance');
-console.log('\\n💡 Extended with 48 comprehensive database management pages for enterprise-grade database operations!');
+console.log(
+  '\\n💡 Extended with 48 comprehensive database management pages for enterprise-grade database operations!'
+);

@@ -6,14 +6,13 @@
 import type { Report, ReportSchedule, ReportTemplate } from '../../types';
 
 export class ReportsService {
-  
   async createReport(report: Omit<Report, 'id' | 'createdDate'>): Promise<Report> {
     const id = `rpt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...report,
       id,
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
@@ -34,20 +33,20 @@ export class ReportsService {
 
   async runReport(reportId: string, parameters?: { [key: string]: any }): Promise<any> {
     console.log(`Running report ${reportId}`, parameters);
-    
+
     return {
       reportId,
       runDate: new Date(),
       data: [
         { id: 1, name: 'Sample Data', value: 100 },
-        { id: 2, name: 'Another Row', value: 200 }
+        { id: 2, name: 'Another Row', value: 200 },
       ],
       summary: {
         recordCount: 2,
         executionTime: 150, // milliseconds
         filters: parameters || {},
-        generatedBy: 'Reports Service'
-      }
+        generatedBy: 'Reports Service',
+      },
     };
   }
 
@@ -71,10 +70,10 @@ export class ReportsService {
 
   async exportReport(reportId: string, format: 'PDF' | 'EXCEL' | 'CSV' | 'JSON'): Promise<Buffer> {
     console.log(`Exporting report ${reportId} as ${format}`);
-    
+
     // Generate mock export data based on format
     const reportData = await this.runReport(reportId);
-    
+
     switch (format) {
       case 'CSV':
         const csvData = this.convertToCSV(reportData.data);
@@ -92,9 +91,9 @@ export class ReportsService {
 
   private convertToCSV(data: any[]): string {
     if (!data.length) return '';
-    
+
     const headers = Object.keys(data[0]).join(',');
-    const rows = data.map(row => Object.values(row).join(','));
+    const rows = data.map((row) => Object.values(row).join(','));
     return [headers, ...rows].join('\n');
   }
 
@@ -110,7 +109,7 @@ export class ReportsService {
 
   async cloneReport(reportId: string, newName: string): Promise<Report> {
     const id = `rpt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       id,
       name: newName,
@@ -120,7 +119,7 @@ export class ReportsService {
       template: {} as ReportTemplate,
       recipients: [],
       createdBy: 'user',
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
@@ -133,21 +132,32 @@ export class ReportsService {
         status: 'SUCCESS',
         recordCount: 100,
         executionTime: 250,
-        parameters: {}
-      }
+        parameters: {},
+      },
     ];
   }
 
-  async shareReport(reportId: string, shareWith: string[], permissions: 'VIEW' | 'EDIT'): Promise<void> {
+  async shareReport(
+    reportId: string,
+    shareWith: string[],
+    permissions: 'VIEW' | 'EDIT'
+  ): Promise<void> {
     console.log(`Sharing report ${reportId} with users`, shareWith, `permission: ${permissions}`);
   }
 
-  async getReportPermissions(reportId: string, userId: string): Promise<'OWNER' | 'EDIT' | 'VIEW' | 'NONE'> {
+  async getReportPermissions(
+    reportId: string,
+    userId: string
+  ): Promise<'OWNER' | 'EDIT' | 'VIEW' | 'NONE'> {
     // Would check user permissions
     return 'VIEW';
   }
 
-  async subscribeToReport(reportId: string, userId: string, deliveryMethod: 'EMAIL' | 'SLACK'): Promise<void> {
+  async subscribeToReport(
+    reportId: string,
+    userId: string,
+    deliveryMethod: 'EMAIL' | 'SLACK'
+  ): Promise<void> {
     console.log(`User ${userId} subscribed to report ${reportId} via ${deliveryMethod}`);
   }
 
@@ -155,7 +165,10 @@ export class ReportsService {
     console.log(`User ${userId} unsubscribed from report ${reportId}`);
   }
 
-  async getReportMetrics(reportId: string, period: { startDate: Date; endDate: Date }): Promise<any> {
+  async getReportMetrics(
+    reportId: string,
+    period: { startDate: Date; endDate: Date }
+  ): Promise<any> {
     return {
       reportId,
       period,
@@ -165,8 +178,8 @@ export class ReportsService {
         uniqueUsers: 8,
         failureRate: 0.04,
         popularParameters: {},
-        peakUsageHour: '09:00'
-      }
+        peakUsageHour: '09:00',
+      },
     };
   }
 
@@ -175,13 +188,11 @@ export class ReportsService {
       reportId,
       isValid: true,
       issues: [],
-      warnings: [
-        'Report query could be optimized for better performance'
-      ],
+      warnings: ['Report query could be optimized for better performance'],
       recommendations: [
         'Add data source connection timeout',
-        'Consider pagination for large result sets'
-      ]
+        'Consider pagination for large result sets',
+      ],
     };
   }
 
@@ -191,38 +202,41 @@ export class ReportsService {
       optimizations: [
         'Added query result caching',
         'Optimized SQL query structure',
-        'Reduced data transfer overhead'
+        'Reduced data transfer overhead',
       ],
       performanceGain: '35%',
-      newEstimatedRunTime: 110 // ms
+      newEstimatedRunTime: 110, // ms
     };
   }
 
   async previewReport(reportId: string, parameters?: { [key: string]: any }): Promise<any> {
     console.log(`Generating preview for report ${reportId}`, parameters);
-    
+
     return {
       reportId,
       preview: {
         data: [
           { column1: 'Preview Data 1', column2: 100 },
-          { column1: 'Preview Data 2', column2: 200 }
+          { column1: 'Preview Data 2', column2: 200 },
         ],
         columnInfo: [
           { name: 'column1', type: 'STRING', nullable: false },
-          { name: 'column2', type: 'NUMBER', nullable: true }
+          { name: 'column2', type: 'NUMBER', nullable: true },
         ],
         estimatedRows: 1000,
-        previewRows: 2
-      }
+        previewRows: 2,
+      },
     };
   }
 
-  async searchReports(query: string, filters?: {
-    category?: string;
-    type?: string;
-    createdBy?: string;
-  }): Promise<Report[]> {
+  async searchReports(
+    query: string,
+    filters?: {
+      category?: string;
+      type?: string;
+      createdBy?: string;
+    }
+  ): Promise<Report[]> {
     console.log(`Searching reports with query: ${query}`, filters);
     return [];
   }
@@ -233,26 +247,30 @@ export class ReportsService {
       dependencies: {
         dataSources: [],
         reports: [], // Other reports this depends on
-        dashboards: [] // Dashboards using this report
+        dashboards: [], // Dashboards using this report
       },
       dependents: {
         reports: [], // Reports that depend on this one
         dashboards: [], // Dashboards using this report
-        alerts: [] // Alerts based on this report
-      }
+        alerts: [], // Alerts based on this report
+      },
     };
   }
 
   async bulkExportReports(reportIds: string[], format: 'PDF' | 'EXCEL' | 'CSV'): Promise<Buffer> {
     console.log(`Bulk exporting ${reportIds.length} reports as ${format}`);
-    
+
     // Would combine multiple reports into single export
     return Buffer.from(`Bulk export of reports: ${reportIds.join(', ')}`);
   }
 
-  async createReportFromTemplate(templateId: string, reportName: string, parameters: any): Promise<Report> {
+  async createReportFromTemplate(
+    templateId: string,
+    reportName: string,
+    parameters: any
+  ): Promise<Report> {
     const id = `rpt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       id,
       name: reportName,
@@ -262,7 +280,7 @@ export class ReportsService {
       template: {} as ReportTemplate,
       recipients: [],
       createdBy: 'template_generator',
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
@@ -274,8 +292,8 @@ export class ReportsService {
         mostPopularCategory: 'Financial',
         averageExecutionTime: 200,
         topPerformingReports: [],
-        growthRate: 15 // %
-      }
+        growthRate: 15, // %
+      },
     };
   }
 }

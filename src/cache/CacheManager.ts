@@ -6,7 +6,10 @@ import * as Redis from 'ioredis';
 export class CacheManager extends EventEmitter {
   private config: CacheConfig;
   private logger: Logger;
-  private client: Redis.Redis | Map<string, { value: any; ttl?: NodeJS.Timeout; expires?: number }> | null = null;
+  private client:
+    | Redis.Redis
+    | Map<string, { value: any; ttl?: NodeJS.Timeout; expires?: number }>
+    | null = null;
 
   constructor(config: CacheConfig, logger: Logger) {
     super();
@@ -17,7 +20,7 @@ export class CacheManager extends EventEmitter {
   async initialize(): Promise<void> {
     try {
       this.logger.info(`Initializing ${this.config.type} cache`);
-      
+
       switch (this.config.type) {
         case 'redis':
           this.client = new Redis.Redis({
@@ -25,33 +28,33 @@ export class CacheManager extends EventEmitter {
             port: this.config.port || 6379,
             lazyConnect: true,
           });
-          
+
           this.client.on('connect', () => {
             this.logger.info('Redis cache connected');
             this.emit('connected');
           });
-          
+
           this.client.on('error', (error) => {
             this.logger.error('Redis cache error:', error);
             this.emit('error', error);
           });
-          
+
           await this.client.connect();
           break;
-          
+
         case 'memory':
           this.client = new Map();
           this.logger.info('Memory cache initialized');
           this.emit('connected');
           break;
-          
+
         case 'memcached':
           // For now, fallback to memory cache for memcached
           this.client = new Map();
           this.logger.warn('Memcached not implemented, using memory cache');
           this.emit('connected');
           break;
-          
+
         default:
           throw new Error(`Unsupported cache type: ${this.config.type}`);
       }
@@ -75,13 +78,13 @@ export class CacheManager extends EventEmitter {
         // Memory cache
         const entry = this.client.get(key);
         if (!entry) return null;
-        
+
         // Check expiration
         if (entry.expires && Date.now() > entry.expires) {
           this.client.delete(key);
           return null;
         }
-        
+
         return entry.value;
       }
     } catch (error) {
@@ -108,24 +111,24 @@ export class CacheManager extends EventEmitter {
       } else {
         // Memory cache
         const entry: any = { value };
-        
+
         if (effectiveTtl) {
-          entry.expires = Date.now() + (effectiveTtl * 1000);
+          entry.expires = Date.now() + effectiveTtl * 1000;
           entry.ttl = setTimeout(() => {
             if (this.client instanceof Map) {
               this.client.delete(key);
             }
           }, effectiveTtl * 1000);
         }
-        
+
         // Clear existing timeout if any
         const existing = this.client.get(key);
         if (existing?.ttl) {
           clearTimeout(existing.ttl);
         }
-        
+
         this.client.set(key, entry);
-        
+
         // Enforce max keys limit for memory cache
         if (this.config.maxKeys && this.client.size > this.config.maxKeys) {
           const firstKey = this.client.keys().next().value;
@@ -136,7 +139,7 @@ export class CacheManager extends EventEmitter {
           }
         }
       }
-      
+
       this.logger.debug(`Cache set: ${key}`, { ttl: effectiveTtl });
     } catch (error) {
       this.logger.error(`Cache set error for key ${key}:`, error);
@@ -160,7 +163,7 @@ export class CacheManager extends EventEmitter {
         }
         this.client.delete(key);
       }
-      
+
       this.logger.debug(`Cache delete: ${key}`);
     } catch (error) {
       this.logger.error(`Cache delete error for key ${key}:`, error);
@@ -185,7 +188,7 @@ export class CacheManager extends EventEmitter {
         }
         this.client.clear();
       }
-      
+
       this.logger.info('Cache cleared');
     } catch (error) {
       this.logger.error('Cache clear error:', error);
@@ -207,10 +210,10 @@ export class CacheManager extends EventEmitter {
         if (!pattern || pattern === '*') {
           return allKeys;
         }
-        
+
         // Simple pattern matching for memory cache
         const regex = new RegExp(pattern.replace(/\*/g, '.*'));
-        return allKeys.filter(key => regex.test(key));
+        return allKeys.filter((key) => regex.test(key));
       }
     } catch (error) {
       this.logger.error(`Cache keys error:`, error);
@@ -231,7 +234,7 @@ export class CacheManager extends EventEmitter {
         }
         this.client.clear();
       }
-      
+
       this.client = null;
       this.logger.info('Cache stopped');
     } catch (error) {
@@ -248,7 +251,7 @@ export class CacheManager extends EventEmitter {
           timestamp: new Date(),
           details: {
             type: this.config.type,
-            error: 'Not initialized'
+            error: 'Not initialized',
           },
         };
       }
@@ -287,7 +290,7 @@ export class CacheManager extends EventEmitter {
         timestamp: new Date(),
         details: {
           type: this.config.type,
-          error: error instanceof Error ? error.message : 'Unknown error'
+          error: error instanceof Error ? error.message : 'Unknown error',
         },
       };
     }
