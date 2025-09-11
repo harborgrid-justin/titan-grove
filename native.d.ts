@@ -134,6 +134,20 @@ export interface RuleEvaluationResult {
   executionTimeMs: number
   errors: Array<string>
 }
+export interface BusinessRuleContext {
+  entityType: string
+  entityId: string
+  data: Record<string, string>
+  userId: string
+  timestamp: string
+}
+/** Production-Grade Business Rules Engine Implementation */
+export declare function evaluateBusinessRule(rule: BusinessRule, context: BusinessRuleContext): RuleEvaluationResult
+export declare function evaluateMultipleRules(rules: Array<BusinessRule>, context: BusinessRuleContext): Array<RuleEvaluationResult>
+/** Advanced rule validation for production environments */
+export declare function validateBusinessRule(rule: BusinessRule): Array<string>
+/** Create predefined business rules for common enterprise scenarios */
+export declare function createStandardBusinessRules(): Array<BusinessRule>
 export interface BusinessRuleSet {
   rules: Array<BusinessRule>
   globalVariables: Record<string, string>
@@ -149,7 +163,6 @@ export declare function createInventoryReorderRule(minimumStockLevel: number, re
 export declare function createDynamicPricingRule(basePrice: number, demandMultiplier: number, competitorPriceThreshold: number): BusinessRule
 /** Advanced business rule management */
 export declare function getActiveRulesByCategory(rules: Array<BusinessRule>, category: string): Array<BusinessRule>
-export declare function validateBusinessRule(rule: BusinessRule): Array<string>
 /** Calculate rule execution performance metrics */
 export declare function calculateRulePerformanceMetrics(results: Array<RuleEvaluationResult>): Record<string, number>
 /**
@@ -194,14 +207,19 @@ export interface BusinessDataProfile {
   businessLogicValidations: Array<string>
   dataEnrichmentSources: Array<string>
 }
+/** Production-Grade Data Standardization Functions */
+export declare function standardizeDataRecord(data: Record<string, string>, rules: Array<DataStandardizationRule>): Array<ValidationResult>
+export declare function validateEmail(email: string): ValidationResult
+export declare function validatePhoneNumber(phone: string): ValidationResult
+export declare function standardizeAddress(address: string): ValidationResult
+export declare function validateCurrencyAmount(amountStr: string): ValidationResult
+export declare function generateDataQualityReport(validationResults: Array<ValidationResult>): DataQualityReport
 /** Standardize and validate business data */
 export declare function standardizeBusinessData(data: Record<string, string>, rules: Array<DataStandardizationRule>): Array<ValidationResult>
 /** Create standardized customer data profile */
 export declare function createCustomerDataProfile(): BusinessDataProfile
 /** Create financial transaction data profile */
 export declare function createFinancialTransactionProfile(): BusinessDataProfile
-/** Generate comprehensive data quality report */
-export declare function generateDataQualityReport(validationResults: Array<ValidationResult>): DataQualityReport
 /** Advanced data transformation function */
 export declare function applyAdvancedDataTransformations(data: Record<string, string>, transformationType: string): Record<string, string>
 /**
@@ -887,6 +905,45 @@ export declare function calculateCompoundInterest(principal: number, annualRate:
 export declare function calculatePresentValue(futureValue: number, discountRate: number, periods: number): number
 export declare function calculateNetPresentValue(cashFlows: Array<number>, discountRate: number): number
 export declare function calculateInternalRateOfReturn(cashFlows: Array<number>, initialGuess: number): number
+/** Advanced Business Calculations for Production Systems */
+export declare function calculateWeightedAverageCostOfCapital(equityWeight: number, costOfEquity: number, debtWeight: number, costOfDebt: number, taxRate: number): number
+export declare function calculateEconomicValueAdded(netOperatingProfitAfterTax: number, investedCapital: number, wacc: number): number
+export declare function calculateReturnOnInvestedCapital(netOperatingProfitAfterTax: number, investedCapital: number): number
+export declare function calculateDebtToEquityRatio(totalDebt: number, totalEquity: number): number
+export declare function calculateCurrentRatio(currentAssets: number, currentLiabilities: number): number
+export declare function calculateQuickRatio(currentAssets: number, inventory: number, prepaidExpenses: number, currentLiabilities: number): number
+export declare function calculateInventoryTurnover(costOfGoodsSold: number, averageInventory: number): number
+export declare function calculateDaysSalesOutstanding(accountsReceivable: number, dailyCreditSales: number): number
+export declare function calculateGrossProfitMargin(grossProfit: number, revenue: number): number
+export declare function calculateOperatingProfitMargin(operatingProfit: number, revenue: number): number
+export declare function calculateNetProfitMargin(netProfit: number, revenue: number): number
+/** Advanced Manufacturing Calculations */
+export declare function calculateOverallEquipmentEffectiveness(availability: number, performance: number, quality: number): number
+export declare function calculateCycleTimeEfficiency(valueAddedTime: number, totalCycleTime: number): number
+export declare function calculateCapacityUtilization(actualOutput: number, maximumPossibleOutput: number): number
+export declare function calculateYieldRate(goodUnits: number, totalUnits: number): number
+export declare function calculateScrapRate(scrappedUnits: number, totalUnits: number): number
+export declare function calculateReworkRate(reworkUnits: number, totalUnits: number): number
+/** Supply Chain & Inventory Calculations */
+export declare function calculateEconomicOrderQuantity(annualDemand: number, orderingCost: number, carryingCostPerUnit: number): number
+export declare function calculateReorderPoint(dailyDemand: number, leadTimeDays: number, safetyStock: number): number
+export declare function calculateSafetyStock(maxDailyUsage: number, maxLeadTime: number, avgDailyUsage: number, avgLeadTime: number): number
+export declare function calculateInventoryCarryingCost(averageInventoryValue: number, carryingCostPercentage: number): number
+export declare function calculateStockoutCost(lostSales: number, expeditingCosts: number, customerGoodwillImpact: number): number
+/** Human Resources & Payroll Calculations */
+export declare function calculateOvertimePay(baseHours: number, totalHours: number, hourlyRate: number, overtimeMultiplier: number): number
+export declare function calculateEmployeeUtilization(billableHours: number, totalAvailableHours: number): number
+export declare function calculateTurnoverRate(departures: number, averageHeadcount: number, timePeriodMonths: number): number
+export declare function calculateCostPerHire(totalRecruitingCosts: number, numberOfHires: number): number
+/** Tax and Depreciation Calculations */
+export declare function calculateStraightLineDepreciation(cost: number, salvageValue: number, usefulLifeYears: number): number
+export declare function calculateDoubleDecliningBalanceDepreciation(cost: number, accumulatedDepreciation: number, usefulLifeYears: number): number
+export declare function calculateSumOfYearsDigitsDepreciation(cost: number, salvageValue: number, usefulLifeYears: number, currentYear: number): number
+export declare function calculateEffectiveTaxRate(taxExpense: number, pretaxIncome: number): number
+/** Risk Management Calculations */
+export declare function calculateValueAtRisk(portfolioValue: number, confidenceLevel: number, volatility: number, timeHorizonDays: number): number
+export declare function calculateSharpeRatio(portfolioReturn: number, riskFreeRate: number, portfolioVolatility: number): number
+export declare function calculateBeta(assetReturns: Array<number>, marketReturns: Array<number>): number
 export declare function calculatePaybackPeriod(initialInvestment: number, annualCashFlows: Array<number>): number
 export declare function calculateBreakEvenPoint(fixedCosts: number, variableCostPerUnit: number, sellingPricePerUnit: number): number
 export declare function calculateRoi(gainFromInvestment: number, costOfInvestment: number): number
@@ -2292,7 +2349,6 @@ export declare function calculateAccountReconciliation(bookBalance: number, bank
 export declare function calculateGrossMargin(revenue: number, costOfGoodsSold: number): number
 export declare function calculateWorkingCapital(currentAssets: number, currentLiabilities: number): number
 export declare function calculateQuickRatio(currentAssets: number, inventory: number, currentLiabilities: number): number
-export declare function calculateDebtToEquityRatio(totalDebt: number, totalEquity: number): number
 export declare function generateTrialBalance(chartOfAccounts: Array<ChartOfAccounts>): Array<ChartOfAccounts>
 export declare function calculatePeriodClosingEntries(revenueAccounts: Array<number>, expenseAccounts: Array<number>): number
 export declare function calculateBadDebtProvision(totalReceivables: number, historicalBadDebtRate: number): number
@@ -2642,7 +2698,6 @@ export interface PortfolioMetrics {
   beta: number
 }
 export declare function calculatePortfolioReturn(investments: Array<Investment>): number
-export declare function calculateSharpeRatio(portfolioReturn: number, riskFreeRate: number, portfolioVolatility: number): number
 export declare function calculateCashFlowForecast(openingBalance: number, projectedInflows: Array<number>, projectedOutflows: Array<number>): number
 export declare function calculateLiquidityRatio(liquidAssets: number, currentLiabilities: number): number
 export interface Vendor {

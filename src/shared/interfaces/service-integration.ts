@@ -1,12 +1,66 @@
 /**
- * Service Integration Interfaces
- * Standard interfaces for message queue and cache integration across all modules
+ * Production-Grade Service Integration Interfaces
+ * Enhanced interfaces for comprehensive frontend-backend integration
  */
 
 import type { MessageQueueManager } from '../../core/message-queue/MessageQueueManager';
 import type { CacheManager } from '../../cache/CacheManager';
 import type { MessagePayload, QueueType } from '../../core/message-queue/types';
 import type { Logger } from 'winston';
+
+// ============================================================================
+// CORE SERVICE RESPONSE & REQUEST INTERFACES
+// ============================================================================
+
+export interface ServiceResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: {
+    code: string;
+    message: string;
+    details?: Record<string, any>;
+  };
+  timestamp: Date;
+  correlationId?: string;
+  executionTime?: number;
+}
+
+export interface ServiceRequest<T> {
+  data: T;
+  correlationId?: string;
+  userId?: string;
+  metadata?: Record<string, any>;
+  timestamp: Date;
+}
+
+export interface ValidationError {
+  field: string;
+  code: string;
+  message: string;
+  value?: any;
+}
+
+export interface BusinessRuleViolation {
+  ruleId: string;
+  ruleName: string;
+  message: string;
+  severity: 'error' | 'warning' | 'info';
+  field?: string;
+}
+
+export interface ServiceIntegrationContext {
+  userId: string;
+  sessionId: string;
+  permissions: string[];
+  organizationId?: string;
+  tenantId?: string;
+  correlationId: string;
+  requestTimestamp: Date;
+}
+
+// ============================================================================
+// ENHANCED MESSAGE QUEUE INTERFACES
+// ============================================================================
 
 /**
  * Message queue integration interface
