@@ -56,6 +56,353 @@ pub struct BusinessDataProfile {
     pub data_enrichment_sources: Vec<String>,
 }
 
+/// Production-Grade Data Standardization Functions
+#[napi]
+pub fn standardize_data_record(data: HashMap<String, String>, rules: Vec<DataStandardizationRule>) -> Vec<ValidationResult> {
+    let mut results = Vec::new();
+    
+    for rule in &rules {
+        if let Some(value) = data.get(&rule.field_name) {
+            let result = apply_standardization_rule(value, rule);
+            results.push(result);
+        } else {
+            // Handle missing fields
+            results.push(ValidationResult {
+                field_name: rule.field_name.clone(),
+                is_valid: rule.validation_rules.contains(&"required".to_string()) == false,
+                original_value: "".to_string(),
+                standardized_value: rule.default_value.clone().unwrap_or_default(),
+                errors: if rule.validation_rules.contains(&"required".to_string()) {
+                    vec!["Field is required but missing".to_string()]
+                } else {
+                    Vec::new()
+                },
+                warnings: vec!["Field not provided, using default value".to_string()],
+                transformations_applied: if rule.default_value.is_some() {
+                    vec!["default_value_applied".to_string()]
+                } else {
+                    Vec::new()
+                },
+            });
+        }
+    }
+    
+    results
+}
+
+#[napi]
+pub fn validate_email(email: String) -> ValidationResult {
+    let email_regex = Regex::new(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").unwrap();
+    let is_valid = email_regex.is_match(&email);
+    
+    ValidationResult {
+        field_name: "email".to_string(),
+        is_valid,
+        original_value: email.clone(),
+        standardized_value: email.to_lowercase(),
+        errors: if !is_valid { vec!["Invalid email format".to_string()] } else { Vec::new() },
+        warnings: Vec::new(),
+        transformations_applied: vec!["lowercase".to_string()],
+    }
+}
+
+#[napi]
+pub fn validate_phone_number(phone: String) -> ValidationResult {
+    let cleaned_phone = phone.chars()
+        .filter(|c| c.is_ascii_digit())
+        .collect::<String>();
+    
+    let is_valid = cleaned_phone.len() >= 10 && cleaned_phone.len() <= 15;
+    
+    let standardized = if cleaned_phone.len() == 10 {
+        format!("({}) {}-{}", &cleaned_phone[0..3], &cleaned_phone[3..6], &cleaned_phone[6..10])
+    } else if cleaned_phone.len() == 11 && cleaned_phone.starts_with('1') {
+        format!("+1 ({}) {}-{}", &cleaned_phone[1..4], &cleaned_phone[4..7], &cleaned_phone[7..11])
+    } else {
+        cleaned_phone
+    };
+    
+    ValidationResult {
+        field_name: "phone".to_string(),
+        is_valid,
+        original_value: phone,
+        standardized_value: standardized,
+        errors: if !is_valid { vec!["Invalid phone number format".to_string()] } else { Vec::new() },
+        warnings: Vec::new(),
+        transformations_applied: vec!["format_standardization".to_string(), "digit_extraction".to_string()],
+    }
+}
+
+#[napi]
+pub fn standardize_address(address: String) -> ValidationResult {
+    let mut standardized = address.trim().to_uppercase();
+    let mut transformations = Vec::new();
+    
+    // Common address standardizations
+    let replacements = [
+        ("STREET", "ST"),
+        ("AVENUE", "AVE"),
+        ("BOULEVARD", "BLVD"),
+        ("DRIVE", "DR"),
+        ("ROAD", "RD"),
+        ("LANE", "LN"),
+        ("COURT", "CT"),
+        ("PLACE", "PL"),
+        ("APARTMENT", "APT"),
+        ("SUITE", "STE"),
+    ];
+    
+    for (full, abbrev) in &replacements {
+        if standardized.contains(full) {
+            standardized = standardized.replace(full, abbrev);
+            transformations.push(format!("abbreviate_{}", full.to_lowercase()));
+        }
+    }
+    
+    ValidationResult {
+        field_name: "address".to_string(),
+        is_valid: !standardized.is_empty(),
+        original_value: address,
+        standardized_value: standardized,
+        errors: Vec::new(),
+        warnings: Vec::new(),
+        transformations_applied: transformations,
+    }
+}
+
+#[napi]
+pub fn validate_currency_amount(amount_str: String) -> ValidationResult {
+    // Remove currency symbols and formatting
+    let cleaned = amount_str.chars()
+        .filter(|c| c.is_ascii_digit() || *c == '.' || *c == '-')
+        .collect::<String>();
+    
+    let is_valid = cleaned.parse::<f64>().is_ok();
+    let standardized = if let Ok(amount) = cleaned.parse::<f64>() {
+        format!("{:.2}", amount)
+    } else {
+        "0.00".to_string()
+    };
+    
+    ValidationResult {
+        field_name: "currency_amount".to_string(),
+        is_valid,
+        original_value: amount_str,
+        standardized_value: standardized,
+        errors: if !is_valid { vec!["Invalid currency amount".to_string()] } else { Vec::new() },
+        warnings: Vec::new(),
+        transformations_applied: vec!["currency_formatting".to_string(), "decimal_precision".to_string()],
+    }
+}
+
+#[napi]
+pub fn generate_data_quality_report(validation_results: Vec<ValidationResult>) -> DataQualityReport {
+    let total_records = validation_results.len() as i32;
+    let valid_records = validation_results.iter().filter(|r| r.is_valid).count() as i32;
+    let invalid_records = total_records - valid_records;
+    
+    let data_quality_score = if total_records > 0 {
+        (valid_records as f64 / total_records as f64) * 100.0
+    } else {
+        100.0
+    };
+    
+    let mut field_quality_scores = HashMap::new();
+    let mut field_counts = HashMap::new();
+    let mut common_errors = Vec::new();
+    
+    for result in &validation_results {
+        let field_name = &result.field_name;
+        
+        *field_counts.entry(field_name.clone()).or_insert(0) += 1;
+        
+        if result.is_valid {
+            *field_quality_scores.entry(field_name.clone()).or_insert(0.0) += 1.0;
+        }
+        
+        for error in &result.errors {
+            if !common_errors.contains(error) && common_errors.len() < 10 {
+                common_errors.push(error.clone());
+            }
+        }
+    }
+    
+    // Convert field counts to percentages
+    for (field_name, count) in field_counts {
+        if let Some(valid_count) = field_quality_scores.get_mut(&field_name) {
+            *valid_count = (*valid_count / count as f64) * 100.0;
+        }
+    }
+    
+    let suggestions = generate_data_quality_suggestions(&validation_results);
+    
+    DataQualityReport {
+        total_records,
+        valid_records,
+        invalid_records,
+        data_quality_score,
+        field_quality_scores,
+        common_errors,
+        suggestions,
+    }
+}
+
+fn apply_standardization_rule(value: &str, rule: &DataStandardizationRule) -> ValidationResult {
+    let mut result = ValidationResult {
+        field_name: rule.field_name.clone(),
+        is_valid: true,
+        original_value: value.to_string(),
+        standardized_value: value.to_string(),
+        errors: Vec::new(),
+        warnings: Vec::new(),
+        transformations_applied: Vec::new(),
+    };
+    
+    // Apply transformations
+    if let Some(transformation) = &rule.transformation {
+        match transformation.as_str() {
+            "uppercase" => {
+                result.standardized_value = result.standardized_value.to_uppercase();
+                result.transformations_applied.push("uppercase".to_string());
+            },
+            "lowercase" => {
+                result.standardized_value = result.standardized_value.to_lowercase();
+                result.transformations_applied.push("lowercase".to_string());
+            },
+            "title_case" => {
+                result.standardized_value = to_title_case(&result.standardized_value);
+                result.transformations_applied.push("title_case".to_string());
+            },
+            "trim" => {
+                result.standardized_value = result.standardized_value.trim().to_string();
+                result.transformations_applied.push("trim".to_string());
+            },
+            _ => {}
+        }
+    }
+    
+    // Apply validations
+    for validation in &rule.validation_rules {
+        match validation.as_str() {
+            "required" => {
+                if result.standardized_value.is_empty() {
+                    result.is_valid = false;
+                    result.errors.push("Field is required".to_string());
+                }
+            },
+            "email" => {
+                let email_regex = Regex::new(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").unwrap();
+                if !email_regex.is_match(&result.standardized_value) {
+                    result.is_valid = false;
+                    result.errors.push("Invalid email format".to_string());
+                }
+            },
+            "phone" => {
+                let cleaned = result.standardized_value.chars()
+                    .filter(|c| c.is_ascii_digit())
+                    .collect::<String>();
+                if cleaned.len() < 10 || cleaned.len() > 15 {
+                    result.is_valid = false;
+                    result.errors.push("Invalid phone number length".to_string());
+                }
+            },
+            "numeric" => {
+                if result.standardized_value.parse::<f64>().is_err() {
+                    result.is_valid = false;
+                    result.errors.push("Value must be numeric".to_string());
+                }
+            },
+            _ => {}
+        }
+    }
+    
+    // Length validations
+    if let Some(min_length) = rule.min_length {
+        if result.standardized_value.len() < min_length as usize {
+            result.is_valid = false;
+            result.errors.push(format!("Minimum length is {}", min_length));
+        }
+    }
+    
+    if let Some(max_length) = rule.max_length {
+        if result.standardized_value.len() > max_length as usize {
+            result.is_valid = false;
+            result.errors.push(format!("Maximum length is {}", max_length));
+        }
+    }
+    
+    // Value range validations
+    if let (Some(min_value), Ok(parsed_value)) = (rule.min_value, result.standardized_value.parse::<f64>()) {
+        if parsed_value < min_value {
+            result.is_valid = false;
+            result.errors.push(format!("Minimum value is {}", min_value));
+        }
+    }
+    
+    if let (Some(max_value), Ok(parsed_value)) = (rule.max_value, result.standardized_value.parse::<f64>()) {
+        if parsed_value > max_value {
+            result.is_valid = false;
+            result.errors.push(format!("Maximum value is {}", max_value));
+        }
+    }
+    
+    // Allowed values validation
+    if !rule.allowed_values.is_empty() && !rule.allowed_values.contains(&result.standardized_value) {
+        result.is_valid = false;
+        result.errors.push(format!("Value must be one of: {}", rule.allowed_values.join(", ")));
+    }
+    
+    result
+}
+
+fn to_title_case(s: &str) -> String {
+    s.split_whitespace()
+        .map(|word| {
+            let mut chars = word.chars();
+            match chars.next() {
+                None => String::new(),
+                Some(first) => first.to_uppercase().collect::<String>() + &chars.as_str().to_lowercase(),
+            }
+        })
+        .collect::<Vec<String>>()
+        .join(" ")
+}
+
+fn generate_data_quality_suggestions(validation_results: &[ValidationResult]) -> Vec<String> {
+    let mut suggestions = Vec::new();
+    let mut error_counts = HashMap::new();
+    
+    // Count error types
+    for result in validation_results {
+        for error in &result.errors {
+            *error_counts.entry(error.clone()).or_insert(0) += 1;
+        }
+    }
+    
+    // Generate suggestions based on common errors
+    for (error, count) in error_counts {
+        if count > validation_results.len() / 10 {  // More than 10% of records
+            match error.as_str() {
+                "Invalid email format" => {
+                    suggestions.push("Consider implementing email validation at data entry point".to_string());
+                },
+                "Invalid phone number format" => {
+                    suggestions.push("Standardize phone number input format across all systems".to_string());
+                },
+                "Field is required" => {
+                    suggestions.push("Implement required field validation in user interfaces".to_string());
+                },
+                "Invalid currency amount" => {
+                    suggestions.push("Use standard currency input controls to prevent formatting issues".to_string());
+                },
+                _ => {}
+            }
+        }
+    }
+    
+    suggestions
+}
+
 /// Standardize and validate business data
 #[napi]
 pub fn standardize_business_data(
@@ -259,69 +606,6 @@ pub fn create_financial_transaction_profile() -> BusinessDataProfile {
             "merchant_category_codes".to_string(),
             "geolocation_service".to_string(),
         ],
-    }
-}
-
-/// Generate comprehensive data quality report
-#[napi]
-pub fn generate_data_quality_report(validation_results: Vec<ValidationResult>) -> DataQualityReport {
-    let total_records = validation_results.len() as i32;
-    if total_records == 0 {
-        return DataQualityReport {
-            total_records: 0,
-            valid_records: 0,
-            invalid_records: 0,
-            data_quality_score: 0.0,
-            field_quality_scores: HashMap::new(),
-            common_errors: vec![],
-            suggestions: vec![],
-        };
-    }
-    
-    let valid_records = validation_results.iter().filter(|r| r.is_valid).count() as i32;
-    let invalid_records = total_records - valid_records;
-    let data_quality_score = (valid_records as f64 / total_records as f64) * 100.0;
-    
-    // Calculate field-level quality scores
-    let mut field_quality_scores = HashMap::new();
-    let mut field_counts: HashMap<String, (i32, i32)> = HashMap::new(); // (valid, total)
-    
-    for result in &validation_results {
-        let entry = field_counts.entry(result.field_name.clone()).or_insert((0, 0));
-        entry.1 += 1; // total
-        if result.is_valid {
-            entry.0 += 1; // valid
-        }
-    }
-    
-    for (field, (valid, total)) in field_counts {
-        let score = (valid as f64 / total as f64) * 100.0;
-        field_quality_scores.insert(field, score);
-    }
-    
-    // Collect common errors
-    let mut error_counts: HashMap<String, i32> = HashMap::new();
-    for result in &validation_results {
-        for error in &result.errors {
-            *error_counts.entry(error.clone()).or_insert(0) += 1;
-        }
-    }
-    
-    let mut common_errors: Vec<(String, i32)> = error_counts.into_iter().collect();
-    common_errors.sort_by(|a, b| b.1.cmp(&a.1));
-    let common_errors: Vec<String> = common_errors.into_iter().take(5).map(|(error, _)| error).collect();
-    
-    // Generate suggestions
-    let suggestions = generate_data_quality_suggestions(&validation_results, data_quality_score);
-    
-    DataQualityReport {
-        total_records,
-        valid_records,
-        invalid_records,
-        data_quality_score,
-        field_quality_scores,
-        common_errors,
-        suggestions,
     }
 }
 
@@ -554,30 +838,4 @@ fn format_currency_amount(amount: &str) -> String {
         Ok(num) => format!("{:.2}", num),
         Err(_) => amount.to_string(),
     }
-}
-
-fn generate_data_quality_suggestions(results: &[ValidationResult], quality_score: f64) -> Vec<String> {
-    let mut suggestions = Vec::new();
-    
-    if quality_score < 70.0 {
-        suggestions.push("Data quality is below acceptable threshold. Consider implementing automated validation".to_string());
-    }
-    
-    if quality_score < 90.0 {
-        suggestions.push("Review data entry processes and provide better training".to_string());
-    }
-    
-    let fields_with_errors: Vec<&str> = results.iter()
-        .filter(|r| !r.errors.is_empty())
-        .map(|r| r.field_name.as_str())
-        .collect();
-    
-    if !fields_with_errors.is_empty() {
-        suggestions.push(format!("Focus on improving data quality for fields: {:?}", fields_with_errors));
-    }
-    
-    suggestions.push("Consider implementing real-time data validation".to_string());
-    suggestions.push("Set up automated data quality monitoring".to_string());
-    
-    suggestions
 }
