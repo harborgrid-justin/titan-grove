@@ -17,5 +17,5 @@ export { ProcureToPayIntegrationService, procureToPayIntegrationService } from '
 // Legacy compatibility - re-export main service as the original name
 export {
   ProcureToPayIntegrationService as ProcureToPayIntegrationServiceLegacy,
-  procureToPayIntegrationService as procureToPayIntegrationServiceLegacy
+  procureToPayIntegrationService as procureToPayIntegrationServiceLegacy,
 } from './main-service';

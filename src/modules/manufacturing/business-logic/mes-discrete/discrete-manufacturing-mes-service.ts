@@ -92,7 +92,6 @@ export interface ProductionMetrics {
  * Enhances shop floor productivity with rich operator and supervisor capabilities
  */
 export class DiscreteManufacturingMESService {
-
   // ================================
   // OPERATOR PRODUCTIVITY FEATURES
   // ================================
@@ -111,8 +110,10 @@ export class DiscreteManufacturingMESService {
     qualityCheckPoints: QualityResult[];
     estimatedCompletion: Date;
   }> {
-    console.log(`Starting operation ${operationId} by operator ${operatorId} at station ${workStationId}`);
-    
+    console.log(
+      `Starting operation ${operationId} by operator ${operatorId} at station ${workStationId}`
+    );
+
     const operation: ShopFloorOperation = {
       id: operationId,
       operationNumber: 10,
@@ -125,7 +126,7 @@ export class DiscreteManufacturingMESService {
       actualStartTime: new Date(),
       standardLaborHours: 2.0,
       efficiency: 1.0,
-      materialConsumption: []
+      materialConsumption: [],
     };
 
     const taskList: OperatorTask[] = [
@@ -138,7 +139,7 @@ export class DiscreteManufacturingMESService {
         instructions: 'Verify tooling and setup workstation',
         estimatedDuration: 15,
         status: 'ASSIGNED',
-        assignedDate: new Date()
+        assignedDate: new Date(),
       },
       {
         taskId: `task_${Date.now()}_2`,
@@ -149,8 +150,8 @@ export class DiscreteManufacturingMESService {
         instructions: 'Execute production operation per work instructions',
         estimatedDuration: 90,
         status: 'ASSIGNED',
-        assignedDate: new Date()
-      }
+        assignedDate: new Date(),
+      },
     ];
 
     return {
@@ -158,7 +159,7 @@ export class DiscreteManufacturingMESService {
       operationDetails: operation,
       taskList,
       qualityCheckPoints: [],
-      estimatedCompletion: operation.scheduledEndTime
+      estimatedCompletion: operation.scheduledEndTime,
     };
   }
 
@@ -186,47 +187,53 @@ export class DiscreteManufacturingMESService {
     }>;
   }> {
     console.log(`Recording production data for operation ${operationId}`);
-    
+
     const metrics: ProductionMetrics = {
       workStationId: 'WS001',
       date: new Date(),
       plannedProduction: 100,
       actualProduction: productionData.quantityProduced,
       efficiency: (productionData.quantityProduced / 100) * 100,
-      quality: ((productionData.quantityProduced - productionData.quantityRejected) / productionData.quantityProduced) * 100,
-      availability: productionData.downtimeMinutes ? ((480 - productionData.downtimeMinutes) / 480) * 100 : 100,
+      quality:
+        ((productionData.quantityProduced - productionData.quantityRejected) /
+          productionData.quantityProduced) *
+        100,
+      availability: productionData.downtimeMinutes
+        ? ((480 - productionData.downtimeMinutes) / 480) * 100
+        : 100,
       oee: 0, // Will be calculated
       downtimeMinutes: productionData.downtimeMinutes || 0,
       scrapQuantity: productionData.scrapQuantity,
-      reworkQuantity: productionData.quantityRejected
+      reworkQuantity: productionData.quantityRejected,
     };
 
     // Calculate OEE (Overall Equipment Effectiveness)
-    metrics.oee = (metrics.availability / 100) * (metrics.efficiency / 100) * (metrics.quality / 100) * 100;
+    metrics.oee =
+      (metrics.availability / 100) * (metrics.efficiency / 100) * (metrics.quality / 100) * 100;
 
     const alerts = [];
-    
+
     // Generate alerts for performance issues
     if (metrics.efficiency < 80) {
       alerts.push({
         alertType: 'EFFICIENCY' as const,
         message: `Efficiency below target: ${metrics.efficiency.toFixed(1)}%`,
-        severity: 'WARNING' as const
+        severity: 'WARNING' as const,
       });
     }
-    
+
     if (metrics.quality < 95) {
       alerts.push({
         alertType: 'QUALITY' as const,
         message: `Quality below target: ${metrics.quality.toFixed(1)}%`,
-        severity: 'CRITICAL' as const
+        severity: 'CRITICAL' as const,
       });
     }
 
     return {
       recorded: true,
       metrics,
-      alerts
+      alerts,
     };
   }
 
@@ -257,7 +264,7 @@ export class DiscreteManufacturingMESService {
     };
   }> {
     console.log(`Getting shop floor dashboard for work center: ${workCenterId}`);
-    
+
     const workStations: WorkStation[] = [
       {
         id: 'ws001',
@@ -270,7 +277,7 @@ export class DiscreteManufacturingMESService {
         currentOperationId: 'OP10',
         efficiency: 87.5,
         utilizationRate: 92.3,
-        lastStatusUpdate: new Date()
+        lastStatusUpdate: new Date(),
       },
       {
         id: 'ws002',
@@ -281,8 +288,8 @@ export class DiscreteManufacturingMESService {
         status: 'IDLE',
         efficiency: 94.2,
         utilizationRate: 78.6,
-        lastStatusUpdate: new Date()
-      }
+        lastStatusUpdate: new Date(),
+      },
     ];
 
     return {
@@ -292,7 +299,7 @@ export class DiscreteManufacturingMESService {
         totalOEE: 82.4,
         totalEfficiency: 89.1,
         totalQuality: 96.8,
-        totalAvailability: 95.7
+        totalAvailability: 95.7,
       },
       alerts: [
         {
@@ -300,15 +307,15 @@ export class DiscreteManufacturingMESService {
           message: 'Station ASSEMBLY_001 efficiency below target',
           severity: 'WARNING',
           workStationId: 'ws001',
-          timestamp: new Date()
-        }
+          timestamp: new Date(),
+        },
       ],
       kpis: {
         onTimeProduction: 94.2,
         firstPassYield: 96.8,
         cycleTimeVariance: 8.3,
-        setupTimeReduction: 23.5
-      }
+        setupTimeReduction: 23.5,
+      },
     };
   }
 
@@ -341,7 +348,7 @@ export class DiscreteManufacturingMESService {
     }>;
   }> {
     console.log(`Getting supervisor dashboard for ${supervisorId}`);
-    
+
     return {
       managedWorkCenters: ['WC001', 'WC002', 'WC003'],
       operatorPerformance: [
@@ -353,7 +360,7 @@ export class DiscreteManufacturingMESService {
           attendance: 98.5,
           skillLevel: 4.2,
           tasksCompleted: 23,
-          recommendations: ['Consider advanced training for CNC operations']
+          recommendations: ['Consider advanced training for CNC operations'],
         },
         {
           operatorId: 'OP002',
@@ -363,23 +370,23 @@ export class DiscreteManufacturingMESService {
           attendance: 100.0,
           skillLevel: 4.8,
           tasksCompleted: 27,
-          recommendations: ['Ready for team lead promotion']
-        }
+          recommendations: ['Ready for team lead promotion'],
+        },
       ],
       productionSummary: {
         totalUnitsProduced: 1247,
         planAttainment: 102.3,
         qualityRate: 97.1,
-        issuesRequiringAttention: 3
+        issuesRequiringAttention: 3,
       },
       actionItems: [
         {
           priority: 'HIGH',
           description: 'Address quality issue at Station ASSEMBLY_001',
           assignedTo: 'OP001',
-          dueDate: new Date(Date.now() + 2 * 60 * 60 * 1000)
-        }
-      ]
+          dueDate: new Date(Date.now() + 2 * 60 * 60 * 1000),
+        },
+      ],
     };
   }
 
@@ -393,15 +400,17 @@ export class DiscreteManufacturingMESService {
   async assignDailyTasks(
     workCenterId: string,
     date: Date
-  ): Promise<Array<{
-    operatorId: string;
-    tasks: OperatorTask[];
-    workload: number; // percentage
-    skillMatch: number; // percentage
-    estimatedCompletionTime: Date;
-  }>> {
+  ): Promise<
+    Array<{
+      operatorId: string;
+      tasks: OperatorTask[];
+      workload: number; // percentage
+      skillMatch: number; // percentage
+      estimatedCompletionTime: Date;
+    }>
+  > {
     console.log(`Assigning daily tasks for work center ${workCenterId} on ${date.toDateString()}`);
-    
+
     return [
       {
         operatorId: 'OP001',
@@ -415,13 +424,13 @@ export class DiscreteManufacturingMESService {
             instructions: 'Complete assembly operation for Work Order WO12345',
             estimatedDuration: 120,
             status: 'ASSIGNED',
-            assignedDate: new Date()
-          }
+            assignedDate: new Date(),
+          },
         ],
         workload: 95.0,
         skillMatch: 92.5,
-        estimatedCompletionTime: new Date(Date.now() + 8 * 60 * 60 * 1000)
-      }
+        estimatedCompletionTime: new Date(Date.now() + 8 * 60 * 60 * 1000),
+      },
     ];
   }
 }

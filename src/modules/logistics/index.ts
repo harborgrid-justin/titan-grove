@@ -1,11 +1,11 @@
 /**
  * Logistics Management Module
  * Comprehensive Oracle EBS competitive logistics management system with complete submodule scaffolding
- * 
+ *
  * This module provides:
  * - Transportation Management: Multi-modal transportation planning, carrier management, freight optimization
  * - Warehouse Management: Advanced warehouse operations, slotting optimization, labor management
- * - Distribution Management: Network design, distribution planning, fulfillment optimization  
+ * - Distribution Management: Network design, distribution planning, fulfillment optimization
  * - Route Optimization: Advanced routing algorithms, dynamic re-optimization, load consolidation
  * - Freight Management: LTL/FTL management, rate optimization, freight audit and payment
  * - Logistics Analytics: KPI tracking, performance analytics, predictive insights
@@ -23,70 +23,66 @@ export * from './types';
 // ================================
 
 // Transportation Management - Multi-modal transportation planning and execution
-export { 
-  TransportationManagementService, 
+export {
+  TransportationManagementService,
   transportationManagementService,
   type CarrierSelectionCriteria,
   type TransportationPlan,
   type CarrierBidRequest,
-  type CarrierBidResponse
+  type CarrierBidResponse,
 } from './business-logic/transportation-management/transportation-management-service';
 
 // Warehouse Management - Advanced warehouse operations and optimization
-export { 
-  WarehouseManagementService, 
+export {
+  WarehouseManagementService,
   warehouseManagementService,
   type WarehouseFacility,
   type StorageArea,
   type WaveManagement,
   type InventorySlotting,
   type CycleCounting,
-  type LaborManagement
+  type LaborManagement,
 } from './business-logic/warehouse-management/warehouse-management-service';
 
 // Route Optimization - Advanced routing algorithms and dynamic optimization
-export { 
-  RouteOptimizationService, 
+export {
+  RouteOptimizationService,
   routeOptimizationService,
   type RouteOptimizationEngine,
   type VehicleRouting,
   type LoadOptimization,
-  type DynamicRouting
+  type DynamicRouting,
 } from './business-logic/route-optimization/route-optimization-service';
 
 // Distribution Management - Network design and distribution optimization
-export { 
-  DistributionManagementService, 
+export {
+  DistributionManagementService,
   distributionManagementService,
   type DistributionStrategy,
   type NetworkOptimization,
   type FulfillmentPlan,
-  type SupplyChainVisibility
+  type SupplyChainVisibility,
 } from './business-logic/distribution-management/distribution-management-service';
 
 // Freight Management - Freight optimization and management
-export { 
-  FreightManagementService, 
+export {
+  FreightManagementService,
   freightManagementService,
   type FreightPlan,
   type CarrierContract,
   type FreightAudit,
-  type RateManagement
+  type RateManagement,
 } from './business-logic/freight-management/freight-management-service';
 
 // Logistics Analytics - Performance tracking and predictive analytics
-export { 
-  LogisticsAnalyticsService, 
+export {
+  LogisticsAnalyticsService,
   logisticsAnalyticsService,
-  type PerformanceAnalytics
+  type PerformanceAnalytics,
 } from './business-logic/logistics-analytics/logistics-analytics-service';
 
 // Export types from types file
-export type {
-  LogisticsDashboard,
-  LogisticsReport,
-  LogisticsKPI
-} from './types';
+export type { LogisticsDashboard, LogisticsReport, LogisticsKPI } from './types';
 
 // ================================
 // DATA ACCESS LAYER
@@ -118,7 +114,7 @@ import type {
   LogisticsProvider,
   LogisticsKPI,
   Location,
-  OptimizedRoute
+  OptimizedRoute,
 } from './types';
 
 /**
@@ -143,19 +139,19 @@ export class LogisticsManager extends BaseManager {
   async createTransportationPlan(planData: any): Promise<any> {
     try {
       const plan = await transportationManagementService.createTransportationPlan(planData);
-      
+
       // Generate analytics event
       await this.recordAnalyticsEvent('transportation_plan_created', {
         planId: plan.planId,
         planType: plan.planType,
         networkSize: plan.networkDesign.serviceRoutes.length,
-        estimatedCost: plan.totalCost
+        estimatedCost: plan.totalCost,
       });
 
       return {
         success: true,
         plan,
-        message: 'Transportation plan created successfully'
+        message: 'Transportation plan created successfully',
       };
     } catch (error) {
       this.logger?.error('Failed to create transportation plan:', error);
@@ -166,7 +162,10 @@ export class LogisticsManager extends BaseManager {
   /**
    * Execute transportation order with carrier selection
    */
-  async createAndExecuteTransportationOrder(orderData: any, autoAssignCarrier = true): Promise<{
+  async createAndExecuteTransportationOrder(
+    orderData: any,
+    autoAssignCarrier = true
+  ): Promise<{
     order: TransportationOrder;
     carrierAssignment?: any;
     estimatedDelivery: Date;
@@ -175,7 +174,7 @@ export class LogisticsManager extends BaseManager {
     try {
       // Create transportation order
       const order = await transportationManagementService.createTransportationOrder(orderData);
-      
+
       let carrierAssignment;
       if (autoAssignCarrier) {
         // Auto-select best carrier based on cost and service
@@ -183,12 +182,12 @@ export class LogisticsManager extends BaseManager {
         if (carriers.length > 0) {
           const bestCarrier = carriers[0];
           const execution = await transportationManagementService.executeTransportationOrder(
-            order.orderId, 
+            order.orderId,
             bestCarrier.id
           );
           carrierAssignment = {
             carrier: bestCarrier,
-            executionResult: execution
+            executionResult: execution,
           };
         }
       }
@@ -197,7 +196,7 @@ export class LogisticsManager extends BaseManager {
         order,
         carrierAssignment,
         estimatedDelivery: order.scheduledDeliveryDate,
-        trackingNumbers: order.trackingNumbers
+        trackingNumbers: order.trackingNumbers,
       };
     } catch (error) {
       this.logger?.error('Failed to create and execute transportation order:', error);
@@ -217,22 +216,24 @@ export class LogisticsManager extends BaseManager {
     try {
       // Create bid request
       const bidRequest = await transportationManagementService.conductCarrierBid(bidRequestData);
-      
+
       // Auto-invite qualified carriers
       await this.autoInviteQualifiedCarriers(bidRequest);
-      
+
       // Wait for responses (in production, this would be async)
       // For demo, simulate responses
       const responses = await this.simulateCarrierResponses(bidRequest);
-      
+
       // Evaluate responses
-      const evaluation = await transportationManagementService.evaluateCarrierResponses(bidRequest.bidRequestId);
-      
+      const evaluation = await transportationManagementService.evaluateCarrierResponses(
+        bidRequest.bidRequestId
+      );
+
       return {
         bidRequest,
         responses,
         evaluation: evaluation.evaluation,
-        recommendations: evaluation.recommendations
+        recommendations: evaluation.recommendations,
       };
     } catch (error) {
       this.logger?.error('Failed to conduct carrier bidding:', error);
@@ -255,23 +256,23 @@ export class LogisticsManager extends BaseManager {
     try {
       // Create warehouse facility
       const facility = await warehouseManagementService.createWarehouseFacility(facilityData);
-      
+
       // Optimize layout if requested
       let layoutOptimization;
       if (facilityData.optimizeLayout) {
         layoutOptimization = await warehouseManagementService.optimizeWarehouseLayout(
-          facility.facilityId, 
+          facility.facilityId,
           facilityData.optimizationObjectives || ['MINIMIZE_TRAVEL_TIME', 'MAXIMIZE_THROUGHPUT']
         );
       }
-      
+
       // Generate performance projections
       const performanceProjections = await this.generateWarehousePerformanceProjections(facility);
 
       return {
         facility,
         layoutOptimization,
-        performanceProjections
+        performanceProjections,
       };
     } catch (error) {
       this.logger?.error('Failed to create warehouse facility:', error);
@@ -303,15 +304,15 @@ export class LogisticsManager extends BaseManager {
           operationIds.push(operation.operationId);
         }
 
-        batchOptimization = await warehouseManagementService.batchOperations(
-          operationIds,
-          { criteria: 'MINIMIZE_TRAVEL_TIME', priority: 'EFFICIENCY' }
-        );
+        batchOptimization = await warehouseManagementService.batchOperations(operationIds, {
+          criteria: 'MINIMIZE_TRAVEL_TIME',
+          priority: 'EFFICIENCY',
+        });
 
         // Execute optimized sequence
         for (const operationId of batchOptimization.optimizedSequence) {
           const result = await warehouseManagementService.executeWarehouseOperation(
-            operationId, 
+            operationId,
             'AUTO_ASSIGNED'
           );
           completedOperations.push(result);
@@ -321,7 +322,7 @@ export class LogisticsManager extends BaseManager {
         for (const opData of workflowData.operations) {
           const operation = await warehouseManagementService.createWarehouseOperation(opData);
           const result = await warehouseManagementService.executeWarehouseOperation(
-            operation.operationId, 
+            operation.operationId,
             'AUTO_ASSIGNED'
           );
           completedOperations.push(result);
@@ -336,7 +337,7 @@ export class LogisticsManager extends BaseManager {
       return {
         completedOperations,
         batchOptimization,
-        performanceMetrics
+        performanceMetrics,
       };
     } catch (error) {
       this.logger?.error('Failed to execute warehouse workflow:', error);
@@ -370,12 +371,12 @@ export class LogisticsManager extends BaseManager {
         stops: routingData.stops,
         depot: routingData.depot,
         objectives: this.convertOptimizationObjectives(routingData.objectives),
-        constraints: routingData.constraints || []
+        constraints: routingData.constraints || [],
       });
 
       // Execute optimization
       const result = await routeOptimizationService.executeRouteOptimization(request.requestId);
-      
+
       // Calculate cost comparison with baseline
       const costComparison = await this.calculateRouteCostComparison(result.solution, routingData);
 
@@ -383,7 +384,7 @@ export class LogisticsManager extends BaseManager {
         optimizedRoutes: [result.solution],
         alternativeSolutions: result.alternativeSolutions,
         optimizationMetrics: result.metrics,
-        costComparison
+        costComparison,
       };
     } catch (error) {
       this.logger?.error('Failed to optimize routes:', error);
@@ -403,15 +404,15 @@ export class LogisticsManager extends BaseManager {
     try {
       // Solve VRP
       const vrp = await routeOptimizationService.solveVehicleRoutingProblem(vrpData);
-      
+
       // Generate implementation plan
       const implementationPlan = await this.generateVRPImplementationPlan(vrp);
-      
+
       return {
         solution: vrp.solution,
         alternativeSolutions: vrp.alternativeSolutions,
         performanceMetrics: vrp.solutionMetrics,
-        implementationPlan
+        implementationPlan,
       };
     } catch (error) {
       this.logger?.error('Failed to solve VRP:', error);
@@ -437,23 +438,28 @@ export class LogisticsManager extends BaseManager {
   }> {
     try {
       // Get transportation metrics
-      const transportationMetrics = await transportationManagementService.getTransportationMetrics(dateRange);
-      
+      const transportationMetrics =
+        await transportationManagementService.getTransportationMetrics(dateRange);
+
       // Get route optimization analytics
       const routeMetrics = await routeOptimizationService.getRouteOptimizationAnalytics(dateRange);
-      
+
       // Get logistics KPIs
       const kpis = await logisticsAnalyticsService.calculateLogisticsKPIs(dateRange);
-      
+
       // Generate executive summary
-      const executiveSummary = this.generateExecutiveSummary(transportationMetrics, routeMetrics, kpis);
-      
+      const executiveSummary = this.generateExecutiveSummary(
+        transportationMetrics,
+        routeMetrics,
+        kpis
+      );
+
       // Calculate cost analysis
       const costAnalysis = await this.generateLogisticsCostAnalysis(dateRange);
-      
+
       // Get trending data
       const trends = await this.generateLogisticsTrends(dateRange);
-      
+
       // Get alerts and exceptions
       const alerts = await this.generateLogisticsAlerts();
 
@@ -464,7 +470,7 @@ export class LogisticsManager extends BaseManager {
         routeOptimizationMetrics: routeMetrics,
         costAnalysis,
         trends,
-        alerts
+        alerts,
       };
     } catch (error) {
       this.logger?.error('Failed to generate logistics dashboard:', error);
@@ -488,18 +494,18 @@ export class LogisticsManager extends BaseManager {
   }> {
     try {
       const reportId = `lr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
+
       // Compile report data based on configuration
       const reportData = await this.compileLogisticsReportData(reportConfig);
-      
+
       // Generate report in requested format
       const reportUrl = await this.generateReportFile(reportData, reportConfig.format);
-      
+
       return {
         reportId,
         reportUrl,
         reportData,
-        generatedDate: new Date()
+        generatedDate: new Date(),
       };
     } catch (error) {
       this.logger?.error('Failed to generate logistics report:', error);
@@ -527,16 +533,16 @@ export class LogisticsManager extends BaseManager {
   }> {
     try {
       const processId = `lp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
+
       // Create execution plan
       const executionPlan = await this.createLogisticsExecutionPlan(processData);
-      
+
       // Execute plan
       const results = await this.executeLogisticsPlan(executionPlan);
-      
+
       // Calculate performance metrics
       const performanceMetrics = await this.calculateProcessPerformanceMetrics(results);
-      
+
       // Generate cost summary
       const costSummary = await this.generateProcessCostSummary(results);
 
@@ -545,7 +551,7 @@ export class LogisticsManager extends BaseManager {
         executionPlan,
         results,
         performanceMetrics,
-        costSummary
+        costSummary,
       };
     } catch (error) {
       this.logger?.error('Failed to execute end-to-end logistics process:', error);
@@ -576,7 +582,7 @@ export class LogisticsManager extends BaseManager {
       expectedThroughput: facility.throughputCapacity * 0.85,
       projectedUtilization: 80,
       estimatedROI: 15,
-      paybackPeriod: 24 // months
+      paybackPeriod: 24, // months
     };
   }
 
@@ -584,7 +590,7 @@ export class LogisticsManager extends BaseManager {
     const defaultObjectives = [
       { objectiveType: 'MINIMIZE_DISTANCE', weight: 30, priority: 1 },
       { objectiveType: 'MINIMIZE_TIME', weight: 40, priority: 1 },
-      { objectiveType: 'MINIMIZE_COST', weight: 30, priority: 1 }
+      { objectiveType: 'MINIMIZE_COST', weight: 30, priority: 1 },
     ];
 
     if (!objectives) return defaultObjectives;
@@ -592,20 +598,23 @@ export class LogisticsManager extends BaseManager {
     return objectives.map((obj, index) => ({
       objectiveType: `MINIMIZE_${obj.toUpperCase()}`,
       weight: Math.round(100 / objectives.length),
-      priority: 1
+      priority: 1,
     }));
   }
 
-  private async calculateRouteCostComparison(solution: OptimizedRoute, routingData: any): Promise<any> {
+  private async calculateRouteCostComparison(
+    solution: OptimizedRoute,
+    routingData: any
+  ): Promise<any> {
     // Calculate cost savings compared to baseline routing
     const baselineCost = routingData.stops.length * 50; // Simplified baseline
     const optimizedCost = solution.totalCost;
-    
+
     return {
       baselineCost,
       optimizedCost,
       savings: baselineCost - optimizedCost,
-      savingsPercent: Math.round(((baselineCost - optimizedCost) / baselineCost) * 100)
+      savingsPercent: Math.round(((baselineCost - optimizedCost) / baselineCost) * 100),
     };
   }
 
@@ -615,11 +624,11 @@ export class LogisticsManager extends BaseManager {
         { step: 'Route Assignment', duration: 1, resources: ['dispatcher'] },
         { step: 'Vehicle Preparation', duration: 2, resources: ['maintenance', 'drivers'] },
         { step: 'Route Execution', duration: 8, resources: ['drivers', 'vehicles'] },
-        { step: 'Performance Monitoring', duration: 1, resources: ['operations'] }
+        { step: 'Performance Monitoring', duration: 1, resources: ['operations'] },
       ],
       totalDuration: 12,
       requiredResources: ['dispatcher', 'maintenance', 'drivers', 'vehicles', 'operations'],
-      estimatedCost: vrp.solution?.totalCost || 0
+      estimatedCost: vrp.solution?.totalCost || 0,
     };
   }
 
@@ -630,41 +639,47 @@ export class LogisticsManager extends BaseManager {
       onTimeDeliveryRate: transportationMetrics.onTimeDeliveryRate,
       totalCostSavings: routeMetrics.costMetrics?.totalSavings || 0,
       keyPerformanceIndicators: kpis.slice(0, 5),
-      overallScore: 85 // Calculated composite score
+      overallScore: 85, // Calculated composite score
     };
   }
 
-  private async generateLogisticsCostAnalysis(dateRange?: { startDate: Date; endDate: Date }): Promise<any> {
+  private async generateLogisticsCostAnalysis(dateRange?: {
+    startDate: Date;
+    endDate: Date;
+  }): Promise<any> {
     return {
       transportationCosts: 150000,
       warehouseCosts: 75000,
       optimizationSavings: 25000,
       totalCosts: 225000,
-      costPerOrder: 45.50,
-      budgetVariance: -5.2 // Under budget by 5.2%
+      costPerOrder: 45.5,
+      budgetVariance: -5.2, // Under budget by 5.2%
     };
   }
 
-  private async generateLogisticsTrends(dateRange?: { startDate: Date; endDate: Date }): Promise<any[]> {
+  private async generateLogisticsTrends(dateRange?: {
+    startDate: Date;
+    endDate: Date;
+  }): Promise<any[]> {
     return [
       {
         metric: 'Average Delivery Time',
         trend: 'IMPROVING',
         change: -8.5,
-        period: '30 days'
+        period: '30 days',
       },
       {
         metric: 'Transportation Costs',
         trend: 'STABLE',
         change: 1.2,
-        period: '30 days'
+        period: '30 days',
       },
       {
         metric: 'Route Optimization Savings',
         trend: 'IMPROVING',
         change: 15.3,
-        period: '30 days'
-      }
+        period: '30 days',
+      },
     ];
   }
 
@@ -674,14 +689,14 @@ export class LogisticsManager extends BaseManager {
         alertType: 'PERFORMANCE',
         severity: 'MEDIUM',
         message: 'Carrier XYZ on-time delivery rate below threshold (89%)',
-        actionRequired: 'Review carrier performance and consider alternatives'
+        actionRequired: 'Review carrier performance and consider alternatives',
       },
       {
         alertType: 'COST',
         severity: 'LOW',
         message: 'Fuel costs trending upward (5% increase this month)',
-        actionRequired: 'Monitor fuel surcharge agreements'
-      }
+        actionRequired: 'Monitor fuel surcharge agreements',
+      },
     ];
   }
 
@@ -699,7 +714,7 @@ export class LogisticsManager extends BaseManager {
       reportType: reportConfig.reportType,
       dateRange: reportConfig.dateRange,
       sections: reportConfig.includeSections,
-      data: {} // Would be populated with actual report data
+      data: {}, // Would be populated with actual report data
     };
   }
 
@@ -713,13 +728,13 @@ export class LogisticsManager extends BaseManager {
       planId: `plan_${Date.now()}`,
       phases: [
         'Order Processing',
-        'Route Optimization', 
+        'Route Optimization',
         'Warehouse Operations',
         'Transportation Execution',
-        'Delivery Confirmation'
+        'Delivery Confirmation',
       ],
       estimatedDuration: 48, // hours
-      resourceRequirements: []
+      resourceRequirements: [],
     };
   }
 
@@ -729,7 +744,7 @@ export class LogisticsManager extends BaseManager {
       executionStatus: 'COMPLETED',
       completedPhases: executionPlan.phases,
       actualDuration: 46,
-      results: []
+      results: [],
     };
   }
 
@@ -738,16 +753,16 @@ export class LogisticsManager extends BaseManager {
       efficiency: 92.5,
       accuracy: 99.2,
       onTimeCompletion: 94.8,
-      costEffectiveness: 88.7
+      costEffectiveness: 88.7,
     };
   }
 
   private async generateProcessCostSummary(results: any): Promise<any> {
     return {
       totalCost: 12500,
-      costPerOrder: 25.50,
+      costPerOrder: 25.5,
       costSavings: 1800,
-      budgetVariance: -3.2
+      budgetVariance: -3.2,
     };
   }
 }

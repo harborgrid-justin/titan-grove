@@ -3,12 +3,12 @@
  * Business logic for contract lifecycle management
  */
 
-import { 
-  Contract, 
+import {
+  Contract,
   ContractStatus,
   ContractType,
   ContractPerformance,
-  ProcurementSearchCriteria
+  ProcurementSearchCriteria,
 } from '../../types';
 import { contractRepository } from '../../data-access/repositories';
 import { PaginatedResponse, SearchParams, PerformanceLevel } from '../../../../types/common';
@@ -16,17 +16,27 @@ import type { ProcurementConfig } from '../../../../types/business-config';
 import { DateUtils } from '../../../../shared/constants';
 
 export class ContractService {
-  
   /**
    * Create a new contract
    */
   async createContract(
-    data: Omit<Contract, 'id' | 'contractNumber' | 'status' | 'amendments' | 'performance' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>
+    data: Omit<
+      Contract,
+      | 'id'
+      | 'contractNumber'
+      | 'status'
+      | 'amendments'
+      | 'performance'
+      | 'createdAt'
+      | 'updatedAt'
+      | 'createdBy'
+      | 'updatedBy'
+    >
   ): Promise<Contract> {
     this.validateContractData(data);
-    
+
     const contractNumber = await this.generateContractNumber();
-    
+
     const contractData = {
       ...data,
       contractNumber,
@@ -39,12 +49,12 @@ export class ContractService {
         costSavings: { amount: 0, currency: 'USD' },
         issueCount: 0,
         lastReviewDate: new Date(),
-        nextReviewDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) // 90 days from now
+        nextReviewDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
       },
       createdBy: 'system',
-      updatedBy: 'system'
+      updatedBy: 'system',
     };
-    
+
     return await contractRepository.create(contractData);
   }
 
@@ -57,7 +67,7 @@ export class ContractService {
     if (!existing) {
       throw new Error(`Contract with ID ${id} not found`);
     }
-    
+
     return await contractRepository.update(id, updates);
   }
 
@@ -66,13 +76,13 @@ export class ContractService {
     if (!contract) {
       throw new Error(`Contract with ID ${contractId} not found`);
     }
-    
+
     if (contract.status !== ContractStatus.PENDING_SIGNATURE) {
       throw new Error('Only contracts pending signature can be activated');
     }
-    
+
     return await this.updateContract(contractId, {
-      status: ContractStatus.ACTIVE
+      status: ContractStatus.ACTIVE,
     });
   }
 
@@ -81,13 +91,13 @@ export class ContractService {
     if (!contract) {
       throw new Error(`Contract with ID ${contractId} not found`);
     }
-    
+
     // Mock performance monitoring - in real implementation would analyze:
     // - Delivery performance
     // - Quality metrics
     // - Cost savings
     // - Issue tracking
-    
+
     const performance: ContractPerformance = {
       overallRating: PerformanceLevel.HIGH,
       deliveryPerformance: 95.5,
@@ -95,12 +105,12 @@ export class ContractService {
       costSavings: { amount: 25000, currency: 'USD' },
       issueCount: 2,
       lastReviewDate: new Date(),
-      nextReviewDate: DateUtils.addDays(new Date(), 30) // Use standard 30-day review period
+      nextReviewDate: DateUtils.addDays(new Date(), 30), // Use standard 30-day review period
     };
-    
+
     // Update contract with new performance data
     await this.updateContract(contractId, { performance });
-    
+
     return performance;
   }
 
@@ -109,7 +119,7 @@ export class ContractService {
   }
 
   async searchContracts(
-    criteria: ProcurementSearchCriteria, 
+    criteria: ProcurementSearchCriteria,
     params?: SearchParams
   ): Promise<PaginatedResponse<Contract>> {
     return await contractRepository.search(criteria, params);
@@ -119,19 +129,19 @@ export class ContractService {
     if (!data.title || data.title.trim() === '') {
       throw new Error('Contract title is required');
     }
-    
+
     if (!data.supplierId) {
       throw new Error('Supplier ID is required');
     }
-    
+
     if (!data.effectiveDate) {
       throw new Error('Effective date is required');
     }
-    
+
     if (!data.expirationDate) {
       throw new Error('Expiration date is required');
     }
-    
+
     if (data.expirationDate <= data.effectiveDate) {
       throw new Error('Expiration date must be after effective date');
     }

@@ -55,9 +55,9 @@ export class DataTable {
       selectable: config.selectable ?? true,
       editable: config.editable ?? false,
       exportable: config.exportable ?? true,
-      responsive: config.responsive ?? true
+      responsive: config.responsive ?? true,
     };
-    
+
     this.initializeTable();
   }
 
@@ -322,7 +322,7 @@ export class DataTable {
         }
       }
     `;
-    
+
     if (!document.head.querySelector('#titan-table-styles')) {
       style.id = 'titan-table-styles';
       document.head.appendChild(style);
@@ -333,11 +333,11 @@ export class DataTable {
     // Search functionality
     const searchInput = this.container.querySelector('.titan-search-input') as HTMLInputElement;
     const searchBtn = this.container.querySelector('.titan-search-btn') as HTMLButtonElement;
-    
+
     searchBtn?.addEventListener('click', () => {
       this.handleSearch(searchInput.value);
     });
-    
+
     searchInput?.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         this.handleSearch(searchInput.value);
@@ -348,7 +348,7 @@ export class DataTable {
     this.container.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       const action = target.getAttribute('data-action');
-      
+
       switch (action) {
         case 'filter':
           this.showFilterDialog();
@@ -392,21 +392,21 @@ export class DataTable {
     if (!thead) return;
 
     let headerHTML = '<tr>';
-    
+
     if (this.config.selectable) {
       headerHTML += '<th><input type="checkbox" class="titan-select-all"></th>';
     }
-    
+
     for (const column of this.config.columns) {
       const sortable = column.sortable !== false && this.config.sortable;
       const sortClass = sortable ? 'sortable' : '';
       const sortIcon = this.getSortIcon(column.key);
-      
+
       headerHTML += `<th class="${sortClass}" data-column="${column.key}" style="width: ${column.width || 'auto'}">
         ${column.title} ${sortIcon}
       </th>`;
     }
-    
+
     headerHTML += '</tr>';
     thead.innerHTML = headerHTML;
 
@@ -432,29 +432,29 @@ export class DataTable {
     }
 
     let bodyHTML = '';
-    
+
     for (let i = 0; i < this.data.rows.length; i++) {
       const row = this.data.rows[i];
       const isSelected = this.selectedRows.has(i);
       const rowClass = isSelected ? 'selected' : '';
-      
+
       bodyHTML += `<tr class="${rowClass}" data-row-index="${i}">`;
-      
+
       if (this.config.selectable) {
         bodyHTML += `<td><input type="checkbox" ${isSelected ? 'checked' : ''} data-row-index="${i}"></td>`;
       }
-      
+
       for (const column of this.config.columns) {
         const value = row[column.key];
         const formattedValue = column.formatter ? column.formatter(value, row) : value;
         const alignment = column.align ? `text-align: ${column.align}` : '';
-        
+
         bodyHTML += `<td style="${alignment}">${formattedValue}</td>`;
       }
-      
+
       bodyHTML += '</tr>';
     }
-    
+
     tbody.innerHTML = bodyHTML;
 
     // Add selection event listeners
@@ -482,7 +482,7 @@ export class DataTable {
     } else {
       this.currentSort = { column, direction: 'asc' };
     }
-    
+
     // TODO: Implement actual sorting
     this.renderTable();
   }
@@ -516,7 +516,7 @@ export class DataTable {
     } else {
       this.selectedRows.delete(rowIndex);
     }
-    
+
     this.renderTable();
   }
 
@@ -558,7 +558,7 @@ export class DataTable {
   private setLoading(loading: boolean): void {
     const loadingEl = this.container.querySelector('.titan-table-loading') as HTMLElement;
     const tableEl = this.container.querySelector('.titan-table') as HTMLElement;
-    
+
     if (loadingEl && tableEl) {
       loadingEl.style.display = loading ? 'flex' : 'none';
       tableEl.style.opacity = loading ? '0.5' : '1';
@@ -568,7 +568,7 @@ export class DataTable {
   private showEmptyState(): void {
     const emptyEl = this.container.querySelector('.titan-table-empty') as HTMLElement;
     const tableEl = this.container.querySelector('.titan-table') as HTMLElement;
-    
+
     if (emptyEl && tableEl) {
       emptyEl.style.display = 'flex';
       tableEl.style.display = 'none';

@@ -16,34 +16,30 @@ import { BaseManager } from '../../shared/utils/base-manager';
 import { crmLeadService } from './business-logic/lead-management/lead-management-service';
 import { crmCustomerService } from './business-logic/customer-management/customer-management-service';
 
-import type { 
-  Customer, 
-  Lead, 
-  Opportunity, 
-  SupportCase, 
-  Activity 
-} from './types';
+import type { Customer, Lead, Opportunity, SupportCase, Activity } from './types';
 
 export class CRMManager extends BaseManager {
-  
   // Lead Management Methods - delegate to lead service
   async createLead(lead: Omit<Lead, 'id' | 'createdDate' | 'score'>): Promise<Lead> {
     const id = this.generateId('lead');
     const score = await this.calculateLeadScore(lead);
-    
+
     const newLead: Lead = {
       ...lead,
       id,
       createdDate: new Date(),
       score,
-      status: 'NEW'
+      status: 'NEW',
     };
-    
+
     this.logAction('createLead', { id, score });
     return newLead;
   }
 
-  async qualifyLead(leadId: string, qualificationCriteria: any): Promise<{ qualified: boolean, score: number, reasons: string[] }> {
+  async qualifyLead(
+    leadId: string,
+    qualificationCriteria: any
+  ): Promise<{ qualified: boolean; score: number; reasons: string[] }> {
     return crmLeadService.qualifyLead(leadId, qualificationCriteria);
   }
 
@@ -53,27 +49,38 @@ export class CRMManager extends BaseManager {
     if (typeof leadOrId === 'string') {
       return crmLeadService.calculateLeadScore(leadOrId);
     }
-    
+
     const lead = leadOrId;
     let score = 0;
-    
+
     // Score based on data completeness
     if (lead.email) score += 20;
     if (lead.phone) score += 15;
     if (lead.company) score += 10;
-    
+
     // Score based on source
     switch (lead.source) {
-      case 'REFERRAL': score += 30; break;
-      case 'WEBSITE': score += 20; break;
-      case 'MARKETING': score += 15; break;
-      default: score += 10;
+      case 'REFERRAL':
+        score += 30;
+        break;
+      case 'WEBSITE':
+        score += 20;
+        break;
+      case 'MARKETING':
+        score += 15;
+        break;
+      default:
+        score += 10;
     }
-    
+
     return Math.min(score, 100);
   }
 
-  async assignLeadToSalesRep(leadId: string, salesRepId: string, assignmentReason: string): Promise<void> {
+  async assignLeadToSalesRep(
+    leadId: string,
+    salesRepId: string,
+    assignmentReason: string
+  ): Promise<void> {
     return crmLeadService.assignLeadToSalesRep(leadId, salesRepId, assignmentReason);
   }
 
@@ -81,7 +88,7 @@ export class CRMManager extends BaseManager {
     console.log(`Converting lead ${leadId} to customer`);
     const customerId = `cust_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const customerNumber = `CUST${Date.now().toString().slice(-6)}`;
-    
+
     return {
       id: customerId,
       customerNumber,
@@ -94,11 +101,11 @@ export class CRMManager extends BaseManager {
         city: '',
         state: '',
         zipCode: '',
-        country: ''
+        country: '',
       },
       status: 'ACTIVE',
       createdDate: new Date(),
-      totalRevenue: 0
+      totalRevenue: 0,
     };
   }
 
@@ -107,16 +114,18 @@ export class CRMManager extends BaseManager {
   }
 
   // Customer Management Methods - delegate to customer service
-  async createCustomer(customer: Omit<Customer, 'id' | 'customerNumber' | 'createdDate' | 'totalRevenue'>): Promise<Customer> {
+  async createCustomer(
+    customer: Omit<Customer, 'id' | 'customerNumber' | 'createdDate' | 'totalRevenue'>
+  ): Promise<Customer> {
     const id = `cust_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const customerNumber = `CUST${Date.now().toString().slice(-6)}`;
-    
+
     return {
       ...customer,
       id,
       customerNumber,
       createdDate: new Date(),
-      totalRevenue: 0
+      totalRevenue: 0,
     };
   }
 
@@ -146,8 +155,14 @@ export class CRMManager extends BaseManager {
     return { ...opportunity, id };
   }
 
-  async updateOpportunityStage(opportunityId: string, newStage: Opportunity['stage'], probability: number): Promise<void> {
-    console.log(`Updating opportunity ${opportunityId} to stage ${newStage} with probability ${probability}%`);
+  async updateOpportunityStage(
+    opportunityId: string,
+    newStage: Opportunity['stage'],
+    probability: number
+  ): Promise<void> {
+    console.log(
+      `Updating opportunity ${opportunityId} to stage ${newStage} with probability ${probability}%`
+    );
   }
 
   async calculateWeightedPipeline(): Promise<number> {
@@ -156,16 +171,18 @@ export class CRMManager extends BaseManager {
   }
 
   // Support Case Management Methods
-  async createSupportCase(supportCase: Omit<SupportCase, 'id' | 'caseNumber' | 'createdDate'>): Promise<SupportCase> {
+  async createSupportCase(
+    supportCase: Omit<SupportCase, 'id' | 'caseNumber' | 'createdDate'>
+  ): Promise<SupportCase> {
     const id = `case_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const caseNumber = `CASE${Date.now().toString().slice(-6)}`;
-    
+
     return {
       ...supportCase,
       id,
       caseNumber,
       createdDate: new Date(),
-      status: 'OPEN'
+      status: 'OPEN',
     };
   }
 
@@ -194,8 +211,8 @@ export class CRMManager extends BaseManager {
         PROPOSAL: { count: 0, value: 0 },
         NEGOTIATION: { count: 0, value: 0 },
         CLOSED_WON: { count: 0, value: 0 },
-        CLOSED_LOST: { count: 0, value: 0 }
-      }
+        CLOSED_LOST: { count: 0, value: 0 },
+      },
     };
   }
 
@@ -206,10 +223,10 @@ export class CRMManager extends BaseManager {
       customersByStatus: {
         active: 0,
         inactive: 0,
-        churned: 0
+        churned: 0,
       },
       averageCustomerValue: 0,
-      topCustomers: []
+      topCustomers: [],
     };
   }
 
@@ -221,7 +238,7 @@ export class CRMManager extends BaseManager {
       opportunitiesLost: 0,
       winRate: 0,
       averageDealSize: 0,
-      salesCycle: 0
+      salesCycle: 0,
     };
   }
 
@@ -242,7 +259,4 @@ export class CRMManager extends BaseManager {
 export const crmManager = new CRMManager();
 
 // Export business logic services for direct access if needed
-export {
-  crmLeadService,
-  crmCustomerService
-};
+export { crmLeadService, crmCustomerService };

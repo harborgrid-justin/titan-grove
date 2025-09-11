@@ -3,5 +3,5 @@
  */
 
 export * from './ChartComponents';
-export * from './DataTable'; 
+export * from './DataTable';
 export * from './KPICard';

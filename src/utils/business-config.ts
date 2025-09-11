@@ -9,22 +9,22 @@ const businessConfigSchema = Joi.object({
     defaultBaseCost: Joi.number().default(650),
     defaultCostRatio: Joi.number().min(0).max(1).default(0.65),
     defaultLeadTimeBase: Joi.number().default(14),
-    
+
     // Manufacturing Complexity Thresholds
     standardComplexityMaxOptions: Joi.number().default(3),
     complexComplexityMaxOptions: Joi.number().default(8),
-    
+
     // Engineering Configuration
     engineeringHourlyRate: Joi.number().default(150),
     defaultEngineeringDuration: Joi.number().default(15),
     prototypeDevelopmentDuration: Joi.number().default(10),
     productionPlanningDuration: Joi.number().default(5),
     baseProjectTimeline: Joi.number().default(30),
-    
+
     // Sample lead time calculations
     defaultSampleLeadTime: Joi.number().default(7),
   }).default(),
-  
+
   capitalAsset: Joi.object({
     // ROI Analysis Defaults
     roiScenarios: Joi.object({
@@ -38,31 +38,31 @@ const businessConfigSchema = Joi.object({
         probability: Joi.number().min(0).max(100).default(20),
       }).default(),
     }).default(),
-    
+
     // Budget Allocation Recommendations
     budgetAllocations: Joi.object({
       productionEquipment: Joi.number().min(0).max(100).default(40),
       regulatoryCompliance: Joi.number().min(0).max(100).default(20),
       digitalTransformation: Joi.number().min(0).max(100).default(15),
     }).default(),
-    
+
     // Default Analysis Parameters
     defaultDiscountRate: Joi.number().min(0).default(0.08), // 8%
     defaultAnalysisTimeHorizon: Joi.number().default(5),
   }).default(),
-  
+
   manufacturing: Joi.object({
     // BOM Management
     defaultBomComplexity: Joi.number().min(0).max(1).default(0.65),
-    
+
     // Production Defaults
     standardProductionLeadTime: Joi.number().default(7),
     customProductionLeadTime: Joi.number().default(21),
-    
+
     // Cost Management
     materialCostVarianceThreshold: Joi.number().min(0).default(10), // 10%
     laborCostVarianceThreshold: Joi.number().min(0).default(15), // 15%
-    
+
     // Industry 4.0 Configuration
     industry40: Joi.object({
       iot: Joi.object({
@@ -72,7 +72,7 @@ const businessConfigSchema = Joi.object({
         pressureSensorLatency: Joi.number().default(8), // milliseconds
       }).default(),
     }).default(),
-    
+
     // Supply Chain Integration
     integration: Joi.object({
       dataVolumes: Joi.object({
@@ -100,7 +100,7 @@ const businessConfigSchema = Joi.object({
       }).default(),
     }).default(),
   }).default(),
-  
+
   warehouseManagement: Joi.object({
     // Operating Hours Configuration
     operatingHours: Joi.object({
@@ -115,7 +115,7 @@ const businessConfigSchema = Joi.object({
         timeZone: Joi.string().default('EST'),
       }).default(),
     }).default(),
-    
+
     // Shift Configuration
     shifts: Joi.object({
       day: Joi.object({
@@ -134,7 +134,7 @@ const businessConfigSchema = Joi.object({
         staffCount: Joi.number().default(5),
       }).default(),
     }).default(),
-    
+
     // Storage Area Defaults
     storageAreas: Joi.object({
       bulk: Joi.object({
@@ -158,7 +158,7 @@ const businessConfigSchema = Joi.object({
         turnoverRate: Joi.number().default(24), // times per year
       }).default(),
     }).default(),
-    
+
     // Dock Door Configuration
     dockDoors: Joi.object({
       defaultCount: Joi.number().default(10),
@@ -167,7 +167,7 @@ const businessConfigSchema = Joi.object({
       levelingDockDefault: Joi.boolean().default(true),
     }).default(),
   }).default(),
-  
+
   messageQueue: Joi.object({
     // Redis Configuration
     redis: Joi.object({
@@ -178,7 +178,7 @@ const businessConfigSchema = Joi.object({
       maxRetriesPerRequest: Joi.number().default(3),
       lazyConnect: Joi.boolean().default(true),
     }).default(),
-    
+
     // Job Configuration
     defaultJobOptions: Joi.object({
       removeOnComplete: Joi.number().default(100),
@@ -189,7 +189,7 @@ const businessConfigSchema = Joi.object({
         delay: Joi.number().default(2000),
       }).default(),
     }).default(),
-    
+
     // Monitoring Configuration
     monitoring: Joi.object({
       enabled: Joi.boolean().default(true),
@@ -200,21 +200,21 @@ const businessConfigSchema = Joi.object({
         errorRate: Joi.number().min(0).max(1).default(0.1),
       }).default(),
     }).default(),
-    
+
     // Dead Letter Queue
     deadLetterQueue: Joi.object({
       enabled: Joi.boolean().default(true),
       maxRetries: Joi.number().default(5),
       retentionDays: Joi.number().default(30),
     }).default(),
-    
+
     // Clustering
     clustering: Joi.object({
       enabled: Joi.boolean().default(false),
       workers: Joi.number().default(4),
       concurrency: Joi.number().default(10),
     }).default(),
-    
+
     // Dynamic Configuration Values
     dynamicConfig: Joi.object({
       lowConcurrency: Joi.number().default(5),
@@ -231,14 +231,14 @@ const businessConfigSchema = Joi.object({
       criticalRetention: Joi.number().default(500),
     }).default(),
   }).default(),
-  
+
   project: Joi.object({
     // Cost Performance Indicators
     costPerformanceThresholds: Joi.object({
       budgetVarianceAlert: Joi.number().min(0).default(0.1), // 10%
       scheduleVarianceAlert: Joi.number().min(0).default(0.15), // 15%
     }).default(),
-    
+
     // Default Billing Rates
     billing: Joi.object({
       defaultHourlyRate: Joi.number().default(125),
@@ -246,7 +246,7 @@ const businessConfigSchema = Joi.object({
       standardTaxRate: Joi.number().min(0).max(1).default(0.08), // 8%
       paymentTermsDays: Joi.number().default(30), // Net 30
     }).default(),
-    
+
     // Financial Defaults
     financials: Joi.object({
       defaultLaborRate: Joi.number().default(150), // hourly rate
@@ -254,7 +254,7 @@ const businessConfigSchema = Joi.object({
       overheadRatio: Joi.number().min(0).default(0.15), // 15% overhead
       profitMarginTarget: Joi.number().min(0).default(0.29), // 29% margin
     }).default(),
-    
+
     // Performance Metrics
     healthScoreThresholds: Joi.object({
       schedulePerformanceTarget: Joi.number().default(0.95),
@@ -264,14 +264,14 @@ const businessConfigSchema = Joi.object({
       riskScoreThreshold: Joi.number().min(0).max(1).default(0.15),
       teamSatisfactionTarget: Joi.number().min(0).max(1).default(0.88),
     }).default(),
-    
+
     // Resource Management
     resources: Joi.object({
       utilizationTarget: Joi.number().min(0).max(100).default(78), // 78%
       overallocationThreshold: Joi.number().min(0).max(1).default(0.95), // 95%
       capacityBufferRatio: Joi.number().min(0).default(0.15), // 15% buffer
     }).default(),
-    
+
     // Reporting Defaults
     reporting: Joi.object({
       forecastConfidenceDefault: Joi.number().min(0).max(1).default(0.85),
@@ -280,33 +280,33 @@ const businessConfigSchema = Joi.object({
       budgetVarianceAmount: Joi.number().default(7000),
     }).default(),
   }).default(),
-  
+
   orderAnalytics: Joi.object({
     // Credit and Risk Analysis
     defaultCreditUtilization: Joi.number().min(0).max(1).default(0.65),
-    
+
     // Performance Thresholds
     performanceThresholds: Joi.object({
       scopeCompletion: Joi.number().min(0).max(1).default(0.65),
       qualityScore: Joi.number().min(0).max(1).default(0.85),
-      deliveryPerformance: Joi.number().min(0).max(1).default(0.90),
+      deliveryPerformance: Joi.number().min(0).max(1).default(0.9),
     }).default(),
   }).default(),
-  
+
   quoteManagement: Joi.object({
     // Quote Calculation Settings
     defaultExpirationDays: Joi.number().default(30),
-    shippingRatePerPound: Joi.number().default(5.50),
+    shippingRatePerPound: Joi.number().default(5.5),
     mockWeightPerItem: Joi.number().default(2), // pounds per item
-    
+
     // Approval Thresholds
     approvalThresholdAmount: Joi.number().default(10000),
     maxDiscountPercentWithoutApproval: Joi.number().min(0).max(100).default(15),
-    
+
     // Tax and Fees
     standardTaxRate: Joi.number().min(0).max(1).default(0.085), // 8.5%
     currencyConversionRate: Joi.number().default(1.25), // USD to other currency
-    
+
     // Mock Metrics Configuration
     mockMetrics: Joi.object({
       conversionRate: Joi.number().min(0).max(1).default(0.32), // 32%
@@ -317,70 +317,70 @@ const businessConfigSchema = Joi.object({
       budgetLossReasonPercentage: Joi.number().min(0).max(100).default(18.2),
     }).default(),
   }).default(),
-  
+
   orderPromising: Joi.object({
     // Lead Time Defaults (in days)
     manufacturingLeadTime: Joi.number().default(10),
     procurementLeadTime: Joi.number().default(7),
     itemLeadTime: Joi.number().default(5),
-    
+
     // Shipping Times by Method (in days)
     standardShippingTime: Joi.number().default(10),
     expressShippingTime: Joi.number().default(7),
     overnightShippingTime: Joi.number().default(1),
-    
+
     // Buffer Days by Priority
     lowPriorityBufferDays: Joi.number().default(3),
     mediumPriorityBufferDays: Joi.number().default(2),
     highPriorityBufferDays: Joi.number().default(1),
-    
+
     // Confidence Levels
     minConfidenceLevel: Joi.number().min(0).max(1).default(0.1), // 10%
     maxConfidenceLevel: Joi.number().min(0).max(1).default(1.0), // 100%
   }).default(),
-  
+
   procurement: Joi.object({
     // Supplier Scoring Thresholds
     supplierQualityThreshold: Joi.number().min(0).max(100).default(70),
     supplierDeliveryThreshold: Joi.number().min(0).max(100).default(80),
     supplierCostThreshold: Joi.number().min(0).max(100).default(75),
-    
+
     // Purchase Order Limits
     poApprovalThreshold: Joi.number().default(5000),
     maxPoValueWithoutApproval: Joi.number().default(50000),
-    
+
     // RFQ Configuration
     rfqResponseTimeoutDays: Joi.number().default(14),
     minSuppliersForRfq: Joi.number().default(3),
-    
+
     // Contract Management
     contractRenewalNotificationDays: Joi.number().default(90),
     contractValueReviewThreshold: Joi.number().default(100000),
   }).default(),
-  
+
   pricingEngine: Joi.object({
     // Mock Pricing Data
     mockPricing: Joi.object({
-      defaultListPrice: Joi.number().default(100.00),
-      defaultMinPrice: Joi.number().default(80.00),
-      defaultCost: Joi.number().default(60.00),
+      defaultListPrice: Joi.number().default(100.0),
+      defaultMinPrice: Joi.number().default(80.0),
+      defaultCost: Joi.number().default(60.0),
       defaultMarginPercent: Joi.number().default(40.0),
       priceBreaks: Joi.object({
         tier1MinQuantity: Joi.number().default(10),
-        tier1UnitPrice: Joi.number().default(95.00),
+        tier1UnitPrice: Joi.number().default(95.0),
         tier2MinQuantity: Joi.number().default(50),
-        tier2UnitPrice: Joi.number().default(90.00),
+        tier2UnitPrice: Joi.number().default(90.0),
         tier3MinQuantity: Joi.number().default(100),
-        tier3UnitPrice: Joi.number().default(85.00),
+        tier3UnitPrice: Joi.number().default(85.0),
       }).default(),
     }).default(),
-    
+
     // Pricing Rules
     maxDiscountPercent: Joi.number().min(0).max(100).default(20), // 20% max discount
     minMarginPercent: Joi.number().min(0).default(15), // 15% minimum margin
     defaultMarkupMultiplier: Joi.number().default(1.67), // 67% markup from cost
   }).default(),
-  
+
   shipping: Joi.object({
     // Carrier scoring weights
     carrierScoring: Joi.object({
@@ -388,32 +388,32 @@ const businessConfigSchema = Joi.object({
       speedWeight: Joi.number().min(0).max(1).default(0.4), // 40%
       reliabilityWeight: Joi.number().min(0).max(1).default(0.2), // 20%
     }).default(),
-    
+
     // Insurance and fees
     defaultInsuranceRate: Joi.number().min(0).default(0.005), // 0.5%
     dimensionalWeightDivisor: Joi.number().default(139),
-    
+
     // Mock shipping rates
     mockRates: Joi.object({
-      baseShippingCost: Joi.number().default(15.00),
+      baseShippingCost: Joi.number().default(15.0),
       expressShippingMultiplier: Joi.number().default(1.5),
       overnightShippingMultiplier: Joi.number().default(3.0),
     }).default(),
   }).default(),
-  
+
   forecasting: Joi.object({
     // Forecasting parameters
     defaultForecastPeriods: Joi.number().default(12), // 12 months
     seasonalAmplitude: Joi.number().default(200),
     seasonalFrequency: Joi.number().default(0.5),
     trendGrowthRate: Joi.number().default(50),
-    
+
     // Variance and confidence intervals
     forecastVarianceBounds: Joi.object({
       upperMultiplier: Joi.number().default(1.2), // 20% above
       lowerMultiplier: Joi.number().default(0.8), // 20% below
     }).default(),
-    
+
     // Mock forecasting data
     mockForecasting: Joi.object({
       baseOrderValue: Joi.number().default(1000),
@@ -548,7 +548,7 @@ const extendedConfigSchema = Joi.object({
     level: Joi.string().valid('error', 'warn', 'info', 'debug').default('info'),
     format: Joi.string().valid('json', 'simple').default('simple'),
   }).default(),
-  
+
   // Business configuration
   business: businessConfigSchema.required(),
 });
@@ -570,8 +570,8 @@ export function loadBusinessConfig(): BusinessConfig {
   // Load business configuration from environment variables with fallbacks
   const config = {
     configureToOrder: {
-      defaultBasePrice: process.env.CTO_DEFAULT_BASE_PRICE 
-        ? parseInt(process.env.CTO_DEFAULT_BASE_PRICE, 10) 
+      defaultBasePrice: process.env.CTO_DEFAULT_BASE_PRICE
+        ? parseInt(process.env.CTO_DEFAULT_BASE_PRICE, 10)
         : undefined,
       defaultBaseCost: process.env.CTO_DEFAULT_BASE_COST
         ? parseInt(process.env.CTO_DEFAULT_BASE_COST, 10)

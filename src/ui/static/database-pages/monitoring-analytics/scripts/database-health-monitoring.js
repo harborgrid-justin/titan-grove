@@ -1,142 +1,146 @@
 // Database Health Monitoring - Database Management System
 // This file provides business-ready functionality for Database Health Monitoring
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Database Health Monitoring page loaded');
-    
-    // Initialize page functionality
-    initdatabasehealthmonitoring();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loaddatabasehealthmonitoringData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Database Health Monitoring page loaded');
+
+  // Initialize page functionality
+  initdatabasehealthmonitoring();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loaddatabasehealthmonitoringData();
 });
 
 async function loaddatabasehealthmonitoringData() {
-    try {
-        const response = await fetch('/api/database/monitoring-analytics/database-health-monitoring');
-        if (response.ok) {
-            const data = await response.json();
-            updatedatabasehealthmonitoringDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Database Health Monitoring data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/monitoring-analytics/database-health-monitoring');
+    if (response.ok) {
+      const data = await response.json();
+      updatedatabasehealthmonitoringDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Database Health Monitoring data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initdatabasehealthmonitoring() {
-    console.log('Initializing Database Health Monitoring');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Database Health Monitoring');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Database Health Monitoring');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Database Health Monitoring');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Database Health Monitoring');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Database Health Monitoring');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Database Health Monitoring');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Database Health Monitoring');
 }
 
 function handledatabasehealthmonitoringAction() {
-    console.log('Database Health Monitoring action triggered');
-    showNotification('Database Health Monitoring configured successfully', 'success');
+  console.log('Database Health Monitoring action triggered');
+  showNotification('Database Health Monitoring configured successfully', 'success');
 }
 
 function executedatabasehealthmonitoring() {
-    console.log('Database Health Monitoring execution started');
-    showNotification('Database Health Monitoring executed successfully', 'success');
+  console.log('Database Health Monitoring execution started');
+  showNotification('Database Health Monitoring executed successfully', 'success');
 }
 
 function updatedatabasehealthmonitoringDisplay(data) {
-    console.log('Updating Database Health Monitoring display:', data);
-    // Update UI with loaded data
+  console.log('Updating Database Health Monitoring display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/monitoring-analytics/database-health-monitoring/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loaddatabasehealthmonitoringData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handledatabasehealthmonitoringAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/monitoring-analytics/database-health-monitoring/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'database-health-monitoring-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/monitoring-analytics/database-health-monitoring/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loaddatabasehealthmonitoringData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handledatabasehealthmonitoringAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/monitoring-analytics/database-health-monitoring/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'database-health-monitoring-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

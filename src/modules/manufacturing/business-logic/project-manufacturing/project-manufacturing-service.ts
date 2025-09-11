@@ -1,6 +1,6 @@
 /**
  * Project Manufacturing Service
- * Oracle EBS competitive implementation to control broad range of product designs 
+ * Oracle EBS competitive implementation to control broad range of product designs
  * and quickly respond to changes that impact contract planning, costing, and execution
  */
 
@@ -8,10 +8,21 @@ export interface ManufacturingProject {
   projectId: string;
   projectNumber: string;
   projectName: string;
-  projectType: 'ENGINEER_TO_ORDER' | 'CUSTOM_MANUFACTURING' | 'CONTRACT_MANUFACTURING' | 'PROTOTYPE_DEVELOPMENT';
+  projectType:
+    | 'ENGINEER_TO_ORDER'
+    | 'CUSTOM_MANUFACTURING'
+    | 'CONTRACT_MANUFACTURING'
+    | 'PROTOTYPE_DEVELOPMENT';
   customerId: string;
   contractId?: string;
-  status: 'PLANNING' | 'ENGINEERING' | 'MANUFACTURING' | 'TESTING' | 'DELIVERY' | 'COMPLETED' | 'CANCELLED';
+  status:
+    | 'PLANNING'
+    | 'ENGINEERING'
+    | 'MANUFACTURING'
+    | 'TESTING'
+    | 'DELIVERY'
+    | 'COMPLETED'
+    | 'CANCELLED';
   productDesigns: ProductDesign[];
   projectPlan: ProjectPlan;
   costManagement: ProjectCostManagement;
@@ -199,23 +210,52 @@ export interface ChangeOrder {
 }
 
 // Additional supporting interfaces
-export interface TestRequirement { testId: string; testType: string; }
-export interface MakeVsBuyAnalysis { componentId: string; recommendation: string; }
-export interface ProjectDependency { dependencyId: string; predecessor: string; }
-export interface ProjectTimeline { startDate: Date; endDate: Date; }
-export interface ProjectResource { resourceId: string; resourceType: string; }
-export interface ProjectRisk { riskId: string; riskType: string; }
-export interface ProjectQualityPlan { planId: string; qualityGates: string[]; }
-export interface ProjectDeliverable { deliverableId: string; name: string; }
-export interface ChangeApprovalProcess { steps: string[]; approvers: string[]; }
-export interface ChangeApproval { approver: string; decision: string; }
+export interface TestRequirement {
+  testId: string;
+  testType: string;
+}
+export interface MakeVsBuyAnalysis {
+  componentId: string;
+  recommendation: string;
+}
+export interface ProjectDependency {
+  dependencyId: string;
+  predecessor: string;
+}
+export interface ProjectTimeline {
+  startDate: Date;
+  endDate: Date;
+}
+export interface ProjectResource {
+  resourceId: string;
+  resourceType: string;
+}
+export interface ProjectRisk {
+  riskId: string;
+  riskType: string;
+}
+export interface ProjectQualityPlan {
+  planId: string;
+  qualityGates: string[];
+}
+export interface ProjectDeliverable {
+  deliverableId: string;
+  name: string;
+}
+export interface ChangeApprovalProcess {
+  steps: string[];
+  approvers: string[];
+}
+export interface ChangeApproval {
+  approver: string;
+  decision: string;
+}
 
 /**
  * Project Manufacturing Service
  * Control broad range of product designs and respond to changes
  */
 export class ProjectManufacturingService {
-
   // ================================
   // PROJECT MANAGEMENT
   // ================================
@@ -223,20 +263,18 @@ export class ProjectManufacturingService {
   /**
    * Create manufacturing project
    */
-  async createManufacturingProject(
-    projectData: {
-      projectName: string;
-      projectType: string;
-      customerId: string;
-      productDesigns: any[];
-      targetDeliveryDate: Date;
-    }
-  ): Promise<ManufacturingProject> {
+  async createManufacturingProject(projectData: {
+    projectName: string;
+    projectType: string;
+    customerId: string;
+    productDesigns: any[];
+    targetDeliveryDate: Date;
+  }): Promise<ManufacturingProject> {
     const projectId = `mp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const projectNumber = `MP${Date.now().toString().slice(-6)}`;
-    
+
     console.log(`Creating manufacturing project: ${projectNumber}`);
-    
+
     const project: ManufacturingProject = {
       projectId,
       projectNumber,
@@ -258,7 +296,7 @@ export class ProjectManufacturingService {
           complexity: 'MEDIUM',
           customComponents: 0,
           standardComponents: 0,
-          makeVsBuyAnalysis: []
+          makeVsBuyAnalysis: [],
         },
         routingInstructions: {
           routingId: `routing_${projectId}_${index + 1}`,
@@ -267,10 +305,10 @@ export class ProjectManufacturingService {
           totalLaborHours: 0,
           totalLaborCost: 0,
           criticalPath: [],
-          bottleneckOperations: []
+          bottleneckOperations: [],
         },
         testRequirements: [],
-        approvalStatus: 'DRAFT'
+        approvalStatus: 'DRAFT',
       })),
       projectPlan: {
         planId: `plan_${projectId}`,
@@ -284,7 +322,7 @@ export class ProjectManufacturingService {
             status: 'NOT_STARTED',
             percentComplete: 0,
             deliverables: ['Engineering drawings', 'BOM', 'Routing'],
-            resources: ['ENGINEER_001', 'DESIGNER_001']
+            resources: ['ENGINEER_001', 'DESIGNER_001'],
           },
           {
             phaseId: 'phase_002',
@@ -295,8 +333,8 @@ export class ProjectManufacturingService {
             status: 'NOT_STARTED',
             percentComplete: 0,
             deliverables: ['Finished products', 'Quality certificates'],
-            resources: ['PRODUCTION_TEAM']
-          }
+            resources: ['PRODUCTION_TEAM'],
+          },
         ],
         milestones: [
           {
@@ -306,13 +344,15 @@ export class ProjectManufacturingService {
             plannedDate: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
             status: 'PENDING',
             criticalMilestone: true,
-            dependencies: ['phase_001']
-          }
+            dependencies: ['phase_001'],
+          },
         ],
         dependencies: [],
         criticalPath: ['phase_001', 'phase_002'],
-        totalDuration: Math.ceil((projectData.targetDeliveryDate.getTime() - Date.now()) / (24 * 60 * 60 * 1000)),
-        bufferTime: 5
+        totalDuration: Math.ceil(
+          (projectData.targetDeliveryDate.getTime() - Date.now()) / (24 * 60 * 60 * 1000)
+        ),
+        bufferTime: 5,
       },
       costManagement: {
         budgetedCost: 125000,
@@ -327,9 +367,9 @@ export class ProjectManufacturingService {
           labor: 25000,
           tooling: 10000,
           testing: 5000,
-          overhead: 5000
+          overhead: 5000,
         },
-        costTrends: []
+        costTrends: [],
       },
       changeManagement: {
         changeOrders: [],
@@ -337,18 +377,18 @@ export class ProjectManufacturingService {
         changeImpact: {
           costImpact: 0,
           scheduleImpact: 0,
-          scopeImpact: []
+          scopeImpact: [],
         },
         approvalProcess: {
           steps: ['Technical Review', 'Cost Analysis', 'Customer Approval'],
-          approvers: ['TECHNICAL_MANAGER', 'PROJECT_MANAGER', 'CUSTOMER']
-        }
+          approvers: ['TECHNICAL_MANAGER', 'PROJECT_MANAGER', 'CUSTOMER'],
+        },
       },
       qualityPlan: { planId: 'qp_001', qualityGates: [] },
       deliverables: [],
       timeline: { startDate: new Date(), endDate: projectData.targetDeliveryDate },
       resources: [],
-      risks: []
+      risks: [],
     };
 
     return project;
@@ -372,9 +412,9 @@ export class ProjectManufacturingService {
   ): Promise<ChangeOrder> {
     const changeOrderId = `co_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const changeOrderNumber = `CO${Date.now().toString().slice(-6)}`;
-    
+
     console.log(`Creating change order: ${changeOrderNumber} for project ${projectId}`);
-    
+
     const changeOrder: ChangeOrder = {
       changeOrderId,
       changeOrderNumber,
@@ -386,10 +426,10 @@ export class ProjectManufacturingService {
         cost: changeData.impact.cost,
         schedule: changeData.impact.schedule,
         scope: changeData.impact.scope,
-        risk: changeData.impact.cost > 10000 || changeData.impact.schedule > 7 ? 'HIGH' : 'MEDIUM'
+        risk: changeData.impact.cost > 10000 || changeData.impact.schedule > 7 ? 'HIGH' : 'MEDIUM',
       },
       status: 'DRAFT',
-      approvals: []
+      approvals: [],
     };
 
     return changeOrder;
@@ -427,38 +467,38 @@ export class ProjectManufacturingService {
     recommendations: string[];
   }> {
     console.log(`Tracking performance for project ${projectId}`);
-    
+
     return {
       schedulePerformance: {
         plannedProgress: 65.0,
         actualProgress: 58.5,
         scheduleVariance: -6.5,
-        criticalPathStatus: 'AT_RISK'
+        criticalPathStatus: 'AT_RISK',
       },
       costPerformance: {
         budgetedCost: 125000,
         actualCost: 98500,
         costVariance: -26500,
         costPerformanceIndex: 1.27,
-        earnedValue: 73125
+        earnedValue: 73125,
       },
       qualityPerformance: {
         qualityGatesPassed: 3,
         totalQualityGates: 5,
         defectRate: 1.2,
-        reworkRate: 0.8
+        reworkRate: 0.8,
       },
       riskStatus: {
         totalRisks: 8,
         highRisks: 2,
         mitigatedRisks: 4,
-        newRisks: 1
+        newRisks: 1,
       },
       recommendations: [
         'Focus resources on critical path activities',
         'Implement risk mitigation for high-priority risks',
-        'Consider schedule compression techniques'
-      ]
+        'Consider schedule compression techniques',
+      ],
     };
   }
 
@@ -502,7 +542,7 @@ export class ProjectManufacturingService {
     approvalRequired: boolean;
   }> {
     console.log(`Processing design change for project ${projectId}, design ${designId}`);
-    
+
     return {
       changeImpactAnalysis: {
         bomChanges: [
@@ -510,36 +550,36 @@ export class ProjectManufacturingService {
             component: 'Component A',
             changeType: 'MODIFY',
             costImpact: 1500,
-            leadTimeImpact: 3
-          }
+            leadTimeImpact: 3,
+          },
         ],
         routingChanges: [
           {
             operation: 'Assembly',
             changeType: 'MODIFY',
             timeImpact: 2.5,
-            costImpact: 875
-          }
+            costImpact: 875,
+          },
         ],
         testingChanges: [
           {
             test: 'Performance Test',
             changeType: 'ADD',
-            effort: 16
-          }
-        ]
+            effort: 16,
+          },
+        ],
       },
       totalImpact: {
         costChange: 2375,
         scheduleChange: 5,
-        riskChange: 'INCREASE'
+        riskChange: 'INCREASE',
       },
       recommendedActions: [
         'Update project budget to reflect changes',
         'Communicate schedule impact to customer',
-        'Implement additional risk mitigation measures'
+        'Implement additional risk mitigation measures',
       ],
-      approvalRequired: true
+      approvalRequired: true,
     };
   }
 }

@@ -7,7 +7,15 @@
 export interface LifeEvent {
   id: string;
   employeeId: string;
-  eventType: 'MARRIAGE' | 'DIVORCE' | 'BIRTH' | 'ADOPTION' | 'DEATH' | 'RETIREMENT' | 'TERMINATION' | 'DISABILITY';
+  eventType:
+    | 'MARRIAGE'
+    | 'DIVORCE'
+    | 'BIRTH'
+    | 'ADOPTION'
+    | 'DEATH'
+    | 'RETIREMENT'
+    | 'TERMINATION'
+    | 'DISABILITY';
   eventDate: Date;
   reportedDate: Date;
   effectiveDate: Date;
@@ -73,18 +81,19 @@ export interface FlexibleRateCalculation {
 }
 
 export class AdvancedBenefitsService {
-
   /**
    * Life Event Management
    */
-  async processLifeEvent(lifeEvent: Omit<LifeEvent, 'id' | 'status' | 'processedChanges'>): Promise<LifeEvent> {
+  async processLifeEvent(
+    lifeEvent: Omit<LifeEvent, 'id' | 'status' | 'processedChanges'>
+  ): Promise<LifeEvent> {
     const id = `le_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const processedEvent: LifeEvent = {
       ...lifeEvent,
       id,
       status: 'PENDING',
-      processedChanges: []
+      processedChanges: [],
     };
 
     // Determine eligible benefit changes based on event type
@@ -100,9 +109,14 @@ export class AdvancedBenefitsService {
     return processedEvent;
   }
 
-  async processLifeEventChanges(lifeEventId: string, benefitChanges: Omit<BenefitChange, 'id'>[]): Promise<void> {
-    console.log(`Processing ${benefitChanges.length} benefit changes for life event ${lifeEventId}`);
-    
+  async processLifeEventChanges(
+    lifeEventId: string,
+    benefitChanges: Omit<BenefitChange, 'id'>[]
+  ): Promise<void> {
+    console.log(
+      `Processing ${benefitChanges.length} benefit changes for life event ${lifeEventId}`
+    );
+
     for (const change of benefitChanges) {
       await this.validateBenefitChange(change);
       await this.calculateCostImpact(change);
@@ -110,29 +124,34 @@ export class AdvancedBenefitsService {
     }
   }
 
-  private async determineEligibleBenefitChanges(employeeId: string, eventType: LifeEvent['eventType']): Promise<string[]> {
+  private async determineEligibleBenefitChanges(
+    employeeId: string,
+    eventType: LifeEvent['eventType']
+  ): Promise<string[]> {
     const eligibilityRules = await this.getLifeEventEligibilityRules(eventType);
     const employeeBenefits = await this.getEmployeeCurrentBenefits(employeeId);
-    
+
     return eligibilityRules
-      .filter(rule => this.evaluateEligibilityRule(rule, employeeBenefits))
-      .map(rule => rule.benefitPlanId);
+      .filter((rule) => this.evaluateEligibilityRule(rule, employeeBenefits))
+      .map((rule) => rule.benefitPlanId);
   }
 
-  private async getLifeEventEligibilityRules(eventType: LifeEvent['eventType']): Promise<Array<{
-    eventType: string;
-    benefitPlanId: string;
-    allowedChanges: string[];
-    conditions: string[];
-  }>> {
+  private async getLifeEventEligibilityRules(eventType: LifeEvent['eventType']): Promise<
+    Array<{
+      eventType: string;
+      benefitPlanId: string;
+      allowedChanges: string[];
+      conditions: string[];
+    }>
+  > {
     // Implementation would fetch from configuration
     return [
       {
         eventType: 'MARRIAGE',
         benefitPlanId: 'health_001',
         allowedChanges: ['ENROLL', 'MODIFY', 'DEPENDENT_ADD'],
-        conditions: ['spouse_eligible']
-      }
+        conditions: ['spouse_eligible'],
+      },
     ];
   }
 
@@ -157,7 +176,7 @@ export class AdvancedBenefitsService {
     availablePlans: string[];
   }): Promise<ScheduledBenefitsProcessing> {
     const id = `oe_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       id,
       processingType: 'OPEN_ENROLLMENT',
@@ -165,13 +184,13 @@ export class AdvancedBenefitsService {
       effectiveDate: parameters.effectiveDate,
       employeeGroups: parameters.eligibleEmployeeGroups,
       processingRules: await this.getOpenEnrollmentRules(),
-      status: 'SCHEDULED'
+      status: 'SCHEDULED',
     };
   }
 
   async executeScheduledProcessing(processingId: string): Promise<void> {
     console.log(`Executing scheduled benefits processing ${processingId}`);
-    
+
     // Implementation would:
     // 1. Load processing configuration
     // 2. Identify affected employees
@@ -186,8 +205,8 @@ export class AdvancedBenefitsService {
         id: 'rule_auto_enroll_health',
         condition: 'employee.status === "ACTIVE" && !employee.hasHealthInsurance',
         action: 'AUTO_ENROLL_DEFAULT_HEALTH',
-        priority: 1
-      }
+        priority: 1,
+      },
     ];
   }
 
@@ -207,15 +226,18 @@ export class AdvancedBenefitsService {
   }> {
     const rateCalculation = await this.getRateCalculation(benefitPlanId, effectiveDate);
     const employeeData = await this.getEmployeeForRateCalculation(employeeId);
-    
+
     let monthlyPremium = 0;
-    
+
     switch (rateCalculation.rateStructure) {
       case 'AGE_BANDED':
         monthlyPremium = this.calculateAgeBandedRate(employeeData.age, rateCalculation.parameters);
         break;
       case 'INCOME_BASED':
-        monthlyPremium = this.calculateIncomeBasedRate(employeeData.salary, rateCalculation.parameters);
+        monthlyPremium = this.calculateIncomeBasedRate(
+          employeeData.salary,
+          rateCalculation.parameters
+        );
         break;
       case 'TIER_BASED':
         monthlyPremium = this.calculateTierBasedRate(coverageTier, rateCalculation.parameters);
@@ -225,18 +247,22 @@ export class AdvancedBenefitsService {
     }
 
     // Apply employer/employee split
-    const employerContribution = monthlyPremium * (rateCalculation.parameters.employerContributionPercent || 0.8);
+    const employerContribution =
+      monthlyPremium * (rateCalculation.parameters.employerContributionPercent || 0.8);
     const employeeContribution = monthlyPremium - employerContribution;
 
     return {
       monthlyPremium,
       employeeContribution,
       employerContribution,
-      calculation: rateCalculation
+      calculation: rateCalculation,
     };
   }
 
-  private async getRateCalculation(benefitPlanId: string, effectiveDate: Date): Promise<FlexibleRateCalculation> {
+  private async getRateCalculation(
+    benefitPlanId: string,
+    effectiveDate: Date
+  ): Promise<FlexibleRateCalculation> {
     // Implementation would fetch active rate calculation for plan
     return {
       id: `rate_${benefitPlanId}_${effectiveDate.getFullYear()}`,
@@ -248,11 +274,11 @@ export class AdvancedBenefitsService {
           { minAge: 0, maxAge: 29, rate: 150 },
           { minAge: 30, maxAge: 39, rate: 200 },
           { minAge: 40, maxAge: 49, rate: 275 },
-          { minAge: 50, rate: 350 }
+          { minAge: 50, rate: 350 },
         ],
-        employerContributionPercent: 0.8
+        employerContributionPercent: 0.8,
       },
-      effectiveDate
+      effectiveDate,
     };
   }
 
@@ -265,7 +291,7 @@ export class AdvancedBenefitsService {
     return {
       age: 35,
       salary: 75000,
-      dependents: 2
+      dependents: 2,
     };
   }
 
@@ -282,15 +308,15 @@ export class AdvancedBenefitsService {
   private calculateIncomeBasedRate(salary: number, parameters: any): number {
     const baseRate = parameters.baseRate || 200;
     const incomeMultiplier = parameters.incomeMultiplier || 0.002;
-    return baseRate + (salary * incomeMultiplier);
+    return baseRate + salary * incomeMultiplier;
   }
 
   private calculateTierBasedRate(tier: BenefitCoverage['tier'], parameters: any): number {
     const tierRates = parameters.tierRates || {
-      'EMPLOYEE_ONLY': 150,
-      'EMPLOYEE_SPOUSE': 300,
-      'EMPLOYEE_CHILDREN': 275,
-      'FAMILY': 450
+      EMPLOYEE_ONLY: 150,
+      EMPLOYEE_SPOUSE: 300,
+      EMPLOYEE_CHILDREN: 275,
+      FAMILY: 450,
     };
     return tierRates[tier] || 0;
   }
@@ -305,38 +331,43 @@ export class AdvancedBenefitsService {
     enrollmentPeriod: { start: Date; end: Date } | null;
   }> {
     console.log(`Getting self-service enrollment options for employee ${employeeId}`);
-    
+
     return {
       availablePlans: await this.getAvailableBenefitPlans(employeeId),
       currentEnrollments: await this.getCurrentBenefitEnrollments(employeeId),
       eligibleLifeEvents: ['MARRIAGE', 'BIRTH', 'ADOPTION'],
-      enrollmentPeriod: await this.getCurrentEnrollmentPeriod()
+      enrollmentPeriod: await this.getCurrentEnrollmentPeriod(),
     };
   }
 
-  async submitSelfServiceEnrollment(employeeId: string, enrollmentData: {
-    benefitSelections: Array<{
-      benefitPlanId: string;
-      coverageTier: BenefitCoverage['tier'];
-      dependents?: BenefitDependent[];
-    }>;
-    lifeEventId?: string;
-  }): Promise<{ confirmationId: string; effectiveDate: Date }> {
+  async submitSelfServiceEnrollment(
+    employeeId: string,
+    enrollmentData: {
+      benefitSelections: Array<{
+        benefitPlanId: string;
+        coverageTier: BenefitCoverage['tier'];
+        dependents?: BenefitDependent[];
+      }>;
+      lifeEventId?: string;
+    }
+  ): Promise<{ confirmationId: string; effectiveDate: Date }> {
     const confirmationId = `conf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Validate enrollment eligibility
     await this.validateEnrollmentEligibility(employeeId, enrollmentData);
-    
+
     // Process each benefit selection
     for (const selection of enrollmentData.benefitSelections) {
       await this.processBenefitSelection(employeeId, selection);
     }
-    
-    console.log(`Self-service enrollment submitted for employee ${employeeId}, confirmation: ${confirmationId}`);
-    
+
+    console.log(
+      `Self-service enrollment submitted for employee ${employeeId}, confirmation: ${confirmationId}`
+    );
+
     return {
       confirmationId,
-      effectiveDate: new Date() // Would be calculated based on rules
+      effectiveDate: new Date(), // Would be calculated based on rules
     };
   }
 
@@ -375,7 +406,10 @@ export class AdvancedBenefitsService {
     return null;
   }
 
-  private async validateEnrollmentEligibility(employeeId: string, enrollmentData: any): Promise<void> {
+  private async validateEnrollmentEligibility(
+    employeeId: string,
+    enrollmentData: any
+  ): Promise<void> {
     console.log(`Validating enrollment eligibility for employee ${employeeId}`);
   }
 
@@ -392,12 +426,12 @@ export class AdvancedBenefitsService {
     errors: string[];
   }> {
     console.log(`Syncing employee ${employeeId} with Oracle EBS Core HR`);
-    
+
     // Implementation would integrate with Oracle EBS Core HR
     return {
       syncStatus: 'SUCCESS',
       syncedFields: ['benefits', 'personal_info', 'employment_status'],
-      errors: []
+      errors: [],
     };
   }
 
@@ -407,11 +441,11 @@ export class AdvancedBenefitsService {
     errors: string[];
   }> {
     console.log(`Syncing payroll batch ${payrollBatchId} with Oracle EBS Payroll`);
-    
+
     return {
       syncStatus: 'SUCCESS',
       recordsProcessed: 0,
-      errors: []
+      errors: [],
     };
   }
 }

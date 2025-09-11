@@ -13,12 +13,12 @@ export interface RentalAsset {
   assetNumber: string;
   assetName: string;
   description: string;
-  
+
   // Asset classification
   assetCategory: 'EQUIPMENT' | 'VEHICLE' | 'MACHINERY' | 'TOOL' | 'TECHNOLOGY' | 'FURNITURE';
   assetType: string;
   assetSubtype: string;
-  
+
   // Specifications
   specifications: {
     manufacturer: string;
@@ -34,7 +34,7 @@ export interface RentalAsset {
     };
     technicalSpecs: Record<string, any>;
   };
-  
+
   // Rental configuration
   rentalConfig: {
     isRentable: boolean;
@@ -47,7 +47,7 @@ export interface RentalAsset {
       reason: string;
     }[];
   };
-  
+
   // Location and availability
   location: {
     currentLocation: string;
@@ -56,7 +56,7 @@ export interface RentalAsset {
     transportationCost?: number;
     availabilityZone: string[];
   };
-  
+
   // Condition and maintenance
   condition: {
     overallCondition: 'EXCELLENT' | 'GOOD' | 'FAIR' | 'POOR' | 'OUT_OF_SERVICE';
@@ -66,7 +66,7 @@ export interface RentalAsset {
     isOperational: boolean;
     knownIssues: string[];
   };
-  
+
   // Financial information
   financial: {
     acquisitionCost: number;
@@ -76,7 +76,7 @@ export interface RentalAsset {
     targetUtilization: number; // percentage
     targetRevenue: number; // annual
   };
-  
+
   // Rental pricing
   pricing: {
     hourlyRate: number;
@@ -90,7 +90,7 @@ export interface RentalAsset {
     damageDeposit: number;
     deliveryFee?: number;
   };
-  
+
   // Usage tracking
   usage: {
     totalRentalHours: number;
@@ -100,7 +100,7 @@ export interface RentalAsset {
     utilizationRate: number; // percentage
     revenueGenerated: number; // total lifetime
   };
-  
+
   // Compliance and certifications
   compliance: {
     requiredCertifications: string[];
@@ -113,7 +113,7 @@ export interface RentalAsset {
     safetyRequirements: string[];
     operatorRequirements: string[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -125,7 +125,7 @@ export interface RentalAgreement {
   agreementNumber: string;
   rentalAssetId: string;
   customerId: string;
-  
+
   // Customer information
   customer: {
     customerId: string;
@@ -150,7 +150,7 @@ export interface RentalAgreement {
       requiresDeposit: boolean;
     };
   };
-  
+
   // Rental terms
   rentalTerms: {
     startDate: Date;
@@ -168,7 +168,7 @@ export interface RentalAgreement {
       noticeRequired: number; // hours
     };
   };
-  
+
   // Pricing and billing
   pricing: {
     baseRate: number;
@@ -188,7 +188,7 @@ export interface RentalAgreement {
     taxRate: number;
     totalWithTax: number;
   };
-  
+
   // Deposits and fees
   deposits: {
     securityDeposit: number;
@@ -197,7 +197,7 @@ export interface RentalAgreement {
     totalDeposits: number;
     depositStatus: 'PENDING' | 'RECEIVED' | 'PARTIAL' | 'REFUNDED';
   };
-  
+
   // Delivery and pickup
   logistics: {
     deliveryRequired: boolean;
@@ -209,7 +209,7 @@ export interface RentalAgreement {
     transportationCost: number;
     specialInstructions?: string;
   };
-  
+
   // Terms and conditions
   terms: {
     useRestrictions: string[];
@@ -227,10 +227,16 @@ export interface RentalAgreement {
       businessInterruption?: number;
     };
   };
-  
+
   // Agreement status
   status: {
-    agreementStatus: 'DRAFT' | 'PENDING_APPROVAL' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED' | 'BREACHED';
+    agreementStatus:
+      | 'DRAFT'
+      | 'PENDING_APPROVAL'
+      | 'ACTIVE'
+      | 'COMPLETED'
+      | 'CANCELLED'
+      | 'BREACHED';
     signedDate?: Date;
     approvedBy?: string;
     activationDate?: Date;
@@ -238,7 +244,7 @@ export interface RentalAgreement {
     cancellationDate?: Date;
     cancellationReason?: string;
   };
-  
+
   // Performance tracking
   performance: {
     onTimeDelivery: boolean;
@@ -255,7 +261,7 @@ export interface RentalAgreement {
       outstandingBalance: number;
     };
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -266,7 +272,7 @@ export interface RentalFleet {
   fleetId: string;
   fleetName: string;
   description: string;
-  
+
   // Fleet composition
   assets: {
     rentalAssetId: string;
@@ -276,7 +282,7 @@ export interface RentalFleet {
     utilizationRate: number;
     revenueContribution: number;
   }[];
-  
+
   // Fleet metrics
   metrics: {
     totalAssets: number;
@@ -290,7 +296,7 @@ export interface RentalFleet {
     revenueGenerated: number; // annual
     profitability: number; // percentage
   };
-  
+
   // Performance by category
   categoryPerformance: {
     category: string;
@@ -300,7 +306,7 @@ export interface RentalFleet {
     profitMargin: number;
     customerSatisfaction: number;
   }[];
-  
+
   // Maintenance summary
   maintenance: {
     scheduledMaintenanceItems: number;
@@ -309,7 +315,7 @@ export interface RentalFleet {
     downtimePercentage: number;
     maintenanceEfficiency: number;
   };
-  
+
   // Financial performance
   financial: {
     totalRevenue: number;
@@ -320,7 +326,7 @@ export interface RentalFleet {
     returnOnAssets: number; // percentage
     revenuePerAsset: number;
   };
-  
+
   // Optimization opportunities
   optimization: {
     underutilizedAssets: string[];
@@ -336,7 +342,7 @@ export interface RentalFleet {
       estimatedValue: number;
     }[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -352,7 +358,7 @@ export interface RentalUtilization {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Utilization metrics
   utilization: {
     totalAvailableHours: number;
@@ -363,7 +369,7 @@ export interface RentalUtilization {
     peakUtilization: number; // highest utilization in period
     averageUtilization: number; // average across period
   };
-  
+
   // Temporal patterns
   patterns: {
     hourlyUtilization: {
@@ -384,7 +390,7 @@ export interface RentalUtilization {
       demandPattern: string;
     }[];
   };
-  
+
   // Customer analysis
   customerAnalysis: {
     totalCustomers: number;
@@ -398,7 +404,7 @@ export interface RentalUtilization {
       utilizationContribution: number; // percentage
     }[];
   };
-  
+
   // Revenue impact
   revenueImpact: {
     actualRevenue: number;
@@ -407,7 +413,7 @@ export interface RentalUtilization {
     revenueOpportunity: number; // potential improvement
     revenuePerUtilizationPoint: number;
   };
-  
+
   // Factors affecting utilization
   factors: {
     demandFactors: string[];
@@ -416,7 +422,7 @@ export interface RentalUtilization {
     competitiveFactors: string[];
     operationalFactors: string[];
   };
-  
+
   // Improvement recommendations
   recommendations: {
     immediate: string[];
@@ -429,7 +435,7 @@ export interface RentalUtilization {
       paybackPeriod: number; // months
     }[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -445,7 +451,7 @@ export interface RentalRevenue {
     endDate: Date;
     periodType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
   };
-  
+
   // Revenue breakdown
   revenue: {
     rentalRevenue: number;
@@ -457,7 +463,7 @@ export interface RentalRevenue {
     discountsGiven: number;
     totalNetRevenue: number;
   };
-  
+
   // Pricing analysis
   pricing: {
     averageHourlyRate: number;
@@ -470,7 +476,7 @@ export interface RentalRevenue {
       pricePositioning: 'PREMIUM' | 'COMPETITIVE' | 'DISCOUNT';
     };
   };
-  
+
   // Customer revenue analysis
   customerRevenue: {
     topCustomers: {
@@ -489,7 +495,7 @@ export interface RentalRevenue {
     newCustomerRevenue: number;
     repeatCustomerRevenue: number;
   };
-  
+
   // Revenue trends
   trends: {
     monthOverMonth: number; // percentage change
@@ -498,7 +504,7 @@ export interface RentalRevenue {
     seasonalVariation: number; // coefficient of variation
     growthRate: number; // annualized
   };
-  
+
   // Profitability analysis
   profitability: {
     grossProfit: number;
@@ -510,7 +516,7 @@ export interface RentalRevenue {
     netMargin: number; // percentage
     returnOnAssets: number; // percentage
   };
-  
+
   // Performance against targets
   targets: {
     revenueTarget: number;
@@ -521,7 +527,7 @@ export interface RentalRevenue {
     revenuePerAsset: number;
     targetRevenuePerAsset: number;
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -530,7 +536,7 @@ export interface RentalMaintenance {
   maintenanceId: string;
   rentalAssetId: string;
   maintenanceType: 'PREVENTIVE' | 'CORRECTIVE' | 'PREDICTIVE' | 'EMERGENCY' | 'RENTAL_PREP';
-  
+
   // Maintenance details
   maintenance: {
     scheduledDate: Date;
@@ -549,7 +555,7 @@ export interface RentalMaintenance {
     laborCost: number;
     totalCost: number;
   };
-  
+
   // Service provider
   serviceProvider: {
     providerType: 'IN_HOUSE' | 'CONTRACTED' | 'MANUFACTURER';
@@ -561,7 +567,7 @@ export interface RentalMaintenance {
       email: string;
     };
   };
-  
+
   // Asset condition
   condition: {
     preMaintenanceCondition: string;
@@ -571,7 +577,7 @@ export interface RentalMaintenance {
     recommendedActions: string[];
     nextMaintenanceDue: Date;
   };
-  
+
   // Quality and compliance
   quality: {
     workQualityRating: number; // 1-10 scale
@@ -583,7 +589,7 @@ export interface RentalMaintenance {
     certificationUpdated: boolean;
     warrantyImpact: string;
   };
-  
+
   // Impact on availability
   availability: {
     downtimeHours: number;
@@ -592,7 +598,7 @@ export interface RentalMaintenance {
     customerImpact: 'NONE' | 'MINOR' | 'MODERATE' | 'SIGNIFICANT';
     rescheduleRequired: boolean;
   };
-  
+
   // Follow-up actions
   followUp: {
     followUpRequired: boolean;
@@ -601,9 +607,9 @@ export interface RentalMaintenance {
     warrantyWork: boolean;
     vendorNotificationRequired: boolean;
   };
-  
+
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'DEFERRED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -615,7 +621,7 @@ export interface RentalCustomer {
   customerNumber: string;
   customerName: string;
   customerType: 'INDIVIDUAL' | 'CORPORATE' | 'GOVERNMENT' | 'NON_PROFIT';
-  
+
   // Contact information
   contactInfo: {
     primaryContact: string;
@@ -639,7 +645,7 @@ export interface RentalCustomer {
       country: string;
     };
   };
-  
+
   // Business information
   businessInfo: {
     industry: string;
@@ -650,7 +656,7 @@ export interface RentalCustomer {
     taxId?: string;
     businessLicense?: string;
   };
-  
+
   // Credit and financial
   creditInfo: {
     creditRating?: string;
@@ -665,7 +671,7 @@ export interface RentalCustomer {
       accountNumber: string; // encrypted
     };
   };
-  
+
   // Rental history
   rentalHistory: {
     firstRentalDate: Date;
@@ -676,7 +682,7 @@ export interface RentalCustomer {
     preferredAssetCategories: string[];
     frequencyPattern: 'OCCASIONAL' | 'REGULAR' | 'FREQUENT' | 'CONTINUOUS';
   };
-  
+
   // Customer preferences
   preferences: {
     preferredDeliveryMethod: string;
@@ -690,7 +696,7 @@ export interface RentalCustomer {
     specialRequirements: string[];
     notes: string;
   };
-  
+
   // Performance metrics
   performance: {
     paymentHistory: {
@@ -713,7 +719,7 @@ export interface RentalCustomer {
       feedbackCount: number;
     };
   };
-  
+
   // Customer segmentation
   segmentation: {
     customerTier: 'PREMIUM' | 'STANDARD' | 'BASIC';
@@ -722,7 +728,7 @@ export interface RentalCustomer {
     profitability: 'HIGH' | 'MEDIUM' | 'LOW';
     growthPotential: 'HIGH' | 'MEDIUM' | 'LOW';
   };
-  
+
   // Relationship management
   relationship: {
     accountManager?: string;
@@ -732,7 +738,7 @@ export interface RentalCustomer {
     specialOffers: string[];
     contractedRates: boolean;
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -744,7 +750,7 @@ export interface RentalPricing {
   rentalAssetId?: string;
   assetCategory?: string;
   pricingStrategy: string;
-  
+
   // Base pricing structure
   basePricing: {
     hourlyRate: number;
@@ -756,7 +762,7 @@ export interface RentalPricing {
       discountPercentage: number;
     }[];
   };
-  
+
   // Dynamic pricing factors
   dynamicFactors: {
     demandMultiplier: number;
@@ -766,7 +772,7 @@ export interface RentalPricing {
     customerTierDiscount: number;
     volumeDiscount: number;
   };
-  
+
   // Market pricing
   marketPricing: {
     competitorRates: {
@@ -778,7 +784,7 @@ export interface RentalPricing {
     ourPositioning: 'PREMIUM' | 'COMPETITIVE' | 'VALUE';
     priceElasticity: number;
   };
-  
+
   // Pricing optimization
   optimization: {
     currentRevenue: number;
@@ -788,7 +794,7 @@ export interface RentalPricing {
     confidenceLevel: number; // percentage
     recommendedAction: 'INCREASE' | 'DECREASE' | 'MAINTAIN';
   };
-  
+
   // Special pricing
   specialPricing: {
     promotionalRates: {
@@ -809,7 +815,7 @@ export interface RentalPricing {
       discountPercentage: number;
     }[];
   };
-  
+
   // Additional charges
   additionalCharges: {
     deliveryFee: number;
@@ -820,7 +826,7 @@ export interface RentalPricing {
     cleaningFee: number;
     expediteFee: number;
   };
-  
+
   // Pricing performance
   performance: {
     priceRealization: number; // percentage of list price actually achieved
@@ -829,11 +835,11 @@ export interface RentalPricing {
     customerPriceAcceptance: number; // percentage
     negotiationFrequency: number; // percentage of deals negotiated
   };
-  
+
   effectiveDate: Date;
   expirationDate?: Date;
   approvedBy: string;
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -850,7 +856,7 @@ export interface RentalPerformance {
     endDate: Date;
     periodType: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
   };
-  
+
   // Financial performance
   financial: {
     totalRevenue: number;
@@ -861,7 +867,7 @@ export interface RentalPerformance {
     costPerRental: number;
     averageOrderValue: number;
   };
-  
+
   // Operational performance
   operational: {
     utilizationRate: number; // percentage
@@ -871,7 +877,7 @@ export interface RentalPerformance {
     assetTurnover: number; // rentals per asset
     averageRentalDuration: number; // hours
   };
-  
+
   // Key performance indicators
   kpis: {
     name: string;
@@ -881,7 +887,7 @@ export interface RentalPerformance {
     trend: 'IMPROVING' | 'STABLE' | 'DECLINING';
     priority: 'HIGH' | 'MEDIUM' | 'LOW';
   }[];
-  
+
   // Customer metrics
   customerMetrics: {
     newCustomerCount: number;
@@ -891,7 +897,7 @@ export interface RentalPerformance {
     customerComplaintRate: number; // percentage
     netPromoterScore: number;
   };
-  
+
   // Asset performance
   assetPerformance: {
     topPerformingAssets: {
@@ -908,7 +914,7 @@ export interface RentalPerformance {
       issues: string[];
     }[];
   };
-  
+
   // Maintenance performance
   maintenance: {
     plannedMaintenanceCompliance: number; // percentage
@@ -917,7 +923,7 @@ export interface RentalPerformance {
     downtimePercentage: number;
     maintenanceEfficiency: number; // percentage
   };
-  
+
   // Market performance
   market: {
     marketShare: number; // percentage
@@ -925,7 +931,7 @@ export interface RentalPerformance {
     pricePremium: number; // percentage above/below market
     demandCapture: number; // percentage of available demand
   };
-  
+
   // Trends and forecasts
   trends: {
     revenueProjection: {
@@ -939,7 +945,7 @@ export interface RentalPerformance {
       expectedVariance: number; // percentage
     }[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -949,7 +955,7 @@ export interface RentalContract {
   contractNumber: string;
   customerId: string;
   contractType: 'MASTER_AGREEMENT' | 'SPECIFIC_RENTAL' | 'MAINTENANCE_AGREEMENT';
-  
+
   // Contract terms
   contractTerms: {
     startDate: Date;
@@ -966,7 +972,7 @@ export interface RentalContract {
       terminationPenalty?: number;
     };
   };
-  
+
   // Pricing and discounts
   pricing: {
     contractRates: {
@@ -982,7 +988,7 @@ export interface RentalContract {
     paymentTerms: string;
     invoicingFrequency: 'MONTHLY' | 'QUARTERLY' | 'PER_RENTAL';
   };
-  
+
   // Service levels
   serviceLevels: {
     priorityBooking: boolean;
@@ -991,7 +997,7 @@ export interface RentalContract {
     deliveryCommitment: string;
     maintenanceInclusion: string[];
   };
-  
+
   // Performance commitments
   commitments: {
     uptimeGuarantee: number; // percentage
@@ -1002,7 +1008,7 @@ export interface RentalContract {
     }[];
     customerSatisfactionTarget: number;
   };
-  
+
   // Financial terms
   financial: {
     creditLimit: number;
@@ -1015,9 +1021,9 @@ export interface RentalContract {
     billingAddress: string;
     paymentMethod: string;
   };
-  
+
   status: 'DRAFT' | 'PENDING_APPROVAL' | 'ACTIVE' | 'EXPIRED' | 'TERMINATED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1028,7 +1034,7 @@ export interface EquipmentRental {
   equipmentRentalId: string;
   rentalAgreementId: string;
   equipmentId: string;
-  
+
   // Equipment details
   equipment: {
     equipmentType: string;
@@ -1038,7 +1044,7 @@ export interface EquipmentRental {
     operatingInstructions: string;
     safetyRequirements: string[];
   };
-  
+
   // Rental specifics
   rentalDetails: {
     rentalStartDate: Date;
@@ -1050,7 +1056,7 @@ export interface EquipmentRental {
     fuelIncluded: boolean;
     maintenanceIncluded: boolean;
   };
-  
+
   // Delivery and setup
   logistics: {
     deliveryRequired: boolean;
@@ -1060,7 +1066,7 @@ export interface EquipmentRental {
     accessRequirements?: string[];
     specialHandling?: string[];
   };
-  
+
   // Usage monitoring
   usage: {
     meterReadingStart?: number;
@@ -1070,7 +1076,7 @@ export interface EquipmentRental {
     overageCharges?: number;
     fuelConsumed?: number;
   };
-  
+
   // Condition tracking
   condition: {
     preRentalInspection: {
@@ -1089,9 +1095,9 @@ export interface EquipmentRental {
       customerNotified: boolean;
     };
   };
-  
+
   status: 'RESERVED' | 'DELIVERED' | 'IN_USE' | 'RETURNED' | 'INSPECTING' | 'COMPLETED';
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1102,7 +1108,7 @@ export interface FleetOptimization {
   optimizationId: string;
   fleetId: string;
   analysisDate: Date;
-  
+
   // Current fleet analysis
   currentFleet: {
     totalAssets: number;
@@ -1112,7 +1118,7 @@ export interface FleetOptimization {
     annualRevenue: number;
     profitability: number; // percentage
   };
-  
+
   // Optimization objectives
   objectives: {
     targetUtilization: number;
@@ -1121,7 +1127,7 @@ export interface FleetOptimization {
     costReductionTarget: number; // percentage
     revenueGrowthTarget: number; // percentage
   };
-  
+
   // Asset analysis
   assetAnalysis: {
     categoryPerformance: {
@@ -1139,7 +1145,7 @@ export interface FleetOptimization {
       recommendation: 'KEEP' | 'UPGRADE' | 'REPLACE' | 'DISPOSE';
     }[];
   };
-  
+
   // Market demand analysis
   demandAnalysis: {
     currentDemand: {
@@ -1159,7 +1165,7 @@ export interface FleetOptimization {
       confidenceLevel: number; // percentage
     }[];
   };
-  
+
   // Optimization scenarios
   scenarios: {
     scenarioName: string;
@@ -1185,7 +1191,7 @@ export interface FleetOptimization {
       npv: number;
     };
   }[];
-  
+
   // Recommendations
   recommendations: {
     immediate: {
@@ -1207,7 +1213,7 @@ export interface FleetOptimization {
       riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
     }[];
   };
-  
+
   // Implementation plan
   implementationPlan?: {
     selectedScenario: string;
@@ -1226,7 +1232,7 @@ export interface FleetOptimization {
       timeline: number; // months
     }[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1240,7 +1246,7 @@ export interface RentalAnalytics {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Performance analytics
   performance: {
     kpiTrends: {
@@ -1258,7 +1264,7 @@ export interface RentalAnalytics {
       positioning: 'LEADER' | 'ABOVE_AVERAGE' | 'AVERAGE' | 'BELOW_AVERAGE';
     }[];
   };
-  
+
   // Predictive analytics
   predictions: {
     demandForecast: {
@@ -1280,7 +1286,7 @@ export interface RentalAnalytics {
       confidenceInterval: { low: number; high: number };
     }[];
   };
-  
+
   // Customer insights
   customerInsights: {
     segmentAnalysis: {
@@ -1306,7 +1312,7 @@ export interface RentalAnalytics {
       improvementPotential: number;
     }[];
   };
-  
+
   // Operational insights
   operationalInsights: {
     bottleneckAnalysis: {
@@ -1328,7 +1334,7 @@ export interface RentalAnalytics {
       pricingOpportunities: string[];
     }[];
   };
-  
+
   // Financial insights
   financialInsights: {
     profitabilityAnalysis: {
@@ -1352,7 +1358,7 @@ export interface RentalAnalytics {
       demandImpact: number;
     }[];
   };
-  
+
   // Recommendations
   recommendations: {
     strategic: string[];
@@ -1360,7 +1366,7 @@ export interface RentalAnalytics {
     financial: string[];
     immediate: string[];
   };
-  
+
   createdAt: Date;
   createdBy: string;
 }
@@ -1369,7 +1375,7 @@ export interface RentalReservation {
   reservationId: string;
   customerId: string;
   rentalAssetId: string;
-  
+
   // Reservation details
   reservation: {
     reservationDate: Date;
@@ -1379,7 +1385,7 @@ export interface RentalReservation {
     reservationType: 'FIRM' | 'TENTATIVE' | 'OPTION';
     priority: 'STANDARD' | 'HIGH' | 'EMERGENCY';
   };
-  
+
   // Asset allocation
   allocation: {
     allocationMethod: 'SPECIFIC_ASSET' | 'ASSET_CATEGORY' | 'ANY_AVAILABLE';
@@ -1388,7 +1394,7 @@ export interface RentalReservation {
     upgradePossible: boolean;
     downgradeAcceptable: boolean;
   };
-  
+
   // Logistics requirements
   logistics: {
     deliveryRequired: boolean;
@@ -1404,7 +1410,7 @@ export interface RentalReservation {
     };
     specialRequirements?: string[];
   };
-  
+
   // Pricing information
   pricing: {
     quotedRate: number;
@@ -1417,7 +1423,7 @@ export interface RentalReservation {
       amount: number;
     }[];
   };
-  
+
   // Confirmation details
   confirmation: {
     confirmed: boolean;
@@ -1427,7 +1433,7 @@ export interface RentalReservation {
     finalRate?: number;
     contractGenerated?: boolean;
   };
-  
+
   // Status tracking
   status: {
     reservationStatus: 'PENDING' | 'CONFIRMED' | 'MODIFIED' | 'CANCELLED' | 'COMPLETED';
@@ -1436,7 +1442,7 @@ export interface RentalReservation {
     statusChangeReason?: string;
     notificationsSent: string[];
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -1451,7 +1457,7 @@ export interface RentalBilling {
     startDate: Date;
     endDate: Date;
   };
-  
+
   // Invoice details
   invoice: {
     invoiceNumber: string;
@@ -1459,10 +1465,16 @@ export interface RentalBilling {
     dueDate: Date;
     billingType: 'RENTAL_CHARGES' | 'ADDITIONAL_SERVICES' | 'DAMAGE_CHARGES' | 'LATE_FEES';
   };
-  
+
   // Line items
   lineItems: {
-    itemType: 'RENTAL_CHARGE' | 'DELIVERY_FEE' | 'PICKUP_FEE' | 'DAMAGE_CHARGE' | 'LATE_FEE' | 'CLEANING_FEE';
+    itemType:
+      | 'RENTAL_CHARGE'
+      | 'DELIVERY_FEE'
+      | 'PICKUP_FEE'
+      | 'DAMAGE_CHARGE'
+      | 'LATE_FEE'
+      | 'CLEANING_FEE';
     description: string;
     quantity: number;
     rate: number;
@@ -1470,7 +1482,7 @@ export interface RentalBilling {
     taxable: boolean;
     assetId?: string;
   }[];
-  
+
   // Financial summary
   financialSummary: {
     subtotal: number;
@@ -1482,7 +1494,7 @@ export interface RentalBilling {
     adjustments: number;
     newBalance: number;
   };
-  
+
   // Payment information
   payment: {
     paymentMethod: string;
@@ -1493,7 +1505,7 @@ export interface RentalBilling {
     paymentReference?: string;
     lateFeeApplied?: number;
   };
-  
+
   // Billing address
   billingAddress: {
     companyName: string;
@@ -1504,7 +1516,7 @@ export interface RentalBilling {
     zipCode: string;
     country: string;
   };
-  
+
   // Collections information
   collections?: {
     collectionStatus: 'CURRENT' | 'PAST_DUE' | 'COLLECTIONS' | 'LEGAL';
@@ -1516,7 +1528,7 @@ export interface RentalBilling {
     }[];
     collectionNotes: string;
   };
-  
+
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;

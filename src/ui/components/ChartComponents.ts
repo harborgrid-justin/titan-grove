@@ -42,9 +42,9 @@ export class LineChart {
       responsive: config.responsive ?? true,
       animated: config.animated ?? true,
       realtime: config.realtime ?? false,
-      theme: config.theme ?? 'auto'
+      theme: config.theme ?? 'auto',
     };
-    
+
     this.initializeChart();
   }
 
@@ -112,7 +112,7 @@ export class LineChart {
         }
       }
     `;
-    
+
     if (!document.head.querySelector('#titan-chart-styles')) {
       style.id = 'titan-chart-styles';
       document.head.appendChild(style);
@@ -251,7 +251,7 @@ export class PieChart {
         }
       }
     `;
-    
+
     if (!document.head.querySelector('#titan-pie-styles')) {
       style.id = 'titan-pie-styles';
       document.head.appendChild(style);

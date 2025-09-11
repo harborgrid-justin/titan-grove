@@ -3,36 +3,41 @@
  * Business logic for Request for Quote management
  */
 
-import { 
-  RFQ, 
-  RFQStatus,
-  RFQResponse,
-  ProcurementSearchCriteria
-} from '../../types';
+import { RFQ, RFQStatus, RFQResponse, ProcurementSearchCriteria } from '../../types';
 import { rfqRepository } from '../../data-access/repositories';
 import { PaginatedResponse, SearchParams } from '../../../../types/common';
 
 export class RFQService {
-  
   /**
    * Create a new RFQ
    */
   async createRFQ(
-    data: Omit<RFQ, 'id' | 'rfqNumber' | 'status' | 'publishedDate' | 'responses' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>
+    data: Omit<
+      RFQ,
+      | 'id'
+      | 'rfqNumber'
+      | 'status'
+      | 'publishedDate'
+      | 'responses'
+      | 'createdAt'
+      | 'updatedAt'
+      | 'createdBy'
+      | 'updatedBy'
+    >
   ): Promise<RFQ> {
     this.validateRFQData(data);
-    
+
     const rfqNumber = await this.generateRFQNumber();
-    
+
     const rfqData = {
       ...data,
       rfqNumber,
       status: RFQStatus.DRAFT,
       responses: [],
       createdBy: 'system',
-      updatedBy: 'system'
+      updatedBy: 'system',
     };
-    
+
     return await rfqRepository.create(rfqData);
   }
 
@@ -49,21 +54,21 @@ export class RFQService {
     if (!rfq) {
       throw new Error(`RFQ with ID ${rfqId} not found`);
     }
-    
+
     if (rfq.status !== RFQStatus.DRAFT) {
       throw new Error('Only draft RFQs can be published');
     }
-    
+
     // Update status and published date
     await rfqRepository.update(rfqId, {
       status: RFQStatus.PUBLISHED,
-      publishedDate: new Date()
+      publishedDate: new Date(),
     });
-    
+
     return {
       status: 'PUBLISHED',
       publishedDate: new Date(),
-      invitedSuppliers: rfq.invitedSuppliers.length
+      invitedSuppliers: rfq.invitedSuppliers.length,
     };
   }
 
@@ -77,16 +82,17 @@ export class RFQService {
     if (!rfq) {
       throw new Error(`RFQ with ID ${rfqId} not found`);
     }
-    
+
     // Mock evaluation - in real implementation would analyze responses
     return {
       recommendedSupplier: 'supplier_001',
       evaluationScores: [
         { supplierId: 'supplier_001', score: 85, ranking: 1 },
-        { supplierId: 'supplier_002', score: 78, ranking: 2 }
+        { supplierId: 'supplier_002', score: 78, ranking: 2 },
       ],
       costSavings: 15000,
-      analysis: 'Supplier 001 offers the best value proposition with superior quality and competitive pricing.'
+      analysis:
+        'Supplier 001 offers the best value proposition with superior quality and competitive pricing.',
     };
   }
 
@@ -94,11 +100,11 @@ export class RFQService {
     if (!data.title || data.title.trim() === '') {
       throw new Error('RFQ title is required');
     }
-    
+
     if (!data.responseDeadline) {
       throw new Error('Response deadline is required');
     }
-    
+
     if (data.responseDeadline <= new Date()) {
       throw new Error('Response deadline must be in the future');
     }

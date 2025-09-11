@@ -45,7 +45,6 @@ export interface AssetMaintenanceDomainConfig {
  * Consolidated business calculations for asset and maintenance management
  */
 export class AssetMaintenanceBusinessLogic {
-  
   /**
    * Calculate asset depreciation
    */
@@ -74,7 +73,7 @@ export class AssetMaintenanceBusinessLogic {
     return {
       annualDepreciation,
       accumulatedDepreciation: Math.min(accumulatedDepreciation, assetValue * 0.9), // Cap at 90%
-      bookValue: assetValue - Math.min(accumulatedDepreciation, assetValue * 0.9)
+      bookValue: assetValue - Math.min(accumulatedDepreciation, assetValue * 0.9),
     };
   }
 
@@ -96,7 +95,7 @@ export class AssetMaintenanceBusinessLogic {
   } {
     const baseLaborCost = laborHours * laborRate;
     const adjustedPartsCost = partsCost * partsMarkup;
-    
+
     const laborCost = isEmergency ? baseLaborCost * emergencyMultiplier : baseLaborCost;
     const totalCost = laborCost + adjustedPartsCost;
 
@@ -104,7 +103,7 @@ export class AssetMaintenanceBusinessLogic {
       laborCost,
       partsCost: adjustedPartsCost,
       totalCost,
-      isEmergency
+      isEmergency,
     };
   }
 
@@ -134,7 +133,7 @@ export class AssetMaintenanceBusinessLogic {
       utilizationRate,
       efficiency,
       targetGap,
-      status
+      status,
     };
   }
 }
@@ -162,33 +161,33 @@ export class AssetMaintenanceDomainManager {
       assets: {
         depreciationRates: {
           equipment: 0.15,
-          vehicles: 0.20,
+          vehicles: 0.2,
           buildings: 0.05,
-          technology: 0.25
+          technology: 0.25,
         },
         maintenanceSchedules: {
           preventive: 12, // every 12 weeks
-          predictive: 8,  // every 8 weeks
-          emergency: 4    // within 4 hours
+          predictive: 8, // every 8 weeks
+          emergency: 4, // within 4 hours
         },
         utilizationTargets: {
-          equipment: 0.80,
+          equipment: 0.8,
           vehicles: 0.75,
-          facilities: 0.90
-        }
+          facilities: 0.9,
+        },
       },
       maintenance: {
         costFactors: {
           laborRate: 85, // per hour
           partsMarkup: 1.25,
-          emergencyMultiplier: 1.8
+          emergencyMultiplier: 1.8,
         },
         kpis: {
-          mtbf: 720,  // 30 days
-          mttr: 4,    // 4 hours
-          availability: 0.98
-        }
-      }
+          mtbf: 720, // 30 days
+          mttr: 4, // 4 hours
+          availability: 0.98,
+        },
+      },
     };
   }
 
@@ -201,7 +200,7 @@ export class AssetMaintenanceDomainManager {
       id: 'asset_001',
       value: 250000,
       age: 3,
-      type: 'equipment'
+      type: 'equipment',
     };
 
     const depreciation = AssetMaintenanceBusinessLogic.calculateDepreciation(
@@ -222,8 +221,8 @@ export class AssetMaintenanceDomainManager {
         emergencyRepairs: 23,
         averageMTBF: this.config.maintenance.kpis.mtbf,
         averageMTTR: this.config.maintenance.kpis.mttr,
-        availability: 0.96
-      }
+        availability: 0.96,
+      },
     };
   }
 

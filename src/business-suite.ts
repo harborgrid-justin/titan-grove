@@ -10,16 +10,16 @@ import {
   SystemCoordinatorConfig,
   BusinessSystemConfig,
   CustomerSystemConfig,
-  IntegrationConfig
+  IntegrationConfig,
 } from './core/architecture';
 import { createLogger, businessLogger } from './core/logger';
 
 // Domain Orchestration
-import { 
-  DomainOrchestrator, 
-  domainOrchestrator, 
+import {
+  DomainOrchestrator,
+  domainOrchestrator,
   CentralBusinessLogicRegistry,
-  DomainManagers 
+  DomainManagers,
 } from './domains';
 
 // Legacy module imports (for backward compatibility)
@@ -42,7 +42,10 @@ import { complianceManager, ComplianceManager } from './modules/compliance';
 import { documentManager, DocumentManager } from './modules/document';
 import { workflowManager, WorkflowManager } from './modules/workflow';
 import { integrationManager, IntegrationManager } from './modules/integration';
-import { createServiceCommandCenterService, ServiceCommandCenterService } from './modules/service-command-center';
+import {
+  createServiceCommandCenterService,
+  ServiceCommandCenterService,
+} from './modules/service-command-center';
 import { createFieldServiceService } from './modules/field-service';
 import { createMaintenanceService } from './modules/maintenance/business-logic/maintenance-management/maintenance-service';
 import { MessageQueueManager, MessageQueueConfig, QueueProcessors } from './core/message-queue';
@@ -59,7 +62,7 @@ export interface TitanGroveConfig {
     enableSystemMonitoring?: boolean;
     healthCheckInterval?: number;
   };
-  
+
   // Legacy Database Configuration (maintained for compatibility)
   database?: {
     type: 'postgresql' | 'mysql' | 'sqlite' | 'mongodb';
@@ -218,7 +221,7 @@ export class TitanGrove {
         document: true,
         workflow: true,
         integration: true,
-        serviceCommandCenter: true
+        serviceCommandCenter: true,
       },
       multiTenant: { enabled: false },
       auditLogging: { enabled: true, level: 'basic' },
@@ -229,7 +232,7 @@ export class TitanGrove {
           keyPrefix: 'titan-grove:',
           retryDelayOnFailover: 1000,
           maxRetriesPerRequest: 3,
-          lazyConnect: true
+          lazyConnect: true,
         },
         defaultJobOptions: {
           removeOnComplete: 100,
@@ -237,8 +240,8 @@ export class TitanGrove {
           attempts: 3,
           backoff: {
             type: 'exponential',
-            delay: 2000
-          }
+            delay: 2000,
+          },
         },
         monitoring: {
           enabled: true,
@@ -246,21 +249,21 @@ export class TitanGrove {
           alertThresholds: {
             queueDepth: 1000,
             processingTime: 30000,
-            errorRate: 0.1
-          }
+            errorRate: 0.1,
+          },
         },
         deadLetterQueue: {
           enabled: true,
           maxRetries: 5,
-          retentionDays: 30
+          retentionDays: 30,
         },
         clustering: {
           enabled: false,
           workers: 4,
-          concurrency: 10
-        }
+          concurrency: 10,
+        },
       },
-      ...config
+      ...config,
     };
 
     // Initialize domain orchestration (PRIMARY - New Architecture)
@@ -306,7 +309,7 @@ export class TitanGrove {
         enableWorkflowApproval: true,
         enableDataValidation: true,
         securityLevel: 'elevated',
-        complianceMode: true
+        complianceMode: true,
       },
       customer: {
         enableSelfService: true,
@@ -315,7 +318,7 @@ export class TitanGrove {
         rateLimitRequests: true,
         maxRequestsPerMinute: 100,
         cacheEnabled: true,
-        cacheTTL: 300 // 5 minutes
+        cacheTTL: 300, // 5 minutes
       },
       integration: {
         enableEventBridge: true,
@@ -323,16 +326,16 @@ export class TitanGrove {
         enableWorkflowOrchestration: true,
         maxRetryAttempts: 3,
         retryDelayMs: 1000,
-        circuitBreakerThreshold: 5
+        circuitBreakerThreshold: 5,
       },
       enableCrossSystemValidation: true,
       enableSystemMonitoring: true,
-      healthCheckInterval: 30000 // 30 seconds
+      healthCheckInterval: 30000, // 30 seconds
     };
 
     const architectureConfig = {
       ...defaultArchitectureConfig,
-      ...this.config.architecture
+      ...this.config.architecture,
     };
 
     // Initialize system coordinator (will be done later when logger is available)
@@ -365,7 +368,9 @@ export class TitanGrove {
     await this.startServer();
 
     this.isStarted = true;
-    console.log(`✅ Titan Grove is running at http://${this.config.server?.host}:${this.config.server?.port}`);
+    console.log(
+      `✅ Titan Grove is running at http://${this.config.server?.host}:${this.config.server?.port}`
+    );
     console.log('📊 Business modules available: Financial, HR, CRM, SCM, Project, BI');
   }
 
@@ -407,27 +412,32 @@ export class TitanGrove {
         crm: { status: 'healthy', description: 'Customer Relationship Management operational' },
         scm: { status: 'healthy', description: 'Supply Chain Management operational' },
         project: { status: 'healthy', description: 'Project Management operational' },
-        bi: { status: 'healthy', description: 'Business Intelligence operational' }
+        bi: { status: 'healthy', description: 'Business Intelligence operational' },
       },
       database: {
         status: 'healthy',
         type: this.config.database?.type || 'sqlite',
-        responseTime: Math.random() * 10 + 'ms'
+        responseTime: Math.random() * 10 + 'ms',
       },
-      messageQueue: this.messageQueue ? {
-        status: 'healthy',
-        description: 'Fortune 100-grade message queue operational',
-        queues: await this.messageQueue.getAllMetrics().then(metrics => metrics.length).catch(() => 0)
-      } : {
-        status: 'disabled',
-        description: 'Message queue not configured'
-      },
+      messageQueue: this.messageQueue
+        ? {
+            status: 'healthy',
+            description: 'Fortune 100-grade message queue operational',
+            queues: await this.messageQueue
+              .getAllMetrics()
+              .then((metrics) => metrics.length)
+              .catch(() => 0),
+          }
+        : {
+            status: 'disabled',
+            description: 'Message queue not configured',
+          },
       system: {
         nodeVersion: process.version,
         platform: process.platform,
         memoryUsage: process.memoryUsage(),
-        cpuUsage: process.cpuUsage()
-      }
+        cpuUsage: process.cpuUsage(),
+      },
     };
 
     return status;
@@ -458,8 +468,8 @@ export class TitanGrove {
           totalActive: metrics.reduce((sum, m) => sum + m.active, 0),
           totalWaiting: metrics.reduce((sum, m) => sum + m.waiting, 0),
           totalCompleted: metrics.reduce((sum, m) => sum + m.completed, 0),
-          totalFailed: metrics.reduce((sum, m) => sum + m.failed, 0)
-        }
+          totalFailed: metrics.reduce((sum, m) => sum + m.failed, 0),
+        },
       };
     } catch (error) {
       return { error: `Failed to get metrics: ${(error as Error).message}` };
@@ -483,42 +493,70 @@ export class TitanGrove {
           'Customer Relationship Management',
           'Supply Chain Management',
           'Project Management',
-          'Business Intelligence & Analytics'
+          'Business Intelligence & Analytics',
         ],
         modules: {
           financial: {
             name: 'Financial Management',
-            features: ['General Ledger', 'Accounts Payable', 'Accounts Receivable', 'Fixed Assets', 'Cash Management']
+            features: [
+              'General Ledger',
+              'Accounts Payable',
+              'Accounts Receivable',
+              'Fixed Assets',
+              'Cash Management',
+            ],
           },
           hr: {
             name: 'Human Capital Management',
-            features: ['Employee Management', 'Payroll', 'Benefits', 'Time & Attendance', 'Performance Management']
+            features: [
+              'Employee Management',
+              'Payroll',
+              'Benefits',
+              'Time & Attendance',
+              'Performance Management',
+            ],
           },
           crm: {
             name: 'Customer Relationship Management',
-            features: ['Lead Management', 'Sales Pipeline', 'Customer Service', 'Marketing Automation']
+            features: [
+              'Lead Management',
+              'Sales Pipeline',
+              'Customer Service',
+              'Marketing Automation',
+            ],
           },
           scm: {
             name: 'Supply Chain Management',
-            features: ['Inventory Management', 'Purchasing', 'Order Management', 'Manufacturing', 'Quality Control']
+            features: [
+              'Inventory Management',
+              'Purchasing',
+              'Order Management',
+              'Manufacturing',
+              'Quality Control',
+            ],
           },
           project: {
             name: 'Project Management',
-            features: ['Project Portfolio', 'Resource Management', 'Time Tracking', 'Budget Management']
+            features: [
+              'Project Portfolio',
+              'Resource Management',
+              'Time Tracking',
+              'Budget Management',
+            ],
           },
           bi: {
             name: 'Business Intelligence',
-            features: ['Dashboards', 'Reports', 'KPIs', 'Analytics', 'Forecasting']
-          }
+            features: ['Dashboards', 'Reports', 'KPIs', 'Analytics', 'Forecasting'],
+          },
         },
         architecture: {
           platform: 'Node.js/TypeScript',
           database: 'Multi-database support',
           deployment: 'Docker/Kubernetes ready',
-          apis: 'RESTful APIs with comprehensive business logic'
-        }
+          apis: 'RESTful APIs with comprehensive business logic',
+        },
       },
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   }
 
@@ -541,7 +579,7 @@ export class TitanGrove {
           items: data.items,
           taxAmount: data.taxAmount || 0,
           shippingAmount: data.shippingAmount || 0,
-          salesRep: data.salesRep
+          salesRep: data.salesRep,
         });
         return { customer, salesOrder };
 
@@ -614,24 +652,39 @@ export class TitanGrove {
 
   private async initializeMessageQueue(): Promise<void> {
     console.log('🔄 Initializing message queue system...');
-    
+
     if (this.config.messageQueue) {
       try {
         this.messageQueue = new MessageQueueManager(this.config.messageQueue);
         this.queueProcessors = new QueueProcessors();
-        
+
         // Register processors
-        this.messageQueue.registerProcessor('integration-processor', this.queueProcessors.integrationProcessor);
-        this.messageQueue.registerProcessor('financial-processor', this.queueProcessors.financialProcessor);
+        this.messageQueue.registerProcessor(
+          'integration-processor',
+          this.queueProcessors.integrationProcessor
+        );
+        this.messageQueue.registerProcessor(
+          'financial-processor',
+          this.queueProcessors.financialProcessor
+        );
         this.messageQueue.registerProcessor('hr-processor', this.queueProcessors.hrProcessor);
         this.messageQueue.registerProcessor('crm-processor', this.queueProcessors.crmProcessor);
         this.messageQueue.registerProcessor('scm-processor', this.queueProcessors.scmProcessor);
         this.messageQueue.registerProcessor('order-processor', this.queueProcessors.orderProcessor);
-        this.messageQueue.registerProcessor('inventory-processor', this.queueProcessors.inventoryProcessor);
-        this.messageQueue.registerProcessor('notification-processor', this.queueProcessors.notificationProcessor);
+        this.messageQueue.registerProcessor(
+          'inventory-processor',
+          this.queueProcessors.inventoryProcessor
+        );
+        this.messageQueue.registerProcessor(
+          'notification-processor',
+          this.queueProcessors.notificationProcessor
+        );
         this.messageQueue.registerProcessor('audit-processor', this.queueProcessors.auditProcessor);
-        this.messageQueue.registerProcessor('analytics-processor', this.queueProcessors.analyticsProcessor);
-        
+        this.messageQueue.registerProcessor(
+          'analytics-processor',
+          this.queueProcessors.analyticsProcessor
+        );
+
         await this.messageQueue.initialize();
         console.log('✅ Message queue system initialized');
       } catch (error) {
@@ -643,20 +696,20 @@ export class TitanGrove {
 
   private async initializeModules(): Promise<void> {
     console.log('📦 Initializing business modules...');
-    
+
     // Initialize cache if not already done
     if (!this.cache) {
       const cacheConfig = this.config.cache || {
         type: 'memory',
         defaultTTL: 300,
-        maxSize: 1000
+        maxSize: 1000,
       };
-      
+
       this.cache = new CacheManager(cacheConfig, console as any);
       await this.cache.initialize();
       console.log('✅ Cache manager initialized');
     }
-    
+
     // Initialize ServiceFactory if it hasn't been initialized yet
     try {
       // Try to initialize ServiceFactory with message queue and cache
@@ -666,7 +719,7 @@ export class TitanGrove {
           this.config.cache || {
             type: 'memory',
             defaultTTL: 300,
-            maxSize: 1000
+            maxSize: 1000,
           },
           { level: 'info' }
         );
@@ -676,27 +729,29 @@ export class TitanGrove {
           ServiceFactory.createStandardConfig('service-command-center')
         );
         this.serviceCommandCenter = createServiceCommandCenterService(serviceCommandCenterContext);
-        
+
         // Initialize field service with integration
         const fieldServiceContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('field-service')
         );
         const integratedFieldService = createFieldServiceService(fieldServiceContext);
-        
+
         // Initialize maintenance service with integration
         const maintenanceContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('maintenance')
         );
         const integratedMaintenanceService = createMaintenanceService(maintenanceContext);
-        
+
         console.log('✅ Service Command Center integrated with message queue and cache');
         console.log('✅ Field Service integrated with message queue and cache');
         console.log('✅ Maintenance Service integrated with message queue and cache');
         console.log('✅ All core services integrated and ready for coordination');
-        
       }
     } catch (error) {
-      console.warn('⚠️ ServiceFactory initialization failed, using basic service instances:', error);
+      console.warn(
+        '⚠️ ServiceFactory initialization failed, using basic service instances:',
+        error
+      );
       // Keep the basic instance already created in constructor
     }
   }
@@ -799,7 +854,10 @@ export class TitanGrove {
     });
 
     app.get('/api/scm/inventory/:productId/:locationId', async (req: any, res: any) => {
-      const inventory = await this.scm.getInventoryLevel(req.params.productId, req.params.locationId);
+      const inventory = await this.scm.getInventoryLevel(
+        req.params.productId,
+        req.params.locationId
+      );
       res.json({ success: true, data: inventory });
     });
 
@@ -870,11 +928,13 @@ export class TitanGrove {
       try {
         const { queueName } = req.params;
         const { message } = req.body;
-        
+
         const job = await this.messageQueue.addMessage(queueName, message);
         res.json({ success: true, data: { jobId: job.id } });
       } catch (error) {
-        res.status(400).json({ success: false, error: `Failed to add message: ${(error as Error).message}` });
+        res
+          .status(400)
+          .json({ success: false, error: `Failed to add message: ${(error as Error).message}` });
       }
     });
 
@@ -889,7 +949,9 @@ export class TitanGrove {
         await this.messageQueue.pauseQueue(queueName);
         res.json({ success: true, message: `Queue ${queueName} paused` });
       } catch (error) {
-        res.status(400).json({ success: false, error: `Failed to pause queue: ${(error as Error).message}` });
+        res
+          .status(400)
+          .json({ success: false, error: `Failed to pause queue: ${(error as Error).message}` });
       }
     });
 
@@ -904,7 +966,9 @@ export class TitanGrove {
         await this.messageQueue.resumeQueue(queueName);
         res.json({ success: true, message: `Queue ${queueName} resumed` });
       } catch (error) {
-        res.status(400).json({ success: false, error: `Failed to resume queue: ${(error as Error).message}` });
+        res
+          .status(400)
+          .json({ success: false, error: `Failed to resume queue: ${(error as Error).message}` });
       }
     });
 
@@ -917,11 +981,13 @@ export class TitanGrove {
       try {
         const { queueName } = req.params;
         const { grace = 24 * 60 * 60 * 1000, status = 'completed' } = req.body;
-        
+
         const cleaned = await this.messageQueue.cleanQueue(queueName, grace, status);
         res.json({ success: true, data: { cleanedJobs: cleaned } });
       } catch (error) {
-        res.status(400).json({ success: false, error: `Failed to clean queue: ${(error as Error).message}` });
+        res
+          .status(400)
+          .json({ success: false, error: `Failed to clean queue: ${(error as Error).message}` });
       }
     });
   }
@@ -955,10 +1021,10 @@ export class TitanGrove {
   }> {
     const analysis = await this.domains.executeComprehensiveAnalysis();
     const metrics = await this.domains.getBusinessMetrics();
-    
+
     return {
       ...analysis,
-      recommendations: metrics.recommendations
+      recommendations: metrics.recommendations,
     };
   }
 
@@ -988,9 +1054,9 @@ export class TitanGrove {
   /**
    * Calculate performance score using standardized methodology
    */
-  calculatePerformanceScore(
-    metrics: { [key: string]: { value: number; target: number; weight: number } }
-  ) {
+  calculatePerformanceScore(metrics: {
+    [key: string]: { value: number; target: number; weight: number };
+  }) {
     return this.businessLogic.calculatePerformanceScore(metrics);
   }
 
@@ -1020,25 +1086,25 @@ export class TitanGrove {
     status: string;
   }> {
     const basicInfo = await this.getSystemInfo();
-    
+
     return {
       ...basicInfo,
       architecture: 'domain-based',
       domains: [
         'Financial & Administrative',
-        'Human Capital', 
+        'Human Capital',
         'Customer & Sales',
         'Supply Chain & Operations',
         'Manufacturing & Production',
         'Asset & Maintenance',
         'Project & Service',
-        'Technology & Integration'
+        'Technology & Integration',
       ],
       businessLogicLines: 15000, // Estimated consolidated business logic
       modules: {
         legacy: 20, // Original modules maintained for compatibility
-        domains: 8 // New domain organization
-      }
+        domains: 8, // New domain organization
+      },
     };
   }
 
@@ -1050,12 +1116,12 @@ export class TitanGrove {
 
     // Import manufacturing routes
     const manufacturingRoutes = require('./api/manufacturing/manufacturing-routes').default;
-    
+
     // Mount manufacturing routes
     app.use('/api/manufacturing', manufacturingRoutes);
 
     // Additional manufacturing endpoints integrated with business logic
-    
+
     // Production Planning & Scheduling
     app.get('/api/manufacturing/dashboard', async (req: any, res: any) => {
       try {
@@ -1068,9 +1134,11 @@ export class TitanGrove {
 
     app.get('/api/manufacturing/metrics', async (req: any, res: any) => {
       try {
-        const startDate = req.query.startDate ? new Date(req.query.startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const startDate = req.query.startDate
+          ? new Date(req.query.startDate)
+          : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
         const endDate = req.query.endDate ? new Date(req.query.endDate) : new Date();
-        
+
         const metrics = await this.manufacturing.getProductionMetrics(startDate, endDate);
         res.json({ success: true, data: metrics });
       } catch (error: any) {
@@ -1131,9 +1199,9 @@ export class TitanGrove {
       try {
         const { productId } = req.params;
         const { costingMethod = 'STANDARD' } = req.query;
-        
+
         const costs = await this.manufacturing.calculateProductCosts(
-          productId, 
+          productId,
           costingMethod as 'STANDARD' | 'AVERAGE' | 'ACTUAL'
         );
         res.json({ success: true, data: costs });
@@ -1158,8 +1226,10 @@ export class TitanGrove {
       try {
         const { workCenterCode } = req.params;
         const startDate = req.query.startDate ? new Date(req.query.startDate) : new Date();
-        const endDate = req.query.endDate ? new Date(req.query.endDate) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-        
+        const endDate = req.query.endDate
+          ? new Date(req.query.endDate)
+          : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+
         const capacity = await this.manufacturing.calculateWorkCenterCapacity(
           workCenterCode,
           startDate,
@@ -1183,7 +1253,7 @@ export class TitanGrove {
     try {
       // Import ETL routes
       const etlRoutes = require('./api/database/etl-routes').default;
-      
+
       // Mount ETL routes
       app.use('/api/database/data-integration-etl', etlRoutes);
 
@@ -1200,14 +1270,14 @@ export class TitanGrove {
               totalDataProcessed: '847.3TB',
               businessValue: '$24.7M annually',
               efficiency_improvement: '67% faster processing',
-              uptime: '99.97%'
+              uptime: '99.97%',
             },
             integrationStatus: {
               frontend: 'complete',
-              backend: 'complete', 
+              backend: 'complete',
               businessLogic: 'implemented',
-              customerInterface: 'ready'
-            }
+              customerInterface: 'ready',
+            },
           };
           res.json(overview);
         } catch (error: any) {
@@ -1220,10 +1290,10 @@ export class TitanGrove {
       console.error('❌ Failed to setup ETL APIs:', error);
       // Setup basic fallback endpoint
       app.get('/api/database/data-integration-etl/status', (req: any, res: any) => {
-        res.json({ 
+        res.json({
           status: 'error',
           message: 'ETL routes failed to load',
-          fallback: true
+          fallback: true,
         });
       });
     }
@@ -1292,7 +1362,7 @@ export class TitanGroveBusinessSuite {
         enableWorkflowApproval: true,
         enableDataValidation: true,
         securityLevel: 'elevated',
-        complianceMode: true
+        complianceMode: true,
       },
       customer: {
         enableSelfService: true,
@@ -1301,7 +1371,7 @@ export class TitanGroveBusinessSuite {
         rateLimitRequests: true,
         maxRequestsPerMinute: 100,
         cacheEnabled: true,
-        cacheTTL: 300
+        cacheTTL: 300,
       },
       integration: {
         enableEventBridge: true,
@@ -1309,12 +1379,12 @@ export class TitanGroveBusinessSuite {
         enableWorkflowOrchestration: true,
         maxRetryAttempts: 3,
         retryDelayMs: 1000,
-        circuitBreakerThreshold: 5
+        circuitBreakerThreshold: 5,
       },
       enableCrossSystemValidation: true,
       enableSystemMonitoring: true,
       healthCheckInterval: 30000,
-      ...this.config.architecture
+      ...this.config.architecture,
     };
 
     // Initialize system coordinator
@@ -1322,7 +1392,7 @@ export class TitanGroveBusinessSuite {
     await this.systemCoordinator.initialize();
 
     this.initialized = true;
-    
+
     console.log('✅ Standardized Platform Architecture initialized');
     console.log('   ✓ Business System: Enterprise operations with audit and compliance');
     console.log('   ✓ Customer System: Self-service portal with caching and rate limiting');
@@ -1382,7 +1452,7 @@ export class TitanGroveBusinessSuite {
         business: systemHealth.business,
         customer: systemHealth.customer,
         integration: systemHealth.integration,
-        timestamp: systemHealth.timestamp
+        timestamp: systemHealth.timestamp,
       },
       legacy: legacyHealth,
       architecture: {
@@ -1390,8 +1460,8 @@ export class TitanGroveBusinessSuite {
         businessSystemReady: true,
         customerSystemReady: true,
         systemsEngineering: 'aligned',
-        integration: 'complete'
-      }
+        integration: 'complete',
+      },
     };
   }
 
@@ -1414,7 +1484,7 @@ export class TitanGroveBusinessSuite {
 
     const serviceContext = {
       logger: this.logger,
-      ...context
+      ...context,
     };
 
     return await this.systemCoordinator.executeCrossSystemOperation(
@@ -1476,7 +1546,7 @@ export class TitanGroveBusinessSuite {
       document: this.legacyTitanGrove.document,
       workflow: this.legacyTitanGrove.workflow,
       integration: this.legacyTitanGrove.integration,
-      serviceCommandCenter: this.legacyTitanGrove.serviceCommandCenter
+      serviceCommandCenter: this.legacyTitanGrove.serviceCommandCenter,
     };
   }
 

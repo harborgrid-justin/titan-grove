@@ -6,7 +6,6 @@
 import type { DataSource, DataSourceParameter } from '../../types';
 
 export class DataSourcesService {
-  
   async createDataSource(dataSource: Omit<DataSource, 'id'>): Promise<DataSource> {
     const id = `ds_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return { ...dataSource, id };
@@ -17,7 +16,10 @@ export class DataSourcesService {
     return null;
   }
 
-  async updateDataSource(dataSourceId: string, updates: Partial<DataSource>): Promise<DataSource | null> {
+  async updateDataSource(
+    dataSourceId: string,
+    updates: Partial<DataSource>
+  ): Promise<DataSource | null> {
     // Would update in database
     console.log(`Updating data source ${dataSourceId}`, updates);
     return null;
@@ -46,7 +48,7 @@ export class DataSourcesService {
       errors: [],
       warnings: [],
       estimatedRows: 0,
-      estimatedExecutionTime: 0
+      estimatedExecutionTime: 0,
     };
   }
 
@@ -55,7 +57,7 @@ export class DataSourcesService {
     return [
       { name: 'id', type: 'NUMBER', nullable: false },
       { name: 'name', type: 'STRING', nullable: true },
-      { name: 'created_date', type: 'DATE', nullable: false }
+      { name: 'created_date', type: 'DATE', nullable: false },
     ];
   }
 
@@ -65,10 +67,10 @@ export class DataSourcesService {
       columns: ['id', 'name', 'created_date'],
       data: [
         [1, 'Sample Data', '2024-01-01'],
-        [2, 'Another Row', '2024-01-02']
+        [2, 'Another Row', '2024-01-02'],
       ],
       totalRows: 2,
-      previewRows: 2
+      previewRows: 2,
     };
   }
 
@@ -90,7 +92,7 @@ export class DataSourcesService {
       type: 'DATABASE',
       query: 'SELECT * FROM sample_table',
       refreshInterval: 60,
-      parameters: []
+      parameters: [],
     };
   }
 
@@ -100,11 +102,14 @@ export class DataSourcesService {
       dataSourceId,
       refreshedAt: new Date(),
       recordCount: 0,
-      refreshDuration: 0
+      refreshDuration: 0,
     };
   }
 
-  async getDataSourceMetrics(dataSourceId: string, period: { startDate: Date; endDate: Date }): Promise<any> {
+  async getDataSourceMetrics(
+    dataSourceId: string,
+    period: { startDate: Date; endDate: Date }
+  ): Promise<any> {
     return {
       dataSourceId,
       period,
@@ -113,8 +118,8 @@ export class DataSourcesService {
         averageExecutionTime: 0,
         errorRate: 0,
         dataVolume: 0,
-        peakUsageHour: '14:00'
-      }
+        peakUsageHour: '14:00',
+      },
     };
   }
 
@@ -124,9 +129,9 @@ export class DataSourcesService {
       optimizations: [
         'Added database indexes for better performance',
         'Optimized query structure',
-        'Implemented result caching'
+        'Implemented result caching',
       ],
-      performanceImprovement: '40%'
+      performanceImprovement: '40%',
     };
   }
 
@@ -138,18 +143,21 @@ export class DataSourcesService {
       metrics: {
         availability: 99.9,
         responseTime: 150, // ms
-        errorRate: 0.1 // %
+        errorRate: 0.1, // %
       },
       issues: [],
-      recommendations: []
+      recommendations: [],
     };
   }
 
-  async scheduleDataRefresh(dataSourceId: string, schedule: {
-    frequency: 'HOURLY' | 'DAILY' | 'WEEKLY';
-    time?: string;
-    enabled: boolean;
-  }): Promise<void> {
+  async scheduleDataRefresh(
+    dataSourceId: string,
+    schedule: {
+      frequency: 'HOURLY' | 'DAILY' | 'WEEKLY';
+      time?: string;
+      enabled: boolean;
+    }
+  ): Promise<void> {
     console.log(`Scheduling data refresh for ${dataSourceId}`, schedule);
   }
 
@@ -159,7 +167,7 @@ export class DataSourcesService {
       upstream: [], // Sources that feed into this data source
       downstream: [], // Reports/dashboards that use this data source
       dependencies: [],
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
@@ -169,14 +177,14 @@ export class DataSourcesService {
     type: 'CSV' | 'JSON' | 'EXCEL';
   }): Promise<DataSource> {
     const id = `ds_file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       id,
       name: `File: ${file.name}`,
       type: 'FILE',
       query: file.type === 'CSV' ? 'SELECT * FROM uploaded_csv' : 'SELECT * FROM uploaded_data',
       refreshInterval: 0, // Static file
-      parameters: []
+      parameters: [],
     };
   }
 
@@ -190,8 +198,8 @@ export class DataSourcesService {
       vulnerabilities: [],
       recommendations: [
         'Consider rotating connection credentials monthly',
-        'Enable query logging for audit purposes'
-      ]
+        'Enable query logging for audit purposes',
+      ],
     };
   }
 
@@ -203,10 +211,10 @@ export class DataSourcesService {
         uniqueUsers: 0,
         averageQueriesPerDay: 0,
         mostActiveUser: null,
-        peakUsageDay: null
+        peakUsageDay: null,
       },
       connectedReports: [],
-      connectedDashboards: []
+      connectedDashboards: [],
     };
   }
 
@@ -225,7 +233,7 @@ export class DataSourcesService {
       type: 'DATABASE',
       query: 'SELECT * FROM restored_table',
       refreshInterval: 60,
-      parameters: []
+      parameters: [],
     };
   }
 }

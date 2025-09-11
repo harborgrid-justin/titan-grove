@@ -3,16 +3,12 @@
  * Handles operational metrics generation for contract intelligence
  */
 
-import {
-  OperationalMetrics,
-  CycleTimeMetric,
-  WorkloadAnalysis
-} from './types';
+import { OperationalMetrics, CycleTimeMetric, WorkloadAnalysis } from './types';
 
 import {
   ResourceUtilization,
   QualityMetric,
-  ProductivityMetric
+  ProductivityMetric,
 } from '../../../../shared/types/metrics';
 
 export class OperationalMetricsService {
@@ -25,7 +21,7 @@ export class OperationalMetricsService {
       workloadAnalysis: await this.generateWorkloadAnalysis(),
       resourceUtilization: await this.generateResourceUtilization(),
       qualityMetrics: await this.generateQualityMetrics(),
-      productivityMetrics: await this.generateProductivityMetrics()
+      productivityMetrics: await this.generateProductivityMetrics(),
     };
   }
 
@@ -40,7 +36,7 @@ export class OperationalMetricsService {
         targetCycleTime: 42,
         variance: 7,
         bottlenecks: ['Approval delays', 'Market research'],
-        improvementOpportunities: ['Automate approvals', 'Pre-approved vendor lists']
+        improvementOpportunities: ['Automate approvals', 'Pre-approved vendor lists'],
       },
       {
         processName: 'Contract Modification',
@@ -48,7 +44,7 @@ export class OperationalMetricsService {
         targetCycleTime: 14,
         variance: 7,
         bottlenecks: ['Legal review', 'Budget approval'],
-        improvementOpportunities: ['Streamline legal process', 'Delegation of authority']
+        improvementOpportunities: ['Streamline legal process', 'Delegation of authority'],
       },
       {
         processName: 'Invoice Processing',
@@ -56,7 +52,7 @@ export class OperationalMetricsService {
         targetCycleTime: 10,
         variance: -20,
         bottlenecks: [],
-        improvementOpportunities: ['Maintain current efficiency']
+        improvementOpportunities: ['Maintain current efficiency'],
       },
       {
         processName: 'Contract Close-out',
@@ -64,8 +60,8 @@ export class OperationalMetricsService {
         targetCycleTime: 25,
         variance: 20,
         bottlenecks: ['Final documentation', 'Asset disposition'],
-        improvementOpportunities: ['Digital documentation', 'Automated asset tracking']
-      }
+        improvementOpportunities: ['Digital documentation', 'Automated asset tracking'],
+      },
     ];
   }
 
@@ -79,16 +75,16 @@ export class OperationalMetricsService {
       contractsClosedThisPeriod: 18,
       averageContractsPerOfficer: 15,
       workloadDistribution: {
-        'officer_001': 18,
-        'officer_002': 16,
-        'officer_003': 12,
-        'officer_004': 20,
-        'officer_005': 14,
-        'officer_006': 19,
-        'officer_007': 11,
-        'officer_008': 17
+        officer_001: 18,
+        officer_002: 16,
+        officer_003: 12,
+        officer_004: 20,
+        officer_005: 14,
+        officer_006: 19,
+        officer_007: 11,
+        officer_008: 17,
       },
-      capacityUtilization: 85
+      capacityUtilization: 85,
     };
   }
 
@@ -103,7 +99,7 @@ export class OperationalMetricsService {
         utilized: 28,
         utilizationRate: 93,
         efficiency: 87,
-        bottlenecks: ['Training requirements', 'Peak workload periods']
+        bottlenecks: ['Training requirements', 'Peak workload periods'],
       },
       {
         resourceType: 'Contract Specialists',
@@ -111,7 +107,7 @@ export class OperationalMetricsService {
         utilized: 13,
         utilizationRate: 87,
         efficiency: 82,
-        bottlenecks: ['Complex procurements', 'Regulatory changes']
+        bottlenecks: ['Complex procurements', 'Regulatory changes'],
       },
       {
         resourceType: 'Legal Support',
@@ -119,7 +115,7 @@ export class OperationalMetricsService {
         utilized: 7,
         utilizationRate: 88,
         efficiency: 91,
-        bottlenecks: ['Contract disputes', 'Compliance reviews']
+        bottlenecks: ['Contract disputes', 'Compliance reviews'],
       },
       {
         resourceType: 'Administrative Support',
@@ -127,8 +123,8 @@ export class OperationalMetricsService {
         utilized: 10,
         utilizationRate: 83,
         efficiency: 89,
-        bottlenecks: ['Document processing', 'System maintenance']
-      }
+        bottlenecks: ['Document processing', 'System maintenance'],
+      },
     ];
   }
 
@@ -143,7 +139,7 @@ export class OperationalMetricsService {
         targetScore: 95,
         defectRate: 4,
         customerSatisfaction: 92,
-        improvementTrend: 'IMPROVING'
+        improvementTrend: 'IMPROVING',
       },
       {
         qualityIndicator: 'Documentation Quality',
@@ -151,7 +147,7 @@ export class OperationalMetricsService {
         targetScore: 90,
         defectRate: 11,
         customerSatisfaction: 87,
-        improvementTrend: 'STABLE'
+        improvementTrend: 'STABLE',
       },
       {
         qualityIndicator: 'Process Compliance',
@@ -159,7 +155,7 @@ export class OperationalMetricsService {
         targetScore: 95,
         defectRate: 6,
         customerSatisfaction: 90,
-        improvementTrend: 'IMPROVING'
+        improvementTrend: 'IMPROVING',
       },
       {
         qualityIndicator: 'Timeliness',
@@ -167,8 +163,8 @@ export class OperationalMetricsService {
         targetScore: 90,
         defectRate: 12,
         customerSatisfaction: 85,
-        improvementTrend: 'DECLINING'
-      }
+        improvementTrend: 'DECLINING',
+      },
     ];
   }
 
@@ -183,7 +179,7 @@ export class OperationalMetricsService {
         targetOutput: 3.0,
         efficiency: 107,
         resourceInput: 160,
-        productivityRatio: 0.02
+        productivityRatio: 0.02,
       },
       {
         productivityIndicator: 'Modifications per Specialist per Week',
@@ -191,7 +187,7 @@ export class OperationalMetricsService {
         targetOutput: 2.5,
         efficiency: 112,
         resourceInput: 40,
-        productivityRatio: 0.07
+        productivityRatio: 0.07,
       },
       {
         productivityIndicator: 'Awards per Quarter',
@@ -199,8 +195,8 @@ export class OperationalMetricsService {
         targetOutput: 70,
         efficiency: 107,
         resourceInput: 520,
-        productivityRatio: 0.14
-      }
+        productivityRatio: 0.14,
+      },
     ];
   }
 
@@ -217,31 +213,31 @@ export class OperationalMetricsService {
         'Manual approval processes',
         'Legal review delays',
         'Market research requirements',
-        'Budget verification'
+        'Budget verification',
       ],
       impactAnalysis: [
         {
           bottleneck: 'Manual approval processes',
           impact: 85,
-          affectedProcesses: ['Requisition to Award', 'Contract Modification']
+          affectedProcesses: ['Requisition to Award', 'Contract Modification'],
         },
         {
           bottleneck: 'Legal review delays',
           impact: 65,
-          affectedProcesses: ['Contract Modification', 'Contract Close-out']
+          affectedProcesses: ['Contract Modification', 'Contract Close-out'],
         },
         {
           bottleneck: 'Market research requirements',
           impact: 45,
-          affectedProcesses: ['Requisition to Award']
-        }
+          affectedProcesses: ['Requisition to Award'],
+        },
       ],
       recommendations: [
         'Implement electronic approval workflows',
         'Establish service level agreements for legal reviews',
         'Develop pre-approved market research templates',
-        'Automate budget verification processes'
-      ]
+        'Automate budget verification processes',
+      ],
     };
   }
 
@@ -254,13 +250,14 @@ export class OperationalMetricsService {
     benchmarkComparison: { resourceType: string; industryBenchmark: number; ourScore: number }[];
   }> {
     const resources = await this.generateResourceUtilization();
-    const resourceScores = resources.map(resource => ({
+    const resourceScores = resources.map((resource) => ({
       resourceType: resource.resourceType,
-      score: (resource.utilizationRate + resource.efficiency) / 2
+      score: (resource.utilizationRate + resource.efficiency) / 2,
     }));
-    
-    const overallScore = resourceScores.reduce((sum, r) => sum + r.score, 0) / resourceScores.length;
-    
+
+    const overallScore =
+      resourceScores.reduce((sum, r) => sum + r.score, 0) / resourceScores.length;
+
     return {
       overallScore: Math.round(overallScore),
       resourceScores,
@@ -268,8 +265,8 @@ export class OperationalMetricsService {
         { resourceType: 'Contracting Officers', industryBenchmark: 85, ourScore: 87 },
         { resourceType: 'Contract Specialists', industryBenchmark: 80, ourScore: 82 },
         { resourceType: 'Legal Support', industryBenchmark: 88, ourScore: 91 },
-        { resourceType: 'Administrative Support', industryBenchmark: 85, ourScore: 89 }
-      ]
+        { resourceType: 'Administrative Support', industryBenchmark: 85, ourScore: 89 },
+      ],
     };
   }
 }

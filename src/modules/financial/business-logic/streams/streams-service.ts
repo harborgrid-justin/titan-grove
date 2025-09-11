@@ -40,9 +40,12 @@ export class StreamsService {
     return { ...stream, id };
   }
 
-  async generateCashFlowProjection(leaseIds: string[], periodMonths: number): Promise<CashFlowProjection> {
+  async generateCashFlowProjection(
+    leaseIds: string[],
+    periodMonths: number
+  ): Promise<CashFlowProjection> {
     const projectionId = `cf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       id: projectionId,
       projectionDate: new Date(),

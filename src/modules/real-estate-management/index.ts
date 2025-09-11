@@ -1,7 +1,7 @@
 /**
  * Real Estate Management Module
  * Fortune 100 grade real estate portfolio management and advanced forecasting
- * 
+ *
  * Provides comprehensive real estate management capabilities including:
  * - Property portfolio management and tracking
  * - Lease management and administration
@@ -43,7 +43,7 @@ export type {
   CapitalImprovement,
   PropertyPerformance,
   LocationAnalysis,
-  RentalYield
+  RentalYield,
 } from './types';
 
 /**
@@ -59,7 +59,7 @@ export class RealEstateManager extends BaseManager {
     const property = {
       id,
       ...propertyData,
-      ...this.createAuditFields('system')
+      ...this.createAuditFields('system'),
     };
     this.logAction('createProperty', { id });
     return property;
@@ -94,7 +94,7 @@ export class RealEstateManager extends BaseManager {
    */
   async listProperties(criteria?: any): Promise<any[]> {
     this.logAction('listProperties', criteria);
-    return realEstateService.getPropertyPortfolioSummary().then(summary => [summary]);
+    return realEstateService.getPropertyPortfolioSummary().then((summary) => [summary]);
   }
 
   /**

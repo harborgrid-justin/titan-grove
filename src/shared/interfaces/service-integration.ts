@@ -69,13 +69,18 @@ export interface IQueueableService {
   /**
    * Send a message to the appropriate queue
    */
-  sendMessage(queueType: QueueType, messageType: string, data: any, options?: MessageQueueOptions): Promise<void>;
-  
+  sendMessage(
+    queueType: QueueType,
+    messageType: string,
+    data: any,
+    options?: MessageQueueOptions
+  ): Promise<void>;
+
   /**
    * Process incoming messages for this service
    */
   processMessage(message: MessagePayload): Promise<any>;
-  
+
   /**
    * Get the queue types this service handles
    */
@@ -90,22 +95,22 @@ export interface ICacheableService {
    * Get cached data
    */
   getCached(key: string): Promise<any>;
-  
+
   /**
    * Set cached data
    */
   setCached(key: string, value: any, ttl?: number): Promise<void>;
-  
+
   /**
    * Delete cached data
    */
   deleteCached(key: string): Promise<void>;
-  
+
   /**
    * Generate cache key for this service
    */
   generateCacheKey(operation: string, params: any): string;
-  
+
   /**
    * Get cache TTL for different operation types
    */
@@ -120,7 +125,7 @@ export interface IMonitorableService {
    * Check service health
    */
   healthCheck(): Promise<ServiceHealthCheck>;
-  
+
   /**
    * Get service metrics
    */

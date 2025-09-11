@@ -4,126 +4,136 @@
  */
 
 // Page-specific functionality for Tax Threshold Management
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Tax Threshold Management page loaded');
-    
-    // Initialize page-specific features
-    initializethresholdmgmt();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Tax Threshold Management page loaded');
+
+  // Initialize page-specific features
+  initializethresholdmgmt();
 });
 
 function initializethresholdmgmt() {
-    // Configure action button
-    const actionBtn = document.getElementById('actionBtn');
-    if (actionBtn) {
-        actionBtn.addEventListener('click', function() {
-            handlethresholdmgmtAction();
-        });
-    }
-    
-    // Configure primary button  
-    const primaryBtn = document.getElementById('primaryBtn');
-    if (primaryBtn) {
-        primaryBtn.addEventListener('click', function() {
-            executethresholdmgmt();
-        });
-    }
-    
-    // Configure page-specific buttons
-    setupTaxPageActions();
-    
-    // Load initial tax data
-    loadthresholdmgmtData();
+  // Configure action button
+  const actionBtn = document.getElementById('actionBtn');
+  if (actionBtn) {
+    actionBtn.addEventListener('click', function () {
+      handlethresholdmgmtAction();
+    });
+  }
+
+  // Configure primary button
+  const primaryBtn = document.getElementById('primaryBtn');
+  if (primaryBtn) {
+    primaryBtn.addEventListener('click', function () {
+      executethresholdmgmt();
+    });
+  }
+
+  // Configure page-specific buttons
+  setupTaxPageActions();
+
+  // Load initial tax data
+  loadthresholdmgmtData();
 }
 
 async function loadthresholdmgmtData() {
-    try {
-        const response = await fetch('/api/tax-management/tax-configuration-rules/threshold-mgmt');
-        if (response.ok) {
-            const data = await response.json();
-            updatethresholdmgmtDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Tax Threshold Management data:', error);
-        if (window.financialPages) {
-            window.financialPages.showNotification('Failed to load tax data', 'error');
-        }
+  try {
+    const response = await fetch('/api/tax-management/tax-configuration-rules/threshold-mgmt');
+    if (response.ok) {
+      const data = await response.json();
+      updatethresholdmgmtDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Tax Threshold Management data:', error);
+    if (window.financialPages) {
+      window.financialPages.showNotification('Failed to load tax data', 'error');
+    }
+  }
 }
 
 function handlethresholdmgmtAction() {
-    console.log('Tax Threshold Management action triggered');
-    if (window.financialPages) {
-        window.financialPages.showNotification('Tax Threshold Management configured successfully', 'success');
-    }
+  console.log('Tax Threshold Management action triggered');
+  if (window.financialPages) {
+    window.financialPages.showNotification(
+      'Tax Threshold Management configured successfully',
+      'success'
+    );
+  }
 }
 
 function executethresholdmgmt() {
-    console.log('Tax Threshold Management execution started');
-    if (window.financialPages) {
-        window.financialPages.showNotification('Tax Threshold Management executed successfully', 'success');
-    }
+  console.log('Tax Threshold Management execution started');
+  if (window.financialPages) {
+    window.financialPages.showNotification(
+      'Tax Threshold Management executed successfully',
+      'success'
+    );
+  }
 }
 
 function updatethresholdmgmtDisplay(data) {
-    console.log('Updating Tax Threshold Management display:', data);
-    // Update UI with loaded tax data
+  console.log('Updating Tax Threshold Management display:', data);
+  // Update UI with loaded tax data
 }
 
 function setupTaxPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/tax-management/tax-configuration-rules/threshold-mgmt/test');
-                const result = await response.json();
-                if (window.financialPages) {
-                    window.financialPages.showNotification('Tax integration test successful', 'success');
-                }
-            } catch (error) {
-                if (window.financialPages) {
-                    window.financialPages.showNotification('Tax integration test failed', 'error');
-                }
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadthresholdmgmtData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handlethresholdmgmtAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/tax-management/tax-configuration-rules/threshold-mgmt/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'threshold-mgmt-tax-export.xlsx';
-                a.click();
-                if (window.financialPages) {
-                    window.financialPages.showNotification('Tax data exported successfully', 'success');
-                }
-            } catch (error) {
-                if (window.financialPages) {
-                    window.financialPages.showNotification('Tax export failed', 'error');
-                }
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/tax-management/tax-configuration-rules/threshold-mgmt/test'
+        );
+        const result = await response.json();
+        if (window.financialPages) {
+          window.financialPages.showNotification('Tax integration test successful', 'success');
+        }
+      } catch (error) {
+        if (window.financialPages) {
+          window.financialPages.showNotification('Tax integration test failed', 'error');
+        }
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadthresholdmgmtData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handlethresholdmgmtAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/tax-management/tax-configuration-rules/threshold-mgmt/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'threshold-mgmt-tax-export.xlsx';
+        a.click();
+        if (window.financialPages) {
+          window.financialPages.showNotification('Tax data exported successfully', 'success');
+        }
+      } catch (error) {
+        if (window.financialPages) {
+          window.financialPages.showNotification('Tax export failed', 'error');
+        }
+      }
+    });
+  }
 }

@@ -41,7 +41,6 @@ export interface PricingQuote {
 }
 
 export class PricingService extends StandardServiceBase {
-  
   constructor(context?: ServiceIntegrationContext) {
     if (context) {
       super(context);
@@ -54,12 +53,12 @@ export class PricingService extends StandardServiceBase {
         config: {
           serviceName: 'pricing-service',
           cacheConfig: { defaultTTL: 600, keyPrefix: 'pricing' },
-          messageQueueConfig: { 
-            defaultPriority: 1, 
+          messageQueueConfig: {
+            defaultPriority: 1,
             retryAttempts: 3,
-            compliance: { dataClassification: 'CONFIDENTIAL', auditRequired: true }
-          }
-        }
+            compliance: { dataClassification: 'CONFIDENTIAL', auditRequired: true },
+          },
+        },
       });
     }
   }
@@ -69,7 +68,7 @@ export class PricingService extends StandardServiceBase {
    */
   async processMessage(message: MessagePayload): Promise<any> {
     this.markMessageProcessed();
-    
+
     switch (message.type) {
       case 'CALCULATE_PRICING':
         return await this.calculateLeasePricing(
@@ -109,45 +108,49 @@ export class PricingService extends StandardServiceBase {
   ): Promise<PricingQuote> {
     return this.executeWithMetrics(async () => {
       const cacheKey = `pricing:${assetValue}:${termMonths}:${pricingModelId}:${customerId || 'default'}`;
-      
-      return this.executeWithCache(cacheKey, async () => {
-        // Implementation would fetch pricing model and calculate payments
-        const baseRate = 0.05; // 5% example rate
-        const monthlyPayment = (assetValue * baseRate) / 12;
-        
-        const quote: PricingQuote = {
-          id: this.generateId('pq'),
-          customerId: customerId || 'unknown',
-          assetType: 'equipment',
-          assetValue,
-          termMonths,
-          pricingModel: {
-            id: pricingModelId,
-            name: 'Standard Equipment Pricing',
-            type: 'FIXED',
-            baseRate,
-            effectiveDate: new Date(),
-          },
-          basePayment: monthlyPayment,
-          adjustedPayment: monthlyPayment,
-          totalCost: monthlyPayment * termMonths,
-          effectiveRate: baseRate,
-          createdDate: new Date(),
-          expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-        };
 
-        // Send notification about pricing calculation
-        if (this.messageQueue) {
-          await this.sendMessage(
-            QueueType.AUDIT,
-            'PRICING_CALCULATED',
-            { quoteId: quote.id, assetValue, termMonths, customerId },
-            { compliance: { auditRequired: true, dataClassification: 'CONFIDENTIAL' } }
-          );
-        }
+      return this.executeWithCache(
+        cacheKey,
+        async () => {
+          // Implementation would fetch pricing model and calculate payments
+          const baseRate = 0.05; // 5% example rate
+          const monthlyPayment = (assetValue * baseRate) / 12;
 
-        return quote;
-      }, this.getCacheTTL('pricing'));
+          const quote: PricingQuote = {
+            id: this.generateId('pq'),
+            customerId: customerId || 'unknown',
+            assetType: 'equipment',
+            assetValue,
+            termMonths,
+            pricingModel: {
+              id: pricingModelId,
+              name: 'Standard Equipment Pricing',
+              type: 'FIXED',
+              baseRate,
+              effectiveDate: new Date(),
+            },
+            basePayment: monthlyPayment,
+            adjustedPayment: monthlyPayment,
+            totalCost: monthlyPayment * termMonths,
+            effectiveRate: baseRate,
+            createdDate: new Date(),
+            expirationDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+          };
+
+          // Send notification about pricing calculation
+          if (this.messageQueue) {
+            await this.sendMessage(
+              QueueType.AUDIT,
+              'PRICING_CALCULATED',
+              { quoteId: quote.id, assetValue, termMonths, customerId },
+              { compliance: { auditRequired: true, dataClassification: 'CONFIDENTIAL' } }
+            );
+          }
+
+          return quote;
+        },
+        this.getCacheTTL('pricing')
+      );
     });
   }
 
@@ -205,13 +208,10 @@ export class PricingService extends StandardServiceBase {
   /**
    * Apply rate adjustments based on customer profile and deal characteristics
    */
-  async applyRateAdjustments(
-    baseRate: number,
-    adjustments: RateAdjustment[]
-  ): Promise<number> {
+  async applyRateAdjustments(baseRate: number, adjustments: RateAdjustment[]): Promise<number> {
     return this.executeWithMetrics(async () => {
       const adjustedRate = adjustments.reduce((rate, adjustment) => {
-        return rate + (rate * adjustment.adjustmentPercent / 100);
+        return rate + (rate * adjustment.adjustmentPercent) / 100;
       }, baseRate);
 
       // Log adjustment calculation for audit
@@ -219,7 +219,7 @@ export class PricingService extends StandardServiceBase {
         await this.sendMessage(
           QueueType.AUDIT,
           'RATE_ADJUSTMENT_APPLIED',
-          { baseRate, adjustedRate, adjustments: adjustments.map(a => a.type) },
+          { baseRate, adjustedRate, adjustments: adjustments.map((a) => a.type) },
           { compliance: { auditRequired: true, dataClassification: 'INTERNAL' } }
         );
       }
@@ -238,32 +238,30 @@ export class PricingService extends StandardServiceBase {
   ): Promise<PricingQuote[]> {
     return this.executeWithMetrics(async () => {
       const cacheKey = `comparison:${assetValue}:${termMonths}:${modelIds.sort().join(',')}`;
-      
-      return this.executeWithCache(cacheKey, async () => {
-        const comparisons = await Promise.all(
-          modelIds.map(modelId => 
-            this.calculateLeasePricing(assetValue, termMonths, modelId)
-          )
-        );
-        
-        const sortedComparisons = comparisons.sort((a, b) => a.totalCost - b.totalCost);
 
-        // Send notification about comparison generation
-        if (this.messageQueue) {
-          await this.sendMessage(
-            QueueType.ANALYTICS,
-            'PRICING_COMPARISON_GENERATED',
-            { 
-              assetValue, 
-              termMonths, 
-              modelCount: modelIds.length, 
-              bestQuoteId: sortedComparisons[0]?.id 
-            }
+      return this.executeWithCache(
+        cacheKey,
+        async () => {
+          const comparisons = await Promise.all(
+            modelIds.map((modelId) => this.calculateLeasePricing(assetValue, termMonths, modelId))
           );
-        }
 
-        return sortedComparisons;
-      }, this.getCacheTTL('comparison'));
+          const sortedComparisons = comparisons.sort((a, b) => a.totalCost - b.totalCost);
+
+          // Send notification about comparison generation
+          if (this.messageQueue) {
+            await this.sendMessage(QueueType.ANALYTICS, 'PRICING_COMPARISON_GENERATED', {
+              assetValue,
+              termMonths,
+              modelCount: modelIds.length,
+              bestQuoteId: sortedComparisons[0]?.id,
+            });
+          }
+
+          return sortedComparisons;
+        },
+        this.getCacheTTL('comparison')
+      );
     });
   }
 
@@ -274,7 +272,7 @@ export class PricingService extends StandardServiceBase {
     return {
       pricing: 'operational',
       modelsLoaded: true,
-      calculationEngine: 'available'
+      calculationEngine: 'available',
     };
   }
 }

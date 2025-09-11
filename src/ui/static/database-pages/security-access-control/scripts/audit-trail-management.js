@@ -1,142 +1,146 @@
 // Audit Trail Management - Database Management System
 // This file provides business-ready functionality for Audit Trail Management
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Audit Trail Management page loaded');
-    
-    // Initialize page functionality
-    initaudittrailmanagement();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadaudittrailmanagementData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Audit Trail Management page loaded');
+
+  // Initialize page functionality
+  initaudittrailmanagement();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadaudittrailmanagementData();
 });
 
 async function loadaudittrailmanagementData() {
-    try {
-        const response = await fetch('/api/database/security-access-control/audit-trail-management');
-        if (response.ok) {
-            const data = await response.json();
-            updateaudittrailmanagementDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Audit Trail Management data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/security-access-control/audit-trail-management');
+    if (response.ok) {
+      const data = await response.json();
+      updateaudittrailmanagementDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Audit Trail Management data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initaudittrailmanagement() {
-    console.log('Initializing Audit Trail Management');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Audit Trail Management');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Audit Trail Management');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Audit Trail Management');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Audit Trail Management');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Audit Trail Management');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Audit Trail Management');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Audit Trail Management');
 }
 
 function handleaudittrailmanagementAction() {
-    console.log('Audit Trail Management action triggered');
-    showNotification('Audit Trail Management configured successfully', 'success');
+  console.log('Audit Trail Management action triggered');
+  showNotification('Audit Trail Management configured successfully', 'success');
 }
 
 function executeaudittrailmanagement() {
-    console.log('Audit Trail Management execution started');
-    showNotification('Audit Trail Management executed successfully', 'success');
+  console.log('Audit Trail Management execution started');
+  showNotification('Audit Trail Management executed successfully', 'success');
 }
 
 function updateaudittrailmanagementDisplay(data) {
-    console.log('Updating Audit Trail Management display:', data);
-    // Update UI with loaded data
+  console.log('Updating Audit Trail Management display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/security-access-control/audit-trail-management/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadaudittrailmanagementData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleaudittrailmanagementAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/security-access-control/audit-trail-management/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'audit-trail-management-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/security-access-control/audit-trail-management/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadaudittrailmanagementData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleaudittrailmanagementAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/security-access-control/audit-trail-management/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'audit-trail-management-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

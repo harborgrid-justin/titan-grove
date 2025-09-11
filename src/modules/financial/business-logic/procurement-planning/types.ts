@@ -38,7 +38,12 @@ export interface AcquisitionCategory {
   categoryCode: string;
   description: string;
   plannedSpend: number;
-  acquisitionMethod: 'FULL_OPEN_COMPETITION' | 'LIMITED_SOURCES' | 'SOLE_SOURCE' | 'GSA_SCHEDULE' | 'IDIQ';
+  acquisitionMethod:
+    | 'FULL_OPEN_COMPETITION'
+    | 'LIMITED_SOURCES'
+    | 'SOLE_SOURCE'
+    | 'GSA_SCHEDULE'
+    | 'IDIQ';
   incumbentContractors: string[];
   marketAnalysis: MarketAnalysis;
   recommendedStrategy: string;
@@ -69,7 +74,12 @@ export interface StrategicRisk {
 export interface PerformanceTarget {
   id: string;
   targetName: string;
-  targetType: 'COST_SAVINGS' | 'CYCLE_TIME' | 'COMPETITION_RATE' | 'COMPLIANCE_SCORE' | 'QUALITY_RATING';
+  targetType:
+    | 'COST_SAVINGS'
+    | 'CYCLE_TIME'
+    | 'COMPETITION_RATE'
+    | 'COMPLIANCE_SCORE'
+    | 'QUALITY_RATING';
   currentBaseline: number;
   targetValue: number;
   targetDate: Date;
@@ -133,7 +143,12 @@ export interface FundingSource {
 }
 
 export interface ResourceRequirement {
-  resourceType: 'CONTRACTING_OFFICER' | 'TECHNICAL_EXPERT' | 'LEGAL_COUNSEL' | 'PROGRAM_MANAGER' | 'SPECIALIST';
+  resourceType:
+    | 'CONTRACTING_OFFICER'
+    | 'TECHNICAL_EXPERT'
+    | 'LEGAL_COUNSEL'
+    | 'PROGRAM_MANAGER'
+    | 'SPECIALIST';
   requiredSkills: string[];
   certificationLevel: string;
   estimatedHours: number;
@@ -163,7 +178,12 @@ export interface ForecastRisk {
 
 export interface CostAnalysis {
   id: string;
-  analysisType: 'SHOULD_COST' | 'PRICE_ANALYSIS' | 'COST_COMPARISON' | 'LIFE_CYCLE_COST' | 'TOTAL_OWNERSHIP_COST';
+  analysisType:
+    | 'SHOULD_COST'
+    | 'PRICE_ANALYSIS'
+    | 'COST_COMPARISON'
+    | 'LIFE_CYCLE_COST'
+    | 'TOTAL_OWNERSHIP_COST';
   acquisitionId: string;
   baselineEstimate: number;
   marketPrice: number;
@@ -192,7 +212,12 @@ export interface CostDriver {
 }
 
 export interface SavingsOpportunity {
-  opportunityType: 'VOLUME_DISCOUNT' | 'COMPETITION' | 'STANDARDIZATION' | 'CONSOLIDATION' | 'ALTERNATIVE_SOURCE';
+  opportunityType:
+    | 'VOLUME_DISCOUNT'
+    | 'COMPETITION'
+    | 'STANDARDIZATION'
+    | 'CONSOLIDATION'
+    | 'ALTERNATIVE_SOURCE';
   estimatedSavings: number;
   implementationCost: number;
   netSavings: number;
@@ -244,7 +269,12 @@ export interface ImplementationStep {
 }
 
 export interface ExpectedBenefit {
-  benefitType: 'COST_REDUCTION' | 'QUALITY_IMPROVEMENT' | 'DELIVERY_IMPROVEMENT' | 'RISK_REDUCTION' | 'INNOVATION';
+  benefitType:
+    | 'COST_REDUCTION'
+    | 'QUALITY_IMPROVEMENT'
+    | 'DELIVERY_IMPROVEMENT'
+    | 'RISK_REDUCTION'
+    | 'INNOVATION';
   quantifiedBenefit: number;
   timeframe: string;
   measurement: string;

@@ -4,16 +4,12 @@
  * Provides field-ready command and control capabilities
  */
 
-import type {
-  MobileCommandInterface,
-  ServiceResource,
-  ServiceCommandCenter
-} from '../types';
+import type { MobileCommandInterface, ServiceResource, ServiceCommandCenter } from '../types';
 
 export class MobileCommandService {
   private mobileSessions: Map<string, MobileCommandInterface> = new Map();
   private locationTracking: Map<string, any> = new Map();
-  
+
   constructor(
     private logger?: any,
     private pushNotificationService?: any,
@@ -34,50 +30,54 @@ export class MobileCommandService {
       platform: 'iOS' | 'Android' | 'Web';
       version: string;
     };
-    location?: { lat: number; lng: number; accuracy: number; };
+    location?: { lat: number; lng: number; accuracy: number };
   }): Promise<MobileCommandInterface> {
     const sessionId = `mobile_session_${Date.now()}`;
-    
+
     const mobileSession: MobileCommandInterface = {
       sessionId,
       userId: config.userId,
       deviceInfo: {
         ...config.deviceInfo,
-        capabilities: this.detectDeviceCapabilities(config.deviceInfo.platform)
+        capabilities: this.detectDeviceCapabilities(config.deviceInfo.platform),
       },
-      
+
       // Location services
       gpsEnabled: !!config.location,
       currentLocation: config.location,
-      locationHistory: config.location ? [{ 
-        timestamp: new Date(), 
-        lat: config.location.lat, 
-        lng: config.location.lng 
-      }] : [],
-      
+      locationHistory: config.location
+        ? [
+            {
+              timestamp: new Date(),
+              lat: config.location.lat,
+              lng: config.location.lng,
+            },
+          ]
+        : [],
+
       // Offline capabilities
       offlineMode: false,
       syncPending: false,
       lastSyncTime: new Date(),
-      
+
       // Initialize active context
       activeWorkOrders: [],
       nearbyResources: [],
-      emergencyMode: false
+      emergencyMode: false,
     };
 
     this.mobileSessions.set(sessionId, mobileSession);
-    
+
     // Set up location tracking if GPS enabled
     if (mobileSession.gpsEnabled) {
       await this.startLocationTracking(sessionId);
     }
-    
+
     this.logger?.info('Mobile command session initialized', {
       sessionId,
       userId: config.userId,
       platform: config.deviceInfo.platform,
-      gpsEnabled: mobileSession.gpsEnabled
+      gpsEnabled: mobileSession.gpsEnabled,
     });
 
     return mobileSession;
@@ -132,8 +132,8 @@ export class MobileCommandService {
         workOrderId: 'wo_next_001',
         customerName: 'ABC Manufacturing',
         scheduledTime: new Date(Date.now() + 45 * 60 * 1000), // 45 minutes from now
-        estimatedDuration: 90 // minutes
-      }
+        estimatedDuration: 90, // minutes
+      },
     };
 
     const quickActions = [
@@ -141,26 +141,26 @@ export class MobileCommandService {
         actionId: 'create_work_order',
         label: 'Create Work Order',
         icon: 'plus-circle',
-        enabled: true
+        enabled: true,
       },
       {
         actionId: 'emergency_dispatch',
         label: 'Emergency Dispatch',
         icon: 'alert-triangle',
-        enabled: !session.emergencyMode
+        enabled: !session.emergencyMode,
       },
       {
         actionId: 'find_resources',
         label: 'Find Resources',
         icon: 'users',
-        enabled: session.gpsEnabled
+        enabled: session.gpsEnabled,
       },
       {
         actionId: 'service_history',
         label: 'Service History',
         icon: 'clock',
-        enabled: true
-      }
+        enabled: true,
+      },
     ];
 
     const recentActivity = [
@@ -169,48 +169,51 @@ export class MobileCommandService {
         type: 'WORK_ORDER' as const,
         description: 'Work order WO-2024-001 completed successfully',
         timestamp: new Date(Date.now() - 30 * 60 * 1000),
-        priority: 'MEDIUM' as const
+        priority: 'MEDIUM' as const,
       },
       {
         activityId: 'activity_002',
         type: 'RESOURCE_UPDATE' as const,
         description: 'Technician John Smith now available',
         timestamp: new Date(Date.now() - 15 * 60 * 1000),
-        priority: 'LOW' as const
+        priority: 'LOW' as const,
       },
       {
         activityId: 'activity_003',
         type: 'EMERGENCY' as const,
         description: 'Emergency response team dispatched to downtown area',
         timestamp: new Date(Date.now() - 45 * 60 * 1000),
-        priority: 'HIGH' as const
-      }
+        priority: 'HIGH' as const,
+      },
     ];
 
     const performanceSnapshot = {
       todayCompleted: 8,
       avgResponseTime: 16.5, // minutes
       customerRating: 4.8,
-      efficiency: 92.3 // percentage
+      efficiency: 92.3, // percentage
     };
 
     return {
       summary,
       quickActions,
       recentActivity,
-      performanceSnapshot
+      performanceSnapshot,
     };
   }
 
   /**
    * Execute emergency dispatch from mobile
    */
-  async executeEmergencyDispatch(sessionId: string, emergency: {
-    type: 'EQUIPMENT_FAILURE' | 'SAFETY_INCIDENT' | 'CUSTOMER_CRITICAL';
-    description: string;
-    location?: { lat: number; lng: number; };
-    priority: 'HIGH' | 'CRITICAL';
-  }): Promise<{
+  async executeEmergencyDispatch(
+    sessionId: string,
+    emergency: {
+      type: 'EQUIPMENT_FAILURE' | 'SAFETY_INCIDENT' | 'CUSTOMER_CRITICAL';
+      description: string;
+      location?: { lat: number; lng: number };
+      priority: 'HIGH' | 'CRITICAL';
+    }
+  ): Promise<{
     dispatchId: string;
     estimatedResponseTime: number;
     assignedResources: {
@@ -232,7 +235,7 @@ export class MobileCommandService {
     }
 
     const dispatchId = `dispatch_${Date.now()}`;
-    
+
     // Use current location if emergency location not provided
     const emergencyLocation = emergency.location || session.currentLocation;
     if (!emergencyLocation) {
@@ -245,24 +248,25 @@ export class MobileCommandService {
         resourceId: 'tech_emergency_001',
         name: 'Mike Johnson (Emergency Response)',
         eta: new Date(Date.now() + 12 * 60 * 1000), // 12 minutes
-        contact: '+1-555-0101'
+        contact: '+1-555-0101',
       },
       {
         resourceId: 'tech_emergency_002',
         name: 'Sarah Davis (Specialist)',
         eta: new Date(Date.now() + 18 * 60 * 1000), // 18 minutes
-        contact: '+1-555-0102'
-      }
+        contact: '+1-555-0102',
+      },
     ];
 
     // Determine if escalation is needed
-    const escalationTriggered = emergency.priority === 'CRITICAL' || emergency.type === 'SAFETY_INCIDENT';
+    const escalationTriggered =
+      emergency.priority === 'CRITICAL' || emergency.type === 'SAFETY_INCIDENT';
 
     // Create tracking information
     const trackingInfo = {
       trackingId: `track_${dispatchId}`,
       statusUpdates: true,
-      estimatedCompletion: new Date(Date.now() + 90 * 60 * 1000) // 90 minutes
+      estimatedCompletion: new Date(Date.now() + 90 * 60 * 1000), // 90 minutes
     };
 
     // Update session state
@@ -276,7 +280,7 @@ export class MobileCommandService {
           title: 'Emergency Dispatch',
           body: `Emergency ${emergency.type} at ${emergencyLocation.lat}, ${emergencyLocation.lng}`,
           priority: 'HIGH',
-          data: { dispatchId, emergencyType: emergency.type }
+          data: { dispatchId, emergencyType: emergency.type },
         });
       }
     }
@@ -287,7 +291,7 @@ export class MobileCommandService {
       emergencyType: emergency.type,
       priority: emergency.priority,
       resourceCount: assignedResources.length,
-      escalationTriggered
+      escalationTriggered,
     });
 
     return {
@@ -295,7 +299,7 @@ export class MobileCommandService {
       estimatedResponseTime: 12, // minutes to first resource arrival
       assignedResources,
       escalationTriggered,
-      trackingInfo
+      trackingInfo,
     };
   }
 
@@ -322,30 +326,30 @@ export class MobileCommandService {
     }
 
     const syncId = `sync_${Date.now()}`;
-    
+
     // Simulate data synchronization
     const dataUpdated = {
       workOrders: Math.floor(Math.random() * 10) + 1,
       resources: Math.floor(Math.random() * 5) + 1,
-      notifications: Math.floor(Math.random() * 8) + 1
+      notifications: Math.floor(Math.random() * 8) + 1,
     };
 
     const offlineActions = {
       uploaded: Math.floor(Math.random() * 3),
-      failed: 0
+      failed: 0,
     };
 
     // Update session sync status
     session.syncPending = false;
     session.lastSyncTime = new Date();
-    
+
     const nextSyncScheduled = new Date(Date.now() + 5 * 60 * 1000); // Next sync in 5 minutes
 
     this.logger?.info('Mobile data synchronized', {
       sessionId,
       syncId,
       dataUpdated,
-      offlineActions
+      offlineActions,
     });
 
     return {
@@ -353,7 +357,7 @@ export class MobileCommandService {
       syncStatus: 'SUCCESS',
       dataUpdated,
       offlineActions,
-      nextSyncScheduled
+      nextSyncScheduled,
     };
   }
 
@@ -362,7 +366,7 @@ export class MobileCommandService {
    */
   async updateMobileLocation(
     sessionId: string,
-    location: { lat: number; lng: number; accuracy: number; }
+    location: { lat: number; lng: number; accuracy: number }
   ): Promise<{
     locationUpdated: boolean;
     nearbyResources: ServiceResource[];
@@ -382,12 +386,12 @@ export class MobileCommandService {
     session.locationHistory.push({
       timestamp: new Date(),
       lat: location.lat,
-      lng: location.lng
+      lng: location.lng,
     });
 
     // Keep location history to last 24 hours
     const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    session.locationHistory = session.locationHistory.filter(loc => loc.timestamp > dayAgo);
+    session.locationHistory = session.locationHistory.filter((loc) => loc.timestamp > dayAgo);
 
     // Find nearby resources (simulated)
     const nearbyResources: ServiceResource[] = [
@@ -396,15 +400,15 @@ export class MobileCommandService {
         resourceType: 'TECHNICIAN',
         name: 'Tom Wilson',
         status: 'AVAILABLE',
-        currentLocation: { 
-          lat: location.lat + 0.01, 
-          lng: location.lng + 0.01, 
-          address: '123 Main St' 
+        currentLocation: {
+          lat: location.lat + 0.01,
+          lng: location.lng + 0.01,
+          address: '123 Main St',
         },
         availability: {
           start: new Date(),
           end: new Date(Date.now() + 6 * 60 * 60 * 1000),
-          capacity: 80
+          capacity: 80,
         },
         skills: ['electrical', 'hvac'],
         certifications: ['EPA', 'OSHA'],
@@ -413,12 +417,12 @@ export class MobileCommandService {
           completionRate: 94.5,
           averageRating: 4.6,
           responseTime: 14,
-          utilizationRate: 72.0
+          utilizationRate: 72.0,
         },
         currentAssignments: [],
         scheduleConflicts: false,
-        lastUpdated: new Date()
-      }
+        lastUpdated: new Date(),
+      },
     ];
 
     session.nearbyResources = nearbyResources;
@@ -427,13 +431,13 @@ export class MobileCommandService {
     const serviceAreaInfo = {
       areaName: 'Metropolitan Service Area',
       coverage: 'FULL' as const,
-      responseTime: 15 // minutes
+      responseTime: 15, // minutes
     };
 
     return {
       locationUpdated: true,
       nearbyResources,
-      serviceAreaInfo
+      serviceAreaInfo,
     };
   }
 
@@ -469,7 +473,7 @@ export class MobileCommandService {
       workOrders: 25, // Active work orders cached
       resources: 12, // Nearby resources cached
       customers: 150, // Customer data cached
-      inventory: 85 // Inventory items cached
+      inventory: 85, // Inventory items cached
     };
 
     const offlineCapabilities = [
@@ -479,38 +483,41 @@ export class MobileCommandService {
       'Access customer information',
       'Check parts inventory',
       'Create service notes',
-      'Emergency contact access'
+      'Emergency contact access',
     ];
 
     const syncStrategy = {
       autoSyncWhenOnline: true,
       conflictResolution: 'MERGE' as const,
-      maxOfflineHours: 8
+      maxOfflineHours: 8,
     };
 
     this.logger?.info('Offline mode enabled', {
       sessionId,
       cachedData,
-      capabilityCount: offlineCapabilities.length
+      capabilityCount: offlineCapabilities.length,
     });
 
     return {
       offlineModeEnabled: true,
       cachedData,
       offlineCapabilities,
-      syncStrategy
+      syncStrategy,
     };
   }
 
   /**
    * Execute mobile emergency response
    */
-  async executeMobileEmergencyResponse(sessionId: string, emergency: {
-    type: 'PERSONAL_SAFETY' | 'EQUIPMENT_HAZARD' | 'CUSTOMER_EMERGENCY' | 'ENVIRONMENTAL';
-    severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'LIFE_THREATENING';
-    description: string;
-    requiresImmediateResponse: boolean;
-  }): Promise<{
+  async executeMobileEmergencyResponse(
+    sessionId: string,
+    emergency: {
+      type: 'PERSONAL_SAFETY' | 'EQUIPMENT_HAZARD' | 'CUSTOMER_EMERGENCY' | 'ENVIRONMENTAL';
+      severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'LIFE_THREATENING';
+      description: string;
+      requiresImmediateResponse: boolean;
+    }
+  ): Promise<{
     emergencyId: string;
     responseInitiated: boolean;
     emergencyContacts: {
@@ -531,7 +538,7 @@ export class MobileCommandService {
     }
 
     const emergencyId = `emergency_${Date.now()}`;
-    
+
     // Activate emergency mode
     session.emergencyMode = true;
 
@@ -543,11 +550,12 @@ export class MobileCommandService {
 
     // Estimate help arrival (simulated)
     const estimatedHelp = {
-      responseTime: emergency.severity === 'LIFE_THREATENING' ? 8 :
-                   emergency.severity === 'HIGH' ? 15 : 30,
-      respondingUnits: emergency.severity === 'LIFE_THREATENING' ? 
-        ['EMS Unit 1', 'Safety Supervisor', 'Site Manager'] :
-        ['Safety Supervisor', 'Site Manager']
+      responseTime:
+        emergency.severity === 'LIFE_THREATENING' ? 8 : emergency.severity === 'HIGH' ? 15 : 30,
+      respondingUnits:
+        emergency.severity === 'LIFE_THREATENING'
+          ? ['EMS Unit 1', 'Safety Supervisor', 'Site Manager']
+          : ['Safety Supervisor', 'Site Manager'],
     };
 
     // Send emergency notifications
@@ -558,7 +566,7 @@ export class MobileCommandService {
           type: emergency.type,
           severity: emergency.severity,
           location: session.currentLocation,
-          description: emergency.description
+          description: emergency.description,
         });
         contact.notificationSent = true;
       }
@@ -573,7 +581,7 @@ export class MobileCommandService {
       type: emergency.type,
       severity: emergency.severity,
       location: session.currentLocation,
-      contactsNotified: emergencyContacts.length
+      contactsNotified: emergencyContacts.length,
     });
 
     return {
@@ -582,7 +590,7 @@ export class MobileCommandService {
       emergencyContacts,
       safetyProtocols,
       trackingActivated,
-      estimatedHelp
+      estimatedHelp,
     };
   }
 
@@ -592,7 +600,7 @@ export class MobileCommandService {
 
   private detectDeviceCapabilities(platform: string): string[] {
     const baseCapabilities = ['GPS', 'Camera', 'Push_Notifications', 'Offline_Storage'];
-    
+
     switch (platform) {
       case 'iOS':
         return [...baseCapabilities, 'Biometric_Auth', 'Siri_Integration', 'Apple_Pay'];
@@ -621,19 +629,22 @@ export class MobileCommandService {
       const locationUpdate = {
         timestamp: new Date(),
         lat: session.currentLocation.lat + (Math.random() - 0.5) * 0.001,
-        lng: session.currentLocation.lng + (Math.random() - 0.5) * 0.001
+        lng: session.currentLocation.lng + (Math.random() - 0.5) * 0.001,
       };
 
       session.locationHistory.push(locationUpdate);
       session.currentLocation = {
         lat: locationUpdate.lat,
         lng: locationUpdate.lng,
-        accuracy: 5 + Math.random() * 10
+        accuracy: 5 + Math.random() * 10,
       };
     }
   }
 
-  private getEmergencyContacts(type: string, severity: string): {
+  private getEmergencyContacts(
+    type: string,
+    severity: string
+  ): {
     contactType: 'EMERGENCY_SERVICES' | 'SUPERVISOR' | 'SAFETY_TEAM' | 'CUSTOMER';
     contactInfo: string;
     notificationSent: boolean;
@@ -646,15 +657,15 @@ export class MobileCommandService {
       {
         contactType: 'SUPERVISOR',
         contactInfo: '+1-555-SUPERVISOR',
-        notificationSent: false
-      }
+        notificationSent: false,
+      },
     ];
 
     if (severity === 'LIFE_THREATENING') {
       contacts.push({
         contactType: 'EMERGENCY_SERVICES',
         contactInfo: '911',
-        notificationSent: false
+        notificationSent: false,
       });
     }
 
@@ -662,7 +673,7 @@ export class MobileCommandService {
       contacts.push({
         contactType: 'SAFETY_TEAM',
         contactInfo: '+1-555-SAFETY',
-        notificationSent: false
+        notificationSent: false,
       });
     }
 
@@ -673,7 +684,7 @@ export class MobileCommandService {
     const baseProtocols = [
       'Ensure personal safety first',
       'Move to safe location if possible',
-      'Do not attempt repairs in emergency situation'
+      'Do not attempt repairs in emergency situation',
     ];
 
     switch (type) {
@@ -682,21 +693,21 @@ export class MobileCommandService {
           ...baseProtocols,
           'Shut down equipment if safely possible',
           'Post warning signs if available',
-          'Clear area of other personnel'
+          'Clear area of other personnel',
         ];
       case 'ENVIRONMENTAL':
         return [
           ...baseProtocols,
           'Evacuate immediate area',
           'Check for chemical exposure',
-          'Contain spill if trained and safe to do so'
+          'Contain spill if trained and safe to do so',
         ];
       case 'PERSONAL_SAFETY':
         return [
           'Assess injury severity',
           'Apply first aid if trained',
           'Do not move injured person unless necessary',
-          'Keep injured person conscious and comfortable'
+          'Keep injured person conscious and comfortable',
         ];
       default:
         return baseProtocols;
@@ -712,7 +723,7 @@ export class MobileCommandService {
       enhanced: true,
       frequency: 10000, // 10 seconds
       accuracy: 'HIGH',
-      batteryOptimization: false // Prioritize accuracy over battery
+      batteryOptimization: false, // Prioritize accuracy over battery
     });
 
     return true;

@@ -200,7 +200,6 @@ export interface DataSynchronization {
  * Enterprise data management solution for centralized product information
  */
 export class PIMDataHubService {
-
   // ================================
   // PRODUCT MASTER DATA MANAGEMENT
   // ================================
@@ -227,25 +226,26 @@ export class PIMDataHubService {
       message: string;
     }>;
   }> {
-    const productId = productData.productId || `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+    const productId =
+      productData.productId || `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
     console.log(`Synchronizing product data for ${productId} from ${sourceSystem}`);
-    
+
     // Perform data quality assessment
     const dataQuality = await this.assessDataQuality(productData);
-    
+
     // Check for conflicts with existing data
     const conflicts = await this.detectDataConflicts(productId, productData);
-    
+
     // Validate business rules
     const validationResults = await this.validateProductData(productData);
-    
+
     return {
       productId,
       syncResult: conflicts.length === 0 ? 'UPDATED' : 'ERROR',
       dataQuality,
       conflicts,
-      validationResults
+      validationResults,
     };
   }
 
@@ -269,13 +269,13 @@ export class PIMDataHubService {
     }>;
   }> {
     console.log(`Getting unified product view for ${productId}`);
-    
+
     const productMasterData: ProductMasterData = {
       productId,
       globalProductCode: `GPC_${productId}`,
       localProductCodes: [
         { region: 'NA', localCode: `NA_${productId}`, status: 'ACTIVE' },
-        { region: 'EU', localCode: `EU_${productId}`, status: 'ACTIVE' }
+        { region: 'EU', localCode: `EU_${productId}`, status: 'ACTIVE' },
       ],
       productName: 'Sample Product',
       description: 'Comprehensive product description',
@@ -285,7 +285,7 @@ export class PIMDataHubService {
         categoryName: 'Electronics',
         level: 2,
         hierarchy: ['Products', 'Electronics'],
-        attributes: []
+        attributes: [],
       },
       attributes: [
         {
@@ -296,8 +296,8 @@ export class PIMDataHubService {
           source: 'Engineering',
           lastUpdated: new Date(),
           quality: 'HIGH',
-          verified: true
-        }
+          verified: true,
+        },
       ],
       specifications: [
         {
@@ -308,8 +308,8 @@ export class PIMDataHubService {
           unit: '°C',
           testMethod: 'ASTM D1000',
           certificationRequired: true,
-          effectiveDate: new Date()
-        }
+          effectiveDate: new Date(),
+        },
       ],
       classifications: [
         {
@@ -317,26 +317,31 @@ export class PIMDataHubService {
           classificationCode: '43211503',
           description: 'Electronic components',
           level: 4,
-          hierarchy: ['Manufacturing Components', 'Electronic components', 'Semiconductors', 'Electronic components']
-        }
+          hierarchy: [
+            'Manufacturing Components',
+            'Electronic components',
+            'Semiconductors',
+            'Electronic components',
+          ],
+        },
       ],
       lifecycle: {
         currentPhase: 'MATURITY',
         launchDate: new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000),
-        milestones: []
+        milestones: [],
       },
       relationships: [],
       pricing: {
-        baseCost: 125.50,
+        baseCost: 125.5,
         standardCost: 135.25,
         listPrice: 249.99,
         currency: 'USD',
         priceBooks: [],
         costComponents: [
-          { component: 'Material', cost: 85.50, percentage: 63.2 },
-          { component: 'Labor', cost: 25.00, percentage: 18.5 },
-          { component: 'Overhead', cost: 24.75, percentage: 18.3 }
-        ]
+          { component: 'Material', cost: 85.5, percentage: 63.2 },
+          { component: 'Labor', cost: 25.0, percentage: 18.5 },
+          { component: 'Overhead', cost: 24.75, percentage: 18.3 },
+        ],
       },
       sourcing: {
         makeOrBuy: 'MAKE',
@@ -347,9 +352,9 @@ export class PIMDataHubService {
             siteName: 'Main Manufacturing',
             capability: ['ASSEMBLY', 'TESTING'],
             capacity: 10000,
-            cost: 125.50
-          }
-        ]
+            cost: 125.5,
+          },
+        ],
       },
       compliance: {
         regulatoryStatus: 'COMPLIANT',
@@ -359,15 +364,15 @@ export class PIMDataHubService {
             issuedBy: 'EU Notified Body',
             issuedDate: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
             expirationDate: new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
-            status: 'VALID'
-          }
+            status: 'VALID',
+          },
         ],
         restrictions: [],
         safetyData: {
           msdsAvailable: true,
           handlingInstructions: ['Wear protective equipment', 'Store in dry location'],
-          storageRequirements: ['Room temperature', 'Humidity < 60%']
-        }
+          storageRequirements: ['Room temperature', 'Humidity < 60%'],
+        },
       },
       lastSynchronized: new Date(),
       dataQuality: {
@@ -377,8 +382,8 @@ export class PIMDataHubService {
         timeliness: 98.1,
         validity: 96.5,
         overallScore: 95.6,
-        issues: []
-      }
+        issues: [],
+      },
     };
 
     return {
@@ -389,48 +394,48 @@ export class PIMDataHubService {
           lastSync: new Date(),
           dataCompleteness: 95.0,
           dataAccuracy: 98.0,
-          systemSpecificData: { erpProductCode: 'ERP123' }
+          systemSpecificData: { erpProductCode: 'ERP123' },
         },
         {
           systemName: 'PLM System',
           lastSync: new Date(Date.now() - 2 * 60 * 60 * 1000),
           dataCompleteness: 92.0,
           dataAccuracy: 96.5,
-          systemSpecificData: { plmVersion: 'v2.1', drawings: ['DWG001', 'DWG002'] }
-        }
+          systemSpecificData: { plmVersion: 'v2.1', drawings: ['DWG001', 'DWG002'] },
+        },
       ],
       relatedProducts: [],
       usageContext: [
         {
           context: 'Manufacturing',
           frequency: 125,
-          lastAccessed: new Date()
+          lastAccessed: new Date(),
         },
         {
           context: 'Sales',
           frequency: 78,
-          lastAccessed: new Date(Date.now() - 60 * 60 * 1000)
-        }
-      ]
+          lastAccessed: new Date(Date.now() - 60 * 60 * 1000),
+        },
+      ],
     };
   }
 
   /**
    * Synchronize data across systems
    */
-  async synchronizeAcrossSystems(
-    syncRequest: {
-      sourceSystem: string;
-      targetSystems: string[];
-      productIds: string[];
-      syncType: 'FULL' | 'INCREMENTAL';
-      scheduleSync: boolean;
-    }
-  ): Promise<DataSynchronization> {
+  async synchronizeAcrossSystems(syncRequest: {
+    sourceSystem: string;
+    targetSystems: string[];
+    productIds: string[];
+    syncType: 'FULL' | 'INCREMENTAL';
+    scheduleSync: boolean;
+  }): Promise<DataSynchronization> {
     const syncId = `sync_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log(`Synchronizing product data across systems: ${syncRequest.targetSystems.join(', ')}`);
-    
+
+    console.log(
+      `Synchronizing product data across systems: ${syncRequest.targetSystems.join(', ')}`
+    );
+
     // Simulate synchronization process
     const sync: DataSynchronization = {
       syncId,
@@ -444,7 +449,7 @@ export class PIMDataHubService {
       recordsProcessed: syncRequest.productIds.length,
       recordsUpdated: Math.floor(syncRequest.productIds.length * 0.8),
       recordsCreated: Math.floor(syncRequest.productIds.length * 0.2),
-      errors: []
+      errors: [],
     };
 
     return sync;
@@ -476,7 +481,7 @@ export class PIMDataHubService {
     }>;
   }> {
     console.log('Performing data governance assessment');
-    
+
     return {
       overallDataQuality: 94.7,
       systemQuality: [
@@ -484,26 +489,26 @@ export class PIMDataHubService {
           systemName: 'ERP System',
           qualityScore: 96.2,
           issues: 12,
-          lastAssessment: new Date()
+          lastAssessment: new Date(),
         },
         {
           systemName: 'PLM System',
           qualityScore: 92.8,
           issues: 23,
-          lastAssessment: new Date()
+          lastAssessment: new Date(),
         },
         {
           systemName: 'CRM System',
           qualityScore: 89.5,
           issues: 31,
-          lastAssessment: new Date()
-        }
+          lastAssessment: new Date(),
+        },
       ],
       dataGovernanceMetrics: {
         dataCompleteness: 93.8,
         dataAccuracy: 96.2,
         dataConsistency: 91.5,
-        dataTimeliness: 97.4
+        dataTimeliness: 97.4,
       },
       improvementRecommendations: [
         {
@@ -511,16 +516,16 @@ export class PIMDataHubService {
           area: 'Data Consistency',
           description: 'Implement automated data validation rules across systems',
           estimatedEffort: 40,
-          expectedImprovement: 5.2
+          expectedImprovement: 5.2,
         },
         {
           priority: 'MEDIUM',
           area: 'Data Completeness',
           description: 'Enhance data entry forms with mandatory field validation',
           estimatedEffort: 20,
-          expectedImprovement: 3.1
-        }
-      ]
+          expectedImprovement: 3.1,
+        },
+      ],
     };
   }
 
@@ -528,7 +533,9 @@ export class PIMDataHubService {
   // PRIVATE HELPER METHODS
   // ================================
 
-  private async assessDataQuality(productData: Partial<ProductMasterData>): Promise<DataQualityMetrics> {
+  private async assessDataQuality(
+    productData: Partial<ProductMasterData>
+  ): Promise<DataQualityMetrics> {
     // Assess data quality across multiple dimensions
     return {
       completeness: 94.5,
@@ -537,42 +544,44 @@ export class PIMDataHubService {
       timeliness: 98.1,
       validity: 96.5,
       overallScore: 95.6,
-      issues: []
+      issues: [],
     };
   }
 
   private async detectDataConflicts(
     productId: string,
     newData: Partial<ProductMasterData>
-  ): Promise<Array<{
-    field: string;
-    currentValue: any;
-    newValue: any;
-    resolution: string;
-  }>> {
+  ): Promise<
+    Array<{
+      field: string;
+      currentValue: any;
+      newValue: any;
+      resolution: string;
+    }>
+  > {
     // Check for data conflicts between systems
     return [];
   }
 
-  private async validateProductData(
-    productData: Partial<ProductMasterData>
-  ): Promise<Array<{
-    rule: string;
-    passed: boolean;
-    message: string;
-  }>> {
+  private async validateProductData(productData: Partial<ProductMasterData>): Promise<
+    Array<{
+      rule: string;
+      passed: boolean;
+      message: string;
+    }>
+  > {
     // Validate product data against business rules
     return [
       {
         rule: 'Required Fields',
         passed: true,
-        message: 'All required fields are present'
+        message: 'All required fields are present',
       },
       {
         rule: 'Data Format',
         passed: true,
-        message: 'Data format validation passed'
-      }
+        message: 'Data format validation passed',
+      },
     ];
   }
 }

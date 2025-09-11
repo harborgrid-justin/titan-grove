@@ -3,30 +3,36 @@
  * Business logic for purchase order management
  */
 
-import { 
-  PurchaseOrder, 
-  PurchaseOrderStatus,
-  POType,
-  ProcurementSearchCriteria
-} from '../../types';
+import { PurchaseOrder, PurchaseOrderStatus, POType, ProcurementSearchCriteria } from '../../types';
 import { purchaseOrderRepository } from '../../data-access/repositories';
 import { PaginatedResponse, SearchParams } from '../../../../types/common';
 import type { QuoteManagementConfig } from '../../../../types/business-config';
 import { FinancialUtils } from '../../../../shared/constants';
 
 export class PurchaseOrderService {
-  
   /**
    * Create a new purchase order
    */
   async createPurchaseOrder(
-    data: Omit<PurchaseOrder, 'id' | 'poNumber' | 'status' | 'approvals' | 'revisions' | 'orderDate' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy'>
+    data: Omit<
+      PurchaseOrder,
+      | 'id'
+      | 'poNumber'
+      | 'status'
+      | 'approvals'
+      | 'revisions'
+      | 'orderDate'
+      | 'createdAt'
+      | 'updatedAt'
+      | 'createdBy'
+      | 'updatedBy'
+    >
   ): Promise<PurchaseOrder> {
     this.validatePOData(data);
-    
+
     const poNumber = await this.generatePONumber();
     const { subtotal, tax } = this.calculateTotals(data.lineItems);
-    
+
     const poData = {
       ...data,
       poNumber,
@@ -37,13 +43,17 @@ export class PurchaseOrderService {
       subtotal,
       tax,
       total: {
-        amount: subtotal.amount + tax.amount + (data.shipping?.amount || 0) - (data.discount?.amount || 0),
-        currency: subtotal.currency
+        amount:
+          subtotal.amount +
+          tax.amount +
+          (data.shipping?.amount || 0) -
+          (data.discount?.amount || 0),
+        currency: subtotal.currency,
       },
       createdBy: 'system',
-      updatedBy: 'system'
+      updatedBy: 'system',
     };
-    
+
     return await purchaseOrderRepository.create(poData);
   }
 
@@ -56,7 +66,7 @@ export class PurchaseOrderService {
     if (!existing) {
       throw new Error(`Purchase order with ID ${id} not found`);
     }
-    
+
     return await purchaseOrderRepository.update(id, updates);
   }
 
@@ -65,23 +75,23 @@ export class PurchaseOrderService {
     if (!po) {
       throw new Error(`Purchase order with ID ${poId} not found`);
     }
-    
+
     if (po.status !== PurchaseOrderStatus.APPROVED) {
       throw new Error('Only approved purchase orders can be sent to suppliers');
     }
-    
+
     await this.updatePurchaseOrder(poId, {
-      status: PurchaseOrderStatus.SENT_TO_SUPPLIER
+      status: PurchaseOrderStatus.SENT_TO_SUPPLIER,
     });
-    
+
     return {
       status: 'SENT',
-      sentDate: new Date()
+      sentDate: new Date(),
     };
   }
 
   async searchPurchaseOrders(
-    criteria: ProcurementSearchCriteria, 
+    criteria: ProcurementSearchCriteria,
     params?: SearchParams
   ): Promise<PaginatedResponse<PurchaseOrder>> {
     return await purchaseOrderRepository.search(criteria, params);
@@ -91,11 +101,11 @@ export class PurchaseOrderService {
     if (!data.title || data.title.trim() === '') {
       throw new Error('Purchase order title is required');
     }
-    
+
     if (!data.supplierId) {
       throw new Error('Supplier ID is required');
     }
-    
+
     if (!data.lineItems || data.lineItems.length === 0) {
       throw new Error('At least one line item is required');
     }
@@ -103,17 +113,17 @@ export class PurchaseOrderService {
 
   private calculateTotals(lineItems: any[]): { subtotal: any; tax: any } {
     const subtotalAmount = lineItems.reduce((sum, item) => sum + item.totalPrice.amount, 0);
-    
+
     // Load config for tax calculation
     const { loadBusinessConfig } = require('../../../../utils/business-config');
     const config = loadBusinessConfig().quoteManagement;
-    
+
     const taxAmount = FinancialUtils.calculateTax(subtotalAmount, config.standardTaxRate);
     const currency = lineItems[0]?.totalPrice?.currency || 'USD';
-    
+
     return {
       subtotal: { amount: subtotalAmount, currency },
-      tax: { amount: taxAmount, currency }
+      tax: { amount: taxAmount, currency },
     };
   }
 

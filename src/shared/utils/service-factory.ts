@@ -9,7 +9,7 @@ import { createLogger } from '../../utils/logger';
 import type { Logger } from 'winston';
 import {
   ServiceIntegrationContext,
-  StandardServiceConfig
+  StandardServiceConfig,
 } from '../interfaces/service-integration';
 import { QueueType } from '../../core/message-queue/types';
 
@@ -55,7 +55,7 @@ export class ServiceFactory {
       messageQueue: this.messageQueue,
       cache: this.cache,
       logger: this.logger,
-      config
+      config,
     };
   }
 
@@ -71,19 +71,19 @@ export class ServiceFactory {
           defaultTTL: 600, // 10 minutes
           keyPrefix: 'fin',
           operationTTLs: {
-            'balance': 300,      // 5 minutes for balance data
-            'transaction': 1800, // 30 minutes for transaction data
-            'report': 3600       // 1 hour for reports
-          }
+            balance: 300, // 5 minutes for balance data
+            transaction: 1800, // 30 minutes for transaction data
+            report: 3600, // 1 hour for reports
+          },
         },
         messageQueueConfig: {
           defaultPriority: 1, // High priority for financial operations
           retryAttempts: 3,
           compliance: {
             dataClassification: 'CONFIDENTIAL',
-            auditRequired: true
-          }
-        }
+            auditRequired: true,
+          },
+        },
       },
       hr: {
         serviceName: 'hr-service',
@@ -92,19 +92,19 @@ export class ServiceFactory {
           defaultTTL: 1800, // 30 minutes
           keyPrefix: 'hr',
           operationTTLs: {
-            'employee': 900,     // 15 minutes for employee data
-            'payroll': 300,      // 5 minutes for payroll data
-            'benefits': 3600     // 1 hour for benefits data
-          }
+            employee: 900, // 15 minutes for employee data
+            payroll: 300, // 5 minutes for payroll data
+            benefits: 3600, // 1 hour for benefits data
+          },
         },
         messageQueueConfig: {
           defaultPriority: 2,
           retryAttempts: 3,
           compliance: {
             dataClassification: 'CONFIDENTIAL',
-            auditRequired: true
-          }
-        }
+            auditRequired: true,
+          },
+        },
       },
       crm: {
         serviceName: 'crm-service',
@@ -113,19 +113,19 @@ export class ServiceFactory {
           defaultTTL: 900, // 15 minutes
           keyPrefix: 'crm',
           operationTTLs: {
-            'customer': 1800,    // 30 minutes for customer data
-            'opportunity': 600,  // 10 minutes for opportunity data
-            'activity': 300      // 5 minutes for activity data
-          }
+            customer: 1800, // 30 minutes for customer data
+            opportunity: 600, // 10 minutes for opportunity data
+            activity: 300, // 5 minutes for activity data
+          },
         },
         messageQueueConfig: {
           defaultPriority: 2,
           retryAttempts: 2,
           compliance: {
             dataClassification: 'INTERNAL',
-            auditRequired: false
-          }
-        }
+            auditRequired: false,
+          },
+        },
       },
       scm: {
         serviceName: 'scm-service',
@@ -134,19 +134,19 @@ export class ServiceFactory {
           defaultTTL: 600, // 10 minutes
           keyPrefix: 'scm',
           operationTTLs: {
-            'inventory': 120,    // 2 minutes for inventory levels
-            'supplier': 1800,    // 30 minutes for supplier data
-            'procurement': 600   // 10 minutes for procurement data
-          }
+            inventory: 120, // 2 minutes for inventory levels
+            supplier: 1800, // 30 minutes for supplier data
+            procurement: 600, // 10 minutes for procurement data
+          },
         },
         messageQueueConfig: {
           defaultPriority: 2,
           retryAttempts: 3,
           compliance: {
             dataClassification: 'INTERNAL',
-            auditRequired: false
-          }
-        }
+            auditRequired: false,
+          },
+        },
       },
       procurement: {
         serviceName: 'procurement-service',
@@ -155,19 +155,19 @@ export class ServiceFactory {
           defaultTTL: 900, // 15 minutes
           keyPrefix: 'proc',
           operationTTLs: {
-            'vendor': 1800,      // 30 minutes for vendor data
-            'contract': 3600,    // 1 hour for contract data
-            'purchase': 600      // 10 minutes for purchase data
-          }
+            vendor: 1800, // 30 minutes for vendor data
+            contract: 3600, // 1 hour for contract data
+            purchase: 600, // 10 minutes for purchase data
+          },
         },
         messageQueueConfig: {
           defaultPriority: 1, // High priority for procurement
           retryAttempts: 3,
           compliance: {
             dataClassification: 'CONFIDENTIAL',
-            auditRequired: true
-          }
-        }
+            auditRequired: true,
+          },
+        },
       },
       manufacturing: {
         serviceName: 'manufacturing-service',
@@ -176,19 +176,19 @@ export class ServiceFactory {
           defaultTTL: 300, // 5 minutes
           keyPrefix: 'mfg',
           operationTTLs: {
-            'production': 60,    // 1 minute for production data
-            'quality': 600,      // 10 minutes for quality data
-            'schedule': 300      // 5 minutes for schedule data
-          }
+            production: 60, // 1 minute for production data
+            quality: 600, // 10 minutes for quality data
+            schedule: 300, // 5 minutes for schedule data
+          },
         },
         messageQueueConfig: {
           defaultPriority: 1, // High priority for manufacturing
           retryAttempts: 2,
           compliance: {
             dataClassification: 'INTERNAL',
-            auditRequired: false
-          }
-        }
+            auditRequired: false,
+          },
+        },
       },
       inventory: {
         serviceName: 'inventory-service',
@@ -197,65 +197,75 @@ export class ServiceFactory {
           defaultTTL: 120, // 2 minutes
           keyPrefix: 'inv',
           operationTTLs: {
-            'stock-level': 60,   // 1 minute for stock levels
-            'location': 600,     // 10 minutes for location data
-            'movement': 300      // 5 minutes for movement data
-          }
+            'stock-level': 60, // 1 minute for stock levels
+            location: 600, // 10 minutes for location data
+            movement: 300, // 5 minutes for movement data
+          },
         },
         messageQueueConfig: {
           defaultPriority: 2,
           retryAttempts: 3,
           compliance: {
             dataClassification: 'INTERNAL',
-            auditRequired: false
-          }
-        }
+            auditRequired: false,
+          },
+        },
       },
       'service-command-center': {
         serviceName: 'service-command-center-service',
-        queueTypes: [QueueType.SERVICE_COMMAND_CENTER, QueueType.SERVICE, QueueType.MAINTENANCE, QueueType.NOTIFICATION],
+        queueTypes: [
+          QueueType.SERVICE_COMMAND_CENTER,
+          QueueType.SERVICE,
+          QueueType.MAINTENANCE,
+          QueueType.NOTIFICATION,
+        ],
         cacheConfig: {
           defaultTTL: 300, // 5 minutes
           keyPrefix: 'scc',
           operationTTLs: {
-            'command-center': 900,    // 15 minutes for command center data
-            'resource': 300,          // 5 minutes for resource data
-            'status': 60,             // 1 minute for status data
-            'analytics': 600,         // 10 minutes for analytics
-            'emergency': 30           // 30 seconds for emergency data
-          }
+            'command-center': 900, // 15 minutes for command center data
+            resource: 300, // 5 minutes for resource data
+            status: 60, // 1 minute for status data
+            analytics: 600, // 10 minutes for analytics
+            emergency: 30, // 30 seconds for emergency data
+          },
         },
         messageQueueConfig: {
           defaultPriority: 1, // High priority for service command center
           retryAttempts: 3,
           compliance: {
             dataClassification: 'INTERNAL',
-            auditRequired: true // Audit critical service operations
-          }
-        }
+            auditRequired: true, // Audit critical service operations
+          },
+        },
       },
       'field-service': {
         serviceName: 'field-service-service',
-        queueTypes: [QueueType.SERVICE, QueueType.MAINTENANCE, QueueType.NOTIFICATION, QueueType.ANALYTICS],
+        queueTypes: [
+          QueueType.SERVICE,
+          QueueType.MAINTENANCE,
+          QueueType.NOTIFICATION,
+          QueueType.ANALYTICS,
+        ],
         cacheConfig: {
           defaultTTL: 600, // 10 minutes
           keyPrefix: 'fs',
           operationTTLs: {
-            'work-order': 300,        // 5 minutes for work orders
-            'technician': 900,        // 15 minutes for technician data
-            'service-request': 600,   // 10 minutes for service requests
-            'appointment': 300,       // 5 minutes for appointments
-            'contract': 1800          // 30 minutes for contracts
-          }
+            'work-order': 300, // 5 minutes for work orders
+            technician: 900, // 15 minutes for technician data
+            'service-request': 600, // 10 minutes for service requests
+            appointment: 300, // 5 minutes for appointments
+            contract: 1800, // 30 minutes for contracts
+          },
         },
         messageQueueConfig: {
           defaultPriority: 2, // High priority for field service
           retryAttempts: 3,
           compliance: {
             dataClassification: 'INTERNAL',
-            auditRequired: true
-          }
-        }
+            auditRequired: true,
+          },
+        },
       },
       maintenance: {
         serviceName: 'maintenance-service',
@@ -264,39 +274,41 @@ export class ServiceFactory {
           defaultTTL: 600, // 10 minutes
           keyPrefix: 'mnt',
           operationTTLs: {
-            'maintenance': 900,       // 15 minutes for maintenance data
-            'work-order': 300,        // 5 minutes for work orders
-            'schedule': 600,          // 10 minutes for schedules
-            'asset': 1800             // 30 minutes for asset data
-          }
+            maintenance: 900, // 15 minutes for maintenance data
+            'work-order': 300, // 5 minutes for work orders
+            schedule: 600, // 10 minutes for schedules
+            asset: 1800, // 30 minutes for asset data
+          },
         },
         messageQueueConfig: {
           defaultPriority: 2,
           retryAttempts: 3,
           compliance: {
             dataClassification: 'INTERNAL',
-            auditRequired: true
-          }
-        }
-      }
+            auditRequired: true,
+          },
+        },
+      },
     };
 
-    return configs[moduleName] || {
-      serviceName: `${moduleName}-service`,
-      queueTypes: [QueueType.SYSTEM],
-      cacheConfig: {
-        defaultTTL: 600,
-        keyPrefix: moduleName.substring(0, 3),
-      },
-      messageQueueConfig: {
-        defaultPriority: 3,
-        retryAttempts: 2,
-        compliance: {
-          dataClassification: 'INTERNAL',
-          auditRequired: false
-        }
+    return (
+      configs[moduleName] || {
+        serviceName: `${moduleName}-service`,
+        queueTypes: [QueueType.SYSTEM],
+        cacheConfig: {
+          defaultTTL: 600,
+          keyPrefix: moduleName.substring(0, 3),
+        },
+        messageQueueConfig: {
+          defaultPriority: 3,
+          retryAttempts: 2,
+          compliance: {
+            dataClassification: 'INTERNAL',
+            auditRequired: false,
+          },
+        },
       }
-    };
+    );
   }
 
   /**

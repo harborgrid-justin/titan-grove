@@ -3,7 +3,10 @@
  * Healthcare management services and business logic integration
  */
 
-import { healthMedicalDomainManager, HealthMedicalBusinessLogic } from '../../domains/health-medical';
+import {
+  healthMedicalDomainManager,
+  HealthMedicalBusinessLogic,
+} from '../../domains/health-medical';
 
 export interface PatientRecord {
   id: string;
@@ -125,16 +128,17 @@ export interface MedicalBill {
  * Central service for healthcare operations and patient management
  */
 export class HealthMedicalManager {
-  
   /**
    * Patient Management Services
    */
-  async createPatient(patientData: Omit<PatientRecord, 'id' | 'createdDate' | 'updatedDate'>): Promise<PatientRecord> {
+  async createPatient(
+    patientData: Omit<PatientRecord, 'id' | 'createdDate' | 'updatedDate'>
+  ): Promise<PatientRecord> {
     const patient: PatientRecord = {
       id: `pt-${Date.now()}`,
       ...patientData,
       createdDate: new Date(),
-      updatedDate: new Date()
+      updatedDate: new Date(),
     };
 
     // Calculate patient risk score using domain business logic
@@ -146,12 +150,17 @@ export class HealthMedicalManager {
         priorAdmissions: 0, // Would get from medical history
         labValues: {}, // Would get from lab results
         socialFactors: {
-          insurance: patient.insurance?.primary === 'Medicare' ? 'medicare' : 
-                    patient.insurance?.primary === 'Medicaid' ? 'medicaid' : 
-                    patient.insurance ? 'commercial' : 'uninsured',
+          insurance:
+            patient.insurance?.primary === 'Medicare'
+              ? 'medicare'
+              : patient.insurance?.primary === 'Medicaid'
+                ? 'medicaid'
+                : patient.insurance
+                  ? 'commercial'
+                  : 'uninsured',
           zipCode: patient.address?.zipCode || '',
-          supportSystem: patient.emergencyContact ? 'moderate' : 'weak'
-        }
+          supportSystem: patient.emergencyContact ? 'moderate' : 'weak',
+        },
       },
       await healthMedicalDomainManager.config
     );
@@ -176,7 +185,7 @@ export class HealthMedicalManager {
       medications: updates.medications || [],
       createdDate: updates.createdDate || new Date(),
       updatedDate: new Date(),
-      ...updates
+      ...updates,
     };
 
     return updatedPatient;
@@ -199,29 +208,35 @@ export class HealthMedicalManager {
           dosage: '500mg',
           frequency: 'BID',
           prescribedBy: 'Dr. Smith',
-          prescribedDate: new Date()
-        }
+          prescribedDate: new Date(),
+        },
       ],
       createdDate: new Date(),
-      updatedDate: new Date()
+      updatedDate: new Date(),
     };
   }
 
   /**
    * Appointment Management Services
    */
-  async scheduleAppointment(appointmentData: Omit<Appointment, 'id' | 'createdDate' | 'updatedDate'>): Promise<Appointment> {
+  async scheduleAppointment(
+    appointmentData: Omit<Appointment, 'id' | 'createdDate' | 'updatedDate'>
+  ): Promise<Appointment> {
     const appointment: Appointment = {
       id: `apt-${Date.now()}`,
       ...appointmentData,
       createdDate: new Date(),
-      updatedDate: new Date()
+      updatedDate: new Date(),
     };
 
     return appointment;
   }
 
-  async getAppointments(patientId?: string, providerId?: string, date?: Date): Promise<Appointment[]> {
+  async getAppointments(
+    patientId?: string,
+    providerId?: string,
+    date?: Date
+  ): Promise<Appointment[]> {
     // Mock implementation
     return [
       {
@@ -235,20 +250,22 @@ export class HealthMedicalManager {
         reason: 'Annual checkup',
         location: 'Clinic Room 101',
         createdDate: new Date(),
-        updatedDate: new Date()
-      }
+        updatedDate: new Date(),
+      },
     ];
   }
 
   /**
    * Clinical Order Management
    */
-  async createClinicalOrder(orderData: Omit<ClinicalOrder, 'id' | 'createdDate' | 'updatedDate'>): Promise<ClinicalOrder> {
+  async createClinicalOrder(
+    orderData: Omit<ClinicalOrder, 'id' | 'createdDate' | 'updatedDate'>
+  ): Promise<ClinicalOrder> {
     const order: ClinicalOrder = {
       id: `ord-${Date.now()}`,
       ...orderData,
       createdDate: new Date(),
-      updatedDate: new Date()
+      updatedDate: new Date(),
     };
 
     return order;
@@ -265,37 +282,41 @@ export class HealthMedicalManager {
         orderDetails: {
           code: 'CBC',
           description: 'Complete Blood Count',
-          priority: 'routine'
+          priority: 'routine',
         },
         status: 'pending',
         orderDate: new Date(),
         createdDate: new Date(),
-        updatedDate: new Date()
-      }
+        updatedDate: new Date(),
+      },
     ];
   }
 
   /**
    * Medical Billing Services
    */
-  async createMedicalBill(billData: Omit<MedicalBill, 'id' | 'createdDate' | 'updatedDate'>): Promise<MedicalBill> {
+  async createMedicalBill(
+    billData: Omit<MedicalBill, 'id' | 'createdDate' | 'updatedDate'>
+  ): Promise<MedicalBill> {
     const bill: MedicalBill = {
       id: `bill-${Date.now()}`,
       ...billData,
       createdDate: new Date(),
-      updatedDate: new Date()
+      updatedDate: new Date(),
     };
 
     // Calculate revenue cycle metrics using domain business logic
     const revenueCycleMetrics = HealthMedicalBusinessLogic.calculateRevenueCycleMetrics(
-      [{
-        id: bill.id,
-        amount: bill.totalCharges,
-        serviceDate: bill.serviceDate,
-        submissionDate: bill.submissionDate || new Date(),
-        paymentDate: bill.paymentDate,
-        paymentAmount: bill.insurancePayment
-      }],
+      [
+        {
+          id: bill.id,
+          amount: bill.totalCharges,
+          serviceDate: bill.serviceDate,
+          submissionDate: bill.submissionDate || new Date(),
+          paymentDate: bill.paymentDate,
+          paymentAmount: bill.insurancePayment,
+        },
+      ],
       await healthMedicalDomainManager.config
     );
 
@@ -318,22 +339,22 @@ export class HealthMedicalManager {
             description: 'Office visit, established patient',
             quantity: 1,
             unitPrice: 150,
-            totalPrice: 150
-          }
+            totalPrice: 150,
+          },
         ],
         diagnoses: [
           {
             icd10Code: 'E11.9',
             description: 'Type 2 diabetes mellitus without complications',
-            primary: true
-          }
+            primary: true,
+          },
         ],
         totalCharges: 150,
         balance: 150,
         status: 'pending',
         createdDate: new Date(),
-        updatedDate: new Date()
-      }
+        updatedDate: new Date(),
+      },
     ];
   }
 
@@ -359,11 +380,13 @@ export class HealthMedicalManager {
         medications: patient.medications,
         allergies: patient.allergies,
         labResults: {}, // Would get from lab system
-        vitalSigns: patient.vitals ? {
-          systolic: patient.vitals.bloodPressure.systolic,
-          diastolic: patient.vitals.bloodPressure.diastolic,
-          heartRate: patient.vitals.heartRate
-        } : {}
+        vitalSigns: patient.vitals
+          ? {
+              systolic: patient.vitals.bloodPressure.systolic,
+              diastolic: patient.vitals.bloodPressure.diastolic,
+              heartRate: patient.vitals.heartRate,
+            }
+          : {},
       },
       await healthMedicalDomainManager.config
     );
@@ -379,13 +402,13 @@ export class HealthMedicalManager {
         id: 'pt-001',
         age: 65,
         conditions: ['diabetes'],
-        screenings: { 
-          a1c: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000) // 60 days ago
+        screenings: {
+          a1c: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000), // 60 days ago
         },
         medications: ['metformin'],
         admissions: 0,
-        emergencyVisits: 1
-      }
+        emergencyVisits: 1,
+      },
     ];
 
     return HealthMedicalBusinessLogic.calculateQualityMetrics(
@@ -402,11 +425,11 @@ export class HealthMedicalManager {
     const birthDate = new Date(dateOfBirth);
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    
+
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    
+
     return age;
   }
 }

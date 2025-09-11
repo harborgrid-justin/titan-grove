@@ -25,27 +25,21 @@ import { learningManagementService } from './business-logic/learning-management/
 import { laborDistributionService } from './business-logic/labor-distribution/labor-distribution-service';
 import { selfServiceHRService } from './business-logic/self-service/self-service-hr-service';
 
-import type { 
-  Employee, 
-  PayrollRecord, 
-  Benefit, 
-  TimeEntry 
-} from './types';
+import type { Employee, PayrollRecord, Benefit, TimeEntry } from './types';
 
 export class HRManager extends BaseManager {
-  
   // Employee Management Methods
   async createEmployee(employee: Omit<Employee, 'id' | 'employeeNumber'>): Promise<Employee> {
     const id = this.generateId('emp');
     const employeeNumber = this.generateNumericId('EMP');
-    
+
     const newEmployee: Employee = {
       ...employee,
       id,
       employeeNumber,
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     };
-    
+
     this.logAction('createEmployee', { id, employeeNumber });
     return newEmployee;
   }
@@ -67,7 +61,11 @@ export class HRManager extends BaseManager {
     return []; // Would return actual payroll records
   }
 
-  async processPayrollBatch(payPeriodStart: Date, payPeriodEnd: Date, employeeIds?: string[]): Promise<{
+  async processPayrollBatch(
+    payPeriodStart: Date,
+    payPeriodEnd: Date,
+    employeeIds?: string[]
+  ): Promise<{
     batchId: string;
     processedCount: number;
     totalGrossPay: number;
@@ -78,34 +76,50 @@ export class HRManager extends BaseManager {
     return hrPayrollService.processPayrollBatch(payPeriodStart, payPeriodEnd, employeeIds);
   }
 
-  async calculateGrossPay(employeeId: string, hoursWorked: number, overtimeHours: number): Promise<number> {
+  async calculateGrossPay(
+    employeeId: string,
+    hoursWorked: number,
+    overtimeHours: number
+  ): Promise<number> {
     // Implementation would calculate gross pay based on salary/hourly rate
     return hoursWorked * 25 + overtimeHours * 37.5; // Example calculation
   }
 
-  async calculateGrossPayForPeriod(employeeId: string, periodStart: Date, periodEnd: Date): Promise<number> {
+  async calculateGrossPayForPeriod(
+    employeeId: string,
+    periodStart: Date,
+    periodEnd: Date
+  ): Promise<number> {
     return hrPayrollService.calculateGrossPay(employeeId, periodStart, periodEnd);
   }
 
-  async calculateDeductions(employeeId: string, grossPay: number): Promise<Array<{
-    type: string;
-    description: string;
-    amount: number;
-  }>> {
+  async calculateDeductions(
+    employeeId: string,
+    grossPay: number
+  ): Promise<
+    Array<{
+      type: string;
+      description: string;
+      amount: number;
+    }>
+  > {
     const deductions = await hrPayrollService.calculateAllDeductions(employeeId, grossPay);
     // Convert to legacy format
-    return deductions.map(d => ({
+    return deductions.map((d) => ({
       type: d.type,
       description: d.description,
-      amount: d.amount
+      amount: d.amount,
     }));
   }
 
-  async generatePayrollReport(reportType: 'SUMMARY' | 'DETAIL' | 'TAX_LIABILITY', parameters: {
-    startDate: Date;
-    endDate: Date;
-    departmentId?: string;
-  }): Promise<any> {
+  async generatePayrollReport(
+    reportType: 'SUMMARY' | 'DETAIL' | 'TAX_LIABILITY',
+    parameters: {
+      startDate: Date;
+      endDate: Date;
+      departmentId?: string;
+    }
+  ): Promise<any> {
     return hrPayrollService.generatePayrollReport(reportType, parameters);
   }
 
@@ -118,8 +132,18 @@ export class HRManager extends BaseManager {
     return advancedBenefitsService.scheduleOpenEnrollment(parameters);
   }
 
-  async calculateFlexibleBenefitPremium(benefitPlanId: string, employeeId: string, coverageTier: any, effectiveDate: Date): Promise<any> {
-    return advancedBenefitsService.calculateFlexiblePremium(benefitPlanId, employeeId, coverageTier, effectiveDate);
+  async calculateFlexibleBenefitPremium(
+    benefitPlanId: string,
+    employeeId: string,
+    coverageTier: any,
+    effectiveDate: Date
+  ): Promise<any> {
+    return advancedBenefitsService.calculateFlexiblePremium(
+      benefitPlanId,
+      employeeId,
+      coverageTier,
+      effectiveDate
+    );
   }
 
   async getSelfServiceEnrollmentOptions(employeeId: string): Promise<any> {
@@ -131,8 +155,18 @@ export class HRManager extends BaseManager {
     return approvalsManagementService.createApprovalRule(rule);
   }
 
-  async submitForApproval(transactionId: string, transactionType: string, transactionData: any, requestorId: string): Promise<any> {
-    return approvalsManagementService.submitForApproval(transactionId, transactionType, transactionData, requestorId);
+  async submitForApproval(
+    transactionId: string,
+    transactionType: string,
+    transactionData: any,
+    requestorId: string
+  ): Promise<any> {
+    return approvalsManagementService.submitForApproval(
+      transactionId,
+      transactionType,
+      transactionData,
+      requestorId
+    );
   }
 
   async getApprovalDashboard(userId: string): Promise<any> {
@@ -179,7 +213,11 @@ export class HRManager extends BaseManager {
   }
 
   // Time and Labor Management Methods
-  async createEnterpriseTimecard(employeeId: string, periodStart: Date, periodEnd: Date): Promise<any> {
+  async createEnterpriseTimecard(
+    employeeId: string,
+    periodStart: Date,
+    periodEnd: Date
+  ): Promise<any> {
     return timeAndLaborService.createEnterpriseTimecard(employeeId, periodStart, periodEnd);
   }
 
@@ -209,8 +247,16 @@ export class HRManager extends BaseManager {
     return learningManagementService.createLearningProgram(program);
   }
 
-  async enrollEmployeeInProgram(employeeId: string, programId: string, targetCompletionDate?: Date): Promise<any> {
-    return learningManagementService.enrollEmployeeInProgram(employeeId, programId, targetCompletionDate);
+  async enrollEmployeeInProgram(
+    employeeId: string,
+    programId: string,
+    targetCompletionDate?: Date
+  ): Promise<any> {
+    return learningManagementService.enrollEmployeeInProgram(
+      employeeId,
+      programId,
+      targetCompletionDate
+    );
   }
 
   async conductSkillGapAnalysis(employeeId: string, targetRole?: string): Promise<any> {
@@ -255,8 +301,14 @@ export class HRManager extends BaseManager {
   }
 
   // Performance Management Methods
-  async schedulePerformanceReview(employeeId: string, reviewDate: Date, reviewerId: string): Promise<void> {
-    console.log(`Scheduling performance review for employee ${employeeId} on ${reviewDate} with reviewer ${reviewerId}`);
+  async schedulePerformanceReview(
+    employeeId: string,
+    reviewDate: Date,
+    reviewerId: string
+  ): Promise<void> {
+    console.log(
+      `Scheduling performance review for employee ${employeeId} on ${reviewDate} with reviewer ${reviewerId}`
+    );
   }
 
   // HR Reporting Methods
@@ -267,10 +319,10 @@ export class HRManager extends BaseManager {
       byStatus: {
         active: 0,
         inactive: 0,
-        terminated: 0
+        terminated: 0,
       },
       newHires: 0,
-      turnoverRate: 0
+      turnoverRate: 0,
     };
   }
 
@@ -281,7 +333,7 @@ export class HRManager extends BaseManager {
       totalDeductions: 0,
       totalNetPay: 0,
       employeeCount: 0,
-      averageGrossPay: 0
+      averageGrossPay: 0,
     };
   }
 }
@@ -300,5 +352,5 @@ export {
   iRecruitmentService,
   learningManagementService,
   laborDistributionService,
-  selfServiceHRService
+  selfServiceHRService,
 };

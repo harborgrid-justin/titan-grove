@@ -1,6 +1,5 @@
 import Joi from 'joi';
 import { TitanConfig } from '../types';
-import { loadExtendedConfig, loadBusinessConfig } from './business-config';
 
 // Re-export extended configuration loaders
 export { loadExtendedConfig, loadBusinessConfig, validateExtendedConfig } from './business-config';

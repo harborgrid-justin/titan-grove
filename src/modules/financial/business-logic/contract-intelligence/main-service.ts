@@ -11,7 +11,7 @@ import {
   ReportingPeriod,
   DataLineage,
   DataGovernance,
-  Prediction
+  Prediction,
 } from './types';
 
 import { dashboardService } from './dashboard-service';
@@ -23,10 +23,7 @@ export class ContractIntelligenceService {
   /**
    * Generate executive dashboard for strategic decision making
    */
-  async generateExecutiveDashboard(
-    organizationScope: string[],
-    reportingPeriod: ReportingPeriod
-  ) {
+  async generateExecutiveDashboard(organizationScope: string[], reportingPeriod: ReportingPeriod) {
     return dashboardService.generateExecutiveDashboard(organizationScope, reportingPeriod);
   }
 
@@ -49,8 +46,8 @@ export class ContractIntelligenceService {
       dataClassificationComplete: number;
     };
   }> {
-    const dataSources = dataScope.map(scope => this.createDataSourceTransparency(scope));
-    
+    const dataSources = dataScope.map((scope) => this.createDataSourceTransparency(scope));
+
     return {
       dataSources,
       dataQualityOverview: {
@@ -60,24 +57,24 @@ export class ContractIntelligenceService {
           completeness: 92,
           accuracy: 88,
           timeliness: 84,
-          consistency: 90
+          consistency: 90,
         },
         issuesIdentified: [
           'Missing contract modification data in 3% of records',
-          'Delayed updates from legacy systems'
+          'Delayed updates from legacy systems',
         ],
         improvementRecommendations: [
           'Implement real-time data validation',
           'Establish automated data quality monitoring',
-          'Create data steward role for each business unit'
-        ]
+          'Create data steward role for each business unit',
+        ],
       },
       dataGovernanceStatus: {
         policiesInPlace: 15,
         complianceLevel: 95,
         accessControlsActive: 98,
-        dataClassificationComplete: 92
-      }
+        dataClassificationComplete: 92,
+      },
     };
   }
 
@@ -89,22 +86,22 @@ export class ContractIntelligenceService {
     predictionTypes: PredictiveAnalytics['predictionType'][]
   ): Promise<PredictiveAnalytics[]> {
     const analytics: PredictiveAnalytics[] = [];
-    
+
     for (const predictionType of predictionTypes) {
       const model: PredictiveAnalytics = {
         modelId: `model_${predictionType}_${Date.now()}`,
         modelName: `${predictionType} Prediction Model`,
         modelType: 'REGRESSION',
         predictionType,
-        predictions: contractIds.map(id => this.generatePrediction(id, predictionType)),
+        predictions: contractIds.map((id) => this.generatePrediction(id, predictionType)),
         modelAccuracy: 85 + Math.random() * 10, // 85-95% accuracy
         lastTrainedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        nextRetrainingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        nextRetrainingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       };
-      
+
       analytics.push(model);
     }
-    
+
     return analytics;
   }
 
@@ -115,7 +112,7 @@ export class ContractIntelligenceService {
     categories: string[],
     benchmarkType: BenchmarkAnalysis['benchmarkType']
   ): Promise<BenchmarkAnalysis[]> {
-    return categories.map(category => ({
+    return categories.map((category) => ({
       benchmarkId: `bench_${category}_${Date.now()}`,
       benchmarkType,
       category,
@@ -127,8 +124,8 @@ export class ContractIntelligenceService {
       improvementOpportunities: [
         'Streamline approval processes',
         'Enhance supplier relationships',
-        'Implement advanced analytics'
-      ]
+        'Implement advanced analytics',
+      ],
     }));
   }
 
@@ -157,7 +154,7 @@ export class ContractIntelligenceService {
       metrics: this.generateContractMetrics(reportType),
       insights: this.generateContractInsights(reportType),
       recommendations: this.generateRecommendations(reportType),
-      confidenceLevel: 'HIGH'
+      confidenceLevel: 'HIGH',
     };
   }
 
@@ -180,23 +177,26 @@ export class ContractIntelligenceService {
           transformationSteps: ['Data extraction', 'Validation', 'Enrichment'],
           dataFlow: 'Real-time streaming',
           lastProcessed: new Date(),
-          processingStatus: 'SUCCESS'
-        }
+          processingStatus: 'SUCCESS',
+        },
       ],
       dataGovernance: {
         dataOwner: 'Contract Intelligence Team',
         dataClassification: 'INTERNAL',
         retentionPolicy: '7 years',
         accessControls: ['Role-based access', 'Audit logging'],
-        complianceRequirements: ['SOX', 'FAR', 'GDPR']
-      }
+        complianceRequirements: ['SOX', 'FAR', 'GDPR'],
+      },
     };
   }
 
   /**
    * Generate prediction for specific contract
    */
-  private generatePrediction(contractId: string, predictionType: PredictiveAnalytics['predictionType']): Prediction {
+  private generatePrediction(
+    contractId: string,
+    predictionType: PredictiveAnalytics['predictionType']
+  ): Prediction {
     return {
       predictionId: `pred_${contractId}_${Date.now()}`,
       contractId,
@@ -206,10 +206,10 @@ export class ContractIntelligenceService {
       factors: [
         { factorName: 'Historical Performance', importance: 0.3, value: 85, impact: 'POSITIVE' },
         { factorName: 'Market Conditions', importance: 0.25, value: 75, impact: 'NEUTRAL' },
-        { factorName: 'Supplier Stability', importance: 0.2, value: 90, impact: 'POSITIVE' }
+        { factorName: 'Supplier Stability', importance: 0.2, value: 90, impact: 'POSITIVE' },
       ],
       recommendedActions: this.getRecommendedActions(predictionType),
-      riskLevel: Math.random() > 0.7 ? 'HIGH' : (Math.random() > 0.4 ? 'MEDIUM' : 'LOW')
+      riskLevel: Math.random() > 0.7 ? 'HIGH' : Math.random() > 0.4 ? 'MEDIUM' : 'LOW',
     };
   }
 
@@ -219,7 +219,7 @@ export class ContractIntelligenceService {
       SCHEDULE_DELAY: 'On-time delivery expected',
       PERFORMANCE_RISK: 'Performance within acceptable range',
       COMPLIANCE_VIOLATION: 'Compliant execution anticipated',
-      RENEWAL_LIKELIHOOD: 'High probability of renewal'
+      RENEWAL_LIKELIHOOD: 'High probability of renewal',
     };
     return outcomes[predictionType];
   }
@@ -230,7 +230,7 @@ export class ContractIntelligenceService {
       SCHEDULE_DELAY: ['Track milestones', 'Maintain supplier communication'],
       PERFORMANCE_RISK: ['Increase oversight', 'Establish performance metrics'],
       COMPLIANCE_VIOLATION: ['Schedule compliance review', 'Update procedures'],
-      RENEWAL_LIKELIHOOD: ['Prepare renewal documentation', 'Assess market alternatives']
+      RENEWAL_LIKELIHOOD: ['Prepare renewal documentation', 'Assess market alternatives'],
     };
     return actions[predictionType] || [];
   }
@@ -252,8 +252,8 @@ export class ContractIntelligenceService {
         trend: 'IMPROVING' as const,
         variancePercent: 3.4,
         benchmarkValue: 148000000,
-        category: 'Financial Performance'
-      }
+        category: 'Financial Performance',
+      },
     ];
   }
 
@@ -271,8 +271,8 @@ export class ContractIntelligenceService {
         actionRequired: true,
         relatedMetrics: ['metric_001'],
         generatedBy: 'AI_ENGINE' as const,
-        confidence: 85
-      }
+        confidence: 85,
+      },
     ];
   }
 
@@ -284,7 +284,7 @@ export class ContractIntelligenceService {
       'Implement automated contract monitoring',
       'Enhance supplier performance tracking',
       'Strengthen compliance controls',
-      'Develop predictive analytics capabilities'
+      'Develop predictive analytics capabilities',
     ];
   }
 }

@@ -51,7 +51,13 @@ export interface Opportunity {
   customerId: string;
   amount: number;
   probability: number;
-  stage: 'PROSPECTING' | 'QUALIFICATION' | 'PROPOSAL' | 'NEGOTIATION' | 'CLOSED_WON' | 'CLOSED_LOST';
+  stage:
+    | 'PROSPECTING'
+    | 'QUALIFICATION'
+    | 'PROPOSAL'
+    | 'NEGOTIATION'
+    | 'CLOSED_WON'
+    | 'CLOSED_LOST';
   expectedCloseDate: Date;
   actualCloseDate?: Date;
   ownerId: string;

@@ -1,7 +1,7 @@
 /**
  * Capital Asset Management Module
  * Fortune 100 grade capital asset tracking, investment analysis, and ROI management
- * 
+ *
  * Provides comprehensive capital asset management capabilities including:
  * - Capital investment tracking and approval workflows
  * - ROI analysis and performance measurement
@@ -45,7 +45,7 @@ export class CapitalAssetManager extends BaseManager {
     return await capitalAssetService.generatePerformanceReport(assetId, {
       startDate: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
       endDate: new Date(),
-      periodType: 'MONTHLY'
+      periodType: 'MONTHLY',
     });
   }
 
@@ -85,8 +85,8 @@ export class CapitalAssetManager extends BaseManager {
       scenarios: analysisParams.scenarios || [
         { name: 'base', probability: 0.6, assumptions: {} },
         { name: 'optimistic', probability: 0.2, assumptions: {} },
-        { name: 'pessimistic', probability: 0.2, assumptions: {} }
-      ]
+        { name: 'pessimistic', probability: 0.2, assumptions: {} },
+      ],
     });
   }
 }
@@ -106,5 +106,5 @@ export type {
   ApprovalWorkflow,
   InvestmentMetrics,
   CapitalPlan,
-  AssetAcquisition
+  AssetAcquisition,
 } from './types';

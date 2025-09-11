@@ -1,13 +1,20 @@
 /**
  * Mobile Supply Chain Applications Service
- * Oracle EBS competitive integrated suite that streamlines design, planning, manufacturing, 
+ * Oracle EBS competitive integrated suite that streamlines design, planning, manufacturing,
  * maintenance, procurement, inventory management, and fulfillment
  */
 
 export interface MobileApplication {
   appId: string;
   appName: string;
-  category: 'DESIGN' | 'PLANNING' | 'MANUFACTURING' | 'MAINTENANCE' | 'PROCUREMENT' | 'INVENTORY' | 'FULFILLMENT';
+  category:
+    | 'DESIGN'
+    | 'PLANNING'
+    | 'MANUFACTURING'
+    | 'MAINTENANCE'
+    | 'PROCUREMENT'
+    | 'INVENTORY'
+    | 'FULFILLMENT';
   platform: 'IOS' | 'ANDROID' | 'WEB' | 'CROSS_PLATFORM';
   version: string;
   features: string[];
@@ -156,7 +163,6 @@ export interface MobileInventoryTransaction {
  * Integrated mobile suite for streamlined operations
  */
 export class MobileSupplyChainService {
-
   // ================================
   // MOBILE APPLICATION MANAGEMENT
   // ================================
@@ -164,19 +170,17 @@ export class MobileSupplyChainService {
   /**
    * Register mobile application
    */
-  async registerMobileApplication(
-    appData: {
-      appName: string;
-      category: string;
-      platform: string;
-      features: string[];
-      offlineCapable: boolean;
-    }
-  ): Promise<MobileApplication> {
+  async registerMobileApplication(appData: {
+    appName: string;
+    category: string;
+    platform: string;
+    features: string[];
+    offlineCapable: boolean;
+  }): Promise<MobileApplication> {
     const appId = `app_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Registering mobile application: ${appData.appName}`);
-    
+
     const app: MobileApplication = {
       appId,
       appName: appData.appName,
@@ -190,14 +194,14 @@ export class MobileSupplyChainService {
           dataType: 'WORK_ORDERS',
           syncFrequency: 'REAL_TIME',
           conflictResolution: 'SERVER_WINS',
-          offlineSupport: true
+          offlineSupport: true,
         },
         {
           dataType: 'INVENTORY_TRANSACTIONS',
           syncFrequency: 'PERIODIC',
           conflictResolution: 'MANUAL_REVIEW',
-          offlineSupport: true
-        }
+          offlineSupport: true,
+        },
       ],
       userRoles: ['OPERATOR', 'SUPERVISOR', 'TECHNICIAN'],
       integrations: [
@@ -206,9 +210,9 @@ export class MobileSupplyChainService {
           integrationType: 'API',
           dataFlow: 'BIDIRECTIONAL',
           syncStatus: 'CONNECTED',
-          lastSync: new Date()
-        }
-      ]
+          lastSync: new Date(),
+        },
+      ],
     };
 
     return app;
@@ -217,21 +221,19 @@ export class MobileSupplyChainService {
   /**
    * Create mobile work order
    */
-  async createMobileWorkOrder(
-    workOrderData: {
-      title: string;
-      description: string;
-      type: string;
-      assignedTo: string;
-      location: GeolocationData;
-      priority?: string;
-    }
-  ): Promise<MobileWorkOrder> {
+  async createMobileWorkOrder(workOrderData: {
+    title: string;
+    description: string;
+    type: string;
+    assignedTo: string;
+    location: GeolocationData;
+    priority?: string;
+  }): Promise<MobileWorkOrder> {
     const workOrderId = `mwo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const workOrderNumber = `MWO${Date.now().toString().slice(-6)}`;
-    
+
     console.log(`Creating mobile work order: ${workOrderNumber}`);
-    
+
     const workOrder: MobileWorkOrder = {
       workOrderId,
       workOrderNumber,
@@ -246,14 +248,14 @@ export class MobileSupplyChainService {
       instructions: [
         'Review safety procedures before starting',
         'Complete all checklist items',
-        'Perform quality checks as specified'
+        'Perform quality checks as specified',
       ],
       materials: [
         {
           materialId: 'MAT_001',
           quantity: 2,
-          unit: 'EA'
-        }
+          unit: 'EA',
+        },
       ],
       tools: ['WRENCH_SET', 'MULTIMETER', 'SAFETY_EQUIPMENT'],
       attachments: [],
@@ -262,23 +264,23 @@ export class MobileSupplyChainService {
           itemId: 'check_001',
           description: 'Verify material availability',
           required: true,
-          completed: false
+          completed: false,
         },
         {
           itemId: 'check_002',
           description: 'Complete safety inspection',
           required: true,
-          completed: false
-        }
+          completed: false,
+        },
       ],
       qualityChecks: [
         {
           checkId: 'qc_001',
           checkName: 'Visual inspection',
           checkType: 'VISUAL',
-          specification: 'No visible defects'
-        }
-      ]
+          specification: 'No visible defects',
+        },
+      ],
     };
 
     return workOrder;
@@ -287,21 +289,21 @@ export class MobileSupplyChainService {
   /**
    * Process mobile inventory transaction
    */
-  async processMobileInventoryTransaction(
-    transactionData: {
-      transactionType: string;
-      itemId: string;
-      itemCode: string;
-      quantity: number;
-      location: string;
-      userId: string;
-      reason?: string;
-    }
-  ): Promise<MobileInventoryTransaction> {
+  async processMobileInventoryTransaction(transactionData: {
+    transactionType: string;
+    itemId: string;
+    itemCode: string;
+    quantity: number;
+    location: string;
+    userId: string;
+    reason?: string;
+  }): Promise<MobileInventoryTransaction> {
     const transactionId = `mit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log(`Processing mobile inventory transaction: ${transactionData.transactionType} for ${transactionData.itemCode}`);
-    
+
+    console.log(
+      `Processing mobile inventory transaction: ${transactionData.transactionType} for ${transactionData.itemCode}`
+    );
+
     const transaction: MobileInventoryTransaction = {
       transactionId,
       transactionType: transactionData.transactionType as any,
@@ -316,7 +318,7 @@ export class MobileSupplyChainService {
       timestamp: new Date(),
       reason: transactionData.reason,
       attachments: [],
-      verified: true
+      verified: true,
     };
 
     return transaction;
@@ -357,13 +359,13 @@ export class MobileSupplyChainService {
     };
   }> {
     console.log('Getting mobile supply chain analytics');
-    
+
     return {
       userAdoption: {
         totalUsers: 1247,
         activeUsers: 1156,
         adoptionRate: 92.7,
-        averageSessionDuration: 23.5
+        averageSessionDuration: 23.5,
       },
       applicationUsage: [
         {
@@ -371,28 +373,28 @@ export class MobileSupplyChainService {
           appName: 'Mobile Manufacturing',
           users: 456,
           sessionsPerDay: 1247,
-          averageRating: 4.3
+          averageRating: 4.3,
         },
         {
           appId: 'app_002',
           appName: 'Mobile Inventory',
           users: 378,
           sessionsPerDay: 892,
-          averageRating: 4.1
-        }
+          averageRating: 4.1,
+        },
       ],
       operationalMetrics: {
         workOrdersCompleted: 2847,
         inventoryTransactions: 15624,
         dataAccuracy: 97.8,
-        productivityGain: 23.5
+        productivityGain: 23.5,
       },
       performanceMetrics: {
         averageResponseTime: 0.85, // seconds
         offlineUsage: 15.2, // percentage
         syncSuccessRate: 99.1,
-        errorRate: 0.3
-      }
+        errorRate: 0.3,
+      },
     };
   }
 }

@@ -3,25 +3,19 @@
  * Comprehensive order entry, validation, and lifecycle management with Oracle EBS competitive features
  */
 
-import type { 
-  SalesOrder, 
-  OrderLineItem, 
+import type {
+  SalesOrder,
+  OrderLineItem,
   OrderHold,
   OrderApproval,
   OrderWorkflow,
   OrderAddress,
-  OrderMetrics
+  OrderMetrics,
 } from '../../types';
 
-import {
-  OrderStatus, 
-  OrderType,
-  Priority,
-  HoldType
-} from '../../types';
+import { OrderStatus, OrderType, Priority, HoldType } from '../../types';
 
 export class SalesOrderService {
-  
   // ================================
   // CORE ORDER MANAGEMENT
   // ================================
@@ -64,15 +58,14 @@ export class SalesOrderService {
     customFields?: Record<string, any>;
     createdBy: string;
   }): Promise<SalesOrder> {
-    
     const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const orderNumber = `SO${Date.now().toString().slice(-8)}`;
-    
+
     // Process line items
     const processedLineItems: OrderLineItem[] = orderData.lineItems.map((item, index) => {
-      const extendedPrice = (item.unitPrice * item.quantity) - (item.discountAmount || 0);
+      const extendedPrice = item.unitPrice * item.quantity - (item.discountAmount || 0);
       const lineTotal = extendedPrice + (item.taxAmount || 0);
-      
+
       return {
         ...item,
         id: `oli_${Date.now()}_${index}`,
@@ -80,15 +73,22 @@ export class SalesOrderService {
         extendedPrice: Math.round(extendedPrice * 100) / 100,
         lineTotal: Math.round(lineTotal * 100) / 100,
         scheduledShipDate: item.scheduledShipDate || orderData.requestedDate,
-        lineStatus: OrderStatus.ENTERED
+        lineStatus: OrderStatus.ENTERED,
       };
     });
 
     // Calculate order totals
     const subtotal = processedLineItems.reduce((sum, item) => sum + item.extendedPrice, 0);
-    const discountAmount = processedLineItems.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
+    const discountAmount = processedLineItems.reduce(
+      (sum, item) => sum + (item.discountAmount || 0),
+      0
+    );
     const taxAmount = processedLineItems.reduce((sum, item) => sum + (item.taxAmount || 0), 0);
-    const shippingAmount = await this.calculateShippingCost(processedLineItems, orderData.shippingAddress, orderData.shippingMethodId);
+    const shippingAmount = await this.calculateShippingCost(
+      processedLineItems,
+      orderData.shippingAddress,
+      orderData.shippingMethodId
+    );
     const totalAmount = subtotal + taxAmount + shippingAmount;
 
     const salesOrder: SalesOrder = {
@@ -109,7 +109,8 @@ export class SalesOrderService {
       territory: orderData.territory,
       priceListId: orderData.priceListId,
       currency: orderData.currency || 'USD',
-      exchangeRate: orderData.exchangeRate || await this.getExchangeRate(orderData.currency || 'USD'),
+      exchangeRate:
+        orderData.exchangeRate || (await this.getExchangeRate(orderData.currency || 'USD')),
       paymentTermsId: orderData.paymentTermsId,
       paymentTerms: orderData.paymentTerms,
       paymentMethodId: orderData.paymentMethodId,
@@ -146,7 +147,7 @@ export class SalesOrderService {
       modifiedDate: new Date(),
       createdBy: orderData.createdBy,
       modifiedBy: orderData.createdBy,
-      version: 1
+      version: 1,
     };
 
     // Perform order validation
@@ -156,7 +157,12 @@ export class SalesOrderService {
     if (await this.requiresCreditCheck(salesOrder)) {
       const creditCheckResult = await this.performCreditCheck(salesOrder);
       if (!creditCheckResult.passed) {
-        await this.applyOrderHold(orderId, HoldType.CREDIT, creditCheckResult.reason || 'Credit check failed', orderData.createdBy);
+        await this.applyOrderHold(
+          orderId,
+          HoldType.CREDIT,
+          creditCheckResult.reason || 'Credit check failed',
+          orderData.createdBy
+        );
       }
       salesOrder.creditCheckStatus = creditCheckResult.passed ? 'PASSED' : 'FAILED';
     }
@@ -182,15 +188,24 @@ export class SalesOrderService {
 
     // Check if order can be modified
     if (!this.canModifyOrder(existingOrder)) {
-      throw new Error(`Order ${existingOrder.orderNumber} cannot be modified in status ${existingOrder.status}`);
+      throw new Error(
+        `Order ${existingOrder.orderNumber} cannot be modified in status ${existingOrder.status}`
+      );
     }
 
     // Recalculate totals if line items changed
     if (updates.lineItems) {
       const subtotal = updates.lineItems.reduce((sum, item) => sum + item.extendedPrice, 0);
-      const discountAmount = updates.lineItems.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
+      const discountAmount = updates.lineItems.reduce(
+        (sum, item) => sum + (item.discountAmount || 0),
+        0
+      );
       const taxAmount = updates.lineItems.reduce((sum, item) => sum + (item.taxAmount || 0), 0);
-      const shippingAmount = await this.calculateShippingCost(updates.lineItems, existingOrder.shippingAddress, existingOrder.shippingMethodId);
+      const shippingAmount = await this.calculateShippingCost(
+        updates.lineItems,
+        existingOrder.shippingAddress,
+        existingOrder.shippingMethodId
+      );
       const totalAmount = subtotal + taxAmount + shippingAmount;
 
       updates.subtotal = Math.round(subtotal * 100) / 100;
@@ -206,7 +221,7 @@ export class SalesOrderService {
       ...updates,
       version: existingOrder.version + 1,
       modifiedDate: new Date(),
-      modifiedBy: updatedBy
+      modifiedBy: updatedBy,
     };
 
     // Validate updated order
@@ -229,9 +244,9 @@ export class SalesOrderService {
     }
 
     // Check for active holds
-    const activeHolds = order.holds.filter(hold => hold.status === 'ACTIVE');
+    const activeHolds = order.holds.filter((hold) => hold.status === 'ACTIVE');
     if (activeHolds.length > 0) {
-      throw new Error(`Order has active holds: ${activeHolds.map(h => h.holdType).join(', ')}`);
+      throw new Error(`Order has active holds: ${activeHolds.map((h) => h.holdType).join(', ')}`);
     }
 
     // Perform availability check
@@ -247,7 +262,7 @@ export class SalesOrderService {
       status: availabilityResult.available ? OrderStatus.BOOKED : OrderStatus.CONFIRMED,
       bookingDate: new Date(),
       modifiedDate: new Date(),
-      modifiedBy: bookedBy
+      modifiedBy: bookedBy,
     };
 
     // Start fulfillment workflow
@@ -262,8 +277,8 @@ export class SalesOrderService {
    * Cancel a sales order
    */
   async cancelOrder(
-    orderId: string, 
-    cancellationReason: string, 
+    orderId: string,
+    cancellationReason: string,
     cancelledBy: string
   ): Promise<SalesOrder> {
     const order = await this.getOrderById(orderId);
@@ -286,7 +301,7 @@ export class SalesOrderService {
       status: OrderStatus.CANCELLED,
       internalNotes: `${order.internalNotes || ''}\nCancelled: ${cancellationReason}`.trim(),
       modifiedDate: new Date(),
-      modifiedBy: cancelledBy
+      modifiedBy: cancelledBy,
     };
 
     return cancelledOrder;
@@ -317,7 +332,7 @@ export class SalesOrderService {
       status: 'ACTIVE',
       priority: this.getHoldPriority(holdType),
       autoReleaseDate,
-      escalationDate: this.calculateEscalationDate(holdType)
+      escalationDate: this.calculateEscalationDate(holdType),
     };
 
     return hold;
@@ -342,7 +357,7 @@ export class SalesOrderService {
       releasedDate: new Date(),
       releasedBy,
       status: 'RELEASED',
-      priority: Priority.MEDIUM
+      priority: Priority.MEDIUM,
     };
 
     return hold;
@@ -374,7 +389,7 @@ export class SalesOrderService {
       requiredApprover: approval.approverId,
       status: 'PENDING',
       requestDate: new Date(),
-      escalationDate: this.calculateApprovalEscalationDate(approval.level)
+      escalationDate: this.calculateApprovalEscalationDate(approval.level),
     }));
 
     return approvals;
@@ -400,7 +415,7 @@ export class SalesOrderService {
       status: decision,
       requestDate: new Date(),
       responseDate: new Date(),
-      reason: comments
+      reason: comments,
     };
 
     return approval;
@@ -423,7 +438,7 @@ export class SalesOrderService {
   }): Promise<OrderMetrics> {
     // Implementation would query database based on criteria
     // This is a mock implementation
-    
+
     const mockMetrics: OrderMetrics = {
       totalOrders: 1245,
       totalRevenue: 8750000,
@@ -437,8 +452,8 @@ export class SalesOrderService {
       periodComparison: {
         ordersGrowth: 0.15,
         revenueGrowth: 0.22,
-        fulfillmentImprovement: 0.05
-      }
+        fulfillmentImprovement: 0.05,
+      },
     };
 
     return mockMetrics;
@@ -449,13 +464,13 @@ export class SalesOrderService {
   // ================================
 
   private async calculateShippingCost(
-    lineItems: OrderLineItem[], 
-    shippingAddress: OrderAddress, 
+    lineItems: OrderLineItem[],
+    shippingAddress: OrderAddress,
     shippingMethodId?: string
   ): Promise<number> {
     // Implementation would integrate with shipping calculator
-    const totalWeight = lineItems.reduce((sum, item) => sum + (item.quantity * 2), 0);
-    const baseRate = shippingMethodId === 'EXPRESS' ? 15.00 : 8.50;
+    const totalWeight = lineItems.reduce((sum, item) => sum + item.quantity * 2, 0);
+    const baseRate = shippingMethodId === 'EXPRESS' ? 15.0 : 8.5;
     return totalWeight * baseRate;
   }
 
@@ -508,7 +523,7 @@ export class SalesOrderService {
     return {
       passed: true,
       creditLimit: 50000,
-      availableCredit: 25000
+      availableCredit: 25000,
     };
   }
 
@@ -527,7 +542,7 @@ export class SalesOrderService {
     // Implementation would check inventory availability
     return {
       available: true,
-      shortfalls: []
+      shortfalls: [],
     };
   }
 
@@ -535,7 +550,10 @@ export class SalesOrderService {
     // Implementation would create back order records
   }
 
-  private async initiateOrderWorkflow(orderId: string, workflowType: string): Promise<OrderWorkflow> {
+  private async initiateOrderWorkflow(
+    orderId: string,
+    workflowType: string
+  ): Promise<OrderWorkflow> {
     // Implementation would start workflow engine
     return {
       id: `workflow_${Date.now()}`,
@@ -549,7 +567,7 @@ export class SalesOrderService {
       priority: Priority.MEDIUM,
       steps: [],
       createdDate: new Date(),
-      modifiedDate: new Date()
+      modifiedDate: new Date(),
     };
   }
 
@@ -569,7 +587,7 @@ export class SalesOrderService {
       [HoldType.SHIPPING]: 'Shipping validation required',
       [HoldType.CUSTOMER]: 'Customer-specific hold',
       [HoldType.MANUAL]: reason,
-      [HoldType.QUALITY]: 'Quality assurance hold'
+      [HoldType.QUALITY]: 'Quality assurance hold',
     };
     return descriptions[holdType] || reason;
   }
@@ -582,7 +600,7 @@ export class SalesOrderService {
       [HoldType.SHIPPING]: Priority.MEDIUM,
       [HoldType.CUSTOMER]: Priority.HIGH,
       [HoldType.MANUAL]: Priority.MEDIUM,
-      [HoldType.QUALITY]: Priority.HIGH
+      [HoldType.QUALITY]: Priority.HIGH,
     };
     return priorities[holdType] || Priority.MEDIUM;
   }
@@ -595,7 +613,7 @@ export class SalesOrderService {
       [HoldType.SHIPPING]: 12,
       [HoldType.CUSTOMER]: 48,
       [HoldType.MANUAL]: 24,
-      [HoldType.QUALITY]: 12
+      [HoldType.QUALITY]: 12,
     };
 
     const hours = escalationHours[holdType];
@@ -606,19 +624,20 @@ export class SalesOrderService {
     return escalationDate;
   }
 
-  private getRequiredApprovals(order: SalesOrder, approvalType: string): Array<{
+  private getRequiredApprovals(
+    order: SalesOrder,
+    approvalType: string
+  ): Array<{
     level: number;
     approverId: string;
   }> {
     // Implementation would determine required approvals based on business rules
-    return [
-      { level: 1, approverId: 'manager_001' }
-    ];
+    return [{ level: 1, approverId: 'manager_001' }];
   }
 
   private calculateApprovalEscalationDate(level: number): Date {
     const escalationDate = new Date();
-    escalationDate.setHours(escalationDate.getHours() + (level * 24));
+    escalationDate.setHours(escalationDate.getHours() + level * 24);
     return escalationDate;
   }
 

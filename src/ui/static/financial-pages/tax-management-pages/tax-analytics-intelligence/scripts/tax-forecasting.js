@@ -4,126 +4,136 @@
  */
 
 // Page-specific functionality for Tax Forecasting & Modeling
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Tax Forecasting & Modeling page loaded');
-    
-    // Initialize page-specific features
-    initializetaxforecasting();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Tax Forecasting & Modeling page loaded');
+
+  // Initialize page-specific features
+  initializetaxforecasting();
 });
 
 function initializetaxforecasting() {
-    // Configure action button
-    const actionBtn = document.getElementById('actionBtn');
-    if (actionBtn) {
-        actionBtn.addEventListener('click', function() {
-            handletaxforecastingAction();
-        });
-    }
-    
-    // Configure primary button  
-    const primaryBtn = document.getElementById('primaryBtn');
-    if (primaryBtn) {
-        primaryBtn.addEventListener('click', function() {
-            executetaxforecasting();
-        });
-    }
-    
-    // Configure page-specific buttons
-    setupTaxPageActions();
-    
-    // Load initial tax data
-    loadtaxforecastingData();
+  // Configure action button
+  const actionBtn = document.getElementById('actionBtn');
+  if (actionBtn) {
+    actionBtn.addEventListener('click', function () {
+      handletaxforecastingAction();
+    });
+  }
+
+  // Configure primary button
+  const primaryBtn = document.getElementById('primaryBtn');
+  if (primaryBtn) {
+    primaryBtn.addEventListener('click', function () {
+      executetaxforecasting();
+    });
+  }
+
+  // Configure page-specific buttons
+  setupTaxPageActions();
+
+  // Load initial tax data
+  loadtaxforecastingData();
 }
 
 async function loadtaxforecastingData() {
-    try {
-        const response = await fetch('/api/tax-management/tax-analytics-intelligence/tax-forecasting');
-        if (response.ok) {
-            const data = await response.json();
-            updatetaxforecastingDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Tax Forecasting & Modeling data:', error);
-        if (window.financialPages) {
-            window.financialPages.showNotification('Failed to load tax data', 'error');
-        }
+  try {
+    const response = await fetch('/api/tax-management/tax-analytics-intelligence/tax-forecasting');
+    if (response.ok) {
+      const data = await response.json();
+      updatetaxforecastingDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Tax Forecasting & Modeling data:', error);
+    if (window.financialPages) {
+      window.financialPages.showNotification('Failed to load tax data', 'error');
+    }
+  }
 }
 
 function handletaxforecastingAction() {
-    console.log('Tax Forecasting & Modeling action triggered');
-    if (window.financialPages) {
-        window.financialPages.showNotification('Tax Forecasting & Modeling configured successfully', 'success');
-    }
+  console.log('Tax Forecasting & Modeling action triggered');
+  if (window.financialPages) {
+    window.financialPages.showNotification(
+      'Tax Forecasting & Modeling configured successfully',
+      'success'
+    );
+  }
 }
 
 function executetaxforecasting() {
-    console.log('Tax Forecasting & Modeling execution started');
-    if (window.financialPages) {
-        window.financialPages.showNotification('Tax Forecasting & Modeling executed successfully', 'success');
-    }
+  console.log('Tax Forecasting & Modeling execution started');
+  if (window.financialPages) {
+    window.financialPages.showNotification(
+      'Tax Forecasting & Modeling executed successfully',
+      'success'
+    );
+  }
 }
 
 function updatetaxforecastingDisplay(data) {
-    console.log('Updating Tax Forecasting & Modeling display:', data);
-    // Update UI with loaded tax data
+  console.log('Updating Tax Forecasting & Modeling display:', data);
+  // Update UI with loaded tax data
 }
 
 function setupTaxPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/tax-management/tax-analytics-intelligence/tax-forecasting/test');
-                const result = await response.json();
-                if (window.financialPages) {
-                    window.financialPages.showNotification('Tax integration test successful', 'success');
-                }
-            } catch (error) {
-                if (window.financialPages) {
-                    window.financialPages.showNotification('Tax integration test failed', 'error');
-                }
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadtaxforecastingData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handletaxforecastingAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/tax-management/tax-analytics-intelligence/tax-forecasting/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'tax-forecasting-tax-export.xlsx';
-                a.click();
-                if (window.financialPages) {
-                    window.financialPages.showNotification('Tax data exported successfully', 'success');
-                }
-            } catch (error) {
-                if (window.financialPages) {
-                    window.financialPages.showNotification('Tax export failed', 'error');
-                }
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/tax-management/tax-analytics-intelligence/tax-forecasting/test'
+        );
+        const result = await response.json();
+        if (window.financialPages) {
+          window.financialPages.showNotification('Tax integration test successful', 'success');
+        }
+      } catch (error) {
+        if (window.financialPages) {
+          window.financialPages.showNotification('Tax integration test failed', 'error');
+        }
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadtaxforecastingData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handletaxforecastingAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/tax-management/tax-analytics-intelligence/tax-forecasting/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'tax-forecasting-tax-export.xlsx';
+        a.click();
+        if (window.financialPages) {
+          window.financialPages.showNotification('Tax data exported successfully', 'success');
+        }
+      } catch (error) {
+        if (window.financialPages) {
+          window.financialPages.showNotification('Tax export failed', 'error');
+        }
+      }
+    });
+  }
 }

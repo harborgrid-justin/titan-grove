@@ -7,7 +7,6 @@ import { Request, Response } from 'express';
 import { BaseController } from '../base/base-controller';
 
 export class FinanceController extends BaseController {
-
   /**
    * Get general ledger entries
    */
@@ -20,7 +19,7 @@ export class FinanceController extends BaseController {
         method: 'getGeneralLedger',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get general ledger entries retrieved successfully');
@@ -41,7 +40,7 @@ export class FinanceController extends BaseController {
         method: 'createJournalEntry',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create journal entry retrieved successfully');
@@ -62,7 +61,7 @@ export class FinanceController extends BaseController {
         method: 'getAccountsPayable',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get accounts payable retrieved successfully');
@@ -83,7 +82,7 @@ export class FinanceController extends BaseController {
         method: 'createInvoice',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create new invoice retrieved successfully');
@@ -104,7 +103,7 @@ export class FinanceController extends BaseController {
         method: 'getAccountsReceivable',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get accounts receivable retrieved successfully');
@@ -125,7 +124,7 @@ export class FinanceController extends BaseController {
         method: 'recordPayment',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Record payment retrieved successfully');
@@ -146,7 +145,7 @@ export class FinanceController extends BaseController {
         method: 'getFinancialReports',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get financial reports retrieved successfully');
@@ -167,7 +166,7 @@ export class FinanceController extends BaseController {
         method: 'generateReport',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Generate financial report retrieved successfully');
@@ -188,7 +187,7 @@ export class FinanceController extends BaseController {
         method: 'getBudgetAnalysis',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get budget analysis retrieved successfully');
@@ -209,7 +208,7 @@ export class FinanceController extends BaseController {
         method: 'updateBudget',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Update budget allocation retrieved successfully');

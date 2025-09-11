@@ -6,12 +6,15 @@ async function main() {
   try {
     // Load configuration - adapted for Business Suite
     const legacyConfig = loadConfig();
-    
+
     // Transform legacy config to business suite config
     const businessConfig = {
       database: {
         ...legacyConfig.database,
-        type: legacyConfig.database?.type === 'redis' ? 'sqlite' : (legacyConfig.database?.type || 'sqlite')
+        type:
+          legacyConfig.database?.type === 'redis'
+            ? 'sqlite'
+            : legacyConfig.database?.type || 'sqlite',
       },
       server: legacyConfig.server,
       modules: {
@@ -20,10 +23,10 @@ async function main() {
         crm: true,
         scm: true,
         project: true,
-        bi: true
+        bi: true,
       },
       multiTenant: { enabled: false },
-      auditLogging: { enabled: true, level: 'basic' as const }
+      auditLogging: { enabled: true, level: 'basic' as const },
     };
 
     // Create Titan Grove Business Suite instance
@@ -61,7 +64,9 @@ async function main() {
 
     console.log(`🏢 Titan Grove Enterprise Business Suite v1.0.0 started successfully!`);
     console.log(`📊 Database: ${businessConfig.database?.type || 'sqlite'}`);
-    console.log(`🌐 Server: http://${businessConfig.server?.host || 'localhost'}:${businessConfig.server?.port || 3000}`);
+    console.log(
+      `🌐 Server: http://${businessConfig.server?.host || 'localhost'}:${businessConfig.server?.port || 3000}`
+    );
     console.log(`📦 Business Modules: Financial, HR, CRM, SCM, Project, BI`);
     console.log(`🎯 Oracle EBS 12 Competitor - Enterprise Business Suite Ready!`);
   } catch (error) {

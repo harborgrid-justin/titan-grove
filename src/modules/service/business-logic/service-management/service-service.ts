@@ -7,8 +7,9 @@ import type { ServiceEntity } from '../../types';
 import { serviceRepository } from '../../data-access/repositories';
 
 export class ServiceService {
-  
-  async createService(data: Omit<ServiceEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<ServiceEntity> {
+  async createService(
+    data: Omit<ServiceEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<ServiceEntity> {
     this.validateServiceData(data);
     return await serviceRepository.create(data);
   }
@@ -22,7 +23,7 @@ export class ServiceService {
     if (!existing) {
       throw new Error(`Service with ID ${id} not found`);
     }
-    
+
     return await serviceRepository.update(id, updates);
   }
 
@@ -31,7 +32,7 @@ export class ServiceService {
     if (!existing) {
       throw new Error(`Service with ID ${id} not found`);
     }
-    
+
     await serviceRepository.delete(id);
   }
 
@@ -39,7 +40,9 @@ export class ServiceService {
     return await serviceRepository.getAll();
   }
 
-  private validateServiceData(data: Omit<ServiceEntity, 'id' | 'createdDate' | 'modifiedDate'>): void {
+  private validateServiceData(
+    data: Omit<ServiceEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): void {
     if (!data.name || data.name.trim() === '') {
       throw new Error('Name is required');
     }

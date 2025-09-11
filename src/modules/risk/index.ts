@@ -13,5 +13,5 @@ export {
   createRiskAssessment,
   calculateResidualRisk,
   generateRiskMetrics,
-  assessPortfolioRisk
+  assessPortfolioRisk,
 } from '../native';

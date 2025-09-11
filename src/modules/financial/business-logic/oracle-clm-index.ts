@@ -12,7 +12,7 @@ export {
   FederalContractingRequirement,
   ApprovalLevel,
   SocioeconomicRequirement,
-  FARAuditTrail
+  FARAuditTrail,
 } from './federal-compliance/federal-compliance-service';
 
 // Contracting Officer Workflows
@@ -25,7 +25,7 @@ export {
   MarketResearch,
   AcquisitionPlan,
   SourceSelection,
-  ContractAdministration
+  ContractAdministration,
 } from './contracting-officer-workflows/contracting-officer-workflows-service';
 
 // Strategic Procurement Planning
@@ -34,21 +34,21 @@ export {
   ProcurementStrategy,
   AcquisitionForecast,
   PlannedAcquisition,
-  ResourceRequirement
+  ResourceRequirement,
 } from './procurement-planning/procurement-planning-service';
 
 // Contract Intelligence and Analytics
 export {
   ContractIntelligenceService,
   ExecutiveDashboard,
-  PredictiveAnalytics
+  PredictiveAnalytics,
 } from './contract-intelligence/contract-intelligence-service';
 
 // Procure-to-Pay Integration
 export {
   ProcureToPayIntegrationService,
   ProcureToPayProcess,
-  Requisition
+  Requisition,
 } from './procure-to-pay-integration/procure-to-pay-integration-service';
 
 // Enhanced Contract Authoring (existing module with new features)
@@ -60,7 +60,7 @@ export {
   ContractAttachment,
   ValidationResult,
   FederalComplianceCheck,
-  OracleEBSIntegration
+  OracleEBSIntegration,
 } from './contract-authoring/contract-authoring-service';
 
 // Service instances for easy access
@@ -109,19 +109,19 @@ export class OracleCLMManager {
         'Strategic Procurement Planning',
         'Contract Intelligence and Analytics',
         'Procure-to-Pay Integration',
-        'Enhanced Contract Authoring'
+        'Enhanced Contract Authoring',
       ];
 
       return {
         status: 'INITIALIZED',
         message: `Oracle CLM competitive features initialized for ${config.agency}`,
-        featuresEnabled
+        featuresEnabled,
       };
     } catch (error) {
       return {
         status: 'ERROR',
         message: `Failed to initialize Oracle CLM features: ${error}`,
-        featuresEnabled: []
+        featuresEnabled: [],
       };
     }
   }
@@ -148,15 +148,15 @@ export class OracleCLMManager {
         'Procurement Planning': 'ACTIVE',
         'Contract Intelligence': 'ACTIVE',
         'Procure-to-Pay': 'ACTIVE',
-        'Contract Authoring': 'ACTIVE'
+        'Contract Authoring': 'ACTIVE',
       },
       performanceMetrics: {
         totalContractsManaged: 1250,
         complianceScore: 95,
         costSavingsAchieved: 2500000,
-        processEfficiency: 87
+        processEfficiency: 87,
       },
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
@@ -177,7 +177,7 @@ export class OracleCLMManager {
     estimatedCompletion: Date;
   }> {
     // Integrate all CLM features for end-to-end procurement
-    
+
     // 1. Validate federal compliance requirements
     const complianceRequirements = await this.federalCompliance.getFederalContractingRequirements(
       procurementRequest.estimatedValue,
@@ -197,7 +197,7 @@ export class OracleCLMManager {
       await this.procurementPlanning.createStrategicPlan({
         strategyName: `Strategic Plan - ${procurementRequest.requirementDescription}`,
         agency: procurementRequest.agency,
-        totalPlannedValue: procurementRequest.estimatedValue
+        totalPlannedValue: procurementRequest.estimatedValue,
       });
     }
 
@@ -213,10 +213,10 @@ export class OracleCLMManager {
         'Complete market research',
         'Develop acquisition strategy',
         'Prepare solicitation documents',
-        'Execute source selection'
+        'Execute source selection',
       ],
       complianceStatus: 'COMPLIANT',
-      estimatedCompletion: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) // 90 days
+      estimatedCompletion: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days
     };
   }
 }

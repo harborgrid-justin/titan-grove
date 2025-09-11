@@ -9,12 +9,17 @@ export abstract class BaseController {
   /**
    * Standard success response format
    */
-  protected sendSuccess(res: Response, data: any, message: string = 'Success', statusCode: number = 200) {
+  protected sendSuccess(
+    res: Response,
+    data: any,
+    message: string = 'Success',
+    statusCode: number = 200
+  ) {
     res.status(statusCode).json({
       success: true,
       message,
       data,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -25,7 +30,7 @@ export abstract class BaseController {
     res.status(statusCode).json({
       success: false,
       error,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -37,7 +42,7 @@ export abstract class BaseController {
       success: false,
       error: 'Validation failed',
       details: errors,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 
@@ -57,7 +62,7 @@ export abstract class BaseController {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
     const offset = (page - 1) * limit;
-    
+
     return { page, limit, offset };
   }
 
@@ -66,13 +71,13 @@ export abstract class BaseController {
    */
   protected getFilterParams(req: Request, allowedFilters: string[]) {
     const filters: any = {};
-    
-    allowedFilters.forEach(filter => {
+
+    allowedFilters.forEach((filter) => {
       if (req.query[filter]) {
         filters[filter] = req.query[filter];
       }
     });
-    
+
     return filters;
   }
 }

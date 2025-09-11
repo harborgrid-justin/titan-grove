@@ -7,7 +7,12 @@
 export interface ElectronicRecord {
   recordId: string;
   documentNumber: string;
-  documentType: 'MANUFACTURING_RECORD' | 'QUALITY_RECORD' | 'BATCH_RECORD' | 'REGULATORY_FILING' | 'AUDIT_RECORD';
+  documentType:
+    | 'MANUFACTURING_RECORD'
+    | 'QUALITY_RECORD'
+    | 'BATCH_RECORD'
+    | 'REGULATORY_FILING'
+    | 'AUDIT_RECORD';
   title: string;
   description: string;
   version: string;
@@ -142,7 +147,6 @@ export interface RecordAttachment {
  * Complete electronic records management with regulatory compliance
  */
 export class ERecordsService {
-
   // ================================
   // RECORD LIFECYCLE MANAGEMENT
   // ================================
@@ -150,22 +154,20 @@ export class ERecordsService {
   /**
    * Create new electronic record
    */
-  async createElectronicRecord(
-    recordData: {
-      documentType: string;
-      title: string;
-      description: string;
-      content: any;
-      category: string;
-      businessContext: any;
-      createdBy: string;
-    }
-  ): Promise<ElectronicRecord> {
+  async createElectronicRecord(recordData: {
+    documentType: string;
+    title: string;
+    description: string;
+    content: any;
+    category: string;
+    businessContext: any;
+    createdBy: string;
+  }): Promise<ElectronicRecord> {
     const recordId = `erec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const documentNumber = `DOC${Date.now().toString().slice(-8)}`;
-    
+
     console.log(`Creating electronic record: ${documentNumber}`);
-    
+
     const record: ElectronicRecord = {
       recordId,
       documentNumber,
@@ -178,7 +180,7 @@ export class ERecordsService {
         contentType: 'STRUCTURED_DATA',
         content: recordData.content,
         attachments: [],
-        checksum: this.calculateChecksum(recordData.content)
+        checksum: this.calculateChecksum(recordData.content),
       },
       metadata: {
         category: recordData.category,
@@ -191,8 +193,8 @@ export class ERecordsService {
           regulations: ['FDA_21_CFR_PART_11', 'ISO_9001', 'GMP'],
           complianceStatus: 'UNDER_REVIEW',
           lastAudit: new Date(),
-          nextAudit: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-        }
+          nextAudit: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+        },
       },
       signatures: [],
       auditTrail: [
@@ -204,8 +206,8 @@ export class ERecordsService {
           timestamp: new Date(),
           ipAddress: '127.0.0.1',
           location: 'System',
-          description: 'Electronic record created'
-        }
+          description: 'Electronic record created',
+        },
       ],
       retentionPolicy: {
         retentionPeriod: 7, // 7 years default
@@ -213,7 +215,7 @@ export class ERecordsService {
         disposalDate: new Date(Date.now() + 7 * 365 * 24 * 60 * 60 * 1000),
         disposalMethod: 'ARCHIVE',
         legalHolds: [],
-        regulatoryRequirements: ['FDA_RECORD_RETENTION', 'ISO_DOCUMENT_CONTROL']
+        regulatoryRequirements: ['FDA_RECORD_RETENTION', 'ISO_DOCUMENT_CONTROL'],
       },
       accessControl: {
         readAccess: ['OPERATOR', 'SUPERVISOR', 'QA_MANAGER'],
@@ -221,10 +223,10 @@ export class ERecordsService {
         approvalAccess: ['SUPERVISOR', 'QA_MANAGER'],
         adminAccess: ['SYSTEM_ADMIN'],
         restrictedAccess: false,
-        accessLog: []
+        accessLog: [],
       },
       createdDate: new Date(),
-      lastModified: new Date()
+      lastModified: new Date(),
     };
 
     return record;
@@ -250,12 +252,12 @@ export class ERecordsService {
     nextApprover?: string;
   }> {
     console.log(`Adding electronic signature to record ${recordId} by ${signatureData.signerName}`);
-    
+
     const signatureId = `esig_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Validate signature credentials (simplified)
     const isValidSignature = await this.validateElectronicSignature(signatureData.credentials);
-    
+
     if (!isValidSignature) {
       throw new Error('Invalid electronic signature credentials');
     }
@@ -276,15 +278,15 @@ export class ERecordsService {
         issuer: 'Titan Grove CA',
         serialNumber: 'TG123456789',
         validFrom: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
-        validTo: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-      }
+        validTo: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+      },
     };
 
     return {
       signatureAdded: true,
       signatureId,
       recordStatus: 'APPROVED',
-      nextApprover: undefined
+      nextApprover: undefined,
     };
   }
 
@@ -303,7 +305,7 @@ export class ERecordsService {
     correctionPlan?: string[];
   }> {
     console.log(`Performing compliance check for record ${recordId}`);
-    
+
     return {
       compliant: true,
       regulations: [
@@ -311,16 +313,16 @@ export class ERecordsService {
           regulation: 'FDA 21 CFR Part 11',
           status: 'COMPLIANT',
           findings: ['Electronic signatures properly implemented', 'Audit trail complete'],
-          recommendations: []
+          recommendations: [],
         },
         {
           regulation: 'ISO 9001:2015',
           status: 'COMPLIANT',
           findings: ['Document control procedures followed'],
-          recommendations: ['Consider enhanced metadata tagging']
-        }
+          recommendations: ['Consider enhanced metadata tagging'],
+        },
       ],
-      overallRisk: 'LOW'
+      overallRisk: 'LOW',
     };
   }
 
@@ -354,7 +356,7 @@ export class ERecordsService {
     }>;
   }> {
     console.log(`Searching electronic records with criteria: ${JSON.stringify(searchCriteria)}`);
-    
+
     return {
       totalResults: 1247,
       records: [
@@ -364,8 +366,8 @@ export class ERecordsService {
           title: 'Batch Production Record - Product A',
           status: 'APPROVED',
           lastModified: new Date(),
-          relevanceScore: 0.95
-        }
+          relevanceScore: 0.95,
+        },
       ],
       facets: [
         {
@@ -373,10 +375,10 @@ export class ERecordsService {
           values: [
             { value: 'MANUFACTURING_RECORD', count: 456 },
             { value: 'QUALITY_RECORD', count: 378 },
-            { value: 'BATCH_RECORD', count: 413 }
-          ]
-        }
-      ]
+            { value: 'BATCH_RECORD', count: 413 },
+          ],
+        },
+      ],
     };
   }
 

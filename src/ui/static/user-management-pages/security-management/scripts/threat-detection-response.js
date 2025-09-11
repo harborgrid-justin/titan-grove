@@ -1,128 +1,132 @@
 // User Threat Detection & Response - User Management System
 // This file provides business-ready functionality for User Threat Detection & Response
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('User Threat Detection & Response page loaded');
-    
-    // Initialize page functionality
-    initthreatdetectionresponse();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadthreatdetectionresponseData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('User Threat Detection & Response page loaded');
+
+  // Initialize page functionality
+  initthreatdetectionresponse();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadthreatdetectionresponseData();
 });
 
 async function loadthreatdetectionresponseData() {
-    try {
-        // Simulate API call to backend
-        const response = await fetch('/api/user-management/security-management/threat-detection-response');
-        const data = await response.json();
-        
-        console.log('User Threat Detection & Response data loaded:', data);
-        updatethreatdetectionresponseDisplay(data);
-    } catch (error) {
-        console.error('Error loading User Threat Detection & Response data:', error);
-        showNotification('Failed to load User Threat Detection & Response data', 'error');
-    }
+  try {
+    // Simulate API call to backend
+    const response = await fetch(
+      '/api/user-management/security-management/threat-detection-response'
+    );
+    const data = await response.json();
+
+    console.log('User Threat Detection & Response data loaded:', data);
+    updatethreatdetectionresponseDisplay(data);
+  } catch (error) {
+    console.error('Error loading User Threat Detection & Response data:', error);
+    showNotification('Failed to load User Threat Detection & Response data', 'error');
+  }
 }
 
 function initthreatdetectionresponse() {
-    // Initialize User Threat Detection & Response functionality
-    console.log('Initializing User Threat Detection & Response');
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
-    
-    // Initialize dashboard components
-    initializeDashboard();
+  // Initialize User Threat Detection & Response functionality
+  console.log('Initializing User Threat Detection & Response');
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
+
+  // Initialize dashboard components
+  initializeDashboard();
 }
 
 function initializeDashboard() {
-    // Initialize dashboard widgets and components
-    console.log('Dashboard initialized for User Threat Detection & Response');
+  // Initialize dashboard widgets and components
+  console.log('Dashboard initialized for User Threat Detection & Response');
 }
 
 function setupRealTimeUpdates() {
-    // Set up WebSocket or polling for real-time updates
-    console.log('Real-time updates configured for User Threat Detection & Response');
+  // Set up WebSocket or polling for real-time updates
+  console.log('Real-time updates configured for User Threat Detection & Response');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for User Threat Detection & Response');
+  // Business-specific logic implementation
+  console.log('Business logic configured for User Threat Detection & Response');
 }
 
 function handlethreatdetectionresponseAction() {
-    console.log('User Threat Detection & Response action triggered');
-    showNotification('User Threat Detection & Response configured successfully', 'success');
+  console.log('User Threat Detection & Response action triggered');
+  showNotification('User Threat Detection & Response configured successfully', 'success');
 }
 
 function executethreatdetectionresponse() {
-    console.log('User Threat Detection & Response execution started');
-    showNotification('User Threat Detection & Response executed successfully', 'success');
+  console.log('User Threat Detection & Response execution started');
+  showNotification('User Threat Detection & Response executed successfully', 'success');
 }
 
 function updatethreatdetectionresponseDisplay(data) {
-    console.log('Updating User Threat Detection & Response display:', data);
-    // Update UI with loaded data
+  console.log('Updating User Threat Detection & Response display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/user-management/security-management/threat-detection-response/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadthreatdetectionresponseData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handlethreatdetectionresponseAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', function() {
-            window.userManagement.exportData('threat-detection-response');
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/user-management/security-management/threat-detection-response/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadthreatdetectionresponseData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handlethreatdetectionresponseAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', function () {
+      window.userManagement.exportData('threat-detection-response');
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
 }
 
 // Add notification styles
@@ -170,10 +174,10 @@ document.head.appendChild(styleSheet);
 
 // Export page-specific functions for testing
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        initthreatdetectionresponse,
-        handlethreatdetectionresponseAction,
-        executethreatdetectionresponse,
-        loadthreatdetectionresponseData
-    };
+  module.exports = {
+    initthreatdetectionresponse,
+    handlethreatdetectionresponseAction,
+    executethreatdetectionresponse,
+    loadthreatdetectionresponseData,
+  };
 }

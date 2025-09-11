@@ -33,6 +33,7 @@ hr/
 ## Domain Organization
 
 This module is part of the **Human Capital Domain** which consolidates:
+
 - Human resources management
 - Workforce management
 - Labor distribution
@@ -49,20 +50,21 @@ const employee = await hrManager.createEmployee({
   lastName: 'Doe',
   email: 'john.doe@company.com',
   position: 'Software Engineer',
-  salary: 85000
+  salary: 85000,
 });
 
 // Process payroll
 const payroll = await hrManager.processPayroll({
   employeeId: employee.id,
   payPeriod: '2024-01',
-  hoursWorked: 160
+  hoursWorked: 160,
 });
 ```
 
 ## Business Logic
 
 The HR module implements comprehensive business logic including:
+
 - Salary and benefit calculations
 - Tax withholdings
 - Performance metrics

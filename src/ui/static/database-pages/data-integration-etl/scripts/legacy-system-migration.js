@@ -1,142 +1,146 @@
 // Legacy System Migration - Database Management System
 // This file provides business-ready functionality for Legacy System Migration
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Legacy System Migration page loaded');
-    
-    // Initialize page functionality
-    initLegacySystemMigration();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadLegacySystemMigrationData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Legacy System Migration page loaded');
+
+  // Initialize page functionality
+  initLegacySystemMigration();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadLegacySystemMigrationData();
 });
 
 async function loadLegacySystemMigrationData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/legacy-system-migration');
-        if (response.ok) {
-            const data = await response.json();
-            updateLegacySystemMigrationDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Legacy System Migration data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/data-integration-etl/legacy-system-migration');
+    if (response.ok) {
+      const data = await response.json();
+      updateLegacySystemMigrationDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Legacy System Migration data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initLegacySystemMigration() {
-    console.log('Initializing Legacy System Migration');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Legacy System Migration');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Legacy System Migration');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Legacy System Migration');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Legacy System Migration');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Legacy System Migration');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Legacy System Migration');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Legacy System Migration');
 }
 
 function handleLegacySystemMigrationAction() {
-    console.log('Legacy System Migration action triggered');
-    showNotification('Legacy System Migration configured successfully', 'success');
+  console.log('Legacy System Migration action triggered');
+  showNotification('Legacy System Migration configured successfully', 'success');
 }
 
 function executeLegacySystemMigration() {
-    console.log('Legacy System Migration execution started');
-    showNotification('Legacy System Migration executed successfully', 'success');
+  console.log('Legacy System Migration execution started');
+  showNotification('Legacy System Migration executed successfully', 'success');
 }
 
 function updateLegacySystemMigrationDisplay(data) {
-    console.log('Updating Legacy System Migration display:', data);
-    // Update UI with loaded data
+  console.log('Updating Legacy System Migration display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/legacy-system-migration/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadLegacySystemMigrationData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleLegacySystemMigrationAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/legacy-system-migration/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'legacy-system-migration-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/legacy-system-migration/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadLegacySystemMigrationData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleLegacySystemMigrationAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/legacy-system-migration/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'legacy-system-migration-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

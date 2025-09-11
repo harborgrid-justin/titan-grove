@@ -69,35 +69,36 @@ export interface BOMRiskFactor {
 }
 
 export class BOMManagementService {
-  
   /**
    * Core BOM Operations
    */
   async createBOM(bomData: Omit<BillOfMaterials, 'id' | 'totalCost'>): Promise<BillOfMaterials> {
     const id = `bom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Validate BOM structure
     const validation = await this.validateBOM(bomData);
     if (!validation.isValid) {
       throw new Error(`BOM validation failed: ${validation.errors.join(', ')}`);
     }
-    
+
     // Calculate total cost rollup
     const costRollup = await this.calculateBOMCostRollup(bomData.components);
-    
+
     const bom: BillOfMaterials = {
       ...bomData,
       id,
-      totalCost: costRollup.totalCost
+      totalCost: costRollup.totalCost,
     };
 
-    console.log(`Created BOM: ${bom.bomCode} for product ${bom.productId} with total cost: $${bom.totalCost}`);
+    console.log(
+      `Created BOM: ${bom.bomCode} for product ${bom.productId} with total cost: $${bom.totalCost}`
+    );
     return bom;
   }
 
   async updateBOM(bomId: string, updates: Partial<BillOfMaterials>): Promise<BillOfMaterials> {
     console.log(`Updating BOM: ${bomId}`);
-    
+
     // Implementation would retrieve existing BOM, apply updates, and recalculate costs
     const updatedBOM = {
       id: bomId,
@@ -108,7 +109,7 @@ export class BOMManagementService {
       components: [],
       totalCost: 0,
       status: 'ACTIVE' as const,
-      ...updates
+      ...updates,
     };
 
     // Recalculate cost rollup if components changed
@@ -120,47 +121,51 @@ export class BOMManagementService {
     return updatedBOM;
   }
 
-  async validateBOM(bomData: Omit<BillOfMaterials, 'id' | 'totalCost'>): Promise<BOMValidationResult> {
+  async validateBOM(
+    bomData: Omit<BillOfMaterials, 'id' | 'totalCost'>
+  ): Promise<BOMValidationResult> {
     const errors: string[] = [];
     const warnings: string[] = [];
-    
+
     // Validate components
     if (!bomData.components || bomData.components.length === 0) {
       errors.push('BOM must have at least one component');
     }
-    
+
     // Check for circular references
     const circularRef = this.checkCircularReferences(bomData.productId, bomData.components);
     if (circularRef) {
       errors.push('Circular reference detected in BOM structure');
     }
-    
+
     // Validate component quantities
     bomData.components.forEach((comp, index) => {
       if (comp.quantity <= 0) {
         errors.push(`Component ${comp.componentName} at position ${index} has invalid quantity`);
       }
       if (comp.scrapFactor < 0 || comp.scrapFactor > 1) {
-        warnings.push(`Component ${comp.componentName} has unusual scrap factor: ${comp.scrapFactor}`);
+        warnings.push(
+          `Component ${comp.componentName} has unusual scrap factor: ${comp.scrapFactor}`
+        );
       }
     });
-    
+
     // Validate effectivity dates
     if (bomData.expirationDate && bomData.expirationDate <= bomData.effectiveDate) {
       errors.push('Expiration date must be after effective date');
     }
-    
+
     return {
       isValid: errors.length === 0,
       errors,
       warnings,
-      costRollupCorrect: true // Would implement actual cost validation
+      costRollupCorrect: true, // Would implement actual cost validation
     };
   }
 
   private checkCircularReferences(productId: string, components: BOMComponent[]): boolean {
     // Simplified circular reference check
-    return components.some(comp => comp.componentId === productId);
+    return components.some((comp) => comp.componentId === productId);
   }
 
   /**
@@ -168,36 +173,39 @@ export class BOMManagementService {
    */
   async calculateBOMCostRollup(components: BOMComponent[]): Promise<BOMCostRollup> {
     const materialCost = components.reduce((sum, comp) => sum + comp.totalCost, 0);
-    
+
     // Calculate labor cost (simplified - would use routing operations)
     const laborCost = materialCost * 0.15; // 15% of material cost
-    
+
     // Calculate overhead cost
     const overheadCost = (materialCost + laborCost) * 0.25; // 25% overhead rate
-    
+
     const totalCost = materialCost + laborCost + overheadCost;
-    
+
     return {
       materialCost,
       laborCost,
       overheadCost,
       totalCost,
       costingDate: new Date(),
-      costingMethod: 'STANDARD'
+      costingMethod: 'STANDARD',
     };
   }
 
-  async updateBOMCosts(bomId: string, costingMethod: BOMCostRollup['costingMethod'] = 'STANDARD'): Promise<BOMCostRollup> {
+  async updateBOMCosts(
+    bomId: string,
+    costingMethod: BOMCostRollup['costingMethod'] = 'STANDARD'
+  ): Promise<BOMCostRollup> {
     console.log(`Updating BOM costs for ${bomId} using ${costingMethod} costing`);
-    
+
     // Implementation would retrieve current component costs and recalculate
     return {
-      materialCost: 1250.00,
-      laborCost: 187.50,
+      materialCost: 1250.0,
+      laborCost: 187.5,
       overheadCost: 359.38,
       totalCost: 1796.88,
       costingDate: new Date(),
-      costingMethod
+      costingMethod,
     };
   }
 
@@ -206,7 +214,7 @@ export class BOMManagementService {
    */
   async explodeBOM(bomId: string, quantity: number = 1): Promise<BOMExplosion[]> {
     console.log(`Exploding BOM ${bomId} for quantity: ${quantity}`);
-    
+
     // Multi-level BOM explosion
     return [
       {
@@ -214,31 +222,31 @@ export class BOMManagementService {
         componentId: 'COMP_001',
         componentName: 'Steel Plate',
         totalQuantity: 2 * quantity,
-        unitCost: 125.00,
-        extendedCost: 250.00 * quantity,
+        unitCost: 125.0,
+        extendedCost: 250.0 * quantity,
         leadTime: 5,
-        criticalPath: true
+        criticalPath: true,
       },
       {
         levelCode: 1,
-        componentId: 'COMP_002', 
+        componentId: 'COMP_002',
         componentName: 'Fasteners',
         totalQuantity: 8 * quantity,
-        unitCost: 2.50,
-        extendedCost: 20.00 * quantity,
+        unitCost: 2.5,
+        extendedCost: 20.0 * quantity,
         leadTime: 2,
-        criticalPath: false
+        criticalPath: false,
       },
       {
         levelCode: 2,
         componentId: 'COMP_003',
         componentName: 'Raw Steel',
         totalQuantity: 5 * quantity,
-        unitCost: 45.00,
-        extendedCost: 225.00 * quantity,
+        unitCost: 45.0,
+        extendedCost: 225.0 * quantity,
         leadTime: 10,
-        criticalPath: true
-      }
+        criticalPath: true,
+      },
     ];
   }
 
@@ -253,28 +261,28 @@ export class BOMManagementService {
     criticalityAnalysis: string[];
   }> {
     console.log(`Imploding BOM for component: ${componentId}`);
-    
+
     return {
       parentProducts: [
         {
           productId: 'PROD_001',
           productName: 'Assembly A',
           quantityPerUnit: 2,
-          levelCode: 1
+          levelCode: 1,
         },
         {
           productId: 'PROD_002',
           productName: 'Assembly B',
           quantityPerUnit: 1,
-          levelCode: 1
-        }
+          levelCode: 1,
+        },
       ],
       totalUsage: 3,
       criticalityAnalysis: [
         'Component used in 2 active products',
         'High-volume usage - ensure adequate inventory',
-        'Consider supplier capacity constraints'
-      ]
+        'Consider supplier capacity constraints',
+      ],
     };
   }
 
@@ -291,7 +299,7 @@ export class BOMManagementService {
     }
   ): Promise<BillOfMaterials> {
     console.log(`Creating new BOM version for ${baseBomId}: ${versionData.newVersion}`);
-    
+
     // Implementation would copy base BOM and apply changes
     const newBOM: BillOfMaterials = {
       id: `bom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -301,7 +309,7 @@ export class BOMManagementService {
       effectiveDate: versionData.effectiveDate,
       components: [], // Would apply changes from base BOM
       totalCost: 0,
-      status: 'PENDING'
+      status: 'PENDING',
     };
 
     return newBOM;
@@ -309,7 +317,7 @@ export class BOMManagementService {
 
   async compareBOMVersions(bomId1: string, bomId2: string): Promise<BOMComparison> {
     console.log(`Comparing BOM versions: ${bomId1} vs ${bomId2}`);
-    
+
     return {
       bomId1,
       bomId2,
@@ -319,17 +327,17 @@ export class BOMManagementService {
           changeType: 'QUANTITY_CHANGED',
           oldValue: 2,
           newValue: 3,
-          impact: 'MEDIUM'
+          impact: 'MEDIUM',
         },
         {
           componentId: 'COMP_004',
           changeType: 'ADDED',
-          newValue: { quantity: 1, unitCost: 15.00 },
-          impact: 'LOW'
-        }
+          newValue: { quantity: 1, unitCost: 15.0 },
+          impact: 'LOW',
+        },
       ],
-      costVariance: 45.00,
-      complexityChange: 0.15
+      costVariance: 45.0,
+      complexityChange: 0.15,
     };
   }
 
@@ -338,31 +346,31 @@ export class BOMManagementService {
    */
   async analyzeBOMStructure(bomId: string): Promise<BOMAnalytics> {
     console.log(`Analyzing BOM structure for: ${bomId}`);
-    
+
     return {
       bomComplexity: 0.65,
       averageLevels: 3.2,
       componentCount: 25,
-      totalCost: 1876.50,
+      totalCost: 1876.5,
       costDistribution: {
-        materialCost: 1250.00,
-        laborCost: 312.50,
-        overheadCost: 314.00
+        materialCost: 1250.0,
+        laborCost: 312.5,
+        overheadCost: 314.0,
       },
       riskFactors: [
         {
           riskType: 'SINGLE_SOURCE',
           componentId: 'COMP_001',
           severity: 'HIGH',
-          mitigation: 'Qualify alternative suppliers'
+          mitigation: 'Qualify alternative suppliers',
         },
         {
           riskType: 'LONG_LEAD_TIME',
           componentId: 'COMP_003',
           severity: 'MEDIUM',
-          mitigation: 'Increase safety stock or negotiate shorter lead times'
-        }
-      ]
+          mitigation: 'Increase safety stock or negotiate shorter lead times',
+        },
+      ],
     };
   }
 
@@ -379,30 +387,30 @@ export class BOMManagementService {
     }>;
   }> {
     console.log(`Optimizing BOM structure for: ${bomId}`);
-    
+
     return {
-      originalCost: 1876.50,
+      originalCost: 1876.5,
       optimizedCost: 1654.25,
       savings: 222.25,
       optimizationRecommendations: [
         'Replace COMP_001 with lower-cost alternative maintaining quality',
         'Consolidate similar fasteners to reduce complexity',
-        'Negotiate volume discounts for high-usage components'
+        'Negotiate volume discounts for high-usage components',
       ],
       alternativeComponents: [
         {
           originalComponentId: 'COMP_001',
           alternativeComponentId: 'COMP_001_ALT',
-          costSaving: 25.00,
-          qualityImpact: 'No impact - equivalent specification'
+          costSaving: 25.0,
+          qualityImpact: 'No impact - equivalent specification',
         },
         {
           originalComponentId: 'COMP_005',
           alternativeComponentId: 'COMP_005_STD',
-          costSaving: 8.50,
-          qualityImpact: 'Minor - meets minimum requirements'
-        }
-      ]
+          costSaving: 8.5,
+          qualityImpact: 'Minor - meets minimum requirements',
+        },
+      ],
     };
   }
 
@@ -429,21 +437,27 @@ export class BOMManagementService {
     approvers: string[];
   }> {
     const changeRequestId = `ecr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Initiating engineering change ${changeRequestId} for BOM ${bomId}`);
-    
+
     // Analyze impact of proposed changes
     const impactAnalysis = await this.analyzeChangeImpact(bomId, changeRequest.proposedChanges);
-    
+
     return {
       changeRequestId,
       impactAnalysis,
-      approvalRequired: changeRequest.urgency === 'HIGH' || changeRequest.urgency === 'EMERGENCY' || Math.abs(impactAnalysis.costImpact) > 1000,
-      approvers: ['Engineering Manager', 'Manufacturing Manager', 'Cost Accountant']
+      approvalRequired:
+        changeRequest.urgency === 'HIGH' ||
+        changeRequest.urgency === 'EMERGENCY' ||
+        Math.abs(impactAnalysis.costImpact) > 1000,
+      approvers: ['Engineering Manager', 'Manufacturing Manager', 'Cost Accountant'],
     };
   }
 
-  private async analyzeChangeImpact(bomId: string, changes: BOMDifference[]): Promise<{
+  private async analyzeChangeImpact(
+    bomId: string,
+    changes: BOMDifference[]
+  ): Promise<{
     costImpact: number;
     inventoryImpact: number;
     productionImpact: string[];
@@ -455,15 +469,15 @@ export class BOMManagementService {
       if (change.changeType === 'QUANTITY_CHANGED') return impact + 15;
       return impact;
     }, 0);
-    
+
     return {
       costImpact,
       inventoryImpact: changes.length * 100, // Simplified calculation
       productionImpact: [
         'May require tooling changes',
         'Training required for assembly operators',
-        'Quality inspection procedures need update'
-      ]
+        'Quality inspection procedures need update',
+      ],
     };
   }
 
@@ -489,12 +503,12 @@ export class BOMManagementService {
     totalAnnualValue: number;
   }> {
     console.log(`Generating where-used report for component: ${componentId}`);
-    
+
     return {
       component: {
         componentId,
         componentName: 'Steel Plate 12x12',
-        unitCost: 125.00
+        unitCost: 125.0,
       },
       usage: [
         {
@@ -504,7 +518,7 @@ export class BOMManagementService {
           quantityPerUnit: 2,
           levelCode: 1,
           totalAnnualUsage: 10000,
-          annualCostImpact: 1250000
+          annualCostImpact: 1250000,
         },
         {
           bomId: 'BOM_002',
@@ -513,11 +527,11 @@ export class BOMManagementService {
           quantityPerUnit: 1,
           levelCode: 1,
           totalAnnualUsage: 5000,
-          annualCostImpact: 625000
-        }
+          annualCostImpact: 625000,
+        },
       ],
       totalAnnualVolume: 15000,
-      totalAnnualValue: 1875000
+      totalAnnualValue: 1875000,
     };
   }
 
@@ -548,13 +562,13 @@ export class BOMManagementService {
     recommendations: string[];
   }> {
     console.log(`Generating cost report for BOM: ${bomId}`);
-    
+
     return {
       bomSummary: {
         bomId,
         productId: 'PROD_001',
-        totalCost: 1876.50,
-        costingDate: new Date()
+        totalCost: 1876.5,
+        costingDate: new Date(),
       },
       costBreakdown: {
         materialCosts: [
@@ -562,32 +576,40 @@ export class BOMManagementService {
             componentId: 'COMP_001',
             componentName: 'Steel Plate',
             quantity: 2,
-            unitCost: 125.00,
-            extendedCost: 250.00,
-            costPercentage: 13.3
+            unitCost: 125.0,
+            extendedCost: 250.0,
+            costPercentage: 13.3,
           },
           {
             componentId: 'COMP_002',
             componentName: 'Fasteners',
             quantity: 8,
-            unitCost: 2.50,
-            extendedCost: 20.00,
-            costPercentage: 1.1
-          }
+            unitCost: 2.5,
+            extendedCost: 20.0,
+            costPercentage: 1.1,
+          },
         ],
-        laborCosts: 312.50,
-        overheadCosts: 468.75
+        laborCosts: 312.5,
+        overheadCosts: 468.75,
       },
       costTrends: [
-        { date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), totalCost: 1825.00, variance: -51.50 },
-        { date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000), totalCost: 1798.25, variance: -78.25 },
-        { date: new Date(), totalCost: 1876.50, variance: 0 }
+        {
+          date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+          totalCost: 1825.0,
+          variance: -51.5,
+        },
+        {
+          date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
+          totalCost: 1798.25,
+          variance: -78.25,
+        },
+        { date: new Date(), totalCost: 1876.5, variance: 0 },
       ],
       recommendations: [
         'Monitor COMP_001 cost volatility - consider price contracts',
         'Evaluate bulk purchasing opportunities for high-volume components',
-        'Review overhead allocation method for accuracy'
-      ]
+        'Review overhead allocation method for accuracy',
+      ],
     };
   }
 
@@ -601,7 +623,7 @@ export class BOMManagementService {
 
   async copyBOM(sourceBomId: string, targetProductId: string): Promise<BillOfMaterials> {
     console.log(`Copying BOM ${sourceBomId} for product ${targetProductId}`);
-    
+
     // Implementation would copy BOM structure and create new version
     return {
       id: `bom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -611,20 +633,22 @@ export class BOMManagementService {
       effectiveDate: new Date(),
       components: [], // Would copy from source BOM
       totalCost: 0,
-      status: 'PENDING'
+      status: 'PENDING',
     };
   }
 
-  async getBOMEffectivitySchedule(productId: string): Promise<Array<{
-    bomId: string;
-    version: string;
-    effectiveDate: Date;
-    expirationDate?: Date;
-    status: string;
-    isCurrent: boolean;
-  }>> {
+  async getBOMEffectivitySchedule(productId: string): Promise<
+    Array<{
+      bomId: string;
+      version: string;
+      effectiveDate: Date;
+      expirationDate?: Date;
+      status: string;
+      isCurrent: boolean;
+    }>
+  > {
     console.log(`Getting BOM effectivity schedule for product: ${productId}`);
-    
+
     return [
       {
         bomId: 'BOM_001',
@@ -632,15 +656,15 @@ export class BOMManagementService {
         effectiveDate: new Date(2024, 0, 1),
         expirationDate: new Date(2024, 5, 30),
         status: 'ACTIVE',
-        isCurrent: false
+        isCurrent: false,
       },
       {
-        bomId: 'BOM_002', 
+        bomId: 'BOM_002',
         version: '2.0',
         effectiveDate: new Date(2024, 6, 1),
         status: 'ACTIVE',
-        isCurrent: true
-      }
+        isCurrent: true,
+      },
     ];
   }
 }

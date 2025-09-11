@@ -112,18 +112,21 @@ export class ProductionManager {
     };
 
     const finalConfig = { ...defaultConfig, ...config };
-    
+
     try {
       const result = await initializeProductionEnvironment(finalConfig);
       this.initialized = result;
-      
+
       if (this.initialized) {
         await this.logInfo('PRODUCTION_MANAGER', 'Production environment initialized successfully');
       }
-      
+
       return result;
     } catch (error) {
-      await this.logError('PRODUCTION_MANAGER', `Failed to initialize production environment: ${error}`);
+      await this.logError(
+        'PRODUCTION_MANAGER',
+        `Failed to initialize production environment: ${error}`
+      );
       return false;
     }
   }
@@ -146,15 +149,15 @@ export class ProductionManager {
 
     try {
       await this.logInfo(moduleName, `Starting operation: ${operationName}`, id);
-      
+
       const result = await operation();
       const executionTime = Date.now() - startTime;
-      
+
       // Record performance metrics
       await this.recordPerformanceMetric(operationName, moduleName, executionTime, id);
-      
+
       await this.logInfo(moduleName, `Operation completed successfully: ${operationName}`, id);
-      
+
       return {
         success: true,
         data: result,
@@ -165,9 +168,9 @@ export class ProductionManager {
     } catch (error) {
       const executionTime = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : String(error);
-      
+
       await this.logError(moduleName, `Operation failed: ${operationName} - ${errorMessage}`, id);
-      
+
       return {
         success: false,
         error: {
@@ -255,7 +258,13 @@ export class ProductionManager {
     errorRatePercent: number,
     availabilityPercent: number
   ): Promise<void> {
-    await updateHealthStatus(component, status, responseTimeMs, errorRatePercent, availabilityPercent);
+    await updateHealthStatus(
+      component,
+      status,
+      responseTimeMs,
+      errorRatePercent,
+      availabilityPercent
+    );
   }
 
   /**
@@ -324,12 +333,12 @@ export class ProductionManager {
    */
   async performHealthCheck(): Promise<HealthStatus> {
     const startTime = Date.now();
-    
+
     try {
       const config = await this.getProductionConfig();
       const metrics = await this.getPerformanceMetrics(1);
       const responseTime = Date.now() - startTime;
-      
+
       const healthStatus: HealthStatus = {
         component: 'PRODUCTION_MANAGER',
         status: 'HEALTHY',
@@ -338,19 +347,13 @@ export class ProductionManager {
         errorRatePercent: 0,
         availabilityPercent: 100,
       };
-      
-      await this.updateHealthStatus(
-        'PRODUCTION_MANAGER',
-        'HEALTHY',
-        responseTime,
-        0,
-        100
-      );
-      
+
+      await this.updateHealthStatus('PRODUCTION_MANAGER', 'HEALTHY', responseTime, 0, 100);
+
       return healthStatus;
     } catch (error) {
       const responseTime = Date.now() - startTime;
-      
+
       const healthStatus: HealthStatus = {
         component: 'PRODUCTION_MANAGER',
         status: 'UNHEALTHY',
@@ -359,15 +362,9 @@ export class ProductionManager {
         errorRatePercent: 100,
         availabilityPercent: 0,
       };
-      
-      await this.updateHealthStatus(
-        'PRODUCTION_MANAGER',
-        'UNHEALTHY',
-        responseTime,
-        100,
-        0
-      );
-      
+
+      await this.updateHealthStatus('PRODUCTION_MANAGER', 'UNHEALTHY', responseTime, 100, 0);
+
       return healthStatus;
     }
   }
@@ -383,11 +380,7 @@ export const withProductionLogging = <T extends any[], R>(
   operationName: string
 ) => {
   return async (...args: T): Promise<ServiceResponse<R>> => {
-    return productionManager.executeOperation(
-      () => fn(...args),
-      operationName,
-      moduleName
-    );
+    return productionManager.executeOperation(() => fn(...args), operationName, moduleName);
   };
 };
 
@@ -399,29 +392,29 @@ export const withMetrics = <T extends any[], R>(
   return async (...args: T): Promise<R> => {
     const startTime = Date.now();
     const correlationId = productionManager.generateCorrelationId();
-    
+
     try {
       const result = await fn(...args);
       const executionTime = Date.now() - startTime;
-      
+
       await productionManager.recordPerformanceMetric(
         metricName,
         moduleName,
         executionTime,
         correlationId
       );
-      
+
       return result;
     } catch (error) {
       const executionTime = Date.now() - startTime;
-      
+
       await productionManager.recordPerformanceMetric(
         metricName,
         moduleName,
         executionTime,
         correlationId
       );
-      
+
       throw error;
     }
   };

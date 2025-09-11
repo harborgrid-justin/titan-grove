@@ -5,7 +5,11 @@
 
 export interface ProcureToPayProcess {
   id: string;
-  processType: 'STANDARD_PROCUREMENT' | 'SIMPLIFIED_ACQUISITION' | 'EMERGENCY_PROCUREMENT' | 'BLANKET_PURCHASE';
+  processType:
+    | 'STANDARD_PROCUREMENT'
+    | 'SIMPLIFIED_ACQUISITION'
+    | 'EMERGENCY_PROCUREMENT'
+    | 'BLANKET_PURCHASE';
   initiatedBy: string;
   initiationDate: Date;
   currentStage: ProcessStage;
@@ -44,7 +48,13 @@ export interface IntegrationPoint {
 
 export interface ProcessAuditEvent {
   eventId: string;
-  eventType: 'STAGE_TRANSITION' | 'APPROVAL' | 'REJECTION' | 'MODIFICATION' | 'SYSTEM_INTEGRATION' | 'ERROR';
+  eventType:
+    | 'STAGE_TRANSITION'
+    | 'APPROVAL'
+    | 'REJECTION'
+    | 'MODIFICATION'
+    | 'SYSTEM_INTEGRATION'
+    | 'ERROR';
   timestamp: Date;
   userId: string;
   description: string;

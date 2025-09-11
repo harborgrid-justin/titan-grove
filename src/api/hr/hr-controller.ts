@@ -7,7 +7,6 @@ import { Request, Response } from 'express';
 import { BaseController } from '../base/base-controller';
 
 export class HrController extends BaseController {
-
   /**
    * Get employee list
    */
@@ -20,7 +19,7 @@ export class HrController extends BaseController {
         method: 'getEmployees',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get employee list retrieved successfully');
@@ -41,7 +40,7 @@ export class HrController extends BaseController {
         method: 'createEmployee',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create new employee retrieved successfully');
@@ -62,7 +61,7 @@ export class HrController extends BaseController {
         method: 'getEmployeeById',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get employee by ID retrieved successfully');
@@ -83,7 +82,7 @@ export class HrController extends BaseController {
         method: 'updateEmployee',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Update employee information retrieved successfully');
@@ -104,7 +103,7 @@ export class HrController extends BaseController {
         method: 'getPayroll',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get payroll data retrieved successfully');
@@ -125,7 +124,7 @@ export class HrController extends BaseController {
         method: 'processPayroll',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Process payroll run retrieved successfully');
@@ -146,7 +145,7 @@ export class HrController extends BaseController {
         method: 'getPerformanceReviews',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get performance reviews retrieved successfully');
@@ -167,7 +166,7 @@ export class HrController extends BaseController {
         method: 'createPerformanceReview',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Create performance review retrieved successfully');
@@ -188,7 +187,7 @@ export class HrController extends BaseController {
         method: 'getTimeTracking',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Get time tracking data retrieved successfully');
@@ -209,7 +208,7 @@ export class HrController extends BaseController {
         method: 'recordTimeEntry',
         params: req.params,
         query: req.query,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       this.sendSuccess(res, result, 'Record time entry retrieved successfully');

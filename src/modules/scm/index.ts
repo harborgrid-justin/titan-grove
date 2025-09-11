@@ -84,7 +84,15 @@ export interface SalesOrder {
   requestedDeliveryDate: Date;
   promisedDeliveryDate?: Date;
   actualShipDate?: Date;
-  status: 'DRAFT' | 'CONFIRMED' | 'PICKED' | 'PACKED' | 'SHIPPED' | 'DELIVERED' | 'INVOICED' | 'CANCELLED';
+  status:
+    | 'DRAFT'
+    | 'CONFIRMED'
+    | 'PICKED'
+    | 'PACKED'
+    | 'SHIPPED'
+    | 'DELIVERED'
+    | 'INVOICED'
+    | 'CANCELLED';
   items: SalesOrderItem[];
   subtotal: number;
   taxAmount: number;
@@ -174,17 +182,31 @@ export class SCMManager {
       quantityReserved: 20,
       quantityAvailable: 80,
       lastUpdated: new Date(),
-      averageCost: 25.50
+      averageCost: 25.5,
     };
   }
 
-  async adjustInventory(productId: string, locationId: string, adjustmentQuantity: number, reason: string): Promise<void> {
-    console.log(`Adjusting inventory for product ${productId} at location ${locationId} by ${adjustmentQuantity}. Reason: ${reason}`);
+  async adjustInventory(
+    productId: string,
+    locationId: string,
+    adjustmentQuantity: number,
+    reason: string
+  ): Promise<void> {
+    console.log(
+      `Adjusting inventory for product ${productId} at location ${locationId} by ${adjustmentQuantity}. Reason: ${reason}`
+    );
   }
 
-  async reserveInventory(productId: string, locationId: string, quantity: number, orderId: string): Promise<boolean> {
+  async reserveInventory(
+    productId: string,
+    locationId: string,
+    quantity: number,
+    orderId: string
+  ): Promise<boolean> {
     // Implementation would reserve inventory for a sales order
-    console.log(`Reserving ${quantity} units of product ${productId} at location ${locationId} for order ${orderId}`);
+    console.log(
+      `Reserving ${quantity} units of product ${productId} at location ${locationId} for order ${orderId}`
+    );
     return true;
   }
 
@@ -196,24 +218,29 @@ export class SCMManager {
   /**
    * Purchase Order Management
    */
-  async createPurchaseOrder(po: Omit<PurchaseOrder, 'id' | 'poNumber' | 'subtotal' | 'totalAmount'>): Promise<PurchaseOrder> {
+  async createPurchaseOrder(
+    po: Omit<PurchaseOrder, 'id' | 'poNumber' | 'subtotal' | 'totalAmount'>
+  ): Promise<PurchaseOrder> {
     const id = `po_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const poNumber = `PO${Date.now().toString().slice(-6)}`;
-    
+
     const subtotal = po.items.reduce((sum, item) => sum + item.totalAmount, 0);
     const totalAmount = subtotal + po.taxAmount;
-    
+
     return {
       ...po,
       id,
       poNumber,
       subtotal,
       totalAmount,
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
   }
 
-  async receivePurchaseOrder(poId: string, receivedItems: Array<{itemId: string, quantityReceived: number}>): Promise<void> {
+  async receivePurchaseOrder(
+    poId: string,
+    receivedItems: Array<{ itemId: string; quantityReceived: number }>
+  ): Promise<void> {
     console.log(`Receiving purchase order ${poId}`, receivedItems);
     // Implementation would update inventory and PO status
   }
@@ -221,20 +248,22 @@ export class SCMManager {
   /**
    * Sales Order Management
    */
-  async createSalesOrder(so: Omit<SalesOrder, 'id' | 'orderNumber' | 'subtotal' | 'totalAmount'>): Promise<SalesOrder> {
+  async createSalesOrder(
+    so: Omit<SalesOrder, 'id' | 'orderNumber' | 'subtotal' | 'totalAmount'>
+  ): Promise<SalesOrder> {
     const id = `so_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const orderNumber = `SO${Date.now().toString().slice(-6)}`;
-    
+
     const subtotal = so.items.reduce((sum, item) => sum + item.totalAmount, 0);
     const totalAmount = subtotal + so.taxAmount + so.shippingAmount;
-    
+
     return {
       ...so,
       id,
       orderNumber,
       subtotal,
       totalAmount,
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
   }
 
@@ -243,8 +272,14 @@ export class SCMManager {
     // Implementation would create pick list and update order status
   }
 
-  async shipSalesOrder(salesOrderId: string, trackingNumber: string, carrier: string): Promise<void> {
-    console.log(`Shipping sales order ${salesOrderId} via ${carrier} with tracking ${trackingNumber}`);
+  async shipSalesOrder(
+    salesOrderId: string,
+    trackingNumber: string,
+    carrier: string
+  ): Promise<void> {
+    console.log(
+      `Shipping sales order ${salesOrderId} via ${carrier} with tracking ${trackingNumber}`
+    );
   }
 
   /**
@@ -263,23 +298,25 @@ export class SCMManager {
       averageLeadTime: 7,
       priceCompetitiveness: 'GOOD',
       totalPurchaseVolume: 50000,
-      issuesCount: 2
+      issuesCount: 2,
     };
   }
 
   /**
    * Manufacturing Management
    */
-  async createWorkOrder(workOrder: Omit<WorkOrder, 'id' | 'workOrderNumber' | 'quantityProduced'>): Promise<WorkOrder> {
+  async createWorkOrder(
+    workOrder: Omit<WorkOrder, 'id' | 'workOrderNumber' | 'quantityProduced'>
+  ): Promise<WorkOrder> {
     const id = `wo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const workOrderNumber = `WO${Date.now().toString().slice(-6)}`;
-    
+
     return {
       ...workOrder,
       id,
       workOrderNumber,
       quantityProduced: 0,
-      status: 'PLANNED'
+      status: 'PLANNED',
     };
   }
 
@@ -301,7 +338,7 @@ export class SCMManager {
       turnoverRatio: 6.5,
       averageInventoryValue: 15000,
       costOfGoodsSold: 97500,
-      daysInInventory: 56
+      daysInInventory: 56,
     };
   }
 
@@ -311,9 +348,9 @@ export class SCMManager {
       onTimeDeliveryRate: 92,
       qualityMetrics: {
         defectRate: 0.02,
-        returnRate: 0.01
+        returnRate: 0.01,
       },
-      costSavings: 25000
+      costSavings: 25000,
     };
   }
 
@@ -323,7 +360,7 @@ export class SCMManager {
       perfectOrderRate: 89,
       averageOrderCycleTime: 3.5,
       backorderRate: 4,
-      onTimeShipmentRate: 94
+      onTimeShipmentRate: 94,
     };
   }
 
@@ -332,7 +369,7 @@ export class SCMManager {
       planningHorizon: days,
       requirements: [],
       suggestedPurchases: [],
-      criticalShortages: []
+      criticalShortages: [],
     };
   }
 }

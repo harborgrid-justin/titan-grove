@@ -1,142 +1,146 @@
 // Data Archival Management - Database Management System
 // This file provides business-ready functionality for Data Archival Management
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Data Archival Management page loaded');
-    
-    // Initialize page functionality
-    initDataArchivalManagement();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadDataArchivalManagementData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Data Archival Management page loaded');
+
+  // Initialize page functionality
+  initDataArchivalManagement();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadDataArchivalManagementData();
 });
 
 async function loadDataArchivalManagementData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/data-archival-management');
-        if (response.ok) {
-            const data = await response.json();
-            updateDataArchivalManagementDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Data Archival Management data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/data-integration-etl/data-archival-management');
+    if (response.ok) {
+      const data = await response.json();
+      updateDataArchivalManagementDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Data Archival Management data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initDataArchivalManagement() {
-    console.log('Initializing Data Archival Management');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Data Archival Management');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Data Archival Management');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Data Archival Management');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Data Archival Management');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Data Archival Management');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Data Archival Management');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Data Archival Management');
 }
 
 function handleDataArchivalManagementAction() {
-    console.log('Data Archival Management action triggered');
-    showNotification('Data Archival Management configured successfully', 'success');
+  console.log('Data Archival Management action triggered');
+  showNotification('Data Archival Management configured successfully', 'success');
 }
 
 function executeDataArchivalManagement() {
-    console.log('Data Archival Management execution started');
-    showNotification('Data Archival Management executed successfully', 'success');
+  console.log('Data Archival Management execution started');
+  showNotification('Data Archival Management executed successfully', 'success');
 }
 
 function updateDataArchivalManagementDisplay(data) {
-    console.log('Updating Data Archival Management display:', data);
-    // Update UI with loaded data
+  console.log('Updating Data Archival Management display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/data-archival-management/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadDataArchivalManagementData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleDataArchivalManagementAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/data-archival-management/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'data-archival-management-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/data-archival-management/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadDataArchivalManagementData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleDataArchivalManagementAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/data-archival-management/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data-archival-management-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

@@ -7,8 +7,9 @@ import type { ScmEntity } from '../../types';
 import { scmRepository } from '../../data-access/repositories';
 
 export class ScmService {
-  
-  async createScm(data: Omit<ScmEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<ScmEntity> {
+  async createScm(
+    data: Omit<ScmEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<ScmEntity> {
     this.validateScmData(data);
     return await scmRepository.create(data);
   }
@@ -22,7 +23,7 @@ export class ScmService {
     if (!existing) {
       throw new Error(`Scm with ID ${id} not found`);
     }
-    
+
     return await scmRepository.update(id, updates);
   }
 
@@ -31,7 +32,7 @@ export class ScmService {
     if (!existing) {
       throw new Error(`Scm with ID ${id} not found`);
     }
-    
+
     await scmRepository.delete(id);
   }
 

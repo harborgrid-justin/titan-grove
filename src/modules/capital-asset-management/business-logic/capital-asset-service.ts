@@ -1,7 +1,7 @@
 /**
  * Capital Asset Management Service
  * Fortune 100 grade capital asset tracking, investment analysis, and ROI management
- * 
+ *
  * Provides comprehensive capital asset management with:
  * - Capital investment tracking and approval workflows
  * - ROI analysis and performance measurement
@@ -26,7 +26,7 @@ import type {
   AssetAcquisition,
   RiskAssessment,
   ImplementationMilestone,
-  ApprovalRecord
+  ApprovalRecord,
 } from '../types';
 import type { CapitalAssetConfig } from '../../../types/business-config';
 
@@ -66,7 +66,7 @@ export class CapitalAssetService {
     recommendedActions: string[];
   }> {
     const capitalAssetId = this.generateId('CAPITAL_ASSET');
-    
+
     const capitalAsset: CapitalAsset = {
       capitalAssetId,
       assetId: assetData.assetId || '',
@@ -77,7 +77,7 @@ export class CapitalAssetService {
       assetCategory: assetData.assetCategory || '',
       priorityLevel: assetData.priorityLevel || 'MEDIUM',
       strategicImportance: assetData.strategicImportance || 'STANDARD',
-      
+
       capitalValue: {
         originalCost: assetData.capitalValue?.originalCost || 0,
         currentBookValue: assetData.capitalValue?.currentBookValue || 0,
@@ -86,9 +86,9 @@ export class CapitalAssetService {
         totalCostOfOwnership: assetData.capitalValue?.totalCostOfOwnership || 0,
         depreciationMethod: assetData.capitalValue?.depreciationMethod || 'STRAIGHT_LINE',
         usefulLife: assetData.capitalValue?.usefulLife || 10,
-        salvageValue: assetData.capitalValue?.salvageValue || 0
+        salvageValue: assetData.capitalValue?.salvageValue || 0,
       },
-      
+
       investment: {
         investmentId: assetData.investment?.investmentId || '',
         approvalDate: assetData.investment?.approvalDate || new Date(),
@@ -97,9 +97,9 @@ export class CapitalAssetService {
         roi: assetData.investment?.roi || 0,
         paybackPeriod: assetData.investment?.paybackPeriod || 0,
         npv: assetData.investment?.npv || 0,
-        irr: assetData.investment?.irr || 0
+        irr: assetData.investment?.irr || 0,
       },
-      
+
       performance: {
         utilization: assetData.performance?.utilization || 0,
         productivity: assetData.performance?.productivity || 0,
@@ -107,9 +107,9 @@ export class CapitalAssetService {
         availability: assetData.performance?.availability || 0,
         downtime: assetData.performance?.downtime || 0,
         maintenanceCost: assetData.performance?.maintenanceCost || 0,
-        operatingCost: assetData.performance?.operatingCost || 0
+        operatingCost: assetData.performance?.operatingCost || 0,
       },
-      
+
       lifecycle: {
         acquisitionDate: assetData.lifecycle?.acquisitionDate || new Date(),
         commissionDate: assetData.lifecycle?.commissionDate,
@@ -117,29 +117,29 @@ export class CapitalAssetService {
         plannedReplacementDate: assetData.lifecycle?.plannedReplacementDate,
         disposalDate: assetData.lifecycle?.disposalDate,
         currentPhase: assetData.lifecycle?.currentPhase || 'PLANNING',
-        remainingLife: assetData.lifecycle?.remainingLife || 10
+        remainingLife: assetData.lifecycle?.remainingLife || 10,
       },
-      
+
       location: {
         facilityId: assetData.location?.facilityId || '',
         costCenter: assetData.location?.costCenter || '',
         department: assetData.location?.department || '',
         responsibleManager: assetData.location?.responsibleManager || '',
-        businessUnit: assetData.location?.businessUnit || ''
+        businessUnit: assetData.location?.businessUnit || '',
       },
-      
+
       compliance: {
         regulatoryRequirements: assetData.compliance?.regulatoryRequirements || [],
         complianceStatus: assetData.compliance?.complianceStatus || 'PENDING_REVIEW',
         lastAuditDate: assetData.compliance?.lastAuditDate,
         nextAuditDate: assetData.compliance?.nextAuditDate,
-        riskLevel: assetData.compliance?.riskLevel || 'MEDIUM'
+        riskLevel: assetData.compliance?.riskLevel || 'MEDIUM',
       },
-      
+
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: assetData.createdBy || 'system',
-      updatedBy: assetData.updatedBy || 'system'
+      updatedBy: assetData.updatedBy || 'system',
     };
 
     this.capitalAssets.set(capitalAssetId, capitalAsset);
@@ -154,7 +154,7 @@ export class CapitalAssetService {
       capitalAsset,
       suggestedInvestmentStrategy: investmentStrategy,
       estimatedROI,
-      recommendedActions
+      recommendedActions,
     };
   }
 
@@ -169,64 +169,64 @@ export class CapitalAssetService {
     estimatedTimeline: string;
   }> {
     const proposalId = this.generateId('INVESTMENT_PROPOSAL');
-    
+
     const proposal: InvestmentProposal = {
       proposalId,
       proposalName: proposalData.proposalName || '',
       description: proposalData.description || '',
-      
+
       requestor: {
         employeeId: proposalData.requestor?.employeeId || '',
         name: proposalData.requestor?.name || '',
         department: proposalData.requestor?.department || '',
-        email: proposalData.requestor?.email || ''
+        email: proposalData.requestor?.email || '',
       },
-      
+
       investment: {
         requestedAmount: proposalData.investment?.requestedAmount || 0,
         currency: proposalData.investment?.currency || 'USD',
         urgency: proposalData.investment?.urgency || 'MEDIUM',
         expectedStartDate: proposalData.investment?.expectedStartDate || new Date(),
-        expectedDuration: proposalData.investment?.expectedDuration || 12
+        expectedDuration: proposalData.investment?.expectedDuration || 12,
       },
-      
+
       justification: {
         businessNeed: proposalData.justification?.businessNeed || '',
         strategicAlignment: proposalData.justification?.strategicAlignment || '',
         expectedBenefits: proposalData.justification?.expectedBenefits || [],
         consequencesOfNotInvesting: proposalData.justification?.consequencesOfNotInvesting || [],
-        alternativesConsidered: proposalData.justification?.alternativesConsidered || []
+        alternativesConsidered: proposalData.justification?.alternativesConsidered || [],
       },
-      
+
       technical: {
         specifications: proposalData.technical?.specifications || {},
         preferredVendors: proposalData.technical?.preferredVendors || [],
         technicalRequirements: proposalData.technical?.technicalRequirements || [],
-        integrationRequirements: proposalData.technical?.integrationRequirements || []
+        integrationRequirements: proposalData.technical?.integrationRequirements || [],
       },
-      
+
       risks: {
         identifiedRisks: proposalData.risks?.identifiedRisks || [],
         mitigationStrategies: proposalData.risks?.mitigationStrategies || [],
-        overallRiskLevel: proposalData.risks?.overallRiskLevel || 'MEDIUM'
+        overallRiskLevel: proposalData.risks?.overallRiskLevel || 'MEDIUM',
       },
-      
+
       status: 'DRAFT',
       submissionDate: undefined,
       reviewDeadline: undefined,
-      
+
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     this.proposals.set(proposalId, proposal);
 
     // Perform initial risk assessment
     const riskAssessment = await this.performRiskAssessment(proposal);
-    
+
     // Create approval workflow
     const approvalWorkflow = await this.createApprovalWorkflow(proposalId, 'CAPITAL_INVESTMENT');
-    
+
     // Estimate timeline
     const estimatedTimeline = this.calculateProposalTimeline(proposal);
 
@@ -235,18 +235,21 @@ export class CapitalAssetService {
       proposal,
       initialRiskAssessment: riskAssessment,
       approvalWorkflow,
-      estimatedTimeline
+      estimatedTimeline,
     };
   }
 
   /**
    * Perform comprehensive ROI analysis
    */
-  async performROIAnalysis(investmentId: string, analysisParams: {
-    timeHorizon: number;
-    discountRate: number;
-    scenarios?: { name: string; probability: number; assumptions: Record<string, number> }[];
-  }): Promise<{
+  async performROIAnalysis(
+    investmentId: string,
+    analysisParams: {
+      timeHorizon: number;
+      discountRate: number;
+      scenarios?: { name: string; probability: number; assumptions: Record<string, number> }[];
+    }
+  ): Promise<{
     success: boolean;
     analysis: ROIAnalysis;
     recommendations: string[];
@@ -255,20 +258,23 @@ export class CapitalAssetService {
   }> {
     const analysisId = this.generateId('ROI_ANALYSIS');
     const investment = this.investments.get(investmentId);
-    
+
     if (!investment) {
       throw new Error(`Investment not found: ${investmentId}`);
     }
 
     // Generate cash flow projections
     const cashFlows = this.generateCashFlowProjections(investment, analysisParams.timeHorizon);
-    
+
     // Calculate financial metrics
     const roi = this.calculateROI(cashFlows);
     const paybackPeriod = this.calculatePaybackPeriod(cashFlows);
     const npv = this.calculateNPV(cashFlows, analysisParams.discountRate);
     const irr = this.calculateIRR(cashFlows);
-    const profitabilityIndex = this.calculateProfitabilityIndex(npv, investment.financial.requestedAmount);
+    const profitabilityIndex = this.calculateProfitabilityIndex(
+      npv,
+      investment.financial.requestedAmount
+    );
 
     // Perform sensitivity analysis
     const sensitivityAnalysis = this.performSensitivityAnalysis(
@@ -284,41 +290,41 @@ export class CapitalAssetService {
       analysisType: 'INITIAL',
       timeHorizon: analysisParams.timeHorizon,
       discountRate: analysisParams.discountRate,
-      
+
       metrics: {
         roi,
         paybackPeriod,
         npv,
         irr,
         profitabilityIndex,
-        breakEvenPoint: paybackPeriod
+        breakEvenPoint: paybackPeriod,
       },
-      
+
       cashFlows: {
         initialInvestment: investment.financial.requestedAmount,
         annualCashFlows: cashFlows,
-        terminalValue: this.calculateTerminalValue(investment)
+        terminalValue: this.calculateTerminalValue(investment),
       },
-      
+
       sensitivity: sensitivityAnalysis,
-      
+
       assumptions: [
         `Discount rate: ${analysisParams.discountRate}%`,
         `Time horizon: ${analysisParams.timeHorizon} years`,
         'Cash flows adjusted for inflation',
-        'Terminal value based on perpetual growth model'
+        'Terminal value based on perpetual growth model',
       ],
-      
+
       limitations: [
         'Projections based on current market conditions',
         'Actual results may vary due to unforeseen circumstances',
-        'Sensitivity analysis covers major variables only'
+        'Sensitivity analysis covers major variables only',
       ],
-      
+
       recommendations: this.generateROIRecommendations(roi, npv, irr, paybackPeriod),
-      
+
       createdAt: new Date(),
-      createdBy: 'system'
+      createdBy: 'system',
     };
 
     this.roiAnalyses.set(analysisId, analysis);
@@ -332,7 +338,7 @@ export class CapitalAssetService {
       analysis,
       recommendations: analysis.recommendations,
       riskLevel,
-      confidenceLevel
+      confidenceLevel,
     };
   }
 
@@ -346,7 +352,7 @@ export class CapitalAssetService {
     riskFactors: string[];
   }> {
     const budgetId = this.generateId('CAPITAL_BUDGET');
-    
+
     const budget: CapitalBudget = {
       budgetId,
       budgetName: budgetData.budgetName || '',
@@ -371,20 +377,20 @@ export class CapitalAssetService {
         varianceAnalysis: {
           favorableVariance: 0,
           unfavorableVariance: 0,
-          majorVariances: []
-        }
+          majorVariances: [],
+        },
       },
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: budgetData.createdBy || 'system',
-      updatedBy: budgetData.updatedBy || 'system'
+      updatedBy: budgetData.updatedBy || 'system',
     };
 
     this.budgets.set(budgetId, budget);
 
     // Generate allocation recommendations
     const allocationRecommendations = this.generateAllocationRecommendations(budget);
-    
+
     // Identify risk factors
     const riskFactors = this.identifyBudgetRiskFactors(budget);
 
@@ -392,7 +398,7 @@ export class CapitalAssetService {
       success: true,
       budget,
       allocationRecommendations,
-      riskFactors
+      riskFactors,
     };
   }
 
@@ -413,7 +419,7 @@ export class CapitalAssetService {
     };
   }> {
     const expenditureId = this.generateId('CAPITAL_EXPENDITURE');
-    
+
     const expenditure: CapitalExpenditure = {
       expenditureId,
       investmentId: expenditureData.investmentId || '',
@@ -432,7 +438,7 @@ export class CapitalAssetService {
         journalEntry: expenditureData.accounting?.journalEntry || '',
         invoiceNumber: expenditureData.accounting?.invoiceNumber,
         vendorId: expenditureData.accounting?.vendorId,
-        poNumber: expenditureData.accounting?.poNumber
+        poNumber: expenditureData.accounting?.poNumber,
       },
       expenditureType: expenditureData.expenditureType || 'CAPITAL',
       assetImpact: expenditureData.assetImpact || 'NEW_ASSET',
@@ -441,14 +447,14 @@ export class CapitalAssetService {
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: expenditureData.createdBy || 'system',
-      updatedBy: expenditureData.updatedBy || 'system'
+      updatedBy: expenditureData.updatedBy || 'system',
     };
 
     this.expenditures.set(expenditureId, expenditure);
 
     // Calculate budget impact
     const budgetImpact = await this.calculateBudgetImpact(expenditure);
-    
+
     // Perform compliance check
     const complianceCheck = await this.performExpenditureComplianceCheck(expenditure);
 
@@ -456,18 +462,21 @@ export class CapitalAssetService {
       success: true,
       expenditure,
       budgetImpact,
-      complianceCheck
+      complianceCheck,
     };
   }
 
   /**
    * Generate comprehensive capital asset performance report
    */
-  async generatePerformanceReport(assetId: string, reportingPeriod: {
-    startDate: Date;
-    endDate: Date;
-    periodType: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
-  }): Promise<{
+  async generatePerformanceReport(
+    assetId: string,
+    reportingPeriod: {
+      startDate: Date;
+      endDate: Date;
+      periodType: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
+    }
+  ): Promise<{
     success: boolean;
     performance: CapitalAssetPerformance;
     insights: string[];
@@ -475,18 +484,18 @@ export class CapitalAssetService {
     benchmarkComparison: any;
   }> {
     const capitalAsset = this.capitalAssets.get(assetId);
-    
+
     if (!capitalAsset) {
       throw new Error(`Capital asset not found: ${assetId}`);
     }
 
     const performanceId = this.generateId('ASSET_PERFORMANCE');
-    
+
     // Calculate performance metrics
     const financial = await this.calculateFinancialPerformance(capitalAsset, reportingPeriod);
     const operational = await this.calculateOperationalPerformance(capitalAsset, reportingPeriod);
     const kpis = await this.calculateAssetKPIs(capitalAsset, reportingPeriod);
-    
+
     const performance: CapitalAssetPerformance = {
       performanceId,
       assetId,
@@ -497,7 +506,7 @@ export class CapitalAssetService {
       benchmarks: await this.generateBenchmarks(capitalAsset),
       trends: await this.calculatePerformanceTrends(capitalAsset, reportingPeriod),
       createdAt: new Date(),
-      createdBy: 'system'
+      createdBy: 'system',
     };
 
     // Generate insights and recommendations
@@ -510,7 +519,7 @@ export class CapitalAssetService {
       performance,
       insights,
       recommendations,
-      benchmarkComparison
+      benchmarkComparison,
     };
   }
 
@@ -528,7 +537,7 @@ export class CapitalAssetService {
     riskAnalysis: any;
   }> {
     const portfolioId = this.generateId('INVESTMENT_PORTFOLIO');
-    
+
     const portfolio: InvestmentPortfolio = {
       portfolioId,
       portfolioName: portfolioData.portfolioName || '',
@@ -540,7 +549,7 @@ export class CapitalAssetService {
         riskAdjustedReturn: 0,
         portfolioRisk: 0,
         diversificationIndex: 0,
-        sharpeRatio: 0
+        sharpeRatio: 0,
       },
       performance: {
         periodicReturns: [],
@@ -548,30 +557,30 @@ export class CapitalAssetService {
           volatility: 0,
           beta: 0,
           maxDrawdown: 0,
-          valueAtRisk: 0
-        }
+          valueAtRisk: 0,
+        },
       },
       targetAllocation: portfolioData.targetAllocation || [],
       rebalancing: {
         lastRebalanceDate: new Date(),
         nextRebalanceDate: new Date(),
         rebalanceThreshold: 5,
-        rebalanceHistory: []
+        rebalanceHistory: [],
       },
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: portfolioData.createdBy || 'system',
-      updatedBy: portfolioData.updatedBy || 'system'
+      updatedBy: portfolioData.updatedBy || 'system',
     };
 
     // Calculate portfolio metrics
     portfolio.metrics = await this.calculatePortfolioMetrics(portfolio);
-    
+
     this.portfolios.set(portfolioId, portfolio);
 
     // Generate optimization recommendations
     const optimizationRecommendations = await this.generatePortfolioOptimizations(portfolio);
-    
+
     // Perform risk analysis
     const riskAnalysis = await this.performPortfolioRiskAnalysis(portfolio);
 
@@ -579,7 +588,7 @@ export class CapitalAssetService {
       success: true,
       portfolio,
       optimizationRecommendations,
-      riskAnalysis
+      riskAnalysis,
     };
   }
 
@@ -605,38 +614,38 @@ export class CapitalAssetService {
     // Simplified ROI calculation based on asset characteristics
     const baseROI = 12; // 12% base ROI
     let adjustment = 0;
-    
+
     if (asset.strategicImportance === 'CRITICAL') adjustment += 3;
     if (asset.priorityLevel === 'HIGH') adjustment += 2;
     if (asset.capitalClass === 'PRODUCTION_EQUIPMENT') adjustment += 1;
-    
+
     return Math.round((baseROI + adjustment) * 100) / 100;
   }
 
   private generateCapitalAssetRecommendations(asset: CapitalAsset): string[] {
     const recommendations: string[] = [];
-    
+
     if (asset.capitalValue.originalCost > 1000000) {
       recommendations.push('Consider phased implementation to reduce risk');
     }
-    
+
     if (asset.strategicImportance === 'CRITICAL') {
       recommendations.push('Implement redundancy planning for business continuity');
     }
-    
+
     if (asset.compliance.riskLevel === 'HIGH') {
       recommendations.push('Prioritize compliance verification before deployment');
     }
-    
+
     recommendations.push('Schedule quarterly performance reviews');
     recommendations.push('Establish KPI baseline within 30 days of commissioning');
-    
+
     return recommendations;
   }
 
   private async performRiskAssessment(proposal: InvestmentProposal): Promise<RiskAssessment[]> {
     const risks: RiskAssessment[] = [];
-    
+
     // Financial risk assessment
     if (proposal.investment.requestedAmount > 5000000) {
       risks.push({
@@ -648,10 +657,10 @@ export class CapitalAssetService {
         riskLevel: 'HIGH',
         mitigation: 'Implement staged approval process with milestone reviews',
         owner: 'Finance Director',
-        status: 'IDENTIFIED'
+        status: 'IDENTIFIED',
       });
     }
-    
+
     // Technical risk assessment
     if (proposal.technical.integrationRequirements.length > 5) {
       risks.push({
@@ -663,16 +672,19 @@ export class CapitalAssetService {
         riskLevel: 'MEDIUM',
         mitigation: 'Conduct technical feasibility study before approval',
         owner: 'Technical Lead',
-        status: 'IDENTIFIED'
+        status: 'IDENTIFIED',
       });
     }
-    
+
     return risks;
   }
 
-  private async createApprovalWorkflow(investmentId: string, workflowType: 'CAPITAL_INVESTMENT' | 'BUDGET_REQUEST' | 'EXPENDITURE_APPROVAL'): Promise<ApprovalWorkflow> {
+  private async createApprovalWorkflow(
+    investmentId: string,
+    workflowType: 'CAPITAL_INVESTMENT' | 'BUDGET_REQUEST' | 'EXPENDITURE_APPROVAL'
+  ): Promise<ApprovalWorkflow> {
     const workflowId = this.generateId('APPROVAL_WORKFLOW');
-    
+
     const workflow: ApprovalWorkflow = {
       workflowId,
       investmentId,
@@ -686,7 +698,7 @@ export class CapitalAssetService {
             approverRole: 'Department Manager',
             approvalThreshold: 100000,
             isParallel: false,
-            isOptional: false
+            isOptional: false,
           },
           {
             stageId: 'FINANCE_REVIEW',
@@ -695,7 +707,7 @@ export class CapitalAssetService {
             approverRole: 'Finance Director',
             approvalThreshold: 500000,
             isParallel: false,
-            isOptional: false
+            isOptional: false,
           },
           {
             stageId: 'EXECUTIVE_APPROVAL',
@@ -704,57 +716,57 @@ export class CapitalAssetService {
             approverRole: 'Executive Committee',
             approvalThreshold: 1000000,
             isParallel: false,
-            isOptional: false
-          }
+            isOptional: false,
+          },
         ],
         currentStage: 'MANAGER_APPROVAL',
-        overallStatus: 'PENDING'
+        overallStatus: 'PENDING',
       },
       approvals: [],
       escalation: {
         escalationThreshold: 72, // 72 hours
         escalationTo: 'Senior Management',
         maxEscalations: 2,
-        currentEscalationLevel: 0
+        currentEscalationLevel: 0,
       },
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
-    
+
     this.workflows.set(workflowId, workflow);
     return workflow;
   }
 
   private calculateProposalTimeline(proposal: InvestmentProposal): string {
     let timelineWeeks = 4; // Base timeline
-    
+
     if (proposal.investment.requestedAmount > 1000000) timelineWeeks += 2;
     if (proposal.investment.urgency === 'HIGH') timelineWeeks -= 1;
     if (proposal.technical.integrationRequirements.length > 3) timelineWeeks += 1;
-    
+
     return `Estimated ${timelineWeeks} weeks for approval and implementation planning`;
   }
 
   private generateCashFlowProjections(investment: CapitalInvestment, timeHorizon: number): any[] {
     const cashFlows = [];
     const annualRevenue = investment.financial.requestedAmount * 0.2; // 20% annual return assumption
-    
+
     for (let year = 1; year <= timeHorizon; year++) {
       const revenue = annualRevenue * Math.pow(1.03, year - 1); // 3% growth
       const costs = revenue * 0.3; // 30% of revenue as costs
       const netCashFlow = revenue - costs;
-      
+
       cashFlows.push({
         year,
         revenue: Math.round(revenue),
         costs: Math.round(costs),
         netCashFlow: Math.round(netCashFlow),
-        cumulativeCashFlow: year === 1 ? netCashFlow : 
-          cashFlows[year - 2].cumulativeCashFlow + netCashFlow,
-        presentValue: Math.round(netCashFlow / Math.pow(1.1, year))
+        cumulativeCashFlow:
+          year === 1 ? netCashFlow : cashFlows[year - 2].cumulativeCashFlow + netCashFlow,
+        presentValue: Math.round(netCashFlow / Math.pow(1.1, year)),
       });
     }
-    
+
     return cashFlows;
   }
 
@@ -775,7 +787,7 @@ export class CapitalAssetService {
 
   private calculateNPV(cashFlows: any[], discountRate: number): number {
     return cashFlows.reduce((npv, cf) => {
-      return npv + (cf.netCashFlow / Math.pow(1 + discountRate / 100, cf.year));
+      return npv + cf.netCashFlow / Math.pow(1 + discountRate / 100, cf.year);
     }, -1000000); // Subtract initial investment
   }
 
@@ -790,11 +802,11 @@ export class CapitalAssetService {
 
   private performSensitivityAnalysis(investment: CapitalInvestment, scenarios: any[]): any {
     return {
-      scenarios: scenarios.map(scenario => ({
+      scenarios: scenarios.map((scenario) => ({
         name: scenario.name,
         probability: scenario.probability,
         roi: 12 + (Math.random() - 0.5) * 8, // Random variation
-        npv: 500000 + (Math.random() - 0.5) * 200000
+        npv: 500000 + (Math.random() - 0.5) * 200000,
       })),
       keyVariables: [
         {
@@ -802,10 +814,10 @@ export class CapitalAssetService {
           baseValue: 3,
           sensitivityRange: [
             { change: -2, roiImpact: -1.5, npvImpact: -100000 },
-            { change: 2, roiImpact: 1.5, npvImpact: 100000 }
-          ]
-        }
-      ]
+            { change: 2, roiImpact: 1.5, npvImpact: 100000 },
+          ],
+        },
+      ],
     };
   }
 
@@ -813,23 +825,29 @@ export class CapitalAssetService {
     return investment.financial.requestedAmount * 0.1; // 10% terminal value
   }
 
-  private generateROIRecommendations(roi: number, npv: number, irr: number, paybackPeriod: number): string[] {
+  private generateROIRecommendations(
+    roi: number,
+    npv: number,
+    irr: number,
+    paybackPeriod: number
+  ): string[] {
     const recommendations: string[] = [];
-    
+
     if (roi > 15) {
       recommendations.push('Strong ROI indicates favorable investment opportunity');
     } else if (roi < 8) {
       recommendations.push('Low ROI - consider alternative investments or cost optimization');
     }
-    
+
     if (npv > 0) {
       recommendations.push('Positive NPV supports investment approval');
     }
-    
-    if (paybackPeriod > 60) { // 5 years
+
+    if (paybackPeriod > 60) {
+      // 5 years
       recommendations.push('Long payback period - assess strategic importance');
     }
-    
+
     return recommendations;
   }
 
@@ -845,18 +863,30 @@ export class CapitalAssetService {
 
   private calculateConfidenceLevel(analysis: ROIAnalysis): number {
     let confidence = 80; // Base confidence
-    
+
     if (analysis.sensitivity.scenarios.length > 3) confidence += 5;
     if (analysis.assumptions.length > 5) confidence += 5;
-    
+
     return Math.min(confidence, 95);
   }
 
   private generateDefaultScenarios(): any[] {
     return [
-      { name: 'Base Case', probability: this.config.roiScenarios.baseCase.probability, assumptions: {} },
-      { name: 'Optimistic', probability: this.config.roiScenarios.optimistic.probability, assumptions: {} },
-      { name: 'Pessimistic', probability: this.config.roiScenarios.pessimistic.probability, assumptions: {} }
+      {
+        name: 'Base Case',
+        probability: this.config.roiScenarios.baseCase.probability,
+        assumptions: {},
+      },
+      {
+        name: 'Optimistic',
+        probability: this.config.roiScenarios.optimistic.probability,
+        assumptions: {},
+      },
+      {
+        name: 'Pessimistic',
+        probability: this.config.roiScenarios.pessimistic.probability,
+        assumptions: {},
+      },
     ];
   }
 
@@ -864,7 +894,7 @@ export class CapitalAssetService {
     return [
       `Allocate ${this.config.budgetAllocations.productionEquipment}% to production equipment for maximum ROI`,
       `Reserve ${this.config.budgetAllocations.regulatoryCompliance}% for regulatory compliance investments`,
-      `Consider ${this.config.budgetAllocations.digitalTransformation}% allocation for digital transformation initiatives`
+      `Consider ${this.config.budgetAllocations.digitalTransformation}% allocation for digital transformation initiatives`,
     ];
   }
 
@@ -872,7 +902,7 @@ export class CapitalAssetService {
     return [
       'Market volatility may impact equipment costs',
       'Regulatory changes could require additional investments',
-      'Supply chain disruptions may cause delays'
+      'Supply chain disruptions may cause delays',
     ];
   }
 
@@ -880,14 +910,14 @@ export class CapitalAssetService {
     return {
       remainingBudget: 5000000 - expenditure.amount,
       utilizationPercentage: (expenditure.amount / 10000000) * 100,
-      forecastAccuracy: 95
+      forecastAccuracy: 95,
     };
   }
 
   private async performExpenditureComplianceCheck(expenditure: CapitalExpenditure): Promise<any> {
     return {
       isCompliant: true,
-      violations: []
+      violations: [],
     };
   }
 
@@ -898,7 +928,7 @@ export class CapitalAssetService {
       maintenanceCost: asset.performance.maintenanceCost,
       netIncome: asset.capitalValue.originalCost * 0.12,
       roi: asset.investment.roi,
-      cashFlow: asset.capitalValue.originalCost * 0.1
+      cashFlow: asset.capitalValue.originalCost * 0.1,
     };
   }
 
@@ -914,15 +944,15 @@ export class CapitalAssetService {
         target: 85,
         unit: '%',
         trend: 'IMPROVING',
-        benchmark: 80
+        benchmark: 80,
       },
       {
         name: 'Maintenance Cost Ratio',
-        value: asset.performance.maintenanceCost / asset.capitalValue.originalCost * 100,
+        value: (asset.performance.maintenanceCost / asset.capitalValue.originalCost) * 100,
         target: 5,
         unit: '%',
-        trend: 'STABLE'
-      }
+        trend: 'STABLE',
+      },
     ];
   }
 
@@ -931,13 +961,13 @@ export class CapitalAssetService {
       internal: {
         peerAssets: ['asset1', 'asset2'],
         ranking: 3,
-        percentile: 75
+        percentile: 75,
       },
       external: {
         industryAverage: 82,
         industryRanking: 5,
-        source: 'Industry Benchmarking Report 2024'
-      }
+        source: 'Industry Benchmarking Report 2024',
+      },
     };
   }
 
@@ -948,8 +978,8 @@ export class CapitalAssetService {
         currentValue: asset.performance.utilization,
         previousPeriodValue: asset.performance.utilization - 2,
         changePercent: 2.4,
-        trend: 'IMPROVING'
-      }
+        trend: 'IMPROVING',
+      },
     ];
   }
 
@@ -957,7 +987,7 @@ export class CapitalAssetService {
     return [
       'Asset utilization has improved by 2.4% over the previous period',
       'Maintenance costs are within target range',
-      'ROI is tracking above industry benchmark'
+      'ROI is tracking above industry benchmark',
     ];
   }
 
@@ -965,7 +995,7 @@ export class CapitalAssetService {
     return [
       'Consider predictive maintenance to further reduce costs',
       'Explore efficiency improvements through process optimization',
-      'Schedule quarterly performance reviews'
+      'Schedule quarterly performance reviews',
     ];
   }
 
@@ -973,25 +1003,25 @@ export class CapitalAssetService {
     return {
       industryComparison: {
         utilization: { asset: 85, industry: 80, variance: 5 },
-        efficiency: { asset: 92, industry: 88, variance: 4 }
+        efficiency: { asset: 92, industry: 88, variance: 4 },
       },
       peerComparison: {
         ranking: 3,
-        totalPeers: 10
-      }
+        totalPeers: 10,
+      },
     };
   }
 
   private async calculatePortfolioMetrics(portfolio: InvestmentPortfolio): Promise<any> {
     const totalValue = portfolio.investments.reduce((sum, inv) => sum + inv.amount, 0);
-    
+
     return {
       totalValue,
       totalReturn: 12.5, // Placeholder
       riskAdjustedReturn: 10.2,
       portfolioRisk: 8.5,
       diversificationIndex: 0.75,
-      sharpeRatio: 1.2
+      sharpeRatio: 1.2,
     };
   }
 
@@ -999,7 +1029,7 @@ export class CapitalAssetService {
     return [
       'Consider rebalancing to reduce concentration risk',
       'Increase allocation to high-growth categories',
-      'Implement systematic rebalancing schedule'
+      'Implement systematic rebalancing schedule',
     ];
   }
 
@@ -1009,8 +1039,8 @@ export class CapitalAssetService {
       concentrationRisk: 15,
       correlationAnalysis: {
         highCorrelation: ['inv1', 'inv2'],
-        lowCorrelation: ['inv3', 'inv4']
-      }
+        lowCorrelation: ['inv3', 'inv4'],
+      },
     };
   }
 }
@@ -1020,5 +1050,5 @@ export const capitalAssetService = new CapitalAssetService({
   enabled: true,
   defaultDepreciationRate: 0.1,
   currencyCode: 'USD',
-  riskAssessmentRequired: true
+  riskAssessmentRequired: true,
 });

@@ -28,14 +28,14 @@ export {
   outsourcedManufacturingService,
   type OutsourcedManufacturingContract,
   type OutsourcedOrder,
-  type SupplierPerformance
+  type SupplierPerformance,
 } from './business-logic/outsourced-manufacturing/outsourced-manufacturing-service';
 export {
   ProcessManufacturingService,
   processManufacturingService,
   type ProcessProduct,
   type ProcessManufacturingExecution,
-  type RegulatoryRequirements
+  type RegulatoryRequirements,
 } from './business-logic/process-manufacturing/process-manufacturing-service';
 export * from './business-logic/work-in-process/work-in-process-service';
 export * from './business-logic/project-manufacturing/project-manufacturing-service';
@@ -200,17 +200,21 @@ export class ManufacturingManager extends BaseManager {
   /**
    * Product & BOM Management
    */
-  async createProduct(product: Omit<Product, 'id' | 'createdDate' | 'lastModified'>): Promise<Product> {
+  async createProduct(
+    product: Omit<Product, 'id' | 'createdDate' | 'lastModified'>
+  ): Promise<Product> {
     const id = `prod_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return {
       ...product,
       id,
       createdDate: new Date(),
-      lastModified: new Date()
+      lastModified: new Date(),
     };
   }
 
-  async createBillOfMaterials(bom: Omit<BillOfMaterials, 'id' | 'totalCost'>): Promise<BillOfMaterials> {
+  async createBillOfMaterials(
+    bom: Omit<BillOfMaterials, 'id' | 'totalCost'>
+  ): Promise<BillOfMaterials> {
     return this.bomService.createBOM(bom);
   }
 
@@ -222,11 +226,17 @@ export class ManufacturingManager extends BaseManager {
   /**
    * Work Order Management
    */
-  async createWorkOrder(workOrder: Omit<WorkOrder, 'id' | 'workOrderNumber' | 'completedQuantity' | 'scrapQuantity'>): Promise<WorkOrder> {
+  async createWorkOrder(
+    workOrder: Omit<WorkOrder, 'id' | 'workOrderNumber' | 'completedQuantity' | 'scrapQuantity'>
+  ): Promise<WorkOrder> {
     return this.workOrderService.createWorkOrder(workOrder);
   }
 
-  async updateWorkOrderStatus(workOrderId: string, status: WorkOrder['status'], actualQuantity?: number): Promise<void> {
+  async updateWorkOrderStatus(
+    workOrderId: string,
+    status: WorkOrder['status'],
+    actualQuantity?: number
+  ): Promise<void> {
     console.log(`Updating work order ${workOrderId} to status ${status}`);
     if (actualQuantity) {
       console.log(`Recording completed quantity: ${actualQuantity}`);
@@ -244,7 +254,7 @@ export class ManufacturingManager extends BaseManager {
       materialCost: costAnalysis.actualCosts.materialCost,
       laborCost: costAnalysis.actualCosts.laborCost,
       overheadCost: costAnalysis.actualCosts.overheadCost,
-      totalCost: costAnalysis.actualCosts.totalActualCost
+      totalCost: costAnalysis.actualCosts.totalActualCost,
     };
   }
 
@@ -261,15 +271,18 @@ export class ManufacturingManager extends BaseManager {
     return [];
   }
 
-  async scheduleWorkOrder(workOrderId: string, preferredStartDate: Date): Promise<ScheduledWorkOrder> {
+  async scheduleWorkOrder(
+    workOrderId: string,
+    preferredStartDate: Date
+  ): Promise<ScheduledWorkOrder> {
     const id = `sched_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return {
       workOrderId,
       scheduledStartTime: preferredStartDate,
-      scheduledEndTime: new Date(preferredStartDate.getTime() + (8 * 60 * 60 * 1000)), // Default 8 hours
+      scheduledEndTime: new Date(preferredStartDate.getTime() + 8 * 60 * 60 * 1000), // Default 8 hours
       estimatedDuration: 480, // 8 hours in minutes
       priority: 1,
-      resourceRequirements: []
+      resourceRequirements: [],
     };
   }
 
@@ -287,8 +300,8 @@ export class ManufacturingManager extends BaseManager {
       recommendations: [
         'Reorder work orders to minimize setup time',
         'Balance workload across work centers',
-        'Consider overtime for critical orders'
-      ]
+        'Consider overtime for critical orders',
+      ],
     };
   }
 
@@ -315,14 +328,16 @@ export class ManufacturingManager extends BaseManager {
       totalCapacity: 2000, // hours
       scheduledHours: 1600,
       availableCapacity: 400,
-      utilizationPercentage: 80
+      utilizationPercentage: 80,
     };
   }
 
   /**
    * Quality Control
    */
-  async createQualityInspection(inspection: Omit<QualityInspection, 'id' | 'inspectionNumber'>): Promise<QualityInspection> {
+  async createQualityInspection(
+    inspection: Omit<QualityInspection, 'id' | 'inspectionNumber'>
+  ): Promise<QualityInspection> {
     return this.qualityService.createQualityInspection(inspection);
   }
 
@@ -349,18 +364,18 @@ export class ManufacturingManager extends BaseManager {
   }> {
     const report = await this.qualityService.generateQualityReport('DEFECT_ANALYSIS', {
       startDate,
-      endDate
+      endDate,
     });
-    
+
     return {
       totalInspections: report.summary.totalInspections,
       passRate: report.summary.passRate,
       defectRate: report.summary.defectRate,
-      topDefects: report.summary.topDefects.map(d => ({
+      topDefects: report.summary.topDefects.map((d) => ({
         defectCode: d.defectCode,
-        occurrences: d.occurrences
+        occurrences: d.occurrences,
       })),
-      recommendations: report.recommendations
+      recommendations: report.recommendations,
     };
   }
 
@@ -375,13 +390,13 @@ export class ManufacturingManager extends BaseManager {
     exceptions: any[];
   }> {
     const realtimeData = await this.shopFloorService.getRealtimeProductionData();
-    
+
     return {
       workCenterStatus: realtimeData.workCenterMetrics,
       operatorStatus: realtimeData.operatorStatus,
       equipmentStatus: realtimeData.equipmentStatus,
       qualityAlerts: realtimeData.qualityAlerts,
-      exceptions: [] // Would get from exception management
+      exceptions: [], // Would get from exception management
     };
   }
 
@@ -401,25 +416,30 @@ export class ManufacturingManager extends BaseManager {
     lastUpdated: Date;
   }> {
     console.log(`Calculating ${costingMethod} costs for product ${productId}`);
-    
+
     // Integration with cost management service
     const costAnalysis = await this.costService.generateCostAnalysis({
       analysisType: 'PRODUCT_COSTING',
       productIds: [productId],
       timeFrame: {
         startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-        endDate: new Date()
-      }
+        endDate: new Date(),
+      },
     });
 
     return {
       productId,
       costingMethod,
-      materialCost: costAnalysis.costBreakdown.materialCosts.directMaterial / (costAnalysis.productIds.length || 1),
-      laborCost: costAnalysis.costBreakdown.laborCosts.directLabor / (costAnalysis.productIds.length || 1),
-      overheadCost: costAnalysis.costBreakdown.overheadCosts.manufacturing / (costAnalysis.productIds.length || 1),
+      materialCost:
+        costAnalysis.costBreakdown.materialCosts.directMaterial /
+        (costAnalysis.productIds.length || 1),
+      laborCost:
+        costAnalysis.costBreakdown.laborCosts.directLabor / (costAnalysis.productIds.length || 1),
+      overheadCost:
+        costAnalysis.costBreakdown.overheadCosts.manufacturing /
+        (costAnalysis.productIds.length || 1),
       totalCost: costAnalysis.costBreakdown.totalCost / (costAnalysis.productIds.length || 1),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
@@ -438,19 +458,23 @@ export class ManufacturingManager extends BaseManager {
     laborEfficiency: number;
   }> {
     // Enhanced implementation integrating all sub-services
-    const shopFloorMetrics = await this.shopFloorService.generateProductionMetrics('ALL', startDate, 'DAY');
+    const shopFloorMetrics = await this.shopFloorService.generateProductionMetrics(
+      'ALL',
+      startDate,
+      'DAY'
+    );
     const qualityMetrics = await this.qualityService.generateQualityReport('DEFECT_ANALYSIS', {
       startDate,
-      endDate
+      endDate,
     });
-    
+
     return {
       totalProductionVolume: 15000,
       onTimeDeliveryRate: 89.5,
       averageCycleTime: shopFloorMetrics.cycleTime,
       overallEquipmentEffectiveness: shopFloorMetrics.overallEquipmentEffectiveness,
       scrapRate: shopFloorMetrics.scrapRate,
-      laborEfficiency: shopFloorMetrics.efficiency
+      laborEfficiency: shopFloorMetrics.efficiency,
     };
   }
 
@@ -463,43 +487,39 @@ export class ManufacturingManager extends BaseManager {
     kpis: any[];
   }> {
     console.log('Generating comprehensive manufacturing dashboard');
-    
+
     const realtimeData = await this.shopFloorService.getRealtimeProductionData();
     const costControl = await this.costService.generateCostControlDashboard();
     const shopFloorDashboard = await this.shopFloorService.generateShopFloorDashboard();
-    
+
     return {
       productionStatus: {
         activeWorkOrders: 25,
         onSchedule: 18,
         delayed: 5,
         ahead: 2,
-        overallEfficiency: 89.5
+        overallEfficiency: 89.5,
       },
       qualityStatus: {
         passRate: 94.8,
         defectRate: 2.1,
         activeInspections: 8,
-        qualityAlerts: realtimeData.qualityAlerts.length
+        qualityAlerts: realtimeData.qualityAlerts.length,
       },
       costStatus: {
         budgetVariance: 5.4, // Fixed value since costControl doesn't have currentPeriodCosts
-        costPerUnit: costControl.keyMetrics.find((m: any) => m.metricName === 'Cost per Unit')?.currentValue || 0,
-        costTrend: 'INCREASING'
+        costPerUnit:
+          costControl.keyMetrics.find((m: any) => m.metricName === 'Cost per Unit')?.currentValue ||
+          0,
+        costTrend: 'INCREASING',
       },
       capacityStatus: {
         overallUtilization: 87.5,
         bottlenecks: shopFloorDashboard.activeExceptions.length,
-        availableCapacity: 12.5
+        availableCapacity: 12.5,
       },
-      alerts: [
-        ...realtimeData.qualityAlerts,
-        ...shopFloorDashboard.activeExceptions
-      ],
-      kpis: [
-        ...shopFloorDashboard.kpis,
-        ...costControl.keyMetrics
-      ]
+      alerts: [...realtimeData.qualityAlerts, ...shopFloorDashboard.activeExceptions],
+      kpis: [...shopFloorDashboard.kpis, ...costControl.keyMetrics],
     };
   }
 
@@ -519,7 +539,7 @@ export class ManufacturingManager extends BaseManager {
     criticalMaterials: string[];
   }> {
     console.log(`Generating material requirements for work order ${workOrderId}`);
-    
+
     return {
       materialRequirements: [
         {
@@ -528,11 +548,11 @@ export class ManufacturingManager extends BaseManager {
           requiredQuantity: 10,
           requiredDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
           leadTime: 5,
-          supplier: 'Steel Corp'
-        }
+          supplier: 'Steel Corp',
+        },
       ],
-      totalValue: 2500.00,
-      criticalMaterials: ['MAT_001']
+      totalValue: 2500.0,
+      criticalMaterials: ['MAT_001'],
     };
   }
 
@@ -555,24 +575,24 @@ export class ManufacturingManager extends BaseManager {
         {
           flowType: 'MATERIAL_REQUIREMENTS',
           status: 'ACTIVE',
-          lastSync: new Date()
+          lastSync: new Date(),
         },
         {
           flowType: 'INVENTORY_UPDATES',
           status: 'ACTIVE',
-          lastSync: new Date(Date.now() - 5 * 60 * 1000) // 5 minutes ago
+          lastSync: new Date(Date.now() - 5 * 60 * 1000), // 5 minutes ago
         },
         {
           flowType: 'CAPACITY_SHARING',
           status: 'ACTIVE',
-          lastSync: new Date(Date.now() - 2 * 60 * 1000) // 2 minutes ago
-        }
+          lastSync: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
+        },
       ],
       syncMetrics: {
         successRate: 98.5,
         averageLatency: 150, // milliseconds
-        errorRate: 1.5
-      }
+        errorRate: 1.5,
+      },
     };
   }
 
@@ -587,21 +607,22 @@ export class ManufacturingManager extends BaseManager {
     pullSystemStatus: any;
   }> {
     console.log('Getting Lean Manufacturing capabilities');
-    
-    const [wasteAnalysis, kaizenEvents, valueStreamMapping, leanMetrics, pullSystemStatus] = await Promise.all([
-      leanManufacturingService.identifyWaste('PRODUCTION_FLOOR'),
-      leanManufacturingService.manageKaizenEvents(),
-      leanManufacturingService.createValueStreamMap('MAIN_ASSEMBLY'),
-      leanManufacturingService.getLeanMetricsDashboard(),
-      leanManufacturingService.managePullSystem()
-    ]);
+
+    const [wasteAnalysis, kaizenEvents, valueStreamMapping, leanMetrics, pullSystemStatus] =
+      await Promise.all([
+        leanManufacturingService.identifyWaste('PRODUCTION_FLOOR'),
+        leanManufacturingService.manageKaizenEvents(),
+        leanManufacturingService.createValueStreamMap('MAIN_ASSEMBLY'),
+        leanManufacturingService.getLeanMetricsDashboard(),
+        leanManufacturingService.managePullSystem(),
+      ]);
 
     return {
       wasteAnalysis,
       kaizenEvents,
       valueStreamMapping,
       leanMetrics,
-      pullSystemStatus
+      pullSystemStatus,
     };
   }
 
@@ -618,7 +639,7 @@ export class ManufacturingManager extends BaseManager {
     readinessAssessment: any;
   }> {
     console.log('Getting Industry 4.0 capabilities');
-    
+
     const [
       iotManagement,
       digitalTwins,
@@ -626,7 +647,7 @@ export class ManufacturingManager extends BaseManager {
       smartFactoryAnalytics,
       autonomousOperations,
       cyberPhysicalSystems,
-      readinessAssessment
+      readinessAssessment,
     ] = await Promise.all([
       industry40Service.manageIoTDevices(),
       industry40Service.manageDigitalTwins(),
@@ -634,7 +655,7 @@ export class ManufacturingManager extends BaseManager {
       industry40Service.getSmartFactoryAnalytics(),
       industry40Service.manageAutonomousOperations(),
       industry40Service.manageCyberPhysicalSystems(),
-      industry40Service.assessIndustry40Readiness()
+      industry40Service.assessIndustry40Readiness(),
     ]);
 
     return {
@@ -644,7 +665,7 @@ export class ManufacturingManager extends BaseManager {
       smartFactoryAnalytics,
       autonomousOperations,
       cyberPhysicalSystems,
-      readinessAssessment
+      readinessAssessment,
     };
   }
 
@@ -670,35 +691,38 @@ export class ManufacturingManager extends BaseManager {
     recommendations: string[];
   }> {
     console.log('Generating advanced manufacturing dashboard');
-    
+
     const [leanCapabilities, industry40Capabilities] = await Promise.all([
       this.getLeanManufacturingCapabilities(),
-      this.getIndustry40Capabilities()
+      this.getIndustry40Capabilities(),
     ]);
 
     return {
       leanPerformance: {
         leanScore: leanCapabilities.leanMetrics.overallPerformance.leanScore,
         wasteReduction: 32.5, // % waste eliminated
-        continuousImprovement: leanCapabilities.kaizenEvents.totalSavings
+        continuousImprovement: leanCapabilities.kaizenEvents.totalSavings,
       },
       industry40Performance: {
-        digitalizationScore: industry40Capabilities.smartFactoryAnalytics.digitalizationScore.overallDigitalization,
-        autonomyLevel: industry40Capabilities.smartFactoryAnalytics.digitalizationScore.autonomyLevel,
-        predictiveCapability: industry40Capabilities.smartFactoryAnalytics.digitalizationScore.predictiveCapability
+        digitalizationScore:
+          industry40Capabilities.smartFactoryAnalytics.digitalizationScore.overallDigitalization,
+        autonomyLevel:
+          industry40Capabilities.smartFactoryAnalytics.digitalizationScore.autonomyLevel,
+        predictiveCapability:
+          industry40Capabilities.smartFactoryAnalytics.digitalizationScore.predictiveCapability,
       },
       integratedMetrics: {
         overallAdvancedScore: 82.3,
         competitiveAdvantage: 'SUPERIOR to Oracle EBS with modern Lean + Industry 4.0 integration',
-        futureReadiness: 85.7
+        futureReadiness: 85.7,
       },
       recommendations: [
         'Continue Lean transformation with focus on value stream optimization',
         'Accelerate IoT sensor deployment for complete visibility',
         'Implement AI-driven autonomous quality control',
         'Expand digital twin coverage to all critical assets',
-        'Develop operator skills for human-machine collaboration'
-      ]
+        'Develop operator skills for human-machine collaboration',
+      ],
     };
   }
 }

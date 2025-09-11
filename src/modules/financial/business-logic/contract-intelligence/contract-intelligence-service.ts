@@ -117,23 +117,23 @@ export class ContractIntelligenceService {
           {
             agencyName: 'DOD',
             contractCount: 45,
-            totalValue: 20000000
-          }
-        ]
+            totalValue: 20000000,
+          },
+        ],
       },
       performanceMetrics: {
         averageProcessingTime: 45,
         complianceRate: 95,
         costSavingsAchieved: 2500000,
         competitionRate: 85,
-        supplierPerformanceRating: 4.2
+        supplierPerformanceRating: 4.2,
       },
       complianceStatus: {
         overallScore: 95,
         criticalIssues: 2,
         warningIssues: 5,
         passedChecks: 143,
-        pendingReviews: 8
+        pendingReviews: 8,
       },
       costAnalysis: {
         budgetUtilization: 87,
@@ -143,17 +143,17 @@ export class ContractIntelligenceService {
             description: 'Consolidate similar services',
             estimatedSavings: 500000,
             implementationEffort: 'MEDIUM',
-            priority: 'HIGH'
-          }
+            priority: 'HIGH',
+          },
         ],
         spendAnalysis: [
           {
             category: 'IT Services',
             amount: 15000000,
             percentage: 30,
-            trend: 'STABLE'
-          }
-        ]
+            trend: 'STABLE',
+          },
+        ],
       },
       alerts: [],
       dataSources: [
@@ -161,9 +161,9 @@ export class ContractIntelligenceService {
           dataSourceName: 'Oracle EBS Data Source',
           status: 'CONNECTED',
           lastSync: new Date(),
-          recordCount: 10000
-        }
-      ]
+          recordCount: 10000,
+        },
+      ],
     };
   }
 
@@ -180,14 +180,11 @@ export class ContractIntelligenceService {
           probability: 0.25,
           impact: 'MEDIUM',
           description: 'Potential 2-week delay based on current progress',
-          recommendations: [
-            'Increase oversight meetings',
-            'Review critical path activities'
-          ]
-        }
+          recommendations: ['Increase oversight meetings', 'Review critical path activities'],
+        },
       ],
       confidence: 0.85,
-      basedOnHistoricalData: true
+      basedOnHistoricalData: true,
     };
   }
 
@@ -205,17 +202,17 @@ export class ContractIntelligenceService {
           metric: 'Processing Time',
           trend: 'IMPROVING',
           changePercentage: -15,
-          period: timeframe
-        }
+          period: timeframe,
+        },
       ],
       insights: [
         'Contract processing times have improved by 15% this quarter',
-        'Compliance rates remain consistently high'
+        'Compliance rates remain consistently high',
       ],
       recommendations: [
         'Continue current process improvements',
-        'Focus on remaining compliance gaps'
-      ]
+        'Focus on remaining compliance gaps',
+      ],
     };
   }
 }

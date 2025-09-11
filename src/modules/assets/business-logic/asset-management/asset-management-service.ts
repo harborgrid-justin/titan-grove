@@ -4,14 +4,17 @@
  */
 
 import type { Asset, AssetCategory, AssetTransfer } from '../../types';
-import { assetRepository, assetCategoryRepository, assetTransferRepository } from '../../data-access/repositories';
+import {
+  assetRepository,
+  assetCategoryRepository,
+  assetTransferRepository,
+} from '../../data-access/repositories';
 
 export class AssetManagementService {
-  
   async createAsset(assetData: Omit<Asset, 'id' | 'createdDate' | 'modifiedDate'>): Promise<Asset> {
     // Validate asset data
     await this.validateAssetData(assetData);
-    
+
     // Create the asset
     return await assetRepository.createAsset(assetData);
   }
@@ -25,7 +28,10 @@ export class AssetManagementService {
     return await assetRepository.updateAsset(assetId, updates);
   }
 
-  async transferAsset(assetId: string, transferData: Omit<AssetTransfer, 'id' | 'assetId'>): Promise<AssetTransfer> {
+  async transferAsset(
+    assetId: string,
+    transferData: Omit<AssetTransfer, 'id' | 'assetId'>
+  ): Promise<AssetTransfer> {
     const asset = await assetRepository.getAssetById(assetId);
     if (!asset) {
       throw new Error(`Asset with ID ${assetId} not found`);
@@ -38,14 +44,14 @@ export class AssetManagementService {
     // Create transfer record
     const transfer = await assetTransferRepository.createTransfer({
       ...transferData,
-      assetId
+      assetId,
     });
 
     // Update asset location and department if transfer is approved
     if (transferData.status === 'APPROVED') {
       await assetRepository.updateAsset(assetId, {
         location: transferData.toLocation,
-        department: transferData.toDepartment
+        department: transferData.toDepartment,
       });
     }
 
@@ -60,7 +66,7 @@ export class AssetManagementService {
 
     // Update asset status to disposed
     await assetRepository.updateAsset(assetId, {
-      status: 'DISPOSED'
+      status: 'DISPOSED',
     });
 
     // Create disposal record (would use disposalRepository)
@@ -85,19 +91,19 @@ export class AssetManagementService {
 
     // Apply additional filters
     if (searchCriteria.category) {
-      results = results.filter(asset => asset.category.id === searchCriteria.category);
+      results = results.filter((asset) => asset.category.id === searchCriteria.category);
     }
 
     if (searchCriteria.location) {
-      results = results.filter(asset => asset.location === searchCriteria.location);
+      results = results.filter((asset) => asset.location === searchCriteria.location);
     }
 
     if (searchCriteria.department) {
-      results = results.filter(asset => asset.department === searchCriteria.department);
+      results = results.filter((asset) => asset.department === searchCriteria.department);
     }
 
     if (searchCriteria.status) {
-      results = results.filter(asset => asset.status === searchCriteria.status);
+      results = results.filter((asset) => asset.status === searchCriteria.status);
     }
 
     return results;
@@ -137,11 +143,13 @@ export class AssetManagementService {
       utilizationPercentage,
       remainingLife: Math.max(asset.usefulLife - currentAge, 0),
       currentValue: asset.currentValue,
-      originalCost: asset.purchasePrice
+      originalCost: asset.purchasePrice,
     };
   }
 
-  private async validateAssetData(assetData: Omit<Asset, 'id' | 'createdDate' | 'modifiedDate'>): Promise<void> {
+  private async validateAssetData(
+    assetData: Omit<Asset, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<void> {
     if (!assetData.name || assetData.name.trim() === '') {
       throw new Error('Asset name is required');
     }

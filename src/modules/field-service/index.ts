@@ -1,7 +1,7 @@
 /**
  * Field Service Management Module
  * Oracle Field Service competitive implementation
- * 
+ *
  * Provides comprehensive field service capabilities including:
  * - Service request and work order management
  * - Technician scheduling and dispatch optimization
@@ -15,17 +15,17 @@
 export * from './business-logic/field-service-service';
 export * from './types';
 
-// Export business logic services  
+// Export business logic services
 import { BaseManager } from '../../shared/utils/base-manager';
 
 // Import business logic services
 import { fieldServiceService } from './business-logic/field-service-service';
 
 // Core field service functionality
-export { 
-  FieldServiceService, 
-  fieldServiceService, 
-  createFieldServiceService 
+export {
+  FieldServiceService,
+  fieldServiceService,
+  createFieldServiceService,
 } from './business-logic/field-service-service';
 
 // Types
@@ -41,7 +41,7 @@ export type {
   ServiceAnalytics,
   MobileWorkforce,
   DispatchOptimization,
-  ServiceWarranty
+  ServiceWarranty,
 } from './types';
 
 /**
@@ -58,7 +58,7 @@ export class FieldServiceManager extends BaseManager {
       id,
       ...requestData,
       createdAt: new Date(),
-      status: 'OPEN'
+      status: 'OPEN',
     };
     this.logAction('createServiceRequest', { id });
     return serviceRequest;

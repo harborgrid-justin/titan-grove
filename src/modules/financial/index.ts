@@ -35,12 +35,7 @@ export * from './business-logic/billing/billing-service';
 // Import shared utilities
 import { BaseManager } from '../../shared/utils/base-manager';
 
-import type { 
-  GeneralLedgerEntry,
-  Account,
-  Invoice,
-  InvoiceItem
-} from './types';
+import type { GeneralLedgerEntry, Account, Invoice, InvoiceItem } from './types';
 
 export class FinancialManager extends BaseManager {
   /**
@@ -49,12 +44,12 @@ export class FinancialManager extends BaseManager {
   async createGLEntry(entry: Omit<GeneralLedgerEntry, 'id'>): Promise<GeneralLedgerEntry> {
     const id = this.generateId('gl');
     const glEntry: GeneralLedgerEntry = { ...entry, id };
-    
+
     // Validate double-entry bookkeeping
     if (entry.debit !== 0 && entry.credit !== 0) {
       throw new Error('Entry must have either debit or credit, not both');
     }
-    
+
     this.logAction('createGLEntry', { id, accountCode: entry.accountCode });
     return glEntry;
   }
@@ -70,15 +65,18 @@ export class FinancialManager extends BaseManager {
   async createInvoice(invoice: Omit<Invoice, 'id'>): Promise<Invoice> {
     const id = this.generateId('inv');
     const newInvoice: Invoice = { ...invoice, id };
-    
+
     // Calculate totals
     const subtotal = invoice.items.reduce((sum, item) => sum + item.amount, 0);
-    const taxTotal = invoice.items.reduce((sum, item) => sum + (item.amount * item.taxRate / 100), 0);
-    
+    const taxTotal = invoice.items.reduce(
+      (sum, item) => sum + (item.amount * item.taxRate) / 100,
+      0
+    );
+
     newInvoice.amount = subtotal;
     newInvoice.taxAmount = taxTotal;
     newInvoice.totalAmount = subtotal + taxTotal;
-    
+
     this.logAction('createInvoice', { id, amount: newInvoice.totalAmount });
     return newInvoice;
   }
@@ -96,13 +94,13 @@ export class FinancialManager extends BaseManager {
       period: `${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`,
       revenue: {
         totalRevenue: 0,
-        breakdown: []
+        breakdown: [],
       },
       expenses: {
         totalExpenses: 0,
-        breakdown: []
+        breakdown: [],
       },
-      netIncome: 0
+      netIncome: 0,
     };
   }
 
@@ -112,16 +110,16 @@ export class FinancialManager extends BaseManager {
       assets: {
         currentAssets: 0,
         fixedAssets: 0,
-        totalAssets: 0
+        totalAssets: 0,
       },
       liabilities: {
         currentLiabilities: 0,
         longTermLiabilities: 0,
-        totalLiabilities: 0
+        totalLiabilities: 0,
       },
       equity: {
-        totalEquity: 0
-      }
+        totalEquity: 0,
+      },
     };
   }
 
@@ -130,7 +128,12 @@ export class FinancialManager extends BaseManager {
   /**
    * Pricing Management
    */
-  async calculateLeasePricing(assetValue: number, termMonths: number, pricingModelId: string, customerId?: string) {
+  async calculateLeasePricing(
+    assetValue: number,
+    termMonths: number,
+    pricingModelId: string,
+    customerId?: string
+  ) {
     return pricingService.calculateLeasePricing(assetValue, termMonths, pricingModelId, customerId);
   }
 
@@ -145,7 +148,12 @@ export class FinancialManager extends BaseManager {
   /**
    * Subsidies Management
    */
-  async findApplicableSubsidies(assetType: string, assetValue: number, customerId: string, location: string) {
+  async findApplicableSubsidies(
+    assetType: string,
+    assetValue: number,
+    customerId: string,
+    location: string
+  ) {
     return subsidiesService.findApplicableSubsidies(assetType, assetValue, customerId, location);
   }
 
@@ -160,8 +168,18 @@ export class FinancialManager extends BaseManager {
   /**
    * Lease Sales Quotes
    */
-  async createLeaseSalesQuote(customerId: string, salesRepId: string, assets: any[], leaseTerms: any) {
-    return leaseSalesQuotesService.createLeaseSalesQuote(customerId, salesRepId, assets, leaseTerms);
+  async createLeaseSalesQuote(
+    customerId: string,
+    salesRepId: string,
+    assets: any[],
+    leaseTerms: any
+  ) {
+    return leaseSalesQuotesService.createLeaseSalesQuote(
+      customerId,
+      salesRepId,
+      assets,
+      leaseTerms
+    );
   }
 
   async submitQuoteForApproval(quoteId: string) {
@@ -195,7 +213,11 @@ export class FinancialManager extends BaseManager {
   }
 
   async generateLeaseFromMaster(masterAgreementId: string, assetDetails: any, specificTerms: any) {
-    return masterLeaseAgreementsService.generateLeaseFromMaster(masterAgreementId, assetDetails, specificTerms);
+    return masterLeaseAgreementsService.generateLeaseFromMaster(
+      masterAgreementId,
+      assetDetails,
+      specificTerms
+    );
   }
 
   async getAgreementUtilization(agreementId: string) {
@@ -205,7 +227,11 @@ export class FinancialManager extends BaseManager {
   /**
    * Contract Authoring
    */
-  async createContractFromTemplate(templateId: string, variables: Record<string, any>, createdBy: string) {
+  async createContractFromTemplate(
+    templateId: string,
+    variables: Record<string, any>,
+    createdBy: string
+  ) {
     return contractAuthoringService.createContractFromTemplate(templateId, variables, createdBy);
   }
 
@@ -267,5 +293,5 @@ export {
   contractAuthoringService,
   streamsService,
   taxService,
-  billingService
+  billingService,
 };

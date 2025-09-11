@@ -25,7 +25,7 @@ export enum CommonStatus {
   REJECTED = 'REJECTED',
   CANCELLED = 'CANCELLED',
   COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED'
+  FAILED = 'FAILED',
 }
 
 /**
@@ -35,7 +35,7 @@ export enum Priority {
   CRITICAL = 'CRITICAL',
   HIGH = 'HIGH',
   MEDIUM = 'MEDIUM',
-  LOW = 'LOW'
+  LOW = 'LOW',
 }
 
 /**
@@ -43,9 +43,9 @@ export enum Priority {
  */
 export enum RiskLevel {
   LOW = 'LOW',
-  MEDIUM = 'MEDIUM', 
+  MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL'
+  CRITICAL = 'CRITICAL',
 }
 
 /**
@@ -54,7 +54,7 @@ export enum RiskLevel {
 export enum PerformanceLevel {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH'
+  HIGH = 'HIGH',
 }
 
 /**

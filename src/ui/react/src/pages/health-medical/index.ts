@@ -105,62 +105,258 @@ export { default as CaseManagement } from './CaseManagement';
  * Complete business-ready healthcare pages with integrated backend services
  */
 export const healthMedicalPageRegistry = {
-  'patient-registration': { component: 'PatientRegistration', title: 'Patient Registration', category: 'Patient Management' },
-  'patient-records': { component: 'PatientRecords', title: 'Patient Medical Records', category: 'Patient Management' },
-  'patient-history': { component: 'PatientHistory', title: 'Patient History', category: 'Patient Management' },
-  'care-planning': { component: 'CarePlanning', title: 'Care Planning', category: 'Patient Management' },
-  'patient-portal': { component: 'PatientPortal', title: 'Patient Portal', category: 'Patient Management' },
-  'patient-communication': { component: 'PatientCommunication', title: 'Patient Communication', category: 'Patient Management' },
-  'patient-education': { component: 'PatientEducation', title: 'Patient Education', category: 'Patient Management' },
-  'patient-support': { component: 'PatientSupport', title: 'Patient Support Services', category: 'Patient Management' },
-  'appointment-scheduling': { component: 'AppointmentScheduling', title: 'Appointment Scheduling', category: 'Clinical Operations' },
-  'clinical-consultations': { component: 'ClinicalConsultations', title: 'Clinical Consultations', category: 'Clinical Operations' },
-  'procedure-management': { component: 'ProcedureManagement', title: 'Procedure Management', category: 'Clinical Operations' },
-  'discharge-processing': { component: 'DischargeProcessing', title: 'Discharge Processing', category: 'Clinical Operations' },
-  'clinical-workflow': { component: 'ClinicalWorkflow', title: 'Clinical Workflow', category: 'Clinical Operations' },
-  'tele-health': { component: 'TeleHealth', title: 'TeleHealth Services', category: 'Clinical Operations' },
-  'emergency-services': { component: 'EmergencyServices', title: 'Emergency Services', category: 'Clinical Operations' },
-  'clinical-rounding': { component: 'ClinicalRounding', title: 'Clinical Rounding', category: 'Clinical Operations' },
-  'electronic-health-records': { component: 'ElectronicHealthRecords', title: 'Electronic Health Records', category: 'Medical Records' },
-  'laboratory-results': { component: 'LaboratoryResults', title: 'Laboratory Results', category: 'Medical Records' },
-  'medical-imaging': { component: 'MedicalImaging', title: 'Medical Imaging', category: 'Medical Records' },
-  'prescription-management': { component: 'PrescriptionManagement', title: 'Prescription Management', category: 'Medical Records' },
-  'clinical-documentation': { component: 'ClinicalDocumentation', title: 'Clinical Documentation', category: 'Medical Records' },
-  'medical-history': { component: 'MedicalHistory', title: 'Medical History', category: 'Medical Records' },
-  'vital-signs': { component: 'VitalSigns', title: 'Vital Signs Monitoring', category: 'Medical Records' },
-  'population-health': { component: 'PopulationHealth', title: 'Population Health Analytics', category: 'Healthcare Analytics' },
-  'clinical-outcomes': { component: 'ClinicalOutcomes', title: 'Clinical Outcomes', category: 'Healthcare Analytics' },
-  'utilization-analytics': { component: 'UtilizationAnalytics', title: 'Utilization Analytics', category: 'Healthcare Analytics' },
-  'quality-metrics': { component: 'QualityMetrics', title: 'Quality Metrics Dashboard', category: 'Healthcare Analytics' },
-  'cost-analytics': { component: 'CostAnalytics', title: 'Healthcare Cost Analytics', category: 'Healthcare Analytics' },
-  'performance-dashboard': { component: 'PerformanceDashboard', title: 'Clinical Performance Dashboard', category: 'Healthcare Analytics' },
-  'h-i-p-a-a-compliance': { component: 'HIPAACompliance', title: 'HIPAA Compliance', category: 'Regulatory Compliance' },
-  'quality-measures': { component: 'QualityMeasures', title: 'Quality Measures', category: 'Regulatory Compliance' },
-  'regulatory-reporting': { component: 'RegulatoryReporting', title: 'Regulatory Reporting', category: 'Regulatory Compliance' },
-  'audit-management': { component: 'AuditManagement', title: 'Audit Management', category: 'Regulatory Compliance' },
-  'accreditation-tracking': { component: 'AccreditationTracking', title: 'Accreditation Tracking', category: 'Regulatory Compliance' },
-  'compliance-monitoring': { component: 'ComplianceMonitoring', title: 'Compliance Monitoring', category: 'Regulatory Compliance' },
-  'clinical-guidelines': { component: 'ClinicalGuidelines', title: 'Clinical Guidelines', category: 'Clinical Decision Support' },
-  'clinical-alerts': { component: 'ClinicalAlerts', title: 'Clinical Alerts', category: 'Clinical Decision Support' },
-  'drug-interactions': { component: 'DrugInteractions', title: 'Drug Interaction Checking', category: 'Clinical Decision Support' },
-  'clinical-protocols': { component: 'ClinicalProtocols', title: 'Clinical Protocols', category: 'Clinical Decision Support' },
-  'risk-assessment': { component: 'RiskAssessment', title: 'Risk Assessment', category: 'Clinical Decision Support' },
-  'clinical-orders': { component: 'ClinicalOrders', title: 'Clinical Order Sets', category: 'Clinical Decision Support' },
-  'medical-billing': { component: 'MedicalBilling', title: 'Medical Billing', category: 'Revenue Cycle' },
-  'insurance-management': { component: 'InsuranceManagement', title: 'Insurance Management', category: 'Revenue Cycle' },
-  'claims-processing': { component: 'ClaimsProcessing', title: 'Claims Processing', category: 'Revenue Cycle' },
-  'financial-reporting': { component: 'FinancialReporting', title: 'Healthcare Financial Reporting', category: 'Revenue Cycle' },
-  'referral-management': { component: 'ReferralManagement', title: 'Referral Management', category: 'Care Coordination' },
-  'care-transitions': { component: 'CareTransitions', title: 'Care Transitions', category: 'Care Coordination' },
-  'care-team-collaboration': { component: 'CareTeamCollaboration', title: 'Care Team Collaboration', category: 'Care Coordination' },
-  'case-management': { component: 'CaseManagement', title: 'Case Management', category: 'Care Coordination' },
+  'patient-registration': {
+    component: 'PatientRegistration',
+    title: 'Patient Registration',
+    category: 'Patient Management',
+  },
+  'patient-records': {
+    component: 'PatientRecords',
+    title: 'Patient Medical Records',
+    category: 'Patient Management',
+  },
+  'patient-history': {
+    component: 'PatientHistory',
+    title: 'Patient History',
+    category: 'Patient Management',
+  },
+  'care-planning': {
+    component: 'CarePlanning',
+    title: 'Care Planning',
+    category: 'Patient Management',
+  },
+  'patient-portal': {
+    component: 'PatientPortal',
+    title: 'Patient Portal',
+    category: 'Patient Management',
+  },
+  'patient-communication': {
+    component: 'PatientCommunication',
+    title: 'Patient Communication',
+    category: 'Patient Management',
+  },
+  'patient-education': {
+    component: 'PatientEducation',
+    title: 'Patient Education',
+    category: 'Patient Management',
+  },
+  'patient-support': {
+    component: 'PatientSupport',
+    title: 'Patient Support Services',
+    category: 'Patient Management',
+  },
+  'appointment-scheduling': {
+    component: 'AppointmentScheduling',
+    title: 'Appointment Scheduling',
+    category: 'Clinical Operations',
+  },
+  'clinical-consultations': {
+    component: 'ClinicalConsultations',
+    title: 'Clinical Consultations',
+    category: 'Clinical Operations',
+  },
+  'procedure-management': {
+    component: 'ProcedureManagement',
+    title: 'Procedure Management',
+    category: 'Clinical Operations',
+  },
+  'discharge-processing': {
+    component: 'DischargeProcessing',
+    title: 'Discharge Processing',
+    category: 'Clinical Operations',
+  },
+  'clinical-workflow': {
+    component: 'ClinicalWorkflow',
+    title: 'Clinical Workflow',
+    category: 'Clinical Operations',
+  },
+  'tele-health': {
+    component: 'TeleHealth',
+    title: 'TeleHealth Services',
+    category: 'Clinical Operations',
+  },
+  'emergency-services': {
+    component: 'EmergencyServices',
+    title: 'Emergency Services',
+    category: 'Clinical Operations',
+  },
+  'clinical-rounding': {
+    component: 'ClinicalRounding',
+    title: 'Clinical Rounding',
+    category: 'Clinical Operations',
+  },
+  'electronic-health-records': {
+    component: 'ElectronicHealthRecords',
+    title: 'Electronic Health Records',
+    category: 'Medical Records',
+  },
+  'laboratory-results': {
+    component: 'LaboratoryResults',
+    title: 'Laboratory Results',
+    category: 'Medical Records',
+  },
+  'medical-imaging': {
+    component: 'MedicalImaging',
+    title: 'Medical Imaging',
+    category: 'Medical Records',
+  },
+  'prescription-management': {
+    component: 'PrescriptionManagement',
+    title: 'Prescription Management',
+    category: 'Medical Records',
+  },
+  'clinical-documentation': {
+    component: 'ClinicalDocumentation',
+    title: 'Clinical Documentation',
+    category: 'Medical Records',
+  },
+  'medical-history': {
+    component: 'MedicalHistory',
+    title: 'Medical History',
+    category: 'Medical Records',
+  },
+  'vital-signs': {
+    component: 'VitalSigns',
+    title: 'Vital Signs Monitoring',
+    category: 'Medical Records',
+  },
+  'population-health': {
+    component: 'PopulationHealth',
+    title: 'Population Health Analytics',
+    category: 'Healthcare Analytics',
+  },
+  'clinical-outcomes': {
+    component: 'ClinicalOutcomes',
+    title: 'Clinical Outcomes',
+    category: 'Healthcare Analytics',
+  },
+  'utilization-analytics': {
+    component: 'UtilizationAnalytics',
+    title: 'Utilization Analytics',
+    category: 'Healthcare Analytics',
+  },
+  'quality-metrics': {
+    component: 'QualityMetrics',
+    title: 'Quality Metrics Dashboard',
+    category: 'Healthcare Analytics',
+  },
+  'cost-analytics': {
+    component: 'CostAnalytics',
+    title: 'Healthcare Cost Analytics',
+    category: 'Healthcare Analytics',
+  },
+  'performance-dashboard': {
+    component: 'PerformanceDashboard',
+    title: 'Clinical Performance Dashboard',
+    category: 'Healthcare Analytics',
+  },
+  'h-i-p-a-a-compliance': {
+    component: 'HIPAACompliance',
+    title: 'HIPAA Compliance',
+    category: 'Regulatory Compliance',
+  },
+  'quality-measures': {
+    component: 'QualityMeasures',
+    title: 'Quality Measures',
+    category: 'Regulatory Compliance',
+  },
+  'regulatory-reporting': {
+    component: 'RegulatoryReporting',
+    title: 'Regulatory Reporting',
+    category: 'Regulatory Compliance',
+  },
+  'audit-management': {
+    component: 'AuditManagement',
+    title: 'Audit Management',
+    category: 'Regulatory Compliance',
+  },
+  'accreditation-tracking': {
+    component: 'AccreditationTracking',
+    title: 'Accreditation Tracking',
+    category: 'Regulatory Compliance',
+  },
+  'compliance-monitoring': {
+    component: 'ComplianceMonitoring',
+    title: 'Compliance Monitoring',
+    category: 'Regulatory Compliance',
+  },
+  'clinical-guidelines': {
+    component: 'ClinicalGuidelines',
+    title: 'Clinical Guidelines',
+    category: 'Clinical Decision Support',
+  },
+  'clinical-alerts': {
+    component: 'ClinicalAlerts',
+    title: 'Clinical Alerts',
+    category: 'Clinical Decision Support',
+  },
+  'drug-interactions': {
+    component: 'DrugInteractions',
+    title: 'Drug Interaction Checking',
+    category: 'Clinical Decision Support',
+  },
+  'clinical-protocols': {
+    component: 'ClinicalProtocols',
+    title: 'Clinical Protocols',
+    category: 'Clinical Decision Support',
+  },
+  'risk-assessment': {
+    component: 'RiskAssessment',
+    title: 'Risk Assessment',
+    category: 'Clinical Decision Support',
+  },
+  'clinical-orders': {
+    component: 'ClinicalOrders',
+    title: 'Clinical Order Sets',
+    category: 'Clinical Decision Support',
+  },
+  'medical-billing': {
+    component: 'MedicalBilling',
+    title: 'Medical Billing',
+    category: 'Revenue Cycle',
+  },
+  'insurance-management': {
+    component: 'InsuranceManagement',
+    title: 'Insurance Management',
+    category: 'Revenue Cycle',
+  },
+  'claims-processing': {
+    component: 'ClaimsProcessing',
+    title: 'Claims Processing',
+    category: 'Revenue Cycle',
+  },
+  'financial-reporting': {
+    component: 'FinancialReporting',
+    title: 'Healthcare Financial Reporting',
+    category: 'Revenue Cycle',
+  },
+  'referral-management': {
+    component: 'ReferralManagement',
+    title: 'Referral Management',
+    category: 'Care Coordination',
+  },
+  'care-transitions': {
+    component: 'CareTransitions',
+    title: 'Care Transitions',
+    category: 'Care Coordination',
+  },
+  'care-team-collaboration': {
+    component: 'CareTeamCollaboration',
+    title: 'Care Team Collaboration',
+    category: 'Care Coordination',
+  },
+  'case-management': {
+    component: 'CaseManagement',
+    title: 'Case Management',
+    category: 'Care Coordination',
+  },
 };
 
 /**
  * Get health medical page categories for navigation
  */
 export const getHealthMedicalCategories = () => {
-  const categories = new Set(Object.values(healthMedicalPageRegistry).map(page => page.category));
+  const categories = new Set(Object.values(healthMedicalPageRegistry).map((page) => page.category));
   return Array.from(categories).sort();
 };
 

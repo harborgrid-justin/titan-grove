@@ -91,7 +91,6 @@ export interface HealthMedicalDomainConfig {
  * Comprehensive healthcare business logic for patient care and operations
  */
 export class HealthMedicalBusinessLogic {
-  
   /**
    * Calculate Patient Risk Score
    * Advanced risk stratification for patient management
@@ -133,8 +132,8 @@ export class HealthMedicalBusinessLogic {
 
     // Chronic conditions factor
     const highRiskConditions = ['diabetes', 'heart-failure', 'copd', 'ckd', 'cancer'];
-    const patientHighRiskConditions = patientData.chronicConditions.filter(
-      condition => highRiskConditions.includes(condition)
+    const patientHighRiskConditions = patientData.chronicConditions.filter((condition) =>
+      highRiskConditions.includes(condition)
     );
     riskScore += patientHighRiskConditions.length * 12;
     if (patientHighRiskConditions.length > 0) {
@@ -200,7 +199,7 @@ export class HealthMedicalBusinessLogic {
       riskLevel,
       contributingFactors,
       recommendations,
-      interventions
+      interventions,
     };
   }
 
@@ -237,43 +236,47 @@ export class HealthMedicalBusinessLogic {
     const totalPatients = patientPopulation.length;
 
     // Preventive Screening Compliance
-    const diabetesPatients = patientPopulation.filter(p => p.conditions.includes('diabetes'));
-    const diabetesWithA1C = diabetesPatients.filter(p => {
+    const diabetesPatients = patientPopulation.filter((p) => p.conditions.includes('diabetes'));
+    const diabetesWithA1C = diabetesPatients.filter((p) => {
       const lastA1C = p.screenings['a1c'];
-      return lastA1C && (Date.now() - lastA1C.getTime()) < (180 * 24 * 60 * 60 * 1000); // 6 months
+      return lastA1C && Date.now() - lastA1C.getTime() < 180 * 24 * 60 * 60 * 1000; // 6 months
     });
-    qualityScores['diabetes_a1c_screening'] = diabetesPatients.length > 0 ? 
-      (diabetesWithA1C.length / diabetesPatients.length) * 100 : 0;
+    qualityScores['diabetes_a1c_screening'] =
+      diabetesPatients.length > 0 ? (diabetesWithA1C.length / diabetesPatients.length) * 100 : 0;
 
     // Mammography Screening
-    const eligibleWomen = patientPopulation.filter(p => p.age >= 50 && p.age <= 74);
-    const mammographyCompliant = eligibleWomen.filter(p => {
+    const eligibleWomen = patientPopulation.filter((p) => p.age >= 50 && p.age <= 74);
+    const mammographyCompliant = eligibleWomen.filter((p) => {
       const lastMammogram = p.screenings['mammogram'];
-      return lastMammogram && (Date.now() - lastMammogram.getTime()) < (730 * 24 * 60 * 60 * 1000); // 2 years
+      return lastMammogram && Date.now() - lastMammogram.getTime() < 730 * 24 * 60 * 60 * 1000; // 2 years
     });
-    qualityScores['mammography_screening'] = eligibleWomen.length > 0 ? 
-      (mammographyCompliant.length / eligibleWomen.length) * 100 : 0;
+    qualityScores['mammography_screening'] =
+      eligibleWomen.length > 0 ? (mammographyCompliant.length / eligibleWomen.length) * 100 : 0;
 
     // Colonoscopy Screening
-    const eligibleForColon = patientPopulation.filter(p => p.age >= 50 && p.age <= 75);
-    const colonoscopyCompliant = eligibleForColon.filter(p => {
+    const eligibleForColon = patientPopulation.filter((p) => p.age >= 50 && p.age <= 75);
+    const colonoscopyCompliant = eligibleForColon.filter((p) => {
       const lastColonoscopy = p.screenings['colonoscopy'];
-      return lastColonoscopy && (Date.now() - lastColonoscopy.getTime()) < (3650 * 24 * 60 * 60 * 1000); // 10 years
+      return lastColonoscopy && Date.now() - lastColonoscopy.getTime() < 3650 * 24 * 60 * 60 * 1000; // 10 years
     });
-    qualityScores['colonoscopy_screening'] = eligibleForColon.length > 0 ? 
-      (colonoscopyCompliant.length / eligibleForColon.length) * 100 : 0;
+    qualityScores['colonoscopy_screening'] =
+      eligibleForColon.length > 0
+        ? (colonoscopyCompliant.length / eligibleForColon.length) * 100
+        : 0;
 
     // Population Health Metrics
     const averageAge = patientPopulation.reduce((sum, p) => sum + p.age, 0) / totalPatients;
-    const chronicDiseaseCount = patientPopulation.filter(p => 
-      p.conditions.some(c => ['diabetes', 'hypertension', 'heart-disease', 'copd'].includes(c))
+    const chronicDiseaseCount = patientPopulation.filter((p) =>
+      p.conditions.some((c) => ['diabetes', 'hypertension', 'heart-disease', 'copd'].includes(c))
     ).length;
     const chronicDiseasePrevalence = (chronicDiseaseCount / totalPatients) * 100;
 
     const utilizationMetrics = {
-      averageAdmissions: patientPopulation.reduce((sum, p) => sum + p.admissions, 0) / totalPatients,
-      averageEmergencyVisits: patientPopulation.reduce((sum, p) => sum + p.emergencyVisits, 0) / totalPatients,
-      readmissionRate: patientPopulation.filter(p => p.admissions > 1).length / totalPatients
+      averageAdmissions:
+        patientPopulation.reduce((sum, p) => sum + p.admissions, 0) / totalPatients,
+      averageEmergencyVisits:
+        patientPopulation.reduce((sum, p) => sum + p.emergencyVisits, 0) / totalPatients,
+      readmissionRate: patientPopulation.filter((p) => p.admissions > 1).length / totalPatients,
     };
 
     // Care Gaps Analysis
@@ -294,15 +297,17 @@ export class HealthMedicalBusinessLogic {
         totalPatients,
         averageAge,
         chronicDiseasePrevalence,
-        utilizationMetrics
+        utilizationMetrics,
       },
       complianceMetrics: {
-        preventiveScreening: (qualityScores['diabetes_a1c_screening'] + 
-                             qualityScores['mammography_screening'] + 
-                             qualityScores['colonoscopy_screening']) / 3,
+        preventiveScreening:
+          (qualityScores['diabetes_a1c_screening'] +
+            qualityScores['mammography_screening'] +
+            qualityScores['colonoscopy_screening']) /
+          3,
         medicationAdherence: 85, // Placeholder - would calculate from medication fill data
-        careGaps
-      }
+        careGaps,
+      },
     };
   }
 
@@ -339,15 +344,15 @@ export class HealthMedicalBusinessLogic {
     recommendations: string[];
   } {
     const totalCharges = claims.reduce((sum, claim) => sum + claim.amount, 0);
-    const paidClaims = claims.filter(claim => claim.paymentDate && claim.paymentAmount);
+    const paidClaims = claims.filter((claim) => claim.paymentDate && claim.paymentAmount);
     const totalCollections = paidClaims.reduce((sum, claim) => sum + (claim.paymentAmount || 0), 0);
-    const deniedClaims = claims.filter(claim => claim.denialDate);
-    
+    const deniedClaims = claims.filter((claim) => claim.denialDate);
+
     const collectionRate = totalCharges > 0 ? (totalCollections / totalCharges) * 100 : 0;
     const denialRate = claims.length > 0 ? (deniedClaims.length / claims.length) * 100 : 0;
 
     // Calculate Days in AR
-    const unpaidClaims = claims.filter(claim => !claim.paymentDate && !claim.denialDate);
+    const unpaidClaims = claims.filter((claim) => !claim.paymentDate && !claim.denialDate);
     const totalDaysOutstanding = unpaidClaims.reduce((sum, claim) => {
       const daysOutstanding = (Date.now() - claim.submissionDate.getTime()) / (1000 * 60 * 60 * 24);
       return sum + daysOutstanding;
@@ -357,15 +362,20 @@ export class HealthMedicalBusinessLogic {
     // Performance Indicators
     const monthlyCharges = totalCharges / 12; // Assuming annual data
     const cashFlow = totalCollections / 12; // Monthly cash flow
-    const netCollectionRate = totalCharges > 0 ? (totalCollections / (totalCharges - deniedClaims.reduce((sum, claim) => sum + claim.amount, 0))) * 100 : 0;
-    
-    const firstPassPaid = claims.filter(claim => 
-      claim.paymentDate && !claim.denialDate
-    ).length;
+    const netCollectionRate =
+      totalCharges > 0
+        ? (totalCollections /
+            (totalCharges - deniedClaims.reduce((sum, claim) => sum + claim.amount, 0))) *
+          100
+        : 0;
+
+    const firstPassPaid = claims.filter((claim) => claim.paymentDate && !claim.denialDate).length;
     const firstPassResolution = claims.length > 0 ? (firstPassPaid / claims.length) * 100 : 0;
-    
-    const averageReimbursement = paidClaims.length > 0 ? 
-      paidClaims.reduce((sum, claim) => sum + (claim.paymentAmount || 0), 0) / paidClaims.length : 0;
+
+    const averageReimbursement =
+      paidClaims.length > 0
+        ? paidClaims.reduce((sum, claim) => sum + (claim.paymentAmount || 0), 0) / paidClaims.length
+        : 0;
 
     // Generate Recommendations
     const recommendations: string[] = [];
@@ -379,7 +389,9 @@ export class HealthMedicalBusinessLogic {
       recommendations.push('Days in AR above target - expedite claim follow-up');
     }
     if (firstPassResolution < 90) {
-      recommendations.push('First pass resolution low - enhance prior authorization and eligibility verification');
+      recommendations.push(
+        'First pass resolution low - enhance prior authorization and eligibility verification'
+      );
     }
 
     return {
@@ -388,15 +400,15 @@ export class HealthMedicalBusinessLogic {
         totalCollections,
         collectionRate,
         daysInAR,
-        denialRate
+        denialRate,
       },
       performanceIndicators: {
         cashFlow,
         netCollectionRate,
         firstPassResolution,
-        averageReimbursement
+        averageReimbursement,
       },
-      recommendations
+      recommendations,
     };
   }
 
@@ -416,14 +428,34 @@ export class HealthMedicalBusinessLogic {
     },
     config: HealthMedicalDomainConfig
   ): {
-    alerts: Array<{ type: 'critical' | 'warning' | 'info'; message: string; recommendation: string }>;
-    drugInteractions: Array<{ severity: 'major' | 'moderate' | 'minor'; drugs: string[]; description: string }>;
+    alerts: Array<{
+      type: 'critical' | 'warning' | 'info';
+      message: string;
+      recommendation: string;
+    }>;
+    drugInteractions: Array<{
+      severity: 'major' | 'moderate' | 'minor';
+      drugs: string[];
+      description: string;
+    }>;
     clinicalGuidelines: Array<{ guideline: string; recommendation: string; evidence: string }>;
     preventiveCare: Array<{ service: string; overdue: boolean; nextDue: Date }>;
   } {
-    const alerts: Array<{ type: 'critical' | 'warning' | 'info'; message: string; recommendation: string }> = [];
-    const drugInteractions: Array<{ severity: 'major' | 'moderate' | 'minor'; drugs: string[]; description: string }> = [];
-    const clinicalGuidelines: Array<{ guideline: string; recommendation: string; evidence: string }> = [];
+    const alerts: Array<{
+      type: 'critical' | 'warning' | 'info';
+      message: string;
+      recommendation: string;
+    }> = [];
+    const drugInteractions: Array<{
+      severity: 'major' | 'moderate' | 'minor';
+      drugs: string[];
+      description: string;
+    }> = [];
+    const clinicalGuidelines: Array<{
+      guideline: string;
+      recommendation: string;
+      evidence: string;
+    }> = [];
     const preventiveCare: Array<{ service: string; overdue: boolean; nextDue: Date }> = [];
 
     // Critical Lab Value Alerts
@@ -431,7 +463,7 @@ export class HealthMedicalBusinessLogic {
       alerts.push({
         type: 'critical',
         message: 'Elevated creatinine level indicates potential kidney dysfunction',
-        recommendation: 'Review medications for nephrotoxicity and consider nephrology referral'
+        recommendation: 'Review medications for nephrotoxicity and consider nephrology referral',
       });
     }
 
@@ -439,37 +471,42 @@ export class HealthMedicalBusinessLogic {
       alerts.push({
         type: 'critical',
         message: 'Severe hyperkalemia detected',
-        recommendation: 'Immediate intervention required - consider EKG and treatment protocol'
+        recommendation: 'Immediate intervention required - consider EKG and treatment protocol',
       });
     }
 
     // Medication Interaction Checking
-    const medications = patientData.medications.map(m => m.name.toLowerCase());
+    const medications = patientData.medications.map((m) => m.name.toLowerCase());
     if (medications.includes('warfarin') && medications.includes('aspirin')) {
       drugInteractions.push({
         severity: 'major',
         drugs: ['warfarin', 'aspirin'],
-        description: 'Increased bleeding risk with concurrent use'
+        description: 'Increased bleeding risk with concurrent use',
       });
     }
 
     // Clinical Guidelines
     if (patientData.conditions.includes('diabetes')) {
-      if (!patientData.labResults['a1c'] || 
-          (Date.now() - patientData.labResults['a1c'].date.getTime()) > (180 * 24 * 60 * 60 * 1000)) {
+      if (
+        !patientData.labResults['a1c'] ||
+        Date.now() - patientData.labResults['a1c'].date.getTime() > 180 * 24 * 60 * 60 * 1000
+      ) {
         clinicalGuidelines.push({
           guideline: 'ADA Diabetes Management',
           recommendation: 'A1C testing every 3-6 months for diabetic patients',
-          evidence: 'Level A recommendation'
+          evidence: 'Level A recommendation',
         });
       }
     }
 
-    if (patientData.conditions.includes('hypertension') && patientData.vitalSigns['systolic'] > 140) {
+    if (
+      patientData.conditions.includes('hypertension') &&
+      patientData.vitalSigns['systolic'] > 140
+    ) {
       clinicalGuidelines.push({
         guideline: 'ACC/AHA Hypertension Guidelines',
         recommendation: 'Blood pressure above goal - consider medication adjustment',
-        evidence: 'Class I recommendation'
+        evidence: 'Class I recommendation',
       });
     }
 
@@ -480,7 +517,7 @@ export class HealthMedicalBusinessLogic {
       preventiveCare.push({
         service: 'Mammography',
         overdue: false, // Would check against last screening date
-        nextDue: nextMammogram
+        nextDue: nextMammogram,
       });
     }
 
@@ -490,7 +527,7 @@ export class HealthMedicalBusinessLogic {
       preventiveCare.push({
         service: 'Colonoscopy',
         overdue: false, // Would check against last screening date
-        nextDue: nextColonoscopy
+        nextDue: nextColonoscopy,
       });
     }
 
@@ -498,7 +535,7 @@ export class HealthMedicalBusinessLogic {
       alerts,
       drugInteractions,
       clinicalGuidelines,
-      preventiveCare
+      preventiveCare,
     };
   }
 }
@@ -508,9 +545,7 @@ export class HealthMedicalBusinessLogic {
  * Orchestrates all healthcare operations, patient care, and clinical workflows
  */
 export class HealthMedicalDomainManager {
-  constructor(
-    private config: HealthMedicalDomainConfig
-  ) {}
+  constructor(private config: HealthMedicalDomainConfig) {}
 
   /**
    * Comprehensive healthcare analytics and optimization
@@ -532,8 +567,8 @@ export class HealthMedicalDomainManager {
         socialFactors: {
           insurance: 'medicare',
           zipCode: '12345',
-          supportSystem: 'moderate'
-        }
+          supportSystem: 'moderate',
+        },
       },
       this.config
     );
@@ -541,10 +576,14 @@ export class HealthMedicalDomainManager {
     const qualityMetrics = HealthMedicalBusinessLogic.calculateQualityMetrics(
       [
         {
-          id: 'pt1', age: 65, conditions: ['diabetes'], 
+          id: 'pt1',
+          age: 65,
+          conditions: ['diabetes'],
           screenings: { a1c: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000) },
-          medications: ['metformin'], admissions: 0, emergencyVisits: 1
-        }
+          medications: ['metformin'],
+          admissions: 0,
+          emergencyVisits: 1,
+        },
       ],
       this.config
     );
@@ -552,24 +591,29 @@ export class HealthMedicalDomainManager {
     const revenueCycleAnalysis = HealthMedicalBusinessLogic.calculateRevenueCycleMetrics(
       [
         {
-          id: 'claim1', amount: 1500, serviceDate: new Date('2024-01-15'),
-          submissionDate: new Date('2024-01-17'), paymentDate: new Date('2024-02-10'),
-          paymentAmount: 1200
-        }
+          id: 'claim1',
+          amount: 1500,
+          serviceDate: new Date('2024-01-15'),
+          submissionDate: new Date('2024-01-17'),
+          paymentDate: new Date('2024-02-10'),
+          paymentAmount: 1200,
+        },
       ],
       this.config
     );
 
     const clinicalDecisionSupport = HealthMedicalBusinessLogic.generateClinicalDecisionSupport(
       {
-        age: 68, gender: 'M', conditions: ['diabetes', 'hypertension'],
+        age: 68,
+        gender: 'M',
+        conditions: ['diabetes', 'hypertension'],
         medications: [{ name: 'metformin', dose: '500mg', frequency: 'BID' }],
-        allergies: ['penicillin'], 
-        labResults: { 
+        allergies: ['penicillin'],
+        labResults: {
           a1c: { value: 7.2, date: new Date(), normal: false },
-          creatinine: { value: 1.1, date: new Date(), normal: true }
+          creatinine: { value: 1.1, date: new Date(), normal: true },
         },
-        vitalSigns: { systolic: 145, diastolic: 88 }
+        vitalSigns: { systolic: 145, diastolic: 88 },
       },
       this.config
     );
@@ -578,7 +622,7 @@ export class HealthMedicalDomainManager {
       patientRiskAnalysis,
       qualityMetrics,
       revenueCycleAnalysis,
-      clinicalDecisionSupport
+      clinicalDecisionSupport,
     };
   }
 }
@@ -592,81 +636,81 @@ export const defaultHealthMedicalConfig: HealthMedicalDomainConfig = {
       validationRules: {
         age: { min: 0, max: 120 },
         phone: '^[0-9]{10}$',
-        email: '^[^@]+@[^@]+\\.[^@]+$'
-      }
+        email: '^[^@]+@[^@]+\\.[^@]+$',
+      },
     },
     privacy: {
       hipaaComplianceLevel: 'full',
       dataRetentionYears: 7,
       auditLogRetention: 1095, // 3 years in days
-      encryptionRequired: true
+      encryptionRequired: true,
     },
     scheduling: {
       defaultAppointmentDuration: 30,
       bufferTime: 15,
       maxAdvanceBooking: 365,
-      cancellationPenalty: 24
-    }
+      cancellationPenalty: 24,
+    },
   },
   clinical: {
     qualityMetrics: {
       patientSafetyThreshold: 95,
       readmissionRateTarget: 8.5, // percentage
       infectionRateTarget: 2.0, // percentage
-      medicationErrorTarget: 0.5 // percentage
+      medicationErrorTarget: 0.5, // percentage
     },
     protocols: {
       criticalResultsNotification: 30, // minutes
       labResultsReview: 24, // hours
       prescriptionReview: 2, // hours
-      clinicalDecisionSupport: true
+      clinicalDecisionSupport: true,
     },
     outcomes: {
       qualityIndicators: ['mortality', 'readmission', 'infection', 'patient-satisfaction'],
       riskAssessmentFrequency: 30, // days
-      careplanReviewFrequency: 90 // days
-    }
+      careplanReviewFrequency: 90, // days
+    },
   },
   billing: {
     coding: {
       icd10Required: true,
       cptRequired: true,
       hcpcsSupported: true,
-      modifierValidation: true
+      modifierValidation: true,
     },
     insurance: {
       verificationRequired: true,
       priorAuthRequired: ['surgery', 'imaging', 'specialty-drugs'],
       copayCollection: 'upfront',
-      eligibilityCheckDays: 30
+      eligibilityCheckDays: 30,
     },
     revenue: {
       daysInAR: 45, // target days in accounts receivable
       collectionRate: 0.95, // 95% collection target
       denialRate: 0.05, // 5% denial rate target
-      cashFlowTarget: 250000 // monthly target
-    }
+      cashFlowTarget: 250000, // monthly target
+    },
   },
   compliance: {
     hipaa: {
       breachNotificationHours: 24,
       accessLogRetention: 1095, // 3 years
       riskAssessmentFrequency: 12, // months
-      trainingRequiredHours: 8 // annual
+      trainingRequiredHours: 8, // annual
     },
     quality: {
       hedisReporting: true,
       cmsStarRating: true,
       jcahoCompliance: true,
-      qualityMeasureFrequency: 3 // months
+      qualityMeasureFrequency: 3, // months
     },
     safety: {
       adverseEventReporting: true,
       medicationReconciliation: true,
       fallPreventionProtocols: true,
-      infectionControlMeasures: true
-    }
-  }
+      infectionControlMeasures: true,
+    },
+  },
 };
 
 // Singleton instance

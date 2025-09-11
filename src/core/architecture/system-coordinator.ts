@@ -4,24 +4,10 @@
  */
 
 import { Logger } from 'winston';
-import { 
-  BaseService, 
-  ServiceContext, 
-  ServiceResult 
-} from './service-layer';
-import { 
-  BusinessSystemService, 
-  BusinessSystemConfig 
-} from './business-system';
-import { 
-  CustomerSystemService, 
-  CustomerSystemConfig 
-} from './customer-system';
-import { 
-  IntegrationLayerService, 
-  IntegrationConfig, 
-  IntegrationEvent 
-} from './integration-layer';
+import { BaseService, ServiceContext, ServiceResult } from './service-layer';
+import { BusinessSystemService, BusinessSystemConfig } from './business-system';
+import { CustomerSystemService, CustomerSystemConfig } from './customer-system';
+import { IntegrationLayerService, IntegrationConfig, IntegrationEvent } from './integration-layer';
 import { healthThresholds } from '../config';
 
 export interface SystemCoordinatorConfig {
@@ -77,7 +63,7 @@ export class SystemCoordinator extends BaseService {
   private businessSystem: BusinessSystemService;
   private customerSystem: CustomerSystemService;
   private integrationLayer: IntegrationLayerService;
-  
+
   private crossSystemOperations: Map<string, CrossSystemOperation> = new Map();
   private healthCheckTimer?: NodeJS.Timeout;
   private lastHealthCheck?: SystemHealth;
@@ -109,18 +95,21 @@ export class SystemCoordinator extends BaseService {
    * Initialize the system coordinator and all subsystems
    */
   async initialize(): Promise<ServiceResult<void>> {
-    return this.executeWithMetrics(async () => {
-      this.logger.info('Initializing System Coordinator');
+    return this.executeWithMetrics(
+      async () => {
+        this.logger.info('Initializing System Coordinator');
 
-      // Initialize default cross-system operations
-      this.initializeDefaultOperations();
+        // Initialize default cross-system operations
+        this.initializeDefaultOperations();
 
-      // Setup integration workflows
-      this.setupDefaultWorkflows();
+        // Setup integration workflows
+        this.setupDefaultWorkflows();
 
-      this.logger.info('System Coordinator initialized successfully');
-      return void 0;
-    }, { logger: this.logger });
+        this.logger.info('System Coordinator initialized successfully');
+        return void 0;
+      },
+      { logger: this.logger }
+    );
   }
 
   /**
@@ -128,13 +117,13 @@ export class SystemCoordinator extends BaseService {
    */
   registerCrossSystemOperation(operation: CrossSystemOperation): void {
     this.crossSystemOperations.set(operation.operationId, operation);
-    
+
     this.logger.info('Registered cross-system operation', {
       operationId: operation.operationId,
       name: operation.name,
       hasBusinessOperation: !!operation.businessOperation,
       hasCustomerOperation: !!operation.customerOperation,
-      hasIntegrationWorkflow: !!operation.integrationWorkflow
+      hasIntegrationWorkflow: !!operation.integrationWorkflow,
     });
   }
 
@@ -152,8 +141,8 @@ export class SystemCoordinator extends BaseService {
         success: false,
         error: {
           code: 'OPERATION_NOT_FOUND',
-          message: `Cross-system operation ${operationId} not found`
-        }
+          message: `Cross-system operation ${operationId} not found`,
+        },
       };
     }
 
@@ -161,7 +150,7 @@ export class SystemCoordinator extends BaseService {
       this.logger.info('Executing cross-system operation', {
         operationId,
         name: operation.name,
-        userId: context.userId
+        userId: context.userId,
       });
 
       // Validate input if validation rules are defined
@@ -181,13 +170,13 @@ export class SystemCoordinator extends BaseService {
           workResult,
           context
         );
-        
+
         if (!businessResult.success) {
           throw new Error(businessResult.error?.message || 'Business operation failed');
         }
-        
+
         workResult = businessResult.data;
-        
+
         // Publish business operation completed event
         await this.publishSystemEvent({
           eventId: `${operationId}-business-${Date.now()}`,
@@ -198,8 +187,8 @@ export class SystemCoordinator extends BaseService {
           payload: {
             operationId: operation.businessOperation,
             crossSystemOperationId: operationId,
-            result: workResult
-          }
+            result: workResult,
+          },
         });
       }
 
@@ -210,11 +199,11 @@ export class SystemCoordinator extends BaseService {
           workResult,
           context
         );
-        
+
         if (!workflowResult.success) {
           throw new Error(workflowResult.error?.message || 'Workflow failed');
         }
-        
+
         workResult = workflowResult.data;
       }
 
@@ -225,13 +214,13 @@ export class SystemCoordinator extends BaseService {
           workResult,
           context
         );
-        
+
         if (!customerResult.success) {
           throw new Error(customerResult.error?.message || 'Customer operation failed');
         }
-        
+
         workResult = customerResult.data;
-        
+
         // Publish customer operation completed event
         await this.publishSystemEvent({
           eventId: `${operationId}-customer-${Date.now()}`,
@@ -242,14 +231,14 @@ export class SystemCoordinator extends BaseService {
           payload: {
             operationId: operation.customerOperation,
             crossSystemOperationId: operationId,
-            result: workResult
-          }
+            result: workResult,
+          },
         });
       }
 
       return workResult as TOutput;
     }, context);
-    
+
     return result;
   }
 
@@ -263,17 +252,29 @@ export class SystemCoordinator extends BaseService {
 
     // Determine business system status
     let businessStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-    if (businessHealth.complianceStatus === 'violation' || businessHealth.recentFailures > healthThresholds.business.maxFailuresForViolation) {
+    if (
+      businessHealth.complianceStatus === 'violation' ||
+      businessHealth.recentFailures > healthThresholds.business.maxFailuresForViolation
+    ) {
       businessStatus = 'unhealthy';
-    } else if (businessHealth.complianceStatus === 'warning' || businessHealth.recentFailures > healthThresholds.business.maxFailuresForWarning) {
+    } else if (
+      businessHealth.complianceStatus === 'warning' ||
+      businessHealth.recentFailures > healthThresholds.business.maxFailuresForWarning
+    ) {
       businessStatus = 'degraded';
     }
 
     // Determine customer system status
     let customerStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
-    if (customerHealth.avgResponseTime > healthThresholds.customer.maxResponseTimeForUnhealthy || customerHealth.cacheHitRate < healthThresholds.customer.minCacheHitRateForUnhealthy) {
+    if (
+      customerHealth.avgResponseTime > healthThresholds.customer.maxResponseTimeForUnhealthy ||
+      customerHealth.cacheHitRate < healthThresholds.customer.minCacheHitRateForUnhealthy
+    ) {
       customerStatus = 'unhealthy';
-    } else if (customerHealth.avgResponseTime > healthThresholds.customer.maxResponseTimeForDegraded || customerHealth.cacheHitRate < healthThresholds.customer.minCacheHitRateForDegraded) {
+    } else if (
+      customerHealth.avgResponseTime > healthThresholds.customer.maxResponseTimeForDegraded ||
+      customerHealth.cacheHitRate < healthThresholds.customer.minCacheHitRateForDegraded
+    ) {
       customerStatus = 'degraded';
     }
 
@@ -285,8 +286,9 @@ export class SystemCoordinator extends BaseService {
       overallStatus = 'degraded';
     }
 
-    const circuitBreakersOpen = Object.values(integrationHealth.circuitBreakers)
-      .filter(cb => cb.isOpen).length;
+    const circuitBreakersOpen = Object.values(integrationHealth.circuitBreakers).filter(
+      (cb) => cb.isOpen
+    ).length;
 
     const systemHealth: SystemHealth = {
       overall: overallStatus,
@@ -295,22 +297,22 @@ export class SystemCoordinator extends BaseService {
         operationsRegistered: businessHealth.operationsRegistered,
         auditLogSize: businessHealth.auditLogSize,
         recentFailures: businessHealth.recentFailures,
-        complianceStatus: businessHealth.complianceStatus
+        complianceStatus: businessHealth.complianceStatus,
       },
       customer: {
         status: customerStatus,
         operationsRegistered: customerHealth.operationsRegistered,
         cacheSize: customerHealth.cacheSize,
         cacheHitRate: customerHealth.cacheHitRate,
-        avgResponseTime: customerHealth.avgResponseTime
+        avgResponseTime: customerHealth.avgResponseTime,
       },
       integration: {
         eventHandlers: integrationHealth.eventHandlers,
         dataSyncRules: integrationHealth.dataSyncRules,
         workflows: integrationHealth.workflows,
-        circuitBreakersOpen
+        circuitBreakersOpen,
       },
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     this.lastHealthCheck = systemHealth;
@@ -343,8 +345,8 @@ export class SystemCoordinator extends BaseService {
         operationsRegistered: this.crossSystemOperations.size,
         totalExecutions: coordinatorMetrics.requestCount,
         averageExecutionTime: coordinatorMetrics.averageResponseTime,
-        successRate: 1 - coordinatorMetrics.errorRate
-      }
+        successRate: 1 - coordinatorMetrics.errorRate,
+      },
     };
   }
 
@@ -352,24 +354,27 @@ export class SystemCoordinator extends BaseService {
    * Shutdown the system coordinator and all subsystems
    */
   async shutdown(): Promise<ServiceResult<void>> {
-    return this.executeWithMetrics(async () => {
-      this.logger.info('Shutting down System Coordinator');
+    return this.executeWithMetrics(
+      async () => {
+        this.logger.info('Shutting down System Coordinator');
 
-      // Stop health monitoring
-      if (this.healthCheckTimer) {
-        clearInterval(this.healthCheckTimer);
-        this.healthCheckTimer = undefined;
-      }
+        // Stop health monitoring
+        if (this.healthCheckTimer) {
+          clearInterval(this.healthCheckTimer);
+          this.healthCheckTimer = undefined;
+        }
 
-      this.logger.info('System Coordinator shutdown completed');
-      return void 0;
-    }, { logger: this.logger });
+        this.logger.info('System Coordinator shutdown completed');
+        return void 0;
+      },
+      { logger: this.logger }
+    );
   }
 
   /**
    * Private helper methods
    */
-  
+
   private validateCrossSystemInput(
     input: any,
     rules: Array<{ field: string; rule: string; message: string }>
@@ -378,7 +383,7 @@ export class SystemCoordinator extends BaseService {
 
     for (const rule of rules) {
       const value = input[rule.field];
-      
+
       switch (rule.rule) {
         case 'required':
           if (!value) {
@@ -404,8 +409,8 @@ export class SystemCoordinator extends BaseService {
         error: {
           code: 'CROSS_SYSTEM_VALIDATION_ERROR',
           message: 'Cross-system validation failed',
-          details: errors
-        }
+          details: errors,
+        },
       };
     }
 
@@ -418,7 +423,7 @@ export class SystemCoordinator extends BaseService {
     } catch (error) {
       this.logger.warn('Failed to publish system event', {
         eventType: event.eventType,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -427,17 +432,17 @@ export class SystemCoordinator extends BaseService {
     this.healthCheckTimer = setInterval(async () => {
       try {
         const health = await this.getSystemHealth();
-        
+
         if (health.overall !== 'healthy') {
           this.logger.warn('System health degraded', {
             overall: health.overall,
             business: health.business.status,
-            customer: health.customer.status
+            customer: health.customer.status,
           });
         }
       } catch (error) {
         this.logger.error('Health check failed', {
-          error: error instanceof Error ? error.message : String(error)
+          error: error instanceof Error ? error.message : String(error),
         });
       }
     }, this.config.healthCheckInterval);
@@ -448,9 +453,9 @@ export class SystemCoordinator extends BaseService {
     this.integrationLayer.subscribeToEvent('business.data.updated', async (event) => {
       this.logger.debug('Handling business data update event', {
         eventId: event.eventId,
-        payload: event.payload
+        payload: event.payload,
       });
-      
+
       // Implement default business to customer sync logic
     });
 
@@ -458,9 +463,9 @@ export class SystemCoordinator extends BaseService {
     this.integrationLayer.subscribeToEvent('customer.data.updated', async (event) => {
       this.logger.debug('Handling customer data update event', {
         eventId: event.eventId,
-        payload: event.payload
+        payload: event.payload,
       });
-      
+
       // Implement default customer to business sync logic
     });
   }
@@ -476,8 +481,8 @@ export class SystemCoordinator extends BaseService {
       businessOperation: 'business.order.fulfill',
       validationRules: [
         { field: 'customerId', rule: 'required', message: 'Customer ID is required' },
-        { field: 'items', rule: 'required', message: 'Order items are required' }
-      ]
+        { field: 'items', rule: 'required', message: 'Order items are required' },
+      ],
     });
 
     // Customer Support Case - coordinates customer inquiry with business support
@@ -487,7 +492,7 @@ export class SystemCoordinator extends BaseService {
       description: 'Create and manage customer support cases across systems',
       customerOperation: 'customer.case.create',
       integrationWorkflow: 'support.case.workflow',
-      businessOperation: 'business.case.assign'
+      businessOperation: 'business.case.assign',
     });
 
     // Financial Transaction - coordinates customer payment with business accounting
@@ -500,8 +505,8 @@ export class SystemCoordinator extends BaseService {
       businessOperation: 'business.accounting.record',
       validationRules: [
         { field: 'amount', rule: 'positive_number', message: 'Amount must be a positive number' },
-        { field: 'customerId', rule: 'required', message: 'Customer ID is required' }
-      ]
+        { field: 'customerId', rule: 'required', message: 'Customer ID is required' },
+      ],
     });
   }
 
@@ -513,29 +518,29 @@ export class SystemCoordinator extends BaseService {
       description: 'Integrates customer order with business systems',
       trigger: {
         type: 'event',
-        config: { eventType: 'customer.order.created' }
+        config: { eventType: 'customer.order.created' },
       },
       steps: [
         {
           stepId: 'validate-inventory',
           system: 'business',
           operation: 'business.inventory.check',
-          errorHandling: 'stop'
+          errorHandling: 'stop',
         },
         {
           stepId: 'reserve-items',
           system: 'business',
           operation: 'business.inventory.reserve',
-          errorHandling: 'rollback'
+          errorHandling: 'rollback',
         },
         {
           stepId: 'update-customer',
           system: 'customer',
           operation: 'customer.order.confirm',
-          errorHandling: 'retry'
-        }
+          errorHandling: 'retry',
+        },
       ],
-      errorPolicy: 'rollback'
+      errorPolicy: 'rollback',
     });
 
     // Support Case Workflow
@@ -545,29 +550,29 @@ export class SystemCoordinator extends BaseService {
       description: 'Routes customer support cases to appropriate business teams',
       trigger: {
         type: 'event',
-        config: { eventType: 'customer.case.created' }
+        config: { eventType: 'customer.case.created' },
       },
       steps: [
         {
           stepId: 'categorize-case',
           system: 'business',
           operation: 'business.case.categorize',
-          errorHandling: 'continue'
+          errorHandling: 'continue',
         },
         {
           stepId: 'assign-agent',
           system: 'business',
           operation: 'business.case.assign',
-          errorHandling: 'retry'
+          errorHandling: 'retry',
         },
         {
           stepId: 'notify-customer',
           system: 'customer',
           operation: 'customer.notification.send',
-          errorHandling: 'continue'
-        }
+          errorHandling: 'continue',
+        },
       ],
-      errorPolicy: 'best-effort'
+      errorPolicy: 'best-effort',
     });
 
     // Payment Processing Workflow
@@ -577,35 +582,35 @@ export class SystemCoordinator extends BaseService {
       description: 'Processes payments across customer and business systems',
       trigger: {
         type: 'event',
-        config: { eventType: 'customer.payment.initiated' }
+        config: { eventType: 'customer.payment.initiated' },
       },
       steps: [
         {
           stepId: 'validate-payment',
           system: 'business',
           operation: 'business.payment.validate',
-          errorHandling: 'stop'
+          errorHandling: 'stop',
         },
         {
           stepId: 'process-payment',
           system: 'business',
           operation: 'business.payment.process',
-          errorHandling: 'stop'
+          errorHandling: 'stop',
         },
         {
           stepId: 'record-transaction',
           system: 'business',
           operation: 'business.accounting.record',
-          errorHandling: 'retry'
+          errorHandling: 'retry',
         },
         {
           stepId: 'confirm-customer',
           system: 'customer',
           operation: 'customer.payment.confirm',
-          errorHandling: 'continue'
-        }
+          errorHandling: 'continue',
+        },
       ],
-      errorPolicy: 'fail-fast'
+      errorPolicy: 'fail-fast',
     });
   }
 

@@ -7,8 +7,9 @@ import type { OrdersEntity } from '../../types';
 import { orderRepository } from '../../data-access/repositories';
 
 export class OrdersService {
-  
-  async createOrders(data: Omit<OrdersEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<OrdersEntity> {
+  async createOrders(
+    data: Omit<OrdersEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<OrdersEntity> {
     this.validateOrdersData(data);
     return await ordersRepository.create(data);
   }
@@ -22,7 +23,7 @@ export class OrdersService {
     if (!existing) {
       throw new Error(`Orders with ID ${id} not found`);
     }
-    
+
     return await ordersRepository.update(id, updates);
   }
 
@@ -31,7 +32,7 @@ export class OrdersService {
     if (!existing) {
       throw new Error(`Orders with ID ${id} not found`);
     }
-    
+
     await ordersRepository.delete(id);
   }
 
@@ -39,7 +40,9 @@ export class OrdersService {
     return await ordersRepository.getAll();
   }
 
-  private validateOrdersData(data: Omit<OrdersEntity, 'id' | 'createdDate' | 'modifiedDate'>): void {
+  private validateOrdersData(
+    data: Omit<OrdersEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): void {
     if (!data.name || data.name.trim() === '') {
       throw new Error('Name is required');
     }

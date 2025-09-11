@@ -8,33 +8,39 @@ import type {
   DataMapping,
   IntegrationJob,
   JobExecution,
-  DataQualityReport
+  DataQualityReport,
 } from '../types';
 import { integrationRepository } from '../data-access/repositories';
 
 export class IntegrationService {
-  
-  async createEndpoint(endpointData: Omit<IntegrationEndpoint, 'id' | 'createdDate'>): Promise<IntegrationEndpoint> {
+  async createEndpoint(
+    endpointData: Omit<IntegrationEndpoint, 'id' | 'createdDate'>
+  ): Promise<IntegrationEndpoint> {
     // Validate endpoint configuration
     this.validateEndpointData(endpointData);
-    
+
     // Create the endpoint
     const endpoint = await integrationRepository.createEndpoint(endpointData);
-    
+
     // Test initial connection
     try {
       const connectionResult = await integrationRepository.testEndpointConnection(endpoint.id);
       if (!connectionResult.success) {
-        console.warn(`Initial connection test failed for endpoint ${endpoint.id}: ${connectionResult.error}`);
+        console.warn(
+          `Initial connection test failed for endpoint ${endpoint.id}: ${connectionResult.error}`
+        );
       }
     } catch (error) {
       console.warn(`Could not test initial connection for endpoint ${endpoint.id}:`, error);
     }
-    
+
     return endpoint;
   }
 
-  async updateEndpoint(endpointId: string, updates: Partial<IntegrationEndpoint>): Promise<IntegrationEndpoint> {
+  async updateEndpoint(
+    endpointId: string,
+    updates: Partial<IntegrationEndpoint>
+  ): Promise<IntegrationEndpoint> {
     const existingEndpoint = await integrationRepository.getEndpointById(endpointId);
     if (!existingEndpoint) {
       throw new Error(`Endpoint with ID ${endpointId} not found`);
@@ -43,7 +49,9 @@ export class IntegrationService {
     return await integrationRepository.updateEndpoint(endpointId, updates);
   }
 
-  async testEndpointConnection(endpointId: string): Promise<{ success: boolean; responseTime: number; error?: string }> {
+  async testEndpointConnection(
+    endpointId: string
+  ): Promise<{ success: boolean; responseTime: number; error?: string }> {
     const endpoint = await integrationRepository.getEndpointById(endpointId);
     if (!endpoint) {
       throw new Error(`Endpoint with ID ${endpointId} not found`);
@@ -52,21 +60,28 @@ export class IntegrationService {
     return await integrationRepository.testEndpointConnection(endpointId);
   }
 
-  async createDataMapping(mappingData: Omit<DataMapping, 'id' | 'createdDate'>): Promise<DataMapping> {
+  async createDataMapping(
+    mappingData: Omit<DataMapping, 'id' | 'createdDate'>
+  ): Promise<DataMapping> {
     // Validate mapping configuration
     await this.validateMappingData(mappingData);
-    
+
     return await integrationRepository.createDataMapping(mappingData);
   }
 
-  async createIntegrationJob(jobData: Omit<IntegrationJob, 'id' | 'createdDate' | 'executionHistory'>): Promise<IntegrationJob> {
+  async createIntegrationJob(
+    jobData: Omit<IntegrationJob, 'id' | 'createdDate' | 'executionHistory'>
+  ): Promise<IntegrationJob> {
     // Validate job configuration
     await this.validateJobData(jobData);
-    
+
     return await integrationRepository.createIntegrationJob(jobData);
   }
 
-  async executeIntegrationJob(jobId: string, immediate: boolean = false): Promise<{ executionId: string; status: 'STARTED' | 'QUEUED' | 'ERROR' }> {
+  async executeIntegrationJob(
+    jobId: string,
+    immediate: boolean = false
+  ): Promise<{ executionId: string; status: 'STARTED' | 'QUEUED' | 'ERROR' }> {
     const job = await integrationRepository.getIntegrationJobById(jobId);
     if (!job) {
       throw new Error(`Integration job with ID ${jobId} not found`);
@@ -84,26 +99,31 @@ export class IntegrationService {
       recordsProcessed: 0,
       recordsSuccessful: 0,
       recordsFailed: 0,
-      logs: [{
-        timestamp: new Date(),
-        level: 'INFO',
-        message: 'Job execution started'
-      }]
+      logs: [
+        {
+          timestamp: new Date(),
+          level: 'INFO',
+          message: 'Job execution started',
+        },
+      ],
     });
 
     // In a real implementation, this would trigger the actual job execution
     // For now, simulate execution
-    setTimeout(async () => {
-      try {
-        await this.simulateJobExecution(execution.id);
-      } catch (error) {
-        console.error(`Job execution ${execution.id} failed:`, error);
-      }
-    }, immediate ? 0 : 1000);
+    setTimeout(
+      async () => {
+        try {
+          await this.simulateJobExecution(execution.id);
+        } catch (error) {
+          console.error(`Job execution ${execution.id} failed:`, error);
+        }
+      },
+      immediate ? 0 : 1000
+    );
 
     return {
       executionId: execution.id,
-      status: 'STARTED'
+      status: 'STARTED',
     };
   }
 
@@ -129,7 +149,7 @@ export class IntegrationService {
       { issue: 'Missing required field', count: Math.floor(invalidRecords * 0.4) },
       { issue: 'Invalid date format', count: Math.floor(invalidRecords * 0.3) },
       { issue: 'Data type mismatch', count: Math.floor(invalidRecords * 0.2) },
-      { issue: 'Constraint violation', count: Math.floor(invalidRecords * 0.1) }
+      { issue: 'Constraint violation', count: Math.floor(invalidRecords * 0.1) },
     ];
 
     // Create quality report
@@ -141,7 +161,7 @@ export class IntegrationService {
       invalidRecords,
       qualityScore,
       ruleResults: [],
-      issues: []
+      issues: [],
     });
 
     return {
@@ -149,7 +169,7 @@ export class IntegrationService {
       validRecords,
       invalidRecords,
       qualityScore,
-      commonIssues
+      commonIssues,
     };
   }
 
@@ -163,16 +183,19 @@ export class IntegrationService {
   }> {
     const allJobs = await integrationRepository.getActiveJobs();
     const allEndpoints = await integrationRepository.getAllEndpoints();
-    
+
     // Mock metrics calculation
     const totalJobs = allJobs.length;
     const successfulJobs = Math.floor(totalJobs * 0.85);
     const failedJobs = totalJobs - successfulJobs;
-    
-    const endpointsStatus = allEndpoints.reduce((acc, endpoint) => {
-      acc[endpoint.status.toLowerCase() as keyof typeof acc]++;
-      return acc;
-    }, { active: 0, inactive: 0, error: 0 });
+
+    const endpointsStatus = allEndpoints.reduce(
+      (acc, endpoint) => {
+        acc[endpoint.status.toLowerCase() as keyof typeof acc]++;
+        return acc;
+      },
+      { active: 0, inactive: 0, error: 0 }
+    );
 
     return {
       totalJobs,
@@ -180,11 +203,13 @@ export class IntegrationService {
       failedJobs,
       averageExecutionTime: Math.random() * 30000 + 5000, // 5-35 seconds
       dataQualityScore: Math.random() * 20 + 80, // 80-100%
-      endpointsStatus
+      endpointsStatus,
     };
   }
 
-  private validateEndpointData(endpointData: Omit<IntegrationEndpoint, 'id' | 'createdDate'>): void {
+  private validateEndpointData(
+    endpointData: Omit<IntegrationEndpoint, 'id' | 'createdDate'>
+  ): void {
     if (!endpointData.name || endpointData.name.trim() === '') {
       throw new Error('Endpoint name is required');
     }
@@ -205,18 +230,24 @@ export class IntegrationService {
     }
   }
 
-  private async validateMappingData(mappingData: Omit<DataMapping, 'id' | 'createdDate'>): Promise<void> {
+  private async validateMappingData(
+    mappingData: Omit<DataMapping, 'id' | 'createdDate'>
+  ): Promise<void> {
     if (!mappingData.mappingName || mappingData.mappingName.trim() === '') {
       throw new Error('Mapping name is required');
     }
 
     // Validate source and target endpoints exist
-    const sourceEndpoint = await integrationRepository.getEndpointById(mappingData.sourceEndpointId);
+    const sourceEndpoint = await integrationRepository.getEndpointById(
+      mappingData.sourceEndpointId
+    );
     if (!sourceEndpoint) {
       throw new Error(`Source endpoint ${mappingData.sourceEndpointId} not found`);
     }
 
-    const targetEndpoint = await integrationRepository.getEndpointById(mappingData.targetEndpointId);
+    const targetEndpoint = await integrationRepository.getEndpointById(
+      mappingData.targetEndpointId
+    );
     if (!targetEndpoint) {
       throw new Error(`Target endpoint ${mappingData.targetEndpointId} not found`);
     }
@@ -226,7 +257,9 @@ export class IntegrationService {
     }
   }
 
-  private async validateJobData(jobData: Omit<IntegrationJob, 'id' | 'createdDate' | 'executionHistory'>): Promise<void> {
+  private async validateJobData(
+    jobData: Omit<IntegrationJob, 'id' | 'createdDate' | 'executionHistory'>
+  ): Promise<void> {
     if (!jobData.name || jobData.name.trim() === '') {
       throw new Error('Job name is required');
     }
@@ -238,7 +271,11 @@ export class IntegrationService {
     }
 
     // Validate schedule
-    if (jobData.schedule.type === 'RECURRING' && !jobData.schedule.cronExpression && !jobData.schedule.interval) {
+    if (
+      jobData.schedule.type === 'RECURRING' &&
+      !jobData.schedule.cronExpression &&
+      !jobData.schedule.interval
+    ) {
       throw new Error('Recurring jobs must have either cron expression or interval specified');
     }
   }
@@ -247,8 +284,10 @@ export class IntegrationService {
     // Simulate job execution with random success/failure
     const isSuccess = Math.random() > 0.15; // 85% success rate
     const recordsProcessed = Math.floor(Math.random() * 10000) + 1000;
-    const recordsFailed = isSuccess ? Math.floor(recordsProcessed * 0.02) : Math.floor(recordsProcessed * 0.1);
-    
+    const recordsFailed = isSuccess
+      ? Math.floor(recordsProcessed * 0.02)
+      : Math.floor(recordsProcessed * 0.1);
+
     await integrationRepository.updateJobExecution(executionId, {
       endTime: new Date(),
       status: isSuccess ? 'COMPLETED' : 'FAILED',
@@ -256,7 +295,7 @@ export class IntegrationService {
       recordsSuccessful: recordsProcessed - recordsFailed,
       recordsFailed,
       duration: Math.floor(Math.random() * 30000) + 5000,
-      errorMessage: isSuccess ? undefined : 'Simulated execution failure'
+      errorMessage: isSuccess ? undefined : 'Simulated execution failure',
     });
   }
 }

@@ -73,77 +73,249 @@ export { default as AuditManagement } from './AuditManagement';
  */
 export const manufacturingPageRegistry = {
   // Production Management
-  'production-planning': { component: 'ProductionPlanning', title: 'Production Planning', category: 'Production' },
-  'production-scheduling': { component: 'ProductionScheduling', title: 'Production Scheduling', category: 'Production' },
-  'capacity-management': { component: 'CapacityManagement', title: 'Capacity Management', category: 'Production' },
-  'work-order-management': { component: 'WorkOrderManagement', title: 'Work Order Management', category: 'Production' },
-  'bill-of-materials': { component: 'BillOfMaterials', title: 'Bill of Materials', category: 'Production' },
-  'routing-management': { component: 'RoutingManagement', title: 'Routing Management', category: 'Production' },
-  'master-production-schedule': { component: 'MasterProductionSchedule', title: 'Master Production Schedule', category: 'Production' },
-  'material-requirements': { component: 'MaterialRequirements', title: 'Material Requirements Planning', category: 'Production' },
-  'production-control': { component: 'ProductionControl', title: 'Production Control', category: 'Production' },
-  'flow-manufacturing': { component: 'FlowManufacturing', title: 'Flow Manufacturing', category: 'Production' },
-  'configure-to-order': { component: 'ConfigureToOrder', title: 'Configure-to-Order', category: 'Production' },
+  'production-planning': {
+    component: 'ProductionPlanning',
+    title: 'Production Planning',
+    category: 'Production',
+  },
+  'production-scheduling': {
+    component: 'ProductionScheduling',
+    title: 'Production Scheduling',
+    category: 'Production',
+  },
+  'capacity-management': {
+    component: 'CapacityManagement',
+    title: 'Capacity Management',
+    category: 'Production',
+  },
+  'work-order-management': {
+    component: 'WorkOrderManagement',
+    title: 'Work Order Management',
+    category: 'Production',
+  },
+  'bill-of-materials': {
+    component: 'BillOfMaterials',
+    title: 'Bill of Materials',
+    category: 'Production',
+  },
+  'routing-management': {
+    component: 'RoutingManagement',
+    title: 'Routing Management',
+    category: 'Production',
+  },
+  'master-production-schedule': {
+    component: 'MasterProductionSchedule',
+    title: 'Master Production Schedule',
+    category: 'Production',
+  },
+  'material-requirements': {
+    component: 'MaterialRequirements',
+    title: 'Material Requirements Planning',
+    category: 'Production',
+  },
+  'production-control': {
+    component: 'ProductionControl',
+    title: 'Production Control',
+    category: 'Production',
+  },
+  'flow-manufacturing': {
+    component: 'FlowManufacturing',
+    title: 'Flow Manufacturing',
+    category: 'Production',
+  },
+  'configure-to-order': {
+    component: 'ConfigureToOrder',
+    title: 'Configure-to-Order',
+    category: 'Production',
+  },
 
   // Quality Control
-  'quality-inspection': { component: 'QualityInspection', title: 'Quality Inspection', category: 'Quality' },
-  'quality-assurance': { component: 'QualityAssurance', title: 'Quality Assurance', category: 'Quality' },
+  'quality-inspection': {
+    component: 'QualityInspection',
+    title: 'Quality Inspection',
+    category: 'Quality',
+  },
+  'quality-assurance': {
+    component: 'QualityAssurance',
+    title: 'Quality Assurance',
+    category: 'Quality',
+  },
   'defect-tracking': { component: 'DefectTracking', title: 'Defect Tracking', category: 'Quality' },
   'quality-metrics': { component: 'QualityMetrics', title: 'Quality Metrics', category: 'Quality' },
-  'six-sigma-projects': { component: 'SixSigmaProjects', title: 'Six Sigma Projects', category: 'Quality' },
-  'iso9001-compliance': { component: 'ISO9001Compliance', title: 'ISO 9001 Compliance', category: 'Quality' },
-  'regulatory-compliance': { component: 'RegulatoryCompliance', title: 'Regulatory Compliance', category: 'Quality' },
-  'continuous-improvement': { component: 'ContinuousImprovement', title: 'Continuous Improvement', category: 'Quality' },
+  'six-sigma-projects': {
+    component: 'SixSigmaProjects',
+    title: 'Six Sigma Projects',
+    category: 'Quality',
+  },
+  'iso9001-compliance': {
+    component: 'ISO9001Compliance',
+    title: 'ISO 9001 Compliance',
+    category: 'Quality',
+  },
+  'regulatory-compliance': {
+    component: 'RegulatoryCompliance',
+    title: 'Regulatory Compliance',
+    category: 'Quality',
+  },
+  'continuous-improvement': {
+    component: 'ContinuousImprovement',
+    title: 'Continuous Improvement',
+    category: 'Quality',
+  },
 
   // Shop Floor Control
-  'shop-floor-control': { component: 'ShopFloorControl', title: 'Shop Floor Control', category: 'Shop Floor' },
-  'work-center-management': { component: 'WorkCenterManagement', title: 'Work Center Management', category: 'Shop Floor' },
-  'operator-interface': { component: 'OperatorInterface', title: 'Operator Interface', category: 'Shop Floor' },
-  'machine-monitoring': { component: 'MachineMonitoring', title: 'Machine Monitoring', category: 'Shop Floor' },
-  'production-tracking': { component: 'ProductionTracking', title: 'Production Tracking', category: 'Shop Floor' },
+  'shop-floor-control': {
+    component: 'ShopFloorControl',
+    title: 'Shop Floor Control',
+    category: 'Shop Floor',
+  },
+  'work-center-management': {
+    component: 'WorkCenterManagement',
+    title: 'Work Center Management',
+    category: 'Shop Floor',
+  },
+  'operator-interface': {
+    component: 'OperatorInterface',
+    title: 'Operator Interface',
+    category: 'Shop Floor',
+  },
+  'machine-monitoring': {
+    component: 'MachineMonitoring',
+    title: 'Machine Monitoring',
+    category: 'Shop Floor',
+  },
+  'production-tracking': {
+    component: 'ProductionTracking',
+    title: 'Production Tracking',
+    category: 'Shop Floor',
+  },
   'labor-tracking': { component: 'LaborTracking', title: 'Labor Tracking', category: 'Shop Floor' },
-  'inventory-tracking': { component: 'InventoryTracking', title: 'Inventory Tracking', category: 'Shop Floor' },
+  'inventory-tracking': {
+    component: 'InventoryTracking',
+    title: 'Inventory Tracking',
+    category: 'Shop Floor',
+  },
 
   // Manufacturing Analytics
   'oee-analytics': { component: 'OEEAnalytics', title: 'OEE Analytics', category: 'Analytics' },
-  'production-analytics': { component: 'ProductionAnalytics', title: 'Production Analytics', category: 'Analytics' },
+  'production-analytics': {
+    component: 'ProductionAnalytics',
+    title: 'Production Analytics',
+    category: 'Analytics',
+  },
   'cost-analytics': { component: 'CostAnalytics', title: 'Cost Analytics', category: 'Analytics' },
-  'efficiency-analytics': { component: 'EfficiencyAnalytics', title: 'Efficiency Analytics', category: 'Analytics' },
-  'throughput-analysis': { component: 'ThroughputAnalysis', title: 'Throughput Analysis', category: 'Analytics' },
-  'performance-dashboard': { component: 'PerformanceDashboard', title: 'Performance Dashboard', category: 'Analytics' },
+  'efficiency-analytics': {
+    component: 'EfficiencyAnalytics',
+    title: 'Efficiency Analytics',
+    category: 'Analytics',
+  },
+  'throughput-analysis': {
+    component: 'ThroughputAnalysis',
+    title: 'Throughput Analysis',
+    category: 'Analytics',
+  },
+  'performance-dashboard': {
+    component: 'PerformanceDashboard',
+    title: 'Performance Dashboard',
+    category: 'Analytics',
+  },
 
   // Process Management
-  'process-manufacturing': { component: 'ProcessManufacturing', title: 'Process Manufacturing', category: 'Process' },
-  'batch-management': { component: 'BatchManagement', title: 'Batch Management', category: 'Process' },
-  'recipe-management': { component: 'RecipeManagement', title: 'Recipe Management', category: 'Process' },
+  'process-manufacturing': {
+    component: 'ProcessManufacturing',
+    title: 'Process Manufacturing',
+    category: 'Process',
+  },
+  'batch-management': {
+    component: 'BatchManagement',
+    title: 'Batch Management',
+    category: 'Process',
+  },
+  'recipe-management': {
+    component: 'RecipeManagement',
+    title: 'Recipe Management',
+    category: 'Process',
+  },
   'process-control': { component: 'ProcessControl', title: 'Process Control', category: 'Process' },
-  'process-optimization': { component: 'ProcessOptimization', title: 'Process Optimization', category: 'Process' },
-  'process-validation': { component: 'ProcessValidation', title: 'Process Validation', category: 'Process' },
+  'process-optimization': {
+    component: 'ProcessOptimization',
+    title: 'Process Optimization',
+    category: 'Process',
+  },
+  'process-validation': {
+    component: 'ProcessValidation',
+    title: 'Process Validation',
+    category: 'Process',
+  },
 
   // Equipment Management
-  'equipment-management': { component: 'EquipmentManagement', title: 'Equipment Management', category: 'Equipment' },
-  'maintenance-scheduling': { component: 'MaintenanceScheduling', title: 'Maintenance Scheduling', category: 'Equipment' },
-  'predictive-maintenance': { component: 'PredictiveMaintenance', title: 'Predictive Maintenance', category: 'Equipment' },
-  'equipment-efficiency': { component: 'EquipmentEfficiency', title: 'Equipment Efficiency', category: 'Equipment' },
-  'tool-management': { component: 'ToolManagement', title: 'Tool Management', category: 'Equipment' },
+  'equipment-management': {
+    component: 'EquipmentManagement',
+    title: 'Equipment Management',
+    category: 'Equipment',
+  },
+  'maintenance-scheduling': {
+    component: 'MaintenanceScheduling',
+    title: 'Maintenance Scheduling',
+    category: 'Equipment',
+  },
+  'predictive-maintenance': {
+    component: 'PredictiveMaintenance',
+    title: 'Predictive Maintenance',
+    category: 'Equipment',
+  },
+  'equipment-efficiency': {
+    component: 'EquipmentEfficiency',
+    title: 'Equipment Efficiency',
+    category: 'Equipment',
+  },
+  'tool-management': {
+    component: 'ToolManagement',
+    title: 'Tool Management',
+    category: 'Equipment',
+  },
 
   // Cost Management
-  'manufacturing-costs': { component: 'ManufacturingCosts', title: 'Manufacturing Costs', category: 'Cost' },
+  'manufacturing-costs': {
+    component: 'ManufacturingCosts',
+    title: 'Manufacturing Costs',
+    category: 'Cost',
+  },
   'cost-rollup': { component: 'CostRollup', title: 'Cost Rollup', category: 'Cost' },
-  'variance-analysis': { component: 'VarianceAnalysis', title: 'Variance Analysis', category: 'Cost' },
-  'activity-based-costing': { component: 'ActivityBasedCosting', title: 'Activity-Based Costing', category: 'Cost' },
+  'variance-analysis': {
+    component: 'VarianceAnalysis',
+    title: 'Variance Analysis',
+    category: 'Cost',
+  },
+  'activity-based-costing': {
+    component: 'ActivityBasedCosting',
+    title: 'Activity-Based Costing',
+    category: 'Cost',
+  },
 
   // Compliance & Safety
-  'safety-management': { component: 'SafetyManagement', title: 'Safety Management', category: 'Compliance' },
-  'environmental-compliance': { component: 'EnvironmentalCompliance', title: 'Environmental Compliance', category: 'Compliance' },
-  'audit-management': { component: 'AuditManagement', title: 'Audit Management', category: 'Compliance' }
+  'safety-management': {
+    component: 'SafetyManagement',
+    title: 'Safety Management',
+    category: 'Compliance',
+  },
+  'environmental-compliance': {
+    component: 'EnvironmentalCompliance',
+    title: 'Environmental Compliance',
+    category: 'Compliance',
+  },
+  'audit-management': {
+    component: 'AuditManagement',
+    title: 'Audit Management',
+    category: 'Compliance',
+  },
 };
 
 /**
  * Get manufacturing page categories for navigation
  */
 export const getManufacturingCategories = () => {
-  const categories = new Set(Object.values(manufacturingPageRegistry).map(page => page.category));
+  const categories = new Set(Object.values(manufacturingPageRegistry).map((page) => page.category));
   return Array.from(categories).sort();
 };
 

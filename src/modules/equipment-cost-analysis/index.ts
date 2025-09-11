@@ -1,7 +1,7 @@
 /**
  * Equipment Cost Analysis Module
  * Fortune 100 grade total cost of ownership and equipment cost optimization
- * 
+ *
  * Provides comprehensive cost analysis capabilities including:
  * - Total Cost of Ownership (TCO) calculations
  * - Equipment cost benchmarking and optimization
@@ -25,7 +25,10 @@ import { BaseManager } from '../../shared/utils/base-manager';
 import { equipmentCostService } from './business-logic/equipment-cost-service';
 
 // Core equipment cost analysis functionality
-export { EquipmentCostService, equipmentCostService } from './business-logic/equipment-cost-service';
+export {
+  EquipmentCostService,
+  equipmentCostService,
+} from './business-logic/equipment-cost-service';
 
 // Types
 export type {
@@ -43,7 +46,7 @@ export type {
   EquipmentProcurementCost,
   OperatingCostAnalysis,
   MaintenanceCostAnalysis,
-  CostPerformanceIndicator
+  CostPerformanceIndicator,
 } from './types';
 
 /**
@@ -59,7 +62,7 @@ export class EquipmentCostAnalysisManager extends BaseManager {
     const costProfile = {
       id,
       ...profileData,
-      ...this.createAuditFields('system')
+      ...this.createAuditFields('system'),
     };
     this.logAction('createCostProfile', { id });
     return costProfile;

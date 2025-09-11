@@ -57,13 +57,13 @@ export class MessageQueueUtils {
         userId: options.userId,
         timestamp: new Date(),
         version: '1.0.0',
-        priority: options.priority || MessagePriority.NORMAL
-      }
+        priority: options.priority || MessagePriority.NORMAL,
+      },
     };
 
     if (options.targetQueue) {
       message.routing = {
-        targetQueue: options.targetQueue
+        targetQueue: options.targetQueue,
       };
     }
 
@@ -72,7 +72,7 @@ export class MessageQueueUtils {
         dataClassification: options.compliance.dataClassification || 'INTERNAL',
         auditRequired: options.compliance.auditRequired || false,
         encryptionRequired: options.compliance.encryptionRequired || false,
-        retentionPeriodDays: options.compliance.retentionPeriodDays || 90
+        retentionPeriodDays: options.compliance.retentionPeriodDays || 90,
       };
     }
 
@@ -112,15 +112,17 @@ export class MessageQueueUtils {
 
     if (message.compliance) {
       const validClassifications = ['PUBLIC', 'INTERNAL', 'CONFIDENTIAL', 'RESTRICTED'];
-      if (message.compliance.dataClassification && 
-          !validClassifications.includes(message.compliance.dataClassification)) {
+      if (
+        message.compliance.dataClassification &&
+        !validClassifications.includes(message.compliance.dataClassification)
+      ) {
         errors.push('Invalid data classification');
       }
     }
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -184,13 +186,13 @@ export class MessageQueueUtils {
     }
 
     const encryptedMessage = { ...message };
-    
+
     // Simple encryption for demo - in production, use proper encryption
     const encrypted = Buffer.from(JSON.stringify(message.data)).toString('base64');
     encryptedMessage.data = {
       encrypted: true,
       data: encrypted,
-      algorithm: 'base64' // In production, use AES-256-GCM or similar
+      algorithm: 'base64', // In production, use AES-256-GCM or similar
     };
 
     return encryptedMessage;
@@ -205,7 +207,7 @@ export class MessageQueueUtils {
     }
 
     const decryptedMessage = { ...message };
-    
+
     // Simple decryption for demo
     try {
       const decrypted = Buffer.from(message.data.data, 'base64').toString();
@@ -235,7 +237,7 @@ export class MessageQueueUtils {
       userId: message.metadata.userId,
       source: message.metadata.source,
       dataClassification: message.compliance?.dataClassification,
-      details: details || {}
+      details: details || {},
     };
   }
 
@@ -258,7 +260,7 @@ export class MessageQueueUtils {
     return {
       processingTimeMs,
       queueTimeMs,
-      totalTimeMs
+      totalTimeMs,
     };
   }
 
@@ -296,13 +298,13 @@ export class MessageQueueUtils {
       highRetention: 200,
       criticalRetention: 500,
     };
-    
+
     const config = {
       concurrency: 1,
       attempts: 1,
       backoffDelay: dynamicConfig.standardBackoffDelay,
       removeOnComplete: dynamicConfig.mediumRetention,
-      removeOnFail: 50
+      removeOnFail: 50,
     };
 
     // Adjust concurrency based on throughput requirements
@@ -372,7 +374,7 @@ export class MessageQueueUtils {
       error: {
         message: error.message,
         stack: error.stack,
-        name: error.name
+        name: error.name,
       },
       attemptCount,
       failedAt: new Date(),
@@ -380,8 +382,8 @@ export class MessageQueueUtils {
       metadata: {
         correlationId: originalMessage.metadata.correlationId,
         originalSource: originalMessage.metadata.source,
-        failureReason: 'PROCESSING_FAILED'
-      }
+        failureReason: 'PROCESSING_FAILED',
+      },
     };
   }
 
@@ -396,7 +398,7 @@ export class MessageQueueUtils {
     delayed: number;
   }): string {
     const total = stats.active + stats.waiting + stats.completed + stats.failed + stats.delayed;
-    
+
     return `Queue Stats: ${total} total (${stats.active} active, ${stats.waiting} waiting, ${stats.completed} completed, ${stats.failed} failed, ${stats.delayed} delayed)`;
   }
 
@@ -413,10 +415,12 @@ export class MessageQueueUtils {
    */
   static sanitizeForLogging(message: MessagePayload): any {
     const sanitized = { ...message };
-    
+
     // Remove sensitive data
-    if (message.compliance?.dataClassification === 'RESTRICTED' || 
-        message.compliance?.dataClassification === 'CONFIDENTIAL') {
+    if (
+      message.compliance?.dataClassification === 'RESTRICTED' ||
+      message.compliance?.dataClassification === 'CONFIDENTIAL'
+    ) {
       sanitized.data = '[REDACTED]';
     }
 
@@ -440,10 +444,11 @@ export class MessageQueueUtils {
       batchId,
       totalMessages: messages.length,
       results,
-      startTime: Math.min(...messages.map(m => m.metadata.timestamp.getTime())),
+      startTime: Math.min(...messages.map((m) => m.metadata.timestamp.getTime())),
       endTime: Date.now(),
       successRate: (results.success / messages.length) * 100,
-      avgMessageSize: messages.reduce((sum, m) => sum + JSON.stringify(m.data).length, 0) / messages.length
+      avgMessageSize:
+        messages.reduce((sum, m) => sum + JSON.stringify(m.data).length, 0) / messages.length,
     };
   }
 
@@ -468,28 +473,41 @@ export class MessageQueueUtils {
  * Message Queue Error Classes
  */
 export class MessageQueueError extends Error {
-  constructor(message: string, public code: string, public details?: any) {
+  constructor(
+    message: string,
+    public code: string,
+    public details?: any
+  ) {
     super(message);
     this.name = 'MessageQueueError';
   }
 }
 
 export class MessageValidationError extends MessageQueueError {
-  constructor(message: string, public validationErrors: string[]) {
+  constructor(
+    message: string,
+    public validationErrors: string[]
+  ) {
     super(message, 'VALIDATION_ERROR', { validationErrors });
     this.name = 'MessageValidationError';
   }
 }
 
 export class MessageProcessingError extends MessageQueueError {
-  constructor(message: string, public originalError: Error) {
+  constructor(
+    message: string,
+    public originalError: Error
+  ) {
     super(message, 'PROCESSING_ERROR', { originalError });
     this.name = 'MessageProcessingError';
   }
 }
 
 export class QueueConfigurationError extends MessageQueueError {
-  constructor(message: string, public queueName: string) {
+  constructor(
+    message: string,
+    public queueName: string
+  ) {
     super(message, 'CONFIGURATION_ERROR', { queueName });
     this.name = 'QueueConfigurationError';
   }

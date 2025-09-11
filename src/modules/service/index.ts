@@ -1,7 +1,7 @@
 /**
  * Service Management Module - Oracle EBS Competitive
  * Comprehensive service management system competing with Oracle EBS Service Module
- * 
+ *
  * This enhanced module provides:
  * - Field Service Management: Technician management, scheduling optimization, GPS tracking
  * - Work Order Management: Complete work order lifecycle with advanced features
@@ -41,7 +41,7 @@ export type {
   QualityControl,
   WorkOrderTemplate,
   DispatchBoard,
-  DispatchWorkOrder
+  DispatchWorkOrder,
 } from './types/work-order-types';
 
 // Export install base management types (avoiding conflicts)
@@ -60,7 +60,7 @@ export type {
   InstallAddress,
   ContactPerson,
   AssetDocument,
-  ComplianceRequirement
+  ComplianceRequirement,
 } from './types/install-base-types';
 
 // ================================
@@ -88,9 +88,18 @@ export * from './data-access';
 // ORACLE EBS COMPETITIVE SERVICE MANAGER
 // ================================
 
-import { TechnicianManagementService, technicianManagementService } from './business-logic/field-service-management/technician-management-service';
-import { SchedulingOptimizationService, schedulingOptimizationService } from './business-logic/field-service-management/scheduling-optimization-service';
-import { WorkOrderService, workOrderService } from './business-logic/work-order-management/work-order-service';
+import {
+  TechnicianManagementService,
+  technicianManagementService,
+} from './business-logic/field-service-management/technician-management-service';
+import {
+  SchedulingOptimizationService,
+  schedulingOptimizationService,
+} from './business-logic/field-service-management/scheduling-optimization-service';
+import {
+  WorkOrderService,
+  workOrderService,
+} from './business-logic/work-order-management/work-order-service';
 
 /**
  * Oracle EBS Competitive Service Manager
@@ -98,7 +107,6 @@ import { WorkOrderService, workOrderService } from './business-logic/work-order-
  * Competing with Oracle EBS Service Module with enhanced modern features
  */
 export class OracleEBSCompetitiveServiceManager {
-  
   // Core Service Components
   public readonly technicianManagement: TechnicianManagementService;
   public readonly schedulingOptimization: SchedulingOptimizationService;
@@ -143,45 +151,45 @@ export class OracleEBSCompetitiveServiceManager {
   }> {
     console.log('Initializing Oracle EBS Competitive Service Management System...', {
       organizationId: config.organizationId,
-      features: config.features
+      features: config.features,
     });
 
     const featuresEnabled: string[] = [];
     const integrationStatus: Record<string, 'CONNECTED' | 'DISCONNECTED' | 'ERROR'> = {};
-    
+
     // Initialize AI-powered scheduling if enabled
     if (config.features.aiSchedulingEnabled) {
       featuresEnabled.push('AI-Powered Scheduling Optimization');
     }
-    
+
     // Initialize mobile service capabilities
     if (config.features.mobileServiceEnabled) {
       featuresEnabled.push('Mobile Workforce Management');
     }
-    
+
     // Initialize predictive analytics
     if (config.features.predictiveAnalyticsEnabled) {
       featuresEnabled.push('Predictive Service Analytics');
     }
-    
+
     // Initialize real-time tracking
     if (config.features.realTimeTrackingEnabled) {
       featuresEnabled.push('Real-Time GPS Tracking');
     }
-    
+
     // Check Oracle EBS integrations
     if (config.integrations.oracleFinancialsEnabled) {
       integrationStatus['Oracle Financials'] = 'CONNECTED';
     }
-    
+
     if (config.integrations.oracleInventoryEnabled) {
       integrationStatus['Oracle Inventory'] = 'CONNECTED';
     }
-    
+
     if (config.integrations.oracleCRMEnabled) {
       integrationStatus['Oracle CRM'] = 'CONNECTED';
     }
-    
+
     if (config.integrations.oracleProjectsEnabled) {
       integrationStatus['Oracle Projects'] = 'CONNECTED';
     }
@@ -193,7 +201,7 @@ export class OracleEBSCompetitiveServiceManager {
       integrationStatus,
       systemCapabilities: [
         'Advanced Technician Management',
-        'AI-Powered Scheduling Optimization', 
+        'AI-Powered Scheduling Optimization',
         'Comprehensive Work Order Management',
         'Real-Time Service Analytics',
         'Mobile Field Service',
@@ -203,8 +211,8 @@ export class OracleEBSCompetitiveServiceManager {
         'Oracle EBS Integration',
         'Predictive Maintenance',
         'Customer Portal Integration',
-        'Quality Management System'
-      ]
+        'Quality Management System',
+      ],
     };
   }
 
@@ -226,11 +234,14 @@ export class OracleEBSCompetitiveServiceManager {
       diskUsage: number;
       networkLatency: number;
     };
-    integrationHealth: Record<string, {
-      status: 'CONNECTED' | 'DISCONNECTED' | 'ERROR';
-      lastSync: Date;
-      errorCount: number;
-    }>;
+    integrationHealth: Record<
+      string,
+      {
+        status: 'CONNECTED' | 'DISCONNECTED' | 'ERROR';
+        lastSync: Date;
+        errorCount: number;
+      }
+    >;
     recentActivity: Array<{
       timestamp: Date;
       activity: string;
@@ -248,8 +259,8 @@ export class OracleEBSCompetitiveServiceManager {
           metrics: {
             activeTechnicians: 25,
             avgUtilization: 82.4,
-            avgResponseTime: 18
-          }
+            avgResponseTime: 18,
+          },
         },
         {
           component: 'Work Order Management',
@@ -258,8 +269,8 @@ export class OracleEBSCompetitiveServiceManager {
           metrics: {
             activeWorkOrders: 147,
             completionRate: 94.2,
-            avgCycleTime: 4.2
-          }
+            avgCycleTime: 4.2,
+          },
         },
         {
           component: 'Scheduling Optimization',
@@ -268,43 +279,43 @@ export class OracleEBSCompetitiveServiceManager {
           metrics: {
             optimizationScore: 87.3,
             scheduleConflicts: 2,
-            utilizationImprovement: 15.7
-          }
-        }
+            utilizationImprovement: 15.7,
+          },
+        },
       ],
       activeConnections: 1247,
       systemLoad: {
         cpuUsage: 68.2,
         memoryUsage: 74.5,
         diskUsage: 45.8,
-        networkLatency: 12
+        networkLatency: 12,
       },
       integrationHealth: {
         'Oracle Financials': {
           status: 'CONNECTED',
           lastSync: new Date(Date.now() - 5 * 60 * 1000),
-          errorCount: 0
+          errorCount: 0,
         },
         'Oracle Inventory': {
           status: 'CONNECTED',
           lastSync: new Date(Date.now() - 2 * 60 * 1000),
-          errorCount: 0
-        }
+          errorCount: 0,
+        },
       },
       recentActivity: [
         {
           timestamp: new Date(Date.now() - 10 * 60 * 1000),
           activity: 'Work Order Completed',
           component: 'Work Order Management',
-          details: 'WO247891 completed by Tech #045'
+          details: 'WO247891 completed by Tech #045',
         },
         {
           timestamp: new Date(Date.now() - 15 * 60 * 1000),
           activity: 'Schedule Optimization',
           component: 'Scheduling Optimization',
-          details: 'Route optimization improved efficiency by 12%'
-        }
-      ]
+          details: 'Route optimization improved efficiency by 12%',
+        },
+      ],
     };
   }
 
@@ -312,7 +323,11 @@ export class OracleEBSCompetitiveServiceManager {
    * Execute comprehensive service analytics and reporting
    */
   async generateComprehensiveReport(
-    reportType: 'EXECUTIVE_SUMMARY' | 'OPERATIONAL_DASHBOARD' | 'PERFORMANCE_ANALYSIS' | 'PREDICTIVE_INSIGHTS',
+    reportType:
+      | 'EXECUTIVE_SUMMARY'
+      | 'OPERATIONAL_DASHBOARD'
+      | 'PERFORMANCE_ANALYSIS'
+      | 'PREDICTIVE_INSIGHTS',
     period: { startDate: Date; endDate: Date },
     filters?: {
       serviceAreas?: string[];
@@ -362,7 +377,7 @@ export class OracleEBSCompetitiveServiceManager {
     attachments: string[];
   }> {
     const reportId = `rpt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Generating comprehensive service report: ${reportType}`);
 
     return {
@@ -380,8 +395,8 @@ export class OracleEBSCompetitiveServiceManager {
           'Customer satisfaction improved 8% over last quarter',
           'AI scheduling optimization reduced travel time by 15%',
           'Preventive maintenance program preventing 23% more issues',
-          'Mobile app adoption at 97% among technicians'
-        ]
+          'Mobile app adoption at 97% among technicians',
+        ],
       },
       operationalMetrics: {
         avgResponseTime: 18, // minutes
@@ -389,72 +404,77 @@ export class OracleEBSCompetitiveServiceManager {
         technicianUtilization: 82.4,
         slaCompliance: 94.2,
         firstCallResolution: 87.5,
-        repeatVisitRate: 12.3
+        repeatVisitRate: 12.3,
       },
       financialMetrics: {
         totalRevenue: 2847500,
         totalCosts: 2031250,
         profitMargin: 28.7,
         revenuePerTechnician: 113900,
-        costPerWorkOrder: 1628
+        costPerWorkOrder: 1628,
       },
-      predictiveInsights: reportType === 'PREDICTIVE_INSIGHTS' ? {
-        demandForecast: [
-          {
-            date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-            predictedVolume: 287,
-            confidence: 87
-          }
-        ],
-        resourceNeeds: [
-          'Add 2 HVAC specialists for summer peak',
-          'Increase parts inventory for high-demand components',
-          'Consider expanding service area coverage'
-        ],
-        riskFactors: [
-          'Aging technician workforce - 30% nearing retirement',
-          'Supply chain disruptions affecting parts availability',
-          'Increasing customer service expectations'
-        ],
-        opportunities: [
-          'IoT integration for predictive maintenance',
-          'Expand emergency service offerings',
-          'Implement customer self-service portal'
-        ]
-      } : undefined,
+      predictiveInsights:
+        reportType === 'PREDICTIVE_INSIGHTS'
+          ? {
+              demandForecast: [
+                {
+                  date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                  predictedVolume: 287,
+                  confidence: 87,
+                },
+              ],
+              resourceNeeds: [
+                'Add 2 HVAC specialists for summer peak',
+                'Increase parts inventory for high-demand components',
+                'Consider expanding service area coverage',
+              ],
+              riskFactors: [
+                'Aging technician workforce - 30% nearing retirement',
+                'Supply chain disruptions affecting parts availability',
+                'Increasing customer service expectations',
+              ],
+              opportunities: [
+                'IoT integration for predictive maintenance',
+                'Expand emergency service offerings',
+                'Implement customer self-service portal',
+              ],
+            }
+          : undefined,
       recommendations: [
         'Implement predictive maintenance program to reduce emergency calls',
         'Expand technician training program for multi-skill development',
         'Introduce dynamic pricing for off-peak service windows',
-        'Enhance mobile app with AR capabilities for complex repairs'
+        'Enhance mobile app with AR capabilities for complex repairs',
       ],
-      attachments: []
+      attachments: [],
     };
   }
 
   /**
    * Intelligent service recommendation engine
    */
-  async getServiceRecommendations(
-    context: {
-      customerId: string;
-      assetIds: string[];
-      serviceHistory: Array<{
-        workOrderId: string;
-        completedDate: Date;
-        serviceType: string;
-        issues: string[];
-      }>;
-      currentIssues?: string[];
-      preferredTechnician?: string;
-      timeWindow?: { start: Date; end: Date };
-      urgency?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT' | 'EMERGENCY';
-    }
-  ): Promise<{
+  async getServiceRecommendations(context: {
+    customerId: string;
+    assetIds: string[];
+    serviceHistory: Array<{
+      workOrderId: string;
+      completedDate: Date;
+      serviceType: string;
+      issues: string[];
+    }>;
+    currentIssues?: string[];
+    preferredTechnician?: string;
+    timeWindow?: { start: Date; end: Date };
+    urgency?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT' | 'EMERGENCY';
+  }): Promise<{
     recommendationId: string;
     customerId: string;
     recommendations: Array<{
-      type: 'PREVENTIVE_MAINTENANCE' | 'CORRECTIVE_ACTION' | 'UPGRADE_OPPORTUNITY' | 'TRAINING_OPPORTUNITY';
+      type:
+        | 'PREVENTIVE_MAINTENANCE'
+        | 'CORRECTIVE_ACTION'
+        | 'UPGRADE_OPPORTUNITY'
+        | 'TRAINING_OPPORTUNITY';
       priority: number; // 1-10
       title: string;
       description: string;
@@ -482,8 +502,10 @@ export class OracleEBSCompetitiveServiceManager {
     confidenceScore: number; // 1-100
   }> {
     const recommendationId = `rec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log(`Generating intelligent service recommendations for customer ${context.customerId}`);
+
+    console.log(
+      `Generating intelligent service recommendations for customer ${context.customerId}`
+    );
 
     return {
       recommendationId,
@@ -493,12 +515,13 @@ export class OracleEBSCompetitiveServiceManager {
           type: 'PREVENTIVE_MAINTENANCE',
           priority: 8,
           title: 'Quarterly HVAC System Maintenance',
-          description: 'Comprehensive preventive maintenance to avoid system failures during peak season',
+          description:
+            'Comprehensive preventive maintenance to avoid system failures during peak season',
           benefits: [
             'Prevent 85% of potential system failures',
             'Improve energy efficiency by 12%',
             'Extend equipment life by 2-3 years',
-            'Maintain warranty compliance'
+            'Maintain warranty compliance',
           ],
           estimatedCost: 450,
           estimatedDuration: 180,
@@ -506,12 +529,12 @@ export class OracleEBSCompetitiveServiceManager {
             id: 'tech_001',
             name: 'John Smith',
             skillMatch: 95,
-            availability: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+            availability: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
           },
           relatedAssets: ['asset_001', 'asset_002'],
           urgencyLevel: 'NORMAL',
           roi: 340,
-          riskReduction: 85
+          riskReduction: 85,
         },
         {
           type: 'UPGRADE_OPPORTUNITY',
@@ -522,26 +545,26 @@ export class OracleEBSCompetitiveServiceManager {
             'Remote monitoring and control',
             '15-20% energy savings',
             'Predictive maintenance alerts',
-            'Integration with building management system'
+            'Integration with building management system',
           ],
           estimatedCost: 1200,
           estimatedDuration: 240,
           relatedAssets: ['asset_001'],
           urgencyLevel: 'LOW',
           roi: 180,
-          riskReduction: 45
-        }
+          riskReduction: 45,
+        },
       ],
       alternativeOptions: [
         {
           optionId: 'alt_001',
           description: 'Defer maintenance to off-peak season',
           tradeoffs: ['Higher failure risk', 'Potential emergency costs', 'Reduced equipment life'],
-          costImpact: -450
-        }
+          costImpact: -450,
+        },
       ],
       nextBestAction: 'Schedule quarterly HVAC maintenance within next 2 weeks',
-      confidenceScore: 87
+      confidenceScore: 87,
     };
   }
 }
@@ -750,10 +773,15 @@ export interface ServiceAnalytics {
 
 // Export legacy ServiceManager for backward compatibility (implemented above)
 export class ServiceManager {
-  async createServiceRequest(request: Omit<ServiceRequest, 'id' | 'ticketNumber' | 'status' | 'escalationLevel' | 'createdDate' | 'lastUpdated'>): Promise<ServiceRequest> {
+  async createServiceRequest(
+    request: Omit<
+      ServiceRequest,
+      'id' | 'ticketNumber' | 'status' | 'escalationLevel' | 'createdDate' | 'lastUpdated'
+    >
+  ): Promise<ServiceRequest> {
     const id = `sr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const ticketNumber = `SR${Date.now().toString().slice(-6)}`;
-    
+
     return {
       ...request,
       id,
@@ -761,11 +789,15 @@ export class ServiceManager {
       status: 'NEW',
       escalationLevel: 0,
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
-  async updateServiceRequestStatus(requestId: string, status: ServiceRequest['status'], notes?: string): Promise<{
+  async updateServiceRequestStatus(
+    requestId: string,
+    status: ServiceRequest['status'],
+    notes?: string
+  ): Promise<{
     requestId: string;
     previousStatus: ServiceRequest['status'];
     newStatus: ServiceRequest['status'];
@@ -774,14 +806,14 @@ export class ServiceManager {
     notes?: string;
   }> {
     console.log(`Updating service request ${requestId} to ${status}`);
-    
+
     return {
       requestId,
       previousStatus: 'IN_PROGRESS',
       newStatus: status,
       updatedBy: 'current_user',
       updatedDate: new Date(),
-      notes
+      notes,
     };
   }
 }

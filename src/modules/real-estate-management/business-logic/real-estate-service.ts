@@ -1,7 +1,7 @@
 /**
  * Real Estate Management Service
  * Fortune 100 grade real estate portfolio management and advanced forecasting
- * 
+ *
  * Provides comprehensive real estate management with:
  * - Property portfolio management and tracking
  * - Lease management and administration
@@ -27,7 +27,7 @@ import type {
   CapitalImprovement,
   PropertyPerformance,
   LocationAnalysis,
-  RentalYield
+  RentalYield,
 } from '../types';
 
 export class RealEstateService {
@@ -63,7 +63,7 @@ export class RealEstateService {
     investmentRecommendations: string[];
   }> {
     const propertyId = this.generateId('REAL_ESTATE_PROPERTY');
-    
+
     const property: RealEstateProperty = {
       propertyId,
       propertyNumber: propertyData.propertyNumber || this.generatePropertyNumber(),
@@ -72,23 +72,23 @@ export class RealEstateService {
       propertyType: propertyData.propertyType || 'OFFICE',
       propertySubtype: propertyData.propertySubtype || '',
       assetClass: propertyData.assetClass || 'CORE',
-      
+
       location: {
         address: propertyData.location?.address || {
           street: '',
           city: '',
           state: '',
           zipCode: '',
-          country: 'USA'
+          country: 'USA',
         },
         coordinates: propertyData.location?.coordinates || { latitude: 0, longitude: 0 },
         marketArea: propertyData.location?.marketArea || '',
         submarket: propertyData.location?.submarket || '',
         zoning: propertyData.location?.zoning || '',
         accessibilityRating: propertyData.location?.accessibilityRating || 7,
-        transportationScore: propertyData.location?.transportationScore || 7
+        transportationScore: propertyData.location?.transportationScore || 7,
       },
-      
+
       physical: {
         totalArea: propertyData.physical?.totalArea || 0,
         rentableArea: propertyData.physical?.rentableArea || 0,
@@ -98,9 +98,9 @@ export class RealEstateService {
         yearBuilt: propertyData.physical?.yearBuilt || new Date().getFullYear(),
         lastRenovated: propertyData.physical?.lastRenovated,
         condition: propertyData.physical?.condition || 'GOOD',
-        certifications: propertyData.physical?.certifications || []
+        certifications: propertyData.physical?.certifications || [],
       },
-      
+
       financial: {
         purchasePrice: propertyData.financial?.purchasePrice,
         currentValue: propertyData.financial?.currentValue || 0,
@@ -110,27 +110,27 @@ export class RealEstateService {
         pricePerSquareFoot: propertyData.financial?.pricePerSquareFoot || 0,
         annualPropertyTax: propertyData.financial?.annualPropertyTax || 0,
         insurance: propertyData.financial?.insurance || 0,
-        totalCostOfOwnership: propertyData.financial?.totalCostOfOwnership || 0
+        totalCostOfOwnership: propertyData.financial?.totalCostOfOwnership || 0,
       },
-      
+
       ownership: {
         ownershipType: propertyData.ownership?.ownershipType || 'OWNED',
         acquisitionDate: propertyData.ownership?.acquisitionDate || new Date(),
         acquisitionType: propertyData.ownership?.acquisitionType || 'PURCHASE',
         ownerEntity: propertyData.ownership?.ownerEntity || '',
         percentOwned: propertyData.ownership?.percentOwned || 100,
-        jointVenturePartners: propertyData.ownership?.jointVenturePartners
+        jointVenturePartners: propertyData.ownership?.jointVenturePartners,
       },
-      
+
       operations: {
         operationalStatus: propertyData.operations?.operationalStatus || 'OPERATIONAL',
         occupancyStatus: propertyData.operations?.occupancyStatus || 'PARTIALLY_OCCUPIED',
         primaryUse: propertyData.operations?.primaryUse || '',
         operatingHours: propertyData.operations?.operatingHours || '24/7',
         parkingSpaces: propertyData.operations?.parkingSpaces || 0,
-        amenities: propertyData.operations?.amenities || []
+        amenities: propertyData.operations?.amenities || [],
       },
-      
+
       performance: {
         occupancyRate: propertyData.performance?.occupancyRate || 0,
         leasingActivity: propertyData.performance?.leasingActivity || 0,
@@ -139,21 +139,22 @@ export class RealEstateService {
         capRate: propertyData.performance?.capRate || 0,
         totalReturn: propertyData.performance?.totalReturn || 0,
         irr: propertyData.performance?.irr || 0,
-        cashOnCashReturn: propertyData.performance?.cashOnCashReturn || 0
+        cashOnCashReturn: propertyData.performance?.cashOnCashReturn || 0,
       },
-      
+
       sustainability: {
         energyEfficiencyRating: propertyData.sustainability?.energyEfficiencyRating || 'B',
         carbonFootprint: propertyData.sustainability?.carbonFootprint || 0,
-        sustainabilityCertifications: propertyData.sustainability?.sustainabilityCertifications || [],
+        sustainabilityCertifications:
+          propertyData.sustainability?.sustainabilityCertifications || [],
         greenUpgradesPlan: propertyData.sustainability?.greenUpgradesPlan,
         utilityConsumption: propertyData.sustainability?.utilityConsumption || {
           electricity: 0,
           gas: 0,
-          water: 0
-        }
+          water: 0,
+        },
       },
-      
+
       risk: {
         riskLevel: propertyData.risk?.riskLevel || 'MEDIUM',
         riskFactors: propertyData.risk?.riskFactors || [],
@@ -163,24 +164,24 @@ export class RealEstateService {
         insuranceCoverage: propertyData.risk?.insuranceCoverage || {
           propertyInsurance: 0,
           liabilityInsurance: 0,
-          businessInterruption: 0
-        }
+          businessInterruption: 0,
+        },
       },
-      
+
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: propertyData.createdBy || 'system',
-      updatedBy: propertyData.updatedBy || 'system'
+      updatedBy: propertyData.updatedBy || 'system',
     };
 
     this.properties.set(propertyId, property);
 
     // Generate initial valuation
     const initialValuation = await this.calculatePropertyValuation(property);
-    
+
     // Determine market position
     const marketPosition = await this.assessMarketPosition(property);
-    
+
     // Generate investment recommendations
     const investmentRecommendations = this.generateInvestmentRecommendations(property);
 
@@ -189,7 +190,7 @@ export class RealEstateService {
       property,
       initialValuation,
       marketPosition,
-      investmentRecommendations
+      investmentRecommendations,
     };
   }
 
@@ -204,12 +205,14 @@ export class RealEstateService {
     riskAssessment: any;
   }> {
     const portfolioId = this.generateId('PROPERTY_PORTFOLIO');
-    
+
     // Calculate portfolio metrics
     const metrics = await this.calculatePortfolioMetrics(portfolioData.properties || []);
     const geographic = await this.analyzeGeographicDiversification(portfolioData.properties || []);
-    const propertyTypes = await this.analyzePropertyTypeDiversification(portfolioData.properties || []);
-    
+    const propertyTypes = await this.analyzePropertyTypeDiversification(
+      portfolioData.properties || []
+    );
+
     const portfolio: PropertyPortfolio = {
       portfolioId,
       portfolioName: portfolioData.portfolioName || '',
@@ -228,18 +231,18 @@ export class RealEstateService {
         acquisitionPipeline: {
           targetAcquisitions: 0,
           estimatedValue: 0,
-          targetMarkets: []
+          targetMarkets: [],
         },
         dispositionPlan: {
           propertiesToSell: [],
           estimatedValue: 0,
-          targetTimeline: ''
-        }
+          targetTimeline: '',
+        },
       },
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: portfolioData.createdBy || 'system',
-      updatedBy: portfolioData.updatedBy || 'system'
+      updatedBy: portfolioData.updatedBy || 'system',
     };
 
     this.portfolios.set(portfolioId, portfolio);
@@ -254,19 +257,22 @@ export class RealEstateService {
       portfolio,
       diversificationAnalysis,
       performanceProjection,
-      riskAssessment
+      riskAssessment,
     };
   }
 
   /**
    * Advanced space optimization analysis
    */
-  async optimizeSpace(propertyId: string, objectives: {
-    targetUtilization: number;
-    costReductionTarget: number;
-    efficiencyGainTarget: number;
-    priorities: string[];
-  }): Promise<{
+  async optimizeSpace(
+    propertyId: string,
+    objectives: {
+      targetUtilization: number;
+      costReductionTarget: number;
+      efficiencyGainTarget: number;
+      priorities: string[];
+    }
+  ): Promise<{
     success: boolean;
     optimization: SpaceOptimization;
     scenarios: any[];
@@ -279,13 +285,13 @@ export class RealEstateService {
     }
 
     const optimizationId = this.generateId('SPACE_OPTIMIZATION');
-    
+
     // Analyze current state
     const currentState = await this.analyzeCurrentSpaceUtilization(property);
-    
+
     // Generate optimization scenarios
     const scenarios = await this.generateOptimizationScenarios(property, objectives);
-    
+
     const optimization: SpaceOptimization = {
       optimizationId,
       propertyId,
@@ -299,17 +305,17 @@ export class RealEstateService {
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: 'system',
-      updatedBy: 'system'
+      updatedBy: 'system',
     };
 
     this.optimizations.set(optimizationId, optimization);
 
     // Select recommended scenario
     const recommendedScenario = this.selectOptimalScenario(scenarios);
-    
+
     // Create implementation plan
     const implementationPlan = await this.createImplementationPlan(
-      scenarios.find(s => s.scenarioName === recommendedScenario)
+      scenarios.find((s) => s.scenarioName === recommendedScenario)
     );
 
     return {
@@ -317,14 +323,17 @@ export class RealEstateService {
       optimization,
       scenarios,
       recommendedScenario,
-      implementationPlan
+      implementationPlan,
     };
   }
 
   /**
    * Comprehensive market analysis and forecasting
    */
-  async performMarketAnalysis(marketArea: string, analysisType: 'COMPREHENSIVE' | 'SUPPLY_DEMAND' | 'PRICING' | 'INVESTMENT'): Promise<{
+  async performMarketAnalysis(
+    marketArea: string,
+    analysisType: 'COMPREHENSIVE' | 'SUPPLY_DEMAND' | 'PRICING' | 'INVESTMENT'
+  ): Promise<{
     success: boolean;
     analysis: MarketAnalysis;
     forecast: RealEstateForecast;
@@ -332,14 +341,14 @@ export class RealEstateService {
     risks: string[];
   }> {
     const analysisId = this.generateId('MARKET_ANALYSIS');
-    
+
     // Gather market data
     const marketData = await this.gatherMarketData(marketArea);
     const supplyData = await this.analyzeSupply(marketArea);
     const demandData = await this.analyzeDemand(marketArea);
     const pricingData = await this.analyzePricing(marketArea);
     const investmentData = await this.analyzeInvestmentActivity(marketArea);
-    
+
     const analysis: MarketAnalysis = {
       analysisId,
       marketArea,
@@ -354,14 +363,14 @@ export class RealEstateService {
       risks: await this.identifyMarketRisks(marketArea),
       opportunities: await this.identifyMarketOpportunities(marketArea),
       createdAt: new Date(),
-      createdBy: 'system'
+      createdBy: 'system',
     };
 
     this.marketAnalyses.set(analysisId, analysis);
 
     // Generate forecast
     const forecast = await this.generateMarketForecast(analysis);
-    
+
     // Extract key opportunities and risks
     const opportunities = analysis.opportunities.growthOpportunities;
     const risks = analysis.risks.marketRisks;
@@ -371,14 +380,17 @@ export class RealEstateService {
       analysis,
       forecast,
       opportunities,
-      risks
+      risks,
     };
   }
 
   /**
    * Property valuation with multiple approaches
    */
-  async performPropertyValuation(propertyId: string, valuationType: 'APPRAISAL' | 'BROKER_OPINION' | 'AUTOMATED_VALUATION' | 'INTERNAL_ASSESSMENT'): Promise<{
+  async performPropertyValuation(
+    propertyId: string,
+    valuationType: 'APPRAISAL' | 'BROKER_OPINION' | 'AUTOMATED_VALUATION' | 'INTERNAL_ASSESSMENT'
+  ): Promise<{
     success: boolean;
     valuation: PropertyValuation;
     confidenceLevel: number;
@@ -391,12 +403,12 @@ export class RealEstateService {
     }
 
     const valuationId = this.generateId('PROPERTY_VALUATION');
-    
+
     // Calculate using different approaches
     const costApproach = await this.calculateCostApproach(property);
     const incomeApproach = await this.calculateIncomeApproach(property);
     const salesComparison = await this.calculateSalesComparison(property);
-    
+
     const valuation: PropertyValuation = {
       valuationId,
       propertyId,
@@ -405,7 +417,7 @@ export class RealEstateService {
       approaches: {
         costApproach,
         incomeApproach,
-        salesComparison
+        salesComparison,
       },
       finalValuation: this.calculateFinalValuation(costApproach, incomeApproach, salesComparison),
       assumptions: await this.generateValuationAssumptions(property),
@@ -415,7 +427,7 @@ export class RealEstateService {
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: 'system',
-      updatedBy: 'system'
+      updatedBy: 'system',
     };
 
     this.valuations.set(valuationId, valuation);
@@ -423,7 +435,7 @@ export class RealEstateService {
     const confidenceLevel = valuation.confidence.overallConfidence;
     const valueRange = {
       low: valuation.finalValuation.lowEstimate,
-      high: valuation.finalValuation.highEstimate
+      high: valuation.finalValuation.highEstimate,
     };
     const recommendations = this.generateValuationRecommendations(valuation);
 
@@ -432,18 +444,21 @@ export class RealEstateService {
       valuation,
       confidenceLevel,
       valueRange,
-      recommendations
+      recommendations,
     };
   }
 
   /**
    * Generate comprehensive property performance report
    */
-  async generatePropertyPerformanceReport(propertyId: string, reportingPeriod: {
-    startDate: Date;
-    endDate: Date;
-    periodType: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
-  }): Promise<{
+  async generatePropertyPerformanceReport(
+    propertyId: string,
+    reportingPeriod: {
+      startDate: Date;
+      endDate: Date;
+      periodType: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY';
+    }
+  ): Promise<{
     success: boolean;
     performance: PropertyPerformance;
     insights: string[];
@@ -456,7 +471,7 @@ export class RealEstateService {
     }
 
     const performanceId = this.generateId('PROPERTY_PERFORMANCE');
-    
+
     const performance: PropertyPerformance = {
       performanceId,
       propertyId,
@@ -468,7 +483,7 @@ export class RealEstateService {
       kpis: await this.calculatePropertyKPIs(property, reportingPeriod),
       trends: await this.analyzePerformanceTrends(property, reportingPeriod),
       createdAt: new Date(),
-      createdBy: 'system'
+      createdBy: 'system',
     };
 
     const insights = this.generatePerformanceInsights(performance);
@@ -480,7 +495,7 @@ export class RealEstateService {
       performance,
       insights,
       actionItems,
-      benchmarkComparison
+      benchmarkComparison,
     };
   }
 
@@ -498,7 +513,7 @@ export class RealEstateService {
     recommendedTerms: any;
   }> {
     const leaseId = this.generateId('LEASE_AGREEMENT');
-    
+
     const lease: LeaseAgreement = {
       leaseId,
       propertyId: leaseData.propertyId || '',
@@ -514,8 +529,8 @@ export class RealEstateService {
           primaryContact: '',
           email: '',
           phone: '',
-          address: ''
-        }
+          address: '',
+        },
       },
       terms: leaseData.terms || {
         leaseType: 'GROSS',
@@ -523,7 +538,7 @@ export class RealEstateService {
         leaseEndDate: new Date(),
         leaseTerm: 12,
         renewalOptions: [],
-        earlyTerminationClause: undefined
+        earlyTerminationClause: undefined,
       },
       space: leaseData.space || {
         leasedArea: 0,
@@ -532,7 +547,7 @@ export class RealEstateService {
         parkingSpaces: 0,
         storageSpace: 0,
         exclusiveUseAreas: [],
-        sharedAreas: []
+        sharedAreas: [],
       },
       rent: leaseData.rent || {
         baseRent: 0,
@@ -540,7 +555,7 @@ export class RealEstateService {
         rentEscalation: {
           escalationType: 'PERCENTAGE',
           escalationRate: 3,
-          escalationFrequency: 'ANNUAL'
+          escalationFrequency: 'ANNUAL',
         },
         additionalRents: {
           operatingExpenses: 0,
@@ -548,17 +563,17 @@ export class RealEstateService {
           insurance: 0,
           utilities: 0,
           maintenance: 0,
-          commonAreaMaintenance: 0
+          commonAreaMaintenance: 0,
         },
         securityDeposit: 0,
-        keyMoney: 0
+        keyMoney: 0,
       },
       payment: leaseData.payment || {
         paymentFrequency: 'MONTHLY',
         paymentDueDate: 1,
         lateFeePercentage: 5,
         gracePeriodDays: 5,
-        paymentMethod: ['CHECK', 'ACH']
+        paymentMethod: ['CHECK', 'ACH'],
       },
       responsibilities: leaseData.responsibilities || {
         landlordResponsibilities: [],
@@ -568,8 +583,8 @@ export class RealEstateService {
         insuranceRequirements: {
           generalLiability: 1000000,
           propertyInsurance: 0,
-          businessInterruption: 0
-        }
+          businessInterruption: 0,
+        },
       },
       clauses: leaseData.clauses || {
         useRestrictions: [],
@@ -577,11 +592,11 @@ export class RealEstateService {
         improvements: {
           tenantImprovementsAllowance: 0,
           approvalRequired: true,
-          ownershipOfImprovements: 'LANDLORD'
+          ownershipOfImprovements: 'LANDLORD',
         },
         rightOfFirstRefusal: false,
         exclusivityClause: '',
-        coTenancyRequirements: []
+        coTenancyRequirements: [],
       },
       status: {
         leaseStatus: 'DRAFT',
@@ -590,30 +605,30 @@ export class RealEstateService {
         occupancyDate: undefined,
         expirationDate: leaseData.terms?.leaseEndDate || new Date(),
         noticeToVacateReceived: undefined,
-        renewalNoticeDate: undefined
+        renewalNoticeDate: undefined,
       },
       performance: {
         paymentHistory: {
           onTimePayments: 0,
           latePayments: 0,
           defaults: 0,
-          currentBalance: 0
+          currentBalance: 0,
         },
         tenantSatisfactionScore: undefined,
         maintenanceRequests: 0,
-        renewalProbability: 70
+        renewalProbability: 70,
       },
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: leaseData.createdBy || 'system',
-      updatedBy: leaseData.updatedBy || 'system'
+      updatedBy: leaseData.updatedBy || 'system',
     };
 
     this.leases.set(leaseId, lease);
 
     // Perform risk assessment
     const riskAssessment = await this.assessLeaseRisk(lease);
-    
+
     // Generate recommended terms
     const recommendedTerms = await this.generateRecommendedLeaseTerms(lease);
 
@@ -621,7 +636,7 @@ export class RealEstateService {
       success: true,
       lease,
       riskAssessment,
-      recommendedTerms
+      recommendedTerms,
     };
   }
 
@@ -645,10 +660,15 @@ export class RealEstateService {
     // Simplified valuation calculation
     const baseValue = property.physical.totalArea * 150; // $150 per sq ft
     const locationMultiplier = property.location.accessibilityRating / 10;
-    const conditionMultiplier = property.physical.condition === 'EXCELLENT' ? 1.2 : 
-                               property.physical.condition === 'GOOD' ? 1.0 : 
-                               property.physical.condition === 'FAIR' ? 0.9 : 0.8;
-    
+    const conditionMultiplier =
+      property.physical.condition === 'EXCELLENT'
+        ? 1.2
+        : property.physical.condition === 'GOOD'
+          ? 1.0
+          : property.physical.condition === 'FAIR'
+            ? 0.9
+            : 0.8;
+
     return Math.round(baseValue * locationMultiplier * conditionMultiplier);
   }
 
@@ -664,41 +684,49 @@ export class RealEstateService {
 
   private generateInvestmentRecommendations(property: RealEstateProperty): string[] {
     const recommendations: string[] = [];
-    
+
     if (property.physical.condition === 'FAIR' || property.physical.condition === 'POOR') {
       recommendations.push('Consider capital improvements to enhance property value');
     }
-    
+
     if (property.performance.occupancyRate < 85) {
       recommendations.push('Focus on leasing strategy to improve occupancy rates');
     }
-    
-    if (property.sustainability.energyEfficiencyRating === 'C' || property.sustainability.energyEfficiencyRating === 'D') {
-      recommendations.push('Implement energy efficiency upgrades for cost savings and sustainability');
+
+    if (
+      property.sustainability.energyEfficiencyRating === 'C' ||
+      property.sustainability.energyEfficiencyRating === 'D'
+    ) {
+      recommendations.push(
+        'Implement energy efficiency upgrades for cost savings and sustainability'
+      );
     }
-    
+
     recommendations.push('Conduct quarterly performance reviews');
     recommendations.push('Monitor market trends for strategic positioning');
-    
+
     return recommendations;
   }
 
   private async calculatePortfolioMetrics(properties: any[]): Promise<any> {
     const totalValue = properties.reduce((sum, prop) => sum + prop.currentValue, 0);
     const totalArea = properties.reduce((sum, prop) => sum + prop.totalArea, 0);
-    
+
     return {
       totalValue,
       totalArea,
-      averageOccupancyRate: properties.length > 0 ? 
-        properties.reduce((sum, prop) => sum + (prop.occupancyRate || 85), 0) / properties.length : 0,
+      averageOccupancyRate:
+        properties.length > 0
+          ? properties.reduce((sum, prop) => sum + (prop.occupancyRate || 85), 0) /
+            properties.length
+          : 0,
       totalAnnualIncome: totalValue * 0.08, // 8% yield assumption
       netOperatingIncome: totalValue * 0.06, // 6% NOI assumption
       portfolioYield: 8.0,
       averageCapRate: 6.5,
       totalReturn: 10.2,
       riskAdjustedReturn: 8.7,
-      sharpeRatio: 1.3
+      sharpeRatio: 1.3,
     };
   }
 
@@ -708,14 +736,14 @@ export class RealEstateService {
         { region: 'West Coast', propertyCount: 5, totalValue: 50000000, percentage: 35 },
         { region: 'East Coast', propertyCount: 4, totalValue: 40000000, percentage: 28 },
         { region: 'Midwest', propertyCount: 3, totalValue: 30000000, percentage: 21 },
-        { region: 'South', propertyCount: 2, totalValue: 23000000, percentage: 16 }
+        { region: 'South', propertyCount: 2, totalValue: 23000000, percentage: 16 },
       ],
       cities: [
         { city: 'San Francisco', propertyCount: 2, totalValue: 30000000, percentage: 21 },
         { city: 'New York', propertyCount: 2, totalValue: 25000000, percentage: 17 },
-        { city: 'Chicago', propertyCount: 2, totalValue: 20000000, percentage: 14 }
+        { city: 'Chicago', propertyCount: 2, totalValue: 20000000, percentage: 14 },
       ],
-      concentrationRisk: 25 // percentage
+      concentrationRisk: 25, // percentage
     };
   }
 
@@ -728,7 +756,7 @@ export class RealEstateService {
         totalArea: 500000,
         avgOccupancyRate: 87,
         avgCapRate: 6.2,
-        percentage: 55
+        percentage: 55,
       },
       {
         propertyType: 'WAREHOUSE',
@@ -737,7 +765,7 @@ export class RealEstateService {
         totalArea: 800000,
         avgOccupancyRate: 92,
         avgCapRate: 7.1,
-        percentage: 28
+        percentage: 28,
       },
       {
         propertyType: 'RETAIL',
@@ -746,24 +774,49 @@ export class RealEstateService {
         totalArea: 150000,
         avgOccupancyRate: 83,
         avgCapRate: 6.8,
-        percentage: 17
-      }
+        percentage: 17,
+      },
     ];
   }
 
   private async analyzePortfolioPerformance(properties: any[]): Promise<any> {
     return {
       bestPerformers: [
-        { propertyId: 'prop1', propertyName: 'Downtown Office Tower', totalReturn: 12.5, capRate: 6.8 },
-        { propertyId: 'prop2', propertyName: 'Tech Campus Building', totalReturn: 11.2, capRate: 6.5 }
+        {
+          propertyId: 'prop1',
+          propertyName: 'Downtown Office Tower',
+          totalReturn: 12.5,
+          capRate: 6.8,
+        },
+        {
+          propertyId: 'prop2',
+          propertyName: 'Tech Campus Building',
+          totalReturn: 11.2,
+          capRate: 6.5,
+        },
       ],
       worstPerformers: [
-        { propertyId: 'prop3', propertyName: 'Suburban Retail Center', totalReturn: 7.1, capRate: 5.9 }
+        {
+          propertyId: 'prop3',
+          propertyName: 'Suburban Retail Center',
+          totalReturn: 7.1,
+          capRate: 5.9,
+        },
       ],
       benchmarkComparison: [
-        { benchmark: 'NCREIF Index', portfolioReturn: 10.2, benchmarkReturn: 8.7, outperformance: 1.5 },
-        { benchmark: 'S&P 500', portfolioReturn: 10.2, benchmarkReturn: 12.1, outperformance: -1.9 }
-      ]
+        {
+          benchmark: 'NCREIF Index',
+          portfolioReturn: 10.2,
+          benchmarkReturn: 8.7,
+          outperformance: 1.5,
+        },
+        {
+          benchmark: 'S&P 500',
+          portfolioReturn: 10.2,
+          benchmarkReturn: 12.1,
+          outperformance: -1.9,
+        },
+      ],
     };
   }
 
@@ -777,10 +830,10 @@ export class RealEstateService {
       tenantConcentration: {
         topTenants: [
           { tenantName: 'Tech Corp Inc', percentOfIncome: 12, creditRating: 'AA-' },
-          { tenantName: 'Financial Services Ltd', percentOfIncome: 8, creditRating: 'A+' }
+          { tenantName: 'Financial Services Ltd', percentOfIncome: 8, creditRating: 'A+' },
         ],
-        concentrationIndex: 15
-      }
+        concentrationIndex: 15,
+      },
     };
   }
 
@@ -790,9 +843,9 @@ export class RealEstateService {
       recommendations: [
         'Consider adding more industrial properties to portfolio',
         'Increase geographic diversification in secondary markets',
-        'Reduce concentration in single tenant properties'
+        'Reduce concentration in single tenant properties',
       ],
-      riskReduction: 18 // percentage risk reduction through diversification
+      riskReduction: 18, // percentage risk reduction through diversification
     };
   }
 
@@ -802,13 +855,13 @@ export class RealEstateService {
         totalReturn: 9.8,
         incomeReturn: 6.2,
         appreciationReturn: 3.6,
-        portfolioValue: portfolio.metrics.totalValue * 1.48 // 48% growth over 5 years
+        portfolioValue: portfolio.metrics.totalValue * 1.48, // 48% growth over 5 years
       },
       scenarios: [
         { scenario: 'Base Case', probability: 60, totalReturn: 9.8 },
         { scenario: 'Optimistic', probability: 20, totalReturn: 12.1 },
-        { scenario: 'Pessimistic', probability: 20, totalReturn: 7.2 }
-      ]
+        { scenario: 'Pessimistic', probability: 20, totalReturn: 7.2 },
+      ],
     };
   }
 
@@ -818,18 +871,18 @@ export class RealEstateService {
       riskFactors: [
         'Interest rate sensitivity',
         'Market concentration in office properties',
-        'Geographic concentration risk'
+        'Geographic concentration risk',
       ],
       riskMitigation: [
         'Diversify across property types',
         'Implement hedging strategies for interest rate exposure',
-        'Regular stress testing of portfolio'
-      ]
+        'Regular stress testing of portfolio',
+      ],
     };
   }
 
   // Implement remaining helper methods with similar comprehensive logic...
-  
+
   private async analyzeCurrentSpaceUtilization(property: RealEstateProperty): Promise<any> {
     return {
       totalArea: property.physical.totalArea,
@@ -838,11 +891,14 @@ export class RealEstateService {
       wastedSpace: property.physical.totalArea * 0.15,
       inefficiencies: ['Underutilized meeting rooms', 'Oversized common areas'],
       costPerSquareFoot: 45,
-      occupancyRate: property.performance.occupancyRate
+      occupancyRate: property.performance.occupancyRate,
     };
   }
 
-  private async generateOptimizationScenarios(property: RealEstateProperty, objectives: any): Promise<any[]> {
+  private async generateOptimizationScenarios(
+    property: RealEstateProperty,
+    objectives: any
+  ): Promise<any[]> {
     return [
       {
         scenarioName: 'Efficiency Optimization',
@@ -853,27 +909,27 @@ export class RealEstateService {
             currentUse: 'Traditional meeting rooms',
             proposedUse: 'Flexible meeting spaces',
             areaChange: -500,
-            investmentRequired: 25000
-          }
+            investmentRequired: 25000,
+          },
         ],
         expectedBenefits: {
           utilizationImprovement: 15,
           costSavings: 50000,
           efficiencyGain: 12,
-          occupancyIncrease: 8
+          occupancyIncrease: 8,
         },
         implementation: {
           timeline: 8,
           cost: 75000,
           disruption: 'LOW',
-          riskLevel: 'LOW'
+          riskLevel: 'LOW',
         },
         roi: {
           paybackPeriod: 18,
           netPresentValue: 125000,
-          internalRateOfReturn: 22
-        }
-      }
+          internalRateOfReturn: 22,
+        },
+      },
     ];
   }
 
@@ -882,20 +938,20 @@ export class RealEstateService {
       immediate: ['Implement hot-desking for remote workers'],
       shortTerm: ['Reconfigure meeting spaces for better utilization'],
       longTerm: ['Consider floor plan redesign for maximum efficiency'],
-      considerForFuture: ['Expansion into adjacent spaces if available']
+      considerForFuture: ['Expansion into adjacent spaces if available'],
     };
   }
 
   private selectOptimalScenario(scenarios: any[]): string {
     // Select scenario with best ROI
-    return scenarios.reduce((best, current) => 
+    return scenarios.reduce((best, current) =>
       current.roi.internalRateOfReturn > best.roi.internalRateOfReturn ? current : best
     ).scenarioName;
   }
 
   private async createImplementationPlan(scenario: any): Promise<any> {
     if (!scenario) return null;
-    
+
     return {
       selectedScenario: scenario.scenarioName,
       phases: [
@@ -906,17 +962,17 @@ export class RealEstateService {
           endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           cost: scenario.implementation.cost * 0.2,
           disruption: 'MINIMAL',
-          deliverables: ['Detailed design plans', 'Vendor selection', 'Timeline finalization']
-        }
+          deliverables: ['Detailed design plans', 'Vendor selection', 'Timeline finalization'],
+        },
       ],
       totalCost: scenario.implementation.cost,
       totalTimeline: scenario.implementation.timeline,
-      riskMitigation: ['Phased implementation to minimize disruption', 'Regular progress reviews']
+      riskMitigation: ['Phased implementation to minimize disruption', 'Regular progress reviews'],
     };
   }
 
   // Add more helper methods for market analysis, forecasting, etc.
-  
+
   private async gatherMarketData(marketArea: string): Promise<any> {
     return {
       marketName: marketArea,
@@ -926,7 +982,11 @@ export class RealEstateService {
       unemploymentRate: 4.1,
       medianIncome: 75000,
       majorEmployers: ['Tech Giants', 'Financial Services', 'Healthcare Systems'],
-      economicDrivers: ['Technology sector growth', 'Infrastructure investment', 'Population growth']
+      economicDrivers: [
+        'Technology sector growth',
+        'Infrastructure investment',
+        'Population growth',
+      ],
     };
   }
 
@@ -939,10 +999,10 @@ export class RealEstateService {
         underConstruction: 1000000,
         plannedConstruction: 1500000,
         deliveriesThisYear: 800000,
-        deliveriesNextYear: 1200000
+        deliveriesNextYear: 1200000,
       },
       absorptionRate: 2000000, // 2M sq ft per year
-      months_of_supply: 15
+      months_of_supply: 15,
     };
   }
 
@@ -954,35 +1014,35 @@ export class RealEstateService {
       demandForecast: {
         nextYear: 2100000,
         twoYears: 2300000,
-        fiveYears: 2800000
+        fiveYears: 2800000,
       },
       demandByTenantType: [
         { tenantType: 'Technology', demandVolume: 800000, growthRate: 8.5 },
         { tenantType: 'Financial Services', demandVolume: 500000, growthRate: 3.2 },
-        { tenantType: 'Healthcare', demandVolume: 400000, growthRate: 6.1 }
-      ]
+        { tenantType: 'Healthcare', demandVolume: 400000, growthRate: 6.1 },
+      ],
     };
   }
 
   private async analyzePricing(marketArea: string): Promise<any> {
     return {
-      averageRent: 42.50,
+      averageRent: 42.5,
       rentRange: {
         class_a: { min: 50, max: 65, average: 57.5 },
         class_b: { min: 35, max: 48, average: 41.5 },
-        class_c: { min: 25, max: 38, average: 31.5 }
+        class_c: { min: 25, max: 38, average: 31.5 },
       },
       rentGrowthRate: 4.2,
       rentForecast: {
         nextYear: 44.25,
-        twoYears: 46.10,
-        fiveYears: 52.80
+        twoYears: 46.1,
+        fiveYears: 52.8,
       },
       concessions: {
         freeRentMonths: 3,
         tenantImprovements: 25,
-        otherConcessions: ['Parking allowance', 'Moving allowance']
-      }
+        otherConcessions: ['Parking allowance', 'Moving allowance'],
+      },
     };
   }
 
@@ -993,7 +1053,7 @@ export class RealEstateService {
       averagePricePerSquareFoot: 185,
       transactionVolume: 2500000000, // $2.5B annually
       investmentActivityLevel: 'HIGH' as const,
-      majorInvestors: ['Pension Funds', 'REITs', 'Private Equity', 'Insurance Companies']
+      majorInvestors: ['Pension Funds', 'REITs', 'Private Equity', 'Insurance Companies'],
     };
   }
 

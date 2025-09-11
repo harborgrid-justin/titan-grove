@@ -3,82 +3,82 @@
  * Enhanced Oracle EBS Competitor Interface
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Titan Grove Fortune 100 Enterprise UI Loading...');
-    
-    // Initialize demo components
-    initializeDemoKPIs();
-    initializeDemoTable();
-    
-    // Add interactivity
-    setupNavigation();
-    setupAnimations();
-    
-    console.log('✅ Fortune 100 Enterprise UI Ready');
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('🚀 Titan Grove Fortune 100 Enterprise UI Loading...');
+
+  // Initialize demo components
+  initializeDemoKPIs();
+  initializeDemoTable();
+
+  // Add interactivity
+  setupNavigation();
+  setupAnimations();
+
+  console.log('✅ Fortune 100 Enterprise UI Ready');
 });
 
 function initializeDemoKPIs() {
-    console.log('📊 Initializing Fortune 100 KPIs...');
-    
-    // Revenue KPI
-    const revenueContainer = document.getElementById('revenue-kpi');
-    if (revenueContainer) {
-        createDemoKPI(revenueContainer, {
-            title: 'Enterprise Revenue',
-            value: 4850000,
-            format: 'currency',
-            trend: 'up',
-            trendValue: 12.5,
-            target: 5000000,
-            status: 'success'
-        });
-    }
+  console.log('📊 Initializing Fortune 100 KPIs...');
 
-    // Profit KPI  
-    const profitContainer = document.getElementById('profit-kpi');
-    if (profitContainer) {
-        createDemoKPI(profitContainer, {
-            title: 'Operating Margin',
-            value: 22.4,
-            format: 'percentage',
-            trend: 'up',
-            trendValue: 3.7,
-            target: 25,
-            status: 'warning'
-        });
-    }
+  // Revenue KPI
+  const revenueContainer = document.getElementById('revenue-kpi');
+  if (revenueContainer) {
+    createDemoKPI(revenueContainer, {
+      title: 'Enterprise Revenue',
+      value: 4850000,
+      format: 'currency',
+      trend: 'up',
+      trendValue: 12.5,
+      target: 5000000,
+      status: 'success',
+    });
+  }
 
-    // Customers KPI
-    const customersContainer = document.getElementById('customers-kpi');
-    if (customersContainer) {
-        createDemoKPI(customersContainer, {
-            title: 'Fortune 500 Clients',
-            value: 347,
-            format: 'number',
-            trend: 'up',
-            trendValue: 8.2,
-            target: 400,
-            status: 'info'
-        });
-    }
+  // Profit KPI
+  const profitContainer = document.getElementById('profit-kpi');
+  if (profitContainer) {
+    createDemoKPI(profitContainer, {
+      title: 'Operating Margin',
+      value: 22.4,
+      format: 'percentage',
+      trend: 'up',
+      trendValue: 3.7,
+      target: 25,
+      status: 'warning',
+    });
+  }
 
-    // Projects KPI
-    const projectsContainer = document.getElementById('projects-kpi');
-    if (projectsContainer) {
-        createDemoKPI(projectsContainer, {
-            title: 'Manufacturing Sites',
-            value: 127,
-            format: 'number',
-            trend: 'up',
-            trendValue: 4.8,
-            target: 150,
-            status: 'success'
-        });
-    }
+  // Customers KPI
+  const customersContainer = document.getElementById('customers-kpi');
+  if (customersContainer) {
+    createDemoKPI(customersContainer, {
+      title: 'Fortune 500 Clients',
+      value: 347,
+      format: 'number',
+      trend: 'up',
+      trendValue: 8.2,
+      target: 400,
+      status: 'info',
+    });
+  }
+
+  // Projects KPI
+  const projectsContainer = document.getElementById('projects-kpi');
+  if (projectsContainer) {
+    createDemoKPI(projectsContainer, {
+      title: 'Manufacturing Sites',
+      value: 127,
+      format: 'number',
+      trend: 'up',
+      trendValue: 4.8,
+      target: 150,
+      status: 'success',
+    });
+  }
 }
 
 function createDemoKPI(container, data) {
-    container.innerHTML = `
+  container.innerHTML = `
         <div class="titan-kpi-card">
             <div class="titan-kpi-header">
                 <h3 class="titan-kpi-title">${data.title}</h3>
@@ -116,27 +116,27 @@ function createDemoKPI(container, data) {
 }
 
 function formatValue(value, format) {
-    switch (format) {
-        case 'currency':
-            return new Intl.NumberFormat('en-US', { 
-                style: 'currency', 
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        case 'percentage':
-            return `${value}%`;
-        default:
-            return new Intl.NumberFormat('en-US').format(value);
-    }
+  switch (format) {
+    case 'currency':
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(value);
+    case 'percentage':
+      return `${value}%`;
+    default:
+      return new Intl.NumberFormat('en-US').format(value);
+  }
 }
 
 function initializeDemoTable() {
-    console.log('📋 Initializing Fortune 100 Data Tables...');
-    
-    const tableContainer = document.getElementById('data-table-widget');
-    if (tableContainer) {
-        tableContainer.innerHTML = `
+  console.log('📋 Initializing Fortune 100 Data Tables...');
+
+  const tableContainer = document.getElementById('data-table-widget');
+  if (tableContainer) {
+    tableContainer.innerHTML = `
             <div class="titan-table-container">
                 <div class="titan-table-header">
                     <div class="titan-table-actions">
@@ -227,113 +227,113 @@ function initializeDemoTable() {
                 </div>
             </div>
         `;
-    }
+  }
 }
 
 function setupNavigation() {
-    console.log('🧭 Setting up Fortune 100 Navigation...');
-    
-    const navItems = document.querySelectorAll('.titan-nav-item');
-    const heroSection = document.querySelector('.titan-hero');
-    const featureGrid = document.querySelector('.titan-feature-grid');
-    const comparison = document.querySelector('.titan-comparison');
-    const dashboardView = document.getElementById('dashboard-view');
+  console.log('🧭 Setting up Fortune 100 Navigation...');
 
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Remove active class from all items
-            navItems.forEach(nav => nav.classList.remove('active'));
-            
-            // Add active class to clicked item
-            this.classList.add('active');
-            
-            if (this.getAttribute('href') === '#dashboard') {
-                // Show main landing view
-                if (heroSection) heroSection.style.display = 'block';
-                if (featureGrid) featureGrid.style.display = 'grid';
-                if (comparison) comparison.style.display = 'block';
-                if (dashboardView) dashboardView.style.display = 'none';
-            } else {
-                // Show dashboard view for other modules
-                if (heroSection) heroSection.style.display = 'none';
-                if (featureGrid) featureGrid.style.display = 'none';
-                if (comparison) comparison.style.display = 'none';
-                if (dashboardView) dashboardView.style.display = 'flex';
-            }
-        });
+  const navItems = document.querySelectorAll('.titan-nav-item');
+  const heroSection = document.querySelector('.titan-hero');
+  const featureGrid = document.querySelector('.titan-feature-grid');
+  const comparison = document.querySelector('.titan-comparison');
+  const dashboardView = document.getElementById('dashboard-view');
+
+  navItems.forEach((item) => {
+    item.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // Remove active class from all items
+      navItems.forEach((nav) => nav.classList.remove('active'));
+
+      // Add active class to clicked item
+      this.classList.add('active');
+
+      if (this.getAttribute('href') === '#dashboard') {
+        // Show main landing view
+        if (heroSection) heroSection.style.display = 'block';
+        if (featureGrid) featureGrid.style.display = 'grid';
+        if (comparison) comparison.style.display = 'block';
+        if (dashboardView) dashboardView.style.display = 'none';
+      } else {
+        // Show dashboard view for other modules
+        if (heroSection) heroSection.style.display = 'none';
+        if (featureGrid) featureGrid.style.display = 'none';
+        if (comparison) comparison.style.display = 'none';
+        if (dashboardView) dashboardView.style.display = 'flex';
+      }
     });
+  });
 
-    // Enterprise Dashboard button
-    const demoButton = document.querySelector('.titan-hero .titan-button');
-    if (demoButton) {
-        demoButton.addEventListener('click', function() {
-            console.log('🎯 Entering Fortune 100 Enterprise Dashboard...');
-            
-            if (heroSection) heroSection.style.display = 'none';
-            if (featureGrid) featureGrid.style.display = 'none';
-            if (comparison) comparison.style.display = 'none';
-            if (dashboardView) dashboardView.style.display = 'flex';
-            
-            // Update nav
-            navItems.forEach(nav => nav.classList.remove('active'));
-            const executiveNav = document.querySelector('[href="#dashboard"]');
-            if (executiveNav) executiveNav.classList.add('active');
-        });
-    }
+  // Enterprise Dashboard button
+  const demoButton = document.querySelector('.titan-hero .titan-button');
+  if (demoButton) {
+    demoButton.addEventListener('click', function () {
+      console.log('🎯 Entering Fortune 100 Enterprise Dashboard...');
+
+      if (heroSection) heroSection.style.display = 'none';
+      if (featureGrid) featureGrid.style.display = 'none';
+      if (comparison) comparison.style.display = 'none';
+      if (dashboardView) dashboardView.style.display = 'flex';
+
+      // Update nav
+      navItems.forEach((nav) => nav.classList.remove('active'));
+      const executiveNav = document.querySelector('[href="#dashboard"]');
+      if (executiveNav) executiveNav.classList.add('active');
+    });
+  }
 }
 
 function setupAnimations() {
-    console.log('✨ Setting up Fortune 100 Animations...');
-    
-    // Add intersection observer for animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+  console.log('✨ Setting up Fortune 100 Animations...');
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animationPlayState = 'running';
-            }
-        });
-    }, observerOptions);
+  // Add intersection observer for animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px',
+  };
 
-    document.querySelectorAll('.fade-in, .slide-in-left').forEach(el => {
-        el.style.animationPlayState = 'paused';
-        observer.observe(el);
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
     });
+  }, observerOptions);
+
+  document.querySelectorAll('.fade-in, .slide-in-left').forEach((el) => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
 }
 
 // Add some interactivity to demonstrate real-time updates
 setInterval(() => {
-    const kpiValues = document.querySelectorAll('.titan-kpi-value');
-    kpiValues.forEach(value => {
-        // Add subtle pulsing animation to show "live" data
-        value.style.animation = 'titan-pulse 2s ease-in-out';
-        setTimeout(() => {
-            value.style.animation = '';
-        }, 2000);
-    });
+  const kpiValues = document.querySelectorAll('.titan-kpi-value');
+  kpiValues.forEach((value) => {
+    // Add subtle pulsing animation to show "live" data
+    value.style.animation = 'titan-pulse 2s ease-in-out';
+    setTimeout(() => {
+      value.style.animation = '';
+    }, 2000);
+  });
 }, 30000); // Every 30 seconds
 
 // Real-time data simulation for Fortune 100 enterprise
 function simulateRealTimeUpdates() {
-    console.log('📡 Starting Fortune 100 Real-time Updates...');
-    
-    setInterval(() => {
-        // Simulate manufacturing data updates
-        const statusIndicators = document.querySelectorAll('.titan-status-indicator');
-        statusIndicators.forEach(indicator => {
-            // Add subtle glow effect to show live updates
-            indicator.style.boxShadow = '0 0 8px rgba(37, 99, 235, 0.3)';
-            setTimeout(() => {
-                indicator.style.boxShadow = '';
-            }, 1000);
-        });
-    }, 15000); // Every 15 seconds
+  console.log('📡 Starting Fortune 100 Real-time Updates...');
+
+  setInterval(() => {
+    // Simulate manufacturing data updates
+    const statusIndicators = document.querySelectorAll('.titan-status-indicator');
+    statusIndicators.forEach((indicator) => {
+      // Add subtle glow effect to show live updates
+      indicator.style.boxShadow = '0 0 8px rgba(37, 99, 235, 0.3)';
+      setTimeout(() => {
+        indicator.style.boxShadow = '';
+      }, 1000);
+    });
+  }, 15000); // Every 15 seconds
 }
 
 // Initialize real-time updates

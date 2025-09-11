@@ -13,7 +13,7 @@ import {
   ServiceResponse,
   PaginationRequest,
   PaginationResponse,
-  AlertSeverity
+  AlertSeverity,
 } from '../../../../core/error-handling';
 
 // Re-export common types for easier importing
@@ -27,7 +27,7 @@ export {
   ServiceResponse,
   PaginationRequest,
   PaginationResponse,
-  AlertSeverity
+  AlertSeverity,
 } from '../../../../core/error-handling';
 
 export abstract class BaseComplianceService extends BaseService {
@@ -55,7 +55,7 @@ export abstract class BaseComplianceService extends BaseService {
           success: true as const,
           data: checks,
           timestamp: new Date(),
-          correlationId: this.correlationId
+          correlationId: this.correlationId,
         };
       } catch (error) {
         this.logger?.error(`Compliance validation failed for ${entityType}:${entityId}`, error);
@@ -64,45 +64,47 @@ export abstract class BaseComplianceService extends BaseService {
           error: {
             code: 'COMPLIANCE_VALIDATION_FAILED',
             message: `Failed to validate compliance: ${(error as Error).message}`,
-            details: { entityId, entityType, rulesCount: rules.length }
+            details: { entityId, entityType, rulesCount: rules.length },
           },
           timestamp: new Date(),
-          correlationId: this.correlationId
+          correlationId: this.correlationId,
         };
       }
     }
 
     // Use error boundary if available
-    return await this.errorBoundary.execute(
-      async () => {
-        const checks: ComplianceCheck[] = [];
-        for (const rule of rules) {
-          const check = await this.performRuleCheck(entityId, entityType, rule);
-          checks.push(check);
-        }
-        return {
-          success: true as const,
-          data: checks,
+    return await this.errorBoundary
+      .execute(
+        async () => {
+          const checks: ComplianceCheck[] = [];
+          for (const rule of rules) {
+            const check = await this.performRuleCheck(entityId, entityType, rule);
+            checks.push(check);
+          }
+          return {
+            success: true as const,
+            data: checks,
+            timestamp: new Date(),
+            correlationId: this.correlationId,
+          };
+        },
+        {
+          service: this.constructor.name,
+          operation: 'validateCompliance',
           timestamp: new Date(),
-          correlationId: this.correlationId
-        };
-      },
-      {
-        service: this.constructor.name,
-        operation: 'validateCompliance',
+          metadata: { entityId, entityType, rulesCount: rules.length },
+        }
+      )
+      .catch((error) => ({
+        success: false,
+        error: {
+          code: 'COMPLIANCE_VALIDATION_FAILED',
+          message: `Failed to validate compliance: ${error.message}`,
+          details: { entityId, entityType, rulesCount: rules.length },
+        },
         timestamp: new Date(),
-        metadata: { entityId, entityType, rulesCount: rules.length }
-      }
-    ).catch(error => ({
-      success: false,
-      error: {
-        code: 'COMPLIANCE_VALIDATION_FAILED',
-        message: `Failed to validate compliance: ${error.message}`,
-        details: { entityId, entityType, rulesCount: rules.length }
-      },
-      timestamp: new Date(),
-      correlationId: this.correlationId
-    }));
+        correlationId: this.correlationId,
+      }));
   }
 
   protected async performRuleCheck(
@@ -111,11 +113,11 @@ export abstract class BaseComplianceService extends BaseService {
     rule: ComplianceRule
   ): Promise<ComplianceCheck> {
     const checkId = `${rule.id}_${entityId}_${Date.now()}`;
-    
+
     try {
       // Get entity data for validation
       const entityData = await this.getEntityData(entityId, entityType);
-      
+
       // Perform validation against rule criteria
       const validationResults = await this.validateAgainstCriteria(
         entityData,
@@ -142,9 +144,8 @@ export abstract class BaseComplianceService extends BaseService {
         createdAt: new Date(),
         updatedAt: new Date(),
         createdBy: this.serviceName,
-        version: 1
+        version: 1,
       } as ComplianceCheck;
-
     } catch (error) {
       // Return a failed compliance check
       return {
@@ -155,16 +156,18 @@ export abstract class BaseComplianceService extends BaseService {
         status: ComplianceStatus.NON_COMPLIANT,
         checkDate: new Date(),
         checkedBy: this.serviceName,
-        findings: [{
-          findingType: 'VIOLATION',
-          severity: AlertSeverity.HIGH,
-          description: `Error during compliance check: ${(error as Error).message}`,
-          requiresAction: true
-        }],
+        findings: [
+          {
+            findingType: 'VIOLATION',
+            severity: AlertSeverity.HIGH,
+            description: `Error during compliance check: ${(error as Error).message}`,
+            requiresAction: true,
+          },
+        ],
         createdAt: new Date(),
         updatedAt: new Date(),
         createdBy: this.serviceName,
-        version: 1
+        version: 1,
       } as ComplianceCheck;
     }
   }
@@ -181,20 +184,20 @@ export abstract class BaseComplianceService extends BaseService {
   }> {
     const violations: any[] = [];
     const evidence: any[] = [];
-    
+
     for (const criterion of criteria) {
       try {
         const result = await this.evaluateCriterion(entityData, criterion);
-        
+
         if (!result.isValid && criterion.isRequired) {
           violations.push({
             findingType: 'VIOLATION',
             severity: AlertSeverity.MEDIUM,
             description: criterion.errorMessage || `Validation failed for ${criterion.field}`,
-            requiresAction: true
+            requiresAction: true,
           });
         }
-        
+
         if (result.evidence) {
           evidence.push(result.evidence);
         }
@@ -203,7 +206,7 @@ export abstract class BaseComplianceService extends BaseService {
           findingType: 'VIOLATION',
           severity: AlertSeverity.HIGH,
           description: `Validation error for ${criterion.field}: ${(error as Error).message}`,
-          requiresAction: true
+          requiresAction: true,
         });
       }
     }
@@ -211,7 +214,7 @@ export abstract class BaseComplianceService extends BaseService {
     return {
       isCompliant: violations.length === 0,
       violations,
-      evidence
+      evidence,
     };
   }
 
@@ -223,7 +226,7 @@ export abstract class BaseComplianceService extends BaseService {
     evidence?: any;
   }> {
     const fieldValue = this.getNestedValue(entityData, criterion.field);
-    
+
     switch (criterion.operator) {
       case 'EQUALS':
         return { isValid: fieldValue === criterion.value };
@@ -255,17 +258,14 @@ export abstract class BaseComplianceService extends BaseService {
     }
 
     for (const exemption of rule.exemptions) {
-      const exemptionResult = await this.validateAgainstCriteria(
-        entityData,
-        exemption.conditions
-      );
-      
+      const exemptionResult = await this.validateAgainstCriteria(entityData, exemption.conditions);
+
       if (exemptionResult.isCompliant) {
         return {
           exemptionId: `exemption_${rule.id}_${Date.now()}`,
           justification: exemption.justification,
           approvedBy: 'system_auto_exemption',
-          approvalDate: new Date()
+          approvalDate: new Date(),
         };
       }
     }
@@ -273,16 +273,13 @@ export abstract class BaseComplianceService extends BaseService {
     return undefined;
   }
 
-  protected determineComplianceStatus(
-    validationResults: any,
-    exemption: any
-  ): ComplianceStatus {
+  protected determineComplianceStatus(validationResults: any, exemption: any): ComplianceStatus {
     if (exemption) {
       return ComplianceStatus.WAIVED;
     }
-    
-    return validationResults.isCompliant 
-      ? ComplianceStatus.COMPLIANT 
+
+    return validationResults.isCompliant
+      ? ComplianceStatus.COMPLIANT
       : ComplianceStatus.NON_COMPLIANT;
   }
 
@@ -317,7 +314,7 @@ export abstract class BaseComplianceService extends BaseService {
           success: true as const,
           data: rules,
           timestamp: new Date(),
-          correlationId: this.correlationId
+          correlationId: this.correlationId,
         };
       } catch (error) {
         return {
@@ -325,41 +322,43 @@ export abstract class BaseComplianceService extends BaseService {
           error: {
             code: 'COMPLIANCE_RULES_LOAD_FAILED',
             message: `Failed to load compliance rules: ${(error as Error).message}`,
-            details: { entityType, regulationType }
+            details: { entityType, regulationType },
           },
           timestamp: new Date(),
-          correlationId: this.correlationId
+          correlationId: this.correlationId,
         };
       }
     }
 
     // Use error boundary if available
-    return await this.errorBoundary.execute(
-      async () => {
-        const rules = await this.loadComplianceRules(entityType, regulationType);
-        return {
-          success: true as const,
-          data: rules,
+    return await this.errorBoundary
+      .execute(
+        async () => {
+          const rules = await this.loadComplianceRules(entityType, regulationType);
+          return {
+            success: true as const,
+            data: rules,
+            timestamp: new Date(),
+            correlationId: this.correlationId,
+          };
+        },
+        {
+          service: this.constructor.name,
+          operation: 'getComplianceRules',
           timestamp: new Date(),
-          correlationId: this.correlationId
-        };
-      },
-      {
-        service: this.constructor.name,
-        operation: 'getComplianceRules',
+          metadata: { entityType, regulationType },
+        }
+      )
+      .catch((error) => ({
+        success: false,
+        error: {
+          code: 'COMPLIANCE_RULES_LOAD_FAILED',
+          message: `Failed to load compliance rules: ${error.message}`,
+          details: { entityType, regulationType },
+        },
         timestamp: new Date(),
-        metadata: { entityType, regulationType }
-      }
-    ).catch(error => ({
-      success: false,
-      error: {
-        code: 'COMPLIANCE_RULES_LOAD_FAILED',
-        message: `Failed to load compliance rules: ${error.message}`,
-        details: { entityType, regulationType }
-      },
-      timestamp: new Date(),
-      correlationId: this.correlationId
-    }));
+        correlationId: this.correlationId,
+      }));
   }
 
   protected abstract loadComplianceRules(

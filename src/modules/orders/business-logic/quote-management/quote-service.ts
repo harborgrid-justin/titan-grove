@@ -3,31 +3,27 @@
  * Comprehensive sales quote lifecycle management with Oracle EBS competitive features
  */
 
-import type { 
-  Quote, 
-  QuoteLineItem, 
-  QuoteApproval, 
+import type {
+  Quote,
+  QuoteLineItem,
+  QuoteApproval,
   QuoteWorkflow,
   CompetitorInfo,
   AlternativeItem,
   PricingRule,
   ProductConfiguration,
   OrderAddress,
-  QuoteMetrics
+  QuoteMetrics,
 } from '../../types';
 
-import {
-  QuoteStatus,
-  Priority
-} from '../../types';
+import { QuoteStatus, Priority } from '../../types';
 
 import { QuoteManagementConfig } from '../../../../types/business-config';
 import { BusinessMetricsUtils } from '../../../../shared/constants';
 
 export class QuoteService {
-  
   constructor(private config: QuoteManagementConfig) {}
-  
+
   // ================================
   // CORE QUOTE MANAGEMENT
   // ================================
@@ -60,36 +56,43 @@ export class QuoteService {
     estimatedCloseDate?: Date;
     customFields?: Record<string, any>;
   }): Promise<Quote> {
-    
     const quoteId = `quote_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const quoteNumber = `QT${Date.now().toString().slice(-8)}`;
-    
+
     const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + (quoteData.expirationDays || this.config.defaultExpirationDays));
-    
+    expirationDate.setDate(
+      expirationDate.getDate() + (quoteData.expirationDays || this.config.defaultExpirationDays)
+    );
+
     const validUntil = new Date(expirationDate);
-    
+
     // Calculate line item totals
     const processedLineItems: QuoteLineItem[] = quoteData.lineItems.map((item, index) => {
-      const extendedPrice = (item.unitPrice * item.quantity) - item.discountAmount;
+      const extendedPrice = item.unitPrice * item.quantity - item.discountAmount;
       const margin = item.unitPrice - (item.costOfGoodsSold || 0);
       const marginPercent = item.costOfGoodsSold ? (margin / item.unitPrice) * 100 : 0;
-      
+
       return {
         ...item,
         id: `qli_${Date.now()}_${index}`,
         lineNumber: index + 1,
         extendedPrice,
         margin,
-        marginPercent
+        marginPercent,
       };
     });
 
     // Calculate quote totals
     const subtotal = processedLineItems.reduce((sum, item) => sum + item.extendedPrice, 0);
-    const discountAmount = quoteData.lineItems.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
+    const discountAmount = quoteData.lineItems.reduce(
+      (sum, item) => sum + (item.discountAmount || 0),
+      0
+    );
     const taxAmount = this.calculateTax(subtotal - discountAmount, quoteData.taxExempt || false);
-    const shippingAmount = await this.calculateShipping(processedLineItems, quoteData.shippingAddress);
+    const shippingAmount = await this.calculateShipping(
+      processedLineItems,
+      quoteData.shippingAddress
+    );
     const totalAmount = subtotal - discountAmount + taxAmount + shippingAmount;
 
     const quote: Quote = {
@@ -136,7 +139,7 @@ export class QuoteService {
       createdDate: new Date(),
       modifiedDate: new Date(),
       createdBy: quoteData.salesRepId,
-      modifiedBy: quoteData.salesRepId
+      modifiedBy: quoteData.salesRepId,
     };
 
     // Start quote workflow if needed
@@ -150,11 +153,7 @@ export class QuoteService {
   /**
    * Update existing quote
    */
-  async updateQuote(
-    quoteId: string, 
-    updates: Partial<Quote>,
-    updatedBy: string
-  ): Promise<Quote> {
+  async updateQuote(quoteId: string, updates: Partial<Quote>, updatedBy: string): Promise<Quote> {
     const existingQuote = await this.getQuoteById(quoteId);
     if (!existingQuote) {
       throw new Error(`Quote with ID ${quoteId} not found`);
@@ -166,16 +165,25 @@ export class QuoteService {
 
     // Increment revision number if line items changed
     let revisionNumber = existingQuote.revisionNumber;
-    if (updates.lineItems && JSON.stringify(updates.lineItems) !== JSON.stringify(existingQuote.lineItems)) {
+    if (
+      updates.lineItems &&
+      JSON.stringify(updates.lineItems) !== JSON.stringify(existingQuote.lineItems)
+    ) {
       revisionNumber += 1;
     }
 
     // Recalculate totals if line items changed
     if (updates.lineItems) {
       const subtotal = updates.lineItems.reduce((sum, item) => sum + item.extendedPrice, 0);
-      const discountAmount = updates.lineItems.reduce((sum, item) => sum + (item.discountAmount || 0), 0);
+      const discountAmount = updates.lineItems.reduce(
+        (sum, item) => sum + (item.discountAmount || 0),
+        0
+      );
       const taxAmount = this.calculateTax(subtotal - discountAmount, existingQuote.taxExempt);
-      const shippingAmount = await this.calculateShipping(updates.lineItems, existingQuote.shippingAddress);
+      const shippingAmount = await this.calculateShipping(
+        updates.lineItems,
+        existingQuote.shippingAddress
+      );
       const totalAmount = subtotal - discountAmount + taxAmount + shippingAmount;
 
       updates.subtotal = Math.round(subtotal * 100) / 100;
@@ -190,7 +198,7 @@ export class QuoteService {
       ...updates,
       revisionNumber,
       modifiedDate: new Date(),
-      modifiedBy: updatedBy
+      modifiedBy: updatedBy,
     };
 
     return updatedQuote;
@@ -216,7 +224,7 @@ export class QuoteService {
       ...quote,
       status: QuoteStatus.SUBMITTED,
       modifiedDate: new Date(),
-      modifiedBy: submittedBy
+      modifiedBy: submittedBy,
     };
 
     // Initiate approval workflow if required
@@ -230,39 +238,33 @@ export class QuoteService {
   /**
    * Approve quote
    */
-  async approveQuote(
-    quoteId: string, 
-    approverId: string, 
-    comments?: string
-  ): Promise<Quote> {
+  async approveQuote(quoteId: string, approverId: string, comments?: string): Promise<Quote> {
     const quote = await this.getQuoteById(quoteId);
     if (!quote) {
       throw new Error(`Quote with ID ${quoteId} not found`);
     }
 
     // Update approval record
-    const approvals = quote.approvals.map(approval => 
+    const approvals = quote.approvals.map((approval) =>
       approval.approverId === approverId && approval.status === 'PENDING'
         ? {
             ...approval,
             status: 'APPROVED' as const,
             responseDate: new Date(),
-            comments
+            comments,
           }
         : approval
     );
 
     // Check if all required approvals are complete
-    const allApproved = approvals
-      .filter(a => a.isRequired)
-      .every(a => a.status === 'APPROVED');
+    const allApproved = approvals.filter((a) => a.isRequired).every((a) => a.status === 'APPROVED');
 
     const updatedQuote: Quote = {
       ...quote,
       approvals,
       status: allApproved ? QuoteStatus.APPROVED : quote.status,
       modifiedDate: new Date(),
-      modifiedBy: approverId
+      modifiedBy: approverId,
     };
 
     return updatedQuote;
@@ -272,7 +274,7 @@ export class QuoteService {
    * Convert approved quote to sales order
    */
   async convertQuoteToOrder(
-    quoteId: string, 
+    quoteId: string,
     convertedBy: string,
     orderOptions?: {
       requestedDate?: Date;
@@ -286,7 +288,9 @@ export class QuoteService {
     }
 
     if (quote.status !== QuoteStatus.APPROVED) {
-      throw new Error(`Only approved quotes can be converted to orders. Current status: ${quote.status}`);
+      throw new Error(
+        `Only approved quotes can be converted to orders. Current status: ${quote.status}`
+      );
     }
 
     // Create sales order from quote
@@ -303,7 +307,7 @@ export class QuoteService {
       convertedOrderId: orderId,
       conversionDate: new Date(),
       modifiedDate: new Date(),
-      modifiedBy: convertedBy
+      modifiedBy: convertedBy,
     };
 
     return { orderId, orderNumber };
@@ -326,11 +330,11 @@ export class QuoteService {
   }): Promise<QuoteMetrics> {
     // Implementation would query database based on criteria
     // This is a mock implementation using centralized configuration
-    
+
     // Base mock data - would typically come from database
     const totalQuotes = 156;
     const totalQuoteValue = 2450000;
-    
+
     // Generate metrics using centralized business configuration and utilities
     const mockMetrics = BusinessMetricsUtils.generateMockQuoteMetrics({
       totalQuotes,
@@ -364,7 +368,7 @@ export class QuoteService {
   ): Promise<AlternativeItem[]> {
     // Implementation would analyze product catalog and generate alternatives
     // This is a mock implementation
-    
+
     return [
       {
         id: `alt_${Date.now()}_1`,
@@ -373,28 +377,25 @@ export class QuoteService {
         itemCode: 'ALT-WIDGET-001',
         itemDescription: 'Alternative Premium Widget',
         quantity: 1,
-        unitPrice: 120.00,
-        extendedPrice: 120.00,
+        unitPrice: 120.0,
+        extendedPrice: 120.0,
         reason: 'UPGRADE',
         availability: 'AVAILABLE',
         leadTime: 5,
-        notes: 'Higher performance alternative with extended warranty'
-      }
+        notes: 'Higher performance alternative with extended warranty',
+      },
     ];
   }
 
   /**
    * Apply pricing rules to quote
    */
-  async applyPricingRules(
-    quote: Quote,
-    pricingRules: PricingRule[]
-  ): Promise<Quote> {
+  async applyPricingRules(quote: Quote, pricingRules: PricingRule[]): Promise<Quote> {
     // Implementation would apply complex pricing logic
     // This is a placeholder for the pricing engine integration
-    
+
     let updatedQuote = { ...quote };
-    
+
     for (const rule of pricingRules) {
       if (this.evaluatePricingConditions(quote, rule.conditions)) {
         updatedQuote = this.applyPricingActions(updatedQuote, rule.actions);
@@ -413,7 +414,10 @@ export class QuoteService {
     return amount * this.config.standardTaxRate;
   }
 
-  private async calculateShipping(lineItems: QuoteLineItem[], shippingAddress: OrderAddress): Promise<number> {
+  private async calculateShipping(
+    lineItems: QuoteLineItem[],
+    shippingAddress: OrderAddress
+  ): Promise<number> {
     // Implementation would integrate with shipping calculator
     const totalWeight = lineItems.length * this.config.mockWeightPerItem;
     return totalWeight * this.config.shippingRatePerPound;
@@ -431,8 +435,12 @@ export class QuoteService {
 
   private requiresApproval(quote: Quote): boolean {
     // Implementation would check approval rules
-    return quote.totalAmount > this.config.approvalThresholdAmount || 
-           quote.lineItems.some(item => item.discountPercent > this.config.maxDiscountPercentWithoutApproval);
+    return (
+      quote.totalAmount > this.config.approvalThresholdAmount ||
+      quote.lineItems.some(
+        (item) => item.discountPercent > this.config.maxDiscountPercentWithoutApproval
+      )
+    );
   }
 
   private async initiateQuoteApprovalWorkflow(quoteId: string): Promise<QuoteWorkflow> {
@@ -445,7 +453,7 @@ export class QuoteService {
       currentStep: 'MANAGER_APPROVAL',
       assignedTo: 'sales_manager_001',
       startDate: new Date(),
-      steps: []
+      steps: [],
     };
   }
 
@@ -453,11 +461,11 @@ export class QuoteService {
     if (!quote.lineItems.length) {
       throw new Error('Quote must have at least one line item');
     }
-    
+
     if (quote.totalAmount <= 0) {
       throw new Error('Quote total must be greater than zero');
     }
-    
+
     if (new Date() > quote.validUntil) {
       throw new Error('Quote has expired');
     }

@@ -66,7 +66,15 @@ export interface UserPermissions {
 
 export interface DashboardWidget {
   id: string;
-  type: 'TIMECARD' | 'BENEFITS' | 'PAYROLL' | 'TASKS' | 'ANNOUNCEMENTS' | 'CALENDAR' | 'TEAM' | 'LEARNING';
+  type:
+    | 'TIMECARD'
+    | 'BENEFITS'
+    | 'PAYROLL'
+    | 'TASKS'
+    | 'ANNOUNCEMENTS'
+    | 'CALENDAR'
+    | 'TEAM'
+    | 'LEARNING';
   title: string;
   position: { row: number; column: number };
   size: { width: number; height: number };
@@ -227,17 +235,16 @@ export interface PendingChange {
 }
 
 export class SelfServiceHRService {
-
   /**
    * Personalized Interface Management
    */
   async getPersonalizedInterface(userId: string): Promise<PersonalizedInterface> {
     console.log(`Getting personalized interface for user ${userId}`);
-    
+
     const userRole = await this.getUserRole(userId);
     const preferences = await this.getUserPreferences(userId);
     const permissions = await this.getUserPermissions(userId, userRole);
-    
+
     return {
       userId,
       role: userRole,
@@ -247,19 +254,22 @@ export class SelfServiceHRService {
       preferences,
       permissions,
       dashboardWidgets: await this.getPersonalizedWidgets(userId, userRole),
-      quickActions: await this.getPersonalizedQuickActions(userId, userRole, permissions)
+      quickActions: await this.getPersonalizedQuickActions(userId, userRole, permissions),
     };
   }
 
-  async updateUserPreferences(userId: string, preferences: Partial<UserPreferences>): Promise<void> {
+  async updateUserPreferences(
+    userId: string,
+    preferences: Partial<UserPreferences>
+  ): Promise<void> {
     console.log(`Updating user preferences for ${userId}`, preferences);
-    
+
     // Validate preferences
     await this.validatePreferences(preferences);
-    
+
     // Update user preferences
     await this.saveUserPreferences(userId, preferences);
-    
+
     // Refresh interface configuration
     await this.refreshUserInterface(userId);
   }
@@ -269,7 +279,7 @@ export class SelfServiceHRService {
    */
   async getEmployeeSelfServiceProfile(employeeId: string): Promise<EmployeeSelfServiceProfile> {
     console.log(`Getting self-service profile for employee ${employeeId}`);
-    
+
     return {
       employeeId,
       personalInformation: await this.getPersonalInformation(employeeId),
@@ -280,7 +290,7 @@ export class SelfServiceHRService {
       performanceGoals: await this.getPerformanceGoals(employeeId),
       learningProgress: await this.getLearningProgress(employeeId),
       directReports: await this.getDirectReports(employeeId),
-      managerInfo: await this.getManagerInfo(employeeId)
+      managerInfo: await this.getManagerInfo(employeeId),
     };
   }
 
@@ -294,15 +304,15 @@ export class SelfServiceHRService {
     errors: string[];
   }> {
     console.log(`Updating personal information for employee ${employeeId}`, updates);
-    
+
     const pendingApprovals: PendingChange[] = [];
     const immediateUpdates: string[] = [];
     const errors: string[] = [];
-    
+
     for (const [field, value] of Object.entries(updates)) {
       try {
         const requiresApproval = await this.checkIfFieldRequiresApproval(field);
-        
+
         if (requiresApproval) {
           pendingApprovals.push({
             field,
@@ -310,9 +320,9 @@ export class SelfServiceHRService {
             requestedValue: value,
             requestDate: new Date(),
             status: 'PENDING',
-            requiresApproval: true
+            requiresApproval: true,
           });
-          
+
           // Submit for approval
           await this.submitPersonalInfoChangeForApproval(employeeId, field, value);
         } else {
@@ -320,15 +330,17 @@ export class SelfServiceHRService {
           immediateUpdates.push(field);
         }
       } catch (error) {
-        errors.push(`Failed to update ${field}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        errors.push(
+          `Failed to update ${field}: ${error instanceof Error ? error.message : 'Unknown error'}`
+        );
       }
     }
-    
+
     return {
       success: errors.length === 0,
       pendingApprovals,
       immediateUpdates,
-      errors
+      errors,
     };
   }
 
@@ -344,17 +356,17 @@ export class SelfServiceHRService {
     restrictedActions: Array<{ action: string; reason: string }>;
   }> {
     console.log(`Getting available benefit actions for employee ${employeeId}`);
-    
+
     const currentEnrollmentPeriod = await this.getCurrentEnrollmentPeriod();
     const qualifyingEvents = await this.getQualifyingLifeEvents(employeeId);
-    
+
     return {
       canEnroll: currentEnrollmentPeriod !== null || qualifyingEvents.length > 0,
       canModify: currentEnrollmentPeriod !== null,
       canAddDependents: true,
       openEnrollmentPeriod: currentEnrollmentPeriod || undefined,
       qualifyingLifeEvents: qualifyingEvents,
-      restrictedActions: []
+      restrictedActions: [],
     };
   }
 
@@ -379,16 +391,16 @@ export class SelfServiceHRService {
     estimatedCostChange: number;
   }> {
     const confirmationId = `benefit_change_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Processing benefit enrollment changes for employee ${employeeId}`);
-    
+
     let processedChanges = 0;
     let pendingApprovals = 0;
     let estimatedCostChange = 0;
-    
+
     for (const change of changes.enrollments) {
       const requiresApproval = await this.benefitChangeRequiresApproval(change);
-      
+
       if (requiresApproval) {
         await this.submitBenefitChangeForApproval(employeeId, change);
         pendingApprovals++;
@@ -396,16 +408,16 @@ export class SelfServiceHRService {
         await this.processBenefitChangeImmediately(employeeId, change);
         processedChanges++;
       }
-      
+
       estimatedCostChange += await this.calculateCostImpact(employeeId, change);
     }
-    
+
     return {
       confirmationId,
       processedChanges,
       pendingApprovals,
       effectiveDate: changes.enrollments[0]?.effectiveDate || new Date(),
-      estimatedCostChange
+      estimatedCostChange,
     };
   }
 
@@ -421,14 +433,14 @@ export class SelfServiceHRService {
     quickTimeActions: QuickTimeAction[];
   }> {
     console.log(`Getting timecard self-service for employee ${employeeId}`);
-    
+
     return {
       currentTimecard: await this.getCurrentTimecard(employeeId),
       recentEntries: await this.getRecentTimeEntries(employeeId, 7), // Last 7 days
       pendingApprovals: await this.getPendingTimeApprovals(employeeId),
       timeOffRequests: await this.getTimeOffRequests(employeeId),
       scheduleInformation: await this.getScheduleInformation(employeeId),
-      quickTimeActions: await this.getQuickTimeActions(employeeId)
+      quickTimeActions: await this.getQuickTimeActions(employeeId),
     };
   }
 
@@ -450,21 +462,23 @@ export class SelfServiceHRService {
     conflicts: string[];
   }> {
     const requestId = `timeoff_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Submitting time off request ${requestId} for employee ${employeeId}`);
-    
+
     // Check available balance
     const balance = await this.getTimeOffBalance(employeeId, request.type);
     if (balance.currentBalance < request.hoursRequested) {
-      throw new Error(`Insufficient ${request.type} balance. Available: ${balance.currentBalance} hours`);
+      throw new Error(
+        `Insufficient ${request.type} balance. Available: ${balance.currentBalance} hours`
+      );
     }
-    
+
     // Check for scheduling conflicts
     const conflicts = await this.checkSchedulingConflicts(employeeId, request);
-    
+
     // Determine if approval is required
     const requiresApproval = await this.timeOffRequiresApproval(employeeId, request);
-    
+
     if (!requiresApproval && conflicts.length === 0) {
       await this.autoApproveTimeOff(requestId);
       return {
@@ -472,7 +486,7 @@ export class SelfServiceHRService {
         autoApproved: true,
         requiresManagerApproval: false,
         availableBalance: balance.currentBalance - request.hoursRequested,
-        conflicts
+        conflicts,
       };
     } else {
       await this.submitTimeOffForApproval(requestId, employeeId, request);
@@ -482,7 +496,7 @@ export class SelfServiceHRService {
         requiresManagerApproval: true,
         availableBalance: balance.currentBalance,
         estimatedApprovalDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days
-        conflicts
+        conflicts,
       };
     }
   }
@@ -499,16 +513,16 @@ export class SelfServiceHRService {
     actionItems: ActionItem[];
   }> {
     console.log(`Getting manager dashboard for ${managerId}`);
-    
+
     const directReports = await this.getDirectReports(managerId);
-    
+
     return {
       teamOverview: await this.generateTeamOverview(directReports),
       pendingApprovals: await this.getPendingApprovalsForManager(managerId),
       teamPerformance: await this.getTeamPerformanceMetrics(managerId),
       budgetInformation: await this.getBudgetInformation(managerId),
       upcomingEvents: await this.getUpcomingEvents(managerId),
-      actionItems: await this.getManagerActionItems(managerId)
+      actionItems: await this.getManagerActionItems(managerId),
     };
   }
 
@@ -524,30 +538,33 @@ export class SelfServiceHRService {
     followUpRequired: boolean;
   }> {
     console.log(`Processing manager approval ${approvalId} by ${managerId}: ${decision}`);
-    
+
     const approval = await this.getApprovalRequest(approvalId);
-    
+
     // Validate manager authority
     await this.validateManagerAuthority(managerId, approval);
-    
+
     // Process the decision
     const result = await this.processApprovalDecision(approval, decision, comments);
-    
+
     // Send notifications
     const notifications = await this.sendApprovalNotifications(approval, decision, managerId);
-    
+
     return {
       processed: true,
       nextApprover: result.nextApprover,
       notificationsSent: notifications,
-      followUpRequired: decision === 'REQUEST_MORE_INFO'
+      followUpRequired: decision === 'REQUEST_MORE_INFO',
     };
   }
 
   /**
    * Multi-language and Localization
    */
-  async getLocalizedContent(userId: string, contentKey: string): Promise<{
+  async getLocalizedContent(
+    userId: string,
+    contentKey: string
+  ): Promise<{
     content: string;
     language: string;
     region: string;
@@ -555,31 +572,45 @@ export class SelfServiceHRService {
   }> {
     const userPrefs = await this.getUserPreferences(userId);
     const language = userPrefs.language || 'en-US';
-    
+
     console.log(`Getting localized content for ${contentKey} in ${language}`);
-    
+
     // Implementation would fetch localized content
     return {
       content: await this.getTranslatedContent(contentKey, language),
       language,
       region: userPrefs.timezone || 'UTC',
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
   }
 
-  async getSupportedLanguages(): Promise<Array<{
-    code: string;
-    name: string;
-    nativeName: string;
-    coverage: number; // Percentage of content translated
-    isSupported: boolean;
-  }>> {
+  async getSupportedLanguages(): Promise<
+    Array<{
+      code: string;
+      name: string;
+      nativeName: string;
+      coverage: number; // Percentage of content translated
+      isSupported: boolean;
+    }>
+  > {
     return [
-      { code: 'en-US', name: 'English (US)', nativeName: 'English', coverage: 100, isSupported: true },
+      {
+        code: 'en-US',
+        name: 'English (US)',
+        nativeName: 'English',
+        coverage: 100,
+        isSupported: true,
+      },
       { code: 'es-ES', name: 'Spanish', nativeName: 'Español', coverage: 95, isSupported: true },
       { code: 'fr-FR', name: 'French', nativeName: 'Français', coverage: 90, isSupported: true },
       { code: 'de-DE', name: 'German', nativeName: 'Deutsch', coverage: 85, isSupported: true },
-      { code: 'zh-CN', name: 'Chinese (Simplified)', nativeName: '中文', coverage: 80, isSupported: true }
+      {
+        code: 'zh-CN',
+        name: 'Chinese (Simplified)',
+        nativeName: '中文',
+        coverage: 80,
+        isSupported: true,
+      },
     ];
   }
 
@@ -603,31 +634,34 @@ export class SelfServiceHRService {
         push: true,
         digestFrequency: 'DAILY',
         categories: {
-          'payroll': true,
-          'benefits': true,
-          'timeoff': true,
-          'performance': false
-        }
+          payroll: true,
+          benefits: true,
+          timeoff: true,
+          performance: false,
+        },
       },
       privacy: {
         profileVisibility: 'TEAM_ONLY',
         directoryListing: true,
         skillsVisible: true,
-        contactInfoVisible: false
+        contactInfoVisible: false,
       },
       accessibility: {
         screenReader: false,
         highContrast: false,
         largeText: false,
         keyboardNavigation: true,
-        colorBlindAssist: false
-      }
+        colorBlindAssist: false,
+      },
     };
   }
 
-  private async getUserPermissions(userId: string, role: PersonalizedInterface['role']): Promise<UserPermissions> {
+  private async getUserPermissions(
+    userId: string,
+    role: PersonalizedInterface['role']
+  ): Promise<UserPermissions> {
     console.log(`Getting user permissions for ${userId}, role: ${role}`);
-    
+
     const basePermissions = {
       canViewPayStubs: true,
       canUpdatePersonalInfo: true,
@@ -636,13 +670,16 @@ export class SelfServiceHRService {
       canViewTeamInfo: role === 'MANAGER' || role === 'HR_ADMIN',
       canApproveRequests: role === 'MANAGER' || role === 'HR_ADMIN',
       canAccessReports: role === 'MANAGER' || role === 'HR_ADMIN' || role === 'EXECUTIVE',
-      customPermissions: {}
+      customPermissions: {},
     };
-    
+
     return basePermissions;
   }
 
-  private async getPersonalizedWidgets(userId: string, role: PersonalizedInterface['role']): Promise<DashboardWidget[]> {
+  private async getPersonalizedWidgets(
+    userId: string,
+    role: PersonalizedInterface['role']
+  ): Promise<DashboardWidget[]> {
     const widgets: DashboardWidget[] = [
       {
         id: 'timecard',
@@ -651,7 +688,7 @@ export class SelfServiceHRService {
         position: { row: 1, column: 1 },
         size: { width: 2, height: 1 },
         config: { showWeekly: true },
-        isVisible: true
+        isVisible: true,
       },
       {
         id: 'benefits_summary',
@@ -660,10 +697,10 @@ export class SelfServiceHRService {
         position: { row: 1, column: 3 },
         size: { width: 2, height: 1 },
         config: { showCosts: true },
-        isVisible: true
-      }
+        isVisible: true,
+      },
     ];
-    
+
     if (role === 'MANAGER') {
       widgets.push({
         id: 'team_overview',
@@ -672,14 +709,18 @@ export class SelfServiceHRService {
         position: { row: 2, column: 1 },
         size: { width: 4, height: 2 },
         config: { showPerformance: true },
-        isVisible: true
+        isVisible: true,
       });
     }
-    
+
     return widgets;
   }
 
-  private async getPersonalizedQuickActions(userId: string, role: PersonalizedInterface['role'], permissions: UserPermissions): Promise<QuickAction[]> {
+  private async getPersonalizedQuickActions(
+    userId: string,
+    role: PersonalizedInterface['role'],
+    permissions: UserPermissions
+  ): Promise<QuickAction[]> {
     const actions: QuickAction[] = [
       {
         id: 'clock_in_out',
@@ -688,7 +729,7 @@ export class SelfServiceHRService {
         icon: 'clock',
         category: 'TIME',
         isVisible: true,
-        order: 1
+        order: 1,
       },
       {
         id: 'request_time_off',
@@ -697,10 +738,10 @@ export class SelfServiceHRService {
         icon: 'calendar',
         category: 'TIME',
         isVisible: permissions.canRequestTimeOff,
-        order: 2
-      }
+        order: 2,
+      },
     ];
-    
+
     if (permissions.canEnrollInBenefits) {
       actions.push({
         id: 'enroll_benefits',
@@ -709,10 +750,10 @@ export class SelfServiceHRService {
         icon: 'heart',
         category: 'BENEFITS',
         isVisible: true,
-        order: 3
+        order: 3,
       });
     }
-    
+
     return actions;
   }
 
@@ -721,7 +762,10 @@ export class SelfServiceHRService {
     console.log('Validating user preferences', preferences);
   }
 
-  private async saveUserPreferences(userId: string, preferences: Partial<UserPreferences>): Promise<void> {
+  private async saveUserPreferences(
+    userId: string,
+    preferences: Partial<UserPreferences>
+  ): Promise<void> {
     console.log(`Saving preferences for user ${userId}`);
   }
 
@@ -771,11 +815,21 @@ export class SelfServiceHRService {
     return null;
   }
 
-  private async submitPersonalInfoChangeForApproval(employeeId: string, field: string, value: any): Promise<void> {
-    console.log(`Submitting personal info change for approval: ${field} for employee ${employeeId}`);
+  private async submitPersonalInfoChangeForApproval(
+    employeeId: string,
+    field: string,
+    value: any
+  ): Promise<void> {
+    console.log(
+      `Submitting personal info change for approval: ${field} for employee ${employeeId}`
+    );
   }
 
-  private async updateFieldImmediately(employeeId: string, field: string, value: any): Promise<void> {
+  private async updateFieldImmediately(
+    employeeId: string,
+    field: string,
+    value: any
+  ): Promise<void> {
     console.log(`Updating field ${field} immediately for employee ${employeeId}`);
   }
 
@@ -830,7 +884,10 @@ export class SelfServiceHRService {
     return [];
   }
 
-  private async getTimeOffBalance(employeeId: string, type: string): Promise<{ currentBalance: number }> {
+  private async getTimeOffBalance(
+    employeeId: string,
+    type: string
+  ): Promise<{ currentBalance: number }> {
     return { currentBalance: 120 };
   }
 
@@ -846,7 +903,11 @@ export class SelfServiceHRService {
     console.log(`Auto-approving time off request ${requestId}`);
   }
 
-  private async submitTimeOffForApproval(requestId: string, employeeId: string, request: any): Promise<void> {
+  private async submitTimeOffForApproval(
+    requestId: string,
+    employeeId: string,
+    request: any
+  ): Promise<void> {
     console.log(`Submitting time off request ${requestId} for approval`);
   }
 
@@ -856,7 +917,7 @@ export class SelfServiceHRService {
       presentToday: Math.floor(directReports.length * 0.9),
       onTimeOff: Math.floor(directReports.length * 0.1),
       pendingApprovals: 3,
-      teamPerformanceAverage: 4.1
+      teamPerformanceAverage: 4.1,
     };
   }
 
@@ -869,7 +930,7 @@ export class SelfServiceHRService {
       averageRating: 4.1,
       objectiveCompletionRate: 0.85,
       skillDevelopmentProgress: 0.78,
-      retentionRisk: { high: 1, medium: 3, low: 8 }
+      retentionRisk: { high: 1, medium: 3, low: 8 },
     };
   }
 
@@ -878,7 +939,7 @@ export class SelfServiceHRService {
       allocatedBudget: 500000,
       spentBudget: 380000,
       remainingBudget: 120000,
-      utilizationRate: 0.76
+      utilizationRate: 0.76,
     };
   }
 
@@ -898,15 +959,25 @@ export class SelfServiceHRService {
     console.log(`Validating manager authority for ${managerId}`);
   }
 
-  private async processApprovalDecision(approval: any, decision: string, comments?: string): Promise<any> {
+  private async processApprovalDecision(
+    approval: any,
+    decision: string,
+    comments?: string
+  ): Promise<any> {
     return { nextApprover: undefined };
   }
 
-  private async sendApprovalNotifications(approval: any, decision: string, managerId: string): Promise<string[]> {
+  private async sendApprovalNotifications(
+    approval: any,
+    decision: string,
+    managerId: string
+  ): Promise<string[]> {
     return ['employee_notified', 'hr_notified'];
   }
 
-  private async getEmergencyContactsForSelfService(employeeId: string): Promise<EmergencyContact[]> {
+  private async getEmergencyContactsForSelfService(
+    employeeId: string
+  ): Promise<EmergencyContact[]> {
     console.log(`Getting emergency contacts for employee ${employeeId}`);
     return [];
   }

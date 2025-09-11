@@ -6,14 +6,14 @@
 import express from 'express';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
-import { 
+import {
   evaluateBusinessRule,
   standardizeDataRecord,
   generateDataQualityReport,
   calculateCompoundInterest,
   calculateNetPresentValue,
   validateEmail,
-  validatePhoneNumber
+  validatePhoneNumber,
 } from '../native';
 
 import { ProductionIntegrationService } from '../src/services/production-integration-service';
@@ -42,7 +42,7 @@ app.get('/api/health', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Health check failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -53,9 +53,9 @@ app.get('/api/health', async (req, res) => {
 app.post('/api/business-rules/evaluate', (req, res) => {
   try {
     const { rule, context } = req.body;
-    
+
     const result = evaluateBusinessRule(rule, context);
-    
+
     res.json({
       success: true,
       data: {
@@ -66,16 +66,16 @@ app.post('/api/business-rules/evaluate', (req, res) => {
             'Complex condition evaluation',
             'Flexible action execution',
             'Performance monitoring',
-            'Error handling'
-          ]
-        }
-      }
+            'Error handling',
+          ],
+        },
+      },
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       error: 'Business rule evaluation failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -86,10 +86,10 @@ app.post('/api/business-rules/evaluate', (req, res) => {
 app.post('/api/data-standardization/process', (req, res) => {
   try {
     const { data, rules } = req.body;
-    
+
     const validationResults = standardizeDataRecord(data, rules);
     const qualityReport = generateDataQualityReport(validationResults);
-    
+
     res.json({
       success: true,
       data: {
@@ -102,16 +102,16 @@ app.post('/api/data-standardization/process', (req, res) => {
             'Phone number standardization',
             'Address normalization',
             'Currency amount validation',
-            'Comprehensive quality reporting'
-          ]
-        }
-      }
+            'Comprehensive quality reporting',
+          ],
+        },
+      },
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       error: 'Data standardization failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -123,7 +123,7 @@ app.post('/api/calculations/financial', (req, res) => {
   try {
     const { calculation_type, parameters } = req.body;
     let result;
-    
+
     switch (calculation_type) {
       case 'compound_interest':
         result = calculateCompoundInterest(
@@ -133,18 +133,15 @@ app.post('/api/calculations/financial', (req, res) => {
           parameters.time
         );
         break;
-        
+
       case 'net_present_value':
-        result = calculateNetPresentValue(
-          parameters.cash_flows,
-          parameters.discount_rate
-        );
+        result = calculateNetPresentValue(parameters.cash_flows, parameters.discount_rate);
         break;
-        
+
       default:
         throw new Error(`Unknown calculation type: ${calculation_type}`);
     }
-    
+
     res.json({
       success: true,
       data: {
@@ -157,16 +154,16 @@ app.post('/api/calculations/financial', (req, res) => {
             'Rust-powered performance',
             'Complex mathematical operations',
             'Enterprise-grade precision',
-            'Multiple calculation types'
-          ]
-        }
-      }
+            'Multiple calculation types',
+          ],
+        },
+      },
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       error: 'Financial calculation failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -177,15 +174,15 @@ app.post('/api/calculations/financial', (req, res) => {
 app.post('/api/process/business-data', async (req, res) => {
   try {
     const context = {
-      userId: req.headers['x-user-id'] as string || 'demo_user',
+      userId: (req.headers['x-user-id'] as string) || 'demo_user',
       sessionId: `session_${Date.now()}`,
       permissions: ['read', 'write', 'calculate'],
       correlationId: `demo_${Date.now()}`,
       requestTimestamp: new Date(),
     };
-    
+
     const result = await integrationService.processBusinessData(req.body, context);
-    
+
     res.json({
       ...result,
       demo_info: {
@@ -196,22 +193,22 @@ app.post('/api/process/business-data', async (req, res) => {
           '3. Business Rules Evaluation',
           '4. Native Performance Calculations',
           '5. Real-time Event Broadcasting',
-          '6. Performance Metrics Collection'
+          '6. Performance Metrics Collection',
         ],
         features: [
           'End-to-end data processing',
           'Real-time WebSocket notifications',
           'Comprehensive error handling',
           'Performance monitoring',
-          'Production-grade logging'
-        ]
-      }
+          'Production-grade logging',
+        ],
+      },
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       error: 'Business process failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -223,19 +220,19 @@ app.post('/api/utils/validate-email', (req, res) => {
   try {
     const { email } = req.body;
     const result = validateEmail(email);
-    
+
     res.json({
       success: true,
       data: result,
       demo_info: {
-        description: 'Production-grade email validation using Rust regex engine'
-      }
+        description: 'Production-grade email validation using Rust regex engine',
+      },
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       error: 'Email validation failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -244,19 +241,19 @@ app.post('/api/utils/validate-phone', (req, res) => {
   try {
     const { phone } = req.body;
     const result = validatePhoneNumber(phone);
-    
+
     res.json({
       success: true,
       data: result,
       demo_info: {
-        description: 'Production-grade phone number validation and standardization'
-      }
+        description: 'Production-grade phone number validation and standardization',
+      },
     });
   } catch (error) {
     res.status(400).json({
       success: false,
       error: 'Phone validation failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
@@ -266,32 +263,36 @@ app.post('/api/utils/validate-phone', (req, res) => {
 // ============================================================================
 
 wss.on('connection', (ws, req) => {
-  const userId = (req.url?.includes('userId=') 
-    ? new URL(req.url, 'http://localhost').searchParams.get('userId') 
-    : null) || 'anonymous';
-  
+  const userId =
+    (req.url?.includes('userId=')
+      ? new URL(req.url, 'http://localhost').searchParams.get('userId')
+      : null) || 'anonymous';
+
   console.log(`WebSocket connection established for user: ${userId}`);
-  
+
   // Setup real-time integration
   integrationService.setupWebSocketConnection(ws as any, userId);
-  
+
   // Send welcome message with demo capabilities
-  ws.send(JSON.stringify({
-    type: 'welcome',
-    message: 'Connected to Production-Grade NAPI-RS Demo',
-    capabilities: {
-      business_rules: 'Real-time business rule evaluation',
-      data_standardization: 'Live data validation and standardization',
-      calculations: 'High-performance native calculations',
-      notifications: 'Real-time event broadcasting',
-      monitoring: 'Live performance metrics'
-    },
-    demo_instructions: {
-      send_data: 'Send JSON with { type: "process_data", data: {...} }',
-      business_rules: 'Send JSON with { type: "evaluate_rule", rule: {...}, context: {...} }',
-      calculations: 'Send JSON with { type: "calculate", calculation_type: "...", parameters: {...} }'
-    }
-  }));
+  ws.send(
+    JSON.stringify({
+      type: 'welcome',
+      message: 'Connected to Production-Grade NAPI-RS Demo',
+      capabilities: {
+        business_rules: 'Real-time business rule evaluation',
+        data_standardization: 'Live data validation and standardization',
+        calculations: 'High-performance native calculations',
+        notifications: 'Real-time event broadcasting',
+        monitoring: 'Live performance metrics',
+      },
+      demo_instructions: {
+        send_data: 'Send JSON with { type: "process_data", data: {...} }',
+        business_rules: 'Send JSON with { type: "evaluate_rule", rule: {...}, context: {...} }',
+        calculations:
+          'Send JSON with { type: "calculate", calculation_type: "...", parameters: {...} }',
+      },
+    })
+  );
 });
 
 // ============================================================================
@@ -646,7 +647,7 @@ server.listen(PORT, () => {
   console.log('');
   console.log('🎯 Features Demonstrated:');
   console.log('  ✅ Business Rules Engine with complex evaluation');
-  console.log('  ✅ Data Standardization & Validation Pipeline');  
+  console.log('  ✅ Data Standardization & Validation Pipeline');
   console.log('  ✅ High-Performance Native Calculations');
   console.log('  ✅ Real-time WebSocket Integration');
   console.log('  ✅ Production-Grade Error Handling');

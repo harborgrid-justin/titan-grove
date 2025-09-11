@@ -1,142 +1,146 @@
 // Access Control Matrix Management - Database Management System
 // This file provides business-ready functionality for Access Control Matrix Management
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Access Control Matrix Management page loaded');
-    
-    // Initialize page functionality
-    initaccesscontrolmatrix();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadaccesscontrolmatrixData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Access Control Matrix Management page loaded');
+
+  // Initialize page functionality
+  initaccesscontrolmatrix();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadaccesscontrolmatrixData();
 });
 
 async function loadaccesscontrolmatrixData() {
-    try {
-        const response = await fetch('/api/database/security-access-control/access-control-matrix');
-        if (response.ok) {
-            const data = await response.json();
-            updateaccesscontrolmatrixDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Access Control Matrix Management data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/security-access-control/access-control-matrix');
+    if (response.ok) {
+      const data = await response.json();
+      updateaccesscontrolmatrixDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Access Control Matrix Management data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initaccesscontrolmatrix() {
-    console.log('Initializing Access Control Matrix Management');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Access Control Matrix Management');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Access Control Matrix Management');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Access Control Matrix Management');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Access Control Matrix Management');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Access Control Matrix Management');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Access Control Matrix Management');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Access Control Matrix Management');
 }
 
 function handleaccesscontrolmatrixAction() {
-    console.log('Access Control Matrix Management action triggered');
-    showNotification('Access Control Matrix Management configured successfully', 'success');
+  console.log('Access Control Matrix Management action triggered');
+  showNotification('Access Control Matrix Management configured successfully', 'success');
 }
 
 function executeaccesscontrolmatrix() {
-    console.log('Access Control Matrix Management execution started');
-    showNotification('Access Control Matrix Management executed successfully', 'success');
+  console.log('Access Control Matrix Management execution started');
+  showNotification('Access Control Matrix Management executed successfully', 'success');
 }
 
 function updateaccesscontrolmatrixDisplay(data) {
-    console.log('Updating Access Control Matrix Management display:', data);
-    // Update UI with loaded data
+  console.log('Updating Access Control Matrix Management display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/security-access-control/access-control-matrix/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadaccesscontrolmatrixData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleaccesscontrolmatrixAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/security-access-control/access-control-matrix/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'access-control-matrix-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/security-access-control/access-control-matrix/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadaccesscontrolmatrixData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleaccesscontrolmatrixAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/security-access-control/access-control-matrix/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'access-control-matrix-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

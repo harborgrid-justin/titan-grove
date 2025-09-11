@@ -6,16 +6,17 @@
 import type { Dashboard, Widget } from '../../types';
 
 export class DashboardService {
-  
-  async createDashboard(dashboard: Omit<Dashboard, 'id' | 'createdDate' | 'lastModified'>): Promise<Dashboard> {
+  async createDashboard(
+    dashboard: Omit<Dashboard, 'id' | 'createdDate' | 'lastModified'>
+  ): Promise<Dashboard> {
     const id = `dash_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date();
-    
+
     return {
       ...dashboard,
       id,
       createdDate: now,
-      lastModified: now
+      lastModified: now,
     };
   }
 
@@ -24,7 +25,10 @@ export class DashboardService {
     return null;
   }
 
-  async updateDashboard(dashboardId: string, updates: Partial<Dashboard>): Promise<Dashboard | null> {
+  async updateDashboard(
+    dashboardId: string,
+    updates: Partial<Dashboard>
+  ): Promise<Dashboard | null> {
     // Would update in database
     console.log(`Updating dashboard ${dashboardId}`, updates);
     return null;
@@ -48,7 +52,7 @@ export class DashboardService {
     // Would clone an existing dashboard for a user
     const id = `dash_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const now = new Date();
-    
+
     return {
       id,
       name: `Cloned Dashboard ${id}`,
@@ -58,14 +62,14 @@ export class DashboardService {
       widgets: [],
       createdDate: now,
       lastModified: now,
-      tags: []
+      tags: [],
     };
   }
 
   async addWidgetToDashboard(dashboardId: string, widget: Omit<Widget, 'id'>): Promise<Widget> {
     const id = `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newWidget = { ...widget, id };
-    
+
     console.log(`Adding widget ${id} to dashboard ${dashboardId}`);
     return newWidget;
   }
@@ -78,7 +82,10 @@ export class DashboardService {
     console.log(`Deleting widget ${widgetId}`);
   }
 
-  async moveWidget(widgetId: string, position: { x: number; y: number; width: number; height: number }): Promise<void> {
+  async moveWidget(
+    widgetId: string,
+    position: { x: number; y: number; width: number; height: number }
+  ): Promise<void> {
     console.log(`Moving widget ${widgetId} to position`, position);
   }
 
@@ -87,7 +94,7 @@ export class DashboardService {
     return {
       widgetId,
       lastRefresh: new Date(),
-      data: []
+      data: [],
     };
   }
 
@@ -98,8 +105,8 @@ export class DashboardService {
       data: [],
       metadata: {
         recordCount: 0,
-        lastUpdated: new Date()
-      }
+        lastUpdated: new Date(),
+      },
     };
   }
 
@@ -108,11 +115,22 @@ export class DashboardService {
     return Buffer.from('');
   }
 
-  async shareDashboard(dashboardId: string, shareWith: string[], permissions: 'VIEW' | 'EDIT'): Promise<void> {
-    console.log(`Sharing dashboard ${dashboardId} with users`, shareWith, `permission: ${permissions}`);
+  async shareDashboard(
+    dashboardId: string,
+    shareWith: string[],
+    permissions: 'VIEW' | 'EDIT'
+  ): Promise<void> {
+    console.log(
+      `Sharing dashboard ${dashboardId} with users`,
+      shareWith,
+      `permission: ${permissions}`
+    );
   }
 
-  async getDashboardPermissions(dashboardId: string, userId: string): Promise<'OWNER' | 'EDIT' | 'VIEW' | 'NONE'> {
+  async getDashboardPermissions(
+    dashboardId: string,
+    userId: string
+  ): Promise<'OWNER' | 'EDIT' | 'VIEW' | 'NONE'> {
     // Would check user permissions for dashboard
     return 'VIEW';
   }
@@ -136,7 +154,10 @@ export class DashboardService {
     console.log(`Removing tag "${tag}" from dashboard ${dashboardId}`);
   }
 
-  async getDashboardAnalytics(dashboardId: string, period: { startDate: Date; endDate: Date }): Promise<any> {
+  async getDashboardAnalytics(
+    dashboardId: string,
+    period: { startDate: Date; endDate: Date }
+  ): Promise<any> {
     return {
       dashboardId,
       period,
@@ -145,8 +166,8 @@ export class DashboardService {
         uniqueUsers: 0,
         averageViewTime: 0,
         mostViewedWidget: null,
-        refreshCount: 0
-      }
+        refreshCount: 0,
+      },
     };
   }
 
@@ -156,9 +177,9 @@ export class DashboardService {
       optimizations: [
         'Cached widget data for faster loading',
         'Optimized query performance',
-        'Reduced widget refresh intervals'
+        'Reduced widget refresh intervals',
       ],
-      performanceGain: '25%'
+      performanceGain: '25%',
     };
   }
 
@@ -170,8 +191,8 @@ export class DashboardService {
       warnings: [],
       recommendations: [
         'Consider reducing number of widgets for better performance',
-        'Update data source connections'
-      ]
+        'Update data source connections',
+      ],
     };
   }
 }

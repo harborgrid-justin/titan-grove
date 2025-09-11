@@ -11,7 +11,6 @@ import { ServiceIntegrationContext } from '../../../../shared/interfaces/service
 import { MessagePayload, QueueType } from '../../../../core/message-queue/types';
 
 export class MaintenanceService extends StandardServiceBase {
-  
   constructor(context?: ServiceIntegrationContext) {
     if (context) {
       super(context);
@@ -24,12 +23,12 @@ export class MaintenanceService extends StandardServiceBase {
         config: {
           serviceName: 'maintenance-service',
           cacheConfig: { defaultTTL: 600, keyPrefix: 'mnt' },
-          messageQueueConfig: { 
-            defaultPriority: 2, 
+          messageQueueConfig: {
+            defaultPriority: 2,
             retryAttempts: 3,
-            compliance: { dataClassification: 'INTERNAL', auditRequired: true }
-          }
-        }
+            compliance: { dataClassification: 'INTERNAL', auditRequired: true },
+          },
+        },
       });
     }
   }
@@ -41,7 +40,7 @@ export class MaintenanceService extends StandardServiceBase {
    */
   async processMessage(message: MessagePayload): Promise<any> {
     this.markMessageProcessed();
-    
+
     switch (message.type) {
       case 'CREATE_MAINTENANCE':
         return await this.createMaintenance(message.data);
@@ -62,33 +61,35 @@ export class MaintenanceService extends StandardServiceBase {
   getHandledQueueTypes(): QueueType[] {
     return [QueueType.MAINTENANCE, QueueType.SERVICE, QueueType.ANALYTICS];
   }
-  
-  async createMaintenance(data: Omit<MaintenanceEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<MaintenanceEntity> {
+
+  async createMaintenance(
+    data: Omit<MaintenanceEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<MaintenanceEntity> {
     return this.executeWithMetrics(async () => {
       this.validateMaintenanceData(data);
-      
+
       const maintenance = await maintenanceRepository.create(data);
-      
+
       // Cache the maintenance record
-      await this.setCached(`maintenance:${maintenance.id}`, maintenance, this.getCacheTTL('maintenance'));
-      
-      // Send notification about new maintenance
-      await this.sendMessage(
-        QueueType.SERVICE_COMMAND_CENTER,
-        'MAINTENANCE_CREATED',
-        {
-          maintenanceId: maintenance.id,
-          name: maintenance.name,
-          type: 'PREVENTIVE', // default type
-          timestamp: new Date()
-        }
+      await this.setCached(
+        `maintenance:${maintenance.id}`,
+        maintenance,
+        this.getCacheTTL('maintenance')
       );
-      
-      this.logger.info('Maintenance created', { 
-        maintenanceId: maintenance.id, 
-        name: maintenance.name 
+
+      // Send notification about new maintenance
+      await this.sendMessage(QueueType.SERVICE_COMMAND_CENTER, 'MAINTENANCE_CREATED', {
+        maintenanceId: maintenance.id,
+        name: maintenance.name,
+        type: 'PREVENTIVE', // default type
+        timestamp: new Date(),
       });
-      
+
+      this.logger.info('Maintenance created', {
+        maintenanceId: maintenance.id,
+        name: maintenance.name,
+      });
+
       return maintenance;
     });
   }
@@ -97,12 +98,15 @@ export class MaintenanceService extends StandardServiceBase {
     return await maintenanceRepository.getById(id);
   }
 
-  async updateMaintenance(id: string, updates: Partial<MaintenanceEntity>): Promise<MaintenanceEntity> {
+  async updateMaintenance(
+    id: string,
+    updates: Partial<MaintenanceEntity>
+  ): Promise<MaintenanceEntity> {
     const existing = await maintenanceRepository.getById(id);
     if (!existing) {
       throw new Error(`Maintenance with ID ${id} not found`);
     }
-    
+
     return await maintenanceRepository.update(id, updates);
   }
 
@@ -111,7 +115,7 @@ export class MaintenanceService extends StandardServiceBase {
     if (!existing) {
       throw new Error(`Maintenance with ID ${id} not found`);
     }
-    
+
     await maintenanceRepository.delete(id);
   }
 
@@ -123,7 +127,7 @@ export class MaintenanceService extends StandardServiceBase {
    * Handle emergency maintenance requests from service command center
    */
   async handleEmergencyMaintenance(emergencyData: {
-    location: { lat: number; lng: number; address: string; };
+    location: { lat: number; lng: number; address: string };
     description: string;
     severity: string;
     assignedTeam: string[];
@@ -134,11 +138,11 @@ export class MaintenanceService extends StandardServiceBase {
         description: emergencyData.description,
         location: emergencyData.location.address,
         priority: emergencyData.severity === 'CRITICAL' ? 'HIGH' : 'MEDIUM',
-        assignedTeam: emergencyData.assignedTeam
+        assignedTeam: emergencyData.assignedTeam,
       };
-      
+
       const maintenance = await this.createMaintenance(maintenanceData as any);
-      
+
       // Send immediate notification to service command center
       await this.sendMessage(
         QueueType.SERVICE_COMMAND_CENTER,
@@ -149,11 +153,11 @@ export class MaintenanceService extends StandardServiceBase {
           severity: emergencyData.severity,
           assignedTeam: emergencyData.assignedTeam,
           estimatedCompletion: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours
-          timestamp: new Date()
+          timestamp: new Date(),
         },
         { priority: 1 } // Critical priority
       );
-      
+
       return maintenance;
     });
   }
@@ -172,14 +176,16 @@ export class MaintenanceService extends StandardServiceBase {
         description: `Scheduled ${scheduleData.frequency} maintenance for asset ${scheduleData.assetId}`,
         assetId: scheduleData.assetId,
         type: 'PREVENTIVE',
-        priority: 'MEDIUM'
+        priority: 'MEDIUM',
       };
-      
+
       return await this.createMaintenance(maintenanceData as any);
     });
   }
 
-  private validateMaintenanceData(data: Omit<MaintenanceEntity, 'id' | 'createdDate' | 'modifiedDate'>): void {
+  private validateMaintenanceData(
+    data: Omit<MaintenanceEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): void {
     if (!data.name || data.name.trim() === '') {
       throw new Error('Name is required');
     }

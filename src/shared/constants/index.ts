@@ -16,15 +16,15 @@ export const BUSINESS_CONSTANTS = {
   STANDARD_PAYMENT_TERMS_DAYS: 30,
   STANDARD_REVIEW_PERIOD_DAYS: 30,
   STANDARD_RFQ_RESPONSE_DAYS: 14,
-  
+
   // Performance thresholds
   OVERALLOCATION_THRESHOLD: 0.95, // 95% capacity threshold
-  BUDGET_VARIANCE_WARNING: 0.20, // 20% over budget warning
-  
+  BUDGET_VARIANCE_WARNING: 0.2, // 20% over budget warning
+
   // Default ratios
   OVERHEAD_RATIO_DEFAULT: 0.15, // 15% overhead
   PREMIUM_SERVICE_MULTIPLIER: 0.15, // 15% premium
-  
+
   // Quality thresholds
   MINIMUM_CONFIDENCE_LEVEL: 0.85, // 85% minimum confidence
   TARGET_EFFICIENCY_RATIO: 0.92, // 92% efficiency target
@@ -37,18 +37,18 @@ export const SERVICE_ANALYTICS_CONSTANTS = {
   COST_SAVINGS_DIAGNOSTIC_TOOLS: 125000, // annual savings
   COST_SAVINGS_RESOURCE_OPTIMIZATION: 85000, // from improved efficiency
   COST_SAVINGS_MOBILE_WORKFLOWS: 200000, // annual savings
-  
+
   // Implementation Timelines (days)
   IMPLEMENTATION_TIME_DIAGNOSTIC_TOOLS: 45,
   IMPLEMENTATION_TIME_RESOURCE_EXPANSION: 60,
   IMPLEMENTATION_TIME_MOBILE_WORKFLOWS: 30,
-  
+
   // Performance Thresholds
   RESOURCE_UTILIZATION_CURRENT: 78.9, // current percentage
   RESOURCE_UTILIZATION_OPTIMAL: 75.0, // target percentage
   TIME_REDUCTION_TARGET: 25, // percentage improvement
   CUSTOMER_SATISFACTION_GAIN: 0.3, // rating points
-  
+
   // Oracle EBS Competitive Ratings
   ORACLE_EBS_DASHBOARD_RATING: 6.0,
   ORACLE_EBS_MOBILE_RATING: 5.5,
@@ -56,14 +56,14 @@ export const SERVICE_ANALYTICS_CONSTANTS = {
   ORACLE_EBS_EMERGENCY_RATING: 6.5,
   ORACLE_EBS_ANALYTICS_RATING: 7.5,
   ORACLE_EBS_INTEGRATION_RATING: 6.0,
-  
+
   TITAN_GROVE_DASHBOARD_RATING: 9.5,
   TITAN_GROVE_MOBILE_RATING: 9.2,
   TITAN_GROVE_OPTIMIZATION_RATING: 9.4,
   TITAN_GROVE_EMERGENCY_RATING: 9.3,
   TITAN_GROVE_ANALYTICS_RATING: 9.1,
   TITAN_GROVE_INTEGRATION_RATING: 9.6,
-  
+
   // Business Value Metrics
   ORACLE_COMPETITIVE_COST_SAVINGS: 2850000, // Annual savings
   ORACLE_COMPETITIVE_EFFICIENCY_GAINS: 35.5, // Percentage improvement
@@ -71,7 +71,7 @@ export const SERVICE_ANALYTICS_CONSTANTS = {
   ORACLE_COMPETITIVE_RISK_REDUCTION: 65.0, // Percentage risk reduction
   ORACLE_COMPETITIVE_MIGRATION_COSTS: 750000,
   ORACLE_COMPETITIVE_ROI_MONTHS: 14, // months to payback
-  
+
   // Service Metrics Mock Data (for development/demo)
   MOCK_TOTAL_SERVICE_REQUESTS: 1247,
   MOCK_COMPLETED_WORK_ORDERS: 1183,
@@ -93,18 +93,20 @@ export const DateUtils = {
   addDays: (date: Date, days: number): Date => {
     return new Date(date.getTime() + days * TIME_CONSTANTS.MILLISECONDS_PER_DAY);
   },
-  
+
   addMonths: (date: Date, months: number): Date => {
-    return new Date(date.getTime() + months * TIME_CONSTANTS.DAYS_PER_MONTH * TIME_CONSTANTS.MILLISECONDS_PER_DAY);
+    return new Date(
+      date.getTime() + months * TIME_CONSTANTS.DAYS_PER_MONTH * TIME_CONSTANTS.MILLISECONDS_PER_DAY
+    );
   },
-  
+
   getPaymentDueDate: (invoiceDate: Date, paymentTermsDays: number = 30): Date => {
     return DateUtils.addDays(invoiceDate, paymentTermsDays);
   },
-  
+
   getForecastDate: (baseDate: Date, forecastDays: number): Date => {
     return DateUtils.addDays(baseDate, forecastDays);
-  }
+  },
 };
 
 // ID generation utilities for consistent patterns
@@ -112,30 +114,30 @@ export const IdUtils = {
   generateProjectId: (): string => {
     return `proj_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   },
-  
+
   generateContractId: (): string => {
     return `contract_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   },
-  
+
   generateInvoiceId: (): string => {
     return `inv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   },
-  
+
   generateTimeSheetId: (): string => {
     return `ts_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   },
-  
+
   generateContractNumber: (): string => {
     return `CON${Date.now().toString().slice(-6)}`;
   },
-  
+
   generateInvoiceNumber: (): string => {
     return `INV${Date.now().toString().slice(-6)}`;
   },
-  
+
   generateProjectNumber: (): string => {
     return `PRJ${Date.now().toString().slice(-6)}`;
-  }
+  },
 };
 
 // Financial calculation utilities
@@ -143,25 +145,25 @@ export const FinancialUtils = {
   calculateTax: (amount: number, taxRate: number): number => {
     return amount * taxRate;
   },
-  
+
   calculateOverhead: (totalCost: number, overheadRatio: number): number => {
     return totalCost * overheadRatio;
   },
-  
+
   calculateProfitMargin: (revenue: number, costs: number): number => {
     return revenue > 0 ? (revenue - costs) / revenue : 0;
   },
-  
+
   roundToCents: (amount: number): number => {
     return Math.round(amount * 100) / 100;
-  }
+  },
 };
 
 // Performance calculation utilities
 export const PerformanceUtils = {
   calculateHealthScore: (metrics: {
     schedule: number;
-    cost: number; 
+    cost: number;
     scope: number;
     quality: number;
     risk: number;
@@ -171,32 +173,36 @@ export const PerformanceUtils = {
     const weights = {
       schedule: 0.25,
       cost: 0.25,
-      scope: 0.20,
+      scope: 0.2,
       quality: 0.15,
-      risk: 0.10, // inverse weight since lower risk is better
-      satisfaction: 0.05
+      risk: 0.1, // inverse weight since lower risk is better
+      satisfaction: 0.05,
     };
-    
+
     const normalizedRisk = 1 - metrics.risk; // invert risk for scoring
-    const score = (
-      metrics.schedule * weights.schedule +
-      metrics.cost * weights.cost +
-      metrics.scope * weights.scope +
-      metrics.quality * weights.quality +
-      normalizedRisk * weights.risk +
-      metrics.satisfaction * weights.satisfaction
-    ) * 100;
-    
+    const score =
+      (metrics.schedule * weights.schedule +
+        metrics.cost * weights.cost +
+        metrics.scope * weights.scope +
+        metrics.quality * weights.quality +
+        normalizedRisk * weights.risk +
+        metrics.satisfaction * weights.satisfaction) *
+      100;
+
     return Math.round(Math.max(0, Math.min(100, score)));
   },
-  
-  isOverAllocated: (allocatedHours: number, totalCapacity: number, threshold: number = 0.95): boolean => {
-    return allocatedHours > (totalCapacity * threshold);
+
+  isOverAllocated: (
+    allocatedHours: number,
+    totalCapacity: number,
+    threshold: number = 0.95
+  ): boolean => {
+    return allocatedHours > totalCapacity * threshold;
   },
-  
+
   calculateUtilization: (allocatedHours: number, totalCapacity: number): number => {
     return totalCapacity > 0 ? (allocatedHours / totalCapacity) * 100 : 0;
-  }
+  },
 };
 
 // Business metrics calculation utilities
@@ -205,17 +211,20 @@ export const BusinessMetricsUtils = {
    * Calculate conversion rate as percentage
    */
   calculateConversionRate: (conversions: number, total: number): number => {
-    return total > 0 ? (conversions / total) : 0;
+    return total > 0 ? conversions / total : 0;
   },
 
   /**
    * Calculate loss reason percentages from counts
    */
-  calculateLossReasonPercentages: (lossReasons: Array<{ reason: string; count: number }>): Array<{ reason: string; count: number; percentage: number }> => {
+  calculateLossReasonPercentages: (
+    lossReasons: Array<{ reason: string; count: number }>
+  ): Array<{ reason: string; count: number; percentage: number }> => {
     const totalCount = lossReasons.reduce((sum, reason) => sum + reason.count, 0);
-    return lossReasons.map(reason => ({
+    return lossReasons.map((reason) => ({
       ...reason,
-      percentage: totalCount > 0 ? FinancialUtils.roundToCents((reason.count / totalCount) * 100) : 0
+      percentage:
+        totalCount > 0 ? FinancialUtils.roundToCents((reason.count / totalCount) * 100) : 0,
     }));
   },
 
@@ -233,18 +242,20 @@ export const BusinessMetricsUtils = {
     budgetLossReasonPercentage: number;
   }) => {
     const averageQuoteValue = config.totalQuoteValue / config.totalQuotes;
-    
+
     // Calculate loss reasons based on percentages
     const totalLosses = Math.round(config.totalQuotes * (1 - config.winRate));
     const priceLosses = Math.round(totalLosses * (config.priceLossReasonPercentage / 100));
-    const competitorLosses = Math.round(totalLosses * (config.competitorLossReasonPercentage / 100));
+    const competitorLosses = Math.round(
+      totalLosses * (config.competitorLossReasonPercentage / 100)
+    );
     const budgetLosses = Math.round(totalLosses * (config.budgetLossReasonPercentage / 100));
-    
+
     // Calculate remaining losses for other reasons
     const remainingLosses = totalLosses - priceLosses - competitorLosses - budgetLosses;
     const timingLosses = Math.round(remainingLosses * 0.6); // 60% of remaining
     const productLosses = remainingLosses - timingLosses;
-    
+
     return {
       totalQuotes: config.totalQuotes,
       totalQuoteValue: config.totalQuoteValue,
@@ -257,10 +268,10 @@ export const BusinessMetricsUtils = {
         { reason: 'Lost to competitor', count: competitorLosses },
         { reason: 'Budget constraints', count: budgetLosses },
         { reason: 'Timing not right', count: timingLosses },
-        { reason: 'Product not suitable', count: productLosses }
-      ])
+        { reason: 'Product not suitable', count: productLosses },
+      ]),
     };
-  }
+  },
 };
 
 // Shipping and logistics calculation utilities
@@ -269,12 +280,18 @@ export const ShippingUtils = {
    * Calculate shipping carrier score based on weighted criteria
    */
   calculateCarrierScore: (
-    costScore: number, 
-    speedScore: number, 
+    costScore: number,
+    speedScore: number,
     reliabilityScore: number,
-    weights: { cost: number; speed: number; reliability: number } = { cost: 0.4, speed: 0.4, reliability: 0.2 }
+    weights: { cost: number; speed: number; reliability: number } = {
+      cost: 0.4,
+      speed: 0.4,
+      reliability: 0.2,
+    }
   ): number => {
-    return (costScore * weights.cost) + (speedScore * weights.speed) + (reliabilityScore * weights.reliability);
+    return (
+      costScore * weights.cost + speedScore * weights.speed + reliabilityScore * weights.reliability
+    );
   },
 
   /**
@@ -287,12 +304,17 @@ export const ShippingUtils = {
   /**
    * Calculate shipping weight from dimensions and density
    */
-  calculateDimensionalWeight: (length: number, width: number, height: number, divisor: number = 139): number => {
+  calculateDimensionalWeight: (
+    length: number,
+    width: number,
+    height: number,
+    divisor: number = 139
+  ): number => {
     return (length * width * height) / divisor;
-  }
+  },
 };
 
-// Forecasting and analytics calculation utilities  
+// Forecasting and analytics calculation utilities
 export const ForecastingUtils = {
   /**
    * Generate forecast data with seasonal patterns and trends
@@ -312,42 +334,45 @@ export const ForecastingUtils = {
     variance: number;
   }> => {
     const forecastData = [];
-    
+
     for (let i = 0; i < periods; i++) {
       const period = new Date();
       period.setMonth(period.getMonth() + i + 1);
-      
+
       // Seasonal pattern using sine wave
       const seasonalValue = baseValue + Math.sin(i * seasonalFrequency) * seasonalAmplitude;
       const trend = i * trendGrowth;
       const noise = (Math.random() - 0.5) * 100;
-      
+
       const forecastValue = seasonalValue + trend + noise;
-      
+
       forecastData.push({
         period,
         forecastValue: Math.round(forecastValue),
         upperBound: Math.round(forecastValue * varianceBounds.upper),
         lowerBound: Math.round(forecastValue * varianceBounds.lower),
-        variance: Math.round(Math.abs(noise))
+        variance: Math.round(Math.abs(noise)),
       });
     }
-    
+
     return forecastData;
   },
 
   /**
    * Calculate confidence interval for forecast
    */
-  calculateConfidenceInterval: (value: number, confidenceLevel: number = 0.95): { upper: number; lower: number } => {
-    const multiplier = confidenceLevel === 0.95 ? 1.96 : (confidenceLevel === 0.99 ? 2.58 : 1.645);
+  calculateConfidenceInterval: (
+    value: number,
+    confidenceLevel: number = 0.95
+  ): { upper: number; lower: number } => {
+    const multiplier = confidenceLevel === 0.95 ? 1.96 : confidenceLevel === 0.99 ? 2.58 : 1.645;
     const margin = value * 0.1 * multiplier; // Assume 10% standard error
-    
+
     return {
       upper: FinancialUtils.roundToCents(value + margin),
-      lower: FinancialUtils.roundToCents(Math.max(0, value - margin))
+      lower: FinancialUtils.roundToCents(Math.max(0, value - margin)),
     };
-  }
+  },
 };
 
 // Service Analytics Utilities
@@ -360,27 +385,28 @@ export const ServiceAnalyticsUtils = {
     insightId?: string
   ) => {
     const baseId = `rec_${Date.now()}${insightId ? `_${insightId}` : '_standard'}`;
-    
+
     switch (type) {
       case 'QUALITY_ENHANCEMENT':
         return {
           recommendationId: baseId,
           type,
           title: 'Implement Advanced Diagnostic Tools',
-          description: 'Deploy AI-powered diagnostic tools to improve first-time fix rates and reduce repeat service calls.',
+          description:
+            'Deploy AI-powered diagnostic tools to improve first-time fix rates and reduce repeat service calls.',
           estimatedImpact: {
             qualityImprovement: SERVICE_ANALYTICS_CONSTANTS.QUALITY_IMPROVEMENT_TARGET,
             costSavings: SERVICE_ANALYTICS_CONSTANTS.COST_SAVINGS_DIAGNOSTIC_TOOLS,
-            customerSatisfactionGain: SERVICE_ANALYTICS_CONSTANTS.CUSTOMER_SATISFACTION_GAIN
+            customerSatisfactionGain: SERVICE_ANALYTICS_CONSTANTS.CUSTOMER_SATISFACTION_GAIN,
           },
           implementationEffort: 'MEDIUM' as const,
           timeToImplement: SERVICE_ANALYTICS_CONSTANTS.IMPLEMENTATION_TIME_DIAGNOSTIC_TOOLS,
           requiredResources: ['IT Team', 'Training Team', 'Field Technicians'],
           status: 'NEW' as const,
           priority: 'HIGH' as const,
-          category: 'Quality Improvement'
+          category: 'Quality Improvement',
         };
-      
+
       case 'RESOURCE_OPTIMIZATION':
         return {
           recommendationId: baseId,
@@ -390,33 +416,34 @@ export const ServiceAnalyticsUtils = {
           estimatedImpact: {
             timeReduction: SERVICE_ANALYTICS_CONSTANTS.TIME_REDUCTION_TARGET,
             costSavings: SERVICE_ANALYTICS_CONSTANTS.COST_SAVINGS_RESOURCE_OPTIMIZATION,
-            customerSatisfactionGain: SERVICE_ANALYTICS_CONSTANTS.CUSTOMER_SATISFACTION_GAIN - 0.1 // Slightly lower gain
+            customerSatisfactionGain: SERVICE_ANALYTICS_CONSTANTS.CUSTOMER_SATISFACTION_GAIN - 0.1, // Slightly lower gain
           },
           implementationEffort: 'HIGH' as const,
           timeToImplement: SERVICE_ANALYTICS_CONSTANTS.IMPLEMENTATION_TIME_RESOURCE_EXPANSION,
           requiredResources: ['HR Team', 'Training Budget', 'Equipment'],
           status: 'NEW' as const,
           priority: 'HIGH' as const,
-          category: 'Resource Management'
+          category: 'Resource Management',
         };
-      
+
       case 'PROCESS_IMPROVEMENT':
         return {
           recommendationId: baseId,
           type,
           title: 'Implement Mobile-First Service Workflows',
-          description: 'Transition to mobile-first service workflows to reduce paperwork and improve field efficiency.',
+          description:
+            'Transition to mobile-first service workflows to reduce paperwork and improve field efficiency.',
           estimatedImpact: {
             timeReduction: SERVICE_ANALYTICS_CONSTANTS.TIME_REDUCTION_TARGET - 5, // 20%
             costSavings: SERVICE_ANALYTICS_CONSTANTS.COST_SAVINGS_MOBILE_WORKFLOWS,
-            qualityImprovement: 5
+            qualityImprovement: 5,
           },
           implementationEffort: 'MEDIUM' as const,
           timeToImplement: SERVICE_ANALYTICS_CONSTANTS.IMPLEMENTATION_TIME_MOBILE_WORKFLOWS,
           requiredResources: ['Mobile Development Team', 'Training Team'],
           status: 'NEW' as const,
           priority: 'MEDIUM' as const,
-          category: 'Digital Transformation'
+          category: 'Digital Transformation',
         };
     }
   },
@@ -434,23 +461,28 @@ export const ServiceAnalyticsUtils = {
     oracleEBSRating: oracleRating,
     titanGroveRating,
     advantage: titanGroveRating - oracleRating,
-    notes
+    notes,
   }),
 
   /**
    * Calculate overall competitive advantage
    */
-  calculateCompetitiveAdvantage: (featureComparisons: Array<{
-    oracleEBSRating: number;
-    titanGroveRating: number;
-  }>) => {
-    const oracleAverage = featureComparisons.reduce((sum, f) => sum + f.oracleEBSRating, 0) / featureComparisons.length;
-    const titanGroveAverage = featureComparisons.reduce((sum, f) => sum + f.titanGroveRating, 0) / featureComparisons.length;
-    
+  calculateCompetitiveAdvantage: (
+    featureComparisons: Array<{
+      oracleEBSRating: number;
+      titanGroveRating: number;
+    }>
+  ) => {
+    const oracleAverage =
+      featureComparisons.reduce((sum, f) => sum + f.oracleEBSRating, 0) / featureComparisons.length;
+    const titanGroveAverage =
+      featureComparisons.reduce((sum, f) => sum + f.titanGroveRating, 0) /
+      featureComparisons.length;
+
     return {
       oracle: FinancialUtils.roundToCents(oracleAverage),
       titanGrove: FinancialUtils.roundToCents(titanGroveAverage),
-      competitiveAdvantage: FinancialUtils.roundToCents(titanGroveAverage - oracleAverage)
+      competitiveAdvantage: FinancialUtils.roundToCents(titanGroveAverage - oracleAverage),
     };
   },
 
@@ -461,7 +493,7 @@ export const ServiceAnalyticsUtils = {
     costSavings: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_COST_SAVINGS,
     efficiencyGains: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_EFFICIENCY_GAINS,
     revenueIncrease: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_REVENUE_INCREASE,
-    riskReduction: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_RISK_REDUCTION
+    riskReduction: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_RISK_REDUCTION,
   }),
 
   /**
@@ -471,7 +503,7 @@ export const ServiceAnalyticsUtils = {
     migrationComplexity: 'MEDIUM' as const,
     migrationTimeframe: 8, // months
     migrationCosts: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_MIGRATION_COSTS,
-    expectedROI: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_ROI_MONTHS
+    expectedROI: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_ROI_MONTHS,
   }),
 
   /**
@@ -482,21 +514,21 @@ export const ServiceAnalyticsUtils = {
     totalServiceRequests: SERVICE_ANALYTICS_CONSTANTS.MOCK_TOTAL_SERVICE_REQUESTS,
     completedWorkOrders: SERVICE_ANALYTICS_CONSTANTS.MOCK_COMPLETED_WORK_ORDERS,
     averageResolutionTime: SERVICE_ANALYTICS_CONSTANTS.MOCK_AVERAGE_RESOLUTION_TIME,
-    
+
     // Quality metrics
     firstTimeFixRate: SERVICE_ANALYTICS_CONSTANTS.MOCK_FIRST_TIME_FIX_RATE,
     customerSatisfaction: SERVICE_ANALYTICS_CONSTANTS.MOCK_CUSTOMER_SATISFACTION,
     escalationRate: SERVICE_ANALYTICS_CONSTANTS.MOCK_ESCALATION_RATE,
-    
+
     // Resource metrics
     resourceUtilization: SERVICE_ANALYTICS_CONSTANTS.RESOURCE_UTILIZATION_CURRENT,
     techniciansActive: SERVICE_ANALYTICS_CONSTANTS.MOCK_TECHNICIANS_ACTIVE,
     equipmentUtilization: SERVICE_ANALYTICS_CONSTANTS.MOCK_EQUIPMENT_UTILIZATION,
-    
+
     // Financial metrics
     totalServiceRevenue: SERVICE_ANALYTICS_CONSTANTS.MOCK_TOTAL_SERVICE_REVENUE,
     serviceCosts: SERVICE_ANALYTICS_CONSTANTS.MOCK_SERVICE_COSTS,
     profitMargin: SERVICE_ANALYTICS_CONSTANTS.MOCK_PROFIT_MARGIN,
-    costPerServiceCall: SERVICE_ANALYTICS_CONSTANTS.MOCK_COST_PER_SERVICE_CALL
-  })
+    costPerServiceCall: SERVICE_ANALYTICS_CONSTANTS.MOCK_COST_PER_SERVICE_CALL,
+  }),
 };

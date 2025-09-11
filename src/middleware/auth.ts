@@ -54,7 +54,7 @@ export class AuthenticationService {
         roles: user.roles,
         permissions: user.permissions,
         system: 'business',
-        tenantId: user.tenantId
+        tenantId: user.tenantId,
       },
       this.config.jwtSecret,
       { expiresIn: this.config.jwtExpiresIn }
@@ -64,18 +64,14 @@ export class AuthenticationService {
   /**
    * Generate JWT token for customer user
    */
-  generateCustomerToken(user: {
-    id: string;
-    email: string;
-    permissions?: string[];
-  }): string {
+  generateCustomerToken(user: { id: string; email: string; permissions?: string[] }): string {
     return jwt.sign(
       {
         id: user.id,
         email: user.email,
         roles: ['customer'],
         permissions: user.permissions || ['customer:basic'],
-        system: 'customer'
+        system: 'customer',
       },
       this.config.jwtSecret,
       { expiresIn: this.config.jwtExpiresIn }
@@ -90,7 +86,7 @@ export class AuthenticationService {
       return jwt.verify(token, this.config.jwtSecret);
     } catch (error) {
       this.logger.warn('Token verification failed', {
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
       return null;
     }
@@ -100,7 +96,7 @@ export class AuthenticationService {
    * Check if path is public (doesn't require authentication)
    */
   isPublicPath(path: string): boolean {
-    return this.config.publicPaths.some(publicPath => {
+    return this.config.publicPaths.some((publicPath) => {
       // Support wildcard patterns
       if (publicPath.endsWith('*')) {
         return path.startsWith(publicPath.slice(0, -1));
@@ -122,30 +118,25 @@ const defaultAuthConfig: AuthConfig = {
     '/api/auth/login',
     '/api/auth/register',
     '/api/customer/register',
-    '/api/customer/login'
-  ]
+    '/api/customer/login',
+  ],
 };
 
 // Create authentication service instance
-const authService = new AuthenticationService(
-  defaultAuthConfig,
-  authLogger
-);
+const authService = new AuthenticationService(defaultAuthConfig, authLogger);
 
 /**
  * Authentication middleware factory
  */
-export function authenticate(options: {
-  required?: boolean;
-  systems?: ('business' | 'customer')[];
-  permissions?: string[];
-} = {}) {
+export function authenticate(
+  options: {
+    required?: boolean;
+    systems?: ('business' | 'customer')[];
+    permissions?: string[];
+  } = {}
+) {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const {
-      required = true,
-      systems = ['business', 'customer'],
-      permissions = []
-    } = options;
+    const { required = true, systems = ['business', 'customer'], permissions = [] } = options;
 
     // Skip authentication for public paths
     if (authService.isPublicPath(req.path)) {
@@ -162,8 +153,8 @@ export function authenticate(options: {
         success: false,
         error: {
           code: 'MISSING_TOKEN',
-          message: 'Authorization token is required'
-        }
+          message: 'Authorization token is required',
+        },
       });
     }
 
@@ -175,8 +166,8 @@ export function authenticate(options: {
         success: false,
         error: {
           code: 'INVALID_TOKEN',
-          message: 'Invalid or expired token'
-        }
+          message: 'Invalid or expired token',
+        },
       });
     }
 
@@ -186,18 +177,19 @@ export function authenticate(options: {
         success: false,
         error: {
           code: 'SYSTEM_NOT_ALLOWED',
-          message: `Access denied for ${decoded.system} system`
-        }
+          message: `Access denied for ${decoded.system} system`,
+        },
       });
     }
 
     // Check permissions if specified
     if (permissions.length > 0) {
       const userPermissions = decoded.permissions || [];
-      const hasRequiredPermission = permissions.some(permission =>
-        userPermissions.includes(permission) ||
-        userPermissions.includes('admin') ||
-        (decoded.system === 'business' && userPermissions.includes('business:admin'))
+      const hasRequiredPermission = permissions.some(
+        (permission) =>
+          userPermissions.includes(permission) ||
+          userPermissions.includes('admin') ||
+          (decoded.system === 'business' && userPermissions.includes('business:admin'))
       );
 
       if (!hasRequiredPermission) {
@@ -205,8 +197,8 @@ export function authenticate(options: {
           success: false,
           error: {
             code: 'INSUFFICIENT_PERMISSIONS',
-            message: 'Insufficient permissions for this operation'
-          }
+            message: 'Insufficient permissions for this operation',
+          },
         });
       }
     }
@@ -218,7 +210,7 @@ export function authenticate(options: {
       roles: decoded.roles || [],
       permissions: decoded.permissions || [],
       system: decoded.system,
-      tenantId: decoded.tenantId
+      tenantId: decoded.tenantId,
     };
 
     next();
@@ -230,7 +222,7 @@ export function authenticate(options: {
  */
 export const authenticateBusiness = authenticate({
   required: true,
-  systems: ['business']
+  systems: ['business'],
 });
 
 /**
@@ -238,7 +230,7 @@ export const authenticateBusiness = authenticate({
  */
 export const authenticateCustomer = authenticate({
   required: true,
-  systems: ['customer']
+  systems: ['customer'],
 });
 
 /**
@@ -246,7 +238,7 @@ export const authenticateCustomer = authenticate({
  */
 export const authenticateOptional = authenticate({
   required: false,
-  systems: ['business', 'customer']
+  systems: ['business', 'customer'],
 });
 
 /**
@@ -255,7 +247,7 @@ export const authenticateOptional = authenticate({
 export const authenticateAdmin = authenticate({
   required: true,
   systems: ['business'],
-  permissions: ['admin', 'business:admin']
+  permissions: ['admin', 'business:admin'],
 });
 
 export { AuthenticationService, authService };

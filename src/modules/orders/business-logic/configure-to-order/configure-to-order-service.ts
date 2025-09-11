@@ -9,7 +9,7 @@ import type {
   ConfigurationOption,
   ConfigurationRule,
   SalesOrder,
-  Quote
+  Quote,
 } from '../../types';
 import type { ConfigureToOrderConfig } from '../../../../types/business-config';
 
@@ -20,7 +20,11 @@ export interface ConfigurableProduct {
   description: string;
   basePrice: number;
   baseCost: number;
-  configurationType: 'ENGINEER_TO_ORDER' | 'BUILD_TO_ORDER' | 'ASSEMBLE_TO_ORDER' | 'PURCHASE_TO_ORDER';
+  configurationType:
+    | 'ENGINEER_TO_ORDER'
+    | 'BUILD_TO_ORDER'
+    | 'ASSEMBLE_TO_ORDER'
+    | 'PURCHASE_TO_ORDER';
   configurationModel: ConfigurationModel;
   options: ConfigurationOption[];
   rules: ConfigurationRule[];
@@ -120,10 +124,9 @@ export interface FeasibilityResult {
  * Comprehensive mass customization solution competitive with Oracle EBS
  */
 export class ConfigureToOrderService {
-
   // Simple in-memory session storage for demo/testing
   private sessions = new Map<string, ConfigurationSession>();
-  
+
   constructor(private config: ConfigureToOrderConfig) {}
 
   // ================================
@@ -138,10 +141,10 @@ export class ConfigureToOrderService {
     productId: string
   ): Promise<ConfigurationSession> {
     const sessionId = `config_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Get configurable product
     const product = await this.getConfigurableProduct(productId);
-    
+
     const session: ConfigurationSession = {
       sessionId,
       customerId,
@@ -155,20 +158,20 @@ export class ConfigureToOrderService {
         totalCost: product.baseCost,
         leadTime: product.leadTimeBase,
         validity: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-        rules: product.rules
+        rules: product.rules,
       },
       validationStatus: 'INCOMPLETE',
       validationErrors: [],
       validationWarnings: [],
       lastModified: new Date(),
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
     };
 
     console.log(`Created configuration session: ${sessionId} for product: ${productId}`);
-    
+
     // Store in session cache
     this.sessions.set(sessionId, session);
-    
+
     return session;
   }
 
@@ -182,13 +185,13 @@ export class ConfigureToOrderService {
     quantity: number = 1
   ): Promise<ConfigurationSession> {
     console.log(`Adding option ${optionId}=${optionValue} to session ${sessionId}`);
-    
+
     // Get current session
     const session = await this.getConfigurationSession(sessionId);
-    
+
     // Validate option compatibility
     const validationResult = await this.validateOptionAddition(session, optionId, optionValue);
-    
+
     if (!validationResult.isValid) {
       throw new Error(`Option incompatible: ${validationResult.errors.join(', ')}`);
     }
@@ -203,22 +206,22 @@ export class ConfigureToOrderService {
       extendedPrice: validationResult.unitPrice * quantity,
       isRequired: validationResult.isRequired,
       dependentOptions: validationResult.dependentOptions,
-      conflictingOptions: validationResult.conflictingOptions
+      conflictingOptions: validationResult.conflictingOptions,
     };
 
     session.configuration.selectedOptions.push(option);
-    
+
     // Recalculate pricing and lead time
     await this.recalculateConfiguration(session);
-    
+
     // Revalidate configuration
     await this.validateConfiguration(session);
-    
+
     session.lastModified = new Date();
-    
+
     // Update session in cache
     this.sessions.set(sessionId, session);
-    
+
     return session;
   }
 
@@ -235,35 +238,38 @@ export class ConfigureToOrderService {
     }
   ): Promise<ConfigurationQuote> {
     const session = await this.getConfigurationSession(sessionId);
-    
+
     if (session.validationStatus !== 'VALID') {
       throw new Error('Configuration must be valid before generating quote');
     }
 
     const quoteId = `cqt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Perform feasibility analysis
     const feasibilityCheck = await this.performFeasibilityAnalysis(session.configuration);
-    
+
     // Calculate accurate pricing including configuration complexity
     const pricingResult = await this.calculateConfigurationPricing(session.configuration);
-    
+
     const quote: ConfigurationQuote = {
       quoteId,
       configurationSessionId: sessionId,
       totalPrice: pricingResult.totalPrice,
       totalCost: pricingResult.totalCost,
       margin: pricingResult.totalPrice - pricingResult.totalCost,
-      marginPercent: ((pricingResult.totalPrice - pricingResult.totalCost) / pricingResult.totalPrice) * 100,
+      marginPercent:
+        ((pricingResult.totalPrice - pricingResult.totalCost) / pricingResult.totalPrice) * 100,
       leadTime: pricingResult.leadTime,
       manufactureability: this.assessManufacturability(session.configuration),
       bomGenerated: quoteParameters?.generateBOM || false,
       routingGenerated: quoteParameters?.generateRouting || false,
-      feasibilityCheck
+      feasibilityCheck,
     };
 
-    console.log(`Generated configuration quote: ${quoteId} - $${quote.totalPrice} with ${quote.leadTime} day lead time`);
-    
+    console.log(
+      `Generated configuration quote: ${quoteId} - $${quote.totalPrice} with ${quote.leadTime} day lead time`
+    );
+
     return quote;
   }
 
@@ -286,10 +292,10 @@ export class ConfigureToOrderService {
     manufactureability: string;
   }> {
     console.log(`Converting configuration quote ${configurationQuoteId} to sales order`);
-    
+
     const orderId = `cfg_order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const orderNumber = `CFG${Date.now().toString().slice(-6)}`;
-    
+
     // This would integrate with manufacturing to generate BOM and routing
     const result = {
       orderId,
@@ -297,9 +303,9 @@ export class ConfigureToOrderService {
       configurationId: configurationQuoteId,
       bomId: `bom_${orderId}`,
       routingId: `rte_${orderId}`,
-      manufactureability: 'CUSTOM'
+      manufactureability: 'CUSTOM',
     };
-    
+
     console.log(`Created configured order: ${orderNumber}`);
     return result;
   }
@@ -332,9 +338,9 @@ export class ConfigureToOrderService {
     projectTimeline: number; // days
   }> {
     const projectId = `eto_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Creating Engineer-to-Order project: ${projectId}`);
-    
+
     return {
       projectId,
       engineeringPhases: [
@@ -342,23 +348,28 @@ export class ConfigureToOrderService {
           phaseName: 'Design & Engineering',
           duration: this.config.defaultEngineeringDuration,
           deliverables: ['Technical drawings', 'BOM specification', 'Manufacturing routing'],
-          dependencies: ['Customer approval']
+          dependencies: ['Customer approval'],
         },
         {
           phaseName: 'Prototype Development',
-          duration: engineeringRequirements.prototypeRequired ? this.config.prototypeDevelopmentDuration : 0,
+          duration: engineeringRequirements.prototypeRequired
+            ? this.config.prototypeDevelopmentDuration
+            : 0,
           deliverables: ['Prototype unit', 'Test results'],
-          dependencies: ['Design completion']
+          dependencies: ['Design completion'],
         },
         {
           phaseName: 'Production Planning',
           duration: this.config.productionPlanningDuration,
           deliverables: ['Production BOM', 'Work instructions', 'Quality plan'],
-          dependencies: ['Prototype approval']
-        }
+          dependencies: ['Prototype approval'],
+        },
       ],
-      totalEngineeringCost: engineeringRequirements.engineeringHours * this.config.engineeringHourlyRate,
-      projectTimeline: this.config.baseProjectTimeline + (engineeringRequirements.prototypeRequired ? this.config.prototypeDevelopmentDuration : 0)
+      totalEngineeringCost:
+        engineeringRequirements.engineeringHours * this.config.engineeringHourlyRate,
+      projectTimeline:
+        this.config.baseProjectTimeline +
+        (engineeringRequirements.prototypeRequired ? this.config.prototypeDevelopmentDuration : 0),
     };
   }
 
@@ -383,13 +394,13 @@ export class ConfigureToOrderService {
         optionGroups: [],
         dependencies: [],
         constraints: [],
-        pricingRules: []
+        pricingRules: [],
       },
       options: [],
       rules: [],
       leadTimeBase: this.config.defaultLeadTimeBase,
       isConfigurable: true,
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     };
   }
 
@@ -420,7 +431,7 @@ export class ConfigureToOrderService {
       errors: [],
       optionName: 'Sample Option',
       unitPrice: 100,
-      isRequired: false
+      isRequired: false,
     };
   }
 
@@ -478,13 +489,11 @@ export class ConfigureToOrderService {
       constraints: [],
       alternativeOptions: [],
       costImpact: 0,
-      scheduleImpact: 0
+      scheduleImpact: 0,
     };
   }
 
-  private async calculateConfigurationPricing(
-    configuration: ProductConfiguration
-  ): Promise<{
+  private async calculateConfigurationPricing(configuration: ProductConfiguration): Promise<{
     totalPrice: number;
     totalCost: number;
     leadTime: number;
@@ -502,7 +511,7 @@ export class ConfigureToOrderService {
     pricingBreakdown.push({
       component: 'Base Product',
       price: this.config.defaultBasePrice,
-      cost: this.config.defaultBaseCost
+      cost: this.config.defaultBaseCost,
     });
     totalPrice += this.config.defaultBasePrice;
     totalCost += this.config.defaultBaseCost;
@@ -512,7 +521,7 @@ export class ConfigureToOrderService {
       pricingBreakdown.push({
         component: option.optionName,
         price: option.extendedPrice,
-        cost: option.extendedPrice * this.config.defaultCostRatio
+        cost: option.extendedPrice * this.config.defaultCostRatio,
       });
       totalPrice += option.extendedPrice;
       totalCost += option.extendedPrice * this.config.defaultCostRatio;
@@ -522,13 +531,15 @@ export class ConfigureToOrderService {
       totalPrice,
       totalCost,
       leadTime: configuration.leadTime,
-      pricingBreakdown
+      pricingBreakdown,
     };
   }
 
-  private assessManufacturability(configuration: ProductConfiguration): 'STANDARD' | 'COMPLEX' | 'CUSTOM' {
+  private assessManufacturability(
+    configuration: ProductConfiguration
+  ): 'STANDARD' | 'COMPLEX' | 'CUSTOM' {
     const optionCount = configuration.selectedOptions.length;
-    
+
     if (optionCount <= this.config.standardComplexityMaxOptions) return 'STANDARD';
     if (optionCount <= this.config.complexComplexityMaxOptions) return 'COMPLEX';
     return 'CUSTOM';
@@ -554,9 +565,9 @@ export class ConfigureToOrderService {
     complexity: 'LOW' | 'MEDIUM' | 'HIGH';
   }> {
     const bomId = `cfg_bom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Generating BOM for configuration: ${configurationId}`);
-    
+
     return {
       bomId,
       components: [
@@ -565,18 +576,18 @@ export class ConfigureToOrderService {
           quantity: 1,
           unitCost: 500,
           totalCost: 500,
-          leadTime: 7
+          leadTime: 7,
         },
         {
           componentId: 'CONFIGURED_OPTIONS',
           quantity: 1,
           unitCost: 200,
           totalCost: 200,
-          leadTime: 14
-        }
+          leadTime: 14,
+        },
       ],
       totalMaterialCost: 700,
-      complexity: 'MEDIUM'
+      complexity: 'MEDIUM',
     };
   }
 
@@ -598,9 +609,9 @@ export class ConfigureToOrderService {
     totalLaborCost: number;
   }> {
     const routingId = `cfg_rte_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Generating routing for configuration: ${configurationId}`);
-    
+
     return {
       routingId,
       operations: [
@@ -611,7 +622,7 @@ export class ConfigureToOrderService {
           workCenter: 'ASSEMBLY_001',
           setupTime: 0.5,
           runTime: 2.0,
-          laborRate: 35.00
+          laborRate: 35.0,
         },
         {
           operationNumber: 20,
@@ -620,7 +631,7 @@ export class ConfigureToOrderService {
           workCenter: 'CONFIG_001',
           setupTime: 0.25,
           runTime: 1.5,
-          laborRate: 45.00
+          laborRate: 45.0,
         },
         {
           operationNumber: 30,
@@ -629,11 +640,11 @@ export class ConfigureToOrderService {
           workCenter: 'TEST_001',
           setupTime: 0.1,
           runTime: 0.5,
-          laborRate: 40.00
-        }
+          laborRate: 40.0,
+        },
       ],
       totalLaborHours: 4.85,
-      totalLaborCost: 194.00
+      totalLaborCost: 194.0,
     };
   }
 }
@@ -655,6 +666,8 @@ export const configureToOrderService = new ConfigureToOrderService({
 });
 
 // Factory function for creating service with custom configuration
-export function createConfigureToOrderService(config: ConfigureToOrderConfig): ConfigureToOrderService {
+export function createConfigureToOrderService(
+  config: ConfigureToOrderConfig
+): ConfigureToOrderService {
   return new ConfigureToOrderService(config);
 }

@@ -6,24 +6,29 @@
 import type { ProjectDocument, ProjectDeliverable } from '../../types';
 
 export class ProjectCollaborationService {
-  
-  async createProjectDocument(document: Omit<ProjectDocument, 'id' | 'version' | 'createdDate' | 'modifiedDate'>): Promise<ProjectDocument> {
+  async createProjectDocument(
+    document: Omit<ProjectDocument, 'id' | 'version' | 'createdDate' | 'modifiedDate'>
+  ): Promise<ProjectDocument> {
     const id = `doc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const currentDate = new Date();
-    
+
     return {
       ...document,
       id,
       version: '1.0',
       createdDate: currentDate,
-      modifiedDate: currentDate
+      modifiedDate: currentDate,
     };
   }
 
-  async updateDocumentVersion(documentId: string, updatedBy: string, changes: string): Promise<ProjectDocument> {
+  async updateDocumentVersion(
+    documentId: string,
+    updatedBy: string,
+    changes: string
+  ): Promise<ProjectDocument> {
     // Would fetch existing document, increment version, and create new version
     const currentDate = new Date();
-    
+
     return {
       id: documentId,
       projectId: 'proj_123',
@@ -38,7 +43,7 @@ export class ProjectCollaborationService {
       filePath: '/projects/docs/updated_doc.pdf',
       fileSize: 2048576,
       status: 'DRAFT',
-      tags: ['updated', 'specification']
+      tags: ['updated', 'specification'],
     };
   }
 
@@ -54,7 +59,7 @@ export class ProjectCollaborationService {
         dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         status: 'IN_PROGRESS',
         assignedTo: 'emp_001',
-        documents: ['doc_001', 'doc_002']
+        documents: ['doc_001', 'doc_002'],
       },
       {
         id: `del_${Date.now()}_2`,
@@ -65,10 +70,10 @@ export class ProjectCollaborationService {
         dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         status: 'PLANNED',
         assignedTo: 'emp_002',
-        documents: ['doc_003']
-      }
+        documents: ['doc_003'],
+      },
     ];
-    
+
     return deliverables;
   }
 
@@ -79,13 +84,9 @@ export class ProjectCollaborationService {
       milestonesCompleted: 3,
       totalMilestones: 5,
       lastUpdated: new Date(),
-      remainingTasks: [
-        'Final review',
-        'Client approval',
-        'Documentation'
-      ],
+      remainingTasks: ['Final review', 'Client approval', 'Documentation'],
       blockers: [],
-      estimatedCompletion: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      estimatedCompletion: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     };
   }
 
@@ -97,29 +98,29 @@ export class ProjectCollaborationService {
           specifications: [],
           designs: [],
           contracts: [],
-          reports: []
+          reports: [],
         },
         deliverables: {
           planned: [],
           inProgress: [],
-          completed: []
+          completed: [],
         },
         communications: {
           meetings: [],
           emails: [],
-          decisions: []
-        }
+          decisions: [],
+        },
       },
       accessControl: {
         readAccess: ['all_team_members'],
         writeAccess: ['project_manager', 'tech_lead'],
-        adminAccess: ['project_manager']
+        adminAccess: ['project_manager'],
       },
       versionControl: {
         enabled: true,
         maxVersions: 10,
-        autoBackup: true
-      }
+        autoBackup: true,
+      },
     };
   }
 
@@ -140,8 +141,8 @@ export class ProjectCollaborationService {
         filePath: '/projects/docs/requirements_v2.1.pdf',
         fileSize: 1536000,
         status: 'APPROVED',
-        tags: ['requirements', 'specification', 'approved']
-      }
+        tags: ['requirements', 'specification', 'approved'],
+      },
     ];
   }
 
@@ -155,12 +156,18 @@ export class ProjectCollaborationService {
     return true; // Mock implementation
   }
 
-  async getDeliverablesByStatus(projectId: string, status: ProjectDeliverable['status']): Promise<ProjectDeliverable[]> {
+  async getDeliverablesByStatus(
+    projectId: string,
+    status: ProjectDeliverable['status']
+  ): Promise<ProjectDeliverable[]> {
     const allDeliverables = await this.manageProjectDeliverables(projectId);
-    return allDeliverables.filter(deliverable => deliverable.status === status);
+    return allDeliverables.filter((deliverable) => deliverable.status === status);
   }
 
-  async updateDeliverableStatus(deliverableId: string, newStatus: ProjectDeliverable['status']): Promise<void> {
+  async updateDeliverableStatus(
+    deliverableId: string,
+    newStatus: ProjectDeliverable['status']
+  ): Promise<void> {
     // Would update deliverable status in database
     console.log(`Deliverable ${deliverableId} status updated to ${newStatus}`);
   }
@@ -172,34 +179,40 @@ export class ProjectCollaborationService {
         version: '2.1',
         modifiedBy: 'analyst_002',
         modifiedDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-        changes: 'Updated security requirements section'
+        changes: 'Updated security requirements section',
       },
       {
         version: '2.0',
         modifiedBy: 'analyst_001',
         modifiedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        changes: 'Added performance requirements'
-      }
+        changes: 'Added performance requirements',
+      },
     ];
   }
 
   async generateDocumentReport(projectId: string): Promise<any> {
     const documents = await this.getDocumentsByProject(projectId);
     const deliverables = await this.manageProjectDeliverables(projectId);
-    
+
     return {
       projectId,
       totalDocuments: documents.length,
-      documentsByType: documents.reduce((acc, doc) => {
-        acc[doc.type] = (acc[doc.type] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
+      documentsByType: documents.reduce(
+        (acc, doc) => {
+          acc[doc.type] = (acc[doc.type] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
       totalDeliverables: deliverables.length,
-      deliverablesByStatus: deliverables.reduce((acc, del) => {
-        acc[del.status] = (acc[del.status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      generatedAt: new Date()
+      deliverablesByStatus: deliverables.reduce(
+        (acc, del) => {
+          acc[del.status] = (acc[del.status] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      generatedAt: new Date(),
     };
   }
 }

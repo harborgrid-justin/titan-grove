@@ -11,7 +11,7 @@ import {
   StrategicSourcing,
   ResourceRequirement,
   DependencyAnalysis,
-  ForecastRisk
+  ForecastRisk,
 } from './types';
 
 export class ProcurementPlanningService {
@@ -34,9 +34,9 @@ export class ProcurementPlanningService {
       performanceTargets: strategyData.performanceTargets || [],
       approvedBy: '',
       approvalDate: new Date(),
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
-    
+
     return strategy;
   }
 
@@ -48,7 +48,7 @@ export class ProcurementPlanningService {
     plannedAcquisitions: PlannedAcquisition[]
   ): Promise<AcquisitionForecast> {
     const totalValue = plannedAcquisitions.reduce((sum, acq) => sum + acq.estimatedValue, 0);
-    
+
     const forecast: AcquisitionForecast = {
       id: `forecast_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       forecastPeriod,
@@ -57,16 +57,19 @@ export class ProcurementPlanningService {
       budgetConstraints: [],
       resourceRequirements: this.calculateResourceRequirements(plannedAcquisitions),
       dependencyAnalysis: this.analyzeDependencies(plannedAcquisitions),
-      riskAssessment: this.assessForecastRisks(plannedAcquisitions)
+      riskAssessment: this.assessForecastRisks(plannedAcquisitions),
     };
-    
+
     return forecast;
   }
 
   /**
    * Perform cost analysis
    */
-  async performCostAnalysis(acquisitionId: string, analysisType: CostAnalysis['analysisType']): Promise<CostAnalysis> {
+  async performCostAnalysis(
+    acquisitionId: string,
+    analysisType: CostAnalysis['analysisType']
+  ): Promise<CostAnalysis> {
     return {
       id: `cost_analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       analysisType,
@@ -76,14 +79,17 @@ export class ProcurementPlanningService {
       governmentEstimate: 980000,
       varianceAnalysis: [],
       costDrivers: [],
-      savingsOpportunities: []
+      savingsOpportunities: [],
     };
   }
 
   /**
    * Develop strategic sourcing plan
    */
-  async developStrategicSourcing(commodityCategory: string, totalSpend: number): Promise<StrategicSourcing> {
+  async developStrategicSourcing(
+    commodityCategory: string,
+    totalSpend: number
+  ): Promise<StrategicSourcing> {
     return {
       id: `sourcing_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       sourcingStrategy: 'Competitive Strategy',
@@ -93,7 +99,7 @@ export class ProcurementPlanningService {
       marketPosition: 'BALANCED',
       sourcingRecommendations: [],
       implementationPlan: [],
-      expectedBenefits: []
+      expectedBenefits: [],
     };
   }
 
@@ -102,8 +108,8 @@ export class ProcurementPlanningService {
    */
   private calculateResourceRequirements(acquisitions: PlannedAcquisition[]): ResourceRequirement[] {
     const totalValue = acquisitions.reduce((sum, acq) => sum + acq.estimatedValue, 0);
-    const complexity = totalValue > 10000000 ? 'HIGH' : (totalValue > 1000000 ? 'MEDIUM' : 'LOW');
-    
+    const complexity = totalValue > 10000000 ? 'HIGH' : totalValue > 1000000 ? 'MEDIUM' : 'LOW';
+
     return [
       {
         resourceType: 'CONTRACTING_OFFICER',
@@ -111,8 +117,8 @@ export class ProcurementPlanningService {
         certificationLevel: complexity === 'HIGH' ? 'Level III' : 'Level II',
         estimatedHours: Math.floor(acquisitions.length * 40),
         timeframe: '6 months',
-        availability: 'AVAILABLE'
-      }
+        availability: 'AVAILABLE',
+      },
     ];
   }
 
@@ -121,7 +127,7 @@ export class ProcurementPlanningService {
    */
   private analyzeDependencies(acquisitions: PlannedAcquisition[]): DependencyAnalysis[] {
     const dependencies: DependencyAnalysis[] = [];
-    
+
     for (let i = 0; i < acquisitions.length - 1; i++) {
       dependencies.push({
         dependencyType: 'SEQUENTIAL',
@@ -129,10 +135,10 @@ export class ProcurementPlanningService {
         prerequisiteAcquisition: acquisitions[i].id,
         description: 'Sequential acquisition dependency',
         impactIfDelayed: 'MEDIUM',
-        mitigationOptions: ['Parallel processing', 'Risk acceptance']
+        mitigationOptions: ['Parallel processing', 'Risk acceptance'],
       });
     }
-    
+
     return dependencies;
   }
 
@@ -148,9 +154,9 @@ export class ProcurementPlanningService {
         probability: 0.3,
         impact: 0.7,
         riskScore: 0.21,
-        affectedAcquisitions: acquisitions.map(a => a.id),
-        mitigationStrategy: 'Secure funding early, develop contingency plans'
-      }
+        affectedAcquisitions: acquisitions.map((a) => a.id),
+        mitigationStrategy: 'Secure funding early, develop contingency plans',
+      },
     ];
   }
 
@@ -166,18 +172,18 @@ export class ProcurementPlanningService {
       recommendations: [
         'Increase competition through market research',
         'Consolidate similar acquisitions for economy of scale',
-        'Implement strategic sourcing for high-value categories'
+        'Implement strategic sourcing for high-value categories',
       ],
       actionItems: [
         'Complete market analysis by end of quarter',
         'Develop category management strategies',
-        'Establish supplier performance metrics'
+        'Establish supplier performance metrics',
       ],
       riskMitigation: [
         'Establish contingency funding sources',
         'Develop alternative sourcing strategies',
-        'Monitor market conditions regularly'
-      ]
+        'Monitor market conditions regularly',
+      ],
     };
   }
 
@@ -202,23 +208,24 @@ export class ProcurementPlanningService {
     nextSteps: string[];
   }> {
     return {
-      executiveSummary: 'Strategic procurement plan shows positive outlook with identified opportunities for improvement.',
+      executiveSummary:
+        'Strategic procurement plan shows positive outlook with identified opportunities for improvement.',
       keyMetrics: {
         totalPlannedValue: 45000000,
         numberOfAcquisitions: 15,
         averageCompetition: 85,
-        riskScore: 'MEDIUM'
+        riskScore: 'MEDIUM',
       },
       recommendations: [
         'Focus on high-value strategic categories',
         'Enhance supplier relationship management',
-        'Implement predictive analytics'
+        'Implement predictive analytics',
       ],
       nextSteps: [
         'Finalize acquisition forecasts',
         'Develop implementation timeline',
-        'Establish performance monitoring'
-      ]
+        'Establish performance monitoring',
+      ],
     };
   }
 }

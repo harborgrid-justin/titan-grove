@@ -17,13 +17,13 @@ export interface LoggerConfig {
 
 // Default logger configuration
 const defaultLoggerConfig: LoggerConfig = {
-  level: process.env.LOG_LEVEL as any || 'info',
+  level: (process.env.LOG_LEVEL as any) || 'info',
   enableConsole: true,
   enableFile: process.env.NODE_ENV === 'production',
   enableJson: process.env.NODE_ENV === 'production',
   logFilePath: './logs/titan-grove.log',
   maxFiles: 5,
-  maxSize: '20m'
+  maxSize: '20m',
 };
 
 /**
@@ -31,7 +31,7 @@ const defaultLoggerConfig: LoggerConfig = {
  */
 export function createLogger(serviceName: string, config: Partial<LoggerConfig> = {}): Logger {
   const loggerConfig = { ...defaultLoggerConfig, ...config };
-  
+
   const logFormat = winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
@@ -42,9 +42,9 @@ export function createLogger(serviceName: string, config: Partial<LoggerConfig> 
         level,
         service: service || serviceName,
         message,
-        ...meta
+        ...meta,
       };
-      
+
       if (loggerConfig.enableJson) {
         return JSON.stringify(logEntry);
       } else {
@@ -60,7 +60,7 @@ export function createLogger(serviceName: string, config: Partial<LoggerConfig> 
     transports.push(
       new winston.transports.Console({
         level: loggerConfig.level,
-        format: loggerConfig.enableJson 
+        format: loggerConfig.enableJson
           ? logFormat
           : winston.format.combine(
               winston.format.colorize(),
@@ -68,7 +68,7 @@ export function createLogger(serviceName: string, config: Partial<LoggerConfig> 
               winston.format.printf(({ timestamp, level, message, service, ...meta }) => {
                 return `${timestamp} [${level}] [${service || serviceName}]: ${message} ${Object.keys(meta).length ? JSON.stringify(meta) : ''}`;
               })
-            )
+            ),
       })
     );
   }
@@ -81,7 +81,7 @@ export function createLogger(serviceName: string, config: Partial<LoggerConfig> 
         level: loggerConfig.level,
         format: logFormat,
         maxsize: parseInt(loggerConfig.maxSize?.replace('m', '') || '20') * 1024 * 1024,
-        maxFiles: loggerConfig.maxFiles
+        maxFiles: loggerConfig.maxFiles,
       })
     );
   }
@@ -91,7 +91,7 @@ export function createLogger(serviceName: string, config: Partial<LoggerConfig> 
     format: logFormat,
     defaultMeta: { service: serviceName },
     transports,
-    exitOnError: false
+    exitOnError: false,
   });
 }
 

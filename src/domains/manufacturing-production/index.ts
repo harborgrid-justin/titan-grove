@@ -1,7 +1,7 @@
 /**
  * Manufacturing & Production Domain
  * Centralized business logic for manufacturing operations, quality control, and production scheduling
- * 
+ *
  * @author Titan Grove Development Team
  * @version 1.0.0
  * @since 2024-01-01
@@ -159,38 +159,37 @@ export interface ManufacturingProductionDomainConfig {
 /**
  * Core Business Logic Functions - Manufacturing & Production Domain
  * Production-grade business logic with comprehensive error handling and validation
- * 
+ *
  * This class centralizes all manufacturing calculations and provides standardized
  * business logic across the manufacturing and production domain.
  */
 export class ManufacturingProductionBusinessLogic {
-  
   private static readonly OEE_CALCULATION_CONSTANTS = {
     PERCENTAGE_MULTIPLIER: 100,
     PERFECT_EFFICIENCY: 1.0,
-    MIN_ACCEPTABLE_OEE: 0.60,
+    MIN_ACCEPTABLE_OEE: 0.6,
     GOOD_OEE_THRESHOLD: 0.75,
-    EXCELLENT_OEE_THRESHOLD: 0.85
+    EXCELLENT_OEE_THRESHOLD: 0.85,
   } as const;
 
   private static readonly OEE_COMPONENT_WEIGHTS = {
     AVAILABILITY: 'Availability',
-    PERFORMANCE: 'Performance', 
-    QUALITY: 'Quality'
+    PERFORMANCE: 'Performance',
+    QUALITY: 'Quality',
   } as const;
 
   /**
    * Calculate Overall Equipment Effectiveness (OEE) with comprehensive analysis
-   * 
+   *
    * Implements the standard OEE calculation methodology used in lean manufacturing
    * and provides detailed analysis including component breakdown, performance
    * categorization, and improvement recommendations.
-   * 
+   *
    * @param productionMetrics - Core production time and output metrics
    * @param domainConfig - Domain-specific configuration for OEE analysis
    * @returns Comprehensive OEE analysis with component breakdown and recommendations
    * @throws {InvalidOEEParametersError} When parameters are invalid
-   * 
+   *
    * @example
    * ```typescript
    * const oeeAnalysis = ManufacturingProductionBusinessLogic.calculateOverallEquipmentEffectiveness(
@@ -257,7 +256,10 @@ export class ManufacturingProductionBusinessLogic {
       );
 
       // Calculate overall OEE
-      const oeeDecimal = availabilityAnalysis.availability * performanceAnalysis.performance * qualityAnalysis.quality;
+      const oeeDecimal =
+        availabilityAnalysis.availability *
+        performanceAnalysis.performance *
+        qualityAnalysis.quality;
       const oeePercentage = oeeDecimal * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER;
 
       // Determine performance category
@@ -280,9 +282,12 @@ export class ManufacturingProductionBusinessLogic {
       );
 
       return {
-        availabilityPercentage: availabilityAnalysis.availability * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
-        performancePercentage: performanceAnalysis.performance * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
-        qualityPercentage: qualityAnalysis.quality * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+        availabilityPercentage:
+          availabilityAnalysis.availability * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+        performancePercentage:
+          performanceAnalysis.performance * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+        qualityPercentage:
+          qualityAnalysis.quality * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
         overallEquipmentEffectiveness: oeePercentage,
         performanceCategory: performanceCategory.category,
         improvementRecommendations,
@@ -292,10 +297,9 @@ export class ManufacturingProductionBusinessLogic {
           actualRunRate: performanceAnalysis.actualRunRate,
           targetRunRate: performanceAnalysis.targetRunRate,
           defectRate: qualityAnalysis.defectRate,
-          lossBreakdown
-        }
+          lossBreakdown,
+        },
       };
-
     } catch (error) {
       if (error instanceof InvalidOEEParametersError) {
         throw error;
@@ -316,13 +320,16 @@ export class ManufacturingProductionBusinessLogic {
   private static calculateAvailabilityComponent(
     availableTime: number,
     downtime: number
-  ): { availability: number; operatingTime: number; } {
+  ): { availability: number; operatingTime: number } {
     const operatingTime = availableTime - downtime;
     const availability = availableTime > 0 ? operatingTime / availableTime : 0;
 
     return {
-      availability: Math.max(0, Math.min(this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY, availability)),
-      operatingTime
+      availability: Math.max(
+        0,
+        Math.min(this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY, availability)
+      ),
+      operatingTime,
     };
   }
 
@@ -333,13 +340,16 @@ export class ManufacturingProductionBusinessLogic {
   private static calculatePerformanceComponent(
     actualProduction: number,
     targetProduction: number
-  ): { performance: number; actualRunRate: number; targetRunRate: number; } {
+  ): { performance: number; actualRunRate: number; targetRunRate: number } {
     const performance = targetProduction > 0 ? actualProduction / targetProduction : 0;
 
     return {
-      performance: Math.max(0, Math.min(this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY, performance)),
+      performance: Math.max(
+        0,
+        Math.min(this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY, performance)
+      ),
       actualRunRate: actualProduction,
-      targetRunRate: targetProduction
+      targetRunRate: targetProduction,
     };
   }
 
@@ -350,13 +360,13 @@ export class ManufacturingProductionBusinessLogic {
   private static calculateQualityComponent(
     goodParts: number,
     totalParts: number
-  ): { quality: number; defectRate: number; } {
+  ): { quality: number; defectRate: number } {
     const quality = totalParts > 0 ? goodParts / totalParts : 0;
     const defectRate = totalParts > 0 ? (totalParts - goodParts) / totalParts : 0;
 
     return {
       quality: Math.max(0, Math.min(this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY, quality)),
-      defectRate
+      defectRate,
     };
   }
 
@@ -367,8 +377,10 @@ export class ManufacturingProductionBusinessLogic {
   private static determineOEEPerformanceCategory(
     oeeDecimal: number,
     domainConfig: ManufacturingProductionDomainConfig
-  ): { category: 'excellent' | 'good' | 'acceptable' | 'poor'; threshold: number; } {
-    const targetOEE = domainConfig.production.efficiency.targetOEE / this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER;
+  ): { category: 'excellent' | 'good' | 'acceptable' | 'poor'; threshold: number } {
+    const targetOEE =
+      domainConfig.production.efficiency.targetOEE /
+      this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER;
 
     let category: 'excellent' | 'good' | 'acceptable' | 'poor';
     let threshold: number;
@@ -395,14 +407,20 @@ export class ManufacturingProductionBusinessLogic {
    * @private
    */
   private static calculateOEELossBreakdown(
-    availabilityAnalysis: { availability: number; },
-    performanceAnalysis: { performance: number; },
-    qualityAnalysis: { quality: number; }
-  ): { availabilityLoss: number; performanceLoss: number; qualityLoss: number; } {
+    availabilityAnalysis: { availability: number },
+    performanceAnalysis: { performance: number },
+    qualityAnalysis: { quality: number }
+  ): { availabilityLoss: number; performanceLoss: number; qualityLoss: number } {
     return {
-      availabilityLoss: (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - availabilityAnalysis.availability) * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
-      performanceLoss: (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - performanceAnalysis.performance) * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
-      qualityLoss: (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - qualityAnalysis.quality) * this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER
+      availabilityLoss:
+        (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - availabilityAnalysis.availability) *
+        this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+      performanceLoss:
+        (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - performanceAnalysis.performance) *
+        this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
+      qualityLoss:
+        (this.OEE_CALCULATION_CONSTANTS.PERFECT_EFFICIENCY - qualityAnalysis.quality) *
+        this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER,
     };
   }
 
@@ -411,60 +429,84 @@ export class ManufacturingProductionBusinessLogic {
    * @private
    */
   private static generateOEEImprovementRecommendations(
-    availabilityAnalysis: { availability: number; },
-    performanceAnalysis: { performance: number; },
-    qualityAnalysis: { quality: number; },
+    availabilityAnalysis: { availability: number },
+    performanceAnalysis: { performance: number },
+    qualityAnalysis: { quality: number },
     overallOEE: number,
     domainConfig: ManufacturingProductionDomainConfig
   ): string[] {
     const recommendations: string[] = [];
 
     const IMPROVEMENT_THRESHOLDS = {
-      AVAILABILITY_THRESHOLD: 0.90,
+      AVAILABILITY_THRESHOLD: 0.9,
       PERFORMANCE_THRESHOLD: 0.85,
       QUALITY_THRESHOLD: 0.95,
-      CRITICAL_THRESHOLD: 0.70
+      CRITICAL_THRESHOLD: 0.7,
     } as const;
 
     // Availability recommendations
     if (availabilityAnalysis.availability < IMPROVEMENT_THRESHOLDS.AVAILABILITY_THRESHOLD) {
       if (availabilityAnalysis.availability < IMPROVEMENT_THRESHOLDS.CRITICAL_THRESHOLD) {
-        recommendations.push('CRITICAL: Implement aggressive preventive maintenance program to reduce equipment downtime');
+        recommendations.push(
+          'CRITICAL: Implement aggressive preventive maintenance program to reduce equipment downtime'
+        );
       } else {
-        recommendations.push('Optimize planned maintenance schedules and reduce changeover times to improve availability');
+        recommendations.push(
+          'Optimize planned maintenance schedules and reduce changeover times to improve availability'
+        );
       }
     }
 
     // Performance recommendations
     if (performanceAnalysis.performance < IMPROVEMENT_THRESHOLDS.PERFORMANCE_THRESHOLD) {
       if (performanceAnalysis.performance < IMPROVEMENT_THRESHOLDS.CRITICAL_THRESHOLD) {
-        recommendations.push('CRITICAL: Investigate and resolve major performance bottlenecks affecting production rate');
+        recommendations.push(
+          'CRITICAL: Investigate and resolve major performance bottlenecks affecting production rate'
+        );
       } else {
-        recommendations.push('Fine-tune equipment settings and operator training to achieve target production rates');
+        recommendations.push(
+          'Fine-tune equipment settings and operator training to achieve target production rates'
+        );
       }
     }
 
     // Quality recommendations
     if (qualityAnalysis.quality < IMPROVEMENT_THRESHOLDS.QUALITY_THRESHOLD) {
       if (qualityAnalysis.quality < IMPROVEMENT_THRESHOLDS.CRITICAL_THRESHOLD) {
-        recommendations.push('CRITICAL: Implement immediate quality control measures to reduce defect rates');
+        recommendations.push(
+          'CRITICAL: Implement immediate quality control measures to reduce defect rates'
+        );
       } else {
-        recommendations.push('Enhance quality control processes and implement statistical process control');
+        recommendations.push(
+          'Enhance quality control processes and implement statistical process control'
+        );
       }
     }
 
     // Overall OEE recommendations
-    const targetOEE = domainConfig.production.efficiency.targetOEE / this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER;
+    const targetOEE =
+      domainConfig.production.efficiency.targetOEE /
+      this.OEE_CALCULATION_CONSTANTS.PERCENTAGE_MULTIPLIER;
     if (overallOEE < targetOEE) {
-      recommendations.push(`Overall OEE below target (${(targetOEE * 100).toFixed(1)}%) - prioritize highest impact improvements`);
+      recommendations.push(
+        `Overall OEE below target (${(targetOEE * 100).toFixed(1)}%) - prioritize highest impact improvements`
+      );
     }
 
     // Identify highest priority area for improvement
-    const lowestComponent = Math.min(availabilityAnalysis.availability, performanceAnalysis.performance, qualityAnalysis.quality);
+    const lowestComponent = Math.min(
+      availabilityAnalysis.availability,
+      performanceAnalysis.performance,
+      qualityAnalysis.quality
+    );
     if (lowestComponent === availabilityAnalysis.availability) {
-      recommendations.push('Priority focus: Availability improvement will provide highest OEE impact');
+      recommendations.push(
+        'Priority focus: Availability improvement will provide highest OEE impact'
+      );
     } else if (lowestComponent === performanceAnalysis.performance) {
-      recommendations.push('Priority focus: Performance optimization will provide highest OEE impact');
+      recommendations.push(
+        'Priority focus: Performance optimization will provide highest OEE impact'
+      );
     } else {
       recommendations.push('Priority focus: Quality improvement will provide highest OEE impact');
     }
@@ -498,33 +540,38 @@ export class ManufacturingProductionBusinessLogic {
   } {
     // Calculate material cost with waste factor
     const materialCost = bomItems.reduce((total, item) => {
-      const adjustedQuantity = item.quantity * (1 + item.scrapRate + config.production.costFactors.materialWasteFactor);
-      return total + (adjustedQuantity * item.unitCost * (1 + config.bom.costing.materialMarkup));
+      const adjustedQuantity =
+        item.quantity * (1 + item.scrapRate + config.production.costFactors.materialWasteFactor);
+      return total + adjustedQuantity * item.unitCost * (1 + config.bom.costing.materialMarkup);
     }, 0);
 
     // Calculate labor cost with efficiency factor
-    const laborCost = laborHours * config.production.costFactors.laborCostPerHour * 
-                     (1 / config.bom.costing.laborEfficiency);
+    const laborCost =
+      laborHours *
+      config.production.costFactors.laborCostPerHour *
+      (1 / config.bom.costing.laborEfficiency);
 
     // Calculate machine cost
     const machineCost = machineHours * config.production.costFactors.machineCostPerHour;
 
     // Calculate overhead cost
-    const overheadCost = (materialCost + laborCost + machineCost) * overheadRate * 
-                        config.bom.costing.overheadAllocation;
+    const overheadCost =
+      (materialCost + laborCost + machineCost) *
+      overheadRate *
+      config.bom.costing.overheadAllocation;
 
     // Calculate quality control cost
-    const qualityCost = (materialCost + laborCost + machineCost) * 
-                       config.production.costFactors.qualityControlCost;
+    const qualityCost =
+      (materialCost + laborCost + machineCost) * config.production.costFactors.qualityControlCost;
 
     const totalCost = materialCost + laborCost + machineCost + overheadCost + qualityCost;
 
     const costBreakdown = {
-      'Material': materialCost,
-      'Labor': laborCost,
-      'Machine': machineCost,
-      'Overhead': overheadCost,
-      'Quality': qualityCost
+      Material: materialCost,
+      Labor: laborCost,
+      Machine: machineCost,
+      Overhead: overheadCost,
+      Quality: qualityCost,
     };
 
     return {
@@ -534,7 +581,7 @@ export class ManufacturingProductionBusinessLogic {
       overheadCost,
       qualityCost,
       totalCost,
-      costBreakdown
+      costBreakdown,
     };
   }
 
@@ -586,10 +633,10 @@ export class ManufacturingProductionBusinessLogic {
     }> = [];
 
     // Resource availability tracking
-    const resourceAvailability = resources.map(resource => ({
+    const resourceAvailability = resources.map((resource) => ({
       id: resource.id,
       nextAvailableTime: new Date(),
-      totalUsedTime: 0
+      totalUsedTime: 0,
     }));
 
     // Schedule each work order
@@ -601,13 +648,14 @@ export class ManufacturingProductionBusinessLogic {
       for (let i = 0; i < resources.length; i++) {
         const resource = resources[i];
         const availability = resourceAvailability[i];
-        
-        const totalTime = order.setupTime + order.processingTime + 
-                         config.production.scheduling.setupTimeBuffer;
-        
-        if (availability.totalUsedTime + totalTime <= 
-            resource.availableHours * config.production.scheduling.capacityUtilization) {
-          
+
+        const totalTime =
+          order.setupTime + order.processingTime + config.production.scheduling.setupTimeBuffer;
+
+        if (
+          availability.totalUsedTime + totalTime <=
+          resource.availableHours * config.production.scheduling.capacityUtilization
+        ) {
           if (availability.nextAvailableTime < earliestTime) {
             earliestTime = availability.nextAvailableTime;
             bestResource = { resource, availabilityIndex: i };
@@ -618,19 +666,19 @@ export class ManufacturingProductionBusinessLogic {
       if (bestResource) {
         const { resource, availabilityIndex } = bestResource;
         const availability = resourceAvailability[availabilityIndex];
-        
-        const totalTime = order.setupTime + order.processingTime + 
-                         config.production.scheduling.setupTimeBuffer;
-        
+
+        const totalTime =
+          order.setupTime + order.processingTime + config.production.scheduling.setupTimeBuffer;
+
         const startTime = new Date(availability.nextAvailableTime);
         const endTime = new Date(startTime.getTime() + totalTime * 60 * 60 * 1000);
-        
+
         schedule.push({
           workOrderId: order.id,
           resourceId: resource.id,
           startTime,
           endTime,
-          utilization: totalTime / resource.availableHours
+          utilization: totalTime / resource.availableHours,
         });
 
         // Update resource availability
@@ -640,16 +688,19 @@ export class ManufacturingProductionBusinessLogic {
     }
 
     // Calculate metrics
-    const totalMakespan = schedule.length > 0 ? 
-      Math.max(...schedule.map(s => s.endTime.getTime())) - 
-      Math.min(...schedule.map(s => s.startTime.getTime())) : 0;
+    const totalMakespan =
+      schedule.length > 0
+        ? Math.max(...schedule.map((s) => s.endTime.getTime())) -
+          Math.min(...schedule.map((s) => s.startTime.getTime()))
+        : 0;
 
     const totalResourceCapacity = resources.reduce((sum, r) => sum + r.availableHours, 0);
     const totalUsedCapacity = resourceAvailability.reduce((sum, r) => sum + r.totalUsedTime, 0);
-    const resourceUtilization = totalResourceCapacity > 0 ? totalUsedCapacity / totalResourceCapacity : 0;
+    const resourceUtilization =
+      totalResourceCapacity > 0 ? totalUsedCapacity / totalResourceCapacity : 0;
 
-    const onTimeOrders = schedule.filter(s => {
-      const workOrder = workOrders.find(wo => wo.id === s.workOrderId);
+    const onTimeOrders = schedule.filter((s) => {
+      const workOrder = workOrders.find((wo) => wo.id === s.workOrderId);
       return workOrder ? s.endTime <= workOrder.dueDate : false;
     }).length;
     const onTimeDelivery = schedule.length > 0 ? onTimeOrders / schedule.length : 0;
@@ -658,7 +709,7 @@ export class ManufacturingProductionBusinessLogic {
       schedule,
       totalMakespan: totalMakespan / (1000 * 60 * 60), // Convert to hours
       resourceUtilization,
-      onTimeDelivery
+      onTimeDelivery,
     };
   }
 
@@ -681,25 +732,29 @@ export class ManufacturingProductionBusinessLogic {
   } {
     if (measurements.length === 0) {
       return {
-        cpk: 0, cp: 0, sigma: 0, defectRate: 1,
+        cpk: 0,
+        cp: 0,
+        sigma: 0,
+        defectRate: 1,
         qualityLevel: 'insufficient-data',
-        recommendations: ['Need more measurement data']
+        recommendations: ['Need more measurement data'],
       };
     }
 
     // Calculate basic statistics
     const mean = measurements.reduce((sum, val) => sum + val, 0) / measurements.length;
-    const variance = measurements.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / 
-                    (measurements.length - 1);
+    const variance =
+      measurements.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) /
+      (measurements.length - 1);
     const standardDeviation = Math.sqrt(variance);
 
     // Calculate process capability indices
     const upperSpec = tolerances.upper;
     const lowerSpec = tolerances.lower;
     const specRange = upperSpec - lowerSpec;
-    
+
     const cp = specRange / (6 * standardDeviation);
-    
+
     const cpkUpper = (upperSpec - mean) / (3 * standardDeviation);
     const cpkLower = (mean - lowerSpec) / (3 * standardDeviation);
     const cpk = Math.min(cpkUpper, cpkLower);
@@ -708,8 +763,8 @@ export class ManufacturingProductionBusinessLogic {
     const sigma = Math.min(cpkUpper, cpkLower) * 3;
 
     // Estimate defect rate (simplified)
-    const defectsUpper = measurements.filter(m => m > upperSpec).length;
-    const defectsLower = measurements.filter(m => m < lowerSpec).length;
+    const defectsUpper = measurements.filter((m) => m > upperSpec).length;
+    const defectsLower = measurements.filter((m) => m < lowerSpec).length;
     const defectRate = (defectsUpper + defectsLower) / measurements.length;
 
     // Determine quality level
@@ -729,13 +784,17 @@ export class ManufacturingProductionBusinessLogic {
     // Generate recommendations
     const recommendations: string[] = [];
     if (cpk < 1.0) {
-      recommendations.push('Process capability is below acceptable level - investigate root causes');
+      recommendations.push(
+        'Process capability is below acceptable level - investigate root causes'
+      );
     }
     if (Math.abs(mean - targetValue) > standardDeviation) {
       recommendations.push('Process is not centered on target - adjust process parameters');
     }
     if (standardDeviation > specRange / 8) {
-      recommendations.push('Process variation is too high - implement variation reduction initiatives');
+      recommendations.push(
+        'Process variation is too high - implement variation reduction initiatives'
+      );
     }
     if (defectRate > config.production.efficiency.maxDefectRate) {
       recommendations.push('Defect rate exceeds target - implement quality improvement program');
@@ -747,7 +806,7 @@ export class ManufacturingProductionBusinessLogic {
       sigma,
       defectRate,
       qualityLevel,
-      recommendations
+      recommendations,
     };
   }
 }
@@ -774,28 +833,39 @@ export class ManufacturingProductionDomainManager {
   }> {
     // Mock data for demonstration
     const oeeAnalysis = ManufacturingProductionBusinessLogic.calculateOEE(
-      480, 45, 950, 1000, 920, 950, this.config
+      480,
+      45,
+      950,
+      1000,
+      920,
+      950,
+      this.config
     );
 
     const costAnalysis = ManufacturingProductionBusinessLogic.calculateProductionCost(
       [
         { materialId: 'steel', quantity: 10, unitCost: 50, scrapRate: 0.02 },
-        { materialId: 'paint', quantity: 2, unitCost: 25, scrapRate: 0.05 }
+        { materialId: 'paint', quantity: 2, unitCost: 25, scrapRate: 0.05 },
       ],
-      8, 4, 0.25, this.config
+      8,
+      4,
+      0.25,
+      this.config
     );
 
     const scheduleOptimization = ManufacturingProductionBusinessLogic.optimizeProductionSchedule(
       [
         {
-          id: 'wo1', productId: 'prod1', quantity: 100, 
+          id: 'wo1',
+          productId: 'prod1',
+          quantity: 100,
           dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          priority: 8, setupTime: 2, processingTime: 6
-        }
+          priority: 8,
+          setupTime: 2,
+          processingTime: 6,
+        },
       ],
-      [
-        { id: 'machine1', capacity: 100, availableHours: 40, setupCost: 200 }
-      ],
+      [{ id: 'machine1', capacity: 100, availableHours: 40, setupCost: 200 }],
       this.config
     );
 
@@ -810,7 +880,7 @@ export class ManufacturingProductionDomainManager {
       oeeAnalysis,
       costAnalysis,
       scheduleOptimization,
-      qualityMetrics
+      qualityMetrics,
     };
   }
 
@@ -818,7 +888,7 @@ export class ManufacturingProductionDomainManager {
   get managers() {
     return {
       manufacturing: this.manufacturing,
-      quality: this.quality
+      quality: this.quality,
     };
   }
 }
@@ -830,51 +900,51 @@ export const defaultManufacturingProductionConfig: ManufacturingProductionDomain
       setupTimeBuffer: 0.25, // 25% buffer for setup
       maintenanceWindow: 2, // 2 hours daily maintenance
       capacityUtilization: 0.85, // 85% target utilization
-      rushOrderPremium: 0.15 // 15% premium for rush orders
+      rushOrderPremium: 0.15, // 15% premium for rush orders
     },
     costFactors: {
       laborCostPerHour: 35,
       machineCostPerHour: 125,
       materialWasteFactor: 0.03,
-      qualityControlCost: 0.05
+      qualityControlCost: 0.05,
     },
     efficiency: {
       targetOEE: 0.85, // 85% target OEE
-      minThroughput: 0.80,
+      minThroughput: 0.8,
       maxDefectRate: 0.01, // 1% max defect rate
-      downtimeThreshold: 0.05 // 5% max downtime
-    }
+      downtimeThreshold: 0.05, // 5% max downtime
+    },
   },
   quality: {
     controlLimits: {
       upperControlLimit: 3.0,
       lowerControlLimit: -3.0,
-      warningLimit: 2.0
+      warningLimit: 2.0,
     },
     sampling: {
-      inspectionRate: 0.10, // Inspect 10% of production
+      inspectionRate: 0.1, // Inspect 10% of production
       batchSampleSize: 25,
-      criticalSampleSize: 50
+      criticalSampleSize: 50,
     },
     defectCosts: {
       internalFailure: 150, // Cost per internal defect
       externalFailure: 500, // Cost per external defect
       preventionCost: 25, // Cost per prevention activity
-      appraisalCost: 50 // Cost per appraisal activity
-    }
+      appraisalCost: 50, // Cost per appraisal activity
+    },
   },
   bom: {
     complexity: {
       simpleThreshold: 5, // Components
       moderateThreshold: 15, // Components
-      complexMultiplier: 1.5 // Complexity cost multiplier
+      complexMultiplier: 1.5, // Complexity cost multiplier
     },
     costing: {
       materialMarkup: 0.05, // 5% material markup
       laborEfficiency: 0.85, // 85% labor efficiency
-      overheadAllocation: 1.2 // 120% overhead allocation
-    }
-  }
+      overheadAllocation: 1.2, // 120% overhead allocation
+    },
+  },
 };
 
 // Singleton instance

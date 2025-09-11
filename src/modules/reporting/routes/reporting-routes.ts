@@ -19,11 +19,13 @@ const reportingController = new ReportingController();
 router.use(authMiddleware);
 router.use(validateReportingPermissions);
 router.use(auditMiddleware('reporting'));
-router.use(rateLimitMiddleware({ 
+router.use(
+  rateLimitMiddleware({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many reporting requests from this IP'
-}));
+    message: 'Too many reporting requests from this IP',
+  })
+);
 
 // =================================================================
 // BUSINESS INTELLIGENCE REPORTS (7 endpoints)

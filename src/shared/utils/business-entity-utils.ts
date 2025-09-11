@@ -34,7 +34,6 @@ export interface FinancialEntity extends BaseBusinessEntity {
  * Utility functions for business entities
  */
 export class BusinessEntityUtils {
-  
   /**
    * Create audit fields for a new entity
    */
@@ -44,37 +43,34 @@ export class BusinessEntityUtils {
       createdAt: now,
       updatedAt: now,
       createdBy,
-      updatedBy: createdBy
+      updatedBy: createdBy,
     };
   }
-  
+
   /**
    * Update audit fields for an existing entity
    */
   static updateAuditFields(updatedBy: string): Pick<AuditFields, 'updatedAt' | 'updatedBy'> {
     return {
       updatedAt: new Date(),
-      updatedBy
+      updatedBy,
     };
   }
-  
+
   /**
    * Check if entity is active
    */
   static isActive(entity: BaseBusinessEntity): boolean {
     return entity.status === CommonStatus.ACTIVE;
   }
-  
+
   /**
    * Filter entities by status
    */
-  static filterByStatus<T extends BaseBusinessEntity>(
-    entities: T[], 
-    status: CommonStatus
-  ): T[] {
-    return entities.filter(entity => entity.status === status);
+  static filterByStatus<T extends BaseBusinessEntity>(entities: T[], status: CommonStatus): T[] {
+    return entities.filter((entity) => entity.status === status);
   }
-  
+
   /**
    * Sort entities by priority (highest first)
    */
@@ -83,9 +79,9 @@ export class BusinessEntityUtils {
       [Priority.CRITICAL]: 0,
       [Priority.HIGH]: 1,
       [Priority.MEDIUM]: 2,
-      [Priority.LOW]: 3
+      [Priority.LOW]: 3,
     };
-    
+
     return entities.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
   }
 }

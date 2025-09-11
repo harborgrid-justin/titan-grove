@@ -14,7 +14,6 @@ const router: RouterType = Router();
 // Apply standard middleware
 applyStandardMiddleware(router);
 
-
 // Production Planning Routes
 router.get('/production/planning', manufacturingController.getProductionPlanning);
 router.post('/production/planning', manufacturingController.createProductionPlan);

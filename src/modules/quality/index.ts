@@ -135,7 +135,12 @@ export interface QualityStandard {
 export interface QualityMetric {
   metricId: string;
   metricName: string;
-  metricType: 'DEFECT_RATE' | 'FIRST_PASS_YIELD' | 'CUSTOMER_SATISFACTION' | 'COST_OF_QUALITY' | 'SUPPLIER_PERFORMANCE';
+  metricType:
+    | 'DEFECT_RATE'
+    | 'FIRST_PASS_YIELD'
+    | 'CUSTOMER_SATISFACTION'
+    | 'COST_OF_QUALITY'
+    | 'SUPPLIER_PERFORMANCE';
   value: number;
   target: number;
   unit: string;
@@ -247,14 +252,16 @@ export interface NonConformance {
 }
 
 export class QualityManager {
-  async createQualityPlan(plan: Omit<QualityPlan, 'id' | 'status' | 'createdDate' | 'version'>): Promise<QualityPlan> {
+  async createQualityPlan(
+    plan: Omit<QualityPlan, 'id' | 'status' | 'createdDate' | 'version'>
+  ): Promise<QualityPlan> {
     const id = `qp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return {
       ...plan,
       id,
       status: 'DRAFT',
       createdDate: new Date(),
-      version: '1.0'
+      version: '1.0',
     };
   }
 
@@ -272,13 +279,18 @@ export class QualityManager {
       createdDate: new Date(),
       version: '1.1',
       qualityStandards: [],
-      ...updates
+      ...updates,
     };
   }
 
-  async scheduleInspection(planId: string, pointId: string, scheduleDate: Date, inspectorId: string): Promise<QualityInspection> {
+  async scheduleInspection(
+    planId: string,
+    pointId: string,
+    scheduleDate: Date,
+    inspectorId: string
+  ): Promise<QualityInspection> {
     const inspectionId = `qi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       inspectionId,
       planId,
@@ -291,11 +303,14 @@ export class QualityManager {
       overallResult: 'PASS',
       defectsFound: [],
       correctiveActions: [],
-      inspectionNotes: ''
+      inspectionNotes: '',
     };
   }
 
-  async conductInspection(inspectionId: string, results: InspectionResult[]): Promise<{
+  async conductInspection(
+    inspectionId: string,
+    results: InspectionResult[]
+  ): Promise<{
     inspectionId: string;
     overallResult: 'PASS' | 'FAIL' | 'CONDITIONAL_PASS';
     defectsFound: QualityDefect[];
@@ -303,10 +318,10 @@ export class QualityManager {
     qualityScore: number;
   }> {
     console.log(`Conducting inspection ${inspectionId}`);
-    
-    const passCount = results.filter(r => r.result === 'PASS').length;
+
+    const passCount = results.filter((r) => r.result === 'PASS').length;
     const qualityScore = (passCount / results.length) * 100;
-    
+
     let overallResult: 'PASS' | 'FAIL' | 'CONDITIONAL_PASS' = 'PASS';
     if (qualityScore < 70) {
       overallResult = 'FAIL';
@@ -315,8 +330,8 @@ export class QualityManager {
     }
 
     const defectsFound: QualityDefect[] = results
-      .filter(r => r.result === 'FAIL')
-      .map(r => ({
+      .filter((r) => r.result === 'FAIL')
+      .map((r) => ({
         defectId: `def_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         defectCode: 'DEF001',
         description: `Failed criteria: ${r.criteriaId}`,
@@ -326,7 +341,7 @@ export class QualityManager {
         reportedBy: 'inspector_001',
         reportedDate: new Date(),
         status: 'OPEN' as const,
-        photos: []
+        photos: [],
       }));
 
     return {
@@ -336,24 +351,30 @@ export class QualityManager {
       recommendedActions: [
         'Review process parameters',
         'Additional training for operators',
-        'Calibrate measurement equipment'
+        'Calibrate measurement equipment',
       ],
-      qualityScore
+      qualityScore,
     };
   }
 
-  async createCorrectiveAction(defectId: string, actionDetails: Omit<CorrectiveAction, 'actionId' | 'status' | 'defectId'>): Promise<CorrectiveAction> {
+  async createCorrectiveAction(
+    defectId: string,
+    actionDetails: Omit<CorrectiveAction, 'actionId' | 'status' | 'defectId'>
+  ): Promise<CorrectiveAction> {
     const actionId = `ca_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       actionId,
       defectId,
       status: 'PLANNED',
-      ...actionDetails
+      ...actionDetails,
     };
   }
 
-  async performRootCauseAnalysis(defectId: string, analysisMethod: '5_WHY' | 'FISHBONE' | 'FAULT_TREE' | 'PARETO'): Promise<{
+  async performRootCauseAnalysis(
+    defectId: string,
+    analysisMethod: '5_WHY' | 'FISHBONE' | 'FAULT_TREE' | 'PARETO'
+  ): Promise<{
     analysisId: string;
     method: string;
     rootCauses: Array<{
@@ -366,7 +387,7 @@ export class QualityManager {
     preventiveMeasures: string[];
   }> {
     const analysisId = `rca_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       analysisId,
       method: analysisMethod,
@@ -375,25 +396,25 @@ export class QualityManager {
           cause: 'Machine calibration drift',
           likelihood: 75,
           impact: 'HIGH',
-          category: 'Equipment'
+          category: 'Equipment',
         },
         {
           cause: 'Operator training gap',
           likelihood: 40,
           impact: 'MEDIUM',
-          category: 'Human Factors'
-        }
+          category: 'Human Factors',
+        },
       ],
       recommendedActions: [
         'Implement daily calibration checks',
         'Provide additional operator training',
-        'Update standard operating procedures'
+        'Update standard operating procedures',
       ],
       preventiveMeasures: [
         'Install automatic calibration monitoring',
         'Create competency assessment program',
-        'Establish preventive maintenance schedule'
-      ]
+        'Establish preventive maintenance schedule',
+      ],
     };
   }
 
@@ -418,7 +439,7 @@ export class QualityManager {
         period: 'MONTHLY',
         trend: 'IMPROVING',
         lastCalculated: new Date(),
-        dataSource: 'Production System'
+        dataSource: 'Production System',
       },
       {
         metricId: 'qm_002',
@@ -430,8 +451,8 @@ export class QualityManager {
         period: 'MONTHLY',
         trend: 'DECLINING',
         lastCalculated: new Date(),
-        dataSource: 'Quality System'
-      }
+        dataSource: 'Quality System',
+      },
     ];
 
     return {
@@ -439,18 +460,18 @@ export class QualityManager {
       trends: {
         overallQuality: 'IMPROVING',
         defectTrend: 'IMPROVING',
-        customerSatisfaction: 'STABLE'
+        customerSatisfaction: 'STABLE',
       },
       benchmarks: {
         industryAvgFPY: 91.5,
         industryAvgDefectRate: 1.2,
-        worldClassFPY: 99.0
+        worldClassFPY: 99.0,
       },
       recommendations: [
         'Focus on reducing variation in critical processes',
         'Implement statistical process control',
-        'Enhance supplier quality requirements'
-      ]
+        'Enhance supplier quality requirements',
+      ],
     };
   }
 
@@ -464,7 +485,7 @@ export class QualityManager {
       nonConformanceProcess: 'Immediate notification and corrective action',
       effectiveDate: new Date(),
       expirationDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-      penaltyClauses: ['Quality penalties for defect rates > 2%']
+      penaltyClauses: ['Quality penalties for defect rates > 2%'],
     };
 
     return {
@@ -475,26 +496,30 @@ export class QualityManager {
         defectRate: 0.6,
         onTimeDelivery: 96.8,
         qualityScore: 94.3,
-        responseTime: 2.1
+        responseTime: 2.1,
       },
       certifications: ['ISO 9001:2015', 'AS9100D', 'IATF 16949'],
       lastAuditDate: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000),
       nextAuditDate: new Date(Date.now() + 185 * 24 * 60 * 60 * 1000),
-      qualityAgreement
+      qualityAgreement,
     };
   }
 
-  async planQualityAudit(auditType: QualityAudit['auditType'], scope: string[], standards: string[]): Promise<QualityAudit> {
+  async planQualityAudit(
+    auditType: QualityAudit['auditType'],
+    scope: string[],
+    standards: string[]
+  ): Promise<QualityAudit> {
     const auditId = `qa_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const auditTeam: AuditTeamMember[] = [
       {
         memberId: 'auditor_001',
         name: 'Jane Smith',
         role: 'LEAD_AUDITOR',
         qualifications: ['ISO 9001 Lead Auditor', 'ASQ CQA'],
-        responsibilities: ['Plan audit', 'Lead audit team', 'Report findings']
-      }
+        responsibilities: ['Plan audit', 'Lead audit team', 'Report findings'],
+      },
     ];
 
     return {
@@ -509,22 +534,27 @@ export class QualityManager {
       nonConformances: [],
       overallRating: 'GOOD',
       recommendations: [],
-      followUpRequired: false
+      followUpRequired: false,
     };
   }
 
-  async processNonConformance(ncDetails: Omit<NonConformance, 'ncId' | 'status' | 'reportedDate'>): Promise<NonConformance> {
+  async processNonConformance(
+    ncDetails: Omit<NonConformance, 'ncId' | 'status' | 'reportedDate'>
+  ): Promise<NonConformance> {
     const ncId = `nc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ncId,
       status: 'OPEN',
       reportedDate: new Date(),
-      ...ncDetails
+      ...ncDetails,
     };
   }
 
-  async implementStatisticalProcessControl(processId: string, parameters: string[]): Promise<{
+  async implementStatisticalProcessControl(
+    processId: string,
+    parameters: string[]
+  ): Promise<{
     controlCharts: Array<{
       parameter: string;
       chartType: 'X_BAR_R' | 'X_MR' | 'P' | 'NP' | 'C' | 'U';
@@ -545,16 +575,16 @@ export class QualityManager {
     };
     recommendations: string[];
   }> {
-    const controlCharts = parameters.map(param => ({
+    const controlCharts = parameters.map((param) => ({
       parameter: param,
       chartType: 'X_BAR_R' as const,
       controlLimits: {
         ucl: 110,
         lcl: 90,
-        centerLine: 100
+        centerLine: 100,
       },
       status: 'IN_CONTROL' as const,
-      lastUpdate: new Date()
+      lastUpdate: new Date(),
     }));
 
     return {
@@ -563,14 +593,14 @@ export class QualityManager {
         cp: 1.33,
         cpk: 1.25,
         pp: 1.28,
-        ppk: 1.20,
-        sigma: 4.2
+        ppk: 1.2,
+        sigma: 4.2,
       },
       recommendations: [
         'Monitor process for special causes',
         'Investigate control limit violations',
-        'Consider process improvement initiatives'
-      ]
+        'Consider process improvement initiatives',
+      ],
     };
   }
 
@@ -585,7 +615,7 @@ export class QualityManager {
     releaseAuthority: string;
   }> {
     console.log(`Integrating quality requirements with production order ${productionOrderId}`);
-    
+
     return {
       qualityRequirements: [
         {
@@ -597,18 +627,18 @@ export class QualityManager {
           unit: 'mm',
           acceptanceLimits: { minimum: 98, maximum: 102 },
           measurementMethod: 'Caliper measurement',
-          criticalityLevel: 'HIGH'
-        }
+          criticalityLevel: 'HIGH',
+        },
       ],
       inspectionSchedule: [
         {
           inspectionPoint: 'First Article',
           scheduledTime: new Date(Date.now() + 60 * 60 * 1000),
-          inspector: 'inspector_001'
-        }
+          inspector: 'inspector_001',
+        },
       ],
       qualityHold: false,
-      releaseAuthority: 'quality_supervisor'
+      releaseAuthority: 'quality_supervisor',
     };
   }
 }

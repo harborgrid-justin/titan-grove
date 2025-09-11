@@ -4,12 +4,12 @@
  */
 
 import { EventEmitter } from 'events';
-import { 
-  ServiceResponse, 
-  ServiceRequest, 
+import {
+  ServiceResponse,
+  ServiceRequest,
   ServiceIntegrationContext,
   ValidationError,
-  BusinessRuleViolation 
+  BusinessRuleViolation,
 } from '../shared/interfaces/service-integration';
 
 // Import native modules
@@ -25,7 +25,7 @@ import {
   calculateNetPresentValue,
   calculateEconomicOrderQuantity,
   calculateWeightedAverageCostOfCapital,
-  calculateValueAtRisk
+  calculateValueAtRisk,
 } from '../../native';
 
 export interface RealTimeEvent {
@@ -72,7 +72,7 @@ export class ProductionIntegrationService extends EventEmitter {
   ): Promise<ServiceResponse<BusinessProcessResult>> {
     const startTime = Date.now();
     const correlationId = request.correlationId || this.generateCorrelationId();
-    
+
     try {
       // Step 1: Data Standardization
       const standardizationStart = Date.now();
@@ -82,7 +82,7 @@ export class ProductionIntegrationService extends EventEmitter {
 
       // Step 2: Data Quality Assessment
       const qualityReport = generateDataQualityReport(validationResults);
-      
+
       // Step 3: Business Rules Evaluation
       const rulesStart = Date.now();
       const businessRules = this.getBusinessRulesForEntity(request.data.entityType);
@@ -93,7 +93,7 @@ export class ProductionIntegrationService extends EventEmitter {
         userId: context.userId,
         timestamp: new Date().toISOString(),
       };
-      
+
       const ruleResults = evaluateMultipleRules(businessRules, ruleContext);
       const businessRulesTime = Date.now() - rulesStart;
 
@@ -122,7 +122,7 @@ export class ProductionIntegrationService extends EventEmitter {
           {
             type: 'calculations',
             data: calculationResults,
-          }
+          },
         ],
         validationErrors: this.extractValidationErrors(validationResults),
         businessRuleViolations: this.extractBusinessRuleViolations(ruleResults),
@@ -132,7 +132,7 @@ export class ProductionIntegrationService extends EventEmitter {
           nativeExecutionTime,
           validationTime: standardizationTime,
           businessRulesTime,
-        }
+        },
       };
 
       // Step 6: Real-time Notifications
@@ -156,7 +156,6 @@ export class ProductionIntegrationService extends EventEmitter {
         correlationId,
         executionTime: Date.now() - startTime,
       };
-
     } catch (error) {
       // Error handling with detailed context
       const errorResponse: ServiceResponse<BusinessProcessResult> = {
@@ -168,7 +167,7 @@ export class ProductionIntegrationService extends EventEmitter {
             correlationId,
             context: context,
             timestamp: new Date().toISOString(),
-          }
+          },
         },
         timestamp: new Date(),
         correlationId,
@@ -192,7 +191,10 @@ export class ProductionIntegrationService extends EventEmitter {
   /**
    * Perform native calculations based on entity type and data
    */
-  private async performNativeCalculations(data: any, context: ServiceIntegrationContext): Promise<any> {
+  private async performNativeCalculations(
+    data: any,
+    context: ServiceIntegrationContext
+  ): Promise<any> {
     const calculations: any = {};
 
     try {
@@ -208,8 +210,8 @@ export class ProductionIntegrationService extends EventEmitter {
         }
 
         if (data.data.cashFlows && data.data.discountRate) {
-          const cashFlows = Array.isArray(data.data.cashFlows) 
-            ? data.data.cashFlows.map(cf => parseFloat(cf))
+          const cashFlows = Array.isArray(data.data.cashFlows)
+            ? data.data.cashFlows.map((cf) => parseFloat(cf))
             : [];
           calculations.netPresentValue = calculateNetPresentValue(
             cashFlows,
@@ -240,7 +242,13 @@ export class ProductionIntegrationService extends EventEmitter {
 
       // Corporate finance calculations
       if (data.entityType === 'corporate_finance') {
-        if (data.data.equityWeight && data.data.costOfEquity && data.data.debtWeight && data.data.costOfDebt && data.data.taxRate) {
+        if (
+          data.data.equityWeight &&
+          data.data.costOfEquity &&
+          data.data.debtWeight &&
+          data.data.costOfDebt &&
+          data.data.taxRate
+        ) {
           calculations.wacc = calculateWeightedAverageCostOfCapital(
             parseFloat(data.data.equityWeight),
             parseFloat(data.data.costOfEquity),
@@ -254,7 +262,10 @@ export class ProductionIntegrationService extends EventEmitter {
       return calculations;
     } catch (error) {
       console.error('Error in native calculations:', error);
-      return { error: 'Calculation error', details: error instanceof Error ? error.message : 'Unknown error' };
+      return {
+        error: 'Calculation error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      };
     }
   }
 
@@ -277,20 +288,23 @@ export class ProductionIntegrationService extends EventEmitter {
         };
 
         const result = await this.processBusinessData(request, context);
-        
-        // Send result back through WebSocket
-        ws.send(JSON.stringify({
-          type: 'process_result',
-          correlationId: context.correlationId,
-          data: result,
-        }));
 
+        // Send result back through WebSocket
+        ws.send(
+          JSON.stringify({
+            type: 'process_result',
+            correlationId: context.correlationId,
+            data: result,
+          })
+        );
       } catch (error) {
-        ws.send(JSON.stringify({
-          type: 'error',
-          message: 'Failed to process request',
-          error: error instanceof Error ? error.message : 'Unknown error',
-        }));
+        ws.send(
+          JSON.stringify({
+            type: 'error',
+            message: 'Failed to process request',
+            error: error instanceof Error ? error.message : 'Unknown error',
+          })
+        );
       }
     });
 
@@ -299,11 +313,13 @@ export class ProductionIntegrationService extends EventEmitter {
     });
 
     // Send connection confirmation
-    ws.send(JSON.stringify({
-      type: 'connection_established',
-      connectionId,
-      timestamp: new Date().toISOString(),
-    }));
+    ws.send(
+      JSON.stringify({
+        type: 'connection_established',
+        connectionId,
+        timestamp: new Date().toISOString(),
+      })
+    );
   }
 
   /**
@@ -352,7 +368,7 @@ export class ProductionIntegrationService extends EventEmitter {
           validation_rules: ['required'],
           min_length: 2,
           max_length: 100,
-        }
+        },
       ],
       financial_transaction: [
         {
@@ -367,8 +383,8 @@ export class ProductionIntegrationService extends EventEmitter {
           rule_type: 'validate',
           validation_rules: ['required'],
           allowed_values: ['USD', 'EUR', 'GBP', 'JPY', 'CAD'],
-        }
-      ]
+        },
+      ],
     };
 
     return ruleTemplates[entityType] || [];
@@ -393,7 +409,7 @@ export class ProductionIntegrationService extends EventEmitter {
               operator: 'greater_than',
               value: '10000',
               data_type: 'number',
-            }
+            },
           ],
           actions: [
             {
@@ -401,14 +417,14 @@ export class ProductionIntegrationService extends EventEmitter {
               target: 'finance_team',
               value: 'Review large transaction',
               parameters: {},
-            }
+            },
           ],
           priority: 90,
           enabled: true,
           effective_date: '2024-01-01',
           expiry_date: null,
-        }
-      ]
+        },
+      ],
     };
 
     return ruleTemplates[entityType] || [];
@@ -419,7 +435,7 @@ export class ProductionIntegrationService extends EventEmitter {
    */
   private extractValidationErrors(validationResults: any[]): ValidationError[] {
     const errors: ValidationError[] = [];
-    
+
     for (const result of validationResults) {
       if (!result.is_valid) {
         for (const error of result.errors) {
@@ -441,7 +457,7 @@ export class ProductionIntegrationService extends EventEmitter {
    */
   private extractBusinessRuleViolations(ruleResults: any[]): BusinessRuleViolation[] {
     const violations: BusinessRuleViolation[] = [];
-    
+
     for (const result of ruleResults) {
       if (result.errors && result.errors.length > 0) {
         for (const error of result.errors) {
@@ -513,7 +529,7 @@ export class ProductionIntegrationService extends EventEmitter {
     try {
       // Test native module connectivity
       const testCalculation = calculateCompoundInterest(1000, 5, 12, 1);
-      
+
       return {
         success: true,
         data: {

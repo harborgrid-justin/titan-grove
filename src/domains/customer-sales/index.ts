@@ -20,16 +20,16 @@ export interface CustomerSalesDomainConfig {
       seasonalDiscount: number;
     };
     pricingTiers: {
-      bronze: { markup: number; minOrder: number; };
-      silver: { markup: number; minOrder: number; };
-      gold: { markup: number; minOrder: number; };
+      bronze: { markup: number; minOrder: number };
+      silver: { markup: number; minOrder: number };
+      gold: { markup: number; minOrder: number };
     };
   };
   customer: {
     segmentation: {
-      smallBusiness: { revenueMax: number; };
-      midMarket: { revenueMin: number; revenueMax: number; };
-      enterprise: { revenueMin: number; };
+      smallBusiness: { revenueMax: number };
+      midMarket: { revenueMin: number; revenueMax: number };
+      enterprise: { revenueMin: number };
     };
   };
 }
@@ -39,7 +39,6 @@ export interface CustomerSalesDomainConfig {
  * Consolidated business calculations for sales and customer management
  */
 export class CustomerSalesBusinessLogic {
-  
   /**
    * Calculate sales commission based on deal size and type
    */
@@ -50,11 +49,14 @@ export class CustomerSalesBusinessLogic {
   /**
    * Calculate pricing with discounts
    */
-  static calculatePricingWithDiscounts(basePrice: number, discounts: {
-    volume?: number;
-    loyalty?: number;
-    seasonal?: number;
-  }): {
+  static calculatePricingWithDiscounts(
+    basePrice: number,
+    discounts: {
+      volume?: number;
+      loyalty?: number;
+      seasonal?: number;
+    }
+  ): {
     basePrice: number;
     totalDiscount: number;
     finalPrice: number;
@@ -63,9 +65,9 @@ export class CustomerSalesBusinessLogic {
     const volumeDiscount = basePrice * (discounts.volume || 0);
     const loyaltyDiscount = basePrice * (discounts.loyalty || 0);
     const seasonalDiscount = basePrice * (discounts.seasonal || 0);
-    
+
     const totalDiscount = volumeDiscount + loyaltyDiscount + seasonalDiscount;
-    
+
     return {
       basePrice,
       totalDiscount,
@@ -73,8 +75,8 @@ export class CustomerSalesBusinessLogic {
       discountBreakdown: {
         volume: volumeDiscount,
         loyalty: loyaltyDiscount,
-        seasonal: seasonalDiscount
-      }
+        seasonal: seasonalDiscount,
+      },
     };
   }
 
@@ -114,26 +116,26 @@ export class CustomerSalesDomainManager {
         commissionRates: {
           base: 0.03,
           premium: 0.05,
-          enterprise: 0.07
+          enterprise: 0.07,
         },
         discountRules: {
-          volumeDiscount: 0.10,
+          volumeDiscount: 0.1,
           loyaltyDiscount: 0.05,
-          seasonalDiscount: 0.15
+          seasonalDiscount: 0.15,
         },
         pricingTiers: {
           bronze: { markup: 1.2, minOrder: 1000 },
           silver: { markup: 1.5, minOrder: 5000 },
-          gold: { markup: 2.0, minOrder: 10000 }
-        }
+          gold: { markup: 2.0, minOrder: 10000 },
+        },
       },
       customer: {
         segmentation: {
           smallBusiness: { revenueMax: 100000 },
           midMarket: { revenueMin: 100000, revenueMax: 1000000 },
-          enterprise: { revenueMin: 1000000 }
-        }
-      }
+          enterprise: { revenueMin: 1000000 },
+        },
+      },
     };
   }
 
@@ -148,11 +150,15 @@ export class CustomerSalesDomainManager {
       averageOrderValue: 2941.18,
       conversionRate: 0.24,
       customerAcquisitionCost: 125,
-      customerLifetimeValue: CustomerSalesBusinessLogic.calculateCustomerLifetimeValue(2941.18, 4, 3),
+      customerLifetimeValue: CustomerSalesBusinessLogic.calculateCustomerLifetimeValue(
+        2941.18,
+        4,
+        3
+      ),
       topPerformers: [
         { rep: 'Alice Johnson', revenue: 485000, commission: 24250 },
-        { rep: 'Bob Smith', revenue: 398000, commission: 19900 }
-      ]
+        { rep: 'Bob Smith', revenue: 398000, commission: 19900 },
+      ],
     };
   }
 

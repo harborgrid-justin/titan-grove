@@ -17,7 +17,7 @@ export interface PlatformThresholds {
       minCacheHitRateForUnhealthy: number;
     };
   };
-  
+
   // Memory management limits
   memory: {
     audit: {
@@ -33,7 +33,7 @@ export interface PlatformThresholds {
       cleanupInterval: number;
     };
   };
-  
+
   // Performance thresholds
   performance: {
     responseTime: {
@@ -45,7 +45,7 @@ export interface PlatformThresholds {
       errorThreshold: number;
     };
   };
-  
+
   // Security and compliance
   security: {
     rateLimit: {
@@ -57,7 +57,7 @@ export interface PlatformThresholds {
       refreshTokenExpiresIn: string;
     };
   };
-  
+
   // Integration settings
   integration: {
     circuitBreaker: {
@@ -76,63 +76,63 @@ const defaultThresholds: PlatformThresholds = {
   health: {
     business: {
       maxFailuresForWarning: 5,
-      maxFailuresForViolation: 10
+      maxFailuresForViolation: 10,
     },
     customer: {
       maxResponseTimeForDegraded: 2000,
       maxResponseTimeForUnhealthy: 5000,
       minCacheHitRateForDegraded: 0.6,
-      minCacheHitRateForUnhealthy: 0.3
-    }
+      minCacheHitRateForUnhealthy: 0.3,
+    },
   },
-  
+
   memory: {
     audit: {
       maxLogEntries: 10000,
-      cleanupBatchSize: 1000
+      cleanupBatchSize: 1000,
     },
     interactions: {
       maxInteractionEntries: 50000,
-      cleanupBatchSize: 10000
+      cleanupBatchSize: 10000,
     },
     cache: {
       defaultTTL: 300, // 5 minutes
-      cleanupInterval: 60000 // 1 minute
-    }
+      cleanupInterval: 60000, // 1 minute
+    },
   },
-  
+
   performance: {
     responseTime: {
       warningThreshold: 2000,
-      errorThreshold: 5000
+      errorThreshold: 5000,
     },
     errorRate: {
       warningThreshold: 0.05, // 5%
-      errorThreshold: 0.1 // 10%
-    }
+      errorThreshold: 0.1, // 10%
+    },
   },
-  
+
   security: {
     rateLimit: {
       defaultRequestsPerMinute: 100,
-      rateLimitWindow: 60000 // 1 minute
+      rateLimitWindow: 60000, // 1 minute
     },
     authentication: {
       jwtExpiresIn: '24h',
-      refreshTokenExpiresIn: '7d'
-    }
+      refreshTokenExpiresIn: '7d',
+    },
   },
-  
+
   integration: {
     circuitBreaker: {
       defaultThreshold: 5,
-      timeoutMs: 60000 // 1 minute
+      timeoutMs: 60000, // 1 minute
     },
     retry: {
       maxAttempts: 3,
-      delayMs: 1000
-    }
-  }
+      delayMs: 1000,
+    },
+  },
 };
 
 // Environment-specific overrides (using deep merge to override only specific values)
@@ -141,57 +141,57 @@ const environmentOverrides: { [env: string]: any } = {
     memory: {
       audit: {
         maxLogEntries: 1000,
-        cleanupBatchSize: 100
+        cleanupBatchSize: 100,
       },
       interactions: {
         maxInteractionEntries: 5000,
-        cleanupBatchSize: 1000
-      }
+        cleanupBatchSize: 1000,
+      },
     },
     security: {
       rateLimit: {
-        defaultRequestsPerMinute: 1000 // More lenient for development
-      }
-    }
+        defaultRequestsPerMinute: 1000, // More lenient for development
+      },
+    },
   },
-  
+
   test: {
     memory: {
       audit: {
         maxLogEntries: 100,
-        cleanupBatchSize: 10
+        cleanupBatchSize: 10,
       },
       interactions: {
         maxInteractionEntries: 500,
-        cleanupBatchSize: 100
-      }
+        cleanupBatchSize: 100,
+      },
     },
     performance: {
       responseTime: {
         warningThreshold: 1000,
-        errorThreshold: 2000
-      }
-    }
+        errorThreshold: 2000,
+      },
+    },
   },
-  
+
   production: {
     memory: {
       audit: {
         maxLogEntries: 50000,
-        cleanupBatchSize: 5000
+        cleanupBatchSize: 5000,
       },
       interactions: {
         maxInteractionEntries: 100000,
-        cleanupBatchSize: 20000
-      }
+        cleanupBatchSize: 20000,
+      },
     },
     performance: {
       responseTime: {
         warningThreshold: 1500,
-        errorThreshold: 3000
-      }
-    }
-  }
+        errorThreshold: 3000,
+      },
+    },
+  },
 };
 
 /**
@@ -200,7 +200,7 @@ const environmentOverrides: { [env: string]: any } = {
 export function getPlatformConfig(environment?: string): PlatformThresholds {
   const env = environment || process.env.NODE_ENV || 'development';
   const overrides = environmentOverrides[env] || {};
-  
+
   return mergeDeep(defaultThresholds, overrides);
 }
 
@@ -209,7 +209,7 @@ export function getPlatformConfig(environment?: string): PlatformThresholds {
  */
 function mergeDeep<T>(target: T, source: any): T {
   const result = { ...target };
-  
+
   for (const key in source) {
     if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
       result[key] = mergeDeep(target[key], source[key]);
@@ -217,7 +217,7 @@ function mergeDeep<T>(target: T, source: any): T {
       result[key] = source[key];
     }
   }
-  
+
   return result;
 }
 

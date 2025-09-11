@@ -53,7 +53,12 @@ export interface TimeLocation {
 
 export interface TimeException {
   id: string;
-  type: 'MISSING_PUNCH' | 'LATE_ARRIVAL' | 'EARLY_DEPARTURE' | 'LONG_LUNCH' | 'OVERTIME_NOT_APPROVED';
+  type:
+    | 'MISSING_PUNCH'
+    | 'LATE_ARRIVAL'
+    | 'EARLY_DEPARTURE'
+    | 'LONG_LUNCH'
+    | 'OVERTIME_NOT_APPROVED';
   severity: 'LOW' | 'MEDIUM' | 'HIGH';
   description: string;
   autoResolved: boolean;
@@ -147,46 +152,51 @@ export interface PolicyRule {
 }
 
 export class TimeAndLaborService {
-
   /**
    * Enterprise-wide Time Management
    */
-  async createEnterpriseTimecard(employeeId: string, periodStart: Date, periodEnd: Date): Promise<EnterpriseTimecard> {
+  async createEnterpriseTimecard(
+    employeeId: string,
+    periodStart: Date,
+    periodEnd: Date
+  ): Promise<EnterpriseTimecard> {
     const id = `timecard_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const timecard: EnterpriseTimecard = {
       id,
       employeeId,
       timecardPeriod: {
         startDate: periodStart,
-        endDate: periodEnd
+        endDate: periodEnd,
       },
       entries: [],
       status: 'DRAFT',
       totalRegularHours: 0,
       totalOvertimeHours: 0,
-      totalTimeOffHours: 0
+      totalTimeOffHours: 0,
     };
 
     console.log(`Created enterprise timecard ${id} for employee ${employeeId}`);
     return timecard;
   }
 
-  async processMobileTimeEntry(mobileEntry: Omit<MobileTimecardEntry, 'id' | 'syncedAt'>): Promise<MobileTimecardEntry> {
+  async processMobileTimeEntry(
+    mobileEntry: Omit<MobileTimecardEntry, 'id' | 'syncedAt'>
+  ): Promise<MobileTimecardEntry> {
     const id = `mobile_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const processedEntry: MobileTimecardEntry = {
       ...mobileEntry,
       id,
-      syncedAt: new Date()
+      syncedAt: new Date(),
     };
 
     // Validate mobile entry
     await this.validateMobileEntry(processedEntry);
-    
+
     // Update timecard with entry
     await this.updateTimecardFromMobileEntry(processedEntry);
-    
+
     // Check for exceptions
     await this.checkTimeExceptions(processedEntry);
 
@@ -204,7 +214,7 @@ export class TimeAndLaborService {
     policyViolations: string[];
   }> {
     console.log(`Auto-calculating timecard ${timecardId}`);
-    
+
     const timecard = await this.getTimecard(timecardId);
     const calculatedHours = await this.calculateHoursFromEntries(timecard.entries);
     const exceptions = await this.detectTimeExceptions(timecard);
@@ -213,7 +223,7 @@ export class TimeAndLaborService {
     return {
       calculatedHours,
       detectedExceptions: exceptions,
-      policyViolations: violations
+      policyViolations: violations,
     };
   }
 
@@ -233,9 +243,9 @@ export class TimeAndLaborService {
     };
   }> {
     console.log('Tracking workforce in real-time');
-    
+
     const currentStatus = await this.getCurrentWorkforceStatus();
-    
+
     return {
       currentlyWorking: currentStatus.working,
       onBreak: currentStatus.onBreak,
@@ -245,16 +255,19 @@ export class TimeAndLaborService {
       productivityMetrics: {
         averageActiveTime: 7.2, // hours
         utilizationRate: 0.85, // 85%
-        exceptionRate: 0.12 // 12%
-      }
+        exceptionRate: 0.12, // 12%
+      },
     };
   }
 
-  async generateLaborDistribution(employeeId: string, payPeriod: { startDate: Date; endDate: Date }): Promise<LaborDistribution> {
+  async generateLaborDistribution(
+    employeeId: string,
+    payPeriod: { startDate: Date; endDate: Date }
+  ): Promise<LaborDistribution> {
     const id = `labor_dist_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Generating labor distribution ${id} for employee ${employeeId}`);
-    
+
     const timeEntries = await this.getTimeEntriesForPeriod(employeeId, payPeriod);
     const distributions = await this.calculateLaborAllocations(timeEntries);
     const totalHours = timeEntries.reduce((sum, entry) => sum + entry.hoursWorked, 0);
@@ -267,7 +280,7 @@ export class TimeAndLaborService {
       distributions,
       totalHours,
       totalCost,
-      approvalStatus: 'PENDING'
+      approvalStatus: 'PENDING',
     };
   }
 
@@ -283,41 +296,44 @@ export class TimeAndLaborService {
     nextScheduledShift?: ScheduledShift;
   }> {
     console.log(`Getting mobile timecard status for employee ${employeeId}`);
-    
+
     return {
       currentStatus: 'CLOCKED_OUT',
       lastAction: {} as MobileTimecardEntry,
       todayHours: 0,
       weekHours: 0,
       pendingApprovals: 0,
-      nextScheduledShift: undefined
+      nextScheduledShift: undefined,
     };
   }
 
-  async submitTimeOffRequest(employeeId: string, request: {
-    type: 'VACATION' | 'SICK' | 'PERSONAL' | 'BEREAVEMENT' | 'JURY_DUTY';
-    startDate: Date;
-    endDate: Date;
-    totalHours: number;
-    reason?: string;
-  }): Promise<{
+  async submitTimeOffRequest(
+    employeeId: string,
+    request: {
+      type: 'VACATION' | 'SICK' | 'PERSONAL' | 'BEREAVEMENT' | 'JURY_DUTY';
+      startDate: Date;
+      endDate: Date;
+      totalHours: number;
+      reason?: string;
+    }
+  ): Promise<{
     requestId: string;
     approvalRequired: boolean;
     availableBalance: number;
     estimatedApprovalDate: Date;
   }> {
     const requestId = `timeoff_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Time off request ${requestId} submitted for employee ${employeeId}`);
-    
+
     const balance = await this.getTimeOffBalance(employeeId, request.type);
     const approvalRequired = await this.checkApprovalRequired(employeeId, request);
-    
+
     return {
       requestId,
       approvalRequired,
       availableBalance: balance.currentBalance,
-      estimatedApprovalDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) // 2 days
+      estimatedApprovalDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days
     };
   }
 
@@ -340,22 +356,22 @@ export class TimeAndLaborService {
     }>;
   }> {
     console.log(`Enforcing time policies for timecard ${timecardId}`);
-    
+
     const timecard = await this.getTimecard(timecardId);
     const policies = await this.getApplicablePolicies(timecard.employeeId);
-    
+
     const violations = [];
     const autoCorrections = [];
-    
+
     for (const policy of policies) {
       const policyCheck = await this.checkPolicyCompliance(timecard, policy);
       violations.push(...policyCheck.violations);
       autoCorrections.push(...policyCheck.corrections);
     }
-    
+
     return {
       policyViolations: violations,
-      autoCorrections
+      autoCorrections,
     };
   }
 
@@ -382,27 +398,27 @@ export class TimeAndLaborService {
     }>;
   }> {
     const distributionId = `dist_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Distributing labor costs for ${laborDistribution.id}`);
-    
+
     const glEntries = [];
     const projectCharges = [];
     const grantCharges = [];
-    
+
     for (const allocation of laborDistribution.distributions) {
       switch (allocation.distributionTarget.type) {
         case 'GENERAL_LEDGER':
           glEntries.push({
             account: allocation.distributionTarget.targetId,
             amount: allocation.laborCost,
-            debitCredit: 'DEBIT' as const
+            debitCredit: 'DEBIT' as const,
           });
           break;
         case 'PROJECT':
           projectCharges.push({
             projectId: allocation.distributionTarget.targetId,
             amount: allocation.laborCost,
-            hours: allocation.hours
+            hours: allocation.hours,
           });
           break;
         case 'GRANT':
@@ -411,17 +427,17 @@ export class TimeAndLaborService {
             grantId: allocation.distributionTarget.targetId,
             amount: allocation.laborCost,
             hours: allocation.hours,
-            compliance
+            compliance,
           });
           break;
       }
     }
-    
+
     return {
       distributionId,
       glEntries,
       projectCharges,
-      grantCharges
+      grantCharges,
     };
   }
 
@@ -443,23 +459,23 @@ export class TimeAndLaborService {
     conflicts: SchedulingConflict[];
   }> {
     console.log('Generating workforce schedule', parameters);
-    
+
     const employees = await this.getDepartmentEmployees(parameters.departmentId);
     const schedules = [];
-    
+
     for (const employee of employees) {
       const schedule = await this.generateEmployeeSchedule(employee.id, parameters);
       schedules.push(schedule);
     }
-    
+
     return {
       schedules,
       optimization: {
         coverageRate: 0.95, // 95% coverage
         costOptimization: 0.88, // 88% cost efficiency
-        employeeSatisfaction: 0.82 // 82% satisfaction
+        employeeSatisfaction: 0.82, // 82% satisfaction
       },
-      conflicts: await this.detectSchedulingConflicts(schedules)
+      conflicts: await this.detectSchedulingConflicts(schedules),
     };
   }
 
@@ -474,13 +490,13 @@ export class TimeAndLaborService {
         throw new Error('Clock entry location is not within allowed work areas');
       }
     }
-    
+
     // Validate timing
     const isValidTiming = await this.validateTimingRules(entry);
     if (!isValidTiming) {
       throw new Error('Clock entry violates timing policies');
     }
-    
+
     console.log(`Mobile entry validation passed for employee ${entry.employeeId}`);
   }
 
@@ -491,17 +507,17 @@ export class TimeAndLaborService {
 
   private async checkTimeExceptions(entry: MobileTimecardEntry): Promise<TimeException[]> {
     const exceptions: TimeException[] = [];
-    
+
     // Check for common exceptions
     const policies = await this.getTimePolicies(entry.employeeId);
-    
+
     for (const policy of policies) {
       const violation = await this.checkPolicyViolation(entry, policy);
       if (violation) {
         exceptions.push(violation);
       }
     }
-    
+
     return exceptions;
   }
 
@@ -518,16 +534,16 @@ export class TimeAndLaborService {
     const regular = entries.reduce((sum, entry) => sum + entry.hoursWorked, 0);
     const overtime = entries.reduce((sum, entry) => sum + entry.overtimeHours, 0);
     const timeOff = entries.reduce((sum, entry) => sum + (entry.timeOffHours || 0), 0);
-    
+
     return { regular, overtime, timeOff };
   }
 
   private async detectTimeExceptions(timecard: EnterpriseTimecard): Promise<TimeException[]> {
     const exceptions: TimeException[] = [];
-    
+
     // Implementation would detect various time exceptions
     console.log(`Detecting exceptions for timecard ${timecard.id}`);
-    
+
     return exceptions;
   }
 
@@ -547,20 +563,23 @@ export class TimeAndLaborService {
       working: 145,
       onBreak: 12,
       onLunch: 28,
-      clockedOut: 65
+      clockedOut: 65,
     };
   }
 
   private async getLocationDistribution(): Promise<Record<string, number>> {
     return {
       'Main Office': 180,
-      'Remote': 45,
+      Remote: 45,
       'Branch Office A': 25,
-      'Field': 15
+      Field: 15,
     };
   }
 
-  private async getTimeEntriesForPeriod(employeeId: string, period: { startDate: Date; endDate: Date }): Promise<TimeEntry[]> {
+  private async getTimeEntriesForPeriod(
+    employeeId: string,
+    period: { startDate: Date; endDate: Date }
+  ): Promise<TimeEntry[]> {
     console.log(`Getting time entries for employee ${employeeId} for period`, period);
     return [];
   }
@@ -577,10 +596,13 @@ export class TimeAndLaborService {
 
   private async getEmployeeLaborRate(employeeId: string): Promise<{ hourlyRate: number }> {
     console.log(`Getting labor rate for employee ${employeeId}`);
-    return { hourlyRate: 35.00 };
+    return { hourlyRate: 35.0 };
   }
 
-  private async getTimeOffBalance(employeeId: string, type: string): Promise<{ currentBalance: number }> {
+  private async getTimeOffBalance(
+    employeeId: string,
+    type: string
+  ): Promise<{ currentBalance: number }> {
     console.log(`Getting time off balance for employee ${employeeId}, type: ${type}`);
     return { currentBalance: 120 }; // 120 hours available
   }
@@ -595,7 +617,10 @@ export class TimeAndLaborService {
     return [];
   }
 
-  private async checkPolicyCompliance(timecard: EnterpriseTimecard, policy: TimeManagementPolicy): Promise<{
+  private async checkPolicyCompliance(
+    timecard: EnterpriseTimecard,
+    policy: TimeManagementPolicy
+  ): Promise<{
     violations: Array<{
       policyId: string;
       violationType: string;
@@ -620,14 +645,19 @@ export class TimeAndLaborService {
     return true;
   }
 
-  private async getDepartmentEmployees(departmentId: string): Promise<Array<{ id: string; name: string }>> {
+  private async getDepartmentEmployees(
+    departmentId: string
+  ): Promise<Array<{ id: string; name: string }>> {
     console.log(`Getting employees for department ${departmentId}`);
     return [];
   }
 
-  private async generateEmployeeSchedule(employeeId: string, parameters: any): Promise<WorkforceSchedule> {
+  private async generateEmployeeSchedule(
+    employeeId: string,
+    parameters: any
+  ): Promise<WorkforceSchedule> {
     const id = `schedule_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       id,
       employeeId,
@@ -635,7 +665,7 @@ export class TimeAndLaborService {
       shifts: [],
       totalScheduledHours: 40,
       pattern: 'STANDARD',
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
   }
 
@@ -660,7 +690,10 @@ export class TimeAndLaborService {
     return [];
   }
 
-  private async checkPolicyViolation(entry: MobileTimecardEntry, policy: TimeManagementPolicy): Promise<TimeException | null> {
+  private async checkPolicyViolation(
+    entry: MobileTimecardEntry,
+    policy: TimeManagementPolicy
+  ): Promise<TimeException | null> {
     // Implementation would check if entry violates policy
     return null;
   }

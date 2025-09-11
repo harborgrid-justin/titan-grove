@@ -82,7 +82,7 @@ export enum MessagePriority {
   HIGH = 2,
   NORMAL = 3,
   LOW = 4,
-  BULK = 5
+  BULK = 5,
 }
 
 export enum QueueType {
@@ -108,7 +108,7 @@ export enum QueueType {
   NOTIFICATION = 'notification',
   REPORTING = 'reporting',
   ANALYTICS = 'analytics',
-  SYSTEM = 'system'
+  SYSTEM = 'system',
 }
 
 export interface ProcessorFunction {
@@ -153,7 +153,12 @@ export interface DeadLetterMessage {
 export interface QueueAlert {
   id: string;
   queueName: string;
-  alertType: 'QUEUE_DEPTH' | 'HIGH_ERROR_RATE' | 'PROCESSING_DELAY' | 'QUEUE_STALLED' | 'RESOURCE_EXHAUSTED';
+  alertType:
+    | 'QUEUE_DEPTH'
+    | 'HIGH_ERROR_RATE'
+    | 'PROCESSING_DELAY'
+    | 'QUEUE_STALLED'
+    | 'RESOURCE_EXHAUSTED';
   severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   message: string;
   details: Record<string, any>;

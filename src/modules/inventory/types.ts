@@ -139,7 +139,11 @@ export interface DemandForecastData {
   forecastError?: number;
   trendFactor: number;
   seasonalFactor: number;
-  forecastMethod: 'MOVING_AVERAGE' | 'EXPONENTIAL_SMOOTHING' | 'LINEAR_REGRESSION' | 'SEASONAL_DECOMPOSITION';
+  forecastMethod:
+    | 'MOVING_AVERAGE'
+    | 'EXPONENTIAL_SMOOTHING'
+    | 'LINEAR_REGRESSION'
+    | 'SEASONAL_DECOMPOSITION';
   confidence: number;
 }
 
@@ -345,7 +349,12 @@ export interface InventoryKPI {
 
 export interface InventoryReport {
   id: string;
-  reportType: 'STOCK_STATUS' | 'MOVEMENT_HISTORY' | 'VARIANCE_ANALYSIS' | 'ABC_ANALYSIS' | 'AGING_ANALYSIS';
+  reportType:
+    | 'STOCK_STATUS'
+    | 'MOVEMENT_HISTORY'
+    | 'VARIANCE_ANALYSIS'
+    | 'ABC_ANALYSIS'
+    | 'AGING_ANALYSIS';
   parameters: Record<string, any>;
   generatedDate: Date;
   generatedBy: string;
@@ -357,7 +366,12 @@ export interface InventoryReport {
 // Exception Handling Types
 export interface InventoryException {
   id: string;
-  exceptionType: 'NEGATIVE_STOCK' | 'EXCEEDED_MAX_STOCK' | 'STOCKOUT' | 'DISCREPANCY' | 'EXPIRED_LOT';
+  exceptionType:
+    | 'NEGATIVE_STOCK'
+    | 'EXCEEDED_MAX_STOCK'
+    | 'STOCKOUT'
+    | 'DISCREPANCY'
+    | 'EXPIRED_LOT';
   itemId: string;
   warehouseId: string;
   severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';

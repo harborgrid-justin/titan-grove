@@ -1,128 +1,130 @@
 // Identity Verification & Validation - User Management System
 // This file provides business-ready functionality for Identity Verification & Validation
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Identity Verification & Validation page loaded');
-    
-    // Initialize page functionality
-    initidentityverification();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadidentityverificationData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Identity Verification & Validation page loaded');
+
+  // Initialize page functionality
+  initidentityverification();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadidentityverificationData();
 });
 
 async function loadidentityverificationData() {
-    try {
-        // Simulate API call to backend
-        const response = await fetch('/api/user-management/identity-management/identity-verification');
-        const data = await response.json();
-        
-        console.log('Identity Verification & Validation data loaded:', data);
-        updateidentityverificationDisplay(data);
-    } catch (error) {
-        console.error('Error loading Identity Verification & Validation data:', error);
-        showNotification('Failed to load Identity Verification & Validation data', 'error');
-    }
+  try {
+    // Simulate API call to backend
+    const response = await fetch('/api/user-management/identity-management/identity-verification');
+    const data = await response.json();
+
+    console.log('Identity Verification & Validation data loaded:', data);
+    updateidentityverificationDisplay(data);
+  } catch (error) {
+    console.error('Error loading Identity Verification & Validation data:', error);
+    showNotification('Failed to load Identity Verification & Validation data', 'error');
+  }
 }
 
 function initidentityverification() {
-    // Initialize Identity Verification & Validation functionality
-    console.log('Initializing Identity Verification & Validation');
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
-    
-    // Initialize dashboard components
-    initializeDashboard();
+  // Initialize Identity Verification & Validation functionality
+  console.log('Initializing Identity Verification & Validation');
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
+
+  // Initialize dashboard components
+  initializeDashboard();
 }
 
 function initializeDashboard() {
-    // Initialize dashboard widgets and components
-    console.log('Dashboard initialized for Identity Verification & Validation');
+  // Initialize dashboard widgets and components
+  console.log('Dashboard initialized for Identity Verification & Validation');
 }
 
 function setupRealTimeUpdates() {
-    // Set up WebSocket or polling for real-time updates
-    console.log('Real-time updates configured for Identity Verification & Validation');
+  // Set up WebSocket or polling for real-time updates
+  console.log('Real-time updates configured for Identity Verification & Validation');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Identity Verification & Validation');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Identity Verification & Validation');
 }
 
 function handleidentityverificationAction() {
-    console.log('Identity Verification & Validation action triggered');
-    showNotification('Identity Verification & Validation configured successfully', 'success');
+  console.log('Identity Verification & Validation action triggered');
+  showNotification('Identity Verification & Validation configured successfully', 'success');
 }
 
 function executeidentityverification() {
-    console.log('Identity Verification & Validation execution started');
-    showNotification('Identity Verification & Validation executed successfully', 'success');
+  console.log('Identity Verification & Validation execution started');
+  showNotification('Identity Verification & Validation executed successfully', 'success');
 }
 
 function updateidentityverificationDisplay(data) {
-    console.log('Updating Identity Verification & Validation display:', data);
-    // Update UI with loaded data
+  console.log('Updating Identity Verification & Validation display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/user-management/identity-management/identity-verification/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadidentityverificationData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleidentityverificationAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', function() {
-            window.userManagement.exportData('identity-verification');
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/user-management/identity-management/identity-verification/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadidentityverificationData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleidentityverificationAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', function () {
+      window.userManagement.exportData('identity-verification');
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
 }
 
 // Add notification styles
@@ -170,10 +172,10 @@ document.head.appendChild(styleSheet);
 
 // Export page-specific functions for testing
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        initidentityverification,
-        handleidentityverificationAction,
-        executeidentityverification,
-        loadidentityverificationData
-    };
+  module.exports = {
+    initidentityverification,
+    handleidentityverificationAction,
+    executeidentityverification,
+    loadidentityverificationData,
+  };
 }

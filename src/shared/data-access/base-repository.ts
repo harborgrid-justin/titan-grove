@@ -39,7 +39,7 @@ export abstract class BaseRepositoryImpl<T extends { id: string }> implements Ba
   }
 
   async findById(id: string): Promise<T | null> {
-    return this.items.find(item => item.id === id) || null;
+    return this.items.find((item) => item.id === id) || null;
   }
 
   async findAll(): Promise<T[]> {
@@ -47,15 +47,15 @@ export abstract class BaseRepositoryImpl<T extends { id: string }> implements Ba
   }
 
   async update(id: string, updates: Partial<T>): Promise<T | null> {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.items.findIndex((item) => item.id === id);
     if (index === -1) return null;
-    
+
     this.items[index] = { ...this.items[index], ...updates };
     return this.items[index];
   }
 
   async delete(id: string): Promise<void> {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.items.findIndex((item) => item.id === id);
     if (index !== -1) {
       this.items.splice(index, 1);
     }

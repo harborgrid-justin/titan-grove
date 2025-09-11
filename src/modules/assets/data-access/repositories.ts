@@ -33,11 +33,11 @@ export class AssetRepository extends BaseRepositoryImpl<any> {
   }
 
   async getAssetsByLocation(locationId: string) {
-    return this.items.filter(item => item.locationId === locationId);
+    return this.items.filter((item) => item.locationId === locationId);
   }
 
   async getAssetsByDepartment(departmentId: string) {
-    return this.items.filter(item => item.departmentId === departmentId);
+    return this.items.filter((item) => item.departmentId === departmentId);
   }
 }
 

@@ -8,7 +8,7 @@ import {
   ReceivedItem,
   QualityInspection,
   InspectionCheckpoint,
-  Discrepancy
+  Discrepancy,
 } from './types';
 
 export class ReceiptProcessingService {
@@ -30,9 +30,9 @@ export class ReceiptProcessingService {
       receivedItems,
       qualityInspection: this.performQualityInspection(receivedItems),
       discrepancies: this.identifyDiscrepancies(receivedItems),
-      status: 'RECEIVED'
+      status: 'RECEIVED',
     };
-    
+
     return receipt;
   }
 
@@ -44,15 +44,18 @@ export class ReceiptProcessingService {
       checkpointId: `checkpoint_${index + 1}`,
       checkpointName: `Visual Inspection - Item ${index + 1}`,
       requirement: 'Items must be free from damage and meet specifications',
-      actualResult: item.condition === 'NEW' ? 
-        'No visible damage observed, meets specifications' : 
-        `Item shows ${item.condition.toLowerCase()} condition`,
-      status: item.condition === 'NEW' ? 'PASS' : 
-        (item.condition === 'DAMAGED' ? 'FAIL' : 'PASS')
+      actualResult:
+        item.condition === 'NEW'
+          ? 'No visible damage observed, meets specifications'
+          : `Item shows ${item.condition.toLowerCase()} condition`,
+      status: item.condition === 'NEW' ? 'PASS' : item.condition === 'DAMAGED' ? 'FAIL' : 'PASS',
     }));
 
-    const overallRating = inspectionResults.every(r => r.status === 'PASS') ? 'PASS' :
-      inspectionResults.some(r => r.status === 'FAIL') ? 'FAIL' : 'CONDITIONAL';
+    const overallRating = inspectionResults.every((r) => r.status === 'PASS')
+      ? 'PASS'
+      : inspectionResults.some((r) => r.status === 'FAIL')
+        ? 'FAIL'
+        : 'CONDITIONAL';
 
     return {
       inspectionId: `qc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -62,7 +65,7 @@ export class ReceiptProcessingService {
       inspectionResults,
       overallRating,
       certificationRequired: false,
-      certificationProvided: false
+      certificationProvided: false,
     };
   }
 
@@ -71,17 +74,20 @@ export class ReceiptProcessingService {
    */
   private identifyDiscrepancies(receivedItems: ReceivedItem[]): Discrepancy[] {
     const discrepancies: Discrepancy[] = [];
-    
-    receivedItems.forEach(item => {
+
+    receivedItems.forEach((item) => {
       if (item.quantityReceived !== item.quantityOrdered) {
         discrepancies.push({
           discrepancyId: `disc_${Date.now()}_${item.itemId}`,
           discrepancyType: 'QUANTITY',
           description: `Quantity mismatch: Ordered ${item.quantityOrdered}, Received ${item.quantityReceived}`,
-          severity: Math.abs(item.quantityReceived - item.quantityOrdered) > item.quantityOrdered * 0.1 ? 'MAJOR' : 'MINOR',
+          severity:
+            Math.abs(item.quantityReceived - item.quantityOrdered) > item.quantityOrdered * 0.1
+              ? 'MAJOR'
+              : 'MINOR',
           reportedBy: 'receiving_clerk',
           reportedDate: new Date(),
-          supplierNotified: false
+          supplierNotified: false,
         });
       }
 
@@ -93,21 +99,18 @@ export class ReceiptProcessingService {
           severity: item.condition === 'DAMAGED' ? 'MAJOR' : 'MINOR',
           reportedBy: 'quality_inspector',
           reportedDate: new Date(),
-          supplierNotified: false
+          supplierNotified: false,
         });
       }
     });
-    
+
     return discrepancies;
   }
 
   /**
    * Update receipt status
    */
-  async updateReceiptStatus(
-    receiptId: string,
-    status: ReceiptProcessing['status']
-  ): Promise<void> {
+  async updateReceiptStatus(receiptId: string, status: ReceiptProcessing['status']): Promise<void> {
     // Implementation would update receipt status in database
     console.log(`Updating receipt ${receiptId} to status: ${status}`);
   }
@@ -115,10 +118,7 @@ export class ReceiptProcessingService {
   /**
    * Add inspection notes
    */
-  async addInspectionNotes(
-    receiptId: string,
-    notes: string
-  ): Promise<void> {
+  async addInspectionNotes(receiptId: string, notes: string): Promise<void> {
     // Implementation would add inspection notes
     console.log(`Adding inspection notes to receipt ${receiptId}: ${notes}`);
   }
@@ -132,7 +132,9 @@ export class ReceiptProcessingService {
     notificationMethod: 'EMAIL' | 'PORTAL' | 'PHONE'
   ): Promise<void> {
     // Implementation would notify supplier about discrepancy
-    console.log(`Reporting discrepancy ${discrepancyId} to supplier ${supplierId} via ${notificationMethod}`);
+    console.log(
+      `Reporting discrepancy ${discrepancyId} to supplier ${supplierId} via ${notificationMethod}`
+    );
   }
 
   /**
@@ -161,25 +163,25 @@ export class ReceiptProcessingService {
         receiptId,
         totalItemsOrdered: 10,
         totalItemsReceived: 9,
-        receiptCompleteness: '90%'
+        receiptCompleteness: '90%',
       },
       inspectionResults: {
         overallRating: 'PASS',
         inspectionDate: new Date(),
         defectsFound: 1,
-        acceptableItems: 9
+        acceptableItems: 9,
       },
       discrepancySummary: {
         totalDiscrepancies: 2,
         quantityDiscrepancies: 1,
         qualityDiscrepancies: 1,
-        resolved: 0
+        resolved: 0,
       },
       recommendedActions: [
         'Contact supplier regarding quantity shortage',
         'Request replacement for damaged items',
-        'Schedule follow-up inspection'
-      ]
+        'Schedule follow-up inspection',
+      ],
     };
   }
 
@@ -202,19 +204,19 @@ export class ReceiptProcessingService {
           checkpointName: 'Dimensional Accuracy',
           requirement: 'All dimensions within ±0.1% tolerance',
           actualResult: 'All measurements within specification',
-          status: 'PASS'
+          status: 'PASS',
         },
         {
           checkpointId: 'detailed_2',
           checkpointName: 'Functional Test',
           requirement: 'All functions operate as specified',
           actualResult: 'All functions tested successfully',
-          status: 'PASS'
-        }
+          status: 'PASS',
+        },
       ],
       overallRating: 'PASS',
       certificationRequired: true,
-      certificationProvided: true
+      certificationProvided: true,
     };
 
     return detailedInspection;

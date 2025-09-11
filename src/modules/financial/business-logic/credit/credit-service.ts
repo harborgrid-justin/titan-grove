@@ -91,7 +91,7 @@ export class CreditService {
     application: Omit<CreditApplication, 'id' | 'applicationDate' | 'status'>
   ): Promise<CreditApplication> {
     const applicationId = `ca_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...application,
       id: applicationId,
@@ -109,7 +109,7 @@ export class CreditService {
   ): Promise<CreditScore> {
     let score = 600; // Base score
     const factors: CreditScoreFactor[] = [];
-    
+
     // Years in business factor
     if (businessInfo.yearsInBusiness > 5) {
       score += 50;
@@ -120,7 +120,7 @@ export class CreditService {
         weight: 15,
       });
     }
-    
+
     // Revenue factor
     if (financialInfo.annualRevenue > 1000000) {
       score += 40;
@@ -131,7 +131,7 @@ export class CreditService {
         weight: 20,
       });
     }
-    
+
     // Debt-to-income ratio
     const debtToIncome = financialInfo.existingDebt / financialInfo.annualRevenue;
     if (debtToIncome < 0.3) {
@@ -151,13 +151,13 @@ export class CreditService {
         weight: 25,
       });
     }
-    
+
     // Determine risk level
     let riskLevel: CreditScore['riskLevel'];
     if (score >= 750) riskLevel = 'LOW';
     else if (score >= 650) riskLevel = 'MEDIUM';
     else riskLevel = 'HIGH';
-    
+
     return {
       score: Math.min(850, Math.max(300, score)),
       scoreRange: '300-850',
@@ -179,7 +179,7 @@ export class CreditService {
       paymentTerms: 'Net 30',
       expirationDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year
     };
-    
+
     return decision;
   }
 
@@ -197,7 +197,9 @@ export class CreditService {
    */
   async updateCreditLimit(customerId: string, newLimit: number, reason: string): Promise<void> {
     // Implementation would update customer record with new credit limit
-    console.log(`Updated credit limit for customer ${customerId} to ${newLimit}. Reason: ${reason}`);
+    console.log(
+      `Updated credit limit for customer ${customerId} to ${newLimit}. Reason: ${reason}`
+    );
   }
 
   /**
@@ -215,7 +217,7 @@ export class CreditService {
       riskAssessment: 'LOW',
       recommendations: [
         'Customer maintains excellent payment history',
-        'Consider credit limit increase opportunity'
+        'Consider credit limit increase opportunity',
       ],
     };
   }

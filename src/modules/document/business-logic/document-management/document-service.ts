@@ -7,8 +7,9 @@ import type { DocumentEntity } from '../../types';
 import { documentRepository } from '../../data-access/repositories';
 
 export class DocumentService {
-  
-  async createDocument(data: Omit<DocumentEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<DocumentEntity> {
+  async createDocument(
+    data: Omit<DocumentEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<DocumentEntity> {
     this.validateDocumentData(data);
     return await documentRepository.create(data);
   }
@@ -22,7 +23,7 @@ export class DocumentService {
     if (!existing) {
       throw new Error(`Document with ID ${id} not found`);
     }
-    
+
     return await documentRepository.update(id, updates);
   }
 
@@ -31,7 +32,7 @@ export class DocumentService {
     if (!existing) {
       throw new Error(`Document with ID ${id} not found`);
     }
-    
+
     await documentRepository.delete(id);
   }
 
@@ -39,7 +40,9 @@ export class DocumentService {
     return await documentRepository.getAll();
   }
 
-  private validateDocumentData(data: Omit<DocumentEntity, 'id' | 'createdDate' | 'modifiedDate'>): void {
+  private validateDocumentData(
+    data: Omit<DocumentEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): void {
     if (!data.name || data.name.trim() === '') {
       throw new Error('Name is required');
     }

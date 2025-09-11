@@ -1,7 +1,7 @@
 /**
  * Order Management Module
  * Complete order-to-cash lifecycle management with comprehensive Oracle EBS competitive features
- * 
+ *
  * This module provides:
  * - Quote Management: Sales quotes, pricing, approvals, conversions
  * - Sales Order Processing: Order entry, validation, confirmation, holds
@@ -34,66 +34,69 @@ export * from './business-logic/orders-management/orders-service';
 export { QuoteService, quoteService } from './business-logic/quote-management/quote-service';
 
 // Sales Order Processing - Order entry and lifecycle
-export { SalesOrderService, salesOrderService } from './business-logic/sales-order-processing/sales-order-service';
+export {
+  SalesOrderService,
+  salesOrderService,
+} from './business-logic/sales-order-processing/sales-order-service';
 
 // Order Fulfillment - Pick, pack, ship operations
-export { 
-  OrderFulfillmentService, 
+export {
+  OrderFulfillmentService,
   orderFulfillmentService,
   type PickList,
   type PickInstruction,
-  type PackingSlip
+  type PackingSlip,
 } from './business-logic/order-fulfillment/order-fulfillment-service';
 
 // Return Management - RMA and return processing
-export { 
-  ReturnManagementService, 
+export {
+  ReturnManagementService,
   returnManagementService,
   type ReturnAuthorization,
   type ReturnReceipt,
-  type ReturnInspection
+  type ReturnInspection,
 } from './business-logic/return-management/return-management-service';
 
 // Pricing Engine - Advanced pricing and promotions
-export { 
-  PricingEngineService, 
+export {
+  PricingEngineService,
   pricingEngineService,
   type PriceList,
   type Promotion,
   type PricingContext,
-  type PricingResult
+  type PricingResult,
 } from './business-logic/pricing-engine/pricing-engine-service';
 
 // Order Promising - ATP and delivery scheduling
-export { 
-  OrderPromisingService, 
+export {
+  OrderPromisingService,
   orderPromisingService,
   type AvailabilityCheck,
   type PromiseDate,
-  type DeliverySchedule
+  type DeliverySchedule,
 } from './business-logic/order-promising/order-promising-service';
 
 // Shipping Management - Carrier integration
-export { 
-  ShippingManagementService, 
+export {
+  ShippingManagementService,
   shippingManagementService,
   type Carrier,
   type ShippingRate,
   type ShippingLabel,
   type TrackingInfo,
-  type ShippingManifest
+  type ShippingManifest,
 } from './business-logic/shipping-management/shipping-management-service';
 
 // Order Analytics - Reporting and KPIs
-export { 
-  OrderAnalyticsService, 
+export {
+  OrderAnalyticsService,
   orderAnalyticsService,
   createOrderAnalyticsService,
   type OrderAnalyticsDashboard,
   type OrderPerformanceMetrics,
   type SalesPerformanceAnalysis,
   type CustomerAnalytics,
-  type ForecastAnalysis
+  type ForecastAnalysis,
 } from './business-logic/order-analytics/order-analytics-service';
 
 // Configure-to-Order - Mass customization and configuration management
@@ -105,7 +108,7 @@ export {
   type ConfigurationModel,
   type ConfigurationSession,
   type ConfigurationQuote,
-  type FeasibilityResult
+  type FeasibilityResult,
 } from './business-logic/configure-to-order/configure-to-order-service';
 
 // ================================
@@ -129,7 +132,6 @@ import { orderAnalyticsService } from './business-logic/order-analytics/order-an
  * for comprehensive order-to-cash operations
  */
 export class OrderManager extends BaseManager {
-  
   constructor() {
     super();
     // Initialize all service dependencies
@@ -149,14 +151,17 @@ export class OrderManager extends BaseManager {
   /**
    * Convert approved quote to sales order
    */
-  async convertQuoteToOrder(quoteId: string, convertedBy: string = 'SYSTEM'): Promise<{ orderId: string; orderNumber: string }> {
+  async convertQuoteToOrder(
+    quoteId: string,
+    convertedBy: string = 'SYSTEM'
+  ): Promise<{ orderId: string; orderNumber: string }> {
     console.log(`Converting quote ${quoteId} to sales order`);
-    
+
     // Get the quote and validate it can be converted
     // This would integrate with the quote service
     const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const orderNumber = `SO${Date.now().toString().slice(-6)}`;
-    
+
     // Create order from quote data
     return { orderId, orderNumber };
   }
@@ -181,12 +186,12 @@ export class OrderManager extends BaseManager {
     estimatedShipDate?: Date;
   }> {
     console.log(`Confirming order ${orderId}`);
-    
+
     // Perform availability check and book order
     return {
       status: 'CONFIRMED',
       availabilityCheck: [],
-      estimatedShipDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+      estimatedShipDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
     };
   }
 
@@ -202,13 +207,13 @@ export class OrderManager extends BaseManager {
   }> {
     // Integrate with pricing engine for comprehensive pricing
     const pricedOrder = await pricingEngineService.calculateOrderPricing(order);
-    
+
     return {
       subtotal: pricedOrder.subtotal,
       taxAmount: pricedOrder.taxAmount,
       shippingAmount: pricedOrder.shippingAmount,
       discountAmount: pricedOrder.discountAmount,
-      totalAmount: pricedOrder.totalAmount
+      totalAmount: pricedOrder.totalAmount,
     };
   }
 
@@ -228,25 +233,28 @@ export class OrderManager extends BaseManager {
   /**
    * Generate pick list for order
    */
-  async pickOrder(orderId: string, warehouseId: string): Promise<{
+  async pickOrder(
+    orderId: string,
+    warehouseId: string
+  ): Promise<{
     pickListId: string;
     status: 'GENERATED' | 'ERROR';
     estimatedPickTime: number;
     pickInstructions: Array<{ itemCode: string; location: string; quantity: number }>;
   }> {
     console.log(`Generating pick list for order ${orderId}`);
-    
+
     const pickList = await orderFulfillmentService.generatePickList(orderId, warehouseId);
-    
+
     return {
       pickListId: pickList.id,
       status: 'GENERATED',
       estimatedPickTime: pickList.estimatedPickTime,
-      pickInstructions: pickList.pickInstructions.map(instruction => ({
+      pickInstructions: pickList.pickInstructions.map((instruction) => ({
         itemCode: instruction.itemCode,
         location: instruction.warehouseLocation,
-        quantity: instruction.quantityToPick
-      }))
+        quantity: instruction.quantityToPick,
+      })),
     };
   }
 
@@ -255,16 +263,16 @@ export class OrderManager extends BaseManager {
    */
   async packOrder(orderId: string, packagingDetails: any[]): Promise<any> {
     console.log(`Packing order ${orderId}`);
-    
+
     // Generate packing slip
     const packingSlip = await orderFulfillmentService.generatePackingSlip(
-      orderId, 
+      orderId,
       `pick_${orderId}`
     );
-    
+
     const shipmentId = `ship_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const shipmentNumber = `SH${Date.now().toString().slice(-6)}`;
-    
+
     return {
       id: shipmentId,
       shipmentNumber,
@@ -280,7 +288,7 @@ export class OrderManager extends BaseManager {
       totalWeight: packingSlip.totalWeight,
       totalVolume: packingSlip.totalVolume,
       shippingCost: 0,
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
@@ -295,10 +303,10 @@ export class OrderManager extends BaseManager {
     errorMessage?: string;
   }> {
     console.log(`Shipping order ${shipmentId}`);
-    
+
     // Integrate with shipping management service
     const shippingResult = await orderFulfillmentService.shipOrder(shipmentId, {}, 'SYSTEM');
-    
+
     return shippingResult;
   }
 
@@ -318,7 +326,7 @@ export class OrderManager extends BaseManager {
    */
   async processReturn(returnId: string, receiptData: any): Promise<any> {
     const receipt = await returnManagementService.receiveReturn(returnId, receiptData, 'SYSTEM');
-    
+
     // Schedule inspection if needed
     if (receiptData.requiresInspection) {
       const inspection = await returnManagementService.conductReturnInspection(
@@ -326,13 +334,13 @@ export class OrderManager extends BaseManager {
         {
           inspectionType: 'COMPREHENSIVE',
           lineItems: [],
-          overallResult: 'PASSED'
+          overallResult: 'PASSED',
         },
         'INSPECTOR'
       );
       return { receipt, inspection };
     }
-    
+
     return { receipt };
   }
 
@@ -349,12 +357,12 @@ export class OrderManager extends BaseManager {
     remainingBackOrders: Array<{ itemId: string; remainingQuantity: number }>;
   }> {
     console.log(`Attempting to fulfill back order ${backOrderId}`);
-    
+
     // Check availability and fulfill what's possible
     return {
       status: 'FULFILLED',
       fulfilledItems: [],
-      remainingBackOrders: []
+      remainingBackOrders: [],
     };
   }
 

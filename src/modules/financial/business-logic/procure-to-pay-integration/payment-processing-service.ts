@@ -9,7 +9,7 @@ import {
   InvoiceValidation,
   MatchingResult,
   InvoiceLineItem,
-  InvoiceApproval
+  InvoiceApproval,
 } from './types';
 
 export class PaymentProcessingService {
@@ -27,9 +27,9 @@ export class PaymentProcessingService {
       paymentReference: `REF${Date.now().toString().slice(-8)}`,
       bankAccount: 'encrypted_account_info',
       approvals: this.generatePaymentApprovals(0),
-      status: 'PENDING'
+      status: 'PENDING',
     };
-    
+
     return payment;
   }
 
@@ -53,7 +53,7 @@ export class PaymentProcessingService {
       invoiceId,
       validation: this.performThreeWayMatch(contractId, receiptIds, invoiceLineItems),
       approvals: this.generateInvoiceApprovals(totalAmount),
-      status: 'VALIDATION_PENDING'
+      status: 'VALIDATION_PENDING',
     };
   }
 
@@ -65,14 +65,14 @@ export class PaymentProcessingService {
     receiptIds: string[],
     invoiceLineItems: InvoiceLineItem[]
   ): InvoiceValidation {
-    const matchingResults: MatchingResult[] = invoiceLineItems.map(item => ({
+    const matchingResults: MatchingResult[] = invoiceLineItems.map((item) => ({
       matchType: 'PRICE',
       contractValue: item.unitPrice,
       receiptValue: item.unitPrice,
       invoiceValue: item.unitPrice,
       matched: true,
       variance: 0,
-      toleranceExceeded: false
+      toleranceExceeded: false,
     }));
 
     return {
@@ -82,7 +82,7 @@ export class PaymentProcessingService {
       validatedBy: 'automated_system',
       matchingResults,
       overallResult: 'MATCHED',
-      requiresManualReview: false
+      requiresManualReview: false,
     };
   }
 
@@ -96,10 +96,10 @@ export class PaymentProcessingService {
         approverLevel: 1,
         approverId: 'accounts_payable',
         approverRole: 'Accounts Payable Clerk',
-        status: 'PENDING'
-      }
+        status: 'PENDING',
+      },
     ];
-    
+
     // Additional approval for large amounts
     if (totalAmount > 50000) {
       approvals.push({
@@ -107,20 +107,20 @@ export class PaymentProcessingService {
         approverLevel: 2,
         approverId: 'finance_manager',
         approverRole: 'Finance Manager',
-        status: 'PENDING'
+        status: 'PENDING',
       });
     }
-    
+
     if (totalAmount > 250000) {
       approvals.push({
         approvalId: `inv_appr_${Date.now()}_3`,
         approverLevel: 3,
         approverId: 'cfo',
         approverRole: 'Chief Financial Officer',
-        status: 'PENDING'
+        status: 'PENDING',
       });
     }
-    
+
     return approvals;
   }
 
@@ -135,8 +135,8 @@ export class PaymentProcessingService {
         approverId: 'payment_clerk',
         approverRole: 'Payment Clerk',
         status: 'PENDING',
-        signatureRequired: false
-      }
+        signatureRequired: false,
+      },
     ];
 
     if (amount > 100000) {
@@ -146,7 +146,7 @@ export class PaymentProcessingService {
         approverId: 'treasury_manager',
         approverRole: 'Treasury Manager',
         status: 'PENDING',
-        signatureRequired: true
+        signatureRequired: true,
       });
     }
 
@@ -171,7 +171,7 @@ export class PaymentProcessingService {
       approvalDate: new Date(),
       status: approved ? 'APPROVED' : 'REJECTED',
       comments,
-      signatureRequired: false
+      signatureRequired: false,
     };
 
     return approval;
@@ -193,7 +193,7 @@ export class PaymentProcessingService {
       transactionId: `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       executionDate: new Date(),
       status: success ? 'COMPLETED' : 'FAILED',
-      failureReason: success ? undefined : 'Bank processing error'
+      failureReason: success ? undefined : 'Bank processing error',
     };
   }
 
@@ -237,7 +237,7 @@ export class PaymentProcessingService {
       scheduledDate,
       discountAvailable,
       discountAmount,
-      discountDate
+      discountDate,
     };
   }
 
@@ -258,23 +258,19 @@ export class PaymentProcessingService {
       totalPayments: 145,
       totalAmount: 2450000,
       paymentsByMethod: {
-        'ACH': 120,
-        'WIRE': 15,
-        'CHECK': 10
+        ACH: 120,
+        WIRE: 15,
+        CHECK: 10,
       },
       averageProcessingTime: 5.2, // days
-      discountsCaptured: 12500
+      discountsCaptured: 12500,
     };
   }
 
   /**
    * Void payment
    */
-  async voidPayment(
-    paymentId: string,
-    reason: string,
-    voidedBy: string
-  ): Promise<void> {
+  async voidPayment(paymentId: string, reason: string, voidedBy: string): Promise<void> {
     // Implementation would void the payment
     console.log(`Voiding payment ${paymentId} by ${voidedBy}: ${reason}`);
   }
@@ -293,7 +289,7 @@ export class PaymentProcessingService {
     return {
       reconciled: true,
       reconciliationDate: new Date(),
-      discrepancies: []
+      discrepancies: [],
     };
   }
 }

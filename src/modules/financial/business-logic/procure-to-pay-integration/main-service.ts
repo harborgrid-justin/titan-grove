@@ -14,7 +14,7 @@ import {
   ReceiptProcessing,
   PaymentProcessing,
   ReceivedItem,
-  InvoiceLineItem
+  InvoiceLineItem,
 } from './types';
 
 import { requisitionService } from './requisition-service';
@@ -32,7 +32,7 @@ export class ProcureToPayIntegrationService {
     processType: ProcureToPayProcess['processType']
   ): Promise<ProcureToPayProcess> {
     const stages = this.generateProcessStages(processType);
-    
+
     const process: ProcureToPayProcess = {
       id: `p2p_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       processType,
@@ -44,12 +44,12 @@ export class ProcureToPayIntegrationService {
       priority: this.determinePriority(requisition.totalAmount || 0),
       status: 'INITIATED',
       integrationPoints: this.setupIntegrationPoints(),
-      auditTrail: []
+      auditTrail: [],
     };
-    
+
     // Create initial audit event
     this.addAuditEvent(process, 'STAGE_TRANSITION', 'Process initiated', 'P2P_SYSTEM');
-    
+
     return process;
   }
 
@@ -123,25 +123,25 @@ export class ProcureToPayIntegrationService {
     return {
       overallStatus: 'ON_TRACK',
       stagePerformance: {
-        'requisition': { planned: 5, actual: 4, variance: -20 },
-        'sourcing': { planned: 14, actual: 12, variance: -14 },
-        'contracting': { planned: 7, actual: 8, variance: 14 }
+        requisition: { planned: 5, actual: 4, variance: -20 },
+        sourcing: { planned: 14, actual: 12, variance: -14 },
+        contracting: { planned: 7, actual: 8, variance: 14 },
       },
       bottlenecks: [
         'Manual approval processes in contracting stage',
-        'Delayed supplier responses in sourcing'
+        'Delayed supplier responses in sourcing',
       ],
       recommendations: [
         'Implement electronic approval workflow',
         'Expand supplier database for better competition',
-        'Automate routine contract generation'
+        'Automate routine contract generation',
       ],
       complianceStatus: 'COMPLIANT',
       integrationHealth: {
-        'Financial_System': 'HEALTHY',
-        'Contract_Management': 'HEALTHY',
-        'Supplier_Portal': 'WARNING'
-      }
+        Financial_System: 'HEALTHY',
+        Contract_Management: 'HEALTHY',
+        Supplier_Portal: 'WARNING',
+      },
     };
   }
 
@@ -159,7 +159,7 @@ export class ProcureToPayIntegrationService {
         assignedTo: ['requestor', 'supervisor'],
         requiredDocuments: ['Requisition Form', 'Business Justification'],
         systemIntegrations: ['ERP', 'Budget_Management'],
-        automationLevel: 'SEMI_AUTOMATED'
+        automationLevel: 'SEMI_AUTOMATED',
       },
       {
         stageId: 'stage_sourcing',
@@ -170,24 +170,23 @@ export class ProcureToPayIntegrationService {
         assignedTo: ['contracting_officer', 'procurement_specialist'],
         requiredDocuments: ['Market Research', 'Solicitation Documents'],
         systemIntegrations: ['Supplier_Portal', 'Evaluation_System'],
-        automationLevel: processType === 'SIMPLIFIED_ACQUISITION' ? 'FULLY_AUTOMATED' : 'SEMI_AUTOMATED'
-      }
+        automationLevel:
+          processType === 'SIMPLIFIED_ACQUISITION' ? 'FULLY_AUTOMATED' : 'SEMI_AUTOMATED',
+      },
     ];
 
     if (processType === 'STANDARD_PROCUREMENT') {
-      baseStages.push(
-        {
-          stageId: 'stage_contracting',
-          stageName: 'Contract Development',
-          stageType: 'CONTRACTING',
-          sequence: 3,
-          status: 'NOT_STARTED',
-          assignedTo: ['contracting_officer', 'legal_counsel'],
-          requiredDocuments: ['Contract Terms', 'Performance Specifications'],
-          systemIntegrations: ['Contract_Management', 'Legal_Review'],
-          automationLevel: 'MANUAL'
-        }
-      );
+      baseStages.push({
+        stageId: 'stage_contracting',
+        stageName: 'Contract Development',
+        stageType: 'CONTRACTING',
+        sequence: 3,
+        status: 'NOT_STARTED',
+        assignedTo: ['contracting_officer', 'legal_counsel'],
+        requiredDocuments: ['Contract Terms', 'Performance Specifications'],
+        systemIntegrations: ['Contract_Management', 'Legal_Review'],
+        automationLevel: 'MANUAL',
+      });
     }
 
     baseStages.push(
@@ -200,7 +199,7 @@ export class ProcureToPayIntegrationService {
         assignedTo: ['receiving_clerk', 'quality_inspector'],
         requiredDocuments: ['Delivery Receipt', 'Inspection Report'],
         systemIntegrations: ['Inventory_Management', 'Quality_System'],
-        automationLevel: 'SEMI_AUTOMATED'
+        automationLevel: 'SEMI_AUTOMATED',
       },
       {
         stageId: 'stage_invoicing',
@@ -211,7 +210,7 @@ export class ProcureToPayIntegrationService {
         assignedTo: ['accounts_payable'],
         requiredDocuments: ['Supplier Invoice', 'Three-Way Match'],
         systemIntegrations: ['Financial_System', 'Contract_Management'],
-        automationLevel: 'FULLY_AUTOMATED'
+        automationLevel: 'FULLY_AUTOMATED',
       },
       {
         stageId: 'stage_payment',
@@ -222,7 +221,7 @@ export class ProcureToPayIntegrationService {
         assignedTo: ['treasury', 'payment_approver'],
         requiredDocuments: ['Payment Authorization', 'Bank Transfer'],
         systemIntegrations: ['Banking_System', 'Treasury_Management'],
-        automationLevel: 'FULLY_AUTOMATED'
+        automationLevel: 'FULLY_AUTOMATED',
       }
     );
 
@@ -239,22 +238,22 @@ export class ProcureToPayIntegrationService {
         systemName: 'Enterprise Resource Planning',
         integrationType: 'REAL_TIME',
         dataExchanged: ['Budget Data', 'GL Codes', 'Cost Centers'],
-        status: 'CONNECTED'
+        status: 'CONNECTED',
       },
       {
         integrationId: 'int_supplier_portal',
         systemName: 'Supplier Portal',
         integrationType: 'EVENT_DRIVEN',
         dataExchanged: ['RFP Documents', 'Supplier Responses', 'Awards'],
-        status: 'CONNECTED'
+        status: 'CONNECTED',
       },
       {
         integrationId: 'int_banking',
         systemName: 'Banking System',
         integrationType: 'BATCH',
         dataExchanged: ['Payment Instructions', 'Transaction Status'],
-        status: 'CONNECTED'
-      }
+        status: 'CONNECTED',
+      },
     ];
   }
 
@@ -275,7 +274,7 @@ export class ProcureToPayIntegrationService {
       description,
       systemSource,
       dataChanged: {},
-      complianceImpact: 'NONE'
+      complianceImpact: 'NONE',
     };
 
     process.auditTrail.push(auditEvent);

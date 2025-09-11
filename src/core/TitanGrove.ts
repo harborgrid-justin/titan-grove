@@ -120,47 +120,47 @@ export class TitanGrove extends EventEmitter {
       this.emit('service:registered', serviceName);
     });
 
-    this.serviceRegistry.on('service:initialization_failed', (serviceName: string, error: Error) => {
-      this.logger.error(`Service initialization failed: ${serviceName}`, error);
-      this.emit('service:initialization_failed', serviceName, error);
-    });
+    this.serviceRegistry.on(
+      'service:initialization_failed',
+      (serviceName: string, error: Error) => {
+        this.logger.error(`Service initialization failed: ${serviceName}`, error);
+        this.emit('service:initialization_failed', serviceName, error);
+      }
+    );
   }
 
   private registerBusinessServices(): void {
     this.logger.info('Registering business services with error boundaries...');
-    
+
     // Register Federal Compliance Service with error boundary configuration
-    this.serviceRegistry.register(
-      () => new FederalComplianceService(this.serviceRegistry),
-      {
-        metadata: {
-          name: 'FederalComplianceService',
-          version: '1.0.0',
-          description: 'FAR/DFARS compliance validation with circuit breaker protection',
-          dependencies: [],
-          tags: ['compliance', 'federal', 'regulations']
+    this.serviceRegistry.register(() => new FederalComplianceService(this.serviceRegistry), {
+      metadata: {
+        name: 'FederalComplianceService',
+        version: '1.0.0',
+        description: 'FAR/DFARS compliance validation with circuit breaker protection',
+        dependencies: [],
+        tags: ['compliance', 'federal', 'regulations'],
+      },
+      errorBoundaryConfig: {
+        serviceName: 'FederalComplianceService',
+        circuitBreakerConfig: {
+          failureThreshold: 5,
+          recoveryTimeout: 30000,
+          monitoringPeriod: 60000,
         },
-        errorBoundaryConfig: {
-          serviceName: 'FederalComplianceService',
-          circuitBreakerConfig: {
-            failureThreshold: 5,
-            recoveryTimeout: 30000,
-            monitoringPeriod: 60000
-          },
-          retryConfig: {
-            maxAttempts: 3,
-            initialDelay: 1000,
-            maxDelay: 10000,
-            backoffMultiplier: 2
-          },
-          fallbackConfig: {
-            enabled: true
-          }
+        retryConfig: {
+          maxAttempts: 3,
+          initialDelay: 1000,
+          maxDelay: 10000,
+          backoffMultiplier: 2,
         },
-        singleton: true,
-        lazy: false
-      }
-    );
+        fallbackConfig: {
+          enabled: true,
+        },
+      },
+      singleton: true,
+      lazy: false,
+    });
 
     this.logger.info('Business services registration completed');
   }
@@ -354,22 +354,24 @@ export class TitanGrove extends EventEmitter {
     // Business services health
     try {
       const serviceHealths = await this.serviceRegistry.healthCheck();
-      checks.push(...serviceHealths.map(sh => ({
-        service: sh.serviceName,
-        status: sh.status === 'healthy' ? 'healthy' as const : 'unhealthy' as const,
-        timestamp: sh.lastCheck,
-        details: {
-          ...sh.details,
-          errorBoundaryMetrics: sh.errorBoundaryMetrics,
-          circuitBreakerMetrics: sh.circuitBreakerMetrics
-        }
-      })));
+      checks.push(
+        ...serviceHealths.map((sh) => ({
+          service: sh.serviceName,
+          status: sh.status === 'healthy' ? ('healthy' as const) : ('unhealthy' as const),
+          timestamp: sh.lastCheck,
+          details: {
+            ...sh.details,
+            errorBoundaryMetrics: sh.errorBoundaryMetrics,
+            circuitBreakerMetrics: sh.circuitBreakerMetrics,
+          },
+        }))
+      );
     } catch (error) {
       checks.push({
         service: 'business_services',
         status: 'unhealthy',
         timestamp: new Date(),
-        details: { error: (error as Error).message }
+        details: { error: (error as Error).message },
       });
     }
 

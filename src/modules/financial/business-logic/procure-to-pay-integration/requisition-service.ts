@@ -3,11 +3,7 @@
  * Handles requisition processing and management within the procure-to-pay flow
  */
 
-import {
-  Requisition,
-  RequisitionItem,
-  RequisitionApproval
-} from './types';
+import { Requisition, RequisitionItem, RequisitionApproval } from './types';
 
 export class RequisitionService {
   /**
@@ -26,10 +22,12 @@ export class RequisitionService {
       totalAmount: this.calculateTotalAmount(requisitionData.items || []),
       budgetSource: requisitionData.budgetSource || '',
       justification: requisitionData.justification || '',
-      approvals: this.generateRequiredApprovals(this.calculateTotalAmount(requisitionData.items || [])),
-      status: 'DRAFT'
+      approvals: this.generateRequiredApprovals(
+        this.calculateTotalAmount(requisitionData.items || [])
+      ),
+      status: 'DRAFT',
     };
-    
+
     return requisition;
   }
 
@@ -38,7 +36,7 @@ export class RequisitionService {
    */
   private calculateTotalAmount(items: RequisitionItem[]): number {
     return items.reduce((total, item) => {
-      return total + (item.quantity * item.unitPrice);
+      return total + item.quantity * item.unitPrice;
     }, 0);
   }
 
@@ -52,8 +50,8 @@ export class RequisitionService {
         approverLevel: 1,
         approverId: 'supervisor',
         approverRole: 'Supervisor',
-        status: 'PENDING'
-      }
+        status: 'PENDING',
+      },
     ];
 
     // Additional approval levels based on amount
@@ -63,7 +61,7 @@ export class RequisitionService {
         approverLevel: 2,
         approverId: 'department_head',
         approverRole: 'Department Head',
-        status: 'PENDING'
+        status: 'PENDING',
       });
     }
 
@@ -73,7 +71,7 @@ export class RequisitionService {
         approverLevel: 3,
         approverId: 'cfo',
         approverRole: 'Chief Financial Officer',
-        status: 'PENDING'
+        status: 'PENDING',
       });
     }
 
@@ -83,7 +81,7 @@ export class RequisitionService {
         approverLevel: 4,
         approverId: 'contracting_officer',
         approverRole: 'Contracting Officer',
-        status: 'PENDING'
+        status: 'PENDING',
       });
     }
 
@@ -104,10 +102,7 @@ export class RequisitionService {
   /**
    * Add item to requisition
    */
-  async addRequisitionItem(
-    requisitionId: string,
-    item: RequisitionItem
-  ): Promise<void> {
+  async addRequisitionItem(requisitionId: string, item: RequisitionItem): Promise<void> {
     // Implementation would add item to requisition
     console.log(`Adding item ${item.itemId} to requisition ${requisitionId}`);
   }
@@ -128,7 +123,7 @@ export class RequisitionService {
       approverRole: 'Approver',
       approvalDate: new Date(),
       status: approved ? 'APPROVED' : 'REJECTED',
-      comments
+      comments,
     };
 
     return approval;
@@ -174,7 +169,7 @@ export class RequisitionService {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 }

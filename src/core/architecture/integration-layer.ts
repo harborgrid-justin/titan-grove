@@ -69,11 +69,12 @@ export class IntegrationLayerService {
   private logger: Logger;
   private businessSystem: BusinessSystemService;
   private customerSystem: CustomerSystemService;
-  
+
   private eventHandlers: Map<string, Array<(event: IntegrationEvent) => Promise<void>>> = new Map();
   private dataSyncRules: Map<string, DataSyncRule> = new Map();
   private workflows: Map<string, Workflow> = new Map();
-  private circuitBreakers: Map<string, { failures: number; lastFailure: Date; isOpen: boolean }> = new Map();
+  private circuitBreakers: Map<string, { failures: number; lastFailure: Date; isOpen: boolean }> =
+    new Map();
 
   constructor(
     config: IntegrationConfig,
@@ -96,22 +97,20 @@ export class IntegrationLayerService {
         eventId: event.eventId,
         eventType: event.eventType,
         source: event.source,
-        target: event.target
+        target: event.target,
       });
 
       const handlers = this.eventHandlers.get(event.eventType) || [];
-      
+
       // Execute handlers in parallel
-      const results = await Promise.allSettled(
-        handlers.map(handler => handler(event))
-      );
+      const results = await Promise.allSettled(handlers.map((handler) => handler(event)));
 
       // Check for failures
-      const failures = results.filter(result => result.status === 'rejected');
+      const failures = results.filter((result) => result.status === 'rejected');
       if (failures.length > 0) {
         this.logger.warn(`${failures.length} event handlers failed for event ${event.eventType}`, {
           eventId: event.eventId,
-          failures: failures.map(f => (f as PromiseRejectedResult).reason)
+          failures: failures.map((f) => (f as PromiseRejectedResult).reason),
         });
       }
 
@@ -119,13 +118,13 @@ export class IntegrationLayerService {
         success: true,
         metadata: {
           handlersExecuted: handlers.length,
-          failures: failures.length
-        }
+          failures: failures.length,
+        },
       };
     } catch (error) {
       this.logger.error('Failed to publish integration event', {
         eventId: event.eventId,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
 
       return {
@@ -133,8 +132,8 @@ export class IntegrationLayerService {
         error: {
           code: 'EVENT_PUBLISH_FAILED',
           message: 'Failed to publish integration event',
-          details: error
-        }
+          details: error,
+        },
       };
     }
   }
@@ -142,16 +141,13 @@ export class IntegrationLayerService {
   /**
    * Subscribe to integration events
    */
-  subscribeToEvent(
-    eventType: string,
-    handler: (event: IntegrationEvent) => Promise<void>
-  ): void {
+  subscribeToEvent(eventType: string, handler: (event: IntegrationEvent) => Promise<void>): void {
     if (!this.eventHandlers.has(eventType)) {
       this.eventHandlers.set(eventType, []);
     }
-    
+
     this.eventHandlers.get(eventType)!.push(handler);
-    
+
     this.logger.info(`Subscribed to integration event: ${eventType}`);
   }
 
@@ -160,28 +156,32 @@ export class IntegrationLayerService {
    */
   registerDataSyncRule(rule: DataSyncRule): void {
     this.dataSyncRules.set(rule.ruleId, rule);
-    
+
     this.logger.info('Registered data sync rule', {
       ruleId: rule.ruleId,
       sourceSystem: rule.sourceSystem,
       targetSystem: rule.targetSystem,
       dataType: rule.dataType,
-      syncDirection: rule.syncDirection
+      syncDirection: rule.syncDirection,
     });
   }
 
   /**
    * Execute data synchronization
    */
-  async executeDataSync(ruleId: string, data: any, context: ServiceContext): Promise<ServiceResult<any>> {
+  async executeDataSync(
+    ruleId: string,
+    data: any,
+    context: ServiceContext
+  ): Promise<ServiceResult<any>> {
     const rule = this.dataSyncRules.get(ruleId);
     if (!rule) {
       return {
         success: false,
         error: {
           code: 'SYNC_RULE_NOT_FOUND',
-          message: `Data sync rule ${ruleId} not found`
-        }
+          message: `Data sync rule ${ruleId} not found`,
+        },
       };
     }
 
@@ -192,8 +192,8 @@ export class IntegrationLayerService {
         success: false,
         error: {
           code: 'CIRCUIT_BREAKER_OPEN',
-          message: 'Data sync temporarily unavailable due to repeated failures'
-        }
+          message: 'Data sync temporarily unavailable due to repeated failures',
+        },
       };
     }
 
@@ -203,7 +203,7 @@ export class IntegrationLayerService {
 
       // Execute sync based on source and target systems
       let result: ServiceResult<any>;
-      
+
       if (rule.sourceSystem === 'business' && rule.targetSystem === 'customer') {
         result = await this.syncBusinessToCustomer(rule, transformedData, context);
       } else if (rule.sourceSystem === 'customer' && rule.targetSystem === 'business') {
@@ -213,8 +213,8 @@ export class IntegrationLayerService {
           success: false,
           error: {
             code: 'INVALID_SYNC_DIRECTION',
-            message: 'Invalid sync direction in rule configuration'
-          }
+            message: 'Invalid sync direction in rule configuration',
+          },
         };
       }
 
@@ -227,14 +227,14 @@ export class IntegrationLayerService {
       return result;
     } catch (error) {
       this.recordCircuitBreakerFailure(circuitKey);
-      
+
       return {
         success: false,
         error: {
           code: 'DATA_SYNC_FAILED',
           message: 'Data synchronization failed',
-          details: error
-        }
+          details: error,
+        },
       };
     }
   }
@@ -244,40 +244,44 @@ export class IntegrationLayerService {
    */
   registerWorkflow(workflow: Workflow): void {
     this.workflows.set(workflow.workflowId, workflow);
-    
+
     this.logger.info('Registered workflow', {
       workflowId: workflow.workflowId,
       name: workflow.name,
       steps: workflow.steps.length,
-      triggerType: workflow.trigger.type
+      triggerType: workflow.trigger.type,
     });
   }
 
   /**
    * Execute workflow
    */
-  async executeWorkflow(workflowId: string, input: any, context: ServiceContext): Promise<ServiceResult<any>> {
+  async executeWorkflow(
+    workflowId: string,
+    input: any,
+    context: ServiceContext
+  ): Promise<ServiceResult<any>> {
     const workflow = this.workflows.get(workflowId);
     if (!workflow) {
       return {
         success: false,
         error: {
           code: 'WORKFLOW_NOT_FOUND',
-          message: `Workflow ${workflowId} not found`
-        }
+          message: `Workflow ${workflowId} not found`,
+        },
       };
     }
 
     this.logger.info('Executing workflow', {
       workflowId,
       name: workflow.name,
-      steps: workflow.steps.length
+      steps: workflow.steps.length,
     });
 
     const executionContext = {
       ...context,
       workflowId,
-      executionId: `${workflowId}-${Date.now()}`
+      executionId: `${workflowId}-${Date.now()}`,
     };
 
     let currentData = input;
@@ -286,22 +290,22 @@ export class IntegrationLayerService {
     try {
       for (let i = 0; i < workflow.steps.length; i++) {
         const step = workflow.steps[i];
-        
+
         this.logger.debug('Executing workflow step', {
           workflowId,
           stepId: step.stepId,
           stepIndex: i + 1,
-          system: step.system
+          system: step.system,
         });
 
         // Map input data based on step configuration
-        const stepInput = step.inputMapping 
+        const stepInput = step.inputMapping
           ? this.mapData(currentData, step.inputMapping)
           : currentData;
 
         // Execute step
         let stepResult: ServiceResult<any>;
-        
+
         if (step.system === 'business') {
           stepResult = await this.businessSystem.executeBusinessOperation(
             step.operation,
@@ -325,7 +329,7 @@ export class IntegrationLayerService {
               this.logger.warn('Workflow step failed but continuing', {
                 workflowId,
                 stepId: step.stepId,
-                error: stepResult.error
+                error: stepResult.error,
               });
               stepResults.push({ step: step.stepId, success: false, error: stepResult.error });
               continue;
@@ -348,14 +352,15 @@ export class IntegrationLayerService {
         }
 
         // Map output data based on step configuration
-        currentData = step.outputMapping && stepResult.data
-          ? this.mapData(stepResult.data, step.outputMapping)
-          : stepResult.data;
+        currentData =
+          step.outputMapping && stepResult.data
+            ? this.mapData(stepResult.data, step.outputMapping)
+            : stepResult.data;
 
-        stepResults.push({ 
-          step: step.stepId, 
-          success: stepResult.success, 
-          data: currentData 
+        stepResults.push({
+          step: step.stepId,
+          success: stepResult.success,
+          data: currentData,
         });
       }
 
@@ -365,13 +370,13 @@ export class IntegrationLayerService {
         metadata: {
           stepsExecuted: stepResults.length,
           workflowId,
-          executionId: executionContext.executionId
-        }
+          executionId: executionContext.executionId,
+        },
       };
     } catch (error) {
       this.logger.error('Workflow execution failed', {
         workflowId,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       });
 
       return {
@@ -379,8 +384,8 @@ export class IntegrationLayerService {
         error: {
           code: 'WORKFLOW_EXECUTION_FAILED',
           message: 'Workflow execution failed',
-          details: { workflowId, stepResults, error }
-        }
+          details: { workflowId, stepResults, error },
+        },
       };
     }
   }
@@ -397,12 +402,12 @@ export class IntegrationLayerService {
     // This is a placeholder for the actual sync logic
     this.logger.info('Syncing data from business to customer system', {
       ruleId: rule.ruleId,
-      dataType: rule.dataType
+      dataType: rule.dataType,
     });
 
     return {
       success: true,
-      data: { synced: true, rule: rule.ruleId, direction: 'business-to-customer' }
+      data: { synced: true, rule: rule.ruleId, direction: 'business-to-customer' },
     };
   }
 
@@ -418,12 +423,12 @@ export class IntegrationLayerService {
     // This is a placeholder for the actual sync logic
     this.logger.info('Syncing data from customer to business system', {
       ruleId: rule.ruleId,
-      dataType: rule.dataType
+      dataType: rule.dataType,
     });
 
     return {
       success: true,
-      data: { synced: true, rule: rule.ruleId, direction: 'customer-to-business' }
+      data: { synced: true, rule: rule.ruleId, direction: 'customer-to-business' },
     };
   }
 
@@ -458,7 +463,7 @@ export class IntegrationLayerService {
       breaker.isOpen = true;
       this.logger.warn(`Circuit breaker opened for ${key}`, {
         failures: breaker.failures,
-        threshold: integrationConfig.circuitBreaker.defaultThreshold
+        threshold: integrationConfig.circuitBreaker.defaultThreshold,
       });
     }
   }
@@ -476,13 +481,13 @@ export class IntegrationLayerService {
    */
   private mapData(data: any, mapping: { [key: string]: string }): any {
     const result: any = {};
-    
+
     for (const [targetKey, sourceKey] of Object.entries(mapping)) {
       // Support dot notation for nested properties
       const value = sourceKey.split('.').reduce((obj, key) => obj?.[key], data);
       result[targetKey] = value;
     }
-    
+
     return result;
   }
 
@@ -498,13 +503,15 @@ export class IntegrationLayerService {
       this.logger.debug('Retrying workflow step', {
         stepId: step.stepId,
         attempt,
-        maxAttempts: integrationConfig.retry.maxAttempts
+        maxAttempts: integrationConfig.retry.maxAttempts,
       });
 
-      await new Promise(resolve => setTimeout(resolve, integrationConfig.retry.delayMs * attempt));
+      await new Promise((resolve) =>
+        setTimeout(resolve, integrationConfig.retry.delayMs * attempt)
+      );
 
       let result: ServiceResult<any>;
-      
+
       if (step.system === 'business') {
         result = await this.businessSystem.executeBusinessOperation(step.operation, input, context);
       } else {
@@ -524,8 +531,8 @@ export class IntegrationLayerService {
       success: false,
       error: {
         code: 'MAX_RETRIES_EXCEEDED',
-        message: 'Maximum retry attempts exceeded'
-      }
+        message: 'Maximum retry attempts exceeded',
+      },
     };
   }
 
@@ -539,7 +546,7 @@ export class IntegrationLayerService {
   ): Promise<void> {
     this.logger.info('Rolling back workflow', {
       workflowId: workflow.workflowId,
-      stepsToRollback: stepResults.length
+      stepsToRollback: stepResults.length,
     });
 
     // Implement rollback logic based on completed steps
@@ -548,7 +555,7 @@ export class IntegrationLayerService {
       if (stepResult.success) {
         this.logger.debug('Rolling back workflow step', {
           stepId: stepResult.step,
-          workflowId: workflow.workflowId
+          workflowId: workflow.workflowId,
         });
         // Implement specific rollback operations
       }
@@ -565,19 +572,22 @@ export class IntegrationLayerService {
     circuitBreakers: { [key: string]: { failures: number; isOpen: boolean } };
   } {
     const circuitBreakers: { [key: string]: { failures: number; isOpen: boolean } } = {};
-    
+
     for (const [key, breaker] of this.circuitBreakers.entries()) {
       circuitBreakers[key] = {
         failures: breaker.failures,
-        isOpen: breaker.isOpen
+        isOpen: breaker.isOpen,
       };
     }
 
     return {
-      eventHandlers: Array.from(this.eventHandlers.values()).reduce((sum, handlers) => sum + handlers.length, 0),
+      eventHandlers: Array.from(this.eventHandlers.values()).reduce(
+        (sum, handlers) => sum + handlers.length,
+        0
+      ),
       dataSyncRules: this.dataSyncRules.size,
       workflows: this.workflows.size,
-      circuitBreakers
+      circuitBreakers,
     };
   }
 }

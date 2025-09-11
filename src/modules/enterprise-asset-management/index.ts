@@ -1,7 +1,7 @@
 /**
  * Enterprise Asset Management Module
  * Oracle Enterprise Asset Management competitive implementation
- * 
+ *
  * Provides comprehensive asset management capabilities including:
  * - Asset lifecycle management and tracking
  * - Preventive and predictive maintenance
@@ -25,7 +25,10 @@ import { BaseManager } from '../../shared/utils/base-manager';
 import { assetManagementService } from './business-logic/asset-management-service';
 
 // Core asset management functionality
-export { AssetManagementService, assetManagementService } from './business-logic/asset-management-service';
+export {
+  AssetManagementService,
+  assetManagementService,
+} from './business-logic/asset-management-service';
 
 // Types
 export type {
@@ -40,7 +43,7 @@ export type {
   AssetAnalytics,
   PredictiveMaintenance,
   AssetReliability,
-  MaintenanceInventory
+  MaintenanceInventory,
 } from './types';
 
 /**
@@ -56,7 +59,7 @@ export class EnterpriseAssetManager extends BaseManager {
     const asset = {
       id,
       ...assetData,
-      ...this.createAuditFields('system')
+      ...this.createAuditFields('system'),
     };
     this.logAction('createAsset', { id });
     return asset;

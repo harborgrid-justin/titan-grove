@@ -12,13 +12,13 @@ import {
   ComplianceCheck,
   ServiceResponse,
   ComplianceStatus,
-  ValidationCriteria
+  ValidationCriteria,
 } from '../common/BaseComplianceService';
 
 import {
   CircuitBreakerConfig,
   ErrorBoundaryConfig,
-  ErrorSeverity
+  ErrorSeverity,
 } from '../../../../core/error-handling';
 
 // Specialized federal compliance types extending base types
@@ -84,7 +84,7 @@ export class FederalComplianceService extends BaseComplianceService {
     expectedErrors: (error: Error) => {
       // Don't trigger circuit breaker for validation errors
       return error.message.includes('validation') || error.message.includes('compliance');
-    }
+    },
   };
 
   private static readonly ERROR_BOUNDARY_CONFIG: ErrorBoundaryConfig = {
@@ -97,37 +97,43 @@ export class FederalComplianceService extends BaseComplianceService {
       backoffMultiplier: 2,
       retryableErrors: (error: Error) => {
         // Retry on network errors, timeouts, but not validation errors
-        return !error.message.includes('validation') && 
-               !error.message.includes('compliance') &&
-               (error.message.includes('timeout') || 
-                error.message.includes('network') ||
-                error.message.includes('connection'));
-      }
+        return (
+          !error.message.includes('validation') &&
+          !error.message.includes('compliance') &&
+          (error.message.includes('timeout') ||
+            error.message.includes('network') ||
+            error.message.includes('connection'))
+        );
+      },
     },
     fallbackConfig: {
       enabled: true,
       fallbackHandler: async <T>(context: any, error: Error): Promise<T> => {
         // Return degraded compliance check result
-        return [{
-          id: `fallback_${Date.now()}`,
-          entityId: context.metadata?.entityId || 'unknown',
-          entityType: context.metadata?.entityType || 'contract',
-          ruleId: 'fallback_rule',
-          status: ComplianceStatus.PENDING,
-          checkDate: new Date(),
-          checkedBy: 'fallback_handler',
-          findings: [{
-            findingType: 'OBSERVATION',
-            severity: 'MEDIUM',
-            description: `Compliance check deferred due to service error: ${error.message}`,
-            requiresAction: true
-          }],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          createdBy: 'fallback_handler',
-          version: 1
-        }] as T;
-      }
+        return [
+          {
+            id: `fallback_${Date.now()}`,
+            entityId: context.metadata?.entityId || 'unknown',
+            entityType: context.metadata?.entityType || 'contract',
+            ruleId: 'fallback_rule',
+            status: ComplianceStatus.PENDING,
+            checkDate: new Date(),
+            checkedBy: 'fallback_handler',
+            findings: [
+              {
+                findingType: 'OBSERVATION',
+                severity: 'MEDIUM',
+                description: `Compliance check deferred due to service error: ${error.message}`,
+                requiresAction: true,
+              },
+            ],
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            createdBy: 'fallback_handler',
+            version: 1,
+          },
+        ] as T;
+      },
     },
     errorClassification: (error: Error) => {
       if (error.message.includes('CRITICAL') || error.message.includes('security')) {
@@ -140,7 +146,7 @@ export class FederalComplianceService extends BaseComplianceService {
         return ErrorSeverity.MEDIUM;
       }
       return ErrorSeverity.LOW;
-    }
+    },
   };
 
   constructor(serviceRegistry?: any) {
@@ -158,7 +164,7 @@ export class FederalComplianceService extends BaseComplianceService {
         agency: 'DOD',
         contractorSAMRegistration: 'active',
         requiredClauses: ['FAR 52.204-21', 'FAR 52.219-8'],
-        certifications: ['System for Award Management (SAM) Registration']
+        certifications: ['System for Award Management (SAM) Registration'],
       };
     }
     throw new Error(`Unsupported entity type: ${entityType}`);
@@ -188,20 +194,20 @@ export class FederalComplianceService extends BaseComplianceService {
             operator: 'CONTAINS',
             value: 'FAR 52.204-21',
             isRequired: true,
-            errorMessage: 'Contract must include FAR 52.204-21 Basic Safeguarding clause'
-          }
+            errorMessage: 'Contract must include FAR 52.204-21 Basic Safeguarding clause',
+          },
         ],
         createdAt: new Date(),
         updatedAt: new Date(),
         createdBy: 'system',
-        version: 1
-      }
+        version: 1,
+      },
     ];
 
     if (regulationType) {
-      return baseRules.filter(rule => rule.regulationType === regulationType);
+      return baseRules.filter((rule) => rule.regulationType === regulationType);
     }
-    
+
     return baseRules;
   }
   /**
@@ -244,33 +250,31 @@ export class FederalComplianceService extends BaseComplianceService {
         competitionType: contractValue > 250000 ? 'FULL_AND_OPEN' : 'LIMITED_SOURCES',
         requiredClauses: [
           'FAR 52.204-21 Basic Safeguarding of Covered Contractor Information Systems',
-          'FAR 52.219-8 Utilization of Small Business Concerns'
+          'FAR 52.219-8 Utilization of Small Business Concerns',
         ],
-        requiredCertifications: [
-          'System for Award Management (SAM) Registration'
-        ],
+        requiredCertifications: ['System for Award Management (SAM) Registration'],
         approvalLevels: [
           {
             threshold: contractValue,
             approverRole: 'CONTRACTING_OFFICER',
-            requiredCertifications: ['FAC-C Level II']
-          }
+            requiredCertifications: ['FAC-C Level II'],
+          },
         ],
         socioeconomicRequirements: [
           {
             type: 'SMALL_BUSINESS',
             percentage: 23,
             mandatory: true,
-            applicableContracts: ['all']
-          }
-        ]
+            applicableContracts: ['all'],
+          },
+        ],
       };
 
       return {
         success: true,
         data: requirement,
         timestamp: new Date(),
-        correlationId: this.correlationId
+        correlationId: this.correlationId,
       };
     } catch (error) {
       return {
@@ -278,10 +282,10 @@ export class FederalComplianceService extends BaseComplianceService {
         error: {
           code: 'FEDERAL_REQUIREMENTS_FAILED',
           message: `Failed to get federal contracting requirements: ${(error as Error).message}`,
-          details: { contractValue, contractType, agency }
+          details: { contractValue, contractType, agency },
         },
         timestamp: new Date(),
-        correlationId: this.correlationId
+        correlationId: this.correlationId,
       };
     }
   }
@@ -289,20 +293,22 @@ export class FederalComplianceService extends BaseComplianceService {
   /**
    * Generate compliance report with comprehensive error boundary protection
    */
-  async generateComplianceReport(contractId: string): Promise<ServiceResponse<{
-    overallStatus: 'COMPLIANT' | 'NON_COMPLIANT' | 'PENDING_REVIEW';
-    complianceScore: number;
-    criticalIssues: ComplianceCheck[];
-    recommendations: string[];
-    reportDate: Date;
-  }>> {
+  async generateComplianceReport(contractId: string): Promise<
+    ServiceResponse<{
+      overallStatus: 'COMPLIANT' | 'NON_COMPLIANT' | 'PENDING_REVIEW';
+      complianceScore: number;
+      criticalIssues: ComplianceCheck[];
+      recommendations: string[];
+      reportDate: Date;
+    }>
+  > {
     try {
       // Validate against all applicable regulations
       const farChecks = await this.validateFARCompliance(contractId);
       const dfarsChecks = await this.validateDFARSCompliance(contractId);
 
       const allChecks: ComplianceCheck[] = [];
-      
+
       if (farChecks.success) {
         allChecks.push(...farChecks.data);
       }
@@ -310,8 +316,8 @@ export class FederalComplianceService extends BaseComplianceService {
         allChecks.push(...dfarsChecks.data);
       }
 
-      const criticalIssues = allChecks.filter(check => 
-        check.status === ComplianceStatus.NON_COMPLIANT
+      const criticalIssues = allChecks.filter(
+        (check) => check.status === ComplianceStatus.NON_COMPLIANT
       );
 
       const complianceScore = this.calculateComplianceScore(allChecks);
@@ -326,12 +332,12 @@ export class FederalComplianceService extends BaseComplianceService {
           recommendations: [
             'Ensure all required FAR clauses are included in contract',
             'Verify contractor SAM registration is current',
-            'Review DFARS cybersecurity requirements for DoD contracts'
+            'Review DFARS cybersecurity requirements for DoD contracts',
           ],
-          reportDate: new Date()
+          reportDate: new Date(),
         },
         timestamp: new Date(),
-        correlationId: this.correlationId
+        correlationId: this.correlationId,
       };
     } catch (error) {
       return {
@@ -339,21 +345,22 @@ export class FederalComplianceService extends BaseComplianceService {
         error: {
           code: 'COMPLIANCE_REPORT_FAILED',
           message: `Failed to generate compliance report: ${(error as Error).message}`,
-          details: { contractId }
+          details: { contractId },
         },
         timestamp: new Date(),
-        correlationId: this.correlationId
+        correlationId: this.correlationId,
       };
     }
   }
 
   private calculateComplianceScore(checks: ComplianceCheck[]): number {
     if (checks.length === 0) return 0;
-    
-    const compliantChecks = checks.filter(check => 
-      check.status === ComplianceStatus.COMPLIANT || check.status === ComplianceStatus.WAIVED
+
+    const compliantChecks = checks.filter(
+      (check) =>
+        check.status === ComplianceStatus.COMPLIANT || check.status === ComplianceStatus.WAIVED
     );
-    
+
     return Math.round((compliantChecks.length / checks.length) * 100);
   }
 
@@ -368,7 +375,7 @@ export class FederalComplianceService extends BaseComplianceService {
     try {
       const baseClauses = [
         'FAR 52.204-21 Basic Safeguarding of Covered Contractor Information Systems',
-        'FAR 52.219-8 Utilization of Small Business Concerns'
+        'FAR 52.219-8 Utilization of Small Business Concerns',
       ];
 
       // Add value-based clauses
@@ -390,7 +397,7 @@ export class FederalComplianceService extends BaseComplianceService {
         success: true,
         data: baseClauses,
         timestamp: new Date(),
-        correlationId: this.correlationId
+        correlationId: this.correlationId,
       };
     } catch (error) {
       return {
@@ -398,10 +405,10 @@ export class FederalComplianceService extends BaseComplianceService {
         error: {
           code: 'REQUIRED_CLAUSES_FAILED',
           message: `Failed to get required clauses: ${(error as Error).message}`,
-          details: { contractValue, contractType, agency }
+          details: { contractValue, contractType, agency },
         },
         timestamp: new Date(),
-        correlationId: this.correlationId
+        correlationId: this.correlationId,
       };
     }
   }
@@ -428,7 +435,7 @@ export class FederalComplianceService extends BaseComplianceService {
         performedDate: new Date(),
         regulatoryJustification: details.regulatoryJustification,
         impactAssessment: details.impactAssessment,
-        approvalRequired: details.approvalRequired
+        approvalRequired: details.approvalRequired,
       };
 
       // In a real implementation, this would save to database
@@ -438,7 +445,7 @@ export class FederalComplianceService extends BaseComplianceService {
         success: true,
         data: auditEntry,
         timestamp: new Date(),
-        correlationId: this.correlationId
+        correlationId: this.correlationId,
       };
     } catch (error) {
       return {
@@ -446,10 +453,10 @@ export class FederalComplianceService extends BaseComplianceService {
         error: {
           code: 'AUDIT_TRAIL_FAILED',
           message: `Failed to create audit trail: ${(error as Error).message}`,
-          details: { contractId, action, performedBy }
+          details: { contractId, action, performedBy },
         },
         timestamp: new Date(),
-        correlationId: this.correlationId
+        correlationId: this.correlationId,
       };
     }
   }

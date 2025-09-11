@@ -5,8 +5,8 @@
 
 export enum CircuitBreakerState {
   CLOSED = 'CLOSED',
-  OPEN = 'OPEN', 
-  HALF_OPEN = 'HALF_OPEN'
+  OPEN = 'OPEN',
+  HALF_OPEN = 'HALF_OPEN',
 }
 
 export interface CircuitBreakerConfig {
@@ -30,7 +30,10 @@ export interface CircuitBreakerMetrics {
 }
 
 export class CircuitBreakerError extends Error {
-  constructor(message: string, public readonly state: CircuitBreakerState) {
+  constructor(
+    message: string,
+    public readonly state: CircuitBreakerState
+  ) {
     super(message);
     this.name = 'CircuitBreakerError';
   }
@@ -119,7 +122,7 @@ export class CircuitBreaker {
     const oldState = this.state;
     this.state = newState;
     this.stateChangedAt = new Date();
-    
+
     if (newState === CircuitBreakerState.OPEN) {
       this.nextAttemptTime = new Date(Date.now() + this.config.recoveryTimeout);
     } else {
@@ -139,7 +142,7 @@ export class CircuitBreaker {
       rejectedCount: this.rejectedCount,
       lastFailureTime: this.lastFailureTime,
       lastSuccessTime: this.lastSuccessTime,
-      stateChangedAt: this.stateChangedAt
+      stateChangedAt: this.stateChangedAt,
     };
   }
 

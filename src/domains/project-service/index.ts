@@ -45,7 +45,6 @@ export interface ProjectServiceDomainConfig {
  * Consolidated business calculations for project and service management
  */
 export class ProjectServiceBusinessLogic {
-  
   /**
    * Calculate project profitability analysis
    */
@@ -71,7 +70,7 @@ export class ProjectServiceBusinessLogic {
       totalCosts,
       grossProfit,
       grossMargin,
-      profitabilityIndex
+      profitabilityIndex,
     };
   }
 
@@ -101,7 +100,7 @@ export class ProjectServiceBusinessLogic {
       utilizationRate,
       efficiency,
       variance,
-      status
+      status,
     };
   }
 
@@ -128,7 +127,7 @@ export class ProjectServiceBusinessLogic {
       slaCompliance,
       firstCallResolutionRate,
       escalationRate,
-      overallEfficiency
+      overallEfficiency,
     };
   }
 }
@@ -158,31 +157,31 @@ export class ProjectServiceDomainManager {
           consultant: 150,
           manager: 200,
           architect: 250,
-          developer: 120
+          developer: 120,
         },
         margins: {
           targetGrossMargin: 0.35,
-          minAcceptableMargin: 0.20,
-          premiumMargin: 0.50
+          minAcceptableMargin: 0.2,
+          premiumMargin: 0.5,
         },
         resourceUtilization: {
           billableTarget: 0.75,
           capacityBuffer: 0.15,
-          overallocationLimit: 1.2
-        }
+          overallocationLimit: 1.2,
+        },
       },
       service: {
         slaTargets: {
           availability: 0.999,
           responseTime: 2,
-          resolutionTime: 8
+          resolutionTime: 8,
         },
         satisfactionTargets: {
           customerSatisfaction: 4.5,
           firstCallResolution: 0.8,
-          escalationRate: 0.1
-        }
-      }
+          escalationRate: 0.1,
+        },
+      },
     };
   }
 
@@ -196,7 +195,7 @@ export class ProjectServiceDomainManager {
       revenue: 500000,
       laborCosts: 275000,
       materialCosts: 85000,
-      overheadCosts: 65000
+      overheadCosts: 65000,
     };
 
     const profitability = ProjectServiceBusinessLogic.calculateProjectProfitability(
@@ -217,8 +216,8 @@ export class ProjectServiceDomainManager {
       projectHealth: {
         onTrack: 0.68,
         atRisk: 0.22,
-        delayed: 0.10
-      }
+        delayed: 0.1,
+      },
     };
   }
 
@@ -227,7 +226,12 @@ export class ProjectServiceDomainManager {
    */
   async performServiceDeliveryAnalysis(period: { startDate: Date; endDate: Date }): Promise<any> {
     // Placeholder for service delivery analysis
-    const serviceMetrics = ProjectServiceBusinessLogic.calculateServiceLevelMetrics(1250, 1100, 950, 85);
+    const serviceMetrics = ProjectServiceBusinessLogic.calculateServiceLevelMetrics(
+      1250,
+      1100,
+      950,
+      85
+    );
 
     return {
       totalIncidents: 1250,
@@ -236,7 +240,7 @@ export class ProjectServiceDomainManager {
       avgResolutionTime: 6.2, // hours
       serviceMetrics,
       customerSatisfaction: 4.3,
-      availability: 0.998
+      availability: 0.998,
     };
   }
 

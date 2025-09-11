@@ -64,7 +64,6 @@ export interface ActualCostElement {
 }
 
 export class CostManagementService {
-  
   /**
    * Standard Cost Management
    */
@@ -73,13 +72,16 @@ export class CostManagementService {
     costData: Omit<StandardCost, 'productId' | 'totalStandardCost' | 'lastRollupDate'>
   ): Promise<StandardCost> {
     // Calculate total standard cost
-    const totalStandardCost = costData.costElements.reduce((sum, element) => sum + element.amount, 0);
-    
+    const totalStandardCost = costData.costElements.reduce(
+      (sum, element) => sum + element.amount,
+      0
+    );
+
     const standardCost: StandardCost = {
       productId,
       ...costData,
       totalStandardCost,
-      lastRollupDate: new Date()
+      lastRollupDate: new Date(),
     };
 
     console.log(`Created standard cost for product ${productId}: $${totalStandardCost}`);
@@ -99,15 +101,15 @@ export class CostManagementService {
     lastUpdated: Date;
   }> {
     console.log(`Calculating ${costingMethod} costs for product ${productId}`);
-    
+
     return {
       productId,
       costingMethod,
-      materialCost: 1250.00,
-      laborCost: 400.00,
-      overheadCost: 300.00,
-      totalCost: 1950.00,
-      lastUpdated: new Date()
+      materialCost: 1250.0,
+      laborCost: 400.0,
+      overheadCost: 300.0,
+      totalCost: 1950.0,
+      lastUpdated: new Date(),
     };
   }
 
@@ -126,9 +128,9 @@ export class CostManagementService {
     recommendations: string[];
   }> {
     const reportId = `cr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Generating ${reportType} cost report: ${reportId}`);
-    
+
     return {
       reportId,
       reportType,
@@ -136,22 +138,22 @@ export class CostManagementService {
         totalCosts: 2500000,
         totalVariance: 125000,
         variancePercentage: 5.0,
-        topCostDrivers: ['Material costs', 'Labor inefficiency', 'Overhead allocation']
+        topCostDrivers: ['Material costs', 'Labor inefficiency', 'Overhead allocation'],
       },
       details: [
         {
           productId: 'PROD_001',
-          standardCost: 125.50,
+          standardCost: 125.5,
           actualCost: 135.75,
           variance: 10.25,
-          varPercent: 8.2
-        }
+          varPercent: 8.2,
+        },
       ],
       recommendations: [
         'Focus on material cost control initiatives',
         'Review labor efficiency improvement opportunities',
-        'Validate overhead allocation methodology'
-      ]
+        'Validate overhead allocation methodology',
+      ],
     };
   }
 
@@ -163,17 +165,17 @@ export class CostManagementService {
     explanations: string[];
   }> {
     console.log(`Calculating cost variances for work order ${workOrderId}`);
-    
+
     return {
-      materialVariance: 75.00,
-      laborVariance: 50.00,
-      overheadVariance: 25.00,
-      totalVariance: 150.00,
+      materialVariance: 75.0,
+      laborVariance: 50.0,
+      overheadVariance: 25.0,
+      totalVariance: 150.0,
       explanations: [
         'Material price variance due to market conditions',
         'Labor efficiency variance due to training needs',
-        'Overhead volume variance due to lower production'
-      ]
+        'Overhead volume variance due to lower production',
+      ],
     };
   }
 
@@ -192,16 +194,16 @@ export class CostManagementService {
     productIds: string[];
   }> {
     const analysisId = `ca_${Date.now()}`;
-    
+
     return {
       analysisId,
       costBreakdown: {
         totalCost: 2500000,
         materialCosts: { directMaterial: 1200000 },
         laborCosts: { directLabor: 600000 },
-        overheadCosts: { manufacturing: 150000 }
+        overheadCosts: { manufacturing: 150000 },
       },
-      productIds: parameters.productIds
+      productIds: parameters.productIds,
     };
   }
 
@@ -213,9 +215,9 @@ export class CostManagementService {
   }> {
     return {
       keyMetrics: [
-        { metricName: 'Cost per Unit', currentValue: 52.70 },
-        { metricName: 'Manufacturing Efficiency', currentValue: 89.5 }
-      ]
+        { metricName: 'Cost per Unit', currentValue: 52.7 },
+        { metricName: 'Manufacturing Efficiency', currentValue: 89.5 },
+      ],
     };
   }
 }

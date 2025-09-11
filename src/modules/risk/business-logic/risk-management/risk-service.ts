@@ -7,8 +7,9 @@ import type { RiskEntity } from '../../types';
 import { riskRepository } from '../../data-access/repositories';
 
 export class RiskService {
-  
-  async createRisk(data: Omit<RiskEntity, 'id' | 'createdDate' | 'modifiedDate'>): Promise<RiskEntity> {
+  async createRisk(
+    data: Omit<RiskEntity, 'id' | 'createdDate' | 'modifiedDate'>
+  ): Promise<RiskEntity> {
     this.validateRiskData(data);
     return await riskRepository.create(data);
   }
@@ -22,7 +23,7 @@ export class RiskService {
     if (!existing) {
       throw new Error(`Risk with ID ${id} not found`);
     }
-    
+
     return await riskRepository.update(id, updates);
   }
 
@@ -31,7 +32,7 @@ export class RiskService {
     if (!existing) {
       throw new Error(`Risk with ID ${id} not found`);
     }
-    
+
     await riskRepository.delete(id);
   }
 

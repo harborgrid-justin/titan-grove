@@ -2,7 +2,7 @@
  * Field Service Management Service
  * Oracle Field Service competitive implementation
  * Enhanced with message queue and cache integration
- * 
+ *
  * Provides comprehensive field service management with:
  * - Advanced service request handling
  * - Intelligent technician scheduling and dispatch
@@ -23,7 +23,7 @@ import type {
   ServiceAnalytics,
   MobileWorkforce,
   DispatchOptimization,
-  ServiceWarranty
+  ServiceWarranty,
 } from '../types';
 
 import { StandardServiceBase } from '../../../shared/utils/standard-service-base';
@@ -55,12 +55,12 @@ export class FieldServiceService extends StandardServiceBase {
         config: {
           serviceName: 'field-service-service',
           cacheConfig: { defaultTTL: 600, keyPrefix: 'fs' },
-          messageQueueConfig: { 
-            defaultPriority: 2, 
+          messageQueueConfig: {
+            defaultPriority: 2,
             retryAttempts: 3,
-            compliance: { dataClassification: 'INTERNAL', auditRequired: true }
-          }
-        }
+            compliance: { dataClassification: 'INTERNAL', auditRequired: true },
+          },
+        },
       });
     }
   }
@@ -72,22 +72,16 @@ export class FieldServiceService extends StandardServiceBase {
    */
   async processMessage(message: MessagePayload): Promise<any> {
     this.markMessageProcessed();
-    
+
     switch (message.type) {
       case 'CREATE_SERVICE_REQUEST':
         return await this.createServiceRequest(message.data);
       case 'CREATE_WORK_ORDER':
         return await this.createWorkOrder(message.data);
       case 'ASSIGN_TECHNICIAN':
-        return await this.assignTechnician(
-          message.data.workOrderId,
-          message.data.technicianId
-        );
+        return await this.assignTechnician(message.data.workOrderId, message.data.technicianId);
       case 'UPDATE_WORK_ORDER_STATUS':
-        return await this.updateWorkOrderStatus(
-          message.data.workOrderId,
-          message.data.status
-        );
+        return await this.updateWorkOrderStatus(message.data.workOrderId, message.data.status);
       case 'SCHEDULE_APPOINTMENT':
         return await this.scheduleAppointment(message.data);
       default:
@@ -117,10 +111,10 @@ export class FieldServiceService extends StandardServiceBase {
   }> {
     return this.executeWithMetrics(async () => {
       const requestId = requestData.requestId || `SR_${Date.now()}`;
-      
+
       // Intelligent priority assignment based on request details
       const priority = await this.calculateRequestPriority(requestData);
-      
+
       // Estimate required skills based on problem description
       const skillsRequired = await this.analyzeSkillRequirements(requestData);
 
@@ -132,11 +126,11 @@ export class FieldServiceService extends StandardServiceBase {
         contactInfo: requestData.contactInfo || {
           primaryContact: '',
           phone: '',
-          email: ''
+          email: '',
         },
         serviceAddress: requestData.serviceAddress || {
           address: '',
-          coordinates: { lat: 0, lng: 0 }
+          coordinates: { lat: 0, lng: 0 },
         },
         requestType: requestData.requestType || 'REPAIR',
         priority,
@@ -145,7 +139,7 @@ export class FieldServiceService extends StandardServiceBase {
         assetId: requestData.assetId,
         assetInfo: requestData.assetInfo,
         preferredSchedule: requestData.preferredSchedule || {
-          availability: 'BUSINESS_HOURS'
+          availability: 'BUSINESS_HOURS',
         },
         skillsRequired,
         estimatedDuration: await this.estimateServiceDuration(requestData),
@@ -154,59 +148,55 @@ export class FieldServiceService extends StandardServiceBase {
         status: 'NEW',
         createdBy: 'CUSTOMER_PORTAL',
         createdDate: new Date(),
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
       };
 
       this.serviceRequests.set(requestId, serviceRequest);
-      
+
       // Cache the service request
-      await this.setCached(`service-request:${requestId}`, serviceRequest, this.getCacheTTL('service-request'));
+      await this.setCached(
+        `service-request:${requestId}`,
+        serviceRequest,
+        this.getCacheTTL('service-request')
+      );
 
       // Find suggested technicians
       const suggestedTechnicians = await this.findSuggestedTechnicians(serviceRequest);
-      
+
       // Calculate estimated response time
       const estimatedResponse = await this.calculateResponseTime(serviceRequest);
 
       // Send acknowledgment notification via message queue
-      await this.sendMessage(
-        QueueType.NOTIFICATION,
-        'SERVICE_REQUEST_CREATED',
-        {
-          requestId,
-          requestNumber: serviceRequest.requestNumber,
-          customerId: serviceRequest.customerId,
-          priority: serviceRequest.priority,
-          estimatedResponse,
-          timestamp: new Date()
-        }
-      );
+      await this.sendMessage(QueueType.NOTIFICATION, 'SERVICE_REQUEST_CREATED', {
+        requestId,
+        requestNumber: serviceRequest.requestNumber,
+        customerId: serviceRequest.customerId,
+        priority: serviceRequest.priority,
+        estimatedResponse,
+        timestamp: new Date(),
+      });
 
       // Notify service command center about new request
-      await this.sendMessage(
-        QueueType.SERVICE_COMMAND_CENTER,
-        'NEW_SERVICE_REQUEST',
-        {
-          requestId,
-          priority: serviceRequest.priority,
-          serviceType: serviceRequest.requestType,
-          location: serviceRequest.serviceAddress,
-          skillsRequired: serviceRequest.skillsRequired,
-          timestamp: new Date()
-        }
-      );
+      await this.sendMessage(QueueType.SERVICE_COMMAND_CENTER, 'NEW_SERVICE_REQUEST', {
+        requestId,
+        priority: serviceRequest.priority,
+        serviceType: serviceRequest.requestType,
+        location: serviceRequest.serviceAddress,
+        skillsRequired: serviceRequest.skillsRequired,
+        timestamp: new Date(),
+      });
 
       this.logger.info(`Service request created: ${serviceRequest.requestNumber}`, {
         requestId,
         priority: serviceRequest.priority,
-        estimatedDuration: serviceRequest.estimatedDuration
+        estimatedDuration: serviceRequest.estimatedDuration,
       });
 
       return {
         success: true,
         serviceRequest,
         suggestedTechnicians,
-        estimatedResponse
+        estimatedResponse,
       };
     });
   }
@@ -232,7 +222,7 @@ export class FieldServiceService extends StandardServiceBase {
     }
 
     const workOrderId = `WO_${Date.now()}`;
-    
+
     // Create work order
     const workOrder: WorkOrder = {
       workOrderId,
@@ -245,20 +235,26 @@ export class FieldServiceService extends StandardServiceBase {
       instructions: assignmentData.additionalInstructions || '',
       priority: serviceRequest.priority,
       assetId: serviceRequest.assetId,
-      assetDetails: serviceRequest.assetInfo ? {
-        serialNumber: serviceRequest.assetInfo.serialNumber,
-        modelNumber: serviceRequest.assetInfo.modelNumber,
-        location: serviceRequest.serviceAddress.address,
-        condition: 'GOOD'
-      } : undefined,
-      assignedTechnician: assignmentData.technicianId ? {
-        technicianId: assignmentData.technicianId,
-        technicianName: '',
-        skills: [],
-        certifications: []
-      } : undefined,
+      assetDetails: serviceRequest.assetInfo
+        ? {
+            serialNumber: serviceRequest.assetInfo.serialNumber,
+            modelNumber: serviceRequest.assetInfo.modelNumber,
+            location: serviceRequest.serviceAddress.address,
+            condition: 'GOOD',
+          }
+        : undefined,
+      assignedTechnician: assignmentData.technicianId
+        ? {
+            technicianId: assignmentData.technicianId,
+            technicianName: '',
+            skills: [],
+            certifications: [],
+          }
+        : undefined,
       scheduledStart: assignmentData.scheduledDate,
-      scheduledEnd: new Date(assignmentData.scheduledDate.getTime() + serviceRequest.estimatedDuration * 60000),
+      scheduledEnd: new Date(
+        assignmentData.scheduledDate.getTime() + serviceRequest.estimatedDuration * 60000
+      ),
       estimatedDuration: serviceRequest.estimatedDuration,
       requiredParts: [],
       materialCost: 0,
@@ -270,7 +266,7 @@ export class FieldServiceService extends StandardServiceBase {
       followUpRequired: false,
       createdBy: 'DISPATCHER',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     // Create appointment
@@ -283,12 +279,14 @@ export class FieldServiceService extends StandardServiceBase {
     serviceRequest.lastUpdated = new Date();
     this.serviceRequests.set(requestId, serviceRequest);
 
-    this.logger?.info(`Work order created: ${workOrder.workOrderNumber} from request ${serviceRequest.requestNumber}`);
+    this.logger?.info(
+      `Work order created: ${workOrder.workOrderNumber} from request ${serviceRequest.requestNumber}`
+    );
 
     return {
       success: true,
       workOrder,
-      appointment
+      appointment,
     };
   }
 
@@ -301,7 +299,7 @@ export class FieldServiceService extends StandardServiceBase {
    */
   async registerTechnician(technicianData: Partial<ServiceTechnician>): Promise<ServiceTechnician> {
     const technicianId = technicianData.technicianId || `TECH_${Date.now()}`;
-    
+
     const technician: ServiceTechnician = {
       technicianId,
       employeeId: technicianData.employeeId || '',
@@ -316,11 +314,11 @@ export class FieldServiceService extends StandardServiceBase {
         territoryId: 'DEFAULT',
         territoryName: 'Default Territory',
         geoFence: null,
-        travelRadius: 50
+        travelRadius: 50,
       },
       homeBase: technicianData.homeBase || {
         address: '',
-        coordinates: { lat: 0, lng: 0 }
+        coordinates: { lat: 0, lng: 0 },
       },
       workingHours: technicianData.workingHours || {
         schedule: {
@@ -328,16 +326,16 @@ export class FieldServiceService extends StandardServiceBase {
           Tuesday: { start: '08:00', end: '17:00' },
           Wednesday: { start: '08:00', end: '17:00' },
           Thursday: { start: '08:00', end: '17:00' },
-          Friday: { start: '08:00', end: '17:00' }
+          Friday: { start: '08:00', end: '17:00' },
         },
         availability: 'FULL_TIME',
-        timeZone: 'UTC'
+        timeZone: 'UTC',
       },
       assignedVehicle: technicianData.assignedVehicle,
       mobileInventory: technicianData.mobileInventory || {
         capacity: 1000,
         currentStock: [],
-        stockValue: 0
+        stockValue: 0,
       },
       tools: technicianData.tools || [],
       performance: {
@@ -345,18 +343,18 @@ export class FieldServiceService extends StandardServiceBase {
         onTimeRate: 0.88,
         firstTimeFixRate: 0.82,
         customerSatisfactionScore: 4.3,
-        utilizationRate: 0.75
+        utilizationRate: 0.75,
       },
       status: 'ACTIVE',
       currentStatus: 'AVAILABLE',
       emergencyContact: technicianData.emergencyContact || {
         name: '',
         relationship: '',
-        phone: ''
+        phone: '',
       },
       hireDate: technicianData.hireDate || new Date(),
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     this.technicians.set(technicianId, technician);
@@ -374,31 +372,34 @@ export class FieldServiceService extends StandardServiceBase {
     objectives: string[] = ['MINIMIZE_TRAVEL_TIME', 'MAXIMIZE_UTILIZATION', 'BALANCE_WORKLOAD']
   ): Promise<DispatchOptimization> {
     const optimizationId = `OPT_${Date.now()}`;
-    
+
     // Get available technicians
     const availableTechnicians = Array.from(this.technicians.values())
-      .filter(tech => tech.currentStatus === 'AVAILABLE')
-      .map(tech => ({
+      .filter((tech) => tech.currentStatus === 'AVAILABLE')
+      .map((tech) => ({
         technicianId: tech.technicianId,
         location: tech.homeBase.coordinates,
-        skills: tech.skills.map(skill => skill.skillName),
+        skills: tech.skills.map((skill) => skill.skillName),
         workingHours: { start: '08:00', end: '17:00' },
-        currentWorkload: 0
+        currentWorkload: 0,
       }));
 
     // Get pending work orders
     const pendingWorkOrders = Array.from(this.workOrders.values())
-      .filter(wo => wo.status === 'CREATED' || wo.status === 'SCHEDULED')
-      .map(wo => ({
+      .filter((wo) => wo.status === 'CREATED' || wo.status === 'SCHEDULED')
+      .map((wo) => ({
         workOrderId: wo.workOrderId,
         location: wo.serviceAddress.coordinates,
         priority: wo.priority,
         estimatedDuration: wo.estimatedDuration,
         skillsRequired: [], // Would extract from work order
-        timeWindow: wo.scheduledStart && wo.scheduledEnd ? {
-          start: wo.scheduledStart.toTimeString().substring(0, 5),
-          end: wo.scheduledEnd.toTimeString().substring(0, 5)
-        } : undefined
+        timeWindow:
+          wo.scheduledStart && wo.scheduledEnd
+            ? {
+                start: wo.scheduledStart.toTimeString().substring(0, 5),
+                end: wo.scheduledEnd.toTimeString().substring(0, 5),
+              }
+            : undefined,
       }));
 
     // Run optimization algorithm (simplified version)
@@ -414,19 +415,19 @@ export class FieldServiceService extends StandardServiceBase {
           maximizeUtilization: objectives.includes('MAXIMIZE_UTILIZATION'),
           balanceWorkload: objectives.includes('BALANCE_WORKLOAD'),
           prioritizeUrgent: objectives.includes('PRIORITIZE_URGENT'),
-          minimizeCost: objectives.includes('MINIMIZE_COST')
+          minimizeCost: objectives.includes('MINIMIZE_COST'),
         },
         constraints: {
           technicianSkills: true,
           workingHours: true,
           maxTravelDistance: 100,
           serviceTimeWindows: true,
-          partAvailability: false
-        }
+          partAvailability: false,
+        },
       },
       inputData: {
         availableTechnicians,
-        pendingWorkOrders
+        pendingWorkOrders,
       },
       results: {
         assignments,
@@ -436,11 +437,11 @@ export class FieldServiceService extends StandardServiceBase {
           averageUtilization: 0.75,
           workloadBalance: 0.85,
           costOptimization: 0.78,
-          serviceLevel: 0.92
-        }
+          serviceLevel: 0.92,
+        },
       },
       implementationStatus: 'PENDING',
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     return optimization;
@@ -455,7 +456,7 @@ export class FieldServiceService extends StandardServiceBase {
    */
   async createServiceContract(contractData: Partial<ServiceContract>): Promise<ServiceContract> {
     const contractId = contractData.contractId || `SC_${Date.now()}`;
-    
+
     const contract: ServiceContract = {
       contractId,
       contractNumber: `SC-${contractId.substring(3)}`,
@@ -465,13 +466,13 @@ export class FieldServiceService extends StandardServiceBase {
       startDate: contractData.startDate || new Date(),
       endDate: contractData.endDate || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year
       renewalTerms: contractData.renewalTerms || {
-        autoRenewal: false
+        autoRenewal: false,
       },
       serviceLevel: contractData.serviceLevel || {
         responseTime: 4,
         resolutionTime: 24,
         availability: '8x5',
-        coverage: 'ON_SITE'
+        coverage: 'ON_SITE',
       },
       coveredAssets: contractData.coveredAssets || [],
       contractValue: contractData.contractValue || 0,
@@ -484,7 +485,7 @@ export class FieldServiceService extends StandardServiceBase {
       status: 'DRAFT',
       createdBy: 'SALES_TEAM',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     this.contracts.set(contractId, contract);
@@ -503,21 +504,21 @@ export class FieldServiceService extends StandardServiceBase {
    */
   async trackMobileWorkforce(): Promise<MobileWorkforce> {
     const workforceId = `MWF_${Date.now()}`;
-    
+
     // Get real-time technician locations
     const realTimeTracking = await Promise.all(
-      Array.from(this.technicians.values()).map(async tech => {
+      Array.from(this.technicians.values()).map(async (tech) => {
         const location = await this.getCurrentTechnicianLocation(tech.technicianId);
         return {
           technicianId: tech.technicianId,
           currentLocation: location || {
             coordinates: { lat: 0, lng: 0 },
             accuracy: 0,
-            timestamp: new Date()
+            timestamp: new Date(),
           },
           status: 'AVAILABLE' as 'AVAILABLE' | 'EN_ROUTE' | 'ON_SITE' | 'BREAK' | 'OFFLINE',
           currentWorkOrder: tech.currentAssignment?.workOrderId,
-          estimatedArrival: tech.currentAssignment?.estimatedCompletion
+          estimatedArrival: tech.currentAssignment?.estimatedCompletion,
         };
       })
     );
@@ -532,13 +533,13 @@ export class FieldServiceService extends StandardServiceBase {
           barcodeScanners: true,
           digitalSignature: true,
           photoCapture: true,
-          timeTracking: true
+          timeTracking: true,
         },
         syncSettings: {
           syncFrequency: 5,
           offlineStorageLimit: 500,
-          dataRetentionPeriod: 30
-        }
+          dataRetentionPeriod: 30,
+        },
       },
       devices: [], // Would be populated with actual device data
       realTimeTracking,
@@ -546,7 +547,7 @@ export class FieldServiceService extends StandardServiceBase {
         channels: [
           { channelType: 'VOICE', enabled: true, configuration: {} },
           { channelType: 'SMS', enabled: true, configuration: {} },
-          { channelType: 'PUSH_NOTIFICATION', enabled: true, configuration: {} }
+          { channelType: 'PUSH_NOTIFICATION', enabled: true, configuration: {} },
         ],
         emergencyProtocol: {
           escalationLevels: [
@@ -554,18 +555,18 @@ export class FieldServiceService extends StandardServiceBase {
               level: 1,
               notificationMethod: 'SMS',
               recipients: ['supervisor@company.com'],
-              timeoutMinutes: 15
-            }
-          ]
-        }
+              timeoutMinutes: 15,
+            },
+          ],
+        },
       },
       performanceMonitoring: {
         responseTimeTracking: true,
         productivityMetrics: true,
         customerFeedbackCollection: true,
-        qualityAssurance: true
+        qualityAssurance: true,
       },
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     return mobileWorkforce;
@@ -584,14 +585,14 @@ export class FieldServiceService extends StandardServiceBase {
     endDate: Date
   ): Promise<ServiceAnalytics> {
     const analyticsId = `SA_${Date.now()}`;
-    
+
     let analyticsData: ServiceAnalytics = {
       analyticsId,
       reportType,
       reportingPeriod: { startDate, endDate },
       insights: [],
       generatedDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     switch (reportType) {
@@ -625,7 +626,9 @@ export class FieldServiceService extends StandardServiceBase {
   // PRIVATE HELPER METHODS
   // ================================
 
-  private async calculateRequestPriority(requestData: Partial<ServiceRequest>): Promise<'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'EMERGENCY'> {
+  private async calculateRequestPriority(
+    requestData: Partial<ServiceRequest>
+  ): Promise<'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'EMERGENCY'> {
     // Simple priority calculation based on request type and other factors
     if (requestData.requestType === 'EMERGENCY') return 'EMERGENCY';
     if (requestData.assetInfo?.warrantyStatus === 'ACTIVE') return 'HIGH';
@@ -635,7 +638,7 @@ export class FieldServiceService extends StandardServiceBase {
   private async analyzeSkillRequirements(requestData: Partial<ServiceRequest>): Promise<string[]> {
     // Analyze description and problem category to determine required skills
     const skills: string[] = [];
-    
+
     if (requestData.problemCategory?.includes('ELECTRICAL')) {
       skills.push('ELECTRICAL');
     }
@@ -645,52 +648,54 @@ export class FieldServiceService extends StandardServiceBase {
     if (requestData.description?.toLowerCase().includes('software')) {
       skills.push('SOFTWARE');
     }
-    
+
     return skills.length > 0 ? skills : ['GENERAL'];
   }
 
   private async estimateServiceDuration(requestData: Partial<ServiceRequest>): Promise<number> {
     // Estimate duration based on request type and complexity
     const baseDuration = {
-      'INSTALLATION': 240, // 4 hours
-      'REPAIR': 180,       // 3 hours
-      'MAINTENANCE': 120,  // 2 hours
-      'INSPECTION': 60,    // 1 hour
-      'EMERGENCY': 120,    // 2 hours
-      'CONSULTATION': 90   // 1.5 hours
+      INSTALLATION: 240, // 4 hours
+      REPAIR: 180, // 3 hours
+      MAINTENANCE: 120, // 2 hours
+      INSPECTION: 60, // 1 hour
+      EMERGENCY: 120, // 2 hours
+      CONSULTATION: 90, // 1.5 hours
     };
-    
+
     return baseDuration[requestData.requestType || 'REPAIR'] || 120;
   }
 
-  private async findSuggestedTechnicians(serviceRequest: ServiceRequest): Promise<ServiceTechnician[]> {
+  private async findSuggestedTechnicians(
+    serviceRequest: ServiceRequest
+  ): Promise<ServiceTechnician[]> {
     // Find technicians with matching skills and availability
     const availableTechnicians = Array.from(this.technicians.values())
-      .filter(tech => tech.currentStatus === 'AVAILABLE')
-      .filter(tech => {
+      .filter((tech) => tech.currentStatus === 'AVAILABLE')
+      .filter((tech) => {
         // Check if technician has required skills
-        const techSkills = tech.skills.map(skill => skill.skillName);
-        return serviceRequest.skillsRequired.some(skill => techSkills.includes(skill));
+        const techSkills = tech.skills.map((skill) => skill.skillName);
+        return serviceRequest.skillsRequired.some((skill) => techSkills.includes(skill));
       })
       .slice(0, 3); // Return top 3 suggestions
-    
+
     return availableTechnicians;
   }
 
   private async calculateResponseTime(serviceRequest: ServiceRequest): Promise<any> {
     // Calculate estimated response time based on priority and location
     const baseResponseTime = {
-      'EMERGENCY': 2,  // 2 hours
-      'URGENT': 4,     // 4 hours
-      'HIGH': 8,       // 8 hours
-      'MEDIUM': 24,    // 24 hours
-      'LOW': 48        // 48 hours
+      EMERGENCY: 2, // 2 hours
+      URGENT: 4, // 4 hours
+      HIGH: 8, // 8 hours
+      MEDIUM: 24, // 24 hours
+      LOW: 48, // 48 hours
     };
-    
+
     return {
       estimated: baseResponseTime[serviceRequest.priority] || 24,
       unit: 'hours',
-      confidence: 0.85
+      confidence: 0.85,
     };
   }
 
@@ -699,9 +704,12 @@ export class FieldServiceService extends StandardServiceBase {
     this.logger?.info(`Acknowledgment sent for service request: ${serviceRequest.requestNumber}`);
   }
 
-  private async createServiceAppointment(workOrder: WorkOrder, technicianId?: string): Promise<ServiceAppointment> {
+  private async createServiceAppointment(
+    workOrder: WorkOrder,
+    technicianId?: string
+  ): Promise<ServiceAppointment> {
     const appointmentId = `APT_${Date.now()}`;
-    
+
     const appointment: ServiceAppointment = {
       appointmentId,
       workOrderId: workOrder.workOrderId,
@@ -711,31 +719,31 @@ export class FieldServiceService extends StandardServiceBase {
       timeWindow: {
         start: workOrder.scheduledStart.toTimeString().substring(0, 5),
         end: workOrder.scheduledEnd.toTimeString().substring(0, 5),
-        duration: workOrder.estimatedDuration
+        duration: workOrder.estimatedDuration,
       },
       appointmentType: workOrder.type === 'INSTALLATION' ? 'INSTALLATION' : 'REPAIR',
       serviceAddress: workOrder.serviceAddress,
       skillsRequired: [],
       toolsRequired: workOrder.requiredTools,
-      partsRequired: workOrder.requiredParts.map(part => ({
+      partsRequired: workOrder.requiredParts.map((part) => ({
         partNumber: part.partNumber,
         quantity: part.quantity,
-        critical: part.availability === 'ORDER_REQUIRED'
+        critical: part.availability === 'ORDER_REQUIRED',
       })),
       customerPreferences: {
-        contactMethod: 'PHONE'
+        contactMethod: 'PHONE',
       },
       status: 'SCHEDULED',
       notifications: {
         confirmationSent: false,
         reminderSent: false,
         arrivalNotificationSent: false,
-        completionNotificationSent: false
+        completionNotificationSent: false,
       },
       rescheduleHistory: [],
       createdBy: 'DISPATCHER',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     this.appointments.set(appointmentId, appointment);
@@ -745,37 +753,39 @@ export class FieldServiceService extends StandardServiceBase {
   private async runDispatchOptimization(technicians: any[], workOrders: any[]): Promise<any[]> {
     // Simplified dispatch optimization algorithm
     // In production, this would use advanced optimization algorithms
-    
+
     const assignments: any[] = [];
-    
+
     for (const technician of technicians) {
       const assignedWorkOrders = workOrders
-        .filter(wo => wo.priority === 'HIGH' || wo.priority === 'URGENT')
+        .filter((wo) => wo.priority === 'HIGH' || wo.priority === 'URGENT')
         .slice(0, 3) // Assign up to 3 high-priority work orders per technician
         .map((wo, index) => ({
           workOrderId: wo.workOrderId,
           sequence: index + 1,
-          scheduledStart: new Date(Date.now() + (index * 2 * 60 * 60 * 1000)), // 2 hours apart
-          scheduledEnd: new Date(Date.now() + (index * 2 * 60 * 60 * 1000) + (wo.estimatedDuration * 60 * 1000)),
-          travelTime: 30 // 30 minutes travel time
+          scheduledStart: new Date(Date.now() + index * 2 * 60 * 60 * 1000), // 2 hours apart
+          scheduledEnd: new Date(
+            Date.now() + index * 2 * 60 * 60 * 1000 + wo.estimatedDuration * 60 * 1000
+          ),
+          travelTime: 30, // 30 minutes travel time
         }));
 
       assignments.push({
         technicianId: technician.technicianId,
         workOrders: assignedWorkOrders,
         totalTravelTime: assignedWorkOrders.length * 30,
-        utilizationRate: 0.75
+        utilizationRate: 0.75,
       });
 
       // Remove assigned work orders from the list
-      assignedWorkOrders.forEach(assignment => {
-        const index = workOrders.findIndex(wo => wo.workOrderId === assignment.workOrderId);
+      assignedWorkOrders.forEach((assignment) => {
+        const index = workOrders.findIndex((wo) => wo.workOrderId === assignment.workOrderId);
         if (index > -1) {
           workOrders.splice(index, 1);
         }
       });
     }
-    
+
     return assignments;
   }
 
@@ -794,18 +804,18 @@ export class FieldServiceService extends StandardServiceBase {
         INSTALLATION: 30,
         REPAIR: 85,
         MAINTENANCE: 25,
-        INSPECTION: 10
+        INSPECTION: 10,
       },
       serviceRequestsByPriority: {
         EMERGENCY: 5,
         URGENT: 15,
         HIGH: 45,
         MEDIUM: 70,
-        LOW: 15
+        LOW: 15,
       },
       averageResponseTime: 6.2,
       averageResolutionTime: 18.5,
-      slaComplianceRate: 0.92
+      slaComplianceRate: 0.92,
     };
   }
 
@@ -815,14 +825,14 @@ export class FieldServiceService extends StandardServiceBase {
       revenueByServiceType: {
         INSTALLATION: 45000,
         REPAIR: 65000,
-        MAINTENANCE: 15000
+        MAINTENANCE: 15000,
       },
       totalCosts: 87000,
       laborCosts: 52000,
       partsCosts: 28000,
       travelCosts: 7000,
       profitMargin: 0.304,
-      costPerServiceRequest: 580
+      costPerServiceRequest: 580,
     };
   }
 
@@ -834,7 +844,7 @@ export class FieldServiceService extends StandardServiceBase {
       customerSatisfactionScore: 4.3,
       netPromoterScore: 68,
       complaintsReceived: 12,
-      complaintResolutionTime: 2.5
+      complaintResolutionTime: 2.5,
     };
   }
 
@@ -845,12 +855,12 @@ export class FieldServiceService extends StandardServiceBase {
       utilizationRate: 0.78, // Add the missing property
       productivityScore: 0.85,
       skillsGapAnalysis: {
-        'ELECTRICAL': 2,
-        'SOFTWARE': 3,
-        'ADVANCED_DIAGNOSTICS': 1
+        ELECTRICAL: 2,
+        SOFTWARE: 3,
+        ADVANCED_DIAGNOSTICS: 1,
       },
       trainingCompletionRate: 0.94,
-      turnoverRate: 0.08
+      turnoverRate: 0.08,
     };
   }
 
@@ -858,15 +868,15 @@ export class FieldServiceService extends StandardServiceBase {
     return {
       totalAssetsManaged: 1250,
       assetsByCategory: {
-        'HVAC': 350,
-        'ELECTRICAL': 425,
-        'MECHANICAL': 285,
-        'IT_EQUIPMENT': 190
+        HVAC: 350,
+        ELECTRICAL: 425,
+        MECHANICAL: 285,
+        IT_EQUIPMENT: 190,
       },
       averageAssetAge: 7.2,
       assetReliabilityScore: 0.87,
       maintenanceCostTrends: [],
-      assetDowntime: 142.5
+      assetDowntime: 142.5,
     };
   }
 
@@ -876,33 +886,40 @@ export class FieldServiceService extends StandardServiceBase {
       maintenancePredict: [],
       partsDemandForecast: [],
       resourceOptimization: [],
-      riskAssessment: []
+      riskAssessment: [],
     };
   }
 
   private async generateAnalyticsInsights(analytics: ServiceAnalytics): Promise<any[]> {
     const insights: any[] = [];
-    
+
     // Generate insights based on analytics data
-    if (analytics.operationalData?.slaComplianceRate && analytics.operationalData.slaComplianceRate < 0.95) {
+    if (
+      analytics.operationalData?.slaComplianceRate &&
+      analytics.operationalData.slaComplianceRate < 0.95
+    ) {
       insights.push({
         insightType: 'OPPORTUNITY',
         title: 'SLA Compliance Improvement',
         description: 'SLA compliance is below target. Consider optimizing scheduling and dispatch.',
         impact: 'MEDIUM',
-        recommendedAction: 'Implement advanced dispatch optimization and increase technician capacity during peak hours.',
-        estimatedBenefit: 15000
+        recommendedAction:
+          'Implement advanced dispatch optimization and increase technician capacity during peak hours.',
+        estimatedBenefit: 15000,
       });
     }
 
-    if (analytics.technicianData?.averageUtilizationRate && analytics.technicianData.averageUtilizationRate < 0.75) {
+    if (
+      analytics.technicianData?.averageUtilizationRate &&
+      analytics.technicianData.averageUtilizationRate < 0.75
+    ) {
       insights.push({
         insightType: 'EFFICIENCY',
         title: 'Technician Utilization Opportunity',
         description: 'Technician utilization is below optimal levels.',
         impact: 'HIGH',
         recommendedAction: 'Review scheduling algorithms and consider territory adjustments.',
-        estimatedBenefit: 25000
+        estimatedBenefit: 25000,
       });
     }
 
@@ -916,33 +933,38 @@ export class FieldServiceService extends StandardServiceBase {
   /**
    * Get work orders with filtering options
    */
-  async getWorkOrders(options: {
-    status?: string;
-    priority?: string;
-    technicianId?: string;
-    customerId?: string;
-    dateRange?: { start: Date; end: Date };
-  } = {}): Promise<WorkOrder[]> {
+  async getWorkOrders(
+    options: {
+      status?: string;
+      priority?: string;
+      technicianId?: string;
+      customerId?: string;
+      dateRange?: { start: Date; end: Date };
+    } = {}
+  ): Promise<WorkOrder[]> {
     return this.executeWithMetrics(async () => {
       let workOrders = Array.from(this.workOrders.values());
 
       // Apply filters
       if (options.status) {
-        workOrders = workOrders.filter(wo => wo.status === options.status);
+        workOrders = workOrders.filter((wo) => wo.status === options.status);
       }
       if (options.priority) {
-        workOrders = workOrders.filter(wo => wo.priority === options.priority);
+        workOrders = workOrders.filter((wo) => wo.priority === options.priority);
       }
       if (options.technicianId) {
-        workOrders = workOrders.filter(wo => wo.assignedTechnician?.technicianId === options.technicianId);
+        workOrders = workOrders.filter(
+          (wo) => wo.assignedTechnician?.technicianId === options.technicianId
+        );
       }
       if (options.customerId) {
-        workOrders = workOrders.filter(wo => wo.customerId === options.customerId);
+        workOrders = workOrders.filter((wo) => wo.customerId === options.customerId);
       }
       if (options.dateRange) {
-        workOrders = workOrders.filter(wo => 
-          wo.scheduledStart >= options.dateRange!.start && 
-          wo.scheduledStart <= options.dateRange!.end
+        workOrders = workOrders.filter(
+          (wo) =>
+            wo.scheduledStart >= options.dateRange!.start &&
+            wo.scheduledStart <= options.dateRange!.end
         );
       }
 
@@ -958,22 +980,26 @@ export class FieldServiceService extends StandardServiceBase {
   /**
    * Get technicians with filtering options
    */
-  async getTechnicians(options: {
-    status?: string;
-    skills?: string[];
-    location?: string;
-    availability?: boolean;
-  } = {}): Promise<ServiceTechnician[]> {
+  async getTechnicians(
+    options: {
+      status?: string;
+      skills?: string[];
+      location?: string;
+      availability?: boolean;
+    } = {}
+  ): Promise<ServiceTechnician[]> {
     return this.executeWithMetrics(async () => {
       let technicians = Array.from(this.technicians.values());
 
       // Apply filters
       if (options.status) {
-        technicians = technicians.filter(tech => tech.status === options.status);
+        technicians = technicians.filter((tech) => tech.status === options.status);
       }
       if (options.skills && options.skills.length > 0) {
-        technicians = technicians.filter(tech => 
-          options.skills!.some(skill => tech.skills.some(techSkill => techSkill.skillName === skill))
+        technicians = technicians.filter((tech) =>
+          options.skills!.some((skill) =>
+            tech.skills.some((techSkill) => techSkill.skillName === skill)
+          )
         );
       }
 
@@ -989,12 +1015,14 @@ export class FieldServiceService extends StandardServiceBase {
   /**
    * Optimize schedule based on criteria
    */
-  async optimizeSchedule(options: {
-    criteria?: string;
-    constraints?: any;
-    timeHorizon?: string;
-    includePending?: boolean;
-  } = {}): Promise<{
+  async optimizeSchedule(
+    options: {
+      criteria?: string;
+      constraints?: any;
+      timeHorizon?: string;
+      includePending?: boolean;
+    } = {}
+  ): Promise<{
     optimizedRoutes: any[];
     savings: { travelTime: number; costs: number };
     efficiency: number;
@@ -1005,24 +1033,28 @@ export class FieldServiceService extends StandardServiceBase {
       const timeHorizon = options.timeHorizon || '24h';
 
       // Get all pending and assigned work orders
-      const workOrders = await this.getWorkOrders({ 
-        status: options.includePending ? undefined : 'ASSIGNED' 
+      const workOrders = await this.getWorkOrders({
+        status: options.includePending ? undefined : 'ASSIGNED',
       });
-      
+
       // Get available technicians
       const technicians = await this.getTechnicians({ status: 'AVAILABLE' });
 
       // Perform optimization based on criteria
-      const optimization = await this.performScheduleOptimization(workOrders, technicians, criteria);
+      const optimization = await this.performScheduleOptimization(
+        workOrders,
+        technicians,
+        criteria
+      );
 
       return {
         optimizedRoutes: optimization.routes,
         savings: {
           travelTime: optimization.travelTimeSavings,
-          costs: optimization.costSavings
+          costs: optimization.costSavings,
         },
         efficiency: optimization.efficiencyScore,
-        recommendations: optimization.recommendations
+        recommendations: optimization.recommendations,
       };
     });
   }
@@ -1031,8 +1063,8 @@ export class FieldServiceService extends StandardServiceBase {
    * Assign technician to work order
    */
   async assignTechnician(
-    workOrderId: string, 
-    technicianId: string, 
+    workOrderId: string,
+    technicianId: string,
     scheduledDate?: Date
   ): Promise<{
     success: boolean;
@@ -1055,13 +1087,15 @@ export class FieldServiceService extends StandardServiceBase {
       workOrder.assignedTechnician = {
         technicianId: technician.technicianId,
         technicianName: `${technician.firstName} ${technician.lastName}`,
-        skills: technician.skills.map(skill => skill.skillName),
-        certifications: technician.certifications.map(cert => cert.certificationName)
+        skills: technician.skills.map((skill) => skill.skillName),
+        certifications: technician.certifications.map((cert) => cert.certificationName),
       };
-      
+
       if (scheduledDate) {
         workOrder.scheduledStart = scheduledDate;
-        workOrder.scheduledEnd = new Date(scheduledDate.getTime() + workOrder.estimatedDuration * 60000);
+        workOrder.scheduledEnd = new Date(
+          scheduledDate.getTime() + workOrder.estimatedDuration * 60000
+        );
       }
 
       workOrder.status = 'DISPATCHED';
@@ -1076,7 +1110,7 @@ export class FieldServiceService extends StandardServiceBase {
         technician.currentAssignment = {
           workOrderId: workOrderId,
           estimatedCompletion: new Date(Date.now() + workOrder.estimatedDuration * 60000),
-          status: 'EN_ROUTE'
+          status: 'EN_ROUTE',
         };
       }
       this.technicians.set(technicianId, technician);
@@ -1085,22 +1119,18 @@ export class FieldServiceService extends StandardServiceBase {
       const appointment = await this.createServiceAppointment(workOrder, technicianId);
 
       // Send notification
-      await this.sendMessage(
-        QueueType.NOTIFICATION,
-        'TECHNICIAN_ASSIGNED',
-        {
-          workOrderId,
-          technicianId,
-          scheduledDate: workOrder.scheduledStart,
-          timestamp: new Date()
-        }
-      );
+      await this.sendMessage(QueueType.NOTIFICATION, 'TECHNICIAN_ASSIGNED', {
+        workOrderId,
+        technicianId,
+        scheduledDate: workOrder.scheduledStart,
+        timestamp: new Date(),
+      });
 
       return {
         success: true,
         workOrder,
         technician,
-        appointment
+        appointment,
       };
     });
   }
@@ -1108,24 +1138,29 @@ export class FieldServiceService extends StandardServiceBase {
   /**
    * Get real-time technician locations
    */
-  async getTechnicianLocations(): Promise<Array<{
-    technicianId: string;
-    name: string;
-    location: { lat: number; lng: number };
-    status: string;
-    lastUpdate: Date;
-    currentWorkOrder?: string;
-  }>> {
+  async getTechnicianLocations(): Promise<
+    Array<{
+      technicianId: string;
+      name: string;
+      location: { lat: number; lng: number };
+      status: string;
+      lastUpdate: Date;
+      currentWorkOrder?: string;
+    }>
+  > {
     return this.executeWithMetrics(async () => {
       const technicians = await this.getTechnicians();
-      
-      return technicians.map(tech => ({
+
+      return technicians.map((tech) => ({
         technicianId: tech.technicianId,
         name: `${tech.firstName} ${tech.lastName}`,
-        location: tech.currentLocation?.coordinates || { lat: 40.7128 + (Math.random() - 0.5) * 0.1, lng: -74.0060 + (Math.random() - 0.5) * 0.1 },
+        location: tech.currentLocation?.coordinates || {
+          lat: 40.7128 + (Math.random() - 0.5) * 0.1,
+          lng: -74.006 + (Math.random() - 0.5) * 0.1,
+        },
         status: tech.status,
         lastUpdate: new Date(),
-        currentWorkOrder: tech.currentAssignment?.workOrderId
+        currentWorkOrder: tech.currentAssignment?.workOrderId,
       }));
     });
   }
@@ -1156,7 +1191,7 @@ export class FieldServiceService extends StandardServiceBase {
           technician.currentLocation = {
             coordinates: updates.location,
             address: '',
-            timestamp: new Date()
+            timestamp: new Date(),
           };
         } else {
           technician.currentLocation.coordinates = updates.location;
@@ -1168,7 +1203,7 @@ export class FieldServiceService extends StandardServiceBase {
           technician.currentAssignment = {
             workOrderId: updates.currentWorkOrder,
             estimatedCompletion: new Date(Date.now() + 2 * 60 * 60 * 1000),
-            status: 'EN_ROUTE'
+            status: 'EN_ROUTE',
           };
         } else {
           technician.currentAssignment = undefined;
@@ -1179,16 +1214,12 @@ export class FieldServiceService extends StandardServiceBase {
       this.technicians.set(technicianId, technician);
 
       // Send real-time update
-      await this.sendMessage(
-        QueueType.NOTIFICATION,
-        'TECHNICIAN_STATUS_UPDATED',
-        {
-          technicianId,
-          status: technician.status,
-          location: technician.currentLocation?.coordinates,
-          timestamp: new Date()
-        }
-      );
+      await this.sendMessage(QueueType.NOTIFICATION, 'TECHNICIAN_STATUS_UPDATED', {
+        technicianId,
+        status: technician.status,
+        location: technician.currentLocation?.coordinates,
+        timestamp: new Date(),
+      });
 
       return technician;
     });
@@ -1200,7 +1231,7 @@ export class FieldServiceService extends StandardServiceBase {
   async createWorkOrder(workOrderData: any): Promise<WorkOrder> {
     return this.executeWithMetrics(async () => {
       const workOrderId = `WO_${Date.now()}`;
-      
+
       const workOrder: WorkOrder = {
         workOrderId,
         workOrderNumber: `WO-${workOrderId.substring(3)}`,
@@ -1222,12 +1253,15 @@ export class FieldServiceService extends StandardServiceBase {
         laborCost: workOrderData.laborCost || 0,
         totalCost: workOrderData.totalCost || 0,
         requiredTools: workOrderData.requiredTools || [],
-        serviceAddress: workOrderData.serviceAddress || { address: '', coordinates: { lat: 0, lng: 0 } },
+        serviceAddress: workOrderData.serviceAddress || {
+          address: '',
+          coordinates: { lat: 0, lng: 0 },
+        },
         status: 'CREATED',
         followUpRequired: workOrderData.followUpRequired || false,
         createdBy: 'API',
         createdDate: new Date(),
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
       };
 
       this.workOrders.set(workOrderId, workOrder);
@@ -1261,7 +1295,7 @@ export class FieldServiceService extends StandardServiceBase {
         requiredTools: ['Gauges', 'Multimeter'],
         serviceAddress: {
           address: '123 Main St, New York, NY 10001',
-          coordinates: { lat: 40.7505, lng: -73.9934 }
+          coordinates: { lat: 40.7505, lng: -73.9934 },
         },
         status: 'SCHEDULED',
         followUpRequired: false,
@@ -1274,8 +1308,8 @@ export class FieldServiceService extends StandardServiceBase {
           technicianId: 'TECH_001',
           technicianName: 'John Smith',
           skills: ['HVAC', 'Electrical'],
-          certifications: ['EPA 608']
-        }
+          certifications: ['EPA 608'],
+        },
       },
       {
         workOrderId: 'WO_002',
@@ -1296,7 +1330,7 @@ export class FieldServiceService extends StandardServiceBase {
         requiredTools: ['Multimeter', 'Inspection tools'],
         serviceAddress: {
           address: '456 Oak Ave, Brooklyn, NY 11201',
-          coordinates: { lat: 40.7282, lng: -74.0776 }
+          coordinates: { lat: 40.7282, lng: -74.0776 },
         },
         status: 'SCHEDULED',
         followUpRequired: false,
@@ -1304,12 +1338,12 @@ export class FieldServiceService extends StandardServiceBase {
         createdDate: new Date(Date.now() - 60 * 60 * 1000),
         lastUpdated: new Date(),
         scheduledStart: new Date(Date.now() + 4 * 60 * 60 * 1000),
-        scheduledEnd: new Date(Date.now() + 5.5 * 60 * 60 * 1000)
-      }
+        scheduledEnd: new Date(Date.now() + 5.5 * 60 * 60 * 1000),
+      },
     ];
 
     // Add to internal map
-    sampleOrders.forEach(order => {
+    sampleOrders.forEach((order) => {
       this.workOrders.set(order.workOrderId, order);
     });
 
@@ -1327,46 +1361,73 @@ export class FieldServiceService extends StandardServiceBase {
         phone: '555-0101',
         mobilePhone: '555-0101',
         skills: [
-          { skillId: 'HVAC_001', skillName: 'HVAC', proficiencyLevel: 'EXPERT', yearsExperience: 8 },
-          { skillId: 'ELEC_001', skillName: 'Electrical', proficiencyLevel: 'ADVANCED', yearsExperience: 6 },
-          { skillId: 'PLUMB_001', skillName: 'Plumbing', proficiencyLevel: 'INTERMEDIATE', yearsExperience: 4 }
+          {
+            skillId: 'HVAC_001',
+            skillName: 'HVAC',
+            proficiencyLevel: 'EXPERT',
+            yearsExperience: 8,
+          },
+          {
+            skillId: 'ELEC_001',
+            skillName: 'Electrical',
+            proficiencyLevel: 'ADVANCED',
+            yearsExperience: 6,
+          },
+          {
+            skillId: 'PLUMB_001',
+            skillName: 'Plumbing',
+            proficiencyLevel: 'INTERMEDIATE',
+            yearsExperience: 4,
+          },
         ],
         certifications: [
-          { certificationId: 'EPA_001', certificationName: 'EPA 608', issuingOrganization: 'EPA', issueDate: new Date('2020-01-01'), status: 'ACTIVE' },
-          { certificationId: 'NATE_001', certificationName: 'NATE Certified', issuingOrganization: 'NATE', issueDate: new Date('2019-06-01'), status: 'ACTIVE' }
+          {
+            certificationId: 'EPA_001',
+            certificationName: 'EPA 608',
+            issuingOrganization: 'EPA',
+            issueDate: new Date('2020-01-01'),
+            status: 'ACTIVE',
+          },
+          {
+            certificationId: 'NATE_001',
+            certificationName: 'NATE Certified',
+            issuingOrganization: 'NATE',
+            issueDate: new Date('2019-06-01'),
+            status: 'ACTIVE',
+          },
         ],
         tools: [
           { toolId: 'TOOL_001', toolName: 'Gauges', condition: 'GOOD' },
           { toolId: 'TOOL_002', toolName: 'Multimeter', condition: 'GOOD' },
-          { toolId: 'TOOL_003', toolName: 'Hand Tools', condition: 'FAIR' }
+          { toolId: 'TOOL_003', toolName: 'Hand Tools', condition: 'FAIR' },
         ],
         performance: {
           onTimeRate: 0.95,
           firstTimeFixRate: 0.88,
           customerSatisfactionScore: 4.8,
           completionRate: 0.95,
-          utilizationRate: 0.85
+          utilizationRate: 0.85,
         },
         currentStatus: 'AVAILABLE',
         currentLocation: {
-          coordinates: { lat: 40.7128, lng: -74.0060 },
+          coordinates: { lat: 40.7128, lng: -74.006 },
           address: '123 Tech St, New York, NY',
-          timestamp: new Date()
+          timestamp: new Date(),
         },
         emergencyContact: {
           name: 'Jane Smith',
           relationship: 'Spouse',
-          phone: '555-0199'
+          phone: '555-0199',
         },
         serviceTerritory: {
           territoryId: 'TERRITORY_001',
           territoryName: 'Manhattan North',
           geoFence: null,
-          travelRadius: 25
+          travelRadius: 25,
         },
         homeBase: {
           address: '123 Tech St, New York, NY',
-          coordinates: { lat: 40.7128, lng: -74.0060 }
+          coordinates: { lat: 40.7128, lng: -74.006 },
         },
         workingHours: {
           schedule: {
@@ -1374,20 +1435,20 @@ export class FieldServiceService extends StandardServiceBase {
             TUE: { start: '08:00', end: '17:00' },
             WED: { start: '08:00', end: '17:00' },
             THU: { start: '08:00', end: '17:00' },
-            FRI: { start: '08:00', end: '17:00' }
+            FRI: { start: '08:00', end: '17:00' },
           },
           availability: 'FULL_TIME',
-          timeZone: 'America/New_York'
+          timeZone: 'America/New_York',
         },
         mobileInventory: {
           capacity: 500,
           currentStock: [],
-          stockValue: 0
+          stockValue: 0,
         },
         status: 'ACTIVE',
         hireDate: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
         createdDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
       },
       {
         technicianId: 'TECH_002',
@@ -1398,48 +1459,64 @@ export class FieldServiceService extends StandardServiceBase {
         phone: '555-0102',
         mobilePhone: '555-0102',
         skills: [
-          { skillId: 'PLUMB_001', skillName: 'Plumbing', proficiencyLevel: 'EXPERT', yearsExperience: 10 },
-          { skillId: 'MAINT_001', skillName: 'General Maintenance', proficiencyLevel: 'ADVANCED', yearsExperience: 5 }
+          {
+            skillId: 'PLUMB_001',
+            skillName: 'Plumbing',
+            proficiencyLevel: 'EXPERT',
+            yearsExperience: 10,
+          },
+          {
+            skillId: 'MAINT_001',
+            skillName: 'General Maintenance',
+            proficiencyLevel: 'ADVANCED',
+            yearsExperience: 5,
+          },
         ],
         certifications: [
-          { certificationId: 'LIC_001', certificationName: 'Licensed Plumber', issuingOrganization: 'NYC DOB', issueDate: new Date('2018-01-01'), status: 'ACTIVE' }
+          {
+            certificationId: 'LIC_001',
+            certificationName: 'Licensed Plumber',
+            issuingOrganization: 'NYC DOB',
+            issueDate: new Date('2018-01-01'),
+            status: 'ACTIVE',
+          },
         ],
         tools: [
           { toolId: 'TOOL_004', toolName: 'Pipe Tools', condition: 'GOOD' },
-          { toolId: 'TOOL_005', toolName: 'Hand Tools', condition: 'GOOD' }
+          { toolId: 'TOOL_005', toolName: 'Hand Tools', condition: 'GOOD' },
         ],
         performance: {
           onTimeRate: 0.92,
           firstTimeFixRate: 0.85,
           customerSatisfactionScore: 4.6,
           completionRate: 0.92,
-          utilizationRate: 0.80
+          utilizationRate: 0.8,
         },
         currentStatus: 'BUSY',
         currentLocation: {
           coordinates: { lat: 40.7589, lng: -73.9851 },
           address: '456 Service Ave, Brooklyn, NY',
-          timestamp: new Date()
+          timestamp: new Date(),
         },
         currentAssignment: {
           workOrderId: 'WO_002',
           estimatedCompletion: new Date(Date.now() + 2 * 60 * 60 * 1000),
-          status: 'ON_SITE'
+          status: 'ON_SITE',
         },
         emergencyContact: {
           name: 'Mike Johnson',
           relationship: 'Brother',
-          phone: '555-0299'
+          phone: '555-0299',
         },
         serviceTerritory: {
           territoryId: 'TERRITORY_002',
           territoryName: 'Brooklyn Central',
           geoFence: null,
-          travelRadius: 30
+          travelRadius: 30,
         },
         homeBase: {
           address: '456 Service Ave, Brooklyn, NY',
-          coordinates: { lat: 40.7589, lng: -73.9851 }
+          coordinates: { lat: 40.7589, lng: -73.9851 },
         },
         workingHours: {
           schedule: {
@@ -1447,25 +1524,25 @@ export class FieldServiceService extends StandardServiceBase {
             TUE: { start: '07:00', end: '16:00' },
             WED: { start: '07:00', end: '16:00' },
             THU: { start: '07:00', end: '16:00' },
-            FRI: { start: '07:00', end: '16:00' }
+            FRI: { start: '07:00', end: '16:00' },
           },
           availability: 'FULL_TIME',
-          timeZone: 'America/New_York'
+          timeZone: 'America/New_York',
         },
         mobileInventory: {
           capacity: 400,
           currentStock: [],
-          stockValue: 0
+          stockValue: 0,
         },
         status: 'ACTIVE',
         hireDate: new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000),
         createdDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
-        lastUpdated: new Date()
-      }
+        lastUpdated: new Date(),
+      },
     ];
 
     // Add to internal map
-    sampleTechnicians.forEach(tech => {
+    sampleTechnicians.forEach((tech) => {
       this.technicians.set(tech.technicianId, tech);
     });
 
@@ -1484,18 +1561,20 @@ export class FieldServiceService extends StandardServiceBase {
     recommendations: string[];
   }> {
     // Simple optimization logic - in real implementation this would be much more sophisticated
-    const routes = technicians.map(tech => {
+    const routes = technicians.map((tech) => {
       const assignedOrders = workOrders
-        .filter(wo => !wo.assignedTechnician || wo.assignedTechnician.technicianId === tech.technicianId)
+        .filter(
+          (wo) => !wo.assignedTechnician || wo.assignedTechnician.technicianId === tech.technicianId
+        )
         .slice(0, 3); // Limit to 3 orders per technician
 
       return {
         technicianId: tech.technicianId,
         technicianName: `${tech.firstName} ${tech.lastName}`,
-        workOrders: assignedOrders.map(wo => wo.workOrderId),
+        workOrders: assignedOrders.map((wo) => wo.workOrderId),
         totalTravelTime: Math.floor(Math.random() * 60) + 30, // 30-90 minutes
         efficiency: 0.8 + Math.random() * 0.2, // 80-100%
-        estimatedCompletion: new Date(Date.now() + 8 * 60 * 60 * 1000)
+        estimatedCompletion: new Date(Date.now() + 8 * 60 * 60 * 1000),
       };
     });
 
@@ -1507,8 +1586,8 @@ export class FieldServiceService extends StandardServiceBase {
       recommendations: [
         'Consider clustering work orders by location',
         'Optimize technician skills matching',
-        'Schedule high-priority orders during peak hours'
-      ]
+        'Schedule high-priority orders during peak hours',
+      ],
     };
   }
 
@@ -1522,16 +1601,24 @@ export class FieldServiceService extends StandardServiceBase {
     }
 
     // Map string status to valid enum values
-    const validStatuses = ['CREATED', 'SCHEDULED', 'DISPATCHED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'ON_HOLD'];
-    const mappedStatus = validStatuses.includes(status) ? status as any : 'IN_PROGRESS';
+    const validStatuses = [
+      'CREATED',
+      'SCHEDULED',
+      'DISPATCHED',
+      'IN_PROGRESS',
+      'COMPLETED',
+      'CANCELLED',
+      'ON_HOLD',
+    ];
+    const mappedStatus = validStatuses.includes(status) ? (status as any) : 'IN_PROGRESS';
 
     workOrder.status = mappedStatus;
     workOrder.lastUpdated = new Date();
-    
+
     this.workOrders.set(workOrderId, workOrder);
-    
+
     this.logger?.info(`Work order ${workOrderId} status updated to ${mappedStatus}`);
-    
+
     return workOrder;
   }
 
@@ -1540,7 +1627,7 @@ export class FieldServiceService extends StandardServiceBase {
    */
   async scheduleAppointment(appointmentData: any): Promise<ServiceAppointment> {
     const appointmentId = this.generateId();
-    
+
     const appointment: ServiceAppointment = {
       appointmentId,
       workOrderId: appointmentData.workOrderId || '',
@@ -1550,12 +1637,12 @@ export class FieldServiceService extends StandardServiceBase {
       timeWindow: appointmentData.timeWindow || {
         start: new Date().toTimeString().substring(0, 5),
         end: new Date(Date.now() + 2 * 60 * 60 * 1000).toTimeString().substring(0, 5),
-        duration: 120
+        duration: 120,
       },
       appointmentType: appointmentData.appointmentType || 'MAINTENANCE',
       serviceAddress: appointmentData.serviceAddress || {
         address: 'Default Address',
-        coordinates: { lat: 40.7128, lng: -74.0060 }
+        coordinates: { lat: 40.7128, lng: -74.006 },
       },
       status: 'SCHEDULED',
       skillsRequired: appointmentData.skillsRequired || [],
@@ -1567,7 +1654,7 @@ export class FieldServiceService extends StandardServiceBase {
         confirmationSent: false,
         reminderSent: false,
         arrivalNotificationSent: false,
-        completionNotificationSent: false
+        completionNotificationSent: false,
       },
       rescheduleHistory: [],
       customerPreferences: appointmentData.customerPreferences || {
@@ -1575,17 +1662,19 @@ export class FieldServiceService extends StandardServiceBase {
         specialRequirements: [],
         accessInstructions: '',
         specialInstructions: appointmentData.specialInstructions || '',
-        contactMethod: 'PHONE'
+        contactMethod: 'PHONE',
       },
       createdBy: 'SYSTEM',
       createdDate: new Date(),
-      lastUpdated: new Date()
+      lastUpdated: new Date(),
     };
 
     this.appointments.set(appointmentId, appointment);
-    
-    this.logger?.info(`Appointment ${appointmentId} scheduled for work order ${appointmentData.workOrderId}`);
-    
+
+    this.logger?.info(
+      `Appointment ${appointmentId} scheduled for work order ${appointmentData.workOrderId}`
+    );
+
     return appointment;
   }
 
@@ -1601,7 +1690,9 @@ export class FieldServiceService extends StandardServiceBase {
 export let fieldServiceService: FieldServiceService;
 
 // Factory function to create properly initialized service
-export function createFieldServiceService(context?: ServiceIntegrationContext): FieldServiceService {
+export function createFieldServiceService(
+  context?: ServiceIntegrationContext
+): FieldServiceService {
   fieldServiceService = new FieldServiceService(context);
   return fieldServiceService;
 }

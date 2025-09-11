@@ -9,9 +9,9 @@ import { BusinessConfig } from '../../types/business-config';
 export interface HumanCapitalDomainConfig {
   hr: {
     salaryBands: {
-      junior: { min: number; max: number; };
-      mid: { min: number; max: number; };
-      senior: { min: number; max: number; };
+      junior: { min: number; max: number };
+      mid: { min: number; max: number };
+      senior: { min: number; max: number };
     };
     benefitRates: {
       healthInsurance: number;
@@ -31,7 +31,6 @@ export interface HumanCapitalDomainConfig {
  * Consolidated business calculations for workforce management
  */
 export class HumanCapitalBusinessLogic {
-  
   /**
    * Calculate total compensation including benefits
    */
@@ -49,7 +48,11 @@ export class HumanCapitalBusinessLogic {
   /**
    * Calculate payroll burden costs
    */
-  static calculatePayrollBurden(salaryTotal: number, taxes: number = 0.15, benefits: number = 0.25): {
+  static calculatePayrollBurden(
+    salaryTotal: number,
+    taxes: number = 0.15,
+    benefits: number = 0.25
+  ): {
     grossPayroll: number;
     taxes: number;
     benefits: number;
@@ -61,7 +64,7 @@ export class HumanCapitalBusinessLogic {
       grossPayroll: salaryTotal,
       taxes: taxAmount,
       benefits: benefitAmount,
-      totalBurden: salaryTotal + taxAmount + benefitAmount
+      totalBurden: salaryTotal + taxAmount + benefitAmount,
     };
   }
 }
@@ -88,19 +91,19 @@ export class HumanCapitalDomainManager {
         salaryBands: {
           junior: { min: 40000, max: 60000 },
           mid: { min: 60000, max: 90000 },
-          senior: { min: 90000, max: 150000 }
+          senior: { min: 90000, max: 150000 },
         },
         benefitRates: {
           healthInsurance: 0.12,
           retirement: 0.06,
-          vacation: 0.08
+          vacation: 0.08,
         },
         workforceRatios: {
           managementSpan: 7,
           contractorRatio: 0.2,
-          turnoverTarget: 0.10
-        }
-      }
+          turnoverTarget: 0.1,
+        },
+      },
     };
   }
 
@@ -117,8 +120,8 @@ export class HumanCapitalDomainManager {
       metrics: {
         turnoverRate: 0.08,
         satisfactionScore: 4.2,
-        productivityIndex: 1.15
-      }
+        productivityIndex: 1.15,
+      },
     };
   }
 

@@ -28,28 +28,29 @@ import { projectPlanningService } from './business-logic/planning/planning-servi
 import { projectPortfolioService } from './business-logic/portfolio/portfolio-service';
 import { projectResourcesService } from './business-logic/resources/resources-service';
 
-import type { 
-  Project, 
-  ProjectInvoice, 
-  ProjectContract, 
-  ProjectBudget, 
+import type {
+  Project,
+  ProjectInvoice,
+  ProjectContract,
+  ProjectBudget,
   ResourceAllocation,
   ProjectDocument,
   ProjectDeliverable,
-  TimeSheet
+  TimeSheet,
 } from './types';
 import type { ProjectConfig } from '../../types/business-config';
 import { PerformanceUtils, DateUtils, IdUtils } from '../../shared/constants';
 
 export class ProjectManager extends BaseManager {
-  
   // Project Billing Methods - delegate to billing service
-  async createProjectContract(contract: Omit<ProjectContract, 'id' | 'contractNumber'>): Promise<ProjectContract> {
+  async createProjectContract(
+    contract: Omit<ProjectContract, 'id' | 'contractNumber'>
+  ): Promise<ProjectContract> {
     return projectBillingService.createProjectContract(contract);
   }
 
   async generateProjectInvoice(
-    projectId: string, 
+    projectId: string,
     billingType: ProjectInvoice['billingType'],
     billingPeriod?: { startDate: Date; endDate: Date }
   ): Promise<ProjectInvoice> {
@@ -69,13 +70,20 @@ export class ProjectManager extends BaseManager {
   }
 
   async createProjectBudget(
-    projectId: string, 
-    budgetItems: Omit<ProjectBudget, 'projectId' | 'actualAmount' | 'remainingBudget' | 'variance' | 'variancePercentage'>[]
+    projectId: string,
+    budgetItems: Omit<
+      ProjectBudget,
+      'projectId' | 'actualAmount' | 'remainingBudget' | 'variance' | 'variancePercentage'
+    >[]
   ): Promise<ProjectBudget[]> {
     return projectBillingService.createProjectBudget(projectId, budgetItems);
   }
 
-  async updateProjectCosts(projectId: string, category: ProjectBudget['category'], actualAmount: number): Promise<void> {
+  async updateProjectCosts(
+    projectId: string,
+    category: ProjectBudget['category'],
+    actualAmount: number
+  ): Promise<void> {
     return projectBillingService.updateProjectCosts(projectId, category, actualAmount);
   }
 
@@ -84,11 +92,17 @@ export class ProjectManager extends BaseManager {
   }
 
   // Project Collaboration Methods - delegate to collaboration service
-  async createProjectDocument(document: Omit<ProjectDocument, 'id' | 'version' | 'createdDate' | 'modifiedDate'>): Promise<ProjectDocument> {
+  async createProjectDocument(
+    document: Omit<ProjectDocument, 'id' | 'version' | 'createdDate' | 'modifiedDate'>
+  ): Promise<ProjectDocument> {
     return projectCollaborationService.createProjectDocument(document);
   }
 
-  async updateDocumentVersion(documentId: string, updatedBy: string, changes: string): Promise<ProjectDocument> {
+  async updateDocumentVersion(
+    documentId: string,
+    updatedBy: string,
+    changes: string
+  ): Promise<ProjectDocument> {
     return projectCollaborationService.updateDocumentVersion(documentId, updatedBy, changes);
   }
 
@@ -143,11 +157,14 @@ export class ProjectManager extends BaseManager {
     return projectPortfolioService.evaluateProjectPortfolio(projects);
   }
 
-  async prioritizeProjects(projects: any[], constraints: {
-    totalBudget: number;
-    resourceConstraints: any[];
-    strategicObjectives: string[];
-  }): Promise<any> {
+  async prioritizeProjects(
+    projects: any[],
+    constraints: {
+      totalBudget: number;
+      resourceConstraints: any[];
+      strategicObjectives: string[];
+    }
+  ): Promise<any> {
     return projectPortfolioService.prioritizeProjects(projects, constraints);
   }
 
@@ -169,15 +186,17 @@ export class ProjectManager extends BaseManager {
   }
 
   // Core Project Management Methods (kept in main class for basic operations)
-  async createProject(project: Omit<Project, 'id' | 'projectNumber' | 'actualCost'>): Promise<Project> {
+  async createProject(
+    project: Omit<Project, 'id' | 'projectNumber' | 'actualCost'>
+  ): Promise<Project> {
     const id = IdUtils.generateProjectId();
     const projectNumber = IdUtils.generateProjectNumber();
-    
+
     return {
       ...project,
       id,
       projectNumber,
-      actualCost: 0
+      actualCost: 0,
     };
   }
 
@@ -205,12 +224,12 @@ export class ProjectManager extends BaseManager {
         active: 0,
         onHold: 0,
         completed: 0,
-        cancelled: 0
+        cancelled: 0,
       },
       totalBudget: 0,
       totalActualCost: 0,
       budgetVariance: 0,
-      resourceUtilization: 0
+      resourceUtilization: 0,
     };
   }
 
@@ -218,18 +237,18 @@ export class ProjectManager extends BaseManager {
     // Load config for health score calculation
     const { loadBusinessConfig } = require('../../utils/business-config');
     const config = loadBusinessConfig().project;
-    
+
     const metrics = {
       schedule: config.healthScoreThresholds.schedulePerformanceTarget,
       cost: config.healthScoreThresholds.costPerformanceTarget,
       scope: config.healthScoreThresholds.scopeCompletionTarget,
       quality: config.healthScoreThresholds.qualityMetricsTarget,
       risk: config.healthScoreThresholds.riskScoreThreshold,
-      satisfaction: config.healthScoreThresholds.teamSatisfactionTarget
+      satisfaction: config.healthScoreThresholds.teamSatisfactionTarget,
     };
-    
+
     const overallScore = PerformanceUtils.calculateHealthScore(metrics);
-    
+
     return {
       projectId,
       overallScore,
@@ -239,8 +258,8 @@ export class ProjectManager extends BaseManager {
         scopeCompletion: metrics.scope,
         qualityMetrics: metrics.quality,
         riskScore: metrics.risk,
-        teamSatisfaction: metrics.satisfaction
-      }
+        teamSatisfaction: metrics.satisfaction,
+      },
     };
   }
 
@@ -248,7 +267,7 @@ export class ProjectManager extends BaseManager {
     // Load config for reporting values
     const { loadBusinessConfig } = require('../../utils/business-config');
     const config = loadBusinessConfig().project;
-    
+
     return {
       projectId,
       reportDate: new Date(),
@@ -256,16 +275,16 @@ export class ProjectManager extends BaseManager {
         overallStatus: 'ON_TRACK',
         percentComplete: Math.round(config.healthScoreThresholds.scopeCompletionTarget * 100), // Use scope completion target
         daysRemaining: config.reporting.reportingPeriodDays,
-        budgetUtilized: 0.58 // TODO: Calculate from actual budget data
+        budgetUtilized: 0.58, // TODO: Calculate from actual budget data
       },
       milestones: {
         upcoming: [],
         completed: [],
-        overdue: []
+        overdue: [],
       },
       risks: [],
       issues: [],
-      achievements: []
+      achievements: [],
     };
   }
 
@@ -273,14 +292,14 @@ export class ProjectManager extends BaseManager {
     // Load config for resource targets
     const { loadBusinessConfig } = require('../../utils/business-config');
     const config = loadBusinessConfig().project;
-    
+
     return {
       reportPeriod: { startDate, endDate },
       overallUtilization: config.resources.utilizationTarget,
       byResource: [],
       byProject: [],
       underutilizedResources: [],
-      overallocatedResources: []
+      overallocatedResources: [],
     };
   }
 
@@ -288,7 +307,7 @@ export class ProjectManager extends BaseManager {
     // Load config for financial calculations
     const { loadBusinessConfig } = require('../../utils/business-config');
     const config = loadBusinessConfig().project;
-    
+
     // Use configuration for financial calculations
     const materialCost = config.financials.defaultMaterialCostPerProject;
     const revenue = materialCost * 8; // 8x material cost for revenue
@@ -297,7 +316,7 @@ export class ProjectManager extends BaseManager {
     const otherCosts = materialCost * 0.133; // ~2000 for 15000 material
     const totalCosts = laborCosts + materialCost + equipmentCosts + otherCosts;
     const grossProfit = revenue - totalCosts;
-    
+
     return {
       projectId,
       revenue,
@@ -308,9 +327,9 @@ export class ProjectManager extends BaseManager {
         labor: laborCosts,
         materials: materialCost,
         equipment: equipmentCosts,
-        other: otherCosts
+        other: otherCosts,
       },
-      profitabilityIndex: revenue / totalCosts
+      profitabilityIndex: revenue / totalCosts,
     };
   }
 
@@ -318,29 +337,31 @@ export class ProjectManager extends BaseManager {
     // Load config for forecasting
     const { loadBusinessConfig } = require('../../utils/business-config');
     const config = loadBusinessConfig().project;
-    
+
     const reportingPeriod = config.reporting.reportingPeriodDays;
     const variance = {
       schedule: config.reporting.scheduleVarianceDays,
-      budget: config.reporting.budgetVarianceAmount
+      budget: config.reporting.budgetVarianceAmount,
     };
-    
+
     return {
       projectId,
       currentProgress: Math.round(config.healthScoreThresholds.scopeCompletionTarget * 100),
       estimatedCompletionDate: DateUtils.getForecastDate(new Date(), reportingPeriod),
       estimatedTotalCost: config.financials.defaultMaterialCostPerProject * 6.13, // ~92000 equivalent
       estimatedVariance: variance,
-      confidence: config.reporting.forecastConfidenceDefault
+      confidence: config.reporting.forecastConfidenceDefault,
     };
   }
 
   // Time sheet management
-  async createTimeSheet(timeSheet: Omit<TimeSheet, 'id' | 'approved' | 'approvedBy' | 'approvedDate'>): Promise<TimeSheet> {
+  async createTimeSheet(
+    timeSheet: Omit<TimeSheet, 'id' | 'approved' | 'approvedBy' | 'approvedDate'>
+  ): Promise<TimeSheet> {
     return {
       ...timeSheet,
       id: IdUtils.generateTimeSheetId(),
-      approved: false
+      approved: false,
     };
   }
 
@@ -359,5 +380,5 @@ export {
   projectCostingService,
   projectPlanningService,
   projectPortfolioService,
-  projectResourcesService
+  projectResourcesService,
 };

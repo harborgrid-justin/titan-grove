@@ -21,9 +21,9 @@ export class ThemeManager extends EventEmitter {
    */
   async registerTheme(theme: UITheme): Promise<void> {
     this.validateTheme(theme);
-    
+
     this.themes.set(theme.id, theme);
-    
+
     this.logger.info(`Theme registered: ${theme.name} (${theme.id})`);
     this.emit('themeRegistered', theme);
   }
@@ -78,8 +78,8 @@ export class ThemeManager extends EventEmitter {
    * Create custom theme from base theme
    */
   async createCustomTheme(
-    baseThemeId: string, 
-    customizations: Partial<UITheme>, 
+    baseThemeId: string,
+    customizations: Partial<UITheme>,
     newThemeId: string
   ): Promise<UITheme> {
     const baseTheme = this.themes.get(baseThemeId);
@@ -97,12 +97,12 @@ export class ThemeManager extends EventEmitter {
         ...customizations.colors,
         text: {
           ...baseTheme.colors.text,
-          ...customizations.colors?.text
+          ...customizations.colors?.text,
         },
         status: {
           ...baseTheme.colors.status,
-          ...customizations.colors?.status
-        }
+          ...customizations.colors?.status,
+        },
       },
       // Deep merge typography
       typography: {
@@ -110,21 +110,21 @@ export class ThemeManager extends EventEmitter {
         ...customizations.typography,
         fontFamily: {
           ...baseTheme.typography.fontFamily,
-          ...customizations.typography?.fontFamily
+          ...customizations.typography?.fontFamily,
         },
         fontSizes: {
           ...baseTheme.typography.fontSizes,
-          ...customizations.typography?.fontSizes
+          ...customizations.typography?.fontSizes,
         },
         fontWeights: {
           ...baseTheme.typography.fontWeights,
-          ...customizations.typography?.fontWeights
+          ...customizations.typography?.fontWeights,
         },
         lineHeights: {
           ...baseTheme.typography.lineHeights,
-          ...customizations.typography?.lineHeights
-        }
-      }
+          ...customizations.typography?.lineHeights,
+        },
+      },
     };
 
     await this.registerTheme(customTheme);
@@ -162,9 +162,9 @@ export class ThemeManager extends EventEmitter {
    */
   private buildCSSFromTheme(theme: UITheme): string {
     const { colors, typography, spacing, responsive } = theme;
-    
+
     let css = ':root {\n';
-    
+
     // Colors
     css += `  --primary: ${colors.primary};\n`;
     css += `  --secondary: ${colors.secondary};\n`;
@@ -178,7 +178,7 @@ export class ThemeManager extends EventEmitter {
     css += `  --warning: ${colors.status.warning};\n`;
     css += `  --error: ${colors.status.error};\n`;
     css += `  --info: ${colors.status.info};\n`;
-    
+
     // Typography
     css += `  --font-primary: ${typography.fontFamily.primary};\n`;
     css += `  --font-secondary: ${typography.fontFamily.secondary};\n`;
@@ -189,28 +189,28 @@ export class ThemeManager extends EventEmitter {
     css += `  --text-lg: ${typography.fontSizes.lg};\n`;
     css += `  --text-xl: ${typography.fontSizes.xl};\n`;
     css += `  --text-xxl: ${typography.fontSizes.xxl};\n`;
-    
+
     // Spacing
     css += `  --spacing-unit: ${spacing.unit}px;\n`;
     spacing.scale.forEach((value, index) => {
       css += `  --spacing-${index}: ${value}px;\n`;
     });
-    
+
     css += '}\n\n';
-    
+
     // Responsive breakpoints
     css += `@media (min-width: ${responsive.breakpoints.tablet}) {\n`;
     css += `  :root {\n`;
     css += `    --container-max-width: ${responsive.spacing.tablet.layouts.containerMaxWidth};\n`;
     css += `  }\n`;
     css += '}\n\n';
-    
+
     css += `@media (min-width: ${responsive.breakpoints.desktop}) {\n`;
     css += `  :root {\n`;
     css += `    --container-max-width: ${responsive.spacing.desktop.layouts.containerMaxWidth};\n`;
     css += `  }\n`;
     css += '}\n\n';
-    
+
     // Base styles
     css += `
 body {
@@ -257,7 +257,7 @@ body {
 .titan-text-xl { font-size: var(--text-xl); }
 .titan-text-xxl { font-size: var(--text-xxl); }
 `;
-    
+
     return css;
   }
 }

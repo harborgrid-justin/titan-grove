@@ -82,21 +82,27 @@ export interface WorkflowExecutionLog {
 }
 
 export class WorkflowManager {
-  async createWorkflowDefinition(workflow: Omit<WorkflowDefinition, 'id' | 'status' | 'createdDate'>): Promise<WorkflowDefinition> {
+  async createWorkflowDefinition(
+    workflow: Omit<WorkflowDefinition, 'id' | 'status' | 'createdDate'>
+  ): Promise<WorkflowDefinition> {
     const id = `wf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     return {
       ...workflow,
       id,
       status: 'DRAFT',
-      createdDate: new Date()
+      createdDate: new Date(),
     };
   }
 
-  async startWorkflowInstance(workflowId: string, initiatedBy: string, variables: Record<string, any>): Promise<WorkflowInstance> {
+  async startWorkflowInstance(
+    workflowId: string,
+    initiatedBy: string,
+    variables: Record<string, any>
+  ): Promise<WorkflowInstance> {
     const id = `wfi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const instanceNumber = `WFI${Date.now().toString().slice(-6)}`;
-    
+
     return {
       id,
       workflowId,
@@ -106,11 +112,16 @@ export class WorkflowManager {
       initiatedBy,
       startDate: new Date(),
       variables,
-      executionLog: []
+      executionLog: [],
     };
   }
 
-  async executeWorkflowStep(instanceId: string, stepId: string, performedBy: string, action: string): Promise<{
+  async executeWorkflowStep(
+    instanceId: string,
+    stepId: string,
+    performedBy: string,
+    action: string
+  ): Promise<{
     status: 'SUCCESS' | 'FAILED';
     nextStep?: string;
     message: string;
@@ -119,7 +130,7 @@ export class WorkflowManager {
     return {
       status: 'SUCCESS',
       nextStep: 'step_002',
-      message: 'Step completed successfully'
+      message: 'Step completed successfully',
     };
   }
 
@@ -136,7 +147,7 @@ export class WorkflowManager {
       completedInstances: 142,
       averageCompletionTime: 24.5,
       failureRate: 2.7,
-      activeInstances: 8
+      activeInstances: 8,
     };
   }
 }

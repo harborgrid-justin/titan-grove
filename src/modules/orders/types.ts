@@ -17,7 +17,7 @@ export enum OrderStatus {
   SHIPPED = 'SHIPPED',
   CLOSED = 'CLOSED',
   CANCELLED = 'CANCELLED',
-  ON_HOLD = 'ON_HOLD'
+  ON_HOLD = 'ON_HOLD',
 }
 
 export enum QuoteStatus {
@@ -27,7 +27,7 @@ export enum QuoteStatus {
   REJECTED = 'REJECTED',
   EXPIRED = 'EXPIRED',
   CONVERTED = 'CONVERTED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export enum OrderType {
@@ -38,7 +38,7 @@ export enum OrderType {
   RELEASE = 'RELEASE',
   INTERNAL = 'INTERNAL',
   RMA = 'RMA',
-  CREDIT = 'CREDIT'
+  CREDIT = 'CREDIT',
 }
 
 export enum Priority {
@@ -46,7 +46,7 @@ export enum Priority {
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
   URGENT = 'URGENT',
-  CRITICAL = 'CRITICAL'
+  CRITICAL = 'CRITICAL',
 }
 
 export enum ShipmentStatus {
@@ -56,7 +56,7 @@ export enum ShipmentStatus {
   SHIPPED = 'SHIPPED',
   IN_TRANSIT = 'IN_TRANSIT',
   DELIVERED = 'DELIVERED',
-  EXCEPTION = 'EXCEPTION'
+  EXCEPTION = 'EXCEPTION',
 }
 
 export enum ReturnStatus {
@@ -66,7 +66,7 @@ export enum ReturnStatus {
   INSPECTED = 'INSPECTED',
   CREDIT_ISSUED = 'CREDIT_ISSUED',
   RESTOCKED = 'RESTOCKED',
-  DISPOSED = 'DISPOSED'
+  DISPOSED = 'DISPOSED',
 }
 
 export enum HoldType {
@@ -76,7 +76,7 @@ export enum HoldType {
   SHIPPING = 'SHIPPING',
   CUSTOMER = 'CUSTOMER',
   MANUAL = 'MANUAL',
-  QUALITY = 'QUALITY'
+  QUALITY = 'QUALITY',
 }
 
 // ================================

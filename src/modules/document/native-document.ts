@@ -1,5 +1,5 @@
 // Updated Document Management Module - Using NAPI-RS Native Functions
-import { 
+import {
   calculateDocumentRelevanceScore,
   searchDocuments,
   calculateContentHash,
@@ -7,10 +7,10 @@ import {
   generateDocumentNumber,
   calculateRetentionExpiryDate,
   analyzeDocumentMetrics,
-  classifyDocumentByContent
+  classifyDocumentByContent,
 } from '../native';
 
-// Re-export native types and functions  
+// Re-export native types and functions
 export * from '../native';
 
 export class DocumentManager {
@@ -58,7 +58,10 @@ export class DocumentManager {
   /**
    * Calculate retention expiry date using native date calculations
    */
-  async calculateRetentionExpiryDate(creationDate: string, retentionPeriodMonths: number): Promise<string> {
+  async calculateRetentionExpiryDate(
+    creationDate: string,
+    retentionPeriodMonths: number
+  ): Promise<string> {
     try {
       return await calculateRetentionExpiryDate(creationDate, retentionPeriodMonths);
     } catch (error) {
@@ -88,7 +91,7 @@ export class DocumentManager {
     const id = `doc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const documentNumber = this.generateDocumentNumber(document.documentType, Date.now());
     const contentHash = document.content ? this.calculateContentHash(document.content) : undefined;
-    
+
     return {
       ...document,
       id,
@@ -97,7 +100,7 @@ export class DocumentManager {
       status: 'DRAFT',
       createdDate: new Date(),
       lastModified: new Date(),
-      contentHash
+      contentHash,
     };
   }
 }

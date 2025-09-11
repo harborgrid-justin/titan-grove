@@ -9,18 +9,18 @@ export interface ConfigureToOrderConfig {
   defaultBaseCost: number;
   defaultCostRatio: number; // ratio for calculating costs from prices
   defaultLeadTimeBase: number; // days
-  
+
   // Manufacturing Complexity Thresholds
   standardComplexityMaxOptions: number;
   complexComplexityMaxOptions: number;
-  
+
   // Engineering Configuration
   engineeringHourlyRate: number;
   defaultEngineeringDuration: number; // days
   prototypeDevelopmentDuration: number; // days
   productionPlanningDuration: number; // days
   baseProjectTimeline: number; // days
-  
+
   // Sample lead time calculations
   defaultSampleLeadTime: number; // days
 }
@@ -31,7 +31,7 @@ export interface CapitalAssetConfig {
   defaultDepreciationRate?: number;
   currencyCode?: string;
   riskAssessmentRequired?: boolean;
-  
+
   // ROI Analysis Defaults
   roiScenarios?: {
     baseCase: {
@@ -44,14 +44,14 @@ export interface CapitalAssetConfig {
       probability: number;
     };
   };
-  
+
   // Budget Allocation Recommendations
   budgetAllocations?: {
     productionEquipment: number; // percentage
     regulatoryCompliance: number; // percentage
     digitalTransformation: number; // percentage
   };
-  
+
   // Default Analysis Parameters
   defaultDiscountRate?: number;
   defaultAnalysisTimeHorizon?: number; // years
@@ -60,15 +60,15 @@ export interface CapitalAssetConfig {
 export interface ManufacturingConfig {
   // BOM Management
   defaultBomComplexity: number;
-  
+
   // Production Defaults
   standardProductionLeadTime: number; // days
   customProductionLeadTime: number; // days
-  
+
   // Cost Management
   materialCostVarianceThreshold: number; // percentage
   laborCostVarianceThreshold: number; // percentage
-  
+
   // Industry 4.0 Configuration
   industry40: {
     iot: {
@@ -78,7 +78,7 @@ export interface ManufacturingConfig {
       pressureSensorLatency: number; // milliseconds
     };
   };
-  
+
   // Supply Chain Integration
   integration: {
     dataVolumes: {
@@ -117,7 +117,7 @@ export interface MessageQueueConfig {
     maxRetriesPerRequest: number;
     lazyConnect: boolean;
   };
-  
+
   // Job Configuration
   defaultJobOptions: {
     removeOnComplete: number;
@@ -128,7 +128,7 @@ export interface MessageQueueConfig {
       delay: number;
     };
   };
-  
+
   // Monitoring Configuration
   monitoring: {
     enabled: boolean;
@@ -139,21 +139,21 @@ export interface MessageQueueConfig {
       errorRate: number; // decimal (0.1 = 10%)
     };
   };
-  
+
   // Dead Letter Queue
   deadLetterQueue: {
     enabled: boolean;
     maxRetries: number;
     retentionDays: number;
   };
-  
+
   // Clustering
   clustering: {
     enabled: boolean;
     workers: number;
     concurrency: number;
   };
-  
+
   // Dynamic Configuration Values
   dynamicConfig: {
     lowConcurrency: number;
@@ -177,7 +177,7 @@ export interface ProjectConfig {
     budgetVarianceAlert: number; // percentage (0.1 = 10%)
     scheduleVarianceAlert: number; // percentage
   };
-  
+
   // Default Billing Rates
   billing: {
     defaultHourlyRate: number;
@@ -185,7 +185,7 @@ export interface ProjectConfig {
     standardTaxRate: number; // percentage (e.g., 0.08 = 8%)
     paymentTermsDays: number; // standard payment terms in days
   };
-  
+
   // Financial Defaults
   financials: {
     defaultLaborRate: number; // hourly rate for labor calculations
@@ -193,24 +193,24 @@ export interface ProjectConfig {
     overheadRatio: number; // overhead as ratio of total cost
     profitMarginTarget: number; // target profit margin ratio
   };
-  
+
   // Performance Metrics
   healthScoreThresholds: {
     schedulePerformanceTarget: number; // 1.0 = on schedule
-    costPerformanceTarget: number; // 1.0 = on budget  
+    costPerformanceTarget: number; // 1.0 = on budget
     scopeCompletionTarget: number; // ratio target
     qualityMetricsTarget: number; // quality ratio target
     riskScoreThreshold: number; // maximum acceptable risk
     teamSatisfactionTarget: number; // minimum team satisfaction
   };
-  
+
   // Resource Management
   resources: {
     utilizationTarget: number; // target utilization percentage
     overallocationThreshold: number; // threshold for overallocation detection
     capacityBufferRatio: number; // buffer for capacity planning
   };
-  
+
   // Reporting Defaults
   reporting: {
     forecastConfidenceDefault: number; // default confidence level
@@ -223,7 +223,7 @@ export interface ProjectConfig {
 export interface OrderAnalyticsConfig {
   // Credit and Risk Analysis
   defaultCreditUtilization: number; // ratio
-  
+
   // Performance Thresholds
   performanceThresholds: {
     scopeCompletion: number; // ratio (0.65 = 65%)
@@ -246,7 +246,7 @@ export interface WarehouseManagementConfig {
       timeZone: string;
     };
   };
-  
+
   // Shift Configuration
   shifts: {
     day: {
@@ -265,7 +265,7 @@ export interface WarehouseManagementConfig {
       staffCount: number;
     };
   };
-  
+
   // Storage Area Defaults
   storageAreas: {
     bulk: {
@@ -289,7 +289,7 @@ export interface WarehouseManagementConfig {
       turnoverRate: number; // times per year
     };
   };
-  
+
   // Dock Door Configuration
   dockDoors: {
     defaultCount: number;
@@ -304,15 +304,15 @@ export interface QuoteManagementConfig {
   defaultExpirationDays: number;
   shippingRatePerPound: number; // shipping rate per pound
   mockWeightPerItem: number; // pounds per item for calculation
-  
+
   // Approval Thresholds
   approvalThresholdAmount: number; // dollar amount requiring approval
   maxDiscountPercentWithoutApproval: number; // percentage
-  
+
   // Tax and Fees
   standardTaxRate: number; // percentage (e.g., 8.5% = 0.085)
   currencyConversionRate: number; // USD to other currency rate
-  
+
   // Mock Metrics Configuration (for demo/testing)
   mockMetrics: {
     conversionRate: number; // quote to order conversion rate
@@ -329,17 +329,17 @@ export interface OrderPromisingConfig {
   manufacturingLeadTime: number;
   procurementLeadTime: number;
   itemLeadTime: number;
-  
+
   // Shipping Times by Method (in days)
   standardShippingTime: number;
   expressShippingTime: number;
   overnightShippingTime: number;
-  
+
   // Buffer Days by Priority
   lowPriorityBufferDays: number;
   mediumPriorityBufferDays: number;
   highPriorityBufferDays: number;
-  
+
   // Confidence Levels
   minConfidenceLevel: number; // minimum confidence (0.1 = 10%)
   maxConfidenceLevel: number; // maximum confidence (1.0 = 100%)
@@ -350,15 +350,15 @@ export interface ProcurementConfig {
   supplierQualityThreshold: number; // minimum quality score (0-100)
   supplierDeliveryThreshold: number; // minimum delivery performance (0-100)
   supplierCostThreshold: number; // minimum cost competitiveness (0-100)
-  
+
   // Purchase Order Limits
   poApprovalThreshold: number; // dollar amount requiring approval
   maxPoValueWithoutApproval: number;
-  
+
   // RFQ Configuration
   rfqResponseTimeoutDays: number; // days to wait for RFQ responses
   minSuppliersForRfq: number; // minimum suppliers required for RFQ
-  
+
   // Contract Management
   contractRenewalNotificationDays: number; // days before contract expiry
   contractValueReviewThreshold: number; // dollar threshold for contract review
@@ -380,7 +380,7 @@ export interface PricingEngineConfig {
       tier3UnitPrice: number;
     };
   };
-  
+
   // Pricing Rules
   maxDiscountPercent: number; // maximum discount allowed without approval
   minMarginPercent: number; // minimum margin required
@@ -394,11 +394,11 @@ export interface ShippingConfig {
     speedWeight: number; // weight for speed in carrier selection
     reliabilityWeight: number; // weight for reliability in carrier selection
   };
-  
+
   // Insurance and fees
   defaultInsuranceRate: number; // insurance as percentage of insured value
   dimensionalWeightDivisor: number; // divisor for dimensional weight calculation
-  
+
   // Mock shipping rates (for demo/testing)
   mockRates: {
     baseShippingCost: number;
@@ -413,13 +413,13 @@ export interface ForecastingConfig {
   seasonalAmplitude: number; // amplitude of seasonal variations
   seasonalFrequency: number; // frequency of seasonal pattern
   trendGrowthRate: number; // growth rate per period
-  
+
   // Variance and confidence intervals
   forecastVarianceBounds: {
     upperMultiplier: number; // upper bound multiplier (1.2 = 20% above)
     lowerMultiplier: number; // lower bound multiplier (0.8 = 20% below)
   };
-  
+
   // Mock forecasting data
   mockForecasting: {
     baseOrderValue: number; // base value for order forecasting

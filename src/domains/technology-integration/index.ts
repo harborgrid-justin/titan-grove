@@ -57,7 +57,6 @@ export interface TechnologyIntegrationDomainConfig {
  * Consolidated business calculations for technology and integration operations
  */
 export class TechnologyIntegrationBusinessLogic {
-  
   /**
    * Calculate integration performance metrics
    */
@@ -77,18 +76,19 @@ export class TechnologyIntegrationBusinessLogic {
     const averageResponseTime = totalResponseTime / totalRequests;
     const throughput = totalRequests / (totalResponseTime / 1000); // requests per second
     const dataEfficiency = successfulRequests / dataVolume; // successful requests per MB
-    
+
     // Composite performance score (0-1)
-    const performanceScore = (successRate * 0.4) + 
-                            ((1 / Math.max(averageResponseTime / 1000, 0.1)) * 0.3) + 
-                            (Math.min(throughput / 100, 1) * 0.3);
+    const performanceScore =
+      successRate * 0.4 +
+      (1 / Math.max(averageResponseTime / 1000, 0.1)) * 0.3 +
+      Math.min(throughput / 100, 1) * 0.3;
 
     return {
       successRate,
       averageResponseTime,
       throughput,
       dataEfficiency,
-      performanceScore: Math.min(performanceScore, 1)
+      performanceScore: Math.min(performanceScore, 1),
     };
   }
 
@@ -112,19 +112,20 @@ export class TechnologyIntegrationBusinessLogic {
     const efficiency = targetTime / averageExecutionTime;
     const errorRate = errorCount / totalWorkflows;
     const timeVariance = Math.abs(averageExecutionTime - targetTime) / targetTime;
-    
+
     // Overall workflow score
-    const overallScore = (completionRate * 0.4) + 
-                        (Math.min(efficiency, 2) * 0.3) + 
-                        ((1 - errorRate) * 0.2) + 
-                        ((1 - timeVariance) * 0.1);
+    const overallScore =
+      completionRate * 0.4 +
+      Math.min(efficiency, 2) * 0.3 +
+      (1 - errorRate) * 0.2 +
+      (1 - timeVariance) * 0.1;
 
     return {
       completionRate,
       efficiency,
       errorRate,
       timeVariance,
-      overallScore: Math.max(0, Math.min(overallScore, 1))
+      overallScore: Math.max(0, Math.min(overallScore, 1)),
     };
   }
 
@@ -145,18 +146,16 @@ export class TechnologyIntegrationBusinessLogic {
   } {
     const averageQueryTime = totalQueryTime / queriesExecuted;
     const queryPerformance = Math.min(10 / averageQueryTime, 1); // normalized to 10s target
-    const dataFreshness = Math.max(0, 1 - (dataFreshnessHours / 24)); // fresher is better
-    
-    const analyticsScore = (queryPerformance * 0.3) + 
-                          (dataFreshness * 0.3) + 
-                          (accuracyScore * 0.4);
+    const dataFreshness = Math.max(0, 1 - dataFreshnessHours / 24); // fresher is better
+
+    const analyticsScore = queryPerformance * 0.3 + dataFreshness * 0.3 + accuracyScore * 0.4;
 
     return {
       averageQueryTime,
       queryPerformance,
       dataFreshness,
       accuracy: accuracyScore,
-      analyticsScore: Math.min(analyticsScore, 1)
+      analyticsScore: Math.min(analyticsScore, 1),
     };
   }
 }
@@ -187,43 +186,43 @@ export class TechnologyIntegrationDomainManager {
         timeouts: {
           apiCall: 30,
           dataSync: 300,
-          batchProcess: 1800
+          batchProcess: 1800,
         },
         retryPolicies: {
           maxRetries: 3,
           backoffMultiplier: 2,
-          initialDelay: 1000
+          initialDelay: 1000,
         },
         throughput: {
           transactionsPerSecond: 100,
           maxConcurrentConnections: 50,
-          dataVolumeLimit: 100
-        }
+          dataVolumeLimit: 100,
+        },
       },
       workflow: {
         thresholds: {
           approvalTimeout: 24,
           escalationDelay: 4,
-          maxExecutionTime: 48
+          maxExecutionTime: 48,
         },
         performance: {
           completionTarget: 0.95,
           errorRateLimit: 0.05,
-          throughputTarget: 50
-        }
+          throughputTarget: 50,
+        },
       },
       analytics: {
         kpis: {
           dataFreshness: 4,
           queryPerformance: 5,
-          reportAccuracy: 0.98
+          reportAccuracy: 0.98,
         },
         processing: {
           batchSize: 1000,
           refreshInterval: 15,
-          retentionPeriod: 365
-        }
-      }
+          retentionPeriod: 365,
+        },
+      },
     };
   }
 
@@ -233,38 +232,47 @@ export class TechnologyIntegrationDomainManager {
   async performTechnologyPerformanceAnalysis(): Promise<any> {
     // Placeholder for technology performance analysis
     const integrationMetrics = TechnologyIntegrationBusinessLogic.calculateIntegrationPerformance(
-      10000, 9850, 45000, 850
+      10000,
+      9850,
+      45000,
+      850
     );
 
     const workflowMetrics = TechnologyIntegrationBusinessLogic.calculateWorkflowEfficiency(
-      500, 485, 1.8, 12, 2
+      500,
+      485,
+      1.8,
+      12,
+      2
     );
 
     const analyticsMetrics = TechnologyIntegrationBusinessLogic.calculateAnalyticsPerformance(
-      2500, 8750, 2, 0.975
+      2500,
+      8750,
+      2,
+      0.975
     );
 
     return {
       integrationHealth: {
         totalEndpoints: 45,
         activeConnections: 42,
-        ...integrationMetrics
+        ...integrationMetrics,
       },
       workflowHealth: {
         activeWorkflows: 125,
         completedToday: 95,
-        ...workflowMetrics
+        ...workflowMetrics,
       },
       analyticsHealth: {
         totalReports: 285,
         activeQueries: 1250,
-        ...analyticsMetrics
+        ...analyticsMetrics,
       },
-      overallTechnologyScore: (
+      overallTechnologyScore:
         integrationMetrics.performanceScore * 0.4 +
         workflowMetrics.overallScore * 0.3 +
-        analyticsMetrics.analyticsScore * 0.3
-      )
+        analyticsMetrics.analyticsScore * 0.3,
     };
   }
 

@@ -134,7 +134,6 @@ export interface ScenarioResult {
  * Advanced multi-site planning to master complexity
  */
 export class MasterProductionSchedulingService {
-
   // ================================
   // MULTI-SITE PLANNING
   // ================================
@@ -148,9 +147,9 @@ export class MasterProductionSchedulingService {
     sites: string[]
   ): Promise<MasterProductionSchedule> {
     const scheduleId = `mps_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Creating master production schedule: ${scheduleId} for product ${productId}`);
-    
+
     const productionSites: ProductionSite[] = sites.map((siteId, index) => ({
       siteId,
       siteCode: `SITE_${siteId}`,
@@ -165,19 +164,19 @@ export class MasterProductionSchedulingService {
         utilizationRate: 84.7,
         bottleneckOperations: ['ASSEMBLY'],
         shiftPattern: 'DOUBLE',
-        workingDaysPerWeek: 5
+        workingDaysPerWeek: 5,
       },
       constraints: [],
       costs: {
-        laborCostPerHour: 25.00 + (index * 5),
+        laborCostPerHour: 25.0 + index * 5,
         overheadRate: 2.5,
-        materialHandlingCost: 1.50,
-        transportationCost: 5.00 + (index * 2),
+        materialHandlingCost: 1.5,
+        transportationCost: 5.0 + index * 2,
         regulatoryCost: 0.75,
-        totalCostPerUnit: 125.50 + (index * 10)
+        totalCostPerUnit: 125.5 + index * 10,
       },
-      leadTime: 14 + (index * 3),
-      priorityRanking: index + 1
+      leadTime: 14 + index * 3,
+      priorityRanking: index + 1,
     }));
 
     const schedule: MasterProductionSchedule = {
@@ -193,7 +192,7 @@ export class MasterProductionSchedulingService {
       scenarios: [],
       status: 'DRAFT',
       lastUpdate: new Date(),
-      nextReplanDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Weekly replanning
+      nextReplanDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Weekly replanning
     };
 
     return schedule;
@@ -225,9 +224,9 @@ export class MasterProductionSchedulingService {
     recommendations: string[];
   }> {
     const optimizationId = `opt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     console.log(`Optimizing multi-site allocation for schedule ${scheduleId}`);
-    
+
     return {
       optimizationId,
       allocations: [
@@ -237,16 +236,16 @@ export class MasterProductionSchedulingService {
           allocatedQuantity: 5000,
           utilizationRate: 85.0,
           cost: 627500,
-          serviceLevel: 98.5
+          serviceLevel: 98.5,
         },
         {
-          siteId: 'SITE_002', 
+          siteId: 'SITE_002',
           period: new Date(),
           allocatedQuantity: 3500,
           utilizationRate: 70.0,
           cost: 472500,
-          serviceLevel: 96.8
-        }
+          serviceLevel: 96.8,
+        },
       ],
       totalCost: 1100000,
       averageServiceLevel: 97.7,
@@ -254,8 +253,8 @@ export class MasterProductionSchedulingService {
       recommendations: [
         'Consider increasing capacity at Site 001 to improve efficiency',
         'Evaluate backup supplier options for critical materials',
-        'Implement cross-training program to reduce labor constraints'
-      ]
+        'Implement cross-training program to reduce labor constraints',
+      ],
     };
   }
 
@@ -271,27 +270,27 @@ export class MasterProductionSchedulingService {
     }>
   ): Promise<PlanningScenario[]> {
     console.log(`Generating planning scenarios for schedule ${scheduleId}`);
-    
+
     return scenarioParameters.map((param, index) => ({
       scenarioId: `scenario_${Date.now()}_${index}`,
       scenarioName: param.scenarioName,
       description: `Analysis of ${param.scenarioName} scenario`,
       assumptions: param.assumptions,
       results: {
-        totalCost: 1000000 + (index * 100000),
-        totalProduction: 10000 - (index * 500),
-        serviceLevel: 98.0 - (index * 2),
-        inventoryLevel: 500000 + (index * 50000),
+        totalCost: 1000000 + index * 100000,
+        totalProduction: 10000 - index * 500,
+        serviceLevel: 98.0 - index * 2,
+        inventoryLevel: 500000 + index * 50000,
         utilizationRates: [
-          { siteId: 'SITE_001', utilization: 85.0 - (index * 5) },
-          { siteId: 'SITE_002', utilization: 75.0 - (index * 3) }
+          { siteId: 'SITE_001', utilization: 85.0 - index * 5 },
+          { siteId: 'SITE_002', utilization: 75.0 - index * 3 },
         ],
         risks: [`Risk factor ${index + 1}`, `Potential constraint ${index + 1}`],
-        opportunities: [`Opportunity ${index + 1}`, `Efficiency gain ${index + 1}`]
+        opportunities: [`Opportunity ${index + 1}`, `Efficiency gain ${index + 1}`],
       },
       risk: index === 0 ? 'LOW' : index === 1 ? 'MEDIUM' : 'HIGH',
-      probability: 0.8 - (index * 0.2),
-      financialImpact: 50000 + (index * 25000)
+      probability: 0.8 - index * 0.2,
+      financialImpact: 50000 + index * 25000,
     }));
   }
 
@@ -299,13 +298,16 @@ export class MasterProductionSchedulingService {
   // PRIVATE HELPER METHODS
   // ================================
 
-  private async generateDemandPlan(planningHorizon: { startDate: Date; endDate: Date }): Promise<DemandPlanEntry[]> {
+  private async generateDemandPlan(planningHorizon: {
+    startDate: Date;
+    endDate: Date;
+  }): Promise<DemandPlanEntry[]> {
     const demandPlan: DemandPlanEntry[] = [];
-    
+
     // Generate weekly demand for the planning horizon
     const currentDate = new Date(planningHorizon.startDate);
     let weekNumber = 1;
-    
+
     while (currentDate <= planningHorizon.endDate) {
       demandPlan.push({
         period: new Date(currentDate),
@@ -315,13 +317,13 @@ export class MasterProductionSchedulingService {
         totalDemand: 1000 + Math.random() * 500,
         demandSource: 'FORECAST',
         region: weekNumber % 2 === 0 ? 'North America' : 'Europe',
-        customerSegment: 'Enterprise'
+        customerSegment: 'Enterprise',
       });
-      
+
       currentDate.setDate(currentDate.getDate() + 7);
       weekNumber++;
     }
-    
+
     return demandPlan;
   }
 
@@ -330,10 +332,10 @@ export class MasterProductionSchedulingService {
     planningHorizon: { startDate: Date; endDate: Date }
   ): Promise<SupplyPlanEntry[]> {
     const supplyPlan: SupplyPlanEntry[] = [];
-    
-    sites.forEach(site => {
+
+    sites.forEach((site) => {
       const currentDate = new Date(planningHorizon.startDate);
-      
+
       while (currentDate <= planningHorizon.endDate) {
         supplyPlan.push({
           period: new Date(currentDate),
@@ -342,13 +344,13 @@ export class MasterProductionSchedulingService {
           productionMethod: 'MAKE',
           cost: site.costs.totalCostPerUnit * (site.capacity.availableCapacity / 4),
           leadTime: site.leadTime,
-          riskFactor: 0.1
+          riskFactor: 0.1,
         });
-        
+
         currentDate.setDate(currentDate.getDate() + 7);
       }
     });
-    
+
     return supplyPlan;
   }
 
@@ -357,10 +359,10 @@ export class MasterProductionSchedulingService {
     planningHorizon: { startDate: Date; endDate: Date }
   ): Promise<CapacityPlanEntry[]> {
     const capacityPlan: CapacityPlanEntry[] = [];
-    
-    sites.forEach(site => {
+
+    sites.forEach((site) => {
       const currentDate = new Date(planningHorizon.startDate);
-      
+
       while (currentDate <= planningHorizon.endDate) {
         capacityPlan.push({
           period: new Date(currentDate),
@@ -370,13 +372,13 @@ export class MasterProductionSchedulingService {
           availableCapacity: site.capacity.availableCapacity,
           utilizationRate: site.capacity.utilizationRate,
           constraintCapacity: site.capacity.totalCapacity,
-          bottleneck: site.capacity.utilizationRate > 90
+          bottleneck: site.capacity.utilizationRate > 90,
         });
-        
+
         currentDate.setDate(currentDate.getDate() + 7);
       }
     });
-    
+
     return capacityPlan;
   }
 }

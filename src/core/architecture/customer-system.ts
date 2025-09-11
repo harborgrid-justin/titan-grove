@@ -67,7 +67,7 @@ export class CustomerSystemService extends BaseService {
   constructor(config: CustomerSystemConfig, logger: Logger) {
     super('CustomerSystem', logger);
     this.config = config;
-    
+
     // Setup cache cleanup interval
     if (this.config.cacheEnabled) {
       setInterval(() => this.cleanupExpiredCache(), memoryLimits.cache.cleanupInterval);
@@ -83,7 +83,7 @@ export class CustomerSystemService extends BaseService {
       category: operation.category,
       publicAccess: operation.publicAccess,
       rateLimited: operation.rateLimited,
-      cacheable: operation.cacheable
+      cacheable: operation.cacheable,
     });
   }
 
@@ -101,8 +101,8 @@ export class CustomerSystemService extends BaseService {
         success: false,
         error: {
           code: 'OPERATION_NOT_FOUND',
-          message: `Customer operation ${operationId} not found`
-        }
+          message: `Customer operation ${operationId} not found`,
+        },
       };
     }
 
@@ -125,8 +125,8 @@ export class CustomerSystemService extends BaseService {
           data: cachedResult,
           metadata: {
             cacheHit: true,
-            executionTime: 0
-          }
+            executionTime: 0,
+          },
         };
       }
     }
@@ -134,11 +134,11 @@ export class CustomerSystemService extends BaseService {
     // Execute operation with metrics and interaction tracking
     return this.executeWithMetrics(async () => {
       const startTime = Date.now();
-      
+
       try {
         const result = await operation.execute(input, context);
         const responseTime = Date.now() - startTime;
-        
+
         // Cache result if applicable
         if (this.config.cacheEnabled && operation.cacheable && result.success) {
           const cacheKey = this.generateCacheKey(operationId, input, context);
@@ -163,7 +163,7 @@ export class CustomerSystemService extends BaseService {
   private checkRateLimit(identifier: string, context: ServiceContext): ServiceResult {
     const now = Date.now();
     const windowMs = 60 * 1000; // 1 minute window
-    
+
     let tracker = this.rateLimitTracker.get(identifier);
     if (!tracker || now > tracker.resetTime) {
       tracker = { count: 0, resetTime: now + windowMs };
@@ -177,7 +177,7 @@ export class CustomerSystemService extends BaseService {
         identifier,
         requestId: context.requestId,
         count: tracker.count,
-        limit: this.config.maxRequestsPerMinute
+        limit: this.config.maxRequestsPerMinute,
       });
 
       return {
@@ -186,9 +186,9 @@ export class CustomerSystemService extends BaseService {
           code: 'RATE_LIMIT_EXCEEDED',
           message: 'Too many requests. Please try again later.',
           details: {
-            retryAfter: Math.ceil((tracker.resetTime - now) / 1000)
-          }
-        }
+            retryAfter: Math.ceil((tracker.resetTime - now) / 1000),
+          },
+        },
       };
     }
 
@@ -203,9 +203,9 @@ export class CustomerSystemService extends BaseService {
       operationId,
       input,
       userId: context.userId,
-      tenantId: context.tenantId
+      tenantId: context.tenantId,
     };
-    
+
     // Simple hash function for cache key
     return Buffer.from(JSON.stringify(keyData)).toString('base64');
   }
@@ -218,12 +218,12 @@ export class CustomerSystemService extends BaseService {
     if (cached && cached.expires > Date.now()) {
       return cached.data as T;
     }
-    
+
     // Remove expired entry
     if (cached) {
       this.cache.delete(key);
     }
-    
+
     return null;
   }
 
@@ -233,7 +233,7 @@ export class CustomerSystemService extends BaseService {
   private setCache(key: string, data: any): void {
     this.cache.set(key, {
       data,
-      expires: Date.now() + (this.config.cacheTTL * 1000)
+      expires: Date.now() + this.config.cacheTTL * 1000,
     });
   }
 
@@ -243,13 +243,13 @@ export class CustomerSystemService extends BaseService {
   private cleanupExpiredCache(): void {
     const now = Date.now();
     const expiredKeys: string[] = [];
-    
+
     for (const [key, value] of this.cache.entries()) {
       if (value.expires <= now) {
         expiredKeys.push(key);
       }
     }
-    
+
     for (const key of expiredKeys) {
       this.cache.delete(key);
     }
@@ -278,7 +278,7 @@ export class CustomerSystemService extends BaseService {
       responseTime,
       success,
       userAgent: context.userAgent,
-      ipAddress: context.ipAddress
+      ipAddress: context.ipAddress,
     };
 
     this.interactions.push(interaction);
@@ -293,7 +293,7 @@ export class CustomerSystemService extends BaseService {
       category: operation.category,
       responseTime,
       success,
-      sessionId: context.sessionId
+      sessionId: context.sessionId,
     });
   }
 
@@ -315,7 +315,7 @@ export class CustomerSystemService extends BaseService {
     let filteredInteractions = this.interactions;
 
     if (filters) {
-      filteredInteractions = this.interactions.filter(interaction => {
+      filteredInteractions = this.interactions.filter((interaction) => {
         if (filters.customerId && interaction.customerId !== filters.customerId) return false;
         if (filters.category && interaction.category !== filters.category) return false;
         if (filters.startDate && interaction.timestamp < filters.startDate) return false;
@@ -325,13 +325,14 @@ export class CustomerSystemService extends BaseService {
     }
 
     const totalInteractions = filteredInteractions.length;
-    const successfulInteractions = filteredInteractions.filter(i => i.success).length;
-    const averageResponseTime = filteredInteractions.reduce((sum, i) => sum + i.responseTime, 0) / totalInteractions || 0;
+    const successfulInteractions = filteredInteractions.filter((i) => i.success).length;
+    const averageResponseTime =
+      filteredInteractions.reduce((sum, i) => sum + i.responseTime, 0) / totalInteractions || 0;
     const successRate = totalInteractions > 0 ? successfulInteractions / totalInteractions : 0;
 
     // Top operations
     const operationCounts = new Map<string, number>();
-    filteredInteractions.forEach(interaction => {
+    filteredInteractions.forEach((interaction) => {
       const count = operationCounts.get(interaction.operationId) || 0;
       operationCounts.set(interaction.operationId, count + 1);
     });
@@ -343,7 +344,7 @@ export class CustomerSystemService extends BaseService {
 
     // Category breakdown
     const categoryBreakdown: { [category: string]: number } = {};
-    filteredInteractions.forEach(interaction => {
+    filteredInteractions.forEach((interaction) => {
       categoryBreakdown[interaction.category] = (categoryBreakdown[interaction.category] || 0) + 1;
     });
 
@@ -352,7 +353,7 @@ export class CustomerSystemService extends BaseService {
       averageResponseTime,
       successRate,
       topOperations,
-      categoryBreakdown
+      categoryBreakdown,
     };
   }
 
@@ -367,22 +368,23 @@ export class CustomerSystemService extends BaseService {
     avgResponseTime: number;
   } {
     const recentInteractions = this.interactions.filter(
-      i => i.timestamp > new Date(Date.now() - 24 * 60 * 60 * 1000)
+      (i) => i.timestamp > new Date(Date.now() - 24 * 60 * 60 * 1000)
     );
 
-    const cacheHits = recentInteractions.filter(i => i.responseTime === 0).length;
+    const cacheHits = recentInteractions.filter((i) => i.responseTime === 0).length;
     const cacheHitRate = recentInteractions.length > 0 ? cacheHits / recentInteractions.length : 0;
-    
-    const avgResponseTime = recentInteractions.length > 0 
-      ? recentInteractions.reduce((sum, i) => sum + i.responseTime, 0) / recentInteractions.length 
-      : 0;
+
+    const avgResponseTime =
+      recentInteractions.length > 0
+        ? recentInteractions.reduce((sum, i) => sum + i.responseTime, 0) / recentInteractions.length
+        : 0;
 
     return {
       operationsRegistered: this.operations.size,
       cacheSize: this.cache.size,
       cacheHitRate,
       rateLimitViolations: 0, // Would track from rate limit logs
-      avgResponseTime
+      avgResponseTime,
     };
   }
 }
@@ -407,7 +409,7 @@ export class CustomerOperationFactory {
       publicAccess: options.publicAccess ?? false,
       rateLimited: options.rateLimited ?? true,
       cacheable: options.cacheable ?? true,
-      execute: handler
+      execute: handler,
     };
   }
 
@@ -426,7 +428,7 @@ export class CustomerOperationFactory {
       publicAccess: options.publicAccess ?? false,
       rateLimited: options.rateLimited ?? false,
       cacheable: options.cacheable ?? false,
-      execute: handler
+      execute: handler,
     };
   }
 
@@ -445,7 +447,7 @@ export class CustomerOperationFactory {
       publicAccess: options.publicAccess ?? false,
       rateLimited: options.rateLimited ?? true,
       cacheable: options.cacheable ?? true,
-      execute: handler
+      execute: handler,
     };
   }
 }

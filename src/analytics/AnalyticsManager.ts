@@ -43,10 +43,10 @@ export class AnalyticsManager extends EventEmitter {
     this.logger.debug('Metric recorded:', metric);
   }
 
-  async query(query: any): Promise<any> {
+  async query(_query: any): Promise<any> {
     if (!this.config.enabled) return { data: [] };
 
-    // TODO: Implement analytics query
+    // TODO: Implement analytics query using _query
     return { data: [] };
   }
 

@@ -1,7 +1,7 @@
 /**
  * Advanced Supply Chain Planning Module
  * Oracle Advanced Supply Chain Planning competitive implementation
- * 
+ *
  * Provides comprehensive supply chain planning capabilities including:
  * - Demand planning and forecasting with AI/ML
  * - Supply planning and optimization
@@ -18,7 +18,10 @@ export * from './types';
 export * from './data-access';
 
 // Core supply chain planning functionality
-export { SupplyChainPlanningService, supplyChainPlanningService } from './business-logic/supply-chain-planning-service';
+export {
+  SupplyChainPlanningService,
+  supplyChainPlanningService,
+} from './business-logic/supply-chain-planning-service';
 
 // Types
 export type {
@@ -33,5 +36,5 @@ export type {
   SupplyChainAnalytics,
   DemandForecast,
   CapacityPlan,
-  InventoryPlan
+  InventoryPlan,
 } from './types';

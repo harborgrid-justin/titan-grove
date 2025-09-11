@@ -9,24 +9,26 @@ const financialPages = {
     {
       name: 'chart-of-accounts',
       title: 'Advanced Chart of Accounts',
-      description: 'Hierarchical account structure with multi-dimensional reporting capabilities for comprehensive financial management',
+      description:
+        'Hierarchical account structure with multi-dimensional reporting capabilities for comprehensive financial management',
       features: [
         'Multi-level account hierarchies with unlimited depth',
         'Dynamic account grouping and categorization',
         'Real-time balance calculations and validations',
-        'Multi-dimensional reporting with segment tracking'
-      ]
+        'Multi-dimensional reporting with segment tracking',
+      ],
     },
     {
       name: 'journal-entries',
       title: 'Journal Entry Management',
-      description: 'Automated journal entries with approval workflows and comprehensive audit trails',
+      description:
+        'Automated journal entries with approval workflows and comprehensive audit trails',
       features: [
         'Automated journal entry creation and posting',
         'Multi-step approval workflows with role-based access',
         'Template-based recurring journal entries',
-        'Real-time validation and error checking'
-      ]
+        'Real-time validation and error checking',
+      ],
     },
     {
       name: 'trial-balance',
@@ -36,19 +38,20 @@ const financialPages = {
         'Real-time trial balance generation',
         'Variance analysis with previous periods',
         'Interactive drill-down to transaction details',
-        'Automated reconciliation and balancing'
-      ]
+        'Automated reconciliation and balancing',
+      ],
     },
     {
       name: 'gl-reconciliation',
       title: 'General Ledger Reconciliation',
-      description: 'Automated account reconciliation with exception handling and matching algorithms',
+      description:
+        'Automated account reconciliation with exception handling and matching algorithms',
       features: [
         'Automated transaction matching algorithms',
         'Exception handling and resolution workflows',
         'Bank statement reconciliation automation',
-        'Detailed reconciliation reports and analytics'
-      ]
+        'Detailed reconciliation reports and analytics',
+      ],
     },
     {
       name: 'period-close',
@@ -58,8 +61,8 @@ const financialPages = {
         'Automated period close process management',
         'Comprehensive closing checklist with validations',
         'Parallel processing for multiple entities',
-        'Real-time status tracking and notifications'
-      ]
+        'Real-time status tracking and notifications',
+      ],
     },
     {
       name: 'multi-currency',
@@ -69,8 +72,8 @@ const financialPages = {
         'Real-time exchange rate management',
         'Automated currency translation and revaluation',
         'Hedging strategy implementation and tracking',
-        'Multi-currency financial reporting'
-      ]
+        'Multi-currency financial reporting',
+      ],
     },
     {
       name: 'consolidation',
@@ -80,8 +83,8 @@ const financialPages = {
         'Multi-entity financial consolidation',
         'Automated elimination entries processing',
         'Intercompany transaction matching',
-        'Regulatory compliance reporting'
-      ]
+        'Regulatory compliance reporting',
+      ],
     },
     {
       name: 'allocations',
@@ -91,21 +94,22 @@ const financialPages = {
         'Configurable allocation rules and drivers',
         'Automated cost center allocations',
         'Revenue recognition and allocation',
-        'Real-time allocation calculations'
-      ]
-    }
+        'Real-time allocation calculations',
+      ],
+    },
   ],
   'planning-analysis': [
     {
       name: 'budget-planning',
       title: 'Budget Planning & Control',
-      description: 'Comprehensive budget planning with variance analysis and forecasting capabilities',
+      description:
+        'Comprehensive budget planning with variance analysis and forecasting capabilities',
       features: [
         'Multi-dimensional budget planning and modeling',
         'Real-time variance analysis and reporting',
         'Automated budget allocation and distribution',
-        'Scenario planning and what-if analysis'
-      ]
+        'Scenario planning and what-if analysis',
+      ],
     },
     {
       name: 'forecasting',
@@ -115,8 +119,8 @@ const financialPages = {
         'AI-powered financial forecasting models',
         'Monte Carlo simulation and scenario analysis',
         'Automated trend analysis and predictions',
-        'Risk-adjusted forecast modeling'
-      ]
+        'Risk-adjusted forecast modeling',
+      ],
     },
     {
       name: 'performance-mgmt',
@@ -126,8 +130,8 @@ const financialPages = {
         'Comprehensive KPI tracking and monitoring',
         'Interactive performance dashboards',
         'Automated scorecard generation',
-        'Benchmarking and peer comparison'
-      ]
+        'Benchmarking and peer comparison',
+      ],
     },
     {
       name: 'profitability',
@@ -137,8 +141,8 @@ const financialPages = {
         'Product and service profitability analysis',
         'Customer lifetime value calculations',
         'Activity-based costing implementation',
-        'Margin analysis and optimization'
-      ]
+        'Margin analysis and optimization',
+      ],
     },
     {
       name: 'variance-analysis',
@@ -148,8 +152,8 @@ const financialPages = {
         'Automated variance calculation and analysis',
         'Root cause analysis and commentary',
         'Exception reporting and alerts',
-        'Drill-down to transaction-level details'
-      ]
+        'Drill-down to transaction-level details',
+      ],
     },
     {
       name: 'cost-management',
@@ -159,8 +163,8 @@ const financialPages = {
         'Activity-based costing implementation',
         'Cost center management and allocation',
         'Cost optimization recommendations',
-        'Standard costing and variance analysis'
-      ]
+        'Standard costing and variance analysis',
+      ],
     },
     {
       name: 'financial-analytics',
@@ -170,8 +174,8 @@ const financialPages = {
         'Advanced financial ratio analysis',
         'Trend analysis and pattern recognition',
         'Predictive analytics and insights',
-        'Custom analytics and reporting'
-      ]
+        'Custom analytics and reporting',
+      ],
     },
     {
       name: 'rolling-forecasts',
@@ -181,11 +185,11 @@ const financialPages = {
         'Automated rolling forecast updates',
         'Continuous planning and reforecasting',
         'Driver-based forecasting models',
-        'Forecast accuracy tracking'
-      ]
-    }
+        'Forecast accuracy tracking',
+      ],
+    },
   ],
-  'treasury': [
+  treasury: [
     {
       name: 'cash-flow-management',
       title: 'Cash Flow Management',
@@ -194,8 +198,8 @@ const financialPages = {
         'Real-time cash position monitoring',
         'Cash flow forecasting and planning',
         'Liquidity optimization algorithms',
-        'Cash concentration and pooling'
-      ]
+        'Cash concentration and pooling',
+      ],
     },
     {
       name: 'banking-payments',
@@ -205,8 +209,8 @@ const financialPages = {
         'Multi-bank connectivity and integration',
         'Automated payment processing workflows',
         'Electronic funds transfer management',
-        'Bank statement reconciliation'
-      ]
+        'Bank statement reconciliation',
+      ],
     },
     {
       name: 'investment-management',
@@ -216,8 +220,8 @@ const financialPages = {
         'Investment portfolio management',
         'Performance tracking and analytics',
         'Risk assessment and monitoring',
-        'Investment policy compliance'
-      ]
+        'Investment policy compliance',
+      ],
     },
     {
       name: 'risk-management',
@@ -227,8 +231,8 @@ const financialPages = {
         'Comprehensive risk assessment frameworks',
         'Hedging strategy implementation',
         'Value-at-Risk calculations',
-        'Stress testing and scenario analysis'
-      ]
+        'Stress testing and scenario analysis',
+      ],
     },
     {
       name: 'debt-management',
@@ -238,8 +242,8 @@ const financialPages = {
         'Debt portfolio management and optimization',
         'Covenant tracking and compliance',
         'Interest rate risk management',
-        'Debt refinancing analysis'
-      ]
+        'Debt refinancing analysis',
+      ],
     },
     {
       name: 'foreign-exchange',
@@ -249,8 +253,8 @@ const financialPages = {
         'Real-time FX rate monitoring',
         'FX hedging strategy implementation',
         'Currency exposure analysis',
-        'FX trading and settlement'
-      ]
+        'FX trading and settlement',
+      ],
     },
     {
       name: 'liquidity-management',
@@ -260,8 +264,8 @@ const financialPages = {
         'Liquidity planning and forecasting',
         'Liquidity stress testing',
         'Cash optimization algorithms',
-        'Regulatory liquidity reporting'
-      ]
+        'Regulatory liquidity reporting',
+      ],
     },
     {
       name: 'treasury-operations',
@@ -271,9 +275,9 @@ const financialPages = {
         'Daily treasury operations management',
         'Automated workflow processing',
         'Treasury reporting and analytics',
-        'Cash management optimization'
-      ]
-    }
+        'Cash management optimization',
+      ],
+    },
   ],
   'cash-operations': [
     {
@@ -284,8 +288,8 @@ const financialPages = {
         'Multi-bank cash position aggregation',
         'Real-time balance monitoring and alerts',
         'Cross-entity cash visibility dashboard',
-        'Automated cash sweep optimization'
-      ]
+        'Automated cash sweep optimization',
+      ],
     },
     {
       name: 'cash-concentration',
@@ -295,8 +299,8 @@ const financialPages = {
         'Zero balance account (ZBA) management',
         'Notional cash pooling automation',
         'Target balance optimization',
-        'Concentration timing optimization'
-      ]
+        'Concentration timing optimization',
+      ],
     },
     {
       name: 'cash-forecasting',
@@ -306,8 +310,8 @@ const financialPages = {
         'AI-powered cash flow predictions',
         'Multi-scenario forecasting models',
         'Forecast accuracy measurement',
-        'Rolling forecast automation'
-      ]
+        'Rolling forecast automation',
+      ],
     },
     {
       name: 'cash-analytics',
@@ -317,8 +321,8 @@ const financialPages = {
         'Cash flow pattern analysis',
         'Seasonality and trend identification',
         'Cash efficiency metrics',
-        'Predictive cash analytics'
-      ]
+        'Predictive cash analytics',
+      ],
     },
     {
       name: 'cash-optimization',
@@ -328,8 +332,8 @@ const financialPages = {
         'Mathematical optimization algorithms',
         'Cost minimization strategies',
         'Return maximization models',
-        'Cash allocation optimization'
-      ]
+        'Cash allocation optimization',
+      ],
     },
     {
       name: 'cash-visibility',
@@ -339,8 +343,8 @@ const financialPages = {
         'Global cash position dashboard',
         'Multi-currency cash reporting',
         'Regional cash analytics',
-        'Cross-border cash tracking'
-      ]
+        'Cross-border cash tracking',
+      ],
     },
     {
       name: 'cash-mobilization',
@@ -350,8 +354,8 @@ const financialPages = {
         'Cash mobilization strategies',
         'Optimal deployment algorithms',
         'Funding gap analysis',
-        'Capital efficiency optimization'
-      ]
+        'Capital efficiency optimization',
+      ],
     },
     {
       name: 'cash-control-tower',
@@ -361,9 +365,9 @@ const financialPages = {
         'Centralized cash monitoring hub',
         'Real-time exception alerts',
         'Cash management KPI dashboard',
-        'Automated decision support'
-      ]
-    }
+        'Automated decision support',
+      ],
+    },
   ],
   'working-capital': [
     {
@@ -374,8 +378,8 @@ const financialPages = {
         'Working capital cycle analysis',
         'Cash conversion cycle optimization',
         'Working capital efficiency metrics',
-        'Industry benchmarking analysis'
-      ]
+        'Industry benchmarking analysis',
+      ],
     },
     {
       name: 'accounts-receivable-mgmt',
@@ -385,8 +389,8 @@ const financialPages = {
         'AR aging analysis and optimization',
         'Collection strategy automation',
         'Customer payment behavior analytics',
-        'DSO optimization and forecasting'
-      ]
+        'DSO optimization and forecasting',
+      ],
     },
     {
       name: 'accounts-payable-mgmt',
@@ -396,8 +400,8 @@ const financialPages = {
         'Payment timing optimization',
         'Early payment discount analysis',
         'Supplier payment behavior tracking',
-        'DPO strategy implementation'
-      ]
+        'DPO strategy implementation',
+      ],
     },
     {
       name: 'inventory-cash-mgmt',
@@ -407,8 +411,8 @@ const financialPages = {
         'Inventory cash impact analysis',
         'Stock level optimization models',
         'Inventory financing strategies',
-        'Supply chain cash analytics'
-      ]
+        'Supply chain cash analytics',
+      ],
     },
     {
       name: 'trade-finance-mgmt',
@@ -418,8 +422,8 @@ const financialPages = {
         'Letter of credit management',
         'Trade finance optimization',
         'Documentary collection processing',
-        'Trade finance analytics'
-      ]
+        'Trade finance analytics',
+      ],
     },
     {
       name: 'supply-chain-finance',
@@ -429,8 +433,8 @@ const financialPages = {
         'Supplier financing programs',
         'Dynamic discounting platforms',
         'Supply chain cash optimization',
-        'Vendor payment acceleration'
-      ]
+        'Vendor payment acceleration',
+      ],
     },
     {
       name: 'cash-conversion-cycle',
@@ -440,8 +444,8 @@ const financialPages = {
         'CCC components analysis',
         'Cycle time optimization',
         'Industry benchmark comparison',
-        'CCC trend analysis and forecasting'
-      ]
+        'CCC trend analysis and forecasting',
+      ],
     },
     {
       name: 'working-capital-analytics',
@@ -451,9 +455,9 @@ const financialPages = {
         'Working capital trend analysis',
         'Component performance metrics',
         'Optimization opportunity identification',
-        'ROI impact analysis'
-      ]
-    }
+        'ROI impact analysis',
+      ],
+    },
   ],
   'cash-analytics': [
     {
@@ -464,8 +468,8 @@ const financialPages = {
         'Customizable cash dashboards',
         'Multi-dimensional cash reporting',
         'Executive cash summaries',
-        'Regulatory cash reporting'
-      ]
+        'Regulatory cash reporting',
+      ],
     },
     {
       name: 'cash-variance-analysis',
@@ -475,8 +479,8 @@ const financialPages = {
         'Actual vs forecast variance analysis',
         'Root cause identification algorithms',
         'Variance trend analysis',
-        'Exception reporting automation'
-      ]
+        'Exception reporting automation',
+      ],
     },
     {
       name: 'cash-performance-metrics',
@@ -486,8 +490,8 @@ const financialPages = {
         'Cash management KPI suite',
         'Performance benchmark tracking',
         'Efficiency metric calculations',
-        'ROI and value-add measurements'
-      ]
+        'ROI and value-add measurements',
+      ],
     },
     {
       name: 'cash-scenario-modeling',
@@ -497,8 +501,8 @@ const financialPages = {
         'Monte Carlo cash simulations',
         'Stress testing scenarios',
         'What-if analysis capabilities',
-        'Scenario comparison tools'
-      ]
+        'Scenario comparison tools',
+      ],
     },
     {
       name: 'cash-trend-analysis',
@@ -508,8 +512,8 @@ const financialPages = {
         'Historical cash trend identification',
         'Seasonality pattern analysis',
         'Predictive trend modeling',
-        'Anomaly detection systems'
-      ]
+        'Anomaly detection systems',
+      ],
     },
     {
       name: 'cash-benchmarking',
@@ -519,8 +523,8 @@ const financialPages = {
         'Industry benchmark comparisons',
         'Peer group analysis',
         'Best practice identification',
-        'Performance gap analysis'
-      ]
+        'Performance gap analysis',
+      ],
     },
     {
       name: 'cash-attribution-analysis',
@@ -530,8 +534,8 @@ const financialPages = {
         'Cash flow driver identification',
         'Attribution factor analysis',
         'Performance decomposition',
-        'Impact quantification'
-      ]
+        'Impact quantification',
+      ],
     },
     {
       name: 'real-time-cash-analytics',
@@ -541,9 +545,9 @@ const financialPages = {
         'Streaming cash data analytics',
         'Real-time pattern recognition',
         'Instant alert systems',
-        'Live cash performance monitoring'
-      ]
-    }
+        'Live cash performance monitoring',
+      ],
+    },
   ],
   'payment-systems': [
     {
@@ -554,8 +558,8 @@ const financialPages = {
         'Multi-channel payment processing',
         'Payment method optimization',
         'Transaction routing intelligence',
-        'Payment reconciliation automation'
-      ]
+        'Payment reconciliation automation',
+      ],
     },
     {
       name: 'electronic-payments',
@@ -565,8 +569,8 @@ const financialPages = {
         'ACH payment processing',
         'Wire transfer management',
         'Real-time payment systems',
-        'Payment confirmation tracking'
-      ]
+        'Payment confirmation tracking',
+      ],
     },
     {
       name: 'payment-optimization',
@@ -576,8 +580,8 @@ const financialPages = {
         'Payment timing optimization',
         'Cost minimization algorithms',
         'Payment method selection AI',
-        'Batch payment optimization'
-      ]
+        'Batch payment optimization',
+      ],
     },
     {
       name: 'cross-border-payments',
@@ -587,8 +591,8 @@ const financialPages = {
         'International payment processing',
         'Currency conversion optimization',
         'Regulatory compliance tracking',
-        'Cross-border cost analysis'
-      ]
+        'Cross-border cost analysis',
+      ],
     },
     {
       name: 'payment-security',
@@ -598,8 +602,8 @@ const financialPages = {
         'Real-time fraud detection',
         'Payment authentication systems',
         'Security compliance monitoring',
-        'Suspicious activity alerts'
-      ]
+        'Suspicious activity alerts',
+      ],
     },
     {
       name: 'payment-analytics',
@@ -609,8 +613,8 @@ const financialPages = {
         'Payment pattern analysis',
         'Cost analytics and optimization',
         'Payment performance metrics',
-        'Vendor payment analytics'
-      ]
+        'Vendor payment analytics',
+      ],
     },
     {
       name: 'payment-workflows',
@@ -620,8 +624,8 @@ const financialPages = {
         'Automated payment workflows',
         'Approval routing automation',
         'Compliance validation checks',
-        'Exception handling processes'
-      ]
+        'Exception handling processes',
+      ],
     },
     {
       name: 'payment-reconciliation',
@@ -631,9 +635,9 @@ const financialPages = {
         'Automated payment matching',
         'Exception handling workflows',
         'Reconciliation reporting',
-        'Dispute management system'
-      ]
-    }
+        'Dispute management system',
+      ],
+    },
   ],
   'cash-risk-compliance': [
     {
@@ -644,8 +648,8 @@ const financialPages = {
         'Liquidity risk assessment',
         'Counterparty risk evaluation',
         'Operational risk analysis',
-        'Market risk monitoring'
-      ]
+        'Market risk monitoring',
+      ],
     },
     {
       name: 'compliance-monitoring',
@@ -655,8 +659,8 @@ const financialPages = {
         'Regulatory compliance tracking',
         'Policy violation detection',
         'Compliance reporting automation',
-        'Audit trail management'
-      ]
+        'Audit trail management',
+      ],
     },
     {
       name: 'cash-controls',
@@ -666,8 +670,8 @@ const financialPages = {
         'Cash control framework',
         'Segregation of duties enforcement',
         'Approval workflow controls',
-        'Control testing automation'
-      ]
+        'Control testing automation',
+      ],
     },
     {
       name: 'aml-cash-monitoring',
@@ -677,8 +681,8 @@ const financialPages = {
         'Transaction monitoring systems',
         'Suspicious activity detection',
         'AML compliance reporting',
-        'Know Your Customer (KYC) integration'
-      ]
+        'Know Your Customer (KYC) integration',
+      ],
     },
     {
       name: 'cash-stress-testing',
@@ -688,8 +692,8 @@ const financialPages = {
         'Liquidity stress testing',
         'Scenario-based cash analysis',
         'Recovery planning scenarios',
-        'Contingency funding planning'
-      ]
+        'Contingency funding planning',
+      ],
     },
     {
       name: 'regulatory-reporting',
@@ -699,8 +703,8 @@ const financialPages = {
         'Regulatory report generation',
         'Compliance data aggregation',
         'Submission workflow automation',
-        'Regulatory change tracking'
-      ]
+        'Regulatory change tracking',
+      ],
     },
     {
       name: 'cash-audit-mgmt',
@@ -710,8 +714,8 @@ const financialPages = {
         'Audit documentation automation',
         'Finding tracking and remediation',
         'Evidence collection systems',
-        'Audit workflow management'
-      ]
+        'Audit workflow management',
+      ],
     },
     {
       name: 'cash-policy-mgmt',
@@ -721,9 +725,9 @@ const financialPages = {
         'Policy document management',
         'Version control and approval',
         'Training and acknowledgment',
-        'Policy compliance monitoring'
-      ]
-    }
+        'Policy compliance monitoring',
+      ],
+    },
   ],
   'cash-forecasting-planning': [
     {
@@ -734,8 +738,8 @@ const financialPages = {
         'Machine learning forecast models',
         'Pattern recognition algorithms',
         'Adaptive forecasting systems',
-        'Forecast confidence intervals'
-      ]
+        'Forecast confidence intervals',
+      ],
     },
     {
       name: 'cash-planning-scenarios',
@@ -745,8 +749,8 @@ const financialPages = {
         'Multi-scenario cash planning',
         'Strategic planning integration',
         'Capital allocation planning',
-        'Contingency planning models'
-      ]
+        'Contingency planning models',
+      ],
     },
     {
       name: 'seasonal-cash-planning',
@@ -756,8 +760,8 @@ const financialPages = {
         'Seasonal pattern identification',
         'Holiday impact analysis',
         'Cyclical trend modeling',
-        'Seasonal optimization strategies'
-      ]
+        'Seasonal optimization strategies',
+      ],
     },
     {
       name: 'cash-budget-integration',
@@ -767,8 +771,8 @@ const financialPages = {
         'Budget-to-cash reconciliation',
         'Variance analysis automation',
         'Rolling forecast integration',
-        'Planning system synchronization'
-      ]
+        'Planning system synchronization',
+      ],
     },
     {
       name: 'daily-cash-planning',
@@ -778,8 +782,8 @@ const financialPages = {
         'Intraday cash planning',
         'Daily funding decisions',
         'Short-term cash optimization',
-        'Daily cash target setting'
-      ]
+        'Daily cash target setting',
+      ],
     },
     {
       name: 'long-term-cash-planning',
@@ -789,8 +793,8 @@ const financialPages = {
         'Long-term cash projections',
         'Capital structure planning',
         'Strategic investment planning',
-        'Growth scenario modeling'
-      ]
+        'Growth scenario modeling',
+      ],
     },
     {
       name: 'cash-sensitivity-analysis',
@@ -800,8 +804,8 @@ const financialPages = {
         'Key driver sensitivity testing',
         'Assumption impact analysis',
         'Parameter optimization',
-        'Risk factor assessment'
-      ]
+        'Risk factor assessment',
+      ],
     },
     {
       name: 'collaborative-cash-planning',
@@ -811,8 +815,8 @@ const financialPages = {
         'Multi-stakeholder planning',
         'Collaborative forecasting',
         'Consensus planning process',
-        'Stakeholder communication tools'
-      ]
+        'Stakeholder communication tools',
+      ],
     },
     {
       name: 'cash-planning-automation',
@@ -822,9 +826,9 @@ const financialPages = {
         'Automated planning workflows',
         'Intelligent data integration',
         'Exception-based planning',
-        'Automated plan generation'
-      ]
-    }
+        'Automated plan generation',
+      ],
+    },
   ],
   'treasury-operations-advanced': [
     {
@@ -835,8 +839,8 @@ const financialPages = {
         'Integrated treasury dashboard',
         'Real-time market data feeds',
         'Multi-asset trading platform',
-        'Risk management integration'
-      ]
+        'Risk management integration',
+      ],
     },
     {
       name: 'treasury-automation',
@@ -846,8 +850,8 @@ const financialPages = {
         'Automated treasury workflows',
         'Process orchestration engine',
         'Exception handling automation',
-        'STP (Straight-Through Processing)'
-      ]
+        'STP (Straight-Through Processing)',
+      ],
     },
     {
       name: 'treasury-reporting',
@@ -857,8 +861,8 @@ const financialPages = {
         'Comprehensive treasury reports',
         'Regulatory reporting automation',
         'Management dashboard creation',
-        'Custom report builder'
-      ]
+        'Custom report builder',
+      ],
     },
     {
       name: 'market-data-mgmt',
@@ -868,8 +872,8 @@ const financialPages = {
         'Real-time market data feeds',
         'Historical data management',
         'Data quality monitoring',
-        'Rate curve construction'
-      ]
+        'Rate curve construction',
+      ],
     },
     {
       name: 'treasury-settlement',
@@ -879,8 +883,8 @@ const financialPages = {
         'Trade settlement automation',
         'Settlement risk management',
         'Fail management processes',
-        'Settlement reporting'
-      ]
+        'Settlement reporting',
+      ],
     },
     {
       name: 'treasury-position-mgmt',
@@ -890,8 +894,8 @@ const financialPages = {
         'Real-time position tracking',
         'P&L calculation and attribution',
         'Position limit monitoring',
-        'Portfolio rebalancing tools'
-      ]
+        'Portfolio rebalancing tools',
+      ],
     },
     {
       name: 'treasury-communications',
@@ -901,8 +905,8 @@ const financialPages = {
         'Dealer communication systems',
         'Confirmation management',
         'Trade capture systems',
-        'Communication audit trails'
-      ]
+        'Communication audit trails',
+      ],
     },
     {
       name: 'treasury-mobile',
@@ -912,21 +916,22 @@ const financialPages = {
         'Mobile treasury dashboard',
         'Real-time alerts and notifications',
         'Mobile approval workflows',
-        'Secure mobile access'
-      ]
-    }
+        'Secure mobile access',
+      ],
+    },
   ],
   'reporting-compliance': [
     {
       name: 'financial-statements',
       title: 'Financial Statements',
-      description: 'Automated financial statement generation and formatting with regulatory compliance',
+      description:
+        'Automated financial statement generation and formatting with regulatory compliance',
       features: [
         'Automated financial statement generation',
         'Multi-format reporting capabilities',
         'Regulatory compliance templates',
-        'Comparative period analysis'
-      ]
+        'Comparative period analysis',
+      ],
     },
     {
       name: 'regulatory-reporting',
@@ -936,8 +941,8 @@ const financialPages = {
         'Automated regulatory report generation',
         'Compliance validation and checking',
         'Electronic filing and submission',
-        'Regulatory change management'
-      ]
+        'Regulatory change management',
+      ],
     },
     {
       name: 'tax-management',
@@ -947,8 +952,8 @@ const financialPages = {
         'Automated tax calculation engines',
         'Multi-jurisdiction tax compliance',
         'Tax provision and planning',
-        'Transfer pricing documentation'
-      ]
+        'Transfer pricing documentation',
+      ],
     },
     {
       name: 'audit-management',
@@ -958,8 +963,8 @@ const financialPages = {
         'Comprehensive audit trail management',
         'Audit workflow automation',
         'Documentation management system',
-        'Audit findings tracking'
-      ]
+        'Audit findings tracking',
+      ],
     },
     {
       name: 'internal-controls',
@@ -969,8 +974,8 @@ const financialPages = {
         'SOX compliance framework',
         'Automated control testing',
         'Risk and control matrices',
-        'Deficiency tracking and remediation'
-      ]
+        'Deficiency tracking and remediation',
+      ],
     },
     {
       name: 'management-reporting',
@@ -980,8 +985,8 @@ const financialPages = {
         'Executive dashboard development',
         'Management reporting automation',
         'Real-time analytics and insights',
-        'Custom report builder'
-      ]
+        'Custom report builder',
+      ],
     },
     {
       name: 'data-governance',
@@ -991,8 +996,8 @@ const financialPages = {
         'Data quality monitoring and validation',
         'Data governance framework',
         'Master data management',
-        'Data lineage and audit trails'
-      ]
+        'Data lineage and audit trails',
+      ],
     },
     {
       name: 'report-builder',
@@ -1002,21 +1007,22 @@ const financialPages = {
         'Drag-and-drop report designer',
         'Custom report templates',
         'Automated report scheduling',
-        'Interactive report visualization'
-      ]
-    }
+        'Interactive report visualization',
+      ],
+    },
   ],
   'capital-asset': [
     {
       name: 'asset-valuation',
       title: 'Asset Valuation & Appraisal',
-      description: 'Comprehensive asset valuation with multiple methodologies and fair value assessment',
+      description:
+        'Comprehensive asset valuation with multiple methodologies and fair value assessment',
       features: [
         'Multi-methodology asset valuation models',
         'Fair value measurement and assessment',
         'Automated revaluation and impairment testing',
-        'Market-based and income-based valuations'
-      ]
+        'Market-based and income-based valuations',
+      ],
     },
     {
       name: 'capital-budgeting',
@@ -1026,19 +1032,20 @@ const financialPages = {
         'Net Present Value (NPV) analysis',
         'Capital allocation optimization',
         'Investment project ranking and selection',
-        'Risk-adjusted return calculations'
-      ]
+        'Risk-adjusted return calculations',
+      ],
     },
     {
       name: 'depreciation-mgmt',
       title: 'Depreciation Management',
-      description: 'Automated depreciation calculations with multiple methods and regulatory compliance',
+      description:
+        'Automated depreciation calculations with multiple methods and regulatory compliance',
       features: [
         'Multiple depreciation method support',
         'Automated depreciation calculations',
         'Tax vs book depreciation reconciliation',
-        'Asset lifecycle management'
-      ]
+        'Asset lifecycle management',
+      ],
     },
     {
       name: 'lease-accounting',
@@ -1048,8 +1055,8 @@ const financialPages = {
         'ASC 842 lease accounting automation',
         'Right-of-use asset calculations',
         'Lease payment scheduling and tracking',
-        'Transition and ongoing compliance'
-      ]
+        'Transition and ongoing compliance',
+      ],
     },
     {
       name: 'fixed-assets',
@@ -1059,8 +1066,8 @@ const financialPages = {
         'Asset registration and tracking',
         'Maintenance scheduling and history',
         'Asset transfer and disposal management',
-        'Comprehensive asset reporting'
-      ]
+        'Comprehensive asset reporting',
+      ],
     },
     {
       name: 'intangible-assets',
@@ -1070,8 +1077,8 @@ const financialPages = {
         'IP and intangible asset valuation',
         'Amortization and impairment testing',
         'Patent and trademark management',
-        'Goodwill allocation and testing'
-      ]
+        'Goodwill allocation and testing',
+      ],
     },
     {
       name: 'capital-structure',
@@ -1081,8 +1088,8 @@ const financialPages = {
         'Debt-to-equity ratio optimization',
         'Cost of capital calculations',
         'Capital structure stress testing',
-        'Leverage analysis and planning'
-      ]
+        'Leverage analysis and planning',
+      ],
     },
     {
       name: 'asset-disposal',
@@ -1092,9 +1099,9 @@ const financialPages = {
         'Asset retirement obligation (ARO) management',
         'Disposal gain/loss calculations',
         'Environmental liability tracking',
-        'Retirement planning and scheduling'
-      ]
-    }
+        'Retirement planning and scheduling',
+      ],
+    },
   ],
   'credit-risk': [
     {
@@ -1105,8 +1112,8 @@ const financialPages = {
         'AI-powered credit scoring models',
         'Customer credit rating systems',
         'Risk-based pricing algorithms',
-        'Portfolio credit risk analysis'
-      ]
+        'Portfolio credit risk analysis',
+      ],
     },
     {
       name: 'credit-monitoring',
@@ -1116,8 +1123,8 @@ const financialPages = {
         'Real-time credit monitoring systems',
         'Early warning indicators and alerts',
         'Credit limit management and controls',
-        'Automated risk escalation workflows'
-      ]
+        'Automated risk escalation workflows',
+      ],
     },
     {
       name: 'collections-mgmt',
@@ -1127,8 +1134,8 @@ const financialPages = {
         'Automated collections workflows',
         'Predictive collections analytics',
         'Payment plan management',
-        'Recovery optimization strategies'
-      ]
+        'Recovery optimization strategies',
+      ],
     },
     {
       name: 'bad-debt-provision',
@@ -1138,8 +1145,8 @@ const financialPages = {
         'CECL expected credit loss modeling',
         'Automated provision calculations',
         'Historical loss rate analysis',
-        'Forward-looking economic indicators'
-      ]
+        'Forward-looking economic indicators',
+      ],
     },
     {
       name: 'portfolio-analysis',
@@ -1149,8 +1156,8 @@ const financialPages = {
         'Portfolio concentration analysis',
         'Credit risk diversification metrics',
         'Sector and geographic risk analysis',
-        'Portfolio stress testing'
-      ]
+        'Portfolio stress testing',
+      ],
     },
     {
       name: 'counterparty-risk',
@@ -1160,8 +1167,8 @@ const financialPages = {
         'Counterparty exposure calculations',
         'Credit valuation adjustments (CVA)',
         'Collateral management optimization',
-        'Netting agreement analysis'
-      ]
+        'Netting agreement analysis',
+      ],
     },
     {
       name: 'credit-derivatives',
@@ -1171,8 +1178,8 @@ const financialPages = {
         'Credit default swap valuation',
         'Credit hedging strategy optimization',
         'Credit derivative portfolio management',
-        'Basis risk monitoring and control'
-      ]
+        'Basis risk monitoring and control',
+      ],
     },
     {
       name: 'regulatory-capital',
@@ -1182,9 +1189,9 @@ const financialPages = {
         'Basel III capital requirement calculations',
         'Risk-weighted asset optimization',
         'Capital adequacy ratio monitoring',
-        'Stress testing and scenario analysis'
-      ]
-    }
+        'Stress testing and scenario analysis',
+      ],
+    },
   ],
   'operations-control': [
     {
@@ -1195,8 +1202,8 @@ const financialPages = {
         'Automated close task orchestration',
         'Real-time close status monitoring',
         'Exception management and resolution',
-        'Close timeline optimization'
-      ]
+        'Close timeline optimization',
+      ],
     },
     {
       name: 'reconciliation-engine',
@@ -1206,8 +1213,8 @@ const financialPages = {
         'Cross-system reconciliation automation',
         'Exception identification and routing',
         'Reconciliation workflow management',
-        'Variance analysis and reporting'
-      ]
+        'Variance analysis and reporting',
+      ],
     },
     {
       name: 'intercompany-accounting',
@@ -1217,8 +1224,8 @@ const financialPages = {
         'Automated intercompany matching',
         'Elimination entry generation',
         'Transfer pricing compliance',
-        'Intercompany reporting and analytics'
-      ]
+        'Intercompany reporting and analytics',
+      ],
     },
     {
       name: 'journal-automation',
@@ -1228,8 +1235,8 @@ const financialPages = {
         'AI-powered journal entry creation',
         'Template-based recurring entries',
         'Approval workflow automation',
-        'Real-time posting and validation'
-      ]
+        'Real-time posting and validation',
+      ],
     },
     {
       name: 'expense-management',
@@ -1239,8 +1246,8 @@ const financialPages = {
         'Automated expense policy enforcement',
         'Receipt capture and processing',
         'Expense approval workflows',
-        'Spend analytics and reporting'
-      ]
+        'Spend analytics and reporting',
+      ],
     },
     {
       name: 'procurement-finance',
@@ -1250,8 +1257,8 @@ const financialPages = {
         'Purchase order automation',
         '3-way matching and validation',
         'Supplier financing optimization',
-        'Procurement spend analytics'
-      ]
+        'Procurement spend analytics',
+      ],
     },
     {
       name: 'revenue-recognition',
@@ -1261,8 +1268,8 @@ const financialPages = {
         'ASC 606 revenue recognition automation',
         'Contract modification management',
         'Performance obligation tracking',
-        'Revenue allocation and timing'
-      ]
+        'Revenue allocation and timing',
+      ],
     },
     {
       name: 'financial-controls',
@@ -1272,9 +1279,9 @@ const financialPages = {
         'Automated control testing',
         'Control deficiency tracking',
         'Remediation workflow management',
-        'Control effectiveness reporting'
-      ]
-    }
+        'Control effectiveness reporting',
+      ],
+    },
   ],
   'strategic-planning': [
     {
@@ -1285,8 +1292,8 @@ const financialPages = {
         'Long-term strategic plan modeling',
         'Scenario and sensitivity analysis',
         'Strategic initiative prioritization',
-        'Resource allocation optimization'
-      ]
+        'Resource allocation optimization',
+      ],
     },
     {
       name: 'business-modeling',
@@ -1296,19 +1303,20 @@ const financialPages = {
         'Business model performance metrics',
         'Value driver identification and analysis',
         'Business model optimization',
-        'Competitive benchmarking'
-      ]
+        'Competitive benchmarking',
+      ],
     },
     {
       name: 'merger-acquisition',
       title: 'M&A Financial Analysis',
-      description: 'Merger and acquisition financial modeling with valuation and integration planning',
+      description:
+        'Merger and acquisition financial modeling with valuation and integration planning',
       features: [
         'M&A valuation modeling',
         'Synergy identification and quantification',
         'Integration planning and tracking',
-        'Post-merger performance analysis'
-      ]
+        'Post-merger performance analysis',
+      ],
     },
     {
       name: 'investment-analysis',
@@ -1318,8 +1326,8 @@ const financialPages = {
         'Investment ROI calculations',
         'Portfolio optimization algorithms',
         'Risk-return analysis',
-        'Investment performance tracking'
-      ]
+        'Investment performance tracking',
+      ],
     },
     {
       name: 'financial-modeling',
@@ -1329,8 +1337,8 @@ const financialPages = {
         'Advanced financial model building',
         'Monte Carlo simulation capabilities',
         'Model validation and testing',
-        'Sensitivity and scenario analysis'
-      ]
+        'Sensitivity and scenario analysis',
+      ],
     },
     {
       name: 'capital-allocation',
@@ -1340,8 +1348,8 @@ const financialPages = {
         'Capital allocation optimization',
         'Portfolio theory implementation',
         'Resource constraint modeling',
-        'Strategic goal alignment'
-      ]
+        'Strategic goal alignment',
+      ],
     },
     {
       name: 'value-creation',
@@ -1351,8 +1359,8 @@ const financialPages = {
         'Economic Value Added (EVA) calculations',
         'Value-based performance metrics',
         'Shareholder value optimization',
-        'Value creation driver analysis'
-      ]
+        'Value creation driver analysis',
+      ],
     },
     {
       name: 'growth-strategy',
@@ -1362,9 +1370,9 @@ const financialPages = {
         'Growth opportunity financial modeling',
         'Market size and penetration analysis',
         'Growth investment prioritization',
-        'Scale economics optimization'
-      ]
-    }
+        'Scale economics optimization',
+      ],
+    },
   ],
   'compliance-governance': [
     {
@@ -1375,19 +1383,20 @@ const financialPages = {
         'SOX compliance automation',
         'Control testing and documentation',
         'Deficiency tracking and remediation',
-        'Management certification support'
-      ]
+        'Management certification support',
+      ],
     },
     {
       name: 'regulatory-compliance',
       title: 'Regulatory Compliance Hub',
-      description: 'Multi-jurisdiction regulatory compliance with automated monitoring and reporting',
+      description:
+        'Multi-jurisdiction regulatory compliance with automated monitoring and reporting',
       features: [
         'Multi-jurisdiction compliance tracking',
         'Regulatory change monitoring',
         'Automated compliance reporting',
-        'Violation detection and escalation'
-      ]
+        'Violation detection and escalation',
+      ],
     },
     {
       name: 'esg-reporting',
@@ -1397,8 +1406,8 @@ const financialPages = {
         'ESG metrics collection and reporting',
         'Sustainability performance tracking',
         'Climate risk assessment',
-        'Stakeholder reporting automation'
-      ]
+        'Stakeholder reporting automation',
+      ],
     },
     {
       name: 'policy-management',
@@ -1408,8 +1417,8 @@ const financialPages = {
         'Policy lifecycle management',
         'Compliance monitoring and tracking',
         'Policy version control',
-        'Training and acknowledgment tracking'
-      ]
+        'Training and acknowledgment tracking',
+      ],
     },
     {
       name: 'ethics-compliance',
@@ -1419,8 +1428,8 @@ const financialPages = {
         'Ethics violation tracking',
         'Whistleblower management system',
         'Investigation workflow automation',
-        'Ethics training and certification'
-      ]
+        'Ethics training and certification',
+      ],
     },
     {
       name: 'data-privacy',
@@ -1430,8 +1439,8 @@ const financialPages = {
         'Data privacy compliance automation',
         'Personal data inventory and mapping',
         'Consent management systems',
-        'Data breach detection and response'
-      ]
+        'Data breach detection and response',
+      ],
     },
     {
       name: 'vendor-compliance',
@@ -1441,8 +1450,8 @@ const financialPages = {
         'Vendor compliance monitoring',
         'Supplier risk assessment',
         'Due diligence automation',
-        'Contract compliance tracking'
-      ]
+        'Contract compliance tracking',
+      ],
     },
     {
       name: 'governance-reporting',
@@ -1452,9 +1461,9 @@ const financialPages = {
         'Board and committee reporting',
         'Governance metrics tracking',
         'Shareholder communication management',
-        'Governance framework optimization'
-      ]
-    }
+        'Governance framework optimization',
+      ],
+    },
   ],
   'analytics-ai': [
     {
@@ -1465,8 +1474,8 @@ const financialPages = {
         'Machine learning financial models',
         'Predictive cash flow analytics',
         'AI-powered trend analysis',
-        'Automated anomaly detection'
-      ]
+        'Automated anomaly detection',
+      ],
     },
     {
       name: 'financial-ai',
@@ -1476,19 +1485,20 @@ const financialPages = {
         'AI-powered process automation',
         'Intelligent decision support systems',
         'Natural language financial queries',
-        'Automated insight generation'
-      ]
+        'Automated insight generation',
+      ],
     },
     {
       name: 'advanced-reporting',
       title: 'Advanced Reporting & BI',
-      description: 'Advanced business intelligence with interactive dashboards and self-service analytics',
+      description:
+        'Advanced business intelligence with interactive dashboards and self-service analytics',
       features: [
         'Interactive dashboard creation',
         'Self-service analytics platform',
         'Advanced data visualization',
-        'Real-time reporting capabilities'
-      ]
+        'Real-time reporting capabilities',
+      ],
     },
     {
       name: 'data-mining',
@@ -1498,8 +1508,8 @@ const financialPages = {
         'Pattern recognition algorithms',
         'Financial data mining tools',
         'Correlation and causation analysis',
-        'Hidden insight discovery'
-      ]
+        'Hidden insight discovery',
+      ],
     },
     {
       name: 'optimization-engine',
@@ -1509,8 +1519,8 @@ const financialPages = {
         'Linear and nonlinear optimization',
         'Constraint-based optimization',
         'Multi-objective optimization',
-        'Real-time optimization algorithms'
-      ]
+        'Real-time optimization algorithms',
+      ],
     },
     {
       name: 'simulation-modeling',
@@ -1520,8 +1530,8 @@ const financialPages = {
         'Monte Carlo simulation engines',
         'Discrete event simulation',
         'Stochastic modeling capabilities',
-        'Risk simulation and analysis'
-      ]
+        'Risk simulation and analysis',
+      ],
     },
     {
       name: 'cognitive-finance',
@@ -1531,8 +1541,8 @@ const financialPages = {
         'Natural language processing (NLP)',
         'Cognitive document analysis',
         'Intelligent financial assistants',
-        'Automated report generation'
-      ]
+        'Automated report generation',
+      ],
     },
     {
       name: 'real-time-analytics',
@@ -1542,15 +1552,15 @@ const financialPages = {
         'Streaming financial data analytics',
         'Real-time dashboard updates',
         'Instant alert and notification systems',
-        'High-frequency trading analytics'
-      ]
-    }
-  ]
+        'High-frequency trading analytics',
+      ],
+    },
+  ],
 };
 
 function createFinancialPage(category, pageData) {
   const template = fs.readFileSync(path.join(__dirname, 'page-template.html'), 'utf8');
-  
+
   let pageContent = template
     .replace(/\{\{PAGE_TITLE\}\}/g, pageData.title)
     .replace(/\{\{PAGE_DESCRIPTION\}\}/g, pageData.description)
@@ -1562,7 +1572,7 @@ function createFinancialPage(category, pageData) {
 
   const filePath = path.join(__dirname, category, `${pageData.name}.html`);
   fs.writeFileSync(filePath, pageContent);
-  
+
   console.log(`Created: ${filePath}`);
 }
 
@@ -1687,10 +1697,10 @@ function setupPageActions() {
   if (!fs.existsSync(scriptsDir)) {
     fs.mkdirSync(scriptsDir, { recursive: true });
   }
-  
+
   const scriptPath = path.join(scriptsDir, `${pageData.name}.js`);
   fs.writeFileSync(scriptPath, scriptContent);
-  
+
   console.log(`Created script: ${scriptPath}`);
 }
 
@@ -1701,8 +1711,8 @@ Object.entries(financialPages).forEach(([category, pages]) => {
   if (!fs.existsSync(categoryDir)) {
     fs.mkdirSync(categoryDir, { recursive: true });
   }
-  
-  pages.forEach(pageData => {
+
+  pages.forEach((pageData) => {
     createFinancialPage(category, pageData);
     createPageScript(category, pageData);
   });

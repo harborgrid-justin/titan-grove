@@ -1,142 +1,146 @@
 // Asset Lifecycle Tracking - Database Management System
 // This file provides business-ready functionality for Asset Lifecycle Tracking
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Asset Lifecycle Tracking page loaded');
-    
-    // Initialize page functionality
-    initAssetLifecycleTracking();
-    
-    // Configure page-specific buttons
-    setupPageActions();
-    
-    // Load initial data
-    loadAssetLifecycleTrackingData();
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Asset Lifecycle Tracking page loaded');
+
+  // Initialize page functionality
+  initAssetLifecycleTracking();
+
+  // Configure page-specific buttons
+  setupPageActions();
+
+  // Load initial data
+  loadAssetLifecycleTrackingData();
 });
 
 async function loadAssetLifecycleTrackingData() {
-    try {
-        const response = await fetch('/api/database/data-integration-etl/asset-lifecycle-tracking');
-        if (response.ok) {
-            const data = await response.json();
-            updateAssetLifecycleTrackingDisplay(data);
-        }
-    } catch (error) {
-        console.error('Failed to load Asset Lifecycle Tracking data:', error);
-        showNotification('Failed to load data', 'error');
+  try {
+    const response = await fetch('/api/database/data-integration-etl/asset-lifecycle-tracking');
+    if (response.ok) {
+      const data = await response.json();
+      updateAssetLifecycleTrackingDisplay(data);
     }
+  } catch (error) {
+    console.error('Failed to load Asset Lifecycle Tracking data:', error);
+    showNotification('Failed to load data', 'error');
+  }
 }
 
 function initAssetLifecycleTracking() {
-    console.log('Initializing Asset Lifecycle Tracking');
-    
-    // Initialize dashboard components
-    initializeDashboard();
-    
-    // Set up real-time updates
-    setupRealTimeUpdates();
-    
-    // Configure business logic
-    setupBusinessLogic();
+  console.log('Initializing Asset Lifecycle Tracking');
+
+  // Initialize dashboard components
+  initializeDashboard();
+
+  // Set up real-time updates
+  setupRealTimeUpdates();
+
+  // Configure business logic
+  setupBusinessLogic();
 }
 
 function initializeDashboard() {
-    // Dashboard initialization logic
-    console.log('Dashboard initialized for Asset Lifecycle Tracking');
+  // Dashboard initialization logic
+  console.log('Dashboard initialized for Asset Lifecycle Tracking');
 }
 
 function setupRealTimeUpdates() {
-    // WebSocket or Server-Sent Events setup
-    console.log('Real-time updates configured for Asset Lifecycle Tracking');
+  // WebSocket or Server-Sent Events setup
+  console.log('Real-time updates configured for Asset Lifecycle Tracking');
 }
 
 function setupBusinessLogic() {
-    // Business-specific logic implementation
-    console.log('Business logic configured for Asset Lifecycle Tracking');
+  // Business-specific logic implementation
+  console.log('Business logic configured for Asset Lifecycle Tracking');
 }
 
 function handleAssetLifecycleTrackingAction() {
-    console.log('Asset Lifecycle Tracking action triggered');
-    showNotification('Asset Lifecycle Tracking configured successfully', 'success');
+  console.log('Asset Lifecycle Tracking action triggered');
+  showNotification('Asset Lifecycle Tracking configured successfully', 'success');
 }
 
 function executeAssetLifecycleTracking() {
-    console.log('Asset Lifecycle Tracking execution started');
-    showNotification('Asset Lifecycle Tracking executed successfully', 'success');
+  console.log('Asset Lifecycle Tracking execution started');
+  showNotification('Asset Lifecycle Tracking executed successfully', 'success');
 }
 
 function updateAssetLifecycleTrackingDisplay(data) {
-    console.log('Updating Asset Lifecycle Tracking display:', data);
-    // Update UI with loaded data
+  console.log('Updating Asset Lifecycle Tracking display:', data);
+  // Update UI with loaded data
 }
 
 function setupPageActions() {
-    // Test integration button
-    const testBtn = document.getElementById('testIntegrationBtn');
-    if (testBtn) {
-        testBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/asset-lifecycle-tracking/test');
-                const result = await response.json();
-                showNotification('Integration test successful', 'success');
-            } catch (error) {
-                showNotification('Integration test failed', 'error');
-            }
-        });
-    }
-    
-    // View data button
-    const viewDataBtn = document.getElementById('viewDataBtn');
-    if (viewDataBtn) {
-        viewDataBtn.addEventListener('click', function() {
-            loadAssetLifecycleTrackingData();
-        });
-    }
-    
-    // Configure button
-    const configureBtn = document.getElementById('configureBtn');
-    if (configureBtn) {
-        configureBtn.addEventListener('click', function() {
-            handleAssetLifecycleTrackingAction();
-        });
-    }
-    
-    // Export button
-    const exportBtn = document.getElementById('exportBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', async function() {
-            try {
-                const response = await fetch('/api/database/data-integration-etl/asset-lifecycle-tracking/export');
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'asset-lifecycle-tracking-export.xlsx';
-                a.click();
-                showNotification('Data exported successfully', 'success');
-            } catch (error) {
-                showNotification('Export failed', 'error');
-            }
-        });
-    }
+  // Test integration button
+  const testBtn = document.getElementById('testIntegrationBtn');
+  if (testBtn) {
+    testBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/asset-lifecycle-tracking/test'
+        );
+        const result = await response.json();
+        showNotification('Integration test successful', 'success');
+      } catch (error) {
+        showNotification('Integration test failed', 'error');
+      }
+    });
+  }
+
+  // View data button
+  const viewDataBtn = document.getElementById('viewDataBtn');
+  if (viewDataBtn) {
+    viewDataBtn.addEventListener('click', function () {
+      loadAssetLifecycleTrackingData();
+    });
+  }
+
+  // Configure button
+  const configureBtn = document.getElementById('configureBtn');
+  if (configureBtn) {
+    configureBtn.addEventListener('click', function () {
+      handleAssetLifecycleTrackingAction();
+    });
+  }
+
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function () {
+      try {
+        const response = await fetch(
+          '/api/database/data-integration-etl/asset-lifecycle-tracking/export'
+        );
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'asset-lifecycle-tracking-export.xlsx';
+        a.click();
+        showNotification('Data exported successfully', 'success');
+      } catch (error) {
+        showNotification('Export failed', 'error');
+      }
+    });
+  }
 }
 
 // Utility function for notifications
 function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 3000);
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // Add to page
+  document.body.appendChild(notification);
+
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 3000);
 }
 
 // Add notification styles

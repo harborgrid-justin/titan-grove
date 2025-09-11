@@ -42,7 +42,7 @@ export class ValidationService {
       if (rules.body && req.body) {
         const { error } = rules.body.validate(req.body);
         if (error) {
-          errors.body = error.details.map(detail => detail.message);
+          errors.body = error.details.map((detail) => detail.message);
         }
       }
 
@@ -50,7 +50,7 @@ export class ValidationService {
       if (rules.query && req.query) {
         const { error } = rules.query.validate(req.query);
         if (error) {
-          errors.query = error.details.map(detail => detail.message);
+          errors.query = error.details.map((detail) => detail.message);
         }
       }
 
@@ -58,7 +58,7 @@ export class ValidationService {
       if (rules.params && req.params) {
         const { error } = rules.params.validate(req.params);
         if (error) {
-          errors.params = error.details.map(detail => detail.message);
+          errors.params = error.details.map((detail) => detail.message);
         }
       }
 
@@ -66,7 +66,7 @@ export class ValidationService {
       if (rules.headers && req.headers) {
         const { error } = rules.headers.validate(req.headers);
         if (error) {
-          errors.headers = error.details.map(detail => detail.message);
+          errors.headers = error.details.map((detail) => detail.message);
         }
       }
 
@@ -75,7 +75,7 @@ export class ValidationService {
         this.logger.warn('Request validation failed', {
           path: req.path,
           method: req.method,
-          errors: this.config.enableDetailedErrors ? errors : 'Validation failed'
+          errors: this.config.enableDetailedErrors ? errors : 'Validation failed',
         });
 
         return res.status(400).json({
@@ -83,8 +83,8 @@ export class ValidationService {
           error: {
             code: 'VALIDATION_ERROR',
             message: 'Request validation failed',
-            details: this.config.enableDetailedErrors ? errors : undefined
-          }
+            details: this.config.enableDetailedErrors ? errors : undefined,
+          },
         });
       }
 
@@ -101,11 +101,11 @@ export class ValidationService {
       if (req.body) {
         req.body = this.sanitizeObject(req.body);
       }
-      
+
       if (req.query) {
         req.query = this.sanitizeObject(req.query);
       }
-      
+
       if (req.params) {
         req.params = this.sanitizeObject(req.params);
       }
@@ -124,7 +124,7 @@ export class ValidationService {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         const value = obj[key];
-        
+
         if (typeof value === 'string') {
           // Remove potential SQL injection patterns
           sanitized[key] = value
@@ -149,14 +149,11 @@ const defaultValidationConfig: ValidationConfig = {
   enableBusinessValidation: true,
   enableCustomerValidation: true,
   enableDetailedErrors: process.env.NODE_ENV !== 'production',
-  maxRequestSize: '10mb'
+  maxRequestSize: '10mb',
 };
 
 // Create validation service instance
-const validationService = new ValidationService(
-  defaultValidationConfig,
-  validationLogger
-);
+const validationService = new ValidationService(defaultValidationConfig, validationLogger);
 
 /**
  * Common validation schemas
@@ -165,60 +162,62 @@ export const commonSchemas = {
   // ID validation
   id: Joi.string().uuid().required(),
   optionalId: Joi.string().uuid().optional(),
-  
+
   // String validations
   email: Joi.string().email().required(),
   optionalEmail: Joi.string().email().optional(),
-  
+
   // Number validations
   positiveNumber: Joi.number().positive().required(),
   optionalPositiveNumber: Joi.number().positive().optional(),
-  
+
   // Date validations
   date: Joi.date().required(),
   optionalDate: Joi.date().optional(),
-  
+
   // Business-specific validations
   businessEntity: Joi.object({
     id: Joi.string().uuid().optional(),
     name: Joi.string().min(1).max(255).required(),
     description: Joi.string().max(1000).optional(),
     createdAt: Joi.date().optional(),
-    updatedAt: Joi.date().optional()
+    updatedAt: Joi.date().optional(),
   }),
-  
+
   // Customer-specific validations
   customerData: Joi.object({
     id: Joi.string().uuid().optional(),
     email: Joi.string().email().required(),
     firstName: Joi.string().min(1).max(100).required(),
     lastName: Joi.string().min(1).max(100).required(),
-    phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).optional()
+    phone: Joi.string()
+      .pattern(/^\+?[\d\s-()]+$/)
+      .optional(),
   }),
-  
+
   // Financial validations
   financialTransaction: Joi.object({
     amount: Joi.number().positive().precision(2).required(),
     currency: Joi.string().length(3).uppercase().required(),
     description: Joi.string().max(500).optional(),
-    category: Joi.string().valid('income', 'expense', 'transfer').required()
+    category: Joi.string().valid('income', 'expense', 'transfer').required(),
   }),
-  
+
   // Manufacturing validations
   manufacturingOrder: Joi.object({
     productId: Joi.string().uuid().required(),
     quantity: Joi.number().integer().positive().required(),
     dueDate: Joi.date().min('now').required(),
-    priority: Joi.string().valid('low', 'medium', 'high', 'urgent').default('medium')
+    priority: Joi.string().valid('low', 'medium', 'high', 'urgent').default('medium'),
   }),
-  
+
   // Pagination
   pagination: Joi.object({
     page: Joi.number().integer().min(1).default(1),
     limit: Joi.number().integer().min(1).max(100).default(20),
     sortBy: Joi.string().optional(),
-    sortOrder: Joi.string().valid('asc', 'desc').default('asc')
-  })
+    sortOrder: Joi.string().valid('asc', 'desc').default('asc'),
+  }),
 };
 
 /**
@@ -230,17 +229,20 @@ export const businessValidation = {
     body: Joi.object({
       description: Joi.string().max(500).required(),
       reference: Joi.string().max(100).optional(),
-      entries: Joi.array().items(
-        Joi.object({
-          accountId: Joi.string().uuid().required(),
-          debit: Joi.number().precision(2).min(0).optional(),
-          credit: Joi.number().precision(2).min(0).optional(),
-          description: Joi.string().max(255).optional()
-        })
-      ).min(2).required()
-    })
+      entries: Joi.array()
+        .items(
+          Joi.object({
+            accountId: Joi.string().uuid().required(),
+            debit: Joi.number().precision(2).min(0).optional(),
+            credit: Joi.number().precision(2).min(0).optional(),
+            description: Joi.string().max(255).optional(),
+          })
+        )
+        .min(2)
+        .required(),
+    }),
   },
-  
+
   // Financial - Invoice Management
   createInvoice: {
     body: Joi.object({
@@ -251,59 +253,69 @@ export const businessValidation = {
       dueDate: Joi.date().min('now').required(),
       description: Joi.string().max(500).optional(),
       taxAmount: Joi.number().precision(2).min(0).optional(),
-      lineItems: Joi.array().items(
-        Joi.object({
-          description: Joi.string().max(255).required(),
-          quantity: Joi.number().positive().required(),
-          unitPrice: Joi.number().positive().precision(2).required(),
-          total: Joi.number().positive().precision(2).required()
-        })
-      ).min(1).required()
-    })
+      lineItems: Joi.array()
+        .items(
+          Joi.object({
+            description: Joi.string().max(255).required(),
+            quantity: Joi.number().positive().required(),
+            unitPrice: Joi.number().positive().precision(2).required(),
+            total: Joi.number().positive().precision(2).required(),
+          })
+        )
+        .min(1)
+        .required(),
+    }),
   },
-  
+
   // Financial - Payment Management
   recordPayment: {
     body: Joi.object({
       invoiceId: Joi.string().uuid().required(),
       amount: Joi.number().positive().precision(2).required(),
       currency: Joi.string().length(3).uppercase().default('USD'),
-      paymentMethod: Joi.string().valid('cash', 'check', 'wire_transfer', 'credit_card', 'bank_transfer').required(),
+      paymentMethod: Joi.string()
+        .valid('cash', 'check', 'wire_transfer', 'credit_card', 'bank_transfer')
+        .required(),
       paymentDate: Joi.date().default(() => new Date()),
       reference: Joi.string().max(100).optional(),
-      notes: Joi.string().max(500).optional()
-    })
+      notes: Joi.string().max(500).optional(),
+    }),
   },
-  
+
   // Financial - Report Generation
   generateReport: {
     body: Joi.object({
-      reportType: Joi.string().valid('income_statement', 'balance_sheet', 'cash_flow', 'trial_balance', 'accounts_aging').required(),
+      reportType: Joi.string()
+        .valid('income_statement', 'balance_sheet', 'cash_flow', 'trial_balance', 'accounts_aging')
+        .required(),
       startDate: Joi.date().required(),
       endDate: Joi.date().min(Joi.ref('startDate')).required(),
       format: Joi.string().valid('pdf', 'excel', 'csv').default('pdf'),
       includeDrafts: Joi.boolean().default(false),
-      departmentFilter: Joi.array().items(Joi.string().uuid()).optional()
-    })
+      departmentFilter: Joi.array().items(Joi.string().uuid()).optional(),
+    }),
   },
-  
+
   // Financial - Budget Management
   updateBudget: {
     body: Joi.object({
       departmentId: Joi.string().uuid().required(),
       fiscalYear: Joi.number().integer().min(2020).max(2030).required(),
-      budgetItems: Joi.array().items(
-        Joi.object({
-          accountId: Joi.string().uuid().required(),
-          plannedAmount: Joi.number().precision(2).required(),
-          description: Joi.string().max(255).optional()
-        })
-      ).min(1).required(),
+      budgetItems: Joi.array()
+        .items(
+          Joi.object({
+            accountId: Joi.string().uuid().required(),
+            plannedAmount: Joi.number().precision(2).required(),
+            description: Joi.string().max(255).optional(),
+          })
+        )
+        .min(1)
+        .required(),
       approvedBy: Joi.string().uuid().required(),
-      notes: Joi.string().max(1000).optional()
-    })
+      notes: Joi.string().max(1000).optional(),
+    }),
   },
-  
+
   // HR management
   createEmployee: {
     body: Joi.object({
@@ -314,45 +326,47 @@ export const businessValidation = {
       department: Joi.string().max(100).required(),
       position: Joi.string().max(100).required(),
       salary: Joi.number().positive().optional(),
-      startDate: Joi.date().required()
-    })
+      startDate: Joi.date().required(),
+    }),
   },
-  
+
   // Manufacturing
   createWorkOrder: {
-    body: commonSchemas.manufacturingOrder
+    body: commonSchemas.manufacturingOrder,
   },
-  
+
   // Common business operations
   updateStatus: {
     body: Joi.object({
       status: Joi.string().required(),
       reason: Joi.string().max(500).optional(),
-      updatedBy: Joi.string().uuid().required()
+      updatedBy: Joi.string().uuid().required(),
     }),
     params: Joi.object({
-      id: commonSchemas.id
-    })
+      id: commonSchemas.id,
+    }),
   },
-  
+
   // CRM - Customer Management
   createCustomer: {
     body: Joi.object({
       name: Joi.string().max(255).required(),
       email: Joi.string().email().required(),
-      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).optional(),
+      phone: Joi.string()
+        .pattern(/^\+?[\d\s-()]+$/)
+        .optional(),
       address: Joi.object({
         street: Joi.string().max(255).required(),
         city: Joi.string().max(100).required(),
         state: Joi.string().max(100).required(),
         zipCode: Joi.string().max(20).required(),
-        country: Joi.string().max(100).required()
+        country: Joi.string().max(100).required(),
       }).optional(),
       industry: Joi.string().max(100).optional(),
-      companySize: Joi.string().valid('small', 'medium', 'large', 'enterprise').optional()
-    })
+      companySize: Joi.string().valid('small', 'medium', 'large', 'enterprise').optional(),
+    }),
   },
-  
+
   // CRM - Opportunity Management
   createOpportunity: {
     body: Joi.object({
@@ -361,13 +375,22 @@ export const businessValidation = {
       description: Joi.string().max(1000).optional(),
       value: Joi.number().positive().precision(2).required(),
       currency: Joi.string().length(3).uppercase().default('USD'),
-      stage: Joi.string().valid('prospecting', 'qualification', 'proposal', 'negotiation', 'closed_won', 'closed_lost').required(),
+      stage: Joi.string()
+        .valid(
+          'prospecting',
+          'qualification',
+          'proposal',
+          'negotiation',
+          'closed_won',
+          'closed_lost'
+        )
+        .required(),
       probability: Joi.number().min(0).max(100).required(),
       expectedCloseDate: Joi.date().min('now').required(),
-      assignedTo: Joi.string().uuid().required()
-    })
+      assignedTo: Joi.string().uuid().required(),
+    }),
   },
-  
+
   // CRM - Contact Management
   createContact: {
     body: Joi.object({
@@ -375,13 +398,15 @@ export const businessValidation = {
       firstName: Joi.string().max(100).required(),
       lastName: Joi.string().max(100).required(),
       email: Joi.string().email().required(),
-      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).optional(),
+      phone: Joi.string()
+        .pattern(/^\+?[\d\s-()]+$/)
+        .optional(),
       jobTitle: Joi.string().max(100).optional(),
       department: Joi.string().max(100).optional(),
-      isPrimary: Joi.boolean().default(false)
-    })
+      isPrimary: Joi.boolean().default(false),
+    }),
   },
-  
+
   // CRM - Lead Management
   convertLead: {
     body: Joi.object({
@@ -390,9 +415,9 @@ export const businessValidation = {
       createOpportunity: Joi.boolean().default(true),
       opportunityValue: Joi.number().positive().precision(2).optional(),
       assignedTo: Joi.string().uuid().required(),
-      notes: Joi.string().max(1000).optional()
-    })
-  }
+      notes: Joi.string().max(1000).optional(),
+    }),
+  },
 };
 
 /**
@@ -406,63 +431,72 @@ export const customerValidation = {
       password: Joi.string().min(8).required(),
       firstName: Joi.string().max(100).required(),
       lastName: Joi.string().max(100).required(),
-      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).optional(),
-      acceptTerms: Joi.boolean().valid(true).required()
-    })
+      phone: Joi.string()
+        .pattern(/^\+?[\d\s-()]+$/)
+        .optional(),
+      acceptTerms: Joi.boolean().valid(true).required(),
+    }),
   },
-  
+
   // Customer login
   login: {
     body: Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().required()
-    })
+      password: Joi.string().required(),
+    }),
   },
-  
+
   // Order creation
   createOrder: {
     body: Joi.object({
-      items: Joi.array().items(
-        Joi.object({
-          productId: Joi.string().uuid().required(),
-          quantity: Joi.number().integer().positive().required(),
-          price: Joi.number().positive().precision(2).required()
-        })
-      ).min(1).required(),
+      items: Joi.array()
+        .items(
+          Joi.object({
+            productId: Joi.string().uuid().required(),
+            quantity: Joi.number().integer().positive().required(),
+            price: Joi.number().positive().precision(2).required(),
+          })
+        )
+        .min(1)
+        .required(),
       shippingAddress: Joi.object({
         street: Joi.string().max(255).required(),
         city: Joi.string().max(100).required(),
         state: Joi.string().max(100).required(),
         zipCode: Joi.string().max(20).required(),
-        country: Joi.string().max(100).required()
+        country: Joi.string().max(100).required(),
       }).required(),
-      paymentMethod: Joi.string().valid('credit_card', 'debit_card', 'paypal', 'bank_transfer').required()
-    })
+      paymentMethod: Joi.string()
+        .valid('credit_card', 'debit_card', 'paypal', 'bank_transfer')
+        .required(),
+    }),
   },
-  
+
   // Support case
   createSupportCase: {
     body: Joi.object({
       subject: Joi.string().max(255).required(),
       description: Joi.string().max(2000).required(),
       category: Joi.string().valid('technical', 'billing', 'general', 'complaint').required(),
-      priority: Joi.string().valid('low', 'medium', 'high').default('medium')
-    })
+      priority: Joi.string().valid('low', 'medium', 'high').default('medium'),
+    }),
   },
-  
+
   // Profile update
   updateProfile: {
     body: Joi.object({
       firstName: Joi.string().max(100).optional(),
       lastName: Joi.string().max(100).optional(),
-      phone: Joi.string().pattern(/^\+?[\d\s-()]+$/).optional(),
+      phone: Joi.string()
+        .pattern(/^\+?[\d\s-()]+$/)
+        .optional(),
       preferences: Joi.object({
         newsletter: Joi.boolean().optional(),
         notifications: Joi.boolean().optional(),
-        language: Joi.string().max(10).optional()
-      }).optional()
-    })
-  }
+        language: Joi.string().max(10).optional(),
+      }).optional(),
+    }),
+  },
 };
 
 /**
@@ -495,7 +529,7 @@ export function validateCustomer(schemaName: keyof typeof customerValidation) {
  * Query parameter validation
  */
 export const validatePagination = validateRequest({
-  query: commonSchemas.pagination
+  query: commonSchemas.pagination,
 });
 
 /**
@@ -503,8 +537,8 @@ export const validatePagination = validateRequest({
  */
 export const validateIdParam = validateRequest({
   params: Joi.object({
-    id: commonSchemas.id
-  })
+    id: commonSchemas.id,
+  }),
 });
 
 export { ValidationService, validationService };

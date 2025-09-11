@@ -255,33 +255,33 @@ export interface UserPreferences {
   };
 }
 
-export type ComponentType = 
-  | 'chart' 
-  | 'table' 
-  | 'form' 
-  | 'list' 
-  | 'card' 
-  | 'metric' 
-  | 'gauge' 
-  | 'map' 
-  | 'calendar' 
-  | 'kanban' 
-  | 'timeline' 
-  | 'chat' 
-  | 'document' 
+export type ComponentType =
+  | 'chart'
+  | 'table'
+  | 'form'
+  | 'list'
+  | 'card'
+  | 'metric'
+  | 'gauge'
+  | 'map'
+  | 'calendar'
+  | 'kanban'
+  | 'timeline'
+  | 'chat'
+  | 'document'
   | 'media';
 
-export type ChartType = 
-  | 'line' 
-  | 'bar' 
-  | 'pie' 
-  | 'donut' 
-  | 'area' 
-  | 'scatter' 
-  | 'bubble' 
-  | 'heatmap' 
-  | 'treemap' 
-  | 'sankey' 
+export type ChartType =
+  | 'line'
+  | 'bar'
+  | 'pie'
+  | 'donut'
+  | 'area'
+  | 'scatter'
+  | 'bubble'
+  | 'heatmap'
+  | 'treemap'
+  | 'sankey'
   | 'funnel';
 
 export interface UIEvent {

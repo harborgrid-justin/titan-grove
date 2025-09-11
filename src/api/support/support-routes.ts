@@ -15,25 +15,59 @@ const router: RouterType = Router();
 router.use(authenticate);
 
 // Support Operations Routes
-router.get('/support-operations/support-desk-management', supportController.getSupportDeskManagement);
-router.post('/support-operations/support-desk-management', supportController.createSupportDeskRecord);
-router.put('/support-operations/support-desk-management/:id', validateIdParam, supportController.updateSupportDeskRecord);
-router.delete('/support-operations/support-desk-management/:id', supportController.deleteSupportDeskRecord);
+router.get(
+  '/support-operations/support-desk-management',
+  supportController.getSupportDeskManagement
+);
+router.post(
+  '/support-operations/support-desk-management',
+  supportController.createSupportDeskRecord
+);
+router.put(
+  '/support-operations/support-desk-management/:id',
+  validateIdParam,
+  supportController.updateSupportDeskRecord
+);
+router.delete(
+  '/support-operations/support-desk-management/:id',
+  supportController.deleteSupportDeskRecord
+);
 
-router.get('/support-operations/ticket-lifecycle-management', supportController.getTicketLifecycleManagement);
-router.post('/support-operations/ticket-lifecycle-management', supportController.createTicketLifecycleRecord);
+router.get(
+  '/support-operations/ticket-lifecycle-management',
+  supportController.getTicketLifecycleManagement
+);
+router.post(
+  '/support-operations/ticket-lifecycle-management',
+  supportController.createTicketLifecycleRecord
+);
 
 router.get('/support-operations/multi-channel-support', supportController.getMultiChannelSupport);
-router.post('/support-operations/multi-channel-support', supportController.createMultiChannelRecord);
+router.post(
+  '/support-operations/multi-channel-support',
+  supportController.createMultiChannelRecord
+);
 
 router.get('/support-operations/escalation-management', supportController.getEscalationManagement);
 router.post('/support-operations/escalation-management', supportController.createEscalationRecord);
 
-router.get('/support-operations/support-team-collaboration', supportController.getSupportTeamCollaboration);
-router.post('/support-operations/support-team-collaboration', supportController.createCollaborationRecord);
+router.get(
+  '/support-operations/support-team-collaboration',
+  supportController.getSupportTeamCollaboration
+);
+router.post(
+  '/support-operations/support-team-collaboration',
+  supportController.createCollaborationRecord
+);
 
-router.get('/support-operations/customer-communication', supportController.getCustomerCommunication);
-router.post('/support-operations/customer-communication', supportController.createCommunicationRecord);
+router.get(
+  '/support-operations/customer-communication',
+  supportController.getCustomerCommunication
+);
+router.post(
+  '/support-operations/customer-communication',
+  supportController.createCommunicationRecord
+);
 
 router.get('/support-operations/support-automation', supportController.getSupportAutomation);
 router.post('/support-operations/support-automation', supportController.createAutomationRecord);
@@ -42,31 +76,49 @@ router.post('/support-operations/support-automation', supportController.createAu
 router.get('/incident-management/incident-tracking', supportController.getIncidentTracking);
 router.post('/incident-management/incident-tracking', supportController.createIncident);
 
-router.get('/incident-management/incident-classification', supportController.getIncidentClassification);
+router.get(
+  '/incident-management/incident-classification',
+  supportController.getIncidentClassification
+);
 router.post('/incident-management/incident-classification', supportController.classifyIncident);
 
 router.get('/incident-management/incident-response', supportController.getIncidentResponse);
 router.post('/incident-management/incident-response', supportController.initiateIncidentResponse);
 
-router.get('/incident-management/major-incident-management', supportController.getMajorIncidentManagement);
-router.post('/incident-management/major-incident-management', supportController.createMajorIncident);
+router.get(
+  '/incident-management/major-incident-management',
+  supportController.getMajorIncidentManagement
+);
+router.post(
+  '/incident-management/major-incident-management',
+  supportController.createMajorIncident
+);
 
 router.get('/incident-management/incident-resolution', supportController.getIncidentResolution);
 router.post('/incident-management/incident-resolution', supportController.resolveIncident);
 
 router.get('/incident-management/post-incident-review', supportController.getPostIncidentReview);
-router.post('/incident-management/post-incident-review', supportController.createPostIncidentReview);
+router.post(
+  '/incident-management/post-incident-review',
+  supportController.createPostIncidentReview
+);
 
 router.get('/incident-management/incident-analytics', supportController.getIncidentAnalytics);
 
 // Problem Management Routes
-router.get('/problem-management/problem-identification', supportController.getProblemIdentification);
+router.get(
+  '/problem-management/problem-identification',
+  supportController.getProblemIdentification
+);
 router.post('/problem-management/problem-identification', supportController.identifyProblem);
 
 router.get('/problem-management/root-cause-analysis', supportController.getRootCauseAnalysis);
 router.post('/problem-management/root-cause-analysis', supportController.performRootCauseAnalysis);
 
-router.get('/problem-management/problem-prioritization', supportController.getProblemPrioritization);
+router.get(
+  '/problem-management/problem-prioritization',
+  supportController.getProblemPrioritization
+);
 router.post('/problem-management/problem-prioritization', supportController.prioritizeProblem);
 
 router.get('/problem-management/solution-development', supportController.getSolutionDevelopment);
@@ -75,13 +127,22 @@ router.post('/problem-management/solution-development', supportController.develo
 router.get('/problem-management/known-error-database', supportController.getKnownErrorDatabase);
 router.post('/problem-management/known-error-database', supportController.addKnownError);
 
-router.get('/problem-management/proactive-problem-management', supportController.getProactiveProblemManagement);
-router.post('/problem-management/proactive-problem-management', supportController.createProactiveTask);
+router.get(
+  '/problem-management/proactive-problem-management',
+  supportController.getProactiveProblemManagement
+);
+router.post(
+  '/problem-management/proactive-problem-management',
+  supportController.createProactiveTask
+);
 
 router.get('/problem-management/problem-analytics', supportController.getProblemAnalytics);
 
 // Change Management Routes
-router.get('/change-management/change-request-management', supportController.getChangeRequestManagement);
+router.get(
+  '/change-management/change-request-management',
+  supportController.getChangeRequestManagement
+);
 router.post('/change-management/change-request-management', supportController.createChangeRequest);
 
 router.get('/change-management/change-advisory-board', supportController.getChangeAdvisoryBoard);
@@ -102,8 +163,14 @@ router.post('/change-management/change-calendar', supportController.scheduleChan
 router.get('/change-management/change-analytics', supportController.getChangeAnalytics);
 
 // Knowledge Management Routes
-router.get('/knowledge-management/knowledge-base-authoring', supportController.getKnowledgeBaseAuthoring);
-router.post('/knowledge-management/knowledge-base-authoring', supportController.createKnowledgeArticle);
+router.get(
+  '/knowledge-management/knowledge-base-authoring',
+  supportController.getKnowledgeBaseAuthoring
+);
+router.post(
+  '/knowledge-management/knowledge-base-authoring',
+  supportController.createKnowledgeArticle
+);
 
 router.get('/knowledge-management/content-optimization', supportController.getContentOptimization);
 router.post('/knowledge-management/content-optimization', supportController.optimizeContent);
@@ -115,11 +182,17 @@ router.get('/knowledge-management/content-lifecycle', supportController.getConte
 router.post('/knowledge-management/content-lifecycle', supportController.manageContentLifecycle);
 
 router.get('/knowledge-management/expert-collaboration', supportController.getExpertCollaboration);
-router.post('/knowledge-management/expert-collaboration', supportController.facilitateExpertCollaboration);
+router.post(
+  '/knowledge-management/expert-collaboration',
+  supportController.facilitateExpertCollaboration
+);
 
 router.get('/knowledge-management/knowledge-analytics', supportController.getKnowledgeAnalytics);
 
-router.get('/knowledge-management/ai-knowledge-assistant', supportController.getAIKnowledgeAssistant);
+router.get(
+  '/knowledge-management/ai-knowledge-assistant',
+  supportController.getAIKnowledgeAssistant
+);
 router.post('/knowledge-management/ai-knowledge-assistant', supportController.queryAIAssistant);
 
 // Service Level Management Routes
@@ -129,7 +202,10 @@ router.post('/service-level-management/sla-definition', supportController.create
 router.get('/service-level-management/sla-monitoring', supportController.getSLAMonitoring);
 router.post('/service-level-management/sla-monitoring', supportController.startSLAMonitoring);
 
-router.get('/service-level-management/performance-analytics', supportController.getPerformanceAnalytics);
+router.get(
+  '/service-level-management/performance-analytics',
+  supportController.getPerformanceAnalytics
+);
 
 router.get('/service-level-management/sla-reporting', supportController.getSLAReporting);
 router.post('/service-level-management/sla-reporting', supportController.generateSLAReport);
@@ -137,11 +213,20 @@ router.post('/service-level-management/sla-reporting', supportController.generat
 router.get('/service-level-management/service-catalog', supportController.getServiceCatalog);
 router.post('/service-level-management/service-catalog', supportController.addServiceToCatalog);
 
-router.get('/service-level-management/capacity-management', supportController.getCapacityManagement);
+router.get(
+  '/service-level-management/capacity-management',
+  supportController.getCapacityManagement
+);
 router.post('/service-level-management/capacity-management', supportController.planCapacity);
 
-router.get('/service-level-management/availability-management', supportController.getAvailabilityManagement);
-router.post('/service-level-management/availability-management', supportController.manageAvailability);
+router.get(
+  '/service-level-management/availability-management',
+  supportController.getAvailabilityManagement
+);
+router.post(
+  '/service-level-management/availability-management',
+  supportController.manageAvailability
+);
 
 // Support Analytics Routes
 router.get('/support-analytics/support-dashboard', supportController.getSupportDashboard);
@@ -178,19 +263,22 @@ router.get('/incident-management/analytics', supportController.getIncidentManage
 router.get('/problem-management/analytics', supportController.getProblemManagementAnalytics);
 router.get('/change-management/analytics', supportController.getChangeManagementAnalytics);
 router.get('/knowledge-management/analytics', supportController.getKnowledgeManagementAnalytics);
-router.get('/service-level-management/analytics', supportController.getServiceLevelManagementAnalytics);
+router.get(
+  '/service-level-management/analytics',
+  supportController.getServiceLevelManagementAnalytics
+);
 router.get('/support-analytics/analytics', supportController.getSupportAnalyticsAnalytics);
 
 // Health check endpoint
 router.get('/health', (req, res) => {
-    res.json({
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        service: 'support-api',
-        version: '1.0.0',
-        pages: 49,
-        categories: 7
-    });
+  res.json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    service: 'support-api',
+    version: '1.0.0',
+    pages: 49,
+    categories: 7,
+  });
 });
 
 export { router as supportRoutes };

@@ -96,52 +96,52 @@ export interface TransportationOrder {
   orderType: 'PICKUP' | 'DELIVERY' | 'TRANSFER' | 'RETURN';
   status: TransportationOrderStatus;
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'EMERGENCY';
-  
+
   // Origin and destination
   originLocation: Location;
   destinationLocation: Location;
-  
+
   // Shipment details
   shipments: Shipment[];
   totalWeight: number;
   totalVolume: number;
   totalValue: number;
-  
+
   // Service requirements
   serviceType: ServiceType;
   deliveryRequirements: DeliveryRequirements;
   specialInstructions: string;
-  
+
   // Carrier information
   assignedCarrier?: LogisticsProvider;
   carrierService?: string;
-  
+
   // Scheduling
   scheduledPickupDate: Date;
   scheduledDeliveryDate: Date;
   actualPickupDate?: Date;
   actualDeliveryDate?: Date;
-  
+
   // Financial
   estimatedCost: number;
   actualCost?: number;
   billingDetails: BillingDetails;
-  
+
   // Tracking
   trackingNumbers: string[];
   statusHistory: StatusHistory[];
-  
+
   // Compliance and documentation
   requiredDocuments: Document[];
   customsInfo?: CustomsInfo;
   hazmatInfo?: HazmatInfo;
-  
+
   createdBy: string;
   createdDate: Date;
   lastUpdated: Date;
 }
 
-export type TransportationOrderStatus = 
+export type TransportationOrderStatus =
   | 'DRAFT'
   | 'PENDING_APPROVAL'
   | 'APPROVED'
@@ -164,7 +164,7 @@ export interface Shipment {
   specialHandling: string[];
 }
 
-export type ShipmentStatus = 
+export type ShipmentStatus =
   | 'CREATED'
   | 'PICKED_UP'
   | 'IN_TRANSIT'
@@ -196,12 +196,12 @@ export interface WarehouseOperation {
   warehouseId: string;
   orderId?: string;
   priority: Priority;
-  
+
   // Operation details
   items: WarehouseItem[];
   fromLocation?: Location;
   toLocation?: Location;
-  
+
   // Assignment and scheduling
   assignedWorker?: string;
   assignedEquipment?: Equipment[];
@@ -209,22 +209,22 @@ export interface WarehouseOperation {
   scheduledEndTime: Date;
   actualStartTime?: Date;
   actualEndTime?: Date;
-  
+
   // Instructions and requirements
   workInstructions: WorkInstruction[];
   qualityRequirements: QualityRequirement[];
   safetyRequirements: SafetyRequirement[];
-  
+
   // Performance tracking
   expectedDuration: number;
   actualDuration?: number;
   accuracyRate?: number;
-  
+
   createdDate: Date;
   lastUpdated: Date;
 }
 
-export type WarehouseOperationType = 
+export type WarehouseOperationType =
   | 'RECEIVING'
   | 'PUT_AWAY'
   | 'PICKING'
@@ -236,7 +236,7 @@ export type WarehouseOperationType =
   | 'RETURN_PROCESSING'
   | 'VALUE_ADDED_SERVICE';
 
-export type WarehouseOperationStatus = 
+export type WarehouseOperationStatus =
   | 'PLANNED'
   | 'ASSIGNED'
   | 'IN_PROGRESS'
@@ -275,20 +275,20 @@ export interface DistributionNetwork {
   name: string;
   description: string;
   networkType: 'REGIONAL' | 'NATIONAL' | 'INTERNATIONAL';
-  
+
   // Network components
   distributionCenters: DistributionCenter[];
   transitRoutes: TransitRoute[];
   serviceAreas: ServiceArea[];
-  
+
   // Performance metrics
   networkMetrics: NetworkPerformanceMetrics;
   costMetrics: NetworkCostMetrics;
-  
+
   // Configuration
   operatingRules: OperatingRule[];
   flowPolicies: FlowPolicy[];
-  
+
   status: 'ACTIVE' | 'INACTIVE' | 'UNDER_REVIEW';
   createdDate: Date;
   lastUpdated: Date;
@@ -300,17 +300,17 @@ export interface DistributionCenter {
   code: string;
   type: 'WAREHOUSE' | 'CROSS_DOCK' | 'CONSOLIDATION' | 'SORTATION';
   location: Location;
-  
+
   // Capacity and capabilities
   storageCapacity: number;
   throughputCapacity: number;
   capabilities: WarehouseCapability[];
   operatingHours: OperatingHours;
-  
+
   // Staffing and equipment
   staffing: StaffingPlan;
   equipment: Equipment[];
-  
+
   // Performance
   utilizationRate: number;
   throughputRate: number;
@@ -322,25 +322,25 @@ export interface TransitRoute {
   routeId: string;
   routeName: string;
   routeType: 'DIRECT' | 'HUB_SPOKE' | 'MILK_RUN' | 'CROSS_DOCK';
-  
+
   // Route definition
   originLocation: Location;
   destinationLocation: Location;
   intermediateStops: Location[];
   totalDistance: number;
   estimatedTransitTime: number;
-  
+
   // Service characteristics
   serviceFrequency: ServiceFrequency;
   serviceLevel: ServiceLevel;
   capacity: RouteCapacity;
-  
+
   // Costing
   costStructure: RouteCostStructure;
-  
+
   // Performance
   performanceMetrics: RoutePerformanceMetrics;
-  
+
   status: 'ACTIVE' | 'INACTIVE' | 'SEASONAL';
 }
 
@@ -353,20 +353,20 @@ export interface RouteOptimizationRequest {
   optimizationType: 'DISTANCE' | 'TIME' | 'COST' | 'COMBINED';
   objectives: OptimizationObjective[];
   constraints: OptimizationConstraint[];
-  
+
   // Input data
   vehicles: OptimizationVehicle[];
   stops: OptimizationStop[];
   depot: Location;
-  
+
   // Parameters
   parameters: OptimizationParameters;
-  
+
   // Results
   solutions: OptimizedRoute[];
   bestSolution?: OptimizedRoute;
   optimizationMetrics: OptimizationMetrics;
-  
+
   status: 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
   createdDate: Date;
   completedDate?: Date;
@@ -416,48 +416,48 @@ export interface FreightShipment {
   shipmentNumber: string;
   shipmentType: 'LTL' | 'FTL' | 'PARCEL' | 'INTERMODAL' | 'AIR' | 'OCEAN';
   status: FreightShipmentStatus;
-  
+
   // Shipment details
   commodities: FreightCommodity[];
   totalWeight: number;
   totalValue: number;
   pieces: number;
-  
+
   // Locations and timing
   originLocation: Location;
   destinationLocation: Location;
   pickupDate: Date;
   deliveryDate: Date;
   transitTime: number;
-  
+
   // Service requirements
   serviceRequirements: FreightServiceRequirement[];
   equipmentRequirements: EquipmentRequirement[];
-  
+
   // Carrier and rates
   assignedCarrier: LogisticsProvider;
   rateQuotes: FreightRateQuote[];
   selectedRate?: FreightRateQuote;
-  
+
   // Documentation
   billOfLading: BillOfLading;
   freightBill: FreightBill;
   proNumber: string;
-  
+
   // Tracking and events
   trackingEvents: TrackingEvent[];
   milestones: ShipmentMilestone[];
-  
+
   // Financial
   charges: FreightCharge[];
   totalCost: number;
   paymentTerms: PaymentTerms;
-  
+
   createdDate: Date;
   lastUpdated: Date;
 }
 
-export type FreightShipmentStatus = 
+export type FreightShipmentStatus =
   | 'QUOTE'
   | 'BOOKED'
   | 'DISPATCHED'
@@ -503,25 +503,25 @@ export interface LogisticsKPI {
   kpiName: string;
   kpiCategory: 'COST' | 'SERVICE' | 'EFFICIENCY' | 'QUALITY' | 'SUSTAINABILITY';
   description: string;
-  
+
   // Measurement details
   currentValue: number;
   targetValue: number;
   unit: string;
   trend: 'IMPROVING' | 'DECLINING' | 'STABLE';
-  
+
   // Time series data
   historicalData: KPIDataPoint[];
   benchmarkData: BenchmarkData[];
-  
+
   // Configuration
   calculationMethod: string;
   updateFrequency: 'REAL_TIME' | 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY';
   dataSource: string;
-  
+
   // Alerting
   alertThresholds: AlertThreshold[];
-  
+
   lastCalculated: Date;
   lastUpdated: Date;
 }
@@ -531,23 +531,23 @@ export interface LogisticsReport {
   reportName: string;
   reportType: 'OPERATIONAL' | 'FINANCIAL' | 'PERFORMANCE' | 'COMPLIANCE' | 'EXCEPTION';
   reportCategory: string;
-  
+
   // Report configuration
   parameters: ReportParameter[];
   filters: ReportFilter[];
   dateRange: DateRange;
-  
+
   // Data and visualization
   datasets: ReportDataset[];
   visualizations: ReportVisualization[];
-  
+
   // Scheduling and distribution
   schedule: ReportSchedule;
   distributionList: ReportRecipient[];
-  
+
   // Generated reports
   reportInstances: ReportInstance[];
-  
+
   status: 'ACTIVE' | 'INACTIVE' | 'DRAFT';
   createdBy: string;
   createdDate: Date;
@@ -558,20 +558,20 @@ export interface LogisticsDashboard {
   dashboardId: string;
   dashboardName: string;
   dashboardType: 'EXECUTIVE' | 'OPERATIONAL' | 'TACTICAL' | 'STRATEGIC';
-  
+
   // Layout and widgets
   layout: DashboardLayout;
   widgets: DashboardWidget[];
-  
+
   // Data refresh
   refreshSettings: RefreshSettings;
   lastRefreshed: Date;
-  
+
   // Access control
   accessLevel: 'PUBLIC' | 'RESTRICTED' | 'PRIVATE';
   authorizedUsers: string[];
   authorizedRoles: string[];
-  
+
   createdBy: string;
   createdDate: Date;
   lastUpdated: Date;
@@ -626,7 +626,7 @@ export interface Dimensions {
 
 export interface TimeWindow {
   startTime: string; // HH:MM format
-  endTime: string;   // HH:MM format
+  endTime: string; // HH:MM format
   dayOfWeek?: string[];
   timeZone: string;
 }

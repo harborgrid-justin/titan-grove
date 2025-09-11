@@ -14,7 +14,7 @@ export {
   CircuitBreakerState,
   CircuitBreakerError,
   type CircuitBreakerConfig,
-  type CircuitBreakerMetrics
+  type CircuitBreakerMetrics,
 } from './CircuitBreaker';
 
 export {
@@ -26,7 +26,7 @@ export {
   type ErrorContext,
   type ErrorBoundaryMetrics,
   type RetryConfig,
-  type FallbackConfig
+  type FallbackConfig,
 } from './ErrorBoundary';
 
 export {
@@ -34,7 +34,7 @@ export {
   BaseService,
   type ServiceMetadata,
   type ServiceConfig,
-  type ServiceHealth
+  type ServiceHealth,
 } from './ServiceRegistry';
 
 export {
@@ -49,5 +49,5 @@ export {
   type ServiceResponse,
   type PaginationRequest,
   type PaginationResponse,
-  type PerformanceMetrics
+  type PerformanceMetrics,
 } from './CommonTypes';
