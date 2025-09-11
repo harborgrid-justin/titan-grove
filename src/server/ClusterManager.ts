@@ -1,5 +1,6 @@
 import { Logger } from 'winston';
 import cluster from 'cluster';
+import * as os from 'os';
 import { ClusterConfig } from '../types';
 
 export class ClusterManager {
@@ -13,7 +14,7 @@ export class ClusterManager {
 
   async start(workerFunction: () => Promise<void>): Promise<void> {
     if (cluster.isPrimary) {
-      const numWorkers = this.config.workers || require('os').cpus().length;
+      const numWorkers = this.config.workers || os.cpus().length;
       this.logger.info(`Starting ${numWorkers} worker processes`);
 
       // Fork workers

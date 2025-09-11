@@ -5,7 +5,7 @@
 
 import { Router } from 'express';
 import { applyStandardMiddleware, handleRouteErrors } from '../base/base-routes';
-import { validateBusiness, validateIdParam } from '../../middleware/validation';
+import { validateIdParam } from '../../middleware/validation';
 import { hrController } from './hr-controller';
 import type { Router as RouterType } from 'express';
 

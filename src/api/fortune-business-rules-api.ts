@@ -1,6 +1,6 @@
 import { ProductionFramework } from '../production/framework';
 
-const native = require('../../native');
+import * as native from '../../native';
 
 /**
  * Fortune 100 Business Rules API
