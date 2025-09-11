@@ -35,6 +35,7 @@ export class MarketingApi {
 
   // Production Feature: Data Validation
   async validateData(data: any): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _rules: ValidationRule[] = [{ field: 'data', type: 'required' }];
 
     // TODO: Implement actual validation logic using _rules
