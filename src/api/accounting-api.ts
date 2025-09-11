@@ -19,8 +19,8 @@ export class AccountingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_accounting_health === 'function') {
-                    return native.check_accounting_health();
+                if (typeof native.checkAccountingHealth === 'function') {
+                    return native.checkAccountingHealth();
                 }
                 return { status: 'healthy', module: 'accounting' };
             }
@@ -33,8 +33,8 @@ export class AccountingApi {
             'accounting',
             'get_config',
             async () => {
-                if (typeof native.get_accounting_config === 'function') {
-                    return native.get_accounting_config();
+                if (typeof native.getAccountingConfig === 'function') {
+                    return native.getAccountingConfig();
                 }
                 return { module: 'accounting', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class AccountingApi {
             'accounting',
             'validate_data',
             async () => {
-                if (typeof native.validate_accounting_data === 'function') {
-                    return native.validate_accounting_data(JSON.stringify(data));
+                if (typeof native.validateAccountingData === 'function') {
+                    return native.validateAccountingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,11 +73,8 @@ export class AccountingApi {
             'accounting',
             'create',
             async () => {
-                if (typeof native.create_accounting_record === 'function') {
-                    return native.create_accounting_record(
-                        data.name || 'New Record',
-                        data.description || 'Created via API'
-                    );
+                if (typeof native.createAccountingRecord === 'function') {
+                    return native.createAccountingRecord(JSON.stringify(data));
                 }
                 return { id: Date.now().toString(), ...data };
             },
@@ -91,8 +88,8 @@ export class AccountingApi {
             'accounting',
             'read',
             async () => {
-                if (typeof native.get_accounting_record === 'function') {
-                    return native.get_accounting_record(id);
+                if (typeof native.getAccountingRecord === 'function') {
+                    return native.getAccountingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +103,8 @@ export class AccountingApi {
             'accounting',
             'update',
             async () => {
-                if (typeof native.update_accounting_record === 'function') {
-                    return native.update_accounting_record(data);
+                if (typeof native.updateAccountingRecord === 'function') {
+                    return native.updateAccountingRecord(id, JSON.stringify(data));
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +118,8 @@ export class AccountingApi {
             'accounting',
             'delete',
             async () => {
-                if (typeof native.delete_accounting_record === 'function') {
-                    return { success: native.delete_accounting_record(id) };
+                if (typeof native.deleteAccountingRecord === 'function') {
+                    return { success: native.deleteAccountingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +134,8 @@ export class AccountingApi {
             'accounting',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_accounting_records === 'function') {
-                    return native.bulk_create_accounting_records(records);
+                if (typeof native.bulkCreateAccountingRecords === 'function') {
+                    return native.bulkCreateAccountingRecords(JSON.stringify(records));
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +150,8 @@ export class AccountingApi {
             'accounting',
             'analytics',
             async () => {
-                if (typeof native.analyze_accounting_performance === 'function') {
-                    return native.analyze_accounting_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeAccountingPerformance === 'function') {
+                    return native.analyzeAccountingPerformance(30); // 30 days analysis
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +171,8 @@ export class AccountingApi {
             'accounting',
             'optimize',
             async () => {
-                if (typeof native.optimize_accounting_performance === 'function') {
-                    return { score: native.optimize_accounting_performance(data) };
+                if (typeof native.optimizeAccountingPerformance === 'function') {
+                    return { score: native.optimizeAccountingPerformance(JSON.stringify(data)) };
                 }
                 return { score: 95.5, optimized: true };
             },
