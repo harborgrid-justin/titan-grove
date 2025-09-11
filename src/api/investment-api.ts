@@ -19,8 +19,8 @@ export class InvestmentApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_investment_health === 'function') {
-                    return native.check_investment_health();
+                if (typeof native.checkInvestmentHealth === 'function') {
+                    return native.checkInvestmentHealth();
                 }
                 return { status: 'healthy', module: 'investment' };
             }
@@ -33,8 +33,8 @@ export class InvestmentApi {
             'investment',
             'get_config',
             async () => {
-                if (typeof native.get_investment_config === 'function') {
-                    return native.get_investment_config();
+                if (typeof native.getInvestmentConfig === 'function') {
+                    return native.getInvestmentConfig();
                 }
                 return { module: 'investment', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class InvestmentApi {
             'investment',
             'validate_data',
             async () => {
-                if (typeof native.validate_investment_data === 'function') {
-                    return native.validate_investment_data(JSON.stringify(data));
+                if (typeof native.validateInvestmentData === 'function') {
+                    return native.validateInvestmentData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class InvestmentApi {
             'investment',
             'create',
             async () => {
-                if (typeof native.create_investment_record === 'function') {
-                    return native.create_investment_record(
+                if (typeof native.createInvestmentRecord === 'function') {
+                    return native.createInvestmentRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class InvestmentApi {
             'investment',
             'read',
             async () => {
-                if (typeof native.get_investment_record === 'function') {
-                    return native.get_investment_record(id);
+                if (typeof native.getInvestmentRecord === 'function') {
+                    return native.getInvestmentRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class InvestmentApi {
             'investment',
             'update',
             async () => {
-                if (typeof native.update_investment_record === 'function') {
-                    return native.update_investment_record(data);
+                if (typeof native.updateInvestmentRecord === 'function') {
+                    return native.updateInvestmentRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class InvestmentApi {
             'investment',
             'delete',
             async () => {
-                if (typeof native.delete_investment_record === 'function') {
-                    return { success: native.delete_investment_record(id) };
+                if (typeof native.deleteInvestmentRecord === 'function') {
+                    return { success: native.deleteInvestmentRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class InvestmentApi {
             'investment',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_investment_records === 'function') {
-                    return native.bulk_create_investment_records(records);
+                if (typeof native.bulkCreateInvestmentRecords === 'function') {
+                    return native.bulkCreateInvestmentRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class InvestmentApi {
             'investment',
             'analytics',
             async () => {
-                if (typeof native.analyze_investment_performance === 'function') {
-                    return native.analyze_investment_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeInvestmentPerformance === 'function') {
+                    return native.analyzeInvestmentPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class InvestmentApi {
             'investment',
             'optimize',
             async () => {
-                if (typeof native.optimize_investment_performance === 'function') {
-                    return { score: native.optimize_investment_performance(data) };
+                if (typeof native.optimizeInvestmentPerformance === 'function') {
+                    return { score: native.optimizeInvestmentPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class AssetsApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_assets_health === 'function') {
-                    return native.check_assets_health();
+                if (typeof native.checkAssetsHealth === 'function') {
+                    return native.checkAssetsHealth();
                 }
                 return { status: 'healthy', module: 'assets' };
             }
@@ -33,8 +33,8 @@ export class AssetsApi {
             'assets',
             'get_config',
             async () => {
-                if (typeof native.get_assets_config === 'function') {
-                    return native.get_assets_config();
+                if (typeof native.getAssetsConfig === 'function') {
+                    return native.getAssetsConfig();
                 }
                 return { module: 'assets', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class AssetsApi {
             'assets',
             'validate_data',
             async () => {
-                if (typeof native.validate_assets_data === 'function') {
-                    return native.validate_assets_data(JSON.stringify(data));
+                if (typeof native.validateAssetsData === 'function') {
+                    return native.validateAssetsData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class AssetsApi {
             'assets',
             'create',
             async () => {
-                if (typeof native.create_assets_record === 'function') {
-                    return native.create_assets_record(
+                if (typeof native.createAssetsRecord === 'function') {
+                    return native.createAssetsRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class AssetsApi {
             'assets',
             'read',
             async () => {
-                if (typeof native.get_assets_record === 'function') {
-                    return native.get_assets_record(id);
+                if (typeof native.getAssetsRecord === 'function') {
+                    return native.getAssetsRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class AssetsApi {
             'assets',
             'update',
             async () => {
-                if (typeof native.update_assets_record === 'function') {
-                    return native.update_assets_record(data);
+                if (typeof native.updateAssetsRecord === 'function') {
+                    return native.updateAssetsRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class AssetsApi {
             'assets',
             'delete',
             async () => {
-                if (typeof native.delete_assets_record === 'function') {
-                    return { success: native.delete_assets_record(id) };
+                if (typeof native.deleteAssetsRecord === 'function') {
+                    return { success: native.deleteAssetsRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class AssetsApi {
             'assets',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_assets_records === 'function') {
-                    return native.bulk_create_assets_records(records);
+                if (typeof native.bulkCreateAssetsRecords === 'function') {
+                    return native.bulkCreateAssetsRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class AssetsApi {
             'assets',
             'analytics',
             async () => {
-                if (typeof native.analyze_assets_performance === 'function') {
-                    return native.analyze_assets_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeAssetsPerformance === 'function') {
+                    return native.analyzeAssetsPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class AssetsApi {
             'assets',
             'optimize',
             async () => {
-                if (typeof native.optimize_assets_performance === 'function') {
-                    return { score: native.optimize_assets_performance(data) };
+                if (typeof native.optimizeAssetsPerformance === 'function') {
+                    return { score: native.optimizeAssetsPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

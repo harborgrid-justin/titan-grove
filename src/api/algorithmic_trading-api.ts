@@ -19,8 +19,8 @@ export class AlgorithmicTradingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_algorithmic_trading_health === 'function') {
-                    return native.check_algorithmic_trading_health();
+                if (typeof native.checkAlgorithmicTradingHealth === 'function') {
+                    return native.checkAlgorithmicTradingHealth();
                 }
                 return { status: 'healthy', module: 'algorithmic_trading' };
             }
@@ -33,8 +33,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'get_config',
             async () => {
-                if (typeof native.get_algorithmic_trading_config === 'function') {
-                    return native.get_algorithmic_trading_config();
+                if (typeof native.getAlgorithmicTradingConfig === 'function') {
+                    return native.getAlgorithmicTradingConfig();
                 }
                 return { module: 'algorithmic_trading', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'validate_data',
             async () => {
-                if (typeof native.validate_algorithmic_trading_data === 'function') {
-                    return native.validate_algorithmic_trading_data(JSON.stringify(data));
+                if (typeof native.validateAlgorithmicTradingData === 'function') {
+                    return native.validateAlgorithmicTradingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'create',
             async () => {
-                if (typeof native.create_algorithmic_trading_record === 'function') {
-                    return native.create_algorithmic_trading_record(
+                if (typeof native.createAlgorithmicTradingRecord === 'function') {
+                    return native.createAlgorithmicTradingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'read',
             async () => {
-                if (typeof native.get_algorithmic_trading_record === 'function') {
-                    return native.get_algorithmic_trading_record(id);
+                if (typeof native.getAlgorithmicTradingRecord === 'function') {
+                    return native.getAlgorithmicTradingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'update',
             async () => {
-                if (typeof native.update_algorithmic_trading_record === 'function') {
-                    return native.update_algorithmic_trading_record(data);
+                if (typeof native.updateAlgorithmicTradingRecord === 'function') {
+                    return native.updateAlgorithmicTradingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'delete',
             async () => {
-                if (typeof native.delete_algorithmic_trading_record === 'function') {
-                    return { success: native.delete_algorithmic_trading_record(id) };
+                if (typeof native.deleteAlgorithmicTradingRecord === 'function') {
+                    return { success: native.deleteAlgorithmicTradingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_algorithmic_trading_records === 'function') {
-                    return native.bulk_create_algorithmic_trading_records(records);
+                if (typeof native.bulkCreateAlgorithmicTradingRecords === 'function') {
+                    return native.bulkCreateAlgorithmicTradingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'analytics',
             async () => {
-                if (typeof native.analyze_algorithmic_trading_performance === 'function') {
-                    return native.analyze_algorithmic_trading_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeAlgorithmicTradingPerformance === 'function') {
+                    return native.analyzeAlgorithmicTradingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class AlgorithmicTradingApi {
             'algorithmic_trading',
             'optimize',
             async () => {
-                if (typeof native.optimize_algorithmic_trading_performance === 'function') {
-                    return { score: native.optimize_algorithmic_trading_performance(data) };
+                if (typeof native.optimizeAlgorithmicTradingPerformance === 'function') {
+                    return { score: native.optimizeAlgorithmicTradingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

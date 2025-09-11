@@ -19,8 +19,8 @@ export class MultiCurrencyApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_multi_currency_health === 'function') {
-                    return native.check_multi_currency_health();
+                if (typeof native.checkMultiCurrencyHealth === 'function') {
+                    return native.checkMultiCurrencyHealth();
                 }
                 return { status: 'healthy', module: 'multi_currency' };
             }
@@ -33,8 +33,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'get_config',
             async () => {
-                if (typeof native.get_multi_currency_config === 'function') {
-                    return native.get_multi_currency_config();
+                if (typeof native.getMultiCurrencyConfig === 'function') {
+                    return native.getMultiCurrencyConfig();
                 }
                 return { module: 'multi_currency', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'validate_data',
             async () => {
-                if (typeof native.validate_multi_currency_data === 'function') {
-                    return native.validate_multi_currency_data(JSON.stringify(data));
+                if (typeof native.validateMultiCurrencyData === 'function') {
+                    return native.validateMultiCurrencyData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'create',
             async () => {
-                if (typeof native.create_multi_currency_record === 'function') {
-                    return native.create_multi_currency_record(
+                if (typeof native.createMultiCurrencyRecord === 'function') {
+                    return native.createMultiCurrencyRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'read',
             async () => {
-                if (typeof native.get_multi_currency_record === 'function') {
-                    return native.get_multi_currency_record(id);
+                if (typeof native.getMultiCurrencyRecord === 'function') {
+                    return native.getMultiCurrencyRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'update',
             async () => {
-                if (typeof native.update_multi_currency_record === 'function') {
-                    return native.update_multi_currency_record(data);
+                if (typeof native.updateMultiCurrencyRecord === 'function') {
+                    return native.updateMultiCurrencyRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'delete',
             async () => {
-                if (typeof native.delete_multi_currency_record === 'function') {
-                    return { success: native.delete_multi_currency_record(id) };
+                if (typeof native.deleteMultiCurrencyRecord === 'function') {
+                    return { success: native.deleteMultiCurrencyRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_multi_currency_records === 'function') {
-                    return native.bulk_create_multi_currency_records(records);
+                if (typeof native.bulkCreateMultiCurrencyRecords === 'function') {
+                    return native.bulkCreateMultiCurrencyRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'analytics',
             async () => {
-                if (typeof native.analyze_multi_currency_performance === 'function') {
-                    return native.analyze_multi_currency_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeMultiCurrencyPerformance === 'function') {
+                    return native.analyzeMultiCurrencyPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class MultiCurrencyApi {
             'multi_currency',
             'optimize',
             async () => {
-                if (typeof native.optimize_multi_currency_performance === 'function') {
-                    return { score: native.optimize_multi_currency_performance(data) };
+                if (typeof native.optimizeMultiCurrencyPerformance === 'function') {
+                    return { score: native.optimizeMultiCurrencyPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

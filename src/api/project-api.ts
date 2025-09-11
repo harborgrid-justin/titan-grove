@@ -19,8 +19,8 @@ export class ProjectApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_project_health === 'function') {
-                    return native.check_project_health();
+                if (typeof native.checkProjectHealth === 'function') {
+                    return native.checkProjectHealth();
                 }
                 return { status: 'healthy', module: 'project' };
             }
@@ -33,8 +33,8 @@ export class ProjectApi {
             'project',
             'get_config',
             async () => {
-                if (typeof native.get_project_config === 'function') {
-                    return native.get_project_config();
+                if (typeof native.getProjectConfig === 'function') {
+                    return native.getProjectConfig();
                 }
                 return { module: 'project', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ProjectApi {
             'project',
             'validate_data',
             async () => {
-                if (typeof native.validate_project_data === 'function') {
-                    return native.validate_project_data(JSON.stringify(data));
+                if (typeof native.validateProjectData === 'function') {
+                    return native.validateProjectData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ProjectApi {
             'project',
             'create',
             async () => {
-                if (typeof native.create_project_record === 'function') {
-                    return native.create_project_record(
+                if (typeof native.createProjectRecord === 'function') {
+                    return native.createProjectRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ProjectApi {
             'project',
             'read',
             async () => {
-                if (typeof native.get_project_record === 'function') {
-                    return native.get_project_record(id);
+                if (typeof native.getProjectRecord === 'function') {
+                    return native.getProjectRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ProjectApi {
             'project',
             'update',
             async () => {
-                if (typeof native.update_project_record === 'function') {
-                    return native.update_project_record(data);
+                if (typeof native.updateProjectRecord === 'function') {
+                    return native.updateProjectRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ProjectApi {
             'project',
             'delete',
             async () => {
-                if (typeof native.delete_project_record === 'function') {
-                    return { success: native.delete_project_record(id) };
+                if (typeof native.deleteProjectRecord === 'function') {
+                    return { success: native.deleteProjectRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ProjectApi {
             'project',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_project_records === 'function') {
-                    return native.bulk_create_project_records(records);
+                if (typeof native.bulkCreateProjectRecords === 'function') {
+                    return native.bulkCreateProjectRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ProjectApi {
             'project',
             'analytics',
             async () => {
-                if (typeof native.analyze_project_performance === 'function') {
-                    return native.analyze_project_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeProjectPerformance === 'function') {
+                    return native.analyzeProjectPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ProjectApi {
             'project',
             'optimize',
             async () => {
-                if (typeof native.optimize_project_performance === 'function') {
-                    return { score: native.optimize_project_performance(data) };
+                if (typeof native.optimizeProjectPerformance === 'function') {
+                    return { score: native.optimizeProjectPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

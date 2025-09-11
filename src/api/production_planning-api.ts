@@ -19,8 +19,8 @@ export class ProductionPlanningApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_production_planning_health === 'function') {
-                    return native.check_production_planning_health();
+                if (typeof native.checkProductionPlanningHealth === 'function') {
+                    return native.checkProductionPlanningHealth();
                 }
                 return { status: 'healthy', module: 'production_planning' };
             }
@@ -33,8 +33,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'get_config',
             async () => {
-                if (typeof native.get_production_planning_config === 'function') {
-                    return native.get_production_planning_config();
+                if (typeof native.getProductionPlanningConfig === 'function') {
+                    return native.getProductionPlanningConfig();
                 }
                 return { module: 'production_planning', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'validate_data',
             async () => {
-                if (typeof native.validate_production_planning_data === 'function') {
-                    return native.validate_production_planning_data(JSON.stringify(data));
+                if (typeof native.validateProductionPlanningData === 'function') {
+                    return native.validateProductionPlanningData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'create',
             async () => {
-                if (typeof native.create_production_planning_record === 'function') {
-                    return native.create_production_planning_record(
+                if (typeof native.createProductionPlanningRecord === 'function') {
+                    return native.createProductionPlanningRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'read',
             async () => {
-                if (typeof native.get_production_planning_record === 'function') {
-                    return native.get_production_planning_record(id);
+                if (typeof native.getProductionPlanningRecord === 'function') {
+                    return native.getProductionPlanningRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'update',
             async () => {
-                if (typeof native.update_production_planning_record === 'function') {
-                    return native.update_production_planning_record(data);
+                if (typeof native.updateProductionPlanningRecord === 'function') {
+                    return native.updateProductionPlanningRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'delete',
             async () => {
-                if (typeof native.delete_production_planning_record === 'function') {
-                    return { success: native.delete_production_planning_record(id) };
+                if (typeof native.deleteProductionPlanningRecord === 'function') {
+                    return { success: native.deleteProductionPlanningRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_production_planning_records === 'function') {
-                    return native.bulk_create_production_planning_records(records);
+                if (typeof native.bulkCreateProductionPlanningRecords === 'function') {
+                    return native.bulkCreateProductionPlanningRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'analytics',
             async () => {
-                if (typeof native.analyze_production_planning_performance === 'function') {
-                    return native.analyze_production_planning_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeProductionPlanningPerformance === 'function') {
+                    return native.analyzeProductionPlanningPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ProductionPlanningApi {
             'production_planning',
             'optimize',
             async () => {
-                if (typeof native.optimize_production_planning_performance === 'function') {
-                    return { score: native.optimize_production_planning_performance(data) };
+                if (typeof native.optimizeProductionPlanningPerformance === 'function') {
+                    return { score: native.optimizeProductionPlanningPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

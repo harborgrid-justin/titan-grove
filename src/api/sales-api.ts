@@ -19,8 +19,8 @@ export class SalesApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_sales_health === 'function') {
-                    return native.check_sales_health();
+                if (typeof native.checkSalesHealth === 'function') {
+                    return native.checkSalesHealth();
                 }
                 return { status: 'healthy', module: 'sales' };
             }
@@ -33,8 +33,8 @@ export class SalesApi {
             'sales',
             'get_config',
             async () => {
-                if (typeof native.get_sales_config === 'function') {
-                    return native.get_sales_config();
+                if (typeof native.getSalesConfig === 'function') {
+                    return native.getSalesConfig();
                 }
                 return { module: 'sales', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class SalesApi {
             'sales',
             'validate_data',
             async () => {
-                if (typeof native.validate_sales_data === 'function') {
-                    return native.validate_sales_data(JSON.stringify(data));
+                if (typeof native.validateSalesData === 'function') {
+                    return native.validateSalesData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class SalesApi {
             'sales',
             'create',
             async () => {
-                if (typeof native.create_sales_record === 'function') {
-                    return native.create_sales_record(
+                if (typeof native.createSalesRecord === 'function') {
+                    return native.createSalesRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class SalesApi {
             'sales',
             'read',
             async () => {
-                if (typeof native.get_sales_record === 'function') {
-                    return native.get_sales_record(id);
+                if (typeof native.getSalesRecord === 'function') {
+                    return native.getSalesRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class SalesApi {
             'sales',
             'update',
             async () => {
-                if (typeof native.update_sales_record === 'function') {
-                    return native.update_sales_record(data);
+                if (typeof native.updateSalesRecord === 'function') {
+                    return native.updateSalesRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class SalesApi {
             'sales',
             'delete',
             async () => {
-                if (typeof native.delete_sales_record === 'function') {
-                    return { success: native.delete_sales_record(id) };
+                if (typeof native.deleteSalesRecord === 'function') {
+                    return { success: native.deleteSalesRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class SalesApi {
             'sales',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_sales_records === 'function') {
-                    return native.bulk_create_sales_records(records);
+                if (typeof native.bulkCreateSalesRecords === 'function') {
+                    return native.bulkCreateSalesRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class SalesApi {
             'sales',
             'analytics',
             async () => {
-                if (typeof native.analyze_sales_performance === 'function') {
-                    return native.analyze_sales_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeSalesPerformance === 'function') {
+                    return native.analyzeSalesPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class SalesApi {
             'sales',
             'optimize',
             async () => {
-                if (typeof native.optimize_sales_performance === 'function') {
-                    return { score: native.optimize_sales_performance(data) };
+                if (typeof native.optimizeSalesPerformance === 'function') {
+                    return { score: native.optimizeSalesPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -29,6 +29,10 @@ pub mod maintenance;
 pub mod assets;
 pub mod calculations;
 
+// Fortune 100 Enterprise Extensions
+pub mod fortune_business_rules;
+pub mod fortune_data_standardization;
+
 // New 20 modules for enhanced NAPI-RS coverage
 pub mod procurement;
 pub mod orders;
@@ -295,6 +299,10 @@ pub use temporal_business::*;
 pub use dimensional_commerce::*;
 pub use consciousness_economy::*;
 pub use universal_business::*;
+
+// Fortune 100 Enterprise Extensions
+pub use fortune_business_rules::*;
+pub use fortune_data_standardization::*;
 
 // Production-grade capabilities  
 pub use production::*;

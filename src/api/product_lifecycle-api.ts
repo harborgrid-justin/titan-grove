@@ -19,8 +19,8 @@ export class ProductLifecycleApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_product_lifecycle_health === 'function') {
-                    return native.check_product_lifecycle_health();
+                if (typeof native.checkProductLifecycleHealth === 'function') {
+                    return native.checkProductLifecycleHealth();
                 }
                 return { status: 'healthy', module: 'product_lifecycle' };
             }
@@ -33,8 +33,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'get_config',
             async () => {
-                if (typeof native.get_product_lifecycle_config === 'function') {
-                    return native.get_product_lifecycle_config();
+                if (typeof native.getProductLifecycleConfig === 'function') {
+                    return native.getProductLifecycleConfig();
                 }
                 return { module: 'product_lifecycle', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'validate_data',
             async () => {
-                if (typeof native.validate_product_lifecycle_data === 'function') {
-                    return native.validate_product_lifecycle_data(JSON.stringify(data));
+                if (typeof native.validateProductLifecycleData === 'function') {
+                    return native.validateProductLifecycleData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'create',
             async () => {
-                if (typeof native.create_product_lifecycle_record === 'function') {
-                    return native.create_product_lifecycle_record(
+                if (typeof native.createProductLifecycleRecord === 'function') {
+                    return native.createProductLifecycleRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'read',
             async () => {
-                if (typeof native.get_product_lifecycle_record === 'function') {
-                    return native.get_product_lifecycle_record(id);
+                if (typeof native.getProductLifecycleRecord === 'function') {
+                    return native.getProductLifecycleRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'update',
             async () => {
-                if (typeof native.update_product_lifecycle_record === 'function') {
-                    return native.update_product_lifecycle_record(data);
+                if (typeof native.updateProductLifecycleRecord === 'function') {
+                    return native.updateProductLifecycleRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'delete',
             async () => {
-                if (typeof native.delete_product_lifecycle_record === 'function') {
-                    return { success: native.delete_product_lifecycle_record(id) };
+                if (typeof native.deleteProductLifecycleRecord === 'function') {
+                    return { success: native.deleteProductLifecycleRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_product_lifecycle_records === 'function') {
-                    return native.bulk_create_product_lifecycle_records(records);
+                if (typeof native.bulkCreateProductLifecycleRecords === 'function') {
+                    return native.bulkCreateProductLifecycleRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'analytics',
             async () => {
-                if (typeof native.analyze_product_lifecycle_performance === 'function') {
-                    return native.analyze_product_lifecycle_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeProductLifecyclePerformance === 'function') {
+                    return native.analyzeProductLifecyclePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ProductLifecycleApi {
             'product_lifecycle',
             'optimize',
             async () => {
-                if (typeof native.optimize_product_lifecycle_performance === 'function') {
-                    return { score: native.optimize_product_lifecycle_performance(data) };
+                if (typeof native.optimizeProductLifecyclePerformance === 'function') {
+                    return { score: native.optimizeProductLifecyclePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

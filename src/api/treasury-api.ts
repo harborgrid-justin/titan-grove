@@ -19,8 +19,8 @@ export class TreasuryApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_treasury_health === 'function') {
-                    return native.check_treasury_health();
+                if (typeof native.checkTreasuryHealth === 'function') {
+                    return native.checkTreasuryHealth();
                 }
                 return { status: 'healthy', module: 'treasury' };
             }
@@ -33,8 +33,8 @@ export class TreasuryApi {
             'treasury',
             'get_config',
             async () => {
-                if (typeof native.get_treasury_config === 'function') {
-                    return native.get_treasury_config();
+                if (typeof native.getTreasuryConfig === 'function') {
+                    return native.getTreasuryConfig();
                 }
                 return { module: 'treasury', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class TreasuryApi {
             'treasury',
             'validate_data',
             async () => {
-                if (typeof native.validate_treasury_data === 'function') {
-                    return native.validate_treasury_data(JSON.stringify(data));
+                if (typeof native.validateTreasuryData === 'function') {
+                    return native.validateTreasuryData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class TreasuryApi {
             'treasury',
             'create',
             async () => {
-                if (typeof native.create_treasury_record === 'function') {
-                    return native.create_treasury_record(
+                if (typeof native.createTreasuryRecord === 'function') {
+                    return native.createTreasuryRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class TreasuryApi {
             'treasury',
             'read',
             async () => {
-                if (typeof native.get_treasury_record === 'function') {
-                    return native.get_treasury_record(id);
+                if (typeof native.getTreasuryRecord === 'function') {
+                    return native.getTreasuryRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class TreasuryApi {
             'treasury',
             'update',
             async () => {
-                if (typeof native.update_treasury_record === 'function') {
-                    return native.update_treasury_record(data);
+                if (typeof native.updateTreasuryRecord === 'function') {
+                    return native.updateTreasuryRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class TreasuryApi {
             'treasury',
             'delete',
             async () => {
-                if (typeof native.delete_treasury_record === 'function') {
-                    return { success: native.delete_treasury_record(id) };
+                if (typeof native.deleteTreasuryRecord === 'function') {
+                    return { success: native.deleteTreasuryRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class TreasuryApi {
             'treasury',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_treasury_records === 'function') {
-                    return native.bulk_create_treasury_records(records);
+                if (typeof native.bulkCreateTreasuryRecords === 'function') {
+                    return native.bulkCreateTreasuryRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class TreasuryApi {
             'treasury',
             'analytics',
             async () => {
-                if (typeof native.analyze_treasury_performance === 'function') {
-                    return native.analyze_treasury_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeTreasuryPerformance === 'function') {
+                    return native.analyzeTreasuryPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class TreasuryApi {
             'treasury',
             'optimize',
             async () => {
-                if (typeof native.optimize_treasury_performance === 'function') {
-                    return { score: native.optimize_treasury_performance(data) };
+                if (typeof native.optimizeTreasuryPerformance === 'function') {
+                    return { score: native.optimizeTreasuryPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

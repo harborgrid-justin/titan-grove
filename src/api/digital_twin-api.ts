@@ -19,8 +19,8 @@ export class DigitalTwinApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_digital_twin_health === 'function') {
-                    return native.check_digital_twin_health();
+                if (typeof native.checkDigitalTwinHealth === 'function') {
+                    return native.checkDigitalTwinHealth();
                 }
                 return { status: 'healthy', module: 'digital_twin' };
             }
@@ -33,8 +33,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'get_config',
             async () => {
-                if (typeof native.get_digital_twin_config === 'function') {
-                    return native.get_digital_twin_config();
+                if (typeof native.getDigitalTwinConfig === 'function') {
+                    return native.getDigitalTwinConfig();
                 }
                 return { module: 'digital_twin', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'validate_data',
             async () => {
-                if (typeof native.validate_digital_twin_data === 'function') {
-                    return native.validate_digital_twin_data(JSON.stringify(data));
+                if (typeof native.validateDigitalTwinData === 'function') {
+                    return native.validateDigitalTwinData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'create',
             async () => {
-                if (typeof native.create_digital_twin_record === 'function') {
-                    return native.create_digital_twin_record(
+                if (typeof native.createDigitalTwinRecord === 'function') {
+                    return native.createDigitalTwinRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'read',
             async () => {
-                if (typeof native.get_digital_twin_record === 'function') {
-                    return native.get_digital_twin_record(id);
+                if (typeof native.getDigitalTwinRecord === 'function') {
+                    return native.getDigitalTwinRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'update',
             async () => {
-                if (typeof native.update_digital_twin_record === 'function') {
-                    return native.update_digital_twin_record(data);
+                if (typeof native.updateDigitalTwinRecord === 'function') {
+                    return native.updateDigitalTwinRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'delete',
             async () => {
-                if (typeof native.delete_digital_twin_record === 'function') {
-                    return { success: native.delete_digital_twin_record(id) };
+                if (typeof native.deleteDigitalTwinRecord === 'function') {
+                    return { success: native.deleteDigitalTwinRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_digital_twin_records === 'function') {
-                    return native.bulk_create_digital_twin_records(records);
+                if (typeof native.bulkCreateDigitalTwinRecords === 'function') {
+                    return native.bulkCreateDigitalTwinRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'analytics',
             async () => {
-                if (typeof native.analyze_digital_twin_performance === 'function') {
-                    return native.analyze_digital_twin_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeDigitalTwinPerformance === 'function') {
+                    return native.analyzeDigitalTwinPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class DigitalTwinApi {
             'digital_twin',
             'optimize',
             async () => {
-                if (typeof native.optimize_digital_twin_performance === 'function') {
-                    return { score: native.optimize_digital_twin_performance(data) };
+                if (typeof native.optimizeDigitalTwinPerformance === 'function') {
+                    return { score: native.optimizeDigitalTwinPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

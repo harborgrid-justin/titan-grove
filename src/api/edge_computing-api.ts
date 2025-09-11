@@ -19,8 +19,8 @@ export class EdgeComputingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_edge_computing_health === 'function') {
-                    return native.check_edge_computing_health();
+                if (typeof native.checkEdgeComputingHealth === 'function') {
+                    return native.checkEdgeComputingHealth();
                 }
                 return { status: 'healthy', module: 'edge_computing' };
             }
@@ -33,8 +33,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'get_config',
             async () => {
-                if (typeof native.get_edge_computing_config === 'function') {
-                    return native.get_edge_computing_config();
+                if (typeof native.getEdgeComputingConfig === 'function') {
+                    return native.getEdgeComputingConfig();
                 }
                 return { module: 'edge_computing', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'validate_data',
             async () => {
-                if (typeof native.validate_edge_computing_data === 'function') {
-                    return native.validate_edge_computing_data(JSON.stringify(data));
+                if (typeof native.validateEdgeComputingData === 'function') {
+                    return native.validateEdgeComputingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'create',
             async () => {
-                if (typeof native.create_edge_computing_record === 'function') {
-                    return native.create_edge_computing_record(
+                if (typeof native.createEdgeComputingRecord === 'function') {
+                    return native.createEdgeComputingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'read',
             async () => {
-                if (typeof native.get_edge_computing_record === 'function') {
-                    return native.get_edge_computing_record(id);
+                if (typeof native.getEdgeComputingRecord === 'function') {
+                    return native.getEdgeComputingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'update',
             async () => {
-                if (typeof native.update_edge_computing_record === 'function') {
-                    return native.update_edge_computing_record(data);
+                if (typeof native.updateEdgeComputingRecord === 'function') {
+                    return native.updateEdgeComputingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'delete',
             async () => {
-                if (typeof native.delete_edge_computing_record === 'function') {
-                    return { success: native.delete_edge_computing_record(id) };
+                if (typeof native.deleteEdgeComputingRecord === 'function') {
+                    return { success: native.deleteEdgeComputingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_edge_computing_records === 'function') {
-                    return native.bulk_create_edge_computing_records(records);
+                if (typeof native.bulkCreateEdgeComputingRecords === 'function') {
+                    return native.bulkCreateEdgeComputingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'analytics',
             async () => {
-                if (typeof native.analyze_edge_computing_performance === 'function') {
-                    return native.analyze_edge_computing_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeEdgeComputingPerformance === 'function') {
+                    return native.analyzeEdgeComputingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class EdgeComputingApi {
             'edge_computing',
             'optimize',
             async () => {
-                if (typeof native.optimize_edge_computing_performance === 'function') {
-                    return { score: native.optimize_edge_computing_performance(data) };
+                if (typeof native.optimizeEdgeComputingPerformance === 'function') {
+                    return { score: native.optimizeEdgeComputingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

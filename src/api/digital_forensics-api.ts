@@ -19,8 +19,8 @@ export class DigitalForensicsApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_digital_forensics_health === 'function') {
-                    return native.check_digital_forensics_health();
+                if (typeof native.checkDigitalForensicsHealth === 'function') {
+                    return native.checkDigitalForensicsHealth();
                 }
                 return { status: 'healthy', module: 'digital_forensics' };
             }
@@ -33,8 +33,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'get_config',
             async () => {
-                if (typeof native.get_digital_forensics_config === 'function') {
-                    return native.get_digital_forensics_config();
+                if (typeof native.getDigitalForensicsConfig === 'function') {
+                    return native.getDigitalForensicsConfig();
                 }
                 return { module: 'digital_forensics', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'validate_data',
             async () => {
-                if (typeof native.validate_digital_forensics_data === 'function') {
-                    return native.validate_digital_forensics_data(JSON.stringify(data));
+                if (typeof native.validateDigitalForensicsData === 'function') {
+                    return native.validateDigitalForensicsData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'create',
             async () => {
-                if (typeof native.create_digital_forensics_record === 'function') {
-                    return native.create_digital_forensics_record(
+                if (typeof native.createDigitalForensicsRecord === 'function') {
+                    return native.createDigitalForensicsRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'read',
             async () => {
-                if (typeof native.get_digital_forensics_record === 'function') {
-                    return native.get_digital_forensics_record(id);
+                if (typeof native.getDigitalForensicsRecord === 'function') {
+                    return native.getDigitalForensicsRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'update',
             async () => {
-                if (typeof native.update_digital_forensics_record === 'function') {
-                    return native.update_digital_forensics_record(data);
+                if (typeof native.updateDigitalForensicsRecord === 'function') {
+                    return native.updateDigitalForensicsRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'delete',
             async () => {
-                if (typeof native.delete_digital_forensics_record === 'function') {
-                    return { success: native.delete_digital_forensics_record(id) };
+                if (typeof native.deleteDigitalForensicsRecord === 'function') {
+                    return { success: native.deleteDigitalForensicsRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_digital_forensics_records === 'function') {
-                    return native.bulk_create_digital_forensics_records(records);
+                if (typeof native.bulkCreateDigitalForensicsRecords === 'function') {
+                    return native.bulkCreateDigitalForensicsRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'analytics',
             async () => {
-                if (typeof native.analyze_digital_forensics_performance === 'function') {
-                    return native.analyze_digital_forensics_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeDigitalForensicsPerformance === 'function') {
+                    return native.analyzeDigitalForensicsPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class DigitalForensicsApi {
             'digital_forensics',
             'optimize',
             async () => {
-                if (typeof native.optimize_digital_forensics_performance === 'function') {
-                    return { score: native.optimize_digital_forensics_performance(data) };
+                if (typeof native.optimizeDigitalForensicsPerformance === 'function') {
+                    return { score: native.optimizeDigitalForensicsPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

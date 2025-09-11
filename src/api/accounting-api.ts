@@ -103,8 +103,8 @@ export class AccountingApi {
             'accounting',
             'update',
             async () => {
-                if (typeof native.updateAccountingRecord === 'function') {
-                    return native.updateAccountingRecord(id, JSON.stringify(data));
+                if (typeof native.updateAccountingRecord === 'function' && data.id) {
+                    return native.updateAccountingRecord(data.id, JSON.stringify(data));
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },

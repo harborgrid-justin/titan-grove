@@ -19,8 +19,8 @@ export class PerformanceApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_performance_health === 'function') {
-                    return native.check_performance_health();
+                if (typeof native.checkPerformanceHealth === 'function') {
+                    return native.checkPerformanceHealth();
                 }
                 return { status: 'healthy', module: 'performance' };
             }
@@ -33,8 +33,8 @@ export class PerformanceApi {
             'performance',
             'get_config',
             async () => {
-                if (typeof native.get_performance_config === 'function') {
-                    return native.get_performance_config();
+                if (typeof native.getPerformanceConfig === 'function') {
+                    return native.getPerformanceConfig();
                 }
                 return { module: 'performance', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class PerformanceApi {
             'performance',
             'validate_data',
             async () => {
-                if (typeof native.validate_performance_data === 'function') {
-                    return native.validate_performance_data(JSON.stringify(data));
+                if (typeof native.validatePerformanceData === 'function') {
+                    return native.validatePerformanceData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class PerformanceApi {
             'performance',
             'create',
             async () => {
-                if (typeof native.create_performance_record === 'function') {
-                    return native.create_performance_record(
+                if (typeof native.createPerformanceRecord === 'function') {
+                    return native.createPerformanceRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class PerformanceApi {
             'performance',
             'read',
             async () => {
-                if (typeof native.get_performance_record === 'function') {
-                    return native.get_performance_record(id);
+                if (typeof native.getPerformanceRecord === 'function') {
+                    return native.getPerformanceRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class PerformanceApi {
             'performance',
             'update',
             async () => {
-                if (typeof native.update_performance_record === 'function') {
-                    return native.update_performance_record(data);
+                if (typeof native.updatePerformanceRecord === 'function') {
+                    return native.updatePerformanceRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class PerformanceApi {
             'performance',
             'delete',
             async () => {
-                if (typeof native.delete_performance_record === 'function') {
-                    return { success: native.delete_performance_record(id) };
+                if (typeof native.deletePerformanceRecord === 'function') {
+                    return { success: native.deletePerformanceRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class PerformanceApi {
             'performance',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_performance_records === 'function') {
-                    return native.bulk_create_performance_records(records);
+                if (typeof native.bulkCreatePerformanceRecords === 'function') {
+                    return native.bulkCreatePerformanceRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class PerformanceApi {
             'performance',
             'analytics',
             async () => {
-                if (typeof native.analyze_performance_performance === 'function') {
-                    return native.analyze_performance_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzePerformancePerformance === 'function') {
+                    return native.analyzePerformancePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class PerformanceApi {
             'performance',
             'optimize',
             async () => {
-                if (typeof native.optimize_performance_performance === 'function') {
-                    return { score: native.optimize_performance_performance(data) };
+                if (typeof native.optimizePerformancePerformance === 'function') {
+                    return { score: native.optimizePerformancePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

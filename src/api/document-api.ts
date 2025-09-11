@@ -19,8 +19,8 @@ export class DocumentApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_document_health === 'function') {
-                    return native.check_document_health();
+                if (typeof native.checkDocumentHealth === 'function') {
+                    return native.checkDocumentHealth();
                 }
                 return { status: 'healthy', module: 'document' };
             }
@@ -33,8 +33,8 @@ export class DocumentApi {
             'document',
             'get_config',
             async () => {
-                if (typeof native.get_document_config === 'function') {
-                    return native.get_document_config();
+                if (typeof native.getDocumentConfig === 'function') {
+                    return native.getDocumentConfig();
                 }
                 return { module: 'document', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class DocumentApi {
             'document',
             'validate_data',
             async () => {
-                if (typeof native.validate_document_data === 'function') {
-                    return native.validate_document_data(JSON.stringify(data));
+                if (typeof native.validateDocumentData === 'function') {
+                    return native.validateDocumentData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class DocumentApi {
             'document',
             'create',
             async () => {
-                if (typeof native.create_document_record === 'function') {
-                    return native.create_document_record(
+                if (typeof native.createDocumentRecord === 'function') {
+                    return native.createDocumentRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class DocumentApi {
             'document',
             'read',
             async () => {
-                if (typeof native.get_document_record === 'function') {
-                    return native.get_document_record(id);
+                if (typeof native.getDocumentRecord === 'function') {
+                    return native.getDocumentRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class DocumentApi {
             'document',
             'update',
             async () => {
-                if (typeof native.update_document_record === 'function') {
-                    return native.update_document_record(data);
+                if (typeof native.updateDocumentRecord === 'function') {
+                    return native.updateDocumentRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class DocumentApi {
             'document',
             'delete',
             async () => {
-                if (typeof native.delete_document_record === 'function') {
-                    return { success: native.delete_document_record(id) };
+                if (typeof native.deleteDocumentRecord === 'function') {
+                    return { success: native.deleteDocumentRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class DocumentApi {
             'document',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_document_records === 'function') {
-                    return native.bulk_create_document_records(records);
+                if (typeof native.bulkCreateDocumentRecords === 'function') {
+                    return native.bulkCreateDocumentRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class DocumentApi {
             'document',
             'analytics',
             async () => {
-                if (typeof native.analyze_document_performance === 'function') {
-                    return native.analyze_document_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeDocumentPerformance === 'function') {
+                    return native.analyzeDocumentPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class DocumentApi {
             'document',
             'optimize',
             async () => {
-                if (typeof native.optimize_document_performance === 'function') {
-                    return { score: native.optimize_document_performance(data) };
+                if (typeof native.optimizeDocumentPerformance === 'function') {
+                    return { score: native.optimizeDocumentPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class PredictiveAnalyticsApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_predictive_analytics_health === 'function') {
-                    return native.check_predictive_analytics_health();
+                if (typeof native.checkPredictiveAnalyticsHealth === 'function') {
+                    return native.checkPredictiveAnalyticsHealth();
                 }
                 return { status: 'healthy', module: 'predictive_analytics' };
             }
@@ -33,8 +33,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'get_config',
             async () => {
-                if (typeof native.get_predictive_analytics_config === 'function') {
-                    return native.get_predictive_analytics_config();
+                if (typeof native.getPredictiveAnalyticsConfig === 'function') {
+                    return native.getPredictiveAnalyticsConfig();
                 }
                 return { module: 'predictive_analytics', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'validate_data',
             async () => {
-                if (typeof native.validate_predictive_analytics_data === 'function') {
-                    return native.validate_predictive_analytics_data(JSON.stringify(data));
+                if (typeof native.validatePredictiveAnalyticsData === 'function') {
+                    return native.validatePredictiveAnalyticsData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'create',
             async () => {
-                if (typeof native.create_predictive_analytics_record === 'function') {
-                    return native.create_predictive_analytics_record(
+                if (typeof native.createPredictiveAnalyticsRecord === 'function') {
+                    return native.createPredictiveAnalyticsRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'read',
             async () => {
-                if (typeof native.get_predictive_analytics_record === 'function') {
-                    return native.get_predictive_analytics_record(id);
+                if (typeof native.getPredictiveAnalyticsRecord === 'function') {
+                    return native.getPredictiveAnalyticsRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'update',
             async () => {
-                if (typeof native.update_predictive_analytics_record === 'function') {
-                    return native.update_predictive_analytics_record(data);
+                if (typeof native.updatePredictiveAnalyticsRecord === 'function') {
+                    return native.updatePredictiveAnalyticsRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'delete',
             async () => {
-                if (typeof native.delete_predictive_analytics_record === 'function') {
-                    return { success: native.delete_predictive_analytics_record(id) };
+                if (typeof native.deletePredictiveAnalyticsRecord === 'function') {
+                    return { success: native.deletePredictiveAnalyticsRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_predictive_analytics_records === 'function') {
-                    return native.bulk_create_predictive_analytics_records(records);
+                if (typeof native.bulkCreatePredictiveAnalyticsRecords === 'function') {
+                    return native.bulkCreatePredictiveAnalyticsRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'analytics',
             async () => {
-                if (typeof native.analyze_predictive_analytics_performance === 'function') {
-                    return native.analyze_predictive_analytics_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzePredictiveAnalyticsPerformance === 'function') {
+                    return native.analyzePredictiveAnalyticsPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class PredictiveAnalyticsApi {
             'predictive_analytics',
             'optimize',
             async () => {
-                if (typeof native.optimize_predictive_analytics_performance === 'function') {
-                    return { score: native.optimize_predictive_analytics_performance(data) };
+                if (typeof native.optimizePredictiveAnalyticsPerformance === 'function') {
+                    return { score: native.optimizePredictiveAnalyticsPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

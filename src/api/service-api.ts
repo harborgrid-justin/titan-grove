@@ -19,8 +19,8 @@ export class ServiceApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_service_health === 'function') {
-                    return native.check_service_health();
+                if (typeof native.checkServiceHealth === 'function') {
+                    return native.checkServiceHealth();
                 }
                 return { status: 'healthy', module: 'service' };
             }
@@ -33,8 +33,8 @@ export class ServiceApi {
             'service',
             'get_config',
             async () => {
-                if (typeof native.get_service_config === 'function') {
-                    return native.get_service_config();
+                if (typeof native.getServiceConfig === 'function') {
+                    return native.getServiceConfig();
                 }
                 return { module: 'service', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ServiceApi {
             'service',
             'validate_data',
             async () => {
-                if (typeof native.validate_service_data === 'function') {
-                    return native.validate_service_data(JSON.stringify(data));
+                if (typeof native.validateServiceData === 'function') {
+                    return native.validateServiceData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ServiceApi {
             'service',
             'create',
             async () => {
-                if (typeof native.create_service_record === 'function') {
-                    return native.create_service_record(
+                if (typeof native.createServiceRecord === 'function') {
+                    return native.createServiceRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ServiceApi {
             'service',
             'read',
             async () => {
-                if (typeof native.get_service_record === 'function') {
-                    return native.get_service_record(id);
+                if (typeof native.getServiceRecord === 'function') {
+                    return native.getServiceRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ServiceApi {
             'service',
             'update',
             async () => {
-                if (typeof native.update_service_record === 'function') {
-                    return native.update_service_record(data);
+                if (typeof native.updateServiceRecord === 'function') {
+                    return native.updateServiceRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ServiceApi {
             'service',
             'delete',
             async () => {
-                if (typeof native.delete_service_record === 'function') {
-                    return { success: native.delete_service_record(id) };
+                if (typeof native.deleteServiceRecord === 'function') {
+                    return { success: native.deleteServiceRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ServiceApi {
             'service',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_service_records === 'function') {
-                    return native.bulk_create_service_records(records);
+                if (typeof native.bulkCreateServiceRecords === 'function') {
+                    return native.bulkCreateServiceRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ServiceApi {
             'service',
             'analytics',
             async () => {
-                if (typeof native.analyze_service_performance === 'function') {
-                    return native.analyze_service_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeServicePerformance === 'function') {
+                    return native.analyzeServicePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ServiceApi {
             'service',
             'optimize',
             async () => {
-                if (typeof native.optimize_service_performance === 'function') {
-                    return { score: native.optimize_service_performance(data) };
+                if (typeof native.optimizeServicePerformance === 'function') {
+                    return { score: native.optimizeServicePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class VendorApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_vendor_health === 'function') {
-                    return native.check_vendor_health();
+                if (typeof native.checkVendorHealth === 'function') {
+                    return native.checkVendorHealth();
                 }
                 return { status: 'healthy', module: 'vendor' };
             }
@@ -33,8 +33,8 @@ export class VendorApi {
             'vendor',
             'get_config',
             async () => {
-                if (typeof native.get_vendor_config === 'function') {
-                    return native.get_vendor_config();
+                if (typeof native.getVendorConfig === 'function') {
+                    return native.getVendorConfig();
                 }
                 return { module: 'vendor', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class VendorApi {
             'vendor',
             'validate_data',
             async () => {
-                if (typeof native.validate_vendor_data === 'function') {
-                    return native.validate_vendor_data(JSON.stringify(data));
+                if (typeof native.validateVendorData === 'function') {
+                    return native.validateVendorData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class VendorApi {
             'vendor',
             'create',
             async () => {
-                if (typeof native.create_vendor_record === 'function') {
-                    return native.create_vendor_record(
+                if (typeof native.createVendorRecord === 'function') {
+                    return native.createVendorRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class VendorApi {
             'vendor',
             'read',
             async () => {
-                if (typeof native.get_vendor_record === 'function') {
-                    return native.get_vendor_record(id);
+                if (typeof native.getVendorRecord === 'function') {
+                    return native.getVendorRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class VendorApi {
             'vendor',
             'update',
             async () => {
-                if (typeof native.update_vendor_record === 'function') {
-                    return native.update_vendor_record(data);
+                if (typeof native.updateVendorRecord === 'function') {
+                    return native.updateVendorRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class VendorApi {
             'vendor',
             'delete',
             async () => {
-                if (typeof native.delete_vendor_record === 'function') {
-                    return { success: native.delete_vendor_record(id) };
+                if (typeof native.deleteVendorRecord === 'function') {
+                    return { success: native.deleteVendorRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class VendorApi {
             'vendor',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_vendor_records === 'function') {
-                    return native.bulk_create_vendor_records(records);
+                if (typeof native.bulkCreateVendorRecords === 'function') {
+                    return native.bulkCreateVendorRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class VendorApi {
             'vendor',
             'analytics',
             async () => {
-                if (typeof native.analyze_vendor_performance === 'function') {
-                    return native.analyze_vendor_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeVendorPerformance === 'function') {
+                    return native.analyzeVendorPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class VendorApi {
             'vendor',
             'optimize',
             async () => {
-                if (typeof native.optimize_vendor_performance === 'function') {
-                    return { score: native.optimize_vendor_performance(data) };
+                if (typeof native.optimizeVendorPerformance === 'function') {
+                    return { score: native.optimizeVendorPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

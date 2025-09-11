@@ -19,8 +19,8 @@ export class ResourceOptimizationApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_resource_optimization_health === 'function') {
-                    return native.check_resource_optimization_health();
+                if (typeof native.checkResourceOptimizationHealth === 'function') {
+                    return native.checkResourceOptimizationHealth();
                 }
                 return { status: 'healthy', module: 'resource_optimization' };
             }
@@ -33,8 +33,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'get_config',
             async () => {
-                if (typeof native.get_resource_optimization_config === 'function') {
-                    return native.get_resource_optimization_config();
+                if (typeof native.getResourceOptimizationConfig === 'function') {
+                    return native.getResourceOptimizationConfig();
                 }
                 return { module: 'resource_optimization', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'validate_data',
             async () => {
-                if (typeof native.validate_resource_optimization_data === 'function') {
-                    return native.validate_resource_optimization_data(JSON.stringify(data));
+                if (typeof native.validateResourceOptimizationData === 'function') {
+                    return native.validateResourceOptimizationData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'create',
             async () => {
-                if (typeof native.create_resource_optimization_record === 'function') {
-                    return native.create_resource_optimization_record(
+                if (typeof native.createResourceOptimizationRecord === 'function') {
+                    return native.createResourceOptimizationRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'read',
             async () => {
-                if (typeof native.get_resource_optimization_record === 'function') {
-                    return native.get_resource_optimization_record(id);
+                if (typeof native.getResourceOptimizationRecord === 'function') {
+                    return native.getResourceOptimizationRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'update',
             async () => {
-                if (typeof native.update_resource_optimization_record === 'function') {
-                    return native.update_resource_optimization_record(data);
+                if (typeof native.updateResourceOptimizationRecord === 'function') {
+                    return native.updateResourceOptimizationRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'delete',
             async () => {
-                if (typeof native.delete_resource_optimization_record === 'function') {
-                    return { success: native.delete_resource_optimization_record(id) };
+                if (typeof native.deleteResourceOptimizationRecord === 'function') {
+                    return { success: native.deleteResourceOptimizationRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_resource_optimization_records === 'function') {
-                    return native.bulk_create_resource_optimization_records(records);
+                if (typeof native.bulkCreateResourceOptimizationRecords === 'function') {
+                    return native.bulkCreateResourceOptimizationRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'analytics',
             async () => {
-                if (typeof native.analyze_resource_optimization_performance === 'function') {
-                    return native.analyze_resource_optimization_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeResourceOptimizationPerformance === 'function') {
+                    return native.analyzeResourceOptimizationPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ResourceOptimizationApi {
             'resource_optimization',
             'optimize',
             async () => {
-                if (typeof native.optimize_resource_optimization_performance === 'function') {
-                    return { score: native.optimize_resource_optimization_performance(data) };
+                if (typeof native.optimizeResourceOptimizationPerformance === 'function') {
+                    return { score: native.optimizeResourceOptimizationPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class RiskApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_risk_health === 'function') {
-                    return native.check_risk_health();
+                if (typeof native.checkRiskHealth === 'function') {
+                    return native.checkRiskHealth();
                 }
                 return { status: 'healthy', module: 'risk' };
             }
@@ -33,8 +33,8 @@ export class RiskApi {
             'risk',
             'get_config',
             async () => {
-                if (typeof native.get_risk_config === 'function') {
-                    return native.get_risk_config();
+                if (typeof native.getRiskConfig === 'function') {
+                    return native.getRiskConfig();
                 }
                 return { module: 'risk', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class RiskApi {
             'risk',
             'validate_data',
             async () => {
-                if (typeof native.validate_risk_data === 'function') {
-                    return native.validate_risk_data(JSON.stringify(data));
+                if (typeof native.validateRiskData === 'function') {
+                    return native.validateRiskData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class RiskApi {
             'risk',
             'create',
             async () => {
-                if (typeof native.create_risk_record === 'function') {
-                    return native.create_risk_record(
+                if (typeof native.createRiskRecord === 'function') {
+                    return native.createRiskRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class RiskApi {
             'risk',
             'read',
             async () => {
-                if (typeof native.get_risk_record === 'function') {
-                    return native.get_risk_record(id);
+                if (typeof native.getRiskRecord === 'function') {
+                    return native.getRiskRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class RiskApi {
             'risk',
             'update',
             async () => {
-                if (typeof native.update_risk_record === 'function') {
-                    return native.update_risk_record(data);
+                if (typeof native.updateRiskRecord === 'function') {
+                    return native.updateRiskRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class RiskApi {
             'risk',
             'delete',
             async () => {
-                if (typeof native.delete_risk_record === 'function') {
-                    return { success: native.delete_risk_record(id) };
+                if (typeof native.deleteRiskRecord === 'function') {
+                    return { success: native.deleteRiskRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class RiskApi {
             'risk',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_risk_records === 'function') {
-                    return native.bulk_create_risk_records(records);
+                if (typeof native.bulkCreateRiskRecords === 'function') {
+                    return native.bulkCreateRiskRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class RiskApi {
             'risk',
             'analytics',
             async () => {
-                if (typeof native.analyze_risk_performance === 'function') {
-                    return native.analyze_risk_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeRiskPerformance === 'function') {
+                    return native.analyzeRiskPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class RiskApi {
             'risk',
             'optimize',
             async () => {
-                if (typeof native.optimize_risk_performance === 'function') {
-                    return { score: native.optimize_risk_performance(data) };
+                if (typeof native.optimizeRiskPerformance === 'function') {
+                    return { score: native.optimizeRiskPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

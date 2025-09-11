@@ -19,8 +19,8 @@ export class PricingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_pricing_health === 'function') {
-                    return native.check_pricing_health();
+                if (typeof native.checkPricingHealth === 'function') {
+                    return native.checkPricingHealth();
                 }
                 return { status: 'healthy', module: 'pricing' };
             }
@@ -33,8 +33,8 @@ export class PricingApi {
             'pricing',
             'get_config',
             async () => {
-                if (typeof native.get_pricing_config === 'function') {
-                    return native.get_pricing_config();
+                if (typeof native.getPricingConfig === 'function') {
+                    return native.getPricingConfig();
                 }
                 return { module: 'pricing', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class PricingApi {
             'pricing',
             'validate_data',
             async () => {
-                if (typeof native.validate_pricing_data === 'function') {
-                    return native.validate_pricing_data(JSON.stringify(data));
+                if (typeof native.validatePricingData === 'function') {
+                    return native.validatePricingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class PricingApi {
             'pricing',
             'create',
             async () => {
-                if (typeof native.create_pricing_record === 'function') {
-                    return native.create_pricing_record(
+                if (typeof native.createPricingRecord === 'function') {
+                    return native.createPricingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class PricingApi {
             'pricing',
             'read',
             async () => {
-                if (typeof native.get_pricing_record === 'function') {
-                    return native.get_pricing_record(id);
+                if (typeof native.getPricingRecord === 'function') {
+                    return native.getPricingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class PricingApi {
             'pricing',
             'update',
             async () => {
-                if (typeof native.update_pricing_record === 'function') {
-                    return native.update_pricing_record(data);
+                if (typeof native.updatePricingRecord === 'function') {
+                    return native.updatePricingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class PricingApi {
             'pricing',
             'delete',
             async () => {
-                if (typeof native.delete_pricing_record === 'function') {
-                    return { success: native.delete_pricing_record(id) };
+                if (typeof native.deletePricingRecord === 'function') {
+                    return { success: native.deletePricingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class PricingApi {
             'pricing',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_pricing_records === 'function') {
-                    return native.bulk_create_pricing_records(records);
+                if (typeof native.bulkCreatePricingRecords === 'function') {
+                    return native.bulkCreatePricingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class PricingApi {
             'pricing',
             'analytics',
             async () => {
-                if (typeof native.analyze_pricing_performance === 'function') {
-                    return native.analyze_pricing_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzePricingPerformance === 'function') {
+                    return native.analyzePricingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class PricingApi {
             'pricing',
             'optimize',
             async () => {
-                if (typeof native.optimize_pricing_performance === 'function') {
-                    return { score: native.optimize_pricing_performance(data) };
+                if (typeof native.optimizePricingPerformance === 'function') {
+                    return { score: native.optimizePricingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

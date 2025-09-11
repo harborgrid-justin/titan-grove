@@ -19,8 +19,8 @@ export class RentalApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_rental_health === 'function') {
-                    return native.check_rental_health();
+                if (typeof native.checkRentalHealth === 'function') {
+                    return native.checkRentalHealth();
                 }
                 return { status: 'healthy', module: 'rental' };
             }
@@ -33,8 +33,8 @@ export class RentalApi {
             'rental',
             'get_config',
             async () => {
-                if (typeof native.get_rental_config === 'function') {
-                    return native.get_rental_config();
+                if (typeof native.getRentalConfig === 'function') {
+                    return native.getRentalConfig();
                 }
                 return { module: 'rental', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class RentalApi {
             'rental',
             'validate_data',
             async () => {
-                if (typeof native.validate_rental_data === 'function') {
-                    return native.validate_rental_data(JSON.stringify(data));
+                if (typeof native.validateRentalData === 'function') {
+                    return native.validateRentalData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class RentalApi {
             'rental',
             'create',
             async () => {
-                if (typeof native.create_rental_record === 'function') {
-                    return native.create_rental_record(
+                if (typeof native.createRentalRecord === 'function') {
+                    return native.createRentalRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class RentalApi {
             'rental',
             'read',
             async () => {
-                if (typeof native.get_rental_record === 'function') {
-                    return native.get_rental_record(id);
+                if (typeof native.getRentalRecord === 'function') {
+                    return native.getRentalRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class RentalApi {
             'rental',
             'update',
             async () => {
-                if (typeof native.update_rental_record === 'function') {
-                    return native.update_rental_record(data);
+                if (typeof native.updateRentalRecord === 'function') {
+                    return native.updateRentalRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class RentalApi {
             'rental',
             'delete',
             async () => {
-                if (typeof native.delete_rental_record === 'function') {
-                    return { success: native.delete_rental_record(id) };
+                if (typeof native.deleteRentalRecord === 'function') {
+                    return { success: native.deleteRentalRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class RentalApi {
             'rental',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_rental_records === 'function') {
-                    return native.bulk_create_rental_records(records);
+                if (typeof native.bulkCreateRentalRecords === 'function') {
+                    return native.bulkCreateRentalRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class RentalApi {
             'rental',
             'analytics',
             async () => {
-                if (typeof native.analyze_rental_performance === 'function') {
-                    return native.analyze_rental_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeRentalPerformance === 'function') {
+                    return native.analyzeRentalPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class RentalApi {
             'rental',
             'optimize',
             async () => {
-                if (typeof native.optimize_rental_performance === 'function') {
-                    return { score: native.optimize_rental_performance(data) };
+                if (typeof native.optimizeRentalPerformance === 'function') {
+                    return { score: native.optimizeRentalPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

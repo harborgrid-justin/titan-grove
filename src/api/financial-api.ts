@@ -19,8 +19,8 @@ export class FinancialApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_financial_health === 'function') {
-                    return native.check_financial_health();
+                if (typeof native.checkFinancialHealth === 'function') {
+                    return native.checkFinancialHealth();
                 }
                 return { status: 'healthy', module: 'financial' };
             }
@@ -33,8 +33,8 @@ export class FinancialApi {
             'financial',
             'get_config',
             async () => {
-                if (typeof native.get_financial_config === 'function') {
-                    return native.get_financial_config();
+                if (typeof native.getFinancialConfig === 'function') {
+                    return native.getFinancialConfig();
                 }
                 return { module: 'financial', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class FinancialApi {
             'financial',
             'validate_data',
             async () => {
-                if (typeof native.validate_financial_data === 'function') {
-                    return native.validate_financial_data(JSON.stringify(data));
+                if (typeof native.validateFinancialData === 'function') {
+                    return native.validateFinancialData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class FinancialApi {
             'financial',
             'create',
             async () => {
-                if (typeof native.create_financial_record === 'function') {
-                    return native.create_financial_record(
+                if (typeof native.createFinancialRecord === 'function') {
+                    return native.createFinancialRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class FinancialApi {
             'financial',
             'read',
             async () => {
-                if (typeof native.get_financial_record === 'function') {
-                    return native.get_financial_record(id);
+                if (typeof native.getFinancialRecord === 'function') {
+                    return native.getFinancialRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class FinancialApi {
             'financial',
             'update',
             async () => {
-                if (typeof native.update_financial_record === 'function') {
-                    return native.update_financial_record(data);
+                if (typeof native.updateFinancialRecord === 'function') {
+                    return native.updateFinancialRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class FinancialApi {
             'financial',
             'delete',
             async () => {
-                if (typeof native.delete_financial_record === 'function') {
-                    return { success: native.delete_financial_record(id) };
+                if (typeof native.deleteFinancialRecord === 'function') {
+                    return { success: native.deleteFinancialRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class FinancialApi {
             'financial',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_financial_records === 'function') {
-                    return native.bulk_create_financial_records(records);
+                if (typeof native.bulkCreateFinancialRecords === 'function') {
+                    return native.bulkCreateFinancialRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class FinancialApi {
             'financial',
             'analytics',
             async () => {
-                if (typeof native.analyze_financial_performance === 'function') {
-                    return native.analyze_financial_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeFinancialPerformance === 'function') {
+                    return native.analyzeFinancialPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class FinancialApi {
             'financial',
             'optimize',
             async () => {
-                if (typeof native.optimize_financial_performance === 'function') {
-                    return { score: native.optimize_financial_performance(data) };
+                if (typeof native.optimizeFinancialPerformance === 'function') {
+                    return { score: native.optimizeFinancialPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

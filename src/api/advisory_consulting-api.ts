@@ -19,8 +19,8 @@ export class AdvisoryConsultingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_advisory_consulting_health === 'function') {
-                    return native.check_advisory_consulting_health();
+                if (typeof native.checkAdvisoryConsultingHealth === 'function') {
+                    return native.checkAdvisoryConsultingHealth();
                 }
                 return { status: 'healthy', module: 'advisory_consulting' };
             }
@@ -33,8 +33,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'get_config',
             async () => {
-                if (typeof native.get_advisory_consulting_config === 'function') {
-                    return native.get_advisory_consulting_config();
+                if (typeof native.getAdvisoryConsultingConfig === 'function') {
+                    return native.getAdvisoryConsultingConfig();
                 }
                 return { module: 'advisory_consulting', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'validate_data',
             async () => {
-                if (typeof native.validate_advisory_consulting_data === 'function') {
-                    return native.validate_advisory_consulting_data(JSON.stringify(data));
+                if (typeof native.validateAdvisoryConsultingData === 'function') {
+                    return native.validateAdvisoryConsultingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'create',
             async () => {
-                if (typeof native.create_advisory_consulting_record === 'function') {
-                    return native.create_advisory_consulting_record(
+                if (typeof native.createAdvisoryConsultingRecord === 'function') {
+                    return native.createAdvisoryConsultingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'read',
             async () => {
-                if (typeof native.get_advisory_consulting_record === 'function') {
-                    return native.get_advisory_consulting_record(id);
+                if (typeof native.getAdvisoryConsultingRecord === 'function') {
+                    return native.getAdvisoryConsultingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'update',
             async () => {
-                if (typeof native.update_advisory_consulting_record === 'function') {
-                    return native.update_advisory_consulting_record(data);
+                if (typeof native.updateAdvisoryConsultingRecord === 'function') {
+                    return native.updateAdvisoryConsultingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'delete',
             async () => {
-                if (typeof native.delete_advisory_consulting_record === 'function') {
-                    return { success: native.delete_advisory_consulting_record(id) };
+                if (typeof native.deleteAdvisoryConsultingRecord === 'function') {
+                    return { success: native.deleteAdvisoryConsultingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_advisory_consulting_records === 'function') {
-                    return native.bulk_create_advisory_consulting_records(records);
+                if (typeof native.bulkCreateAdvisoryConsultingRecords === 'function') {
+                    return native.bulkCreateAdvisoryConsultingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'analytics',
             async () => {
-                if (typeof native.analyze_advisory_consulting_performance === 'function') {
-                    return native.analyze_advisory_consulting_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeAdvisoryConsultingPerformance === 'function') {
+                    return native.analyzeAdvisoryConsultingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class AdvisoryConsultingApi {
             'advisory_consulting',
             'optimize',
             async () => {
-                if (typeof native.optimize_advisory_consulting_performance === 'function') {
-                    return { score: native.optimize_advisory_consulting_performance(data) };
+                if (typeof native.optimizeAdvisoryConsultingPerformance === 'function') {
+                    return { score: native.optimizeAdvisoryConsultingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

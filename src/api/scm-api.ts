@@ -19,8 +19,8 @@ export class ScmApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_scm_health === 'function') {
-                    return native.check_scm_health();
+                if (typeof native.checkScmHealth === 'function') {
+                    return native.checkScmHealth();
                 }
                 return { status: 'healthy', module: 'scm' };
             }
@@ -33,8 +33,8 @@ export class ScmApi {
             'scm',
             'get_config',
             async () => {
-                if (typeof native.get_scm_config === 'function') {
-                    return native.get_scm_config();
+                if (typeof native.getScmConfig === 'function') {
+                    return native.getScmConfig();
                 }
                 return { module: 'scm', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ScmApi {
             'scm',
             'validate_data',
             async () => {
-                if (typeof native.validate_scm_data === 'function') {
-                    return native.validate_scm_data(JSON.stringify(data));
+                if (typeof native.validateScmData === 'function') {
+                    return native.validateScmData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ScmApi {
             'scm',
             'create',
             async () => {
-                if (typeof native.create_scm_record === 'function') {
-                    return native.create_scm_record(
+                if (typeof native.createScmRecord === 'function') {
+                    return native.createScmRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ScmApi {
             'scm',
             'read',
             async () => {
-                if (typeof native.get_scm_record === 'function') {
-                    return native.get_scm_record(id);
+                if (typeof native.getScmRecord === 'function') {
+                    return native.getScmRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ScmApi {
             'scm',
             'update',
             async () => {
-                if (typeof native.update_scm_record === 'function') {
-                    return native.update_scm_record(data);
+                if (typeof native.updateScmRecord === 'function') {
+                    return native.updateScmRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ScmApi {
             'scm',
             'delete',
             async () => {
-                if (typeof native.delete_scm_record === 'function') {
-                    return { success: native.delete_scm_record(id) };
+                if (typeof native.deleteScmRecord === 'function') {
+                    return { success: native.deleteScmRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ScmApi {
             'scm',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_scm_records === 'function') {
-                    return native.bulk_create_scm_records(records);
+                if (typeof native.bulkCreateScmRecords === 'function') {
+                    return native.bulkCreateScmRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ScmApi {
             'scm',
             'analytics',
             async () => {
-                if (typeof native.analyze_scm_performance === 'function') {
-                    return native.analyze_scm_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeScmPerformance === 'function') {
+                    return native.analyzeScmPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ScmApi {
             'scm',
             'optimize',
             async () => {
-                if (typeof native.optimize_scm_performance === 'function') {
-                    return { score: native.optimize_scm_performance(data) };
+                if (typeof native.optimizeScmPerformance === 'function') {
+                    return { score: native.optimizeScmPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

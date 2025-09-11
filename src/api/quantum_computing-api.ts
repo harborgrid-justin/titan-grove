@@ -19,8 +19,8 @@ export class QuantumComputingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_quantum_computing_health === 'function') {
-                    return native.check_quantum_computing_health();
+                if (typeof native.checkQuantumComputingHealth === 'function') {
+                    return native.checkQuantumComputingHealth();
                 }
                 return { status: 'healthy', module: 'quantum_computing' };
             }
@@ -33,8 +33,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'get_config',
             async () => {
-                if (typeof native.get_quantum_computing_config === 'function') {
-                    return native.get_quantum_computing_config();
+                if (typeof native.getQuantumComputingConfig === 'function') {
+                    return native.getQuantumComputingConfig();
                 }
                 return { module: 'quantum_computing', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'validate_data',
             async () => {
-                if (typeof native.validate_quantum_computing_data === 'function') {
-                    return native.validate_quantum_computing_data(JSON.stringify(data));
+                if (typeof native.validateQuantumComputingData === 'function') {
+                    return native.validateQuantumComputingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'create',
             async () => {
-                if (typeof native.create_quantum_computing_record === 'function') {
-                    return native.create_quantum_computing_record(
+                if (typeof native.createQuantumComputingRecord === 'function') {
+                    return native.createQuantumComputingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'read',
             async () => {
-                if (typeof native.get_quantum_computing_record === 'function') {
-                    return native.get_quantum_computing_record(id);
+                if (typeof native.getQuantumComputingRecord === 'function') {
+                    return native.getQuantumComputingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'update',
             async () => {
-                if (typeof native.update_quantum_computing_record === 'function') {
-                    return native.update_quantum_computing_record(data);
+                if (typeof native.updateQuantumComputingRecord === 'function') {
+                    return native.updateQuantumComputingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'delete',
             async () => {
-                if (typeof native.delete_quantum_computing_record === 'function') {
-                    return { success: native.delete_quantum_computing_record(id) };
+                if (typeof native.deleteQuantumComputingRecord === 'function') {
+                    return { success: native.deleteQuantumComputingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_quantum_computing_records === 'function') {
-                    return native.bulk_create_quantum_computing_records(records);
+                if (typeof native.bulkCreateQuantumComputingRecords === 'function') {
+                    return native.bulkCreateQuantumComputingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'analytics',
             async () => {
-                if (typeof native.analyze_quantum_computing_performance === 'function') {
-                    return native.analyze_quantum_computing_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeQuantumComputingPerformance === 'function') {
+                    return native.analyzeQuantumComputingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class QuantumComputingApi {
             'quantum_computing',
             'optimize',
             async () => {
-                if (typeof native.optimize_quantum_computing_performance === 'function') {
-                    return { score: native.optimize_quantum_computing_performance(data) };
+                if (typeof native.optimizeQuantumComputingPerformance === 'function') {
+                    return { score: native.optimizeQuantumComputingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

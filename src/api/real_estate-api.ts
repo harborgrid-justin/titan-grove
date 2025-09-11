@@ -19,8 +19,8 @@ export class RealEstateApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_real_estate_health === 'function') {
-                    return native.check_real_estate_health();
+                if (typeof native.checkRealEstateHealth === 'function') {
+                    return native.checkRealEstateHealth();
                 }
                 return { status: 'healthy', module: 'real_estate' };
             }
@@ -33,8 +33,8 @@ export class RealEstateApi {
             'real_estate',
             'get_config',
             async () => {
-                if (typeof native.get_real_estate_config === 'function') {
-                    return native.get_real_estate_config();
+                if (typeof native.getRealEstateConfig === 'function') {
+                    return native.getRealEstateConfig();
                 }
                 return { module: 'real_estate', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class RealEstateApi {
             'real_estate',
             'validate_data',
             async () => {
-                if (typeof native.validate_real_estate_data === 'function') {
-                    return native.validate_real_estate_data(JSON.stringify(data));
+                if (typeof native.validateRealEstateData === 'function') {
+                    return native.validateRealEstateData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class RealEstateApi {
             'real_estate',
             'create',
             async () => {
-                if (typeof native.create_real_estate_record === 'function') {
-                    return native.create_real_estate_record(
+                if (typeof native.createRealEstateRecord === 'function') {
+                    return native.createRealEstateRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class RealEstateApi {
             'real_estate',
             'read',
             async () => {
-                if (typeof native.get_real_estate_record === 'function') {
-                    return native.get_real_estate_record(id);
+                if (typeof native.getRealEstateRecord === 'function') {
+                    return native.getRealEstateRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class RealEstateApi {
             'real_estate',
             'update',
             async () => {
-                if (typeof native.update_real_estate_record === 'function') {
-                    return native.update_real_estate_record(data);
+                if (typeof native.updateRealEstateRecord === 'function') {
+                    return native.updateRealEstateRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class RealEstateApi {
             'real_estate',
             'delete',
             async () => {
-                if (typeof native.delete_real_estate_record === 'function') {
-                    return { success: native.delete_real_estate_record(id) };
+                if (typeof native.deleteRealEstateRecord === 'function') {
+                    return { success: native.deleteRealEstateRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class RealEstateApi {
             'real_estate',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_real_estate_records === 'function') {
-                    return native.bulk_create_real_estate_records(records);
+                if (typeof native.bulkCreateRealEstateRecords === 'function') {
+                    return native.bulkCreateRealEstateRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class RealEstateApi {
             'real_estate',
             'analytics',
             async () => {
-                if (typeof native.analyze_real_estate_performance === 'function') {
-                    return native.analyze_real_estate_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeRealEstatePerformance === 'function') {
+                    return native.analyzeRealEstatePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class RealEstateApi {
             'real_estate',
             'optimize',
             async () => {
-                if (typeof native.optimize_real_estate_performance === 'function') {
-                    return { score: native.optimize_real_estate_performance(data) };
+                if (typeof native.optimizeRealEstatePerformance === 'function') {
+                    return { score: native.optimizeRealEstatePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class ProfessionalServicesApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_professional_services_health === 'function') {
-                    return native.check_professional_services_health();
+                if (typeof native.checkProfessionalServicesHealth === 'function') {
+                    return native.checkProfessionalServicesHealth();
                 }
                 return { status: 'healthy', module: 'professional_services' };
             }
@@ -33,8 +33,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'get_config',
             async () => {
-                if (typeof native.get_professional_services_config === 'function') {
-                    return native.get_professional_services_config();
+                if (typeof native.getProfessionalServicesConfig === 'function') {
+                    return native.getProfessionalServicesConfig();
                 }
                 return { module: 'professional_services', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'validate_data',
             async () => {
-                if (typeof native.validate_professional_services_data === 'function') {
-                    return native.validate_professional_services_data(JSON.stringify(data));
+                if (typeof native.validateProfessionalServicesData === 'function') {
+                    return native.validateProfessionalServicesData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'create',
             async () => {
-                if (typeof native.create_professional_services_record === 'function') {
-                    return native.create_professional_services_record(
+                if (typeof native.createProfessionalServicesRecord === 'function') {
+                    return native.createProfessionalServicesRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'read',
             async () => {
-                if (typeof native.get_professional_services_record === 'function') {
-                    return native.get_professional_services_record(id);
+                if (typeof native.getProfessionalServicesRecord === 'function') {
+                    return native.getProfessionalServicesRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'update',
             async () => {
-                if (typeof native.update_professional_services_record === 'function') {
-                    return native.update_professional_services_record(data);
+                if (typeof native.updateProfessionalServicesRecord === 'function') {
+                    return native.updateProfessionalServicesRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'delete',
             async () => {
-                if (typeof native.delete_professional_services_record === 'function') {
-                    return { success: native.delete_professional_services_record(id) };
+                if (typeof native.deleteProfessionalServicesRecord === 'function') {
+                    return { success: native.deleteProfessionalServicesRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_professional_services_records === 'function') {
-                    return native.bulk_create_professional_services_records(records);
+                if (typeof native.bulkCreateProfessionalServicesRecords === 'function') {
+                    return native.bulkCreateProfessionalServicesRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'analytics',
             async () => {
-                if (typeof native.analyze_professional_services_performance === 'function') {
-                    return native.analyze_professional_services_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeProfessionalServicesPerformance === 'function') {
+                    return native.analyzeProfessionalServicesPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ProfessionalServicesApi {
             'professional_services',
             'optimize',
             async () => {
-                if (typeof native.optimize_professional_services_performance === 'function') {
-                    return { score: native.optimize_professional_services_performance(data) };
+                if (typeof native.optimizeProfessionalServicesPerformance === 'function') {
+                    return { score: native.optimizeProfessionalServicesPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

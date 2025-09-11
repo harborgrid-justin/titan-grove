@@ -19,8 +19,8 @@ export class MaintenanceApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_maintenance_health === 'function') {
-                    return native.check_maintenance_health();
+                if (typeof native.checkMaintenanceHealth === 'function') {
+                    return native.checkMaintenanceHealth();
                 }
                 return { status: 'healthy', module: 'maintenance' };
             }
@@ -33,8 +33,8 @@ export class MaintenanceApi {
             'maintenance',
             'get_config',
             async () => {
-                if (typeof native.get_maintenance_config === 'function') {
-                    return native.get_maintenance_config();
+                if (typeof native.getMaintenanceConfig === 'function') {
+                    return native.getMaintenanceConfig();
                 }
                 return { module: 'maintenance', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class MaintenanceApi {
             'maintenance',
             'validate_data',
             async () => {
-                if (typeof native.validate_maintenance_data === 'function') {
-                    return native.validate_maintenance_data(JSON.stringify(data));
+                if (typeof native.validateMaintenanceData === 'function') {
+                    return native.validateMaintenanceData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class MaintenanceApi {
             'maintenance',
             'create',
             async () => {
-                if (typeof native.create_maintenance_record === 'function') {
-                    return native.create_maintenance_record(
+                if (typeof native.createMaintenanceRecord === 'function') {
+                    return native.createMaintenanceRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class MaintenanceApi {
             'maintenance',
             'read',
             async () => {
-                if (typeof native.get_maintenance_record === 'function') {
-                    return native.get_maintenance_record(id);
+                if (typeof native.getMaintenanceRecord === 'function') {
+                    return native.getMaintenanceRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class MaintenanceApi {
             'maintenance',
             'update',
             async () => {
-                if (typeof native.update_maintenance_record === 'function') {
-                    return native.update_maintenance_record(data);
+                if (typeof native.updateMaintenanceRecord === 'function') {
+                    return native.updateMaintenanceRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class MaintenanceApi {
             'maintenance',
             'delete',
             async () => {
-                if (typeof native.delete_maintenance_record === 'function') {
-                    return { success: native.delete_maintenance_record(id) };
+                if (typeof native.deleteMaintenanceRecord === 'function') {
+                    return { success: native.deleteMaintenanceRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class MaintenanceApi {
             'maintenance',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_maintenance_records === 'function') {
-                    return native.bulk_create_maintenance_records(records);
+                if (typeof native.bulkCreateMaintenanceRecords === 'function') {
+                    return native.bulkCreateMaintenanceRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class MaintenanceApi {
             'maintenance',
             'analytics',
             async () => {
-                if (typeof native.analyze_maintenance_performance === 'function') {
-                    return native.analyze_maintenance_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeMaintenancePerformance === 'function') {
+                    return native.analyzeMaintenancePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class MaintenanceApi {
             'maintenance',
             'optimize',
             async () => {
-                if (typeof native.optimize_maintenance_performance === 'function') {
-                    return { score: native.optimize_maintenance_performance(data) };
+                if (typeof native.optimizeMaintenancePerformance === 'function') {
+                    return { score: native.optimizeMaintenancePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

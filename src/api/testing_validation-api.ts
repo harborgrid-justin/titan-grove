@@ -19,8 +19,8 @@ export class TestingValidationApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_testing_validation_health === 'function') {
-                    return native.check_testing_validation_health();
+                if (typeof native.checkTestingValidationHealth === 'function') {
+                    return native.checkTestingValidationHealth();
                 }
                 return { status: 'healthy', module: 'testing_validation' };
             }
@@ -33,8 +33,8 @@ export class TestingValidationApi {
             'testing_validation',
             'get_config',
             async () => {
-                if (typeof native.get_testing_validation_config === 'function') {
-                    return native.get_testing_validation_config();
+                if (typeof native.getTestingValidationConfig === 'function') {
+                    return native.getTestingValidationConfig();
                 }
                 return { module: 'testing_validation', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class TestingValidationApi {
             'testing_validation',
             'validate_data',
             async () => {
-                if (typeof native.validate_testing_validation_data === 'function') {
-                    return native.validate_testing_validation_data(JSON.stringify(data));
+                if (typeof native.validateTestingValidationData === 'function') {
+                    return native.validateTestingValidationData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class TestingValidationApi {
             'testing_validation',
             'create',
             async () => {
-                if (typeof native.create_testing_validation_record === 'function') {
-                    return native.create_testing_validation_record(
+                if (typeof native.createTestingValidationRecord === 'function') {
+                    return native.createTestingValidationRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class TestingValidationApi {
             'testing_validation',
             'read',
             async () => {
-                if (typeof native.get_testing_validation_record === 'function') {
-                    return native.get_testing_validation_record(id);
+                if (typeof native.getTestingValidationRecord === 'function') {
+                    return native.getTestingValidationRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class TestingValidationApi {
             'testing_validation',
             'update',
             async () => {
-                if (typeof native.update_testing_validation_record === 'function') {
-                    return native.update_testing_validation_record(data);
+                if (typeof native.updateTestingValidationRecord === 'function') {
+                    return native.updateTestingValidationRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class TestingValidationApi {
             'testing_validation',
             'delete',
             async () => {
-                if (typeof native.delete_testing_validation_record === 'function') {
-                    return { success: native.delete_testing_validation_record(id) };
+                if (typeof native.deleteTestingValidationRecord === 'function') {
+                    return { success: native.deleteTestingValidationRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class TestingValidationApi {
             'testing_validation',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_testing_validation_records === 'function') {
-                    return native.bulk_create_testing_validation_records(records);
+                if (typeof native.bulkCreateTestingValidationRecords === 'function') {
+                    return native.bulkCreateTestingValidationRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class TestingValidationApi {
             'testing_validation',
             'analytics',
             async () => {
-                if (typeof native.analyze_testing_validation_performance === 'function') {
-                    return native.analyze_testing_validation_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeTestingValidationPerformance === 'function') {
+                    return native.analyzeTestingValidationPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class TestingValidationApi {
             'testing_validation',
             'optimize',
             async () => {
-                if (typeof native.optimize_testing_validation_performance === 'function') {
-                    return { score: native.optimize_testing_validation_performance(data) };
+                if (typeof native.optimizeTestingValidationPerformance === 'function') {
+                    return { score: native.optimizeTestingValidationPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

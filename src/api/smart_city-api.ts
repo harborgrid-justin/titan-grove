@@ -19,8 +19,8 @@ export class SmartCityApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_smart_city_health === 'function') {
-                    return native.check_smart_city_health();
+                if (typeof native.checkSmartCityHealth === 'function') {
+                    return native.checkSmartCityHealth();
                 }
                 return { status: 'healthy', module: 'smart_city' };
             }
@@ -33,8 +33,8 @@ export class SmartCityApi {
             'smart_city',
             'get_config',
             async () => {
-                if (typeof native.get_smart_city_config === 'function') {
-                    return native.get_smart_city_config();
+                if (typeof native.getSmartCityConfig === 'function') {
+                    return native.getSmartCityConfig();
                 }
                 return { module: 'smart_city', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class SmartCityApi {
             'smart_city',
             'validate_data',
             async () => {
-                if (typeof native.validate_smart_city_data === 'function') {
-                    return native.validate_smart_city_data(JSON.stringify(data));
+                if (typeof native.validateSmartCityData === 'function') {
+                    return native.validateSmartCityData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class SmartCityApi {
             'smart_city',
             'create',
             async () => {
-                if (typeof native.create_smart_city_record === 'function') {
-                    return native.create_smart_city_record(
+                if (typeof native.createSmartCityRecord === 'function') {
+                    return native.createSmartCityRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class SmartCityApi {
             'smart_city',
             'read',
             async () => {
-                if (typeof native.get_smart_city_record === 'function') {
-                    return native.get_smart_city_record(id);
+                if (typeof native.getSmartCityRecord === 'function') {
+                    return native.getSmartCityRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class SmartCityApi {
             'smart_city',
             'update',
             async () => {
-                if (typeof native.update_smart_city_record === 'function') {
-                    return native.update_smart_city_record(data);
+                if (typeof native.updateSmartCityRecord === 'function') {
+                    return native.updateSmartCityRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class SmartCityApi {
             'smart_city',
             'delete',
             async () => {
-                if (typeof native.delete_smart_city_record === 'function') {
-                    return { success: native.delete_smart_city_record(id) };
+                if (typeof native.deleteSmartCityRecord === 'function') {
+                    return { success: native.deleteSmartCityRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class SmartCityApi {
             'smart_city',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_smart_city_records === 'function') {
-                    return native.bulk_create_smart_city_records(records);
+                if (typeof native.bulkCreateSmartCityRecords === 'function') {
+                    return native.bulkCreateSmartCityRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class SmartCityApi {
             'smart_city',
             'analytics',
             async () => {
-                if (typeof native.analyze_smart_city_performance === 'function') {
-                    return native.analyze_smart_city_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeSmartCityPerformance === 'function') {
+                    return native.analyzeSmartCityPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class SmartCityApi {
             'smart_city',
             'optimize',
             async () => {
-                if (typeof native.optimize_smart_city_performance === 'function') {
-                    return { score: native.optimize_smart_city_performance(data) };
+                if (typeof native.optimizeSmartCityPerformance === 'function') {
+                    return { score: native.optimizeSmartCityPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

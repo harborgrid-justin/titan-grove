@@ -19,8 +19,8 @@ export class TaxApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_tax_health === 'function') {
-                    return native.check_tax_health();
+                if (typeof native.checkTaxHealth === 'function') {
+                    return native.checkTaxHealth();
                 }
                 return { status: 'healthy', module: 'tax' };
             }
@@ -33,8 +33,8 @@ export class TaxApi {
             'tax',
             'get_config',
             async () => {
-                if (typeof native.get_tax_config === 'function') {
-                    return native.get_tax_config();
+                if (typeof native.getTaxConfig === 'function') {
+                    return native.getTaxConfig();
                 }
                 return { module: 'tax', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class TaxApi {
             'tax',
             'validate_data',
             async () => {
-                if (typeof native.validate_tax_data === 'function') {
-                    return native.validate_tax_data(JSON.stringify(data));
+                if (typeof native.validateTaxData === 'function') {
+                    return native.validateTaxData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class TaxApi {
             'tax',
             'create',
             async () => {
-                if (typeof native.create_tax_record === 'function') {
-                    return native.create_tax_record(
+                if (typeof native.createTaxRecord === 'function') {
+                    return native.createTaxRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class TaxApi {
             'tax',
             'read',
             async () => {
-                if (typeof native.get_tax_record === 'function') {
-                    return native.get_tax_record(id);
+                if (typeof native.getTaxRecord === 'function') {
+                    return native.getTaxRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class TaxApi {
             'tax',
             'update',
             async () => {
-                if (typeof native.update_tax_record === 'function') {
-                    return native.update_tax_record(data);
+                if (typeof native.updateTaxRecord === 'function') {
+                    return native.updateTaxRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class TaxApi {
             'tax',
             'delete',
             async () => {
-                if (typeof native.delete_tax_record === 'function') {
-                    return { success: native.delete_tax_record(id) };
+                if (typeof native.deleteTaxRecord === 'function') {
+                    return { success: native.deleteTaxRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class TaxApi {
             'tax',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_tax_records === 'function') {
-                    return native.bulk_create_tax_records(records);
+                if (typeof native.bulkCreateTaxRecords === 'function') {
+                    return native.bulkCreateTaxRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class TaxApi {
             'tax',
             'analytics',
             async () => {
-                if (typeof native.analyze_tax_performance === 'function') {
-                    return native.analyze_tax_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeTaxPerformance === 'function') {
+                    return native.analyzeTaxPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class TaxApi {
             'tax',
             'optimize',
             async () => {
-                if (typeof native.optimize_tax_performance === 'function') {
-                    return { score: native.optimize_tax_performance(data) };
+                if (typeof native.optimizeTaxPerformance === 'function') {
+                    return { score: native.optimizeTaxPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

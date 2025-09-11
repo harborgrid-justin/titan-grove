@@ -19,8 +19,8 @@ export class CorporateGovernanceApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_corporate_governance_health === 'function') {
-                    return native.check_corporate_governance_health();
+                if (typeof native.checkCorporateGovernanceHealth === 'function') {
+                    return native.checkCorporateGovernanceHealth();
                 }
                 return { status: 'healthy', module: 'corporate_governance' };
             }
@@ -33,8 +33,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'get_config',
             async () => {
-                if (typeof native.get_corporate_governance_config === 'function') {
-                    return native.get_corporate_governance_config();
+                if (typeof native.getCorporateGovernanceConfig === 'function') {
+                    return native.getCorporateGovernanceConfig();
                 }
                 return { module: 'corporate_governance', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'validate_data',
             async () => {
-                if (typeof native.validate_corporate_governance_data === 'function') {
-                    return native.validate_corporate_governance_data(JSON.stringify(data));
+                if (typeof native.validateCorporateGovernanceData === 'function') {
+                    return native.validateCorporateGovernanceData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'create',
             async () => {
-                if (typeof native.create_corporate_governance_record === 'function') {
-                    return native.create_corporate_governance_record(
+                if (typeof native.createCorporateGovernanceRecord === 'function') {
+                    return native.createCorporateGovernanceRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'read',
             async () => {
-                if (typeof native.get_corporate_governance_record === 'function') {
-                    return native.get_corporate_governance_record(id);
+                if (typeof native.getCorporateGovernanceRecord === 'function') {
+                    return native.getCorporateGovernanceRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'update',
             async () => {
-                if (typeof native.update_corporate_governance_record === 'function') {
-                    return native.update_corporate_governance_record(data);
+                if (typeof native.updateCorporateGovernanceRecord === 'function') {
+                    return native.updateCorporateGovernanceRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'delete',
             async () => {
-                if (typeof native.delete_corporate_governance_record === 'function') {
-                    return { success: native.delete_corporate_governance_record(id) };
+                if (typeof native.deleteCorporateGovernanceRecord === 'function') {
+                    return { success: native.deleteCorporateGovernanceRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_corporate_governance_records === 'function') {
-                    return native.bulk_create_corporate_governance_records(records);
+                if (typeof native.bulkCreateCorporateGovernanceRecords === 'function') {
+                    return native.bulkCreateCorporateGovernanceRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'analytics',
             async () => {
-                if (typeof native.analyze_corporate_governance_performance === 'function') {
-                    return native.analyze_corporate_governance_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeCorporateGovernancePerformance === 'function') {
+                    return native.analyzeCorporateGovernancePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class CorporateGovernanceApi {
             'corporate_governance',
             'optimize',
             async () => {
-                if (typeof native.optimize_corporate_governance_performance === 'function') {
-                    return { score: native.optimize_corporate_governance_performance(data) };
+                if (typeof native.optimizeCorporateGovernancePerformance === 'function') {
+                    return { score: native.optimizeCorporateGovernancePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

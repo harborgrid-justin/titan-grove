@@ -19,8 +19,8 @@ export class ComputerVisionApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_computer_vision_health === 'function') {
-                    return native.check_computer_vision_health();
+                if (typeof native.checkComputerVisionHealth === 'function') {
+                    return native.checkComputerVisionHealth();
                 }
                 return { status: 'healthy', module: 'computer_vision' };
             }
@@ -33,8 +33,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'get_config',
             async () => {
-                if (typeof native.get_computer_vision_config === 'function') {
-                    return native.get_computer_vision_config();
+                if (typeof native.getComputerVisionConfig === 'function') {
+                    return native.getComputerVisionConfig();
                 }
                 return { module: 'computer_vision', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'validate_data',
             async () => {
-                if (typeof native.validate_computer_vision_data === 'function') {
-                    return native.validate_computer_vision_data(JSON.stringify(data));
+                if (typeof native.validateComputerVisionData === 'function') {
+                    return native.validateComputerVisionData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'create',
             async () => {
-                if (typeof native.create_computer_vision_record === 'function') {
-                    return native.create_computer_vision_record(
+                if (typeof native.createComputerVisionRecord === 'function') {
+                    return native.createComputerVisionRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'read',
             async () => {
-                if (typeof native.get_computer_vision_record === 'function') {
-                    return native.get_computer_vision_record(id);
+                if (typeof native.getComputerVisionRecord === 'function') {
+                    return native.getComputerVisionRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'update',
             async () => {
-                if (typeof native.update_computer_vision_record === 'function') {
-                    return native.update_computer_vision_record(data);
+                if (typeof native.updateComputerVisionRecord === 'function') {
+                    return native.updateComputerVisionRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'delete',
             async () => {
-                if (typeof native.delete_computer_vision_record === 'function') {
-                    return { success: native.delete_computer_vision_record(id) };
+                if (typeof native.deleteComputerVisionRecord === 'function') {
+                    return { success: native.deleteComputerVisionRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_computer_vision_records === 'function') {
-                    return native.bulk_create_computer_vision_records(records);
+                if (typeof native.bulkCreateComputerVisionRecords === 'function') {
+                    return native.bulkCreateComputerVisionRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'analytics',
             async () => {
-                if (typeof native.analyze_computer_vision_performance === 'function') {
-                    return native.analyze_computer_vision_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeComputerVisionPerformance === 'function') {
+                    return native.analyzeComputerVisionPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ComputerVisionApi {
             'computer_vision',
             'optimize',
             async () => {
-                if (typeof native.optimize_computer_vision_performance === 'function') {
-                    return { score: native.optimize_computer_vision_performance(data) };
+                if (typeof native.optimizeComputerVisionPerformance === 'function') {
+                    return { score: native.optimizeComputerVisionPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

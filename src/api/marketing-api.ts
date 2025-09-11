@@ -19,8 +19,8 @@ export class MarketingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_marketing_health === 'function') {
-                    return native.check_marketing_health();
+                if (typeof native.checkMarketingHealth === 'function') {
+                    return native.checkMarketingHealth();
                 }
                 return { status: 'healthy', module: 'marketing' };
             }
@@ -33,8 +33,8 @@ export class MarketingApi {
             'marketing',
             'get_config',
             async () => {
-                if (typeof native.get_marketing_config === 'function') {
-                    return native.get_marketing_config();
+                if (typeof native.getMarketingConfig === 'function') {
+                    return native.getMarketingConfig();
                 }
                 return { module: 'marketing', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class MarketingApi {
             'marketing',
             'validate_data',
             async () => {
-                if (typeof native.validate_marketing_data === 'function') {
-                    return native.validate_marketing_data(JSON.stringify(data));
+                if (typeof native.validateMarketingData === 'function') {
+                    return native.validateMarketingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class MarketingApi {
             'marketing',
             'create',
             async () => {
-                if (typeof native.create_marketing_record === 'function') {
-                    return native.create_marketing_record(
+                if (typeof native.createMarketingRecord === 'function') {
+                    return native.createMarketingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class MarketingApi {
             'marketing',
             'read',
             async () => {
-                if (typeof native.get_marketing_record === 'function') {
-                    return native.get_marketing_record(id);
+                if (typeof native.getMarketingRecord === 'function') {
+                    return native.getMarketingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class MarketingApi {
             'marketing',
             'update',
             async () => {
-                if (typeof native.update_marketing_record === 'function') {
-                    return native.update_marketing_record(data);
+                if (typeof native.updateMarketingRecord === 'function') {
+                    return native.updateMarketingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class MarketingApi {
             'marketing',
             'delete',
             async () => {
-                if (typeof native.delete_marketing_record === 'function') {
-                    return { success: native.delete_marketing_record(id) };
+                if (typeof native.deleteMarketingRecord === 'function') {
+                    return { success: native.deleteMarketingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class MarketingApi {
             'marketing',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_marketing_records === 'function') {
-                    return native.bulk_create_marketing_records(records);
+                if (typeof native.bulkCreateMarketingRecords === 'function') {
+                    return native.bulkCreateMarketingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class MarketingApi {
             'marketing',
             'analytics',
             async () => {
-                if (typeof native.analyze_marketing_performance === 'function') {
-                    return native.analyze_marketing_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeMarketingPerformance === 'function') {
+                    return native.analyzeMarketingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class MarketingApi {
             'marketing',
             'optimize',
             async () => {
-                if (typeof native.optimize_marketing_performance === 'function') {
-                    return { score: native.optimize_marketing_performance(data) };
+                if (typeof native.optimizeMarketingPerformance === 'function') {
+                    return { score: native.optimizeMarketingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },
