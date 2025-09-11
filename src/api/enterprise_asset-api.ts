@@ -19,8 +19,8 @@ export class EnterpriseAssetApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_enterprise_asset_health === 'function') {
-                    return native.check_enterprise_asset_health();
+                if (typeof native.checkEnterpriseAssetHealth === 'function') {
+                    return native.checkEnterpriseAssetHealth();
                 }
                 return { status: 'healthy', module: 'enterprise_asset' };
             }
@@ -33,8 +33,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'get_config',
             async () => {
-                if (typeof native.get_enterprise_asset_config === 'function') {
-                    return native.get_enterprise_asset_config();
+                if (typeof native.getEnterpriseAssetConfig === 'function') {
+                    return native.getEnterpriseAssetConfig();
                 }
                 return { module: 'enterprise_asset', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'validate_data',
             async () => {
-                if (typeof native.validate_enterprise_asset_data === 'function') {
-                    return native.validate_enterprise_asset_data(JSON.stringify(data));
+                if (typeof native.validateEnterpriseAssetData === 'function') {
+                    return native.validateEnterpriseAssetData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'create',
             async () => {
-                if (typeof native.create_enterprise_asset_record === 'function') {
-                    return native.create_enterprise_asset_record(
+                if (typeof native.createEnterpriseAssetRecord === 'function') {
+                    return native.createEnterpriseAssetRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'read',
             async () => {
-                if (typeof native.get_enterprise_asset_record === 'function') {
-                    return native.get_enterprise_asset_record(id);
+                if (typeof native.getEnterpriseAssetRecord === 'function') {
+                    return native.getEnterpriseAssetRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'update',
             async () => {
-                if (typeof native.update_enterprise_asset_record === 'function') {
-                    return native.update_enterprise_asset_record(data);
+                if (typeof native.updateEnterpriseAssetRecord === 'function') {
+                    return native.updateEnterpriseAssetRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'delete',
             async () => {
-                if (typeof native.delete_enterprise_asset_record === 'function') {
-                    return { success: native.delete_enterprise_asset_record(id) };
+                if (typeof native.deleteEnterpriseAssetRecord === 'function') {
+                    return { success: native.deleteEnterpriseAssetRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_enterprise_asset_records === 'function') {
-                    return native.bulk_create_enterprise_asset_records(records);
+                if (typeof native.bulkCreateEnterpriseAssetRecords === 'function') {
+                    return native.bulkCreateEnterpriseAssetRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'analytics',
             async () => {
-                if (typeof native.analyze_enterprise_asset_performance === 'function') {
-                    return native.analyze_enterprise_asset_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeEnterpriseAssetPerformance === 'function') {
+                    return native.analyzeEnterpriseAssetPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class EnterpriseAssetApi {
             'enterprise_asset',
             'optimize',
             async () => {
-                if (typeof native.optimize_enterprise_asset_performance === 'function') {
-                    return { score: native.optimize_enterprise_asset_performance(data) };
+                if (typeof native.optimizeEnterpriseAssetPerformance === 'function') {
+                    return { score: native.optimizeEnterpriseAssetPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

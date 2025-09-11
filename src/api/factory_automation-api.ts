@@ -19,8 +19,8 @@ export class FactoryAutomationApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_factory_automation_health === 'function') {
-                    return native.check_factory_automation_health();
+                if (typeof native.checkFactoryAutomationHealth === 'function') {
+                    return native.checkFactoryAutomationHealth();
                 }
                 return { status: 'healthy', module: 'factory_automation' };
             }
@@ -33,8 +33,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'get_config',
             async () => {
-                if (typeof native.get_factory_automation_config === 'function') {
-                    return native.get_factory_automation_config();
+                if (typeof native.getFactoryAutomationConfig === 'function') {
+                    return native.getFactoryAutomationConfig();
                 }
                 return { module: 'factory_automation', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'validate_data',
             async () => {
-                if (typeof native.validate_factory_automation_data === 'function') {
-                    return native.validate_factory_automation_data(JSON.stringify(data));
+                if (typeof native.validateFactoryAutomationData === 'function') {
+                    return native.validateFactoryAutomationData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'create',
             async () => {
-                if (typeof native.create_factory_automation_record === 'function') {
-                    return native.create_factory_automation_record(
+                if (typeof native.createFactoryAutomationRecord === 'function') {
+                    return native.createFactoryAutomationRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'read',
             async () => {
-                if (typeof native.get_factory_automation_record === 'function') {
-                    return native.get_factory_automation_record(id);
+                if (typeof native.getFactoryAutomationRecord === 'function') {
+                    return native.getFactoryAutomationRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'update',
             async () => {
-                if (typeof native.update_factory_automation_record === 'function') {
-                    return native.update_factory_automation_record(data);
+                if (typeof native.updateFactoryAutomationRecord === 'function') {
+                    return native.updateFactoryAutomationRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'delete',
             async () => {
-                if (typeof native.delete_factory_automation_record === 'function') {
-                    return { success: native.delete_factory_automation_record(id) };
+                if (typeof native.deleteFactoryAutomationRecord === 'function') {
+                    return { success: native.deleteFactoryAutomationRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_factory_automation_records === 'function') {
-                    return native.bulk_create_factory_automation_records(records);
+                if (typeof native.bulkCreateFactoryAutomationRecords === 'function') {
+                    return native.bulkCreateFactoryAutomationRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'analytics',
             async () => {
-                if (typeof native.analyze_factory_automation_performance === 'function') {
-                    return native.analyze_factory_automation_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeFactoryAutomationPerformance === 'function') {
+                    return native.analyzeFactoryAutomationPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class FactoryAutomationApi {
             'factory_automation',
             'optimize',
             async () => {
-                if (typeof native.optimize_factory_automation_performance === 'function') {
-                    return { score: native.optimize_factory_automation_performance(data) };
+                if (typeof native.optimizeFactoryAutomationPerformance === 'function') {
+                    return { score: native.optimizeFactoryAutomationPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

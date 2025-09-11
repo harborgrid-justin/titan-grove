@@ -19,8 +19,8 @@ export class PlanningApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_planning_health === 'function') {
-                    return native.check_planning_health();
+                if (typeof native.checkPlanningHealth === 'function') {
+                    return native.checkPlanningHealth();
                 }
                 return { status: 'healthy', module: 'planning' };
             }
@@ -33,8 +33,8 @@ export class PlanningApi {
             'planning',
             'get_config',
             async () => {
-                if (typeof native.get_planning_config === 'function') {
-                    return native.get_planning_config();
+                if (typeof native.getPlanningConfig === 'function') {
+                    return native.getPlanningConfig();
                 }
                 return { module: 'planning', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class PlanningApi {
             'planning',
             'validate_data',
             async () => {
-                if (typeof native.validate_planning_data === 'function') {
-                    return native.validate_planning_data(JSON.stringify(data));
+                if (typeof native.validatePlanningData === 'function') {
+                    return native.validatePlanningData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class PlanningApi {
             'planning',
             'create',
             async () => {
-                if (typeof native.create_planning_record === 'function') {
-                    return native.create_planning_record(
+                if (typeof native.createPlanningRecord === 'function') {
+                    return native.createPlanningRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class PlanningApi {
             'planning',
             'read',
             async () => {
-                if (typeof native.get_planning_record === 'function') {
-                    return native.get_planning_record(id);
+                if (typeof native.getPlanningRecord === 'function') {
+                    return native.getPlanningRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class PlanningApi {
             'planning',
             'update',
             async () => {
-                if (typeof native.update_planning_record === 'function') {
-                    return native.update_planning_record(data);
+                if (typeof native.updatePlanningRecord === 'function') {
+                    return native.updatePlanningRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class PlanningApi {
             'planning',
             'delete',
             async () => {
-                if (typeof native.delete_planning_record === 'function') {
-                    return { success: native.delete_planning_record(id) };
+                if (typeof native.deletePlanningRecord === 'function') {
+                    return { success: native.deletePlanningRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class PlanningApi {
             'planning',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_planning_records === 'function') {
-                    return native.bulk_create_planning_records(records);
+                if (typeof native.bulkCreatePlanningRecords === 'function') {
+                    return native.bulkCreatePlanningRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class PlanningApi {
             'planning',
             'analytics',
             async () => {
-                if (typeof native.analyze_planning_performance === 'function') {
-                    return native.analyze_planning_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzePlanningPerformance === 'function') {
+                    return native.analyzePlanningPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class PlanningApi {
             'planning',
             'optimize',
             async () => {
-                if (typeof native.optimize_planning_performance === 'function') {
-                    return { score: native.optimize_planning_performance(data) };
+                if (typeof native.optimizePlanningPerformance === 'function') {
+                    return { score: native.optimizePlanningPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

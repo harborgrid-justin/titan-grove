@@ -19,8 +19,8 @@ export class ReportingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_reporting_health === 'function') {
-                    return native.check_reporting_health();
+                if (typeof native.checkReportingHealth === 'function') {
+                    return native.checkReportingHealth();
                 }
                 return { status: 'healthy', module: 'reporting' };
             }
@@ -33,8 +33,8 @@ export class ReportingApi {
             'reporting',
             'get_config',
             async () => {
-                if (typeof native.get_reporting_config === 'function') {
-                    return native.get_reporting_config();
+                if (typeof native.getReportingConfig === 'function') {
+                    return native.getReportingConfig();
                 }
                 return { module: 'reporting', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ReportingApi {
             'reporting',
             'validate_data',
             async () => {
-                if (typeof native.validate_reporting_data === 'function') {
-                    return native.validate_reporting_data(JSON.stringify(data));
+                if (typeof native.validateReportingData === 'function') {
+                    return native.validateReportingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ReportingApi {
             'reporting',
             'create',
             async () => {
-                if (typeof native.create_reporting_record === 'function') {
-                    return native.create_reporting_record(
+                if (typeof native.createReportingRecord === 'function') {
+                    return native.createReportingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ReportingApi {
             'reporting',
             'read',
             async () => {
-                if (typeof native.get_reporting_record === 'function') {
-                    return native.get_reporting_record(id);
+                if (typeof native.getReportingRecord === 'function') {
+                    return native.getReportingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ReportingApi {
             'reporting',
             'update',
             async () => {
-                if (typeof native.update_reporting_record === 'function') {
-                    return native.update_reporting_record(data);
+                if (typeof native.updateReportingRecord === 'function') {
+                    return native.updateReportingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ReportingApi {
             'reporting',
             'delete',
             async () => {
-                if (typeof native.delete_reporting_record === 'function') {
-                    return { success: native.delete_reporting_record(id) };
+                if (typeof native.deleteReportingRecord === 'function') {
+                    return { success: native.deleteReportingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ReportingApi {
             'reporting',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_reporting_records === 'function') {
-                    return native.bulk_create_reporting_records(records);
+                if (typeof native.bulkCreateReportingRecords === 'function') {
+                    return native.bulkCreateReportingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ReportingApi {
             'reporting',
             'analytics',
             async () => {
-                if (typeof native.analyze_reporting_performance === 'function') {
-                    return native.analyze_reporting_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeReportingPerformance === 'function') {
+                    return native.analyzeReportingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ReportingApi {
             'reporting',
             'optimize',
             async () => {
-                if (typeof native.optimize_reporting_performance === 'function') {
-                    return { score: native.optimize_reporting_performance(data) };
+                if (typeof native.optimizeReportingPerformance === 'function') {
+                    return { score: native.optimizeReportingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

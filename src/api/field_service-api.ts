@@ -19,8 +19,8 @@ export class FieldServiceApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_field_service_health === 'function') {
-                    return native.check_field_service_health();
+                if (typeof native.checkFieldServiceHealth === 'function') {
+                    return native.checkFieldServiceHealth();
                 }
                 return { status: 'healthy', module: 'field_service' };
             }
@@ -33,8 +33,8 @@ export class FieldServiceApi {
             'field_service',
             'get_config',
             async () => {
-                if (typeof native.get_field_service_config === 'function') {
-                    return native.get_field_service_config();
+                if (typeof native.getFieldServiceConfig === 'function') {
+                    return native.getFieldServiceConfig();
                 }
                 return { module: 'field_service', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class FieldServiceApi {
             'field_service',
             'validate_data',
             async () => {
-                if (typeof native.validate_field_service_data === 'function') {
-                    return native.validate_field_service_data(JSON.stringify(data));
+                if (typeof native.validateFieldServiceData === 'function') {
+                    return native.validateFieldServiceData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class FieldServiceApi {
             'field_service',
             'create',
             async () => {
-                if (typeof native.create_field_service_record === 'function') {
-                    return native.create_field_service_record(
+                if (typeof native.createFieldServiceRecord === 'function') {
+                    return native.createFieldServiceRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class FieldServiceApi {
             'field_service',
             'read',
             async () => {
-                if (typeof native.get_field_service_record === 'function') {
-                    return native.get_field_service_record(id);
+                if (typeof native.getFieldServiceRecord === 'function') {
+                    return native.getFieldServiceRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class FieldServiceApi {
             'field_service',
             'update',
             async () => {
-                if (typeof native.update_field_service_record === 'function') {
-                    return native.update_field_service_record(data);
+                if (typeof native.updateFieldServiceRecord === 'function') {
+                    return native.updateFieldServiceRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class FieldServiceApi {
             'field_service',
             'delete',
             async () => {
-                if (typeof native.delete_field_service_record === 'function') {
-                    return { success: native.delete_field_service_record(id) };
+                if (typeof native.deleteFieldServiceRecord === 'function') {
+                    return { success: native.deleteFieldServiceRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class FieldServiceApi {
             'field_service',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_field_service_records === 'function') {
-                    return native.bulk_create_field_service_records(records);
+                if (typeof native.bulkCreateFieldServiceRecords === 'function') {
+                    return native.bulkCreateFieldServiceRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class FieldServiceApi {
             'field_service',
             'analytics',
             async () => {
-                if (typeof native.analyze_field_service_performance === 'function') {
-                    return native.analyze_field_service_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeFieldServicePerformance === 'function') {
+                    return native.analyzeFieldServicePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class FieldServiceApi {
             'field_service',
             'optimize',
             async () => {
-                if (typeof native.optimize_field_service_performance === 'function') {
-                    return { score: native.optimize_field_service_performance(data) };
+                if (typeof native.optimizeFieldServicePerformance === 'function') {
+                    return { score: native.optimizeFieldServicePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class ManufacturingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_manufacturing_health === 'function') {
-                    return native.check_manufacturing_health();
+                if (typeof native.checkManufacturingHealth === 'function') {
+                    return native.checkManufacturingHealth();
                 }
                 return { status: 'healthy', module: 'manufacturing' };
             }
@@ -33,8 +33,8 @@ export class ManufacturingApi {
             'manufacturing',
             'get_config',
             async () => {
-                if (typeof native.get_manufacturing_config === 'function') {
-                    return native.get_manufacturing_config();
+                if (typeof native.getManufacturingConfig === 'function') {
+                    return native.getManufacturingConfig();
                 }
                 return { module: 'manufacturing', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ManufacturingApi {
             'manufacturing',
             'validate_data',
             async () => {
-                if (typeof native.validate_manufacturing_data === 'function') {
-                    return native.validate_manufacturing_data(JSON.stringify(data));
+                if (typeof native.validateManufacturingData === 'function') {
+                    return native.validateManufacturingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ManufacturingApi {
             'manufacturing',
             'create',
             async () => {
-                if (typeof native.create_manufacturing_record === 'function') {
-                    return native.create_manufacturing_record(
+                if (typeof native.createManufacturingRecord === 'function') {
+                    return native.createManufacturingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ManufacturingApi {
             'manufacturing',
             'read',
             async () => {
-                if (typeof native.get_manufacturing_record === 'function') {
-                    return native.get_manufacturing_record(id);
+                if (typeof native.getManufacturingRecord === 'function') {
+                    return native.getManufacturingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ManufacturingApi {
             'manufacturing',
             'update',
             async () => {
-                if (typeof native.update_manufacturing_record === 'function') {
-                    return native.update_manufacturing_record(data);
+                if (typeof native.updateManufacturingRecord === 'function') {
+                    return native.updateManufacturingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ManufacturingApi {
             'manufacturing',
             'delete',
             async () => {
-                if (typeof native.delete_manufacturing_record === 'function') {
-                    return { success: native.delete_manufacturing_record(id) };
+                if (typeof native.deleteManufacturingRecord === 'function') {
+                    return { success: native.deleteManufacturingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ManufacturingApi {
             'manufacturing',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_manufacturing_records === 'function') {
-                    return native.bulk_create_manufacturing_records(records);
+                if (typeof native.bulkCreateManufacturingRecords === 'function') {
+                    return native.bulkCreateManufacturingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ManufacturingApi {
             'manufacturing',
             'analytics',
             async () => {
-                if (typeof native.analyze_manufacturing_performance === 'function') {
-                    return native.analyze_manufacturing_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeManufacturingPerformance === 'function') {
+                    return native.analyzeManufacturingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ManufacturingApi {
             'manufacturing',
             'optimize',
             async () => {
-                if (typeof native.optimize_manufacturing_performance === 'function') {
-                    return { score: native.optimize_manufacturing_performance(data) };
+                if (typeof native.optimizeManufacturingPerformance === 'function') {
+                    return { score: native.optimizeManufacturingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

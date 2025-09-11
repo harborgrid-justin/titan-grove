@@ -19,8 +19,8 @@ export class AuditApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_audit_health === 'function') {
-                    return native.check_audit_health();
+                if (typeof native.checkAuditHealth === 'function') {
+                    return native.checkAuditHealth();
                 }
                 return { status: 'healthy', module: 'audit' };
             }
@@ -33,8 +33,8 @@ export class AuditApi {
             'audit',
             'get_config',
             async () => {
-                if (typeof native.get_audit_config === 'function') {
-                    return native.get_audit_config();
+                if (typeof native.getAuditConfig === 'function') {
+                    return native.getAuditConfig();
                 }
                 return { module: 'audit', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class AuditApi {
             'audit',
             'validate_data',
             async () => {
-                if (typeof native.validate_audit_data === 'function') {
-                    return native.validate_audit_data(JSON.stringify(data));
+                if (typeof native.validateAuditData === 'function') {
+                    return native.validateAuditData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class AuditApi {
             'audit',
             'create',
             async () => {
-                if (typeof native.create_audit_record === 'function') {
-                    return native.create_audit_record(
+                if (typeof native.createAuditRecord === 'function') {
+                    return native.createAuditRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class AuditApi {
             'audit',
             'read',
             async () => {
-                if (typeof native.get_audit_record === 'function') {
-                    return native.get_audit_record(id);
+                if (typeof native.getAuditRecord === 'function') {
+                    return native.getAuditRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class AuditApi {
             'audit',
             'update',
             async () => {
-                if (typeof native.update_audit_record === 'function') {
-                    return native.update_audit_record(data);
+                if (typeof native.updateAuditRecord === 'function') {
+                    return native.updateAuditRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class AuditApi {
             'audit',
             'delete',
             async () => {
-                if (typeof native.delete_audit_record === 'function') {
-                    return { success: native.delete_audit_record(id) };
+                if (typeof native.deleteAuditRecord === 'function') {
+                    return { success: native.deleteAuditRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class AuditApi {
             'audit',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_audit_records === 'function') {
-                    return native.bulk_create_audit_records(records);
+                if (typeof native.bulkCreateAuditRecords === 'function') {
+                    return native.bulkCreateAuditRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class AuditApi {
             'audit',
             'analytics',
             async () => {
-                if (typeof native.analyze_audit_performance === 'function') {
-                    return native.analyze_audit_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeAuditPerformance === 'function') {
+                    return native.analyzeAuditPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class AuditApi {
             'audit',
             'optimize',
             async () => {
-                if (typeof native.optimize_audit_performance === 'function') {
-                    return { score: native.optimize_audit_performance(data) };
+                if (typeof native.optimizeAuditPerformance === 'function') {
+                    return { score: native.optimizeAuditPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

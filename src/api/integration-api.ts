@@ -19,8 +19,8 @@ export class IntegrationApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_integration_health === 'function') {
-                    return native.check_integration_health();
+                if (typeof native.checkIntegrationHealth === 'function') {
+                    return native.checkIntegrationHealth();
                 }
                 return { status: 'healthy', module: 'integration' };
             }
@@ -33,8 +33,8 @@ export class IntegrationApi {
             'integration',
             'get_config',
             async () => {
-                if (typeof native.get_integration_config === 'function') {
-                    return native.get_integration_config();
+                if (typeof native.getIntegrationConfig === 'function') {
+                    return native.getIntegrationConfig();
                 }
                 return { module: 'integration', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class IntegrationApi {
             'integration',
             'validate_data',
             async () => {
-                if (typeof native.validate_integration_data === 'function') {
-                    return native.validate_integration_data(JSON.stringify(data));
+                if (typeof native.validateIntegrationData === 'function') {
+                    return native.validateIntegrationData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class IntegrationApi {
             'integration',
             'create',
             async () => {
-                if (typeof native.create_integration_record === 'function') {
-                    return native.create_integration_record(
+                if (typeof native.createIntegrationRecord === 'function') {
+                    return native.createIntegrationRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class IntegrationApi {
             'integration',
             'read',
             async () => {
-                if (typeof native.get_integration_record === 'function') {
-                    return native.get_integration_record(id);
+                if (typeof native.getIntegrationRecord === 'function') {
+                    return native.getIntegrationRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class IntegrationApi {
             'integration',
             'update',
             async () => {
-                if (typeof native.update_integration_record === 'function') {
-                    return native.update_integration_record(data);
+                if (typeof native.updateIntegrationRecord === 'function') {
+                    return native.updateIntegrationRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class IntegrationApi {
             'integration',
             'delete',
             async () => {
-                if (typeof native.delete_integration_record === 'function') {
-                    return { success: native.delete_integration_record(id) };
+                if (typeof native.deleteIntegrationRecord === 'function') {
+                    return { success: native.deleteIntegrationRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class IntegrationApi {
             'integration',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_integration_records === 'function') {
-                    return native.bulk_create_integration_records(records);
+                if (typeof native.bulkCreateIntegrationRecords === 'function') {
+                    return native.bulkCreateIntegrationRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class IntegrationApi {
             'integration',
             'analytics',
             async () => {
-                if (typeof native.analyze_integration_performance === 'function') {
-                    return native.analyze_integration_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeIntegrationPerformance === 'function') {
+                    return native.analyzeIntegrationPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class IntegrationApi {
             'integration',
             'optimize',
             async () => {
-                if (typeof native.optimize_integration_performance === 'function') {
-                    return { score: native.optimize_integration_performance(data) };
+                if (typeof native.optimizeIntegrationPerformance === 'function') {
+                    return { score: native.optimizeIntegrationPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

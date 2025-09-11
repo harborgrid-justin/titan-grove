@@ -19,8 +19,8 @@ export class AutonomousSystemsApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_autonomous_systems_health === 'function') {
-                    return native.check_autonomous_systems_health();
+                if (typeof native.checkAutonomousSystemsHealth === 'function') {
+                    return native.checkAutonomousSystemsHealth();
                 }
                 return { status: 'healthy', module: 'autonomous_systems' };
             }
@@ -33,8 +33,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'get_config',
             async () => {
-                if (typeof native.get_autonomous_systems_config === 'function') {
-                    return native.get_autonomous_systems_config();
+                if (typeof native.getAutonomousSystemsConfig === 'function') {
+                    return native.getAutonomousSystemsConfig();
                 }
                 return { module: 'autonomous_systems', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'validate_data',
             async () => {
-                if (typeof native.validate_autonomous_systems_data === 'function') {
-                    return native.validate_autonomous_systems_data(JSON.stringify(data));
+                if (typeof native.validateAutonomousSystemsData === 'function') {
+                    return native.validateAutonomousSystemsData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'create',
             async () => {
-                if (typeof native.create_autonomous_systems_record === 'function') {
-                    return native.create_autonomous_systems_record(
+                if (typeof native.createAutonomousSystemsRecord === 'function') {
+                    return native.createAutonomousSystemsRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'read',
             async () => {
-                if (typeof native.get_autonomous_systems_record === 'function') {
-                    return native.get_autonomous_systems_record(id);
+                if (typeof native.getAutonomousSystemsRecord === 'function') {
+                    return native.getAutonomousSystemsRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'update',
             async () => {
-                if (typeof native.update_autonomous_systems_record === 'function') {
-                    return native.update_autonomous_systems_record(data);
+                if (typeof native.updateAutonomousSystemsRecord === 'function') {
+                    return native.updateAutonomousSystemsRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'delete',
             async () => {
-                if (typeof native.delete_autonomous_systems_record === 'function') {
-                    return { success: native.delete_autonomous_systems_record(id) };
+                if (typeof native.deleteAutonomousSystemsRecord === 'function') {
+                    return { success: native.deleteAutonomousSystemsRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_autonomous_systems_records === 'function') {
-                    return native.bulk_create_autonomous_systems_records(records);
+                if (typeof native.bulkCreateAutonomousSystemsRecords === 'function') {
+                    return native.bulkCreateAutonomousSystemsRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'analytics',
             async () => {
-                if (typeof native.analyze_autonomous_systems_performance === 'function') {
-                    return native.analyze_autonomous_systems_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeAutonomousSystemsPerformance === 'function') {
+                    return native.analyzeAutonomousSystemsPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class AutonomousSystemsApi {
             'autonomous_systems',
             'optimize',
             async () => {
-                if (typeof native.optimize_autonomous_systems_performance === 'function') {
-                    return { score: native.optimize_autonomous_systems_performance(data) };
+                if (typeof native.optimizeAutonomousSystemsPerformance === 'function') {
+                    return { score: native.optimizeAutonomousSystemsPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

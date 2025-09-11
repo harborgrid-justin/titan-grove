@@ -19,8 +19,8 @@ export class EquipmentCostApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_equipment_cost_health === 'function') {
-                    return native.check_equipment_cost_health();
+                if (typeof native.checkEquipmentCostHealth === 'function') {
+                    return native.checkEquipmentCostHealth();
                 }
                 return { status: 'healthy', module: 'equipment_cost' };
             }
@@ -33,8 +33,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'get_config',
             async () => {
-                if (typeof native.get_equipment_cost_config === 'function') {
-                    return native.get_equipment_cost_config();
+                if (typeof native.getEquipmentCostConfig === 'function') {
+                    return native.getEquipmentCostConfig();
                 }
                 return { module: 'equipment_cost', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'validate_data',
             async () => {
-                if (typeof native.validate_equipment_cost_data === 'function') {
-                    return native.validate_equipment_cost_data(JSON.stringify(data));
+                if (typeof native.validateEquipmentCostData === 'function') {
+                    return native.validateEquipmentCostData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'create',
             async () => {
-                if (typeof native.create_equipment_cost_record === 'function') {
-                    return native.create_equipment_cost_record(
+                if (typeof native.createEquipmentCostRecord === 'function') {
+                    return native.createEquipmentCostRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'read',
             async () => {
-                if (typeof native.get_equipment_cost_record === 'function') {
-                    return native.get_equipment_cost_record(id);
+                if (typeof native.getEquipmentCostRecord === 'function') {
+                    return native.getEquipmentCostRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'update',
             async () => {
-                if (typeof native.update_equipment_cost_record === 'function') {
-                    return native.update_equipment_cost_record(data);
+                if (typeof native.updateEquipmentCostRecord === 'function') {
+                    return native.updateEquipmentCostRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'delete',
             async () => {
-                if (typeof native.delete_equipment_cost_record === 'function') {
-                    return { success: native.delete_equipment_cost_record(id) };
+                if (typeof native.deleteEquipmentCostRecord === 'function') {
+                    return { success: native.deleteEquipmentCostRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_equipment_cost_records === 'function') {
-                    return native.bulk_create_equipment_cost_records(records);
+                if (typeof native.bulkCreateEquipmentCostRecords === 'function') {
+                    return native.bulkCreateEquipmentCostRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'analytics',
             async () => {
-                if (typeof native.analyze_equipment_cost_performance === 'function') {
-                    return native.analyze_equipment_cost_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeEquipmentCostPerformance === 'function') {
+                    return native.analyzeEquipmentCostPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class EquipmentCostApi {
             'equipment_cost',
             'optimize',
             async () => {
-                if (typeof native.optimize_equipment_cost_performance === 'function') {
-                    return { score: native.optimize_equipment_cost_performance(data) };
+                if (typeof native.optimizeEquipmentCostPerformance === 'function') {
+                    return { score: native.optimizeEquipmentCostPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

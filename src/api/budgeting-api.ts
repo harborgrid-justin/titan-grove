@@ -19,8 +19,8 @@ export class BudgetingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_budgeting_health === 'function') {
-                    return native.check_budgeting_health();
+                if (typeof native.checkBudgetingHealth === 'function') {
+                    return native.checkBudgetingHealth();
                 }
                 return { status: 'healthy', module: 'budgeting' };
             }
@@ -33,8 +33,8 @@ export class BudgetingApi {
             'budgeting',
             'get_config',
             async () => {
-                if (typeof native.get_budgeting_config === 'function') {
-                    return native.get_budgeting_config();
+                if (typeof native.getBudgetingConfig === 'function') {
+                    return native.getBudgetingConfig();
                 }
                 return { module: 'budgeting', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class BudgetingApi {
             'budgeting',
             'validate_data',
             async () => {
-                if (typeof native.validate_budgeting_data === 'function') {
-                    return native.validate_budgeting_data(JSON.stringify(data));
+                if (typeof native.validateBudgetingData === 'function') {
+                    return native.validateBudgetingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class BudgetingApi {
             'budgeting',
             'create',
             async () => {
-                if (typeof native.create_budgeting_record === 'function') {
-                    return native.create_budgeting_record(
+                if (typeof native.createBudgetingRecord === 'function') {
+                    return native.createBudgetingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class BudgetingApi {
             'budgeting',
             'read',
             async () => {
-                if (typeof native.get_budgeting_record === 'function') {
-                    return native.get_budgeting_record(id);
+                if (typeof native.getBudgetingRecord === 'function') {
+                    return native.getBudgetingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class BudgetingApi {
             'budgeting',
             'update',
             async () => {
-                if (typeof native.update_budgeting_record === 'function') {
-                    return native.update_budgeting_record(data);
+                if (typeof native.updateBudgetingRecord === 'function') {
+                    return native.updateBudgetingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class BudgetingApi {
             'budgeting',
             'delete',
             async () => {
-                if (typeof native.delete_budgeting_record === 'function') {
-                    return { success: native.delete_budgeting_record(id) };
+                if (typeof native.deleteBudgetingRecord === 'function') {
+                    return { success: native.deleteBudgetingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class BudgetingApi {
             'budgeting',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_budgeting_records === 'function') {
-                    return native.bulk_create_budgeting_records(records);
+                if (typeof native.bulkCreateBudgetingRecords === 'function') {
+                    return native.bulkCreateBudgetingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class BudgetingApi {
             'budgeting',
             'analytics',
             async () => {
-                if (typeof native.analyze_budgeting_performance === 'function') {
-                    return native.analyze_budgeting_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeBudgetingPerformance === 'function') {
+                    return native.analyzeBudgetingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class BudgetingApi {
             'budgeting',
             'optimize',
             async () => {
-                if (typeof native.optimize_budgeting_performance === 'function') {
-                    return { score: native.optimize_budgeting_performance(data) };
+                if (typeof native.optimizeBudgetingPerformance === 'function') {
+                    return { score: native.optimizeBudgetingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

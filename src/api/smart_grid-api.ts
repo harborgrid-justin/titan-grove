@@ -19,8 +19,8 @@ export class SmartGridApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_smart_grid_health === 'function') {
-                    return native.check_smart_grid_health();
+                if (typeof native.checkSmartGridHealth === 'function') {
+                    return native.checkSmartGridHealth();
                 }
                 return { status: 'healthy', module: 'smart_grid' };
             }
@@ -33,8 +33,8 @@ export class SmartGridApi {
             'smart_grid',
             'get_config',
             async () => {
-                if (typeof native.get_smart_grid_config === 'function') {
-                    return native.get_smart_grid_config();
+                if (typeof native.getSmartGridConfig === 'function') {
+                    return native.getSmartGridConfig();
                 }
                 return { module: 'smart_grid', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class SmartGridApi {
             'smart_grid',
             'validate_data',
             async () => {
-                if (typeof native.validate_smart_grid_data === 'function') {
-                    return native.validate_smart_grid_data(JSON.stringify(data));
+                if (typeof native.validateSmartGridData === 'function') {
+                    return native.validateSmartGridData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class SmartGridApi {
             'smart_grid',
             'create',
             async () => {
-                if (typeof native.create_smart_grid_record === 'function') {
-                    return native.create_smart_grid_record(
+                if (typeof native.createSmartGridRecord === 'function') {
+                    return native.createSmartGridRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class SmartGridApi {
             'smart_grid',
             'read',
             async () => {
-                if (typeof native.get_smart_grid_record === 'function') {
-                    return native.get_smart_grid_record(id);
+                if (typeof native.getSmartGridRecord === 'function') {
+                    return native.getSmartGridRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class SmartGridApi {
             'smart_grid',
             'update',
             async () => {
-                if (typeof native.update_smart_grid_record === 'function') {
-                    return native.update_smart_grid_record(data);
+                if (typeof native.updateSmartGridRecord === 'function') {
+                    return native.updateSmartGridRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class SmartGridApi {
             'smart_grid',
             'delete',
             async () => {
-                if (typeof native.delete_smart_grid_record === 'function') {
-                    return { success: native.delete_smart_grid_record(id) };
+                if (typeof native.deleteSmartGridRecord === 'function') {
+                    return { success: native.deleteSmartGridRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class SmartGridApi {
             'smart_grid',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_smart_grid_records === 'function') {
-                    return native.bulk_create_smart_grid_records(records);
+                if (typeof native.bulkCreateSmartGridRecords === 'function') {
+                    return native.bulkCreateSmartGridRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class SmartGridApi {
             'smart_grid',
             'analytics',
             async () => {
-                if (typeof native.analyze_smart_grid_performance === 'function') {
-                    return native.analyze_smart_grid_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeSmartGridPerformance === 'function') {
+                    return native.analyzeSmartGridPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class SmartGridApi {
             'smart_grid',
             'optimize',
             async () => {
-                if (typeof native.optimize_smart_grid_performance === 'function') {
-                    return { score: native.optimize_smart_grid_performance(data) };
+                if (typeof native.optimizeSmartGridPerformance === 'function') {
+                    return { score: native.optimizeSmartGridPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

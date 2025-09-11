@@ -19,8 +19,8 @@ export class LogisticsApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_logistics_health === 'function') {
-                    return native.check_logistics_health();
+                if (typeof native.checkLogisticsHealth === 'function') {
+                    return native.checkLogisticsHealth();
                 }
                 return { status: 'healthy', module: 'logistics' };
             }
@@ -33,8 +33,8 @@ export class LogisticsApi {
             'logistics',
             'get_config',
             async () => {
-                if (typeof native.get_logistics_config === 'function') {
-                    return native.get_logistics_config();
+                if (typeof native.getLogisticsConfig === 'function') {
+                    return native.getLogisticsConfig();
                 }
                 return { module: 'logistics', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class LogisticsApi {
             'logistics',
             'validate_data',
             async () => {
-                if (typeof native.validate_logistics_data === 'function') {
-                    return native.validate_logistics_data(JSON.stringify(data));
+                if (typeof native.validateLogisticsData === 'function') {
+                    return native.validateLogisticsData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class LogisticsApi {
             'logistics',
             'create',
             async () => {
-                if (typeof native.create_logistics_record === 'function') {
-                    return native.create_logistics_record(
+                if (typeof native.createLogisticsRecord === 'function') {
+                    return native.createLogisticsRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class LogisticsApi {
             'logistics',
             'read',
             async () => {
-                if (typeof native.get_logistics_record === 'function') {
-                    return native.get_logistics_record(id);
+                if (typeof native.getLogisticsRecord === 'function') {
+                    return native.getLogisticsRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class LogisticsApi {
             'logistics',
             'update',
             async () => {
-                if (typeof native.update_logistics_record === 'function') {
-                    return native.update_logistics_record(data);
+                if (typeof native.updateLogisticsRecord === 'function') {
+                    return native.updateLogisticsRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class LogisticsApi {
             'logistics',
             'delete',
             async () => {
-                if (typeof native.delete_logistics_record === 'function') {
-                    return { success: native.delete_logistics_record(id) };
+                if (typeof native.deleteLogisticsRecord === 'function') {
+                    return { success: native.deleteLogisticsRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class LogisticsApi {
             'logistics',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_logistics_records === 'function') {
-                    return native.bulk_create_logistics_records(records);
+                if (typeof native.bulkCreateLogisticsRecords === 'function') {
+                    return native.bulkCreateLogisticsRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class LogisticsApi {
             'logistics',
             'analytics',
             async () => {
-                if (typeof native.analyze_logistics_performance === 'function') {
-                    return native.analyze_logistics_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeLogisticsPerformance === 'function') {
+                    return native.analyzeLogisticsPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class LogisticsApi {
             'logistics',
             'optimize',
             async () => {
-                if (typeof native.optimize_logistics_performance === 'function') {
-                    return { score: native.optimize_logistics_performance(data) };
+                if (typeof native.optimizeLogisticsPerformance === 'function') {
+                    return { score: native.optimizeLogisticsPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

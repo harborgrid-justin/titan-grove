@@ -19,8 +19,8 @@ export class CrmApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_crm_health === 'function') {
-                    return native.check_crm_health();
+                if (typeof native.checkCrmHealth === 'function') {
+                    return native.checkCrmHealth();
                 }
                 return { status: 'healthy', module: 'crm' };
             }
@@ -33,8 +33,8 @@ export class CrmApi {
             'crm',
             'get_config',
             async () => {
-                if (typeof native.get_crm_config === 'function') {
-                    return native.get_crm_config();
+                if (typeof native.getCrmConfig === 'function') {
+                    return native.getCrmConfig();
                 }
                 return { module: 'crm', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class CrmApi {
             'crm',
             'validate_data',
             async () => {
-                if (typeof native.validate_crm_data === 'function') {
-                    return native.validate_crm_data(JSON.stringify(data));
+                if (typeof native.validateCrmData === 'function') {
+                    return native.validateCrmData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class CrmApi {
             'crm',
             'create',
             async () => {
-                if (typeof native.create_crm_record === 'function') {
-                    return native.create_crm_record(
+                if (typeof native.createCrmRecord === 'function') {
+                    return native.createCrmRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class CrmApi {
             'crm',
             'read',
             async () => {
-                if (typeof native.get_crm_record === 'function') {
-                    return native.get_crm_record(id);
+                if (typeof native.getCrmRecord === 'function') {
+                    return native.getCrmRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class CrmApi {
             'crm',
             'update',
             async () => {
-                if (typeof native.update_crm_record === 'function') {
-                    return native.update_crm_record(data);
+                if (typeof native.updateCrmRecord === 'function') {
+                    return native.updateCrmRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class CrmApi {
             'crm',
             'delete',
             async () => {
-                if (typeof native.delete_crm_record === 'function') {
-                    return { success: native.delete_crm_record(id) };
+                if (typeof native.deleteCrmRecord === 'function') {
+                    return { success: native.deleteCrmRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class CrmApi {
             'crm',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_crm_records === 'function') {
-                    return native.bulk_create_crm_records(records);
+                if (typeof native.bulkCreateCrmRecords === 'function') {
+                    return native.bulkCreateCrmRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class CrmApi {
             'crm',
             'analytics',
             async () => {
-                if (typeof native.analyze_crm_performance === 'function') {
-                    return native.analyze_crm_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeCrmPerformance === 'function') {
+                    return native.analyzeCrmPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class CrmApi {
             'crm',
             'optimize',
             async () => {
-                if (typeof native.optimize_crm_performance === 'function') {
-                    return { score: native.optimize_crm_performance(data) };
+                if (typeof native.optimizeCrmPerformance === 'function') {
+                    return { score: native.optimizeCrmPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

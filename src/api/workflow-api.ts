@@ -19,8 +19,8 @@ export class WorkflowApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_workflow_health === 'function') {
-                    return native.check_workflow_health();
+                if (typeof native.checkWorkflowHealth === 'function') {
+                    return native.checkWorkflowHealth();
                 }
                 return { status: 'healthy', module: 'workflow' };
             }
@@ -33,8 +33,8 @@ export class WorkflowApi {
             'workflow',
             'get_config',
             async () => {
-                if (typeof native.get_workflow_config === 'function') {
-                    return native.get_workflow_config();
+                if (typeof native.getWorkflowConfig === 'function') {
+                    return native.getWorkflowConfig();
                 }
                 return { module: 'workflow', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class WorkflowApi {
             'workflow',
             'validate_data',
             async () => {
-                if (typeof native.validate_workflow_data === 'function') {
-                    return native.validate_workflow_data(JSON.stringify(data));
+                if (typeof native.validateWorkflowData === 'function') {
+                    return native.validateWorkflowData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class WorkflowApi {
             'workflow',
             'create',
             async () => {
-                if (typeof native.create_workflow_record === 'function') {
-                    return native.create_workflow_record(
+                if (typeof native.createWorkflowRecord === 'function') {
+                    return native.createWorkflowRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class WorkflowApi {
             'workflow',
             'read',
             async () => {
-                if (typeof native.get_workflow_record === 'function') {
-                    return native.get_workflow_record(id);
+                if (typeof native.getWorkflowRecord === 'function') {
+                    return native.getWorkflowRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class WorkflowApi {
             'workflow',
             'update',
             async () => {
-                if (typeof native.update_workflow_record === 'function') {
-                    return native.update_workflow_record(data);
+                if (typeof native.updateWorkflowRecord === 'function') {
+                    return native.updateWorkflowRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class WorkflowApi {
             'workflow',
             'delete',
             async () => {
-                if (typeof native.delete_workflow_record === 'function') {
-                    return { success: native.delete_workflow_record(id) };
+                if (typeof native.deleteWorkflowRecord === 'function') {
+                    return { success: native.deleteWorkflowRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class WorkflowApi {
             'workflow',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_workflow_records === 'function') {
-                    return native.bulk_create_workflow_records(records);
+                if (typeof native.bulkCreateWorkflowRecords === 'function') {
+                    return native.bulkCreateWorkflowRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class WorkflowApi {
             'workflow',
             'analytics',
             async () => {
-                if (typeof native.analyze_workflow_performance === 'function') {
-                    return native.analyze_workflow_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeWorkflowPerformance === 'function') {
+                    return native.analyzeWorkflowPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class WorkflowApi {
             'workflow',
             'optimize',
             async () => {
-                if (typeof native.optimize_workflow_performance === 'function') {
-                    return { score: native.optimize_workflow_performance(data) };
+                if (typeof native.optimizeWorkflowPerformance === 'function') {
+                    return { score: native.optimizeWorkflowPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

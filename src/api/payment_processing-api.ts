@@ -19,8 +19,8 @@ export class PaymentProcessingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_payment_processing_health === 'function') {
-                    return native.check_payment_processing_health();
+                if (typeof native.checkPaymentProcessingHealth === 'function') {
+                    return native.checkPaymentProcessingHealth();
                 }
                 return { status: 'healthy', module: 'payment_processing' };
             }
@@ -33,8 +33,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'get_config',
             async () => {
-                if (typeof native.get_payment_processing_config === 'function') {
-                    return native.get_payment_processing_config();
+                if (typeof native.getPaymentProcessingConfig === 'function') {
+                    return native.getPaymentProcessingConfig();
                 }
                 return { module: 'payment_processing', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'validate_data',
             async () => {
-                if (typeof native.validate_payment_processing_data === 'function') {
-                    return native.validate_payment_processing_data(JSON.stringify(data));
+                if (typeof native.validatePaymentProcessingData === 'function') {
+                    return native.validatePaymentProcessingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'create',
             async () => {
-                if (typeof native.create_payment_processing_record === 'function') {
-                    return native.create_payment_processing_record(
+                if (typeof native.createPaymentProcessingRecord === 'function') {
+                    return native.createPaymentProcessingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'read',
             async () => {
-                if (typeof native.get_payment_processing_record === 'function') {
-                    return native.get_payment_processing_record(id);
+                if (typeof native.getPaymentProcessingRecord === 'function') {
+                    return native.getPaymentProcessingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'update',
             async () => {
-                if (typeof native.update_payment_processing_record === 'function') {
-                    return native.update_payment_processing_record(data);
+                if (typeof native.updatePaymentProcessingRecord === 'function') {
+                    return native.updatePaymentProcessingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'delete',
             async () => {
-                if (typeof native.delete_payment_processing_record === 'function') {
-                    return { success: native.delete_payment_processing_record(id) };
+                if (typeof native.deletePaymentProcessingRecord === 'function') {
+                    return { success: native.deletePaymentProcessingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_payment_processing_records === 'function') {
-                    return native.bulk_create_payment_processing_records(records);
+                if (typeof native.bulkCreatePaymentProcessingRecords === 'function') {
+                    return native.bulkCreatePaymentProcessingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'analytics',
             async () => {
-                if (typeof native.analyze_payment_processing_performance === 'function') {
-                    return native.analyze_payment_processing_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzePaymentProcessingPerformance === 'function') {
+                    return native.analyzePaymentProcessingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class PaymentProcessingApi {
             'payment_processing',
             'optimize',
             async () => {
-                if (typeof native.optimize_payment_processing_performance === 'function') {
-                    return { score: native.optimize_payment_processing_performance(data) };
+                if (typeof native.optimizePaymentProcessingPerformance === 'function') {
+                    return { score: native.optimizePaymentProcessingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

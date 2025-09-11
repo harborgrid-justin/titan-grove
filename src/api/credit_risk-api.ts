@@ -19,8 +19,8 @@ export class CreditRiskApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_credit_risk_health === 'function') {
-                    return native.check_credit_risk_health();
+                if (typeof native.checkCreditRiskHealth === 'function') {
+                    return native.checkCreditRiskHealth();
                 }
                 return { status: 'healthy', module: 'credit_risk' };
             }
@@ -33,8 +33,8 @@ export class CreditRiskApi {
             'credit_risk',
             'get_config',
             async () => {
-                if (typeof native.get_credit_risk_config === 'function') {
-                    return native.get_credit_risk_config();
+                if (typeof native.getCreditRiskConfig === 'function') {
+                    return native.getCreditRiskConfig();
                 }
                 return { module: 'credit_risk', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class CreditRiskApi {
             'credit_risk',
             'validate_data',
             async () => {
-                if (typeof native.validate_credit_risk_data === 'function') {
-                    return native.validate_credit_risk_data(JSON.stringify(data));
+                if (typeof native.validateCreditRiskData === 'function') {
+                    return native.validateCreditRiskData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class CreditRiskApi {
             'credit_risk',
             'create',
             async () => {
-                if (typeof native.create_credit_risk_record === 'function') {
-                    return native.create_credit_risk_record(
+                if (typeof native.createCreditRiskRecord === 'function') {
+                    return native.createCreditRiskRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class CreditRiskApi {
             'credit_risk',
             'read',
             async () => {
-                if (typeof native.get_credit_risk_record === 'function') {
-                    return native.get_credit_risk_record(id);
+                if (typeof native.getCreditRiskRecord === 'function') {
+                    return native.getCreditRiskRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class CreditRiskApi {
             'credit_risk',
             'update',
             async () => {
-                if (typeof native.update_credit_risk_record === 'function') {
-                    return native.update_credit_risk_record(data);
+                if (typeof native.updateCreditRiskRecord === 'function') {
+                    return native.updateCreditRiskRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class CreditRiskApi {
             'credit_risk',
             'delete',
             async () => {
-                if (typeof native.delete_credit_risk_record === 'function') {
-                    return { success: native.delete_credit_risk_record(id) };
+                if (typeof native.deleteCreditRiskRecord === 'function') {
+                    return { success: native.deleteCreditRiskRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class CreditRiskApi {
             'credit_risk',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_credit_risk_records === 'function') {
-                    return native.bulk_create_credit_risk_records(records);
+                if (typeof native.bulkCreateCreditRiskRecords === 'function') {
+                    return native.bulkCreateCreditRiskRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class CreditRiskApi {
             'credit_risk',
             'analytics',
             async () => {
-                if (typeof native.analyze_credit_risk_performance === 'function') {
-                    return native.analyze_credit_risk_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeCreditRiskPerformance === 'function') {
+                    return native.analyzeCreditRiskPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class CreditRiskApi {
             'credit_risk',
             'optimize',
             async () => {
-                if (typeof native.optimize_credit_risk_performance === 'function') {
-                    return { score: native.optimize_credit_risk_performance(data) };
+                if (typeof native.optimizeCreditRiskPerformance === 'function') {
+                    return { score: native.optimizeCreditRiskPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class SustainabilityApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_sustainability_health === 'function') {
-                    return native.check_sustainability_health();
+                if (typeof native.checkSustainabilityHealth === 'function') {
+                    return native.checkSustainabilityHealth();
                 }
                 return { status: 'healthy', module: 'sustainability' };
             }
@@ -33,8 +33,8 @@ export class SustainabilityApi {
             'sustainability',
             'get_config',
             async () => {
-                if (typeof native.get_sustainability_config === 'function') {
-                    return native.get_sustainability_config();
+                if (typeof native.getSustainabilityConfig === 'function') {
+                    return native.getSustainabilityConfig();
                 }
                 return { module: 'sustainability', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class SustainabilityApi {
             'sustainability',
             'validate_data',
             async () => {
-                if (typeof native.validate_sustainability_data === 'function') {
-                    return native.validate_sustainability_data(JSON.stringify(data));
+                if (typeof native.validateSustainabilityData === 'function') {
+                    return native.validateSustainabilityData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class SustainabilityApi {
             'sustainability',
             'create',
             async () => {
-                if (typeof native.create_sustainability_record === 'function') {
-                    return native.create_sustainability_record(
+                if (typeof native.createSustainabilityRecord === 'function') {
+                    return native.createSustainabilityRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class SustainabilityApi {
             'sustainability',
             'read',
             async () => {
-                if (typeof native.get_sustainability_record === 'function') {
-                    return native.get_sustainability_record(id);
+                if (typeof native.getSustainabilityRecord === 'function') {
+                    return native.getSustainabilityRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class SustainabilityApi {
             'sustainability',
             'update',
             async () => {
-                if (typeof native.update_sustainability_record === 'function') {
-                    return native.update_sustainability_record(data);
+                if (typeof native.updateSustainabilityRecord === 'function') {
+                    return native.updateSustainabilityRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class SustainabilityApi {
             'sustainability',
             'delete',
             async () => {
-                if (typeof native.delete_sustainability_record === 'function') {
-                    return { success: native.delete_sustainability_record(id) };
+                if (typeof native.deleteSustainabilityRecord === 'function') {
+                    return { success: native.deleteSustainabilityRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class SustainabilityApi {
             'sustainability',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_sustainability_records === 'function') {
-                    return native.bulk_create_sustainability_records(records);
+                if (typeof native.bulkCreateSustainabilityRecords === 'function') {
+                    return native.bulkCreateSustainabilityRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class SustainabilityApi {
             'sustainability',
             'analytics',
             async () => {
-                if (typeof native.analyze_sustainability_performance === 'function') {
-                    return native.analyze_sustainability_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeSustainabilityPerformance === 'function') {
+                    return native.analyzeSustainabilityPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class SustainabilityApi {
             'sustainability',
             'optimize',
             async () => {
-                if (typeof native.optimize_sustainability_performance === 'function') {
-                    return { score: native.optimize_sustainability_performance(data) };
+                if (typeof native.optimizeSustainabilityPerformance === 'function') {
+                    return { score: native.optimizeSustainabilityPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

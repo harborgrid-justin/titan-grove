@@ -19,8 +19,8 @@ export class ProcurementApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_procurement_health === 'function') {
-                    return native.check_procurement_health();
+                if (typeof native.checkProcurementHealth === 'function') {
+                    return native.checkProcurementHealth();
                 }
                 return { status: 'healthy', module: 'procurement' };
             }
@@ -33,8 +33,8 @@ export class ProcurementApi {
             'procurement',
             'get_config',
             async () => {
-                if (typeof native.get_procurement_config === 'function') {
-                    return native.get_procurement_config();
+                if (typeof native.getProcurementConfig === 'function') {
+                    return native.getProcurementConfig();
                 }
                 return { module: 'procurement', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ProcurementApi {
             'procurement',
             'validate_data',
             async () => {
-                if (typeof native.validate_procurement_data === 'function') {
-                    return native.validate_procurement_data(JSON.stringify(data));
+                if (typeof native.validateProcurementData === 'function') {
+                    return native.validateProcurementData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ProcurementApi {
             'procurement',
             'create',
             async () => {
-                if (typeof native.create_procurement_record === 'function') {
-                    return native.create_procurement_record(
+                if (typeof native.createProcurementRecord === 'function') {
+                    return native.createProcurementRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ProcurementApi {
             'procurement',
             'read',
             async () => {
-                if (typeof native.get_procurement_record === 'function') {
-                    return native.get_procurement_record(id);
+                if (typeof native.getProcurementRecord === 'function') {
+                    return native.getProcurementRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ProcurementApi {
             'procurement',
             'update',
             async () => {
-                if (typeof native.update_procurement_record === 'function') {
-                    return native.update_procurement_record(data);
+                if (typeof native.updateProcurementRecord === 'function') {
+                    return native.updateProcurementRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ProcurementApi {
             'procurement',
             'delete',
             async () => {
-                if (typeof native.delete_procurement_record === 'function') {
-                    return { success: native.delete_procurement_record(id) };
+                if (typeof native.deleteProcurementRecord === 'function') {
+                    return { success: native.deleteProcurementRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ProcurementApi {
             'procurement',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_procurement_records === 'function') {
-                    return native.bulk_create_procurement_records(records);
+                if (typeof native.bulkCreateProcurementRecords === 'function') {
+                    return native.bulkCreateProcurementRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ProcurementApi {
             'procurement',
             'analytics',
             async () => {
-                if (typeof native.analyze_procurement_performance === 'function') {
-                    return native.analyze_procurement_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeProcurementPerformance === 'function') {
+                    return native.analyzeProcurementPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ProcurementApi {
             'procurement',
             'optimize',
             async () => {
-                if (typeof native.optimize_procurement_performance === 'function') {
-                    return { score: native.optimize_procurement_performance(data) };
+                if (typeof native.optimizeProcurementPerformance === 'function') {
+                    return { score: native.optimizeProcurementPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

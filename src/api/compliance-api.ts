@@ -19,8 +19,8 @@ export class ComplianceApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_compliance_health === 'function') {
-                    return native.check_compliance_health();
+                if (typeof native.checkComplianceHealth === 'function') {
+                    return native.checkComplianceHealth();
                 }
                 return { status: 'healthy', module: 'compliance' };
             }
@@ -33,8 +33,8 @@ export class ComplianceApi {
             'compliance',
             'get_config',
             async () => {
-                if (typeof native.get_compliance_config === 'function') {
-                    return native.get_compliance_config();
+                if (typeof native.getComplianceConfig === 'function') {
+                    return native.getComplianceConfig();
                 }
                 return { module: 'compliance', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ComplianceApi {
             'compliance',
             'validate_data',
             async () => {
-                if (typeof native.validate_compliance_data === 'function') {
-                    return native.validate_compliance_data(JSON.stringify(data));
+                if (typeof native.validateComplianceData === 'function') {
+                    return native.validateComplianceData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ComplianceApi {
             'compliance',
             'create',
             async () => {
-                if (typeof native.create_compliance_record === 'function') {
-                    return native.create_compliance_record(
+                if (typeof native.createComplianceRecord === 'function') {
+                    return native.createComplianceRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ComplianceApi {
             'compliance',
             'read',
             async () => {
-                if (typeof native.get_compliance_record === 'function') {
-                    return native.get_compliance_record(id);
+                if (typeof native.getComplianceRecord === 'function') {
+                    return native.getComplianceRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ComplianceApi {
             'compliance',
             'update',
             async () => {
-                if (typeof native.update_compliance_record === 'function') {
-                    return native.update_compliance_record(data);
+                if (typeof native.updateComplianceRecord === 'function') {
+                    return native.updateComplianceRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ComplianceApi {
             'compliance',
             'delete',
             async () => {
-                if (typeof native.delete_compliance_record === 'function') {
-                    return { success: native.delete_compliance_record(id) };
+                if (typeof native.deleteComplianceRecord === 'function') {
+                    return { success: native.deleteComplianceRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ComplianceApi {
             'compliance',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_compliance_records === 'function') {
-                    return native.bulk_create_compliance_records(records);
+                if (typeof native.bulkCreateComplianceRecords === 'function') {
+                    return native.bulkCreateComplianceRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ComplianceApi {
             'compliance',
             'analytics',
             async () => {
-                if (typeof native.analyze_compliance_performance === 'function') {
-                    return native.analyze_compliance_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeCompliancePerformance === 'function') {
+                    return native.analyzeCompliancePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ComplianceApi {
             'compliance',
             'optimize',
             async () => {
-                if (typeof native.optimize_compliance_performance === 'function') {
-                    return { score: native.optimize_compliance_performance(data) };
+                if (typeof native.optimizeCompliancePerformance === 'function') {
+                    return { score: native.optimizeCompliancePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

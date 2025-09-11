@@ -19,8 +19,8 @@ export class YardManagementApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_yard_management_health === 'function') {
-                    return native.check_yard_management_health();
+                if (typeof native.checkYardManagementHealth === 'function') {
+                    return native.checkYardManagementHealth();
                 }
                 return { status: 'healthy', module: 'yard_management' };
             }
@@ -33,8 +33,8 @@ export class YardManagementApi {
             'yard_management',
             'get_config',
             async () => {
-                if (typeof native.get_yard_management_config === 'function') {
-                    return native.get_yard_management_config();
+                if (typeof native.getYardManagementConfig === 'function') {
+                    return native.getYardManagementConfig();
                 }
                 return { module: 'yard_management', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class YardManagementApi {
             'yard_management',
             'validate_data',
             async () => {
-                if (typeof native.validate_yard_management_data === 'function') {
-                    return native.validate_yard_management_data(JSON.stringify(data));
+                if (typeof native.validateYardManagementData === 'function') {
+                    return native.validateYardManagementData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class YardManagementApi {
             'yard_management',
             'create',
             async () => {
-                if (typeof native.create_yard_management_record === 'function') {
-                    return native.create_yard_management_record(
+                if (typeof native.createYardManagementRecord === 'function') {
+                    return native.createYardManagementRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class YardManagementApi {
             'yard_management',
             'read',
             async () => {
-                if (typeof native.get_yard_management_record === 'function') {
-                    return native.get_yard_management_record(id);
+                if (typeof native.getYardManagementRecord === 'function') {
+                    return native.getYardManagementRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class YardManagementApi {
             'yard_management',
             'update',
             async () => {
-                if (typeof native.update_yard_management_record === 'function') {
-                    return native.update_yard_management_record(data);
+                if (typeof native.updateYardManagementRecord === 'function') {
+                    return native.updateYardManagementRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class YardManagementApi {
             'yard_management',
             'delete',
             async () => {
-                if (typeof native.delete_yard_management_record === 'function') {
-                    return { success: native.delete_yard_management_record(id) };
+                if (typeof native.deleteYardManagementRecord === 'function') {
+                    return { success: native.deleteYardManagementRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class YardManagementApi {
             'yard_management',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_yard_management_records === 'function') {
-                    return native.bulk_create_yard_management_records(records);
+                if (typeof native.bulkCreateYardManagementRecords === 'function') {
+                    return native.bulkCreateYardManagementRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class YardManagementApi {
             'yard_management',
             'analytics',
             async () => {
-                if (typeof native.analyze_yard_management_performance === 'function') {
-                    return native.analyze_yard_management_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeYardManagementPerformance === 'function') {
+                    return native.analyzeYardManagementPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class YardManagementApi {
             'yard_management',
             'optimize',
             async () => {
-                if (typeof native.optimize_yard_management_performance === 'function') {
-                    return { score: native.optimize_yard_management_performance(data) };
+                if (typeof native.optimizeYardManagementPerformance === 'function') {
+                    return { score: native.optimizeYardManagementPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

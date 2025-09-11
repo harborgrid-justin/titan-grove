@@ -19,8 +19,8 @@ export class InvestmentPortfolioApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_investment_portfolio_health === 'function') {
-                    return native.check_investment_portfolio_health();
+                if (typeof native.checkInvestmentPortfolioHealth === 'function') {
+                    return native.checkInvestmentPortfolioHealth();
                 }
                 return { status: 'healthy', module: 'investment_portfolio' };
             }
@@ -33,8 +33,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'get_config',
             async () => {
-                if (typeof native.get_investment_portfolio_config === 'function') {
-                    return native.get_investment_portfolio_config();
+                if (typeof native.getInvestmentPortfolioConfig === 'function') {
+                    return native.getInvestmentPortfolioConfig();
                 }
                 return { module: 'investment_portfolio', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'validate_data',
             async () => {
-                if (typeof native.validate_investment_portfolio_data === 'function') {
-                    return native.validate_investment_portfolio_data(JSON.stringify(data));
+                if (typeof native.validateInvestmentPortfolioData === 'function') {
+                    return native.validateInvestmentPortfolioData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'create',
             async () => {
-                if (typeof native.create_investment_portfolio_record === 'function') {
-                    return native.create_investment_portfolio_record(
+                if (typeof native.createInvestmentPortfolioRecord === 'function') {
+                    return native.createInvestmentPortfolioRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'read',
             async () => {
-                if (typeof native.get_investment_portfolio_record === 'function') {
-                    return native.get_investment_portfolio_record(id);
+                if (typeof native.getInvestmentPortfolioRecord === 'function') {
+                    return native.getInvestmentPortfolioRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'update',
             async () => {
-                if (typeof native.update_investment_portfolio_record === 'function') {
-                    return native.update_investment_portfolio_record(data);
+                if (typeof native.updateInvestmentPortfolioRecord === 'function') {
+                    return native.updateInvestmentPortfolioRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'delete',
             async () => {
-                if (typeof native.delete_investment_portfolio_record === 'function') {
-                    return { success: native.delete_investment_portfolio_record(id) };
+                if (typeof native.deleteInvestmentPortfolioRecord === 'function') {
+                    return { success: native.deleteInvestmentPortfolioRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_investment_portfolio_records === 'function') {
-                    return native.bulk_create_investment_portfolio_records(records);
+                if (typeof native.bulkCreateInvestmentPortfolioRecords === 'function') {
+                    return native.bulkCreateInvestmentPortfolioRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'analytics',
             async () => {
-                if (typeof native.analyze_investment_portfolio_performance === 'function') {
-                    return native.analyze_investment_portfolio_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeInvestmentPortfolioPerformance === 'function') {
+                    return native.analyzeInvestmentPortfolioPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class InvestmentPortfolioApi {
             'investment_portfolio',
             'optimize',
             async () => {
-                if (typeof native.optimize_investment_portfolio_performance === 'function') {
-                    return { score: native.optimize_investment_portfolio_performance(data) };
+                if (typeof native.optimizeInvestmentPortfolioPerformance === 'function') {
+                    return { score: native.optimizeInvestmentPortfolioPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

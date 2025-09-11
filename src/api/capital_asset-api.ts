@@ -19,8 +19,8 @@ export class CapitalAssetApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_capital_asset_health === 'function') {
-                    return native.check_capital_asset_health();
+                if (typeof native.checkCapitalAssetHealth === 'function') {
+                    return native.checkCapitalAssetHealth();
                 }
                 return { status: 'healthy', module: 'capital_asset' };
             }
@@ -33,8 +33,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'get_config',
             async () => {
-                if (typeof native.get_capital_asset_config === 'function') {
-                    return native.get_capital_asset_config();
+                if (typeof native.getCapitalAssetConfig === 'function') {
+                    return native.getCapitalAssetConfig();
                 }
                 return { module: 'capital_asset', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'validate_data',
             async () => {
-                if (typeof native.validate_capital_asset_data === 'function') {
-                    return native.validate_capital_asset_data(JSON.stringify(data));
+                if (typeof native.validateCapitalAssetData === 'function') {
+                    return native.validateCapitalAssetData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'create',
             async () => {
-                if (typeof native.create_capital_asset_record === 'function') {
-                    return native.create_capital_asset_record(
+                if (typeof native.createCapitalAssetRecord === 'function') {
+                    return native.createCapitalAssetRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'read',
             async () => {
-                if (typeof native.get_capital_asset_record === 'function') {
-                    return native.get_capital_asset_record(id);
+                if (typeof native.getCapitalAssetRecord === 'function') {
+                    return native.getCapitalAssetRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'update',
             async () => {
-                if (typeof native.update_capital_asset_record === 'function') {
-                    return native.update_capital_asset_record(data);
+                if (typeof native.updateCapitalAssetRecord === 'function') {
+                    return native.updateCapitalAssetRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'delete',
             async () => {
-                if (typeof native.delete_capital_asset_record === 'function') {
-                    return { success: native.delete_capital_asset_record(id) };
+                if (typeof native.deleteCapitalAssetRecord === 'function') {
+                    return { success: native.deleteCapitalAssetRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_capital_asset_records === 'function') {
-                    return native.bulk_create_capital_asset_records(records);
+                if (typeof native.bulkCreateCapitalAssetRecords === 'function') {
+                    return native.bulkCreateCapitalAssetRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'analytics',
             async () => {
-                if (typeof native.analyze_capital_asset_performance === 'function') {
-                    return native.analyze_capital_asset_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeCapitalAssetPerformance === 'function') {
+                    return native.analyzeCapitalAssetPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class CapitalAssetApi {
             'capital_asset',
             'optimize',
             async () => {
-                if (typeof native.optimize_capital_asset_performance === 'function') {
-                    return { score: native.optimize_capital_asset_performance(data) };
+                if (typeof native.optimizeCapitalAssetPerformance === 'function') {
+                    return { score: native.optimizeCapitalAssetPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class CalculationsApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_calculations_health === 'function') {
-                    return native.check_calculations_health();
+                if (typeof native.checkCalculationsHealth === 'function') {
+                    return native.checkCalculationsHealth();
                 }
                 return { status: 'healthy', module: 'calculations' };
             }
@@ -33,8 +33,8 @@ export class CalculationsApi {
             'calculations',
             'get_config',
             async () => {
-                if (typeof native.get_calculations_config === 'function') {
-                    return native.get_calculations_config();
+                if (typeof native.getCalculationsConfig === 'function') {
+                    return native.getCalculationsConfig();
                 }
                 return { module: 'calculations', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class CalculationsApi {
             'calculations',
             'validate_data',
             async () => {
-                if (typeof native.validate_calculations_data === 'function') {
-                    return native.validate_calculations_data(JSON.stringify(data));
+                if (typeof native.validateCalculationsData === 'function') {
+                    return native.validateCalculationsData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class CalculationsApi {
             'calculations',
             'create',
             async () => {
-                if (typeof native.create_calculations_record === 'function') {
-                    return native.create_calculations_record(
+                if (typeof native.createCalculationsRecord === 'function') {
+                    return native.createCalculationsRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class CalculationsApi {
             'calculations',
             'read',
             async () => {
-                if (typeof native.get_calculations_record === 'function') {
-                    return native.get_calculations_record(id);
+                if (typeof native.getCalculationsRecord === 'function') {
+                    return native.getCalculationsRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class CalculationsApi {
             'calculations',
             'update',
             async () => {
-                if (typeof native.update_calculations_record === 'function') {
-                    return native.update_calculations_record(data);
+                if (typeof native.updateCalculationsRecord === 'function') {
+                    return native.updateCalculationsRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class CalculationsApi {
             'calculations',
             'delete',
             async () => {
-                if (typeof native.delete_calculations_record === 'function') {
-                    return { success: native.delete_calculations_record(id) };
+                if (typeof native.deleteCalculationsRecord === 'function') {
+                    return { success: native.deleteCalculationsRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class CalculationsApi {
             'calculations',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_calculations_records === 'function') {
-                    return native.bulk_create_calculations_records(records);
+                if (typeof native.bulkCreateCalculationsRecords === 'function') {
+                    return native.bulkCreateCalculationsRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class CalculationsApi {
             'calculations',
             'analytics',
             async () => {
-                if (typeof native.analyze_calculations_performance === 'function') {
-                    return native.analyze_calculations_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeCalculationsPerformance === 'function') {
+                    return native.analyzeCalculationsPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class CalculationsApi {
             'calculations',
             'optimize',
             async () => {
-                if (typeof native.optimize_calculations_performance === 'function') {
-                    return { score: native.optimize_calculations_performance(data) };
+                if (typeof native.optimizeCalculationsPerformance === 'function') {
+                    return { score: native.optimizeCalculationsPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

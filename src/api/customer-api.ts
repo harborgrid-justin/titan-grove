@@ -19,8 +19,8 @@ export class CustomerApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_customer_health === 'function') {
-                    return native.check_customer_health();
+                if (typeof native.checkCustomerHealth === 'function') {
+                    return native.checkCustomerHealth();
                 }
                 return { status: 'healthy', module: 'customer' };
             }
@@ -33,8 +33,8 @@ export class CustomerApi {
             'customer',
             'get_config',
             async () => {
-                if (typeof native.get_customer_config === 'function') {
-                    return native.get_customer_config();
+                if (typeof native.getCustomerConfig === 'function') {
+                    return native.getCustomerConfig();
                 }
                 return { module: 'customer', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class CustomerApi {
             'customer',
             'validate_data',
             async () => {
-                if (typeof native.validate_customer_data === 'function') {
-                    return native.validate_customer_data(JSON.stringify(data));
+                if (typeof native.validateCustomerData === 'function') {
+                    return native.validateCustomerData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class CustomerApi {
             'customer',
             'create',
             async () => {
-                if (typeof native.create_customer_record === 'function') {
-                    return native.create_customer_record(
+                if (typeof native.createCustomerRecord === 'function') {
+                    return native.createCustomerRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class CustomerApi {
             'customer',
             'read',
             async () => {
-                if (typeof native.get_customer_record === 'function') {
-                    return native.get_customer_record(id);
+                if (typeof native.getCustomerRecord === 'function') {
+                    return native.getCustomerRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class CustomerApi {
             'customer',
             'update',
             async () => {
-                if (typeof native.update_customer_record === 'function') {
-                    return native.update_customer_record(data);
+                if (typeof native.updateCustomerRecord === 'function') {
+                    return native.updateCustomerRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class CustomerApi {
             'customer',
             'delete',
             async () => {
-                if (typeof native.delete_customer_record === 'function') {
-                    return { success: native.delete_customer_record(id) };
+                if (typeof native.deleteCustomerRecord === 'function') {
+                    return { success: native.deleteCustomerRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class CustomerApi {
             'customer',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_customer_records === 'function') {
-                    return native.bulk_create_customer_records(records);
+                if (typeof native.bulkCreateCustomerRecords === 'function') {
+                    return native.bulkCreateCustomerRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class CustomerApi {
             'customer',
             'analytics',
             async () => {
-                if (typeof native.analyze_customer_performance === 'function') {
-                    return native.analyze_customer_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeCustomerPerformance === 'function') {
+                    return native.analyzeCustomerPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class CustomerApi {
             'customer',
             'optimize',
             async () => {
-                if (typeof native.optimize_customer_performance === 'function') {
-                    return { score: native.optimize_customer_performance(data) };
+                if (typeof native.optimizeCustomerPerformance === 'function') {
+                    return { score: native.optimizeCustomerPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

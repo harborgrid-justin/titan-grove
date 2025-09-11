@@ -19,8 +19,8 @@ export class RegulatoryReportingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_regulatory_reporting_health === 'function') {
-                    return native.check_regulatory_reporting_health();
+                if (typeof native.checkRegulatoryReportingHealth === 'function') {
+                    return native.checkRegulatoryReportingHealth();
                 }
                 return { status: 'healthy', module: 'regulatory_reporting' };
             }
@@ -33,8 +33,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'get_config',
             async () => {
-                if (typeof native.get_regulatory_reporting_config === 'function') {
-                    return native.get_regulatory_reporting_config();
+                if (typeof native.getRegulatoryReportingConfig === 'function') {
+                    return native.getRegulatoryReportingConfig();
                 }
                 return { module: 'regulatory_reporting', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'validate_data',
             async () => {
-                if (typeof native.validate_regulatory_reporting_data === 'function') {
-                    return native.validate_regulatory_reporting_data(JSON.stringify(data));
+                if (typeof native.validateRegulatoryReportingData === 'function') {
+                    return native.validateRegulatoryReportingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'create',
             async () => {
-                if (typeof native.create_regulatory_reporting_record === 'function') {
-                    return native.create_regulatory_reporting_record(
+                if (typeof native.createRegulatoryReportingRecord === 'function') {
+                    return native.createRegulatoryReportingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'read',
             async () => {
-                if (typeof native.get_regulatory_reporting_record === 'function') {
-                    return native.get_regulatory_reporting_record(id);
+                if (typeof native.getRegulatoryReportingRecord === 'function') {
+                    return native.getRegulatoryReportingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'update',
             async () => {
-                if (typeof native.update_regulatory_reporting_record === 'function') {
-                    return native.update_regulatory_reporting_record(data);
+                if (typeof native.updateRegulatoryReportingRecord === 'function') {
+                    return native.updateRegulatoryReportingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'delete',
             async () => {
-                if (typeof native.delete_regulatory_reporting_record === 'function') {
-                    return { success: native.delete_regulatory_reporting_record(id) };
+                if (typeof native.deleteRegulatoryReportingRecord === 'function') {
+                    return { success: native.deleteRegulatoryReportingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_regulatory_reporting_records === 'function') {
-                    return native.bulk_create_regulatory_reporting_records(records);
+                if (typeof native.bulkCreateRegulatoryReportingRecords === 'function') {
+                    return native.bulkCreateRegulatoryReportingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'analytics',
             async () => {
-                if (typeof native.analyze_regulatory_reporting_performance === 'function') {
-                    return native.analyze_regulatory_reporting_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeRegulatoryReportingPerformance === 'function') {
+                    return native.analyzeRegulatoryReportingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class RegulatoryReportingApi {
             'regulatory_reporting',
             'optimize',
             async () => {
-                if (typeof native.optimize_regulatory_reporting_performance === 'function') {
-                    return { score: native.optimize_regulatory_reporting_performance(data) };
+                if (typeof native.optimizeRegulatoryReportingPerformance === 'function') {
+                    return { score: native.optimizeRegulatoryReportingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class OrdersApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_orders_health === 'function') {
-                    return native.check_orders_health();
+                if (typeof native.checkOrdersHealth === 'function') {
+                    return native.checkOrdersHealth();
                 }
                 return { status: 'healthy', module: 'orders' };
             }
@@ -33,8 +33,8 @@ export class OrdersApi {
             'orders',
             'get_config',
             async () => {
-                if (typeof native.get_orders_config === 'function') {
-                    return native.get_orders_config();
+                if (typeof native.getOrdersConfig === 'function') {
+                    return native.getOrdersConfig();
                 }
                 return { module: 'orders', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class OrdersApi {
             'orders',
             'validate_data',
             async () => {
-                if (typeof native.validate_orders_data === 'function') {
-                    return native.validate_orders_data(JSON.stringify(data));
+                if (typeof native.validateOrdersData === 'function') {
+                    return native.validateOrdersData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class OrdersApi {
             'orders',
             'create',
             async () => {
-                if (typeof native.create_orders_record === 'function') {
-                    return native.create_orders_record(
+                if (typeof native.createOrdersRecord === 'function') {
+                    return native.createOrdersRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class OrdersApi {
             'orders',
             'read',
             async () => {
-                if (typeof native.get_orders_record === 'function') {
-                    return native.get_orders_record(id);
+                if (typeof native.getOrdersRecord === 'function') {
+                    return native.getOrdersRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class OrdersApi {
             'orders',
             'update',
             async () => {
-                if (typeof native.update_orders_record === 'function') {
-                    return native.update_orders_record(data);
+                if (typeof native.updateOrdersRecord === 'function') {
+                    return native.updateOrdersRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class OrdersApi {
             'orders',
             'delete',
             async () => {
-                if (typeof native.delete_orders_record === 'function') {
-                    return { success: native.delete_orders_record(id) };
+                if (typeof native.deleteOrdersRecord === 'function') {
+                    return { success: native.deleteOrdersRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class OrdersApi {
             'orders',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_orders_records === 'function') {
-                    return native.bulk_create_orders_records(records);
+                if (typeof native.bulkCreateOrdersRecords === 'function') {
+                    return native.bulkCreateOrdersRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class OrdersApi {
             'orders',
             'analytics',
             async () => {
-                if (typeof native.analyze_orders_performance === 'function') {
-                    return native.analyze_orders_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeOrdersPerformance === 'function') {
+                    return native.analyzeOrdersPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class OrdersApi {
             'orders',
             'optimize',
             async () => {
-                if (typeof native.optimize_orders_performance === 'function') {
-                    return { score: native.optimize_orders_performance(data) };
+                if (typeof native.optimizeOrdersPerformance === 'function') {
+                    return { score: native.optimizeOrdersPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

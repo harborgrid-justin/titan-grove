@@ -19,8 +19,8 @@ export class TrainingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_training_health === 'function') {
-                    return native.check_training_health();
+                if (typeof native.checkTrainingHealth === 'function') {
+                    return native.checkTrainingHealth();
                 }
                 return { status: 'healthy', module: 'training' };
             }
@@ -33,8 +33,8 @@ export class TrainingApi {
             'training',
             'get_config',
             async () => {
-                if (typeof native.get_training_config === 'function') {
-                    return native.get_training_config();
+                if (typeof native.getTrainingConfig === 'function') {
+                    return native.getTrainingConfig();
                 }
                 return { module: 'training', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class TrainingApi {
             'training',
             'validate_data',
             async () => {
-                if (typeof native.validate_training_data === 'function') {
-                    return native.validate_training_data(JSON.stringify(data));
+                if (typeof native.validateTrainingData === 'function') {
+                    return native.validateTrainingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class TrainingApi {
             'training',
             'create',
             async () => {
-                if (typeof native.create_training_record === 'function') {
-                    return native.create_training_record(
+                if (typeof native.createTrainingRecord === 'function') {
+                    return native.createTrainingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class TrainingApi {
             'training',
             'read',
             async () => {
-                if (typeof native.get_training_record === 'function') {
-                    return native.get_training_record(id);
+                if (typeof native.getTrainingRecord === 'function') {
+                    return native.getTrainingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class TrainingApi {
             'training',
             'update',
             async () => {
-                if (typeof native.update_training_record === 'function') {
-                    return native.update_training_record(data);
+                if (typeof native.updateTrainingRecord === 'function') {
+                    return native.updateTrainingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class TrainingApi {
             'training',
             'delete',
             async () => {
-                if (typeof native.delete_training_record === 'function') {
-                    return { success: native.delete_training_record(id) };
+                if (typeof native.deleteTrainingRecord === 'function') {
+                    return { success: native.deleteTrainingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class TrainingApi {
             'training',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_training_records === 'function') {
-                    return native.bulk_create_training_records(records);
+                if (typeof native.bulkCreateTrainingRecords === 'function') {
+                    return native.bulkCreateTrainingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class TrainingApi {
             'training',
             'analytics',
             async () => {
-                if (typeof native.analyze_training_performance === 'function') {
-                    return native.analyze_training_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeTrainingPerformance === 'function') {
+                    return native.analyzeTrainingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class TrainingApi {
             'training',
             'optimize',
             async () => {
-                if (typeof native.optimize_training_performance === 'function') {
-                    return { score: native.optimize_training_performance(data) };
+                if (typeof native.optimizeTrainingPerformance === 'function') {
+                    return { score: native.optimizeTrainingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

@@ -19,8 +19,8 @@ export class HrApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_hr_health === 'function') {
-                    return native.check_hr_health();
+                if (typeof native.checkHrHealth === 'function') {
+                    return native.checkHrHealth();
                 }
                 return { status: 'healthy', module: 'hr' };
             }
@@ -33,8 +33,8 @@ export class HrApi {
             'hr',
             'get_config',
             async () => {
-                if (typeof native.get_hr_config === 'function') {
-                    return native.get_hr_config();
+                if (typeof native.getHrConfig === 'function') {
+                    return native.getHrConfig();
                 }
                 return { module: 'hr', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class HrApi {
             'hr',
             'validate_data',
             async () => {
-                if (typeof native.validate_hr_data === 'function') {
-                    return native.validate_hr_data(JSON.stringify(data));
+                if (typeof native.validateHrData === 'function') {
+                    return native.validateHrData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class HrApi {
             'hr',
             'create',
             async () => {
-                if (typeof native.create_hr_record === 'function') {
-                    return native.create_hr_record(
+                if (typeof native.createHrRecord === 'function') {
+                    return native.createHrRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class HrApi {
             'hr',
             'read',
             async () => {
-                if (typeof native.get_hr_record === 'function') {
-                    return native.get_hr_record(id);
+                if (typeof native.getHrRecord === 'function') {
+                    return native.getHrRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class HrApi {
             'hr',
             'update',
             async () => {
-                if (typeof native.update_hr_record === 'function') {
-                    return native.update_hr_record(data);
+                if (typeof native.updateHrRecord === 'function') {
+                    return native.updateHrRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class HrApi {
             'hr',
             'delete',
             async () => {
-                if (typeof native.delete_hr_record === 'function') {
-                    return { success: native.delete_hr_record(id) };
+                if (typeof native.deleteHrRecord === 'function') {
+                    return { success: native.deleteHrRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class HrApi {
             'hr',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_hr_records === 'function') {
-                    return native.bulk_create_hr_records(records);
+                if (typeof native.bulkCreateHrRecords === 'function') {
+                    return native.bulkCreateHrRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class HrApi {
             'hr',
             'analytics',
             async () => {
-                if (typeof native.analyze_hr_performance === 'function') {
-                    return native.analyze_hr_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeHrPerformance === 'function') {
+                    return native.analyzeHrPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class HrApi {
             'hr',
             'optimize',
             async () => {
-                if (typeof native.optimize_hr_performance === 'function') {
-                    return { score: native.optimize_hr_performance(data) };
+                if (typeof native.optimizeHrPerformance === 'function') {
+                    return { score: native.optimizeHrPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

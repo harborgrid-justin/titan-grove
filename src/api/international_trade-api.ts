@@ -19,8 +19,8 @@ export class InternationalTradeApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_international_trade_health === 'function') {
-                    return native.check_international_trade_health();
+                if (typeof native.checkInternationalTradeHealth === 'function') {
+                    return native.checkInternationalTradeHealth();
                 }
                 return { status: 'healthy', module: 'international_trade' };
             }
@@ -33,8 +33,8 @@ export class InternationalTradeApi {
             'international_trade',
             'get_config',
             async () => {
-                if (typeof native.get_international_trade_config === 'function') {
-                    return native.get_international_trade_config();
+                if (typeof native.getInternationalTradeConfig === 'function') {
+                    return native.getInternationalTradeConfig();
                 }
                 return { module: 'international_trade', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class InternationalTradeApi {
             'international_trade',
             'validate_data',
             async () => {
-                if (typeof native.validate_international_trade_data === 'function') {
-                    return native.validate_international_trade_data(JSON.stringify(data));
+                if (typeof native.validateInternationalTradeData === 'function') {
+                    return native.validateInternationalTradeData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class InternationalTradeApi {
             'international_trade',
             'create',
             async () => {
-                if (typeof native.create_international_trade_record === 'function') {
-                    return native.create_international_trade_record(
+                if (typeof native.createInternationalTradeRecord === 'function') {
+                    return native.createInternationalTradeRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class InternationalTradeApi {
             'international_trade',
             'read',
             async () => {
-                if (typeof native.get_international_trade_record === 'function') {
-                    return native.get_international_trade_record(id);
+                if (typeof native.getInternationalTradeRecord === 'function') {
+                    return native.getInternationalTradeRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class InternationalTradeApi {
             'international_trade',
             'update',
             async () => {
-                if (typeof native.update_international_trade_record === 'function') {
-                    return native.update_international_trade_record(data);
+                if (typeof native.updateInternationalTradeRecord === 'function') {
+                    return native.updateInternationalTradeRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class InternationalTradeApi {
             'international_trade',
             'delete',
             async () => {
-                if (typeof native.delete_international_trade_record === 'function') {
-                    return { success: native.delete_international_trade_record(id) };
+                if (typeof native.deleteInternationalTradeRecord === 'function') {
+                    return { success: native.deleteInternationalTradeRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class InternationalTradeApi {
             'international_trade',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_international_trade_records === 'function') {
-                    return native.bulk_create_international_trade_records(records);
+                if (typeof native.bulkCreateInternationalTradeRecords === 'function') {
+                    return native.bulkCreateInternationalTradeRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class InternationalTradeApi {
             'international_trade',
             'analytics',
             async () => {
-                if (typeof native.analyze_international_trade_performance === 'function') {
-                    return native.analyze_international_trade_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeInternationalTradePerformance === 'function') {
+                    return native.analyzeInternationalTradePerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class InternationalTradeApi {
             'international_trade',
             'optimize',
             async () => {
-                if (typeof native.optimize_international_trade_performance === 'function') {
-                    return { score: native.optimize_international_trade_performance(data) };
+                if (typeof native.optimizeInternationalTradePerformance === 'function') {
+                    return { score: native.optimizeInternationalTradePerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

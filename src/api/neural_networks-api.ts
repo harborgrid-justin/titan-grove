@@ -19,8 +19,8 @@ export class NeuralNetworksApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_neural_networks_health === 'function') {
-                    return native.check_neural_networks_health();
+                if (typeof native.checkNeuralNetworksHealth === 'function') {
+                    return native.checkNeuralNetworksHealth();
                 }
                 return { status: 'healthy', module: 'neural_networks' };
             }
@@ -33,8 +33,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'get_config',
             async () => {
-                if (typeof native.get_neural_networks_config === 'function') {
-                    return native.get_neural_networks_config();
+                if (typeof native.getNeuralNetworksConfig === 'function') {
+                    return native.getNeuralNetworksConfig();
                 }
                 return { module: 'neural_networks', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'validate_data',
             async () => {
-                if (typeof native.validate_neural_networks_data === 'function') {
-                    return native.validate_neural_networks_data(JSON.stringify(data));
+                if (typeof native.validateNeuralNetworksData === 'function') {
+                    return native.validateNeuralNetworksData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'create',
             async () => {
-                if (typeof native.create_neural_networks_record === 'function') {
-                    return native.create_neural_networks_record(
+                if (typeof native.createNeuralNetworksRecord === 'function') {
+                    return native.createNeuralNetworksRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'read',
             async () => {
-                if (typeof native.get_neural_networks_record === 'function') {
-                    return native.get_neural_networks_record(id);
+                if (typeof native.getNeuralNetworksRecord === 'function') {
+                    return native.getNeuralNetworksRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'update',
             async () => {
-                if (typeof native.update_neural_networks_record === 'function') {
-                    return native.update_neural_networks_record(data);
+                if (typeof native.updateNeuralNetworksRecord === 'function') {
+                    return native.updateNeuralNetworksRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'delete',
             async () => {
-                if (typeof native.delete_neural_networks_record === 'function') {
-                    return { success: native.delete_neural_networks_record(id) };
+                if (typeof native.deleteNeuralNetworksRecord === 'function') {
+                    return { success: native.deleteNeuralNetworksRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_neural_networks_records === 'function') {
-                    return native.bulk_create_neural_networks_records(records);
+                if (typeof native.bulkCreateNeuralNetworksRecords === 'function') {
+                    return native.bulkCreateNeuralNetworksRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'analytics',
             async () => {
-                if (typeof native.analyze_neural_networks_performance === 'function') {
-                    return native.analyze_neural_networks_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeNeuralNetworksPerformance === 'function') {
+                    return native.analyzeNeuralNetworksPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class NeuralNetworksApi {
             'neural_networks',
             'optimize',
             async () => {
-                if (typeof native.optimize_neural_networks_performance === 'function') {
-                    return { score: native.optimize_neural_networks_performance(data) };
+                if (typeof native.optimizeNeuralNetworksPerformance === 'function') {
+                    return { score: native.optimizeNeuralNetworksPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

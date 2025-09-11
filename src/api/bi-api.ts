@@ -19,8 +19,8 @@ export class BiApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_bi_health === 'function') {
-                    return native.check_bi_health();
+                if (typeof native.checkBiHealth === 'function') {
+                    return native.checkBiHealth();
                 }
                 return { status: 'healthy', module: 'bi' };
             }
@@ -33,8 +33,8 @@ export class BiApi {
             'bi',
             'get_config',
             async () => {
-                if (typeof native.get_bi_config === 'function') {
-                    return native.get_bi_config();
+                if (typeof native.getBiConfig === 'function') {
+                    return native.getBiConfig();
                 }
                 return { module: 'bi', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class BiApi {
             'bi',
             'validate_data',
             async () => {
-                if (typeof native.validate_bi_data === 'function') {
-                    return native.validate_bi_data(JSON.stringify(data));
+                if (typeof native.validateBiData === 'function') {
+                    return native.validateBiData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class BiApi {
             'bi',
             'create',
             async () => {
-                if (typeof native.create_bi_record === 'function') {
-                    return native.create_bi_record(
+                if (typeof native.createBiRecord === 'function') {
+                    return native.createBiRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class BiApi {
             'bi',
             'read',
             async () => {
-                if (typeof native.get_bi_record === 'function') {
-                    return native.get_bi_record(id);
+                if (typeof native.getBiRecord === 'function') {
+                    return native.getBiRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class BiApi {
             'bi',
             'update',
             async () => {
-                if (typeof native.update_bi_record === 'function') {
-                    return native.update_bi_record(data);
+                if (typeof native.updateBiRecord === 'function') {
+                    return native.updateBiRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class BiApi {
             'bi',
             'delete',
             async () => {
-                if (typeof native.delete_bi_record === 'function') {
-                    return { success: native.delete_bi_record(id) };
+                if (typeof native.deleteBiRecord === 'function') {
+                    return { success: native.deleteBiRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class BiApi {
             'bi',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_bi_records === 'function') {
-                    return native.bulk_create_bi_records(records);
+                if (typeof native.bulkCreateBiRecords === 'function') {
+                    return native.bulkCreateBiRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class BiApi {
             'bi',
             'analytics',
             async () => {
-                if (typeof native.analyze_bi_performance === 'function') {
-                    return native.analyze_bi_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeBiPerformance === 'function') {
+                    return native.analyzeBiPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class BiApi {
             'bi',
             'optimize',
             async () => {
-                if (typeof native.optimize_bi_performance === 'function') {
-                    return { score: native.optimize_bi_performance(data) };
+                if (typeof native.optimizeBiPerformance === 'function') {
+                    return { score: native.optimizeBiPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

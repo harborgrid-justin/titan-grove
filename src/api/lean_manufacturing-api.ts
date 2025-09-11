@@ -19,8 +19,8 @@ export class LeanManufacturingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_lean_manufacturing_health === 'function') {
-                    return native.check_lean_manufacturing_health();
+                if (typeof native.checkLeanManufacturingHealth === 'function') {
+                    return native.checkLeanManufacturingHealth();
                 }
                 return { status: 'healthy', module: 'lean_manufacturing' };
             }
@@ -33,8 +33,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'get_config',
             async () => {
-                if (typeof native.get_lean_manufacturing_config === 'function') {
-                    return native.get_lean_manufacturing_config();
+                if (typeof native.getLeanManufacturingConfig === 'function') {
+                    return native.getLeanManufacturingConfig();
                 }
                 return { module: 'lean_manufacturing', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'validate_data',
             async () => {
-                if (typeof native.validate_lean_manufacturing_data === 'function') {
-                    return native.validate_lean_manufacturing_data(JSON.stringify(data));
+                if (typeof native.validateLeanManufacturingData === 'function') {
+                    return native.validateLeanManufacturingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'create',
             async () => {
-                if (typeof native.create_lean_manufacturing_record === 'function') {
-                    return native.create_lean_manufacturing_record(
+                if (typeof native.createLeanManufacturingRecord === 'function') {
+                    return native.createLeanManufacturingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'read',
             async () => {
-                if (typeof native.get_lean_manufacturing_record === 'function') {
-                    return native.get_lean_manufacturing_record(id);
+                if (typeof native.getLeanManufacturingRecord === 'function') {
+                    return native.getLeanManufacturingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'update',
             async () => {
-                if (typeof native.update_lean_manufacturing_record === 'function') {
-                    return native.update_lean_manufacturing_record(data);
+                if (typeof native.updateLeanManufacturingRecord === 'function') {
+                    return native.updateLeanManufacturingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'delete',
             async () => {
-                if (typeof native.delete_lean_manufacturing_record === 'function') {
-                    return { success: native.delete_lean_manufacturing_record(id) };
+                if (typeof native.deleteLeanManufacturingRecord === 'function') {
+                    return { success: native.deleteLeanManufacturingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_lean_manufacturing_records === 'function') {
-                    return native.bulk_create_lean_manufacturing_records(records);
+                if (typeof native.bulkCreateLeanManufacturingRecords === 'function') {
+                    return native.bulkCreateLeanManufacturingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'analytics',
             async () => {
-                if (typeof native.analyze_lean_manufacturing_performance === 'function') {
-                    return native.analyze_lean_manufacturing_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeLeanManufacturingPerformance === 'function') {
+                    return native.analyzeLeanManufacturingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class LeanManufacturingApi {
             'lean_manufacturing',
             'optimize',
             async () => {
-                if (typeof native.optimize_lean_manufacturing_performance === 'function') {
-                    return { score: native.optimize_lean_manufacturing_performance(data) };
+                if (typeof native.optimizeLeanManufacturingPerformance === 'function') {
+                    return { score: native.optimizeLeanManufacturingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

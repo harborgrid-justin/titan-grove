@@ -19,8 +19,8 @@ export class AugmentedRealityApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_augmented_reality_health === 'function') {
-                    return native.check_augmented_reality_health();
+                if (typeof native.checkAugmentedRealityHealth === 'function') {
+                    return native.checkAugmentedRealityHealth();
                 }
                 return { status: 'healthy', module: 'augmented_reality' };
             }
@@ -33,8 +33,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'get_config',
             async () => {
-                if (typeof native.get_augmented_reality_config === 'function') {
-                    return native.get_augmented_reality_config();
+                if (typeof native.getAugmentedRealityConfig === 'function') {
+                    return native.getAugmentedRealityConfig();
                 }
                 return { module: 'augmented_reality', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'validate_data',
             async () => {
-                if (typeof native.validate_augmented_reality_data === 'function') {
-                    return native.validate_augmented_reality_data(JSON.stringify(data));
+                if (typeof native.validateAugmentedRealityData === 'function') {
+                    return native.validateAugmentedRealityData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'create',
             async () => {
-                if (typeof native.create_augmented_reality_record === 'function') {
-                    return native.create_augmented_reality_record(
+                if (typeof native.createAugmentedRealityRecord === 'function') {
+                    return native.createAugmentedRealityRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'read',
             async () => {
-                if (typeof native.get_augmented_reality_record === 'function') {
-                    return native.get_augmented_reality_record(id);
+                if (typeof native.getAugmentedRealityRecord === 'function') {
+                    return native.getAugmentedRealityRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'update',
             async () => {
-                if (typeof native.update_augmented_reality_record === 'function') {
-                    return native.update_augmented_reality_record(data);
+                if (typeof native.updateAugmentedRealityRecord === 'function') {
+                    return native.updateAugmentedRealityRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'delete',
             async () => {
-                if (typeof native.delete_augmented_reality_record === 'function') {
-                    return { success: native.delete_augmented_reality_record(id) };
+                if (typeof native.deleteAugmentedRealityRecord === 'function') {
+                    return { success: native.deleteAugmentedRealityRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_augmented_reality_records === 'function') {
-                    return native.bulk_create_augmented_reality_records(records);
+                if (typeof native.bulkCreateAugmentedRealityRecords === 'function') {
+                    return native.bulkCreateAugmentedRealityRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'analytics',
             async () => {
-                if (typeof native.analyze_augmented_reality_performance === 'function') {
-                    return native.analyze_augmented_reality_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeAugmentedRealityPerformance === 'function') {
+                    return native.analyzeAugmentedRealityPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class AugmentedRealityApi {
             'augmented_reality',
             'optimize',
             async () => {
-                if (typeof native.optimize_augmented_reality_performance === 'function') {
-                    return { score: native.optimize_augmented_reality_performance(data) };
+                if (typeof native.optimizeAugmentedRealityPerformance === 'function') {
+                    return { score: native.optimizeAugmentedRealityPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

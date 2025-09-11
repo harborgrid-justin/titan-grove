@@ -19,8 +19,8 @@ export class InventoryApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_inventory_health === 'function') {
-                    return native.check_inventory_health();
+                if (typeof native.checkInventoryHealth === 'function') {
+                    return native.checkInventoryHealth();
                 }
                 return { status: 'healthy', module: 'inventory' };
             }
@@ -33,8 +33,8 @@ export class InventoryApi {
             'inventory',
             'get_config',
             async () => {
-                if (typeof native.get_inventory_config === 'function') {
-                    return native.get_inventory_config();
+                if (typeof native.getInventoryConfig === 'function') {
+                    return native.getInventoryConfig();
                 }
                 return { module: 'inventory', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class InventoryApi {
             'inventory',
             'validate_data',
             async () => {
-                if (typeof native.validate_inventory_data === 'function') {
-                    return native.validate_inventory_data(JSON.stringify(data));
+                if (typeof native.validateInventoryData === 'function') {
+                    return native.validateInventoryData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class InventoryApi {
             'inventory',
             'create',
             async () => {
-                if (typeof native.create_inventory_record === 'function') {
-                    return native.create_inventory_record(
+                if (typeof native.createInventoryRecord === 'function') {
+                    return native.createInventoryRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class InventoryApi {
             'inventory',
             'read',
             async () => {
-                if (typeof native.get_inventory_record === 'function') {
-                    return native.get_inventory_record(id);
+                if (typeof native.getInventoryRecord === 'function') {
+                    return native.getInventoryRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class InventoryApi {
             'inventory',
             'update',
             async () => {
-                if (typeof native.update_inventory_record === 'function') {
-                    return native.update_inventory_record(data);
+                if (typeof native.updateInventoryRecord === 'function') {
+                    return native.updateInventoryRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class InventoryApi {
             'inventory',
             'delete',
             async () => {
-                if (typeof native.delete_inventory_record === 'function') {
-                    return { success: native.delete_inventory_record(id) };
+                if (typeof native.deleteInventoryRecord === 'function') {
+                    return { success: native.deleteInventoryRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class InventoryApi {
             'inventory',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_inventory_records === 'function') {
-                    return native.bulk_create_inventory_records(records);
+                if (typeof native.bulkCreateInventoryRecords === 'function') {
+                    return native.bulkCreateInventoryRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class InventoryApi {
             'inventory',
             'analytics',
             async () => {
-                if (typeof native.analyze_inventory_performance === 'function') {
-                    return native.analyze_inventory_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeInventoryPerformance === 'function') {
+                    return native.analyzeInventoryPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class InventoryApi {
             'inventory',
             'optimize',
             async () => {
-                if (typeof native.optimize_inventory_performance === 'function') {
-                    return { score: native.optimize_inventory_performance(data) };
+                if (typeof native.optimizeInventoryPerformance === 'function') {
+                    return { score: native.optimizeInventoryPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

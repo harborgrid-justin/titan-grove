@@ -19,8 +19,8 @@ export class BusinessContinuityApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_business_continuity_health === 'function') {
-                    return native.check_business_continuity_health();
+                if (typeof native.checkBusinessContinuityHealth === 'function') {
+                    return native.checkBusinessContinuityHealth();
                 }
                 return { status: 'healthy', module: 'business_continuity' };
             }
@@ -33,8 +33,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'get_config',
             async () => {
-                if (typeof native.get_business_continuity_config === 'function') {
-                    return native.get_business_continuity_config();
+                if (typeof native.getBusinessContinuityConfig === 'function') {
+                    return native.getBusinessContinuityConfig();
                 }
                 return { module: 'business_continuity', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'validate_data',
             async () => {
-                if (typeof native.validate_business_continuity_data === 'function') {
-                    return native.validate_business_continuity_data(JSON.stringify(data));
+                if (typeof native.validateBusinessContinuityData === 'function') {
+                    return native.validateBusinessContinuityData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'create',
             async () => {
-                if (typeof native.create_business_continuity_record === 'function') {
-                    return native.create_business_continuity_record(
+                if (typeof native.createBusinessContinuityRecord === 'function') {
+                    return native.createBusinessContinuityRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'read',
             async () => {
-                if (typeof native.get_business_continuity_record === 'function') {
-                    return native.get_business_continuity_record(id);
+                if (typeof native.getBusinessContinuityRecord === 'function') {
+                    return native.getBusinessContinuityRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'update',
             async () => {
-                if (typeof native.update_business_continuity_record === 'function') {
-                    return native.update_business_continuity_record(data);
+                if (typeof native.updateBusinessContinuityRecord === 'function') {
+                    return native.updateBusinessContinuityRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'delete',
             async () => {
-                if (typeof native.delete_business_continuity_record === 'function') {
-                    return { success: native.delete_business_continuity_record(id) };
+                if (typeof native.deleteBusinessContinuityRecord === 'function') {
+                    return { success: native.deleteBusinessContinuityRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_business_continuity_records === 'function') {
-                    return native.bulk_create_business_continuity_records(records);
+                if (typeof native.bulkCreateBusinessContinuityRecords === 'function') {
+                    return native.bulkCreateBusinessContinuityRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'analytics',
             async () => {
-                if (typeof native.analyze_business_continuity_performance === 'function') {
-                    return native.analyze_business_continuity_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeBusinessContinuityPerformance === 'function') {
+                    return native.analyzeBusinessContinuityPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class BusinessContinuityApi {
             'business_continuity',
             'optimize',
             async () => {
-                if (typeof native.optimize_business_continuity_performance === 'function') {
-                    return { score: native.optimize_business_continuity_performance(data) };
+                if (typeof native.optimizeBusinessContinuityPerformance === 'function') {
+                    return { score: native.optimizeBusinessContinuityPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

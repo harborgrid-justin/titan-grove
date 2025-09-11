@@ -19,8 +19,8 @@ export class ResearchDevelopmentApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_research_development_health === 'function') {
-                    return native.check_research_development_health();
+                if (typeof native.checkResearchDevelopmentHealth === 'function') {
+                    return native.checkResearchDevelopmentHealth();
                 }
                 return { status: 'healthy', module: 'research_development' };
             }
@@ -33,8 +33,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'get_config',
             async () => {
-                if (typeof native.get_research_development_config === 'function') {
-                    return native.get_research_development_config();
+                if (typeof native.getResearchDevelopmentConfig === 'function') {
+                    return native.getResearchDevelopmentConfig();
                 }
                 return { module: 'research_development', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'validate_data',
             async () => {
-                if (typeof native.validate_research_development_data === 'function') {
-                    return native.validate_research_development_data(JSON.stringify(data));
+                if (typeof native.validateResearchDevelopmentData === 'function') {
+                    return native.validateResearchDevelopmentData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'create',
             async () => {
-                if (typeof native.create_research_development_record === 'function') {
-                    return native.create_research_development_record(
+                if (typeof native.createResearchDevelopmentRecord === 'function') {
+                    return native.createResearchDevelopmentRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'read',
             async () => {
-                if (typeof native.get_research_development_record === 'function') {
-                    return native.get_research_development_record(id);
+                if (typeof native.getResearchDevelopmentRecord === 'function') {
+                    return native.getResearchDevelopmentRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'update',
             async () => {
-                if (typeof native.update_research_development_record === 'function') {
-                    return native.update_research_development_record(data);
+                if (typeof native.updateResearchDevelopmentRecord === 'function') {
+                    return native.updateResearchDevelopmentRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'delete',
             async () => {
-                if (typeof native.delete_research_development_record === 'function') {
-                    return { success: native.delete_research_development_record(id) };
+                if (typeof native.deleteResearchDevelopmentRecord === 'function') {
+                    return { success: native.deleteResearchDevelopmentRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_research_development_records === 'function') {
-                    return native.bulk_create_research_development_records(records);
+                if (typeof native.bulkCreateResearchDevelopmentRecords === 'function') {
+                    return native.bulkCreateResearchDevelopmentRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'analytics',
             async () => {
-                if (typeof native.analyze_research_development_performance === 'function') {
-                    return native.analyze_research_development_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeResearchDevelopmentPerformance === 'function') {
+                    return native.analyzeResearchDevelopmentPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class ResearchDevelopmentApi {
             'research_development',
             'optimize',
             async () => {
-                if (typeof native.optimize_research_development_performance === 'function') {
-                    return { score: native.optimize_research_development_performance(data) };
+                if (typeof native.optimizeResearchDevelopmentPerformance === 'function') {
+                    return { score: native.optimizeResearchDevelopmentPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },

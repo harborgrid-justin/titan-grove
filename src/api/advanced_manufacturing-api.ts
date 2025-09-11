@@ -19,8 +19,8 @@ export class AdvancedManufacturingApi {
             'health_check',
             async () => {
                 // Call native health check if available
-                if (typeof native.check_advanced_manufacturing_health === 'function') {
-                    return native.check_advanced_manufacturing_health();
+                if (typeof native.checkAdvancedManufacturingHealth === 'function') {
+                    return native.checkAdvancedManufacturingHealth();
                 }
                 return { status: 'healthy', module: 'advanced_manufacturing' };
             }
@@ -33,8 +33,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'get_config',
             async () => {
-                if (typeof native.get_advanced_manufacturing_config === 'function') {
-                    return native.get_advanced_manufacturing_config();
+                if (typeof native.getAdvancedManufacturingConfig === 'function') {
+                    return native.getAdvancedManufacturingConfig();
                 }
                 return { module: 'advanced_manufacturing', version: '1.0.0' };
             }
@@ -58,8 +58,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'validate_data',
             async () => {
-                if (typeof native.validate_advanced_manufacturing_data === 'function') {
-                    return native.validate_advanced_manufacturing_data(JSON.stringify(data));
+                if (typeof native.validateAdvancedManufacturingData === 'function') {
+                    return native.validateAdvancedManufacturingData(JSON.stringify(data));
                 }
                 return { isValid: true, score: 100 };
             },
@@ -73,8 +73,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'create',
             async () => {
-                if (typeof native.create_advanced_manufacturing_record === 'function') {
-                    return native.create_advanced_manufacturing_record(
+                if (typeof native.createAdvancedManufacturingRecord === 'function') {
+                    return native.createAdvancedManufacturingRecord(
                         data.name || 'New Record',
                         data.description || 'Created via API'
                     );
@@ -91,8 +91,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'read',
             async () => {
-                if (typeof native.get_advanced_manufacturing_record === 'function') {
-                    return native.get_advanced_manufacturing_record(id);
+                if (typeof native.getAdvancedManufacturingRecord === 'function') {
+                    return native.getAdvancedManufacturingRecord(id);
                 }
                 return { id, status: 'found' };
             },
@@ -106,8 +106,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'update',
             async () => {
-                if (typeof native.update_advanced_manufacturing_record === 'function') {
-                    return native.update_advanced_manufacturing_record(data);
+                if (typeof native.updateAdvancedManufacturingRecord === 'function') {
+                    return native.updateAdvancedManufacturingRecord(data);
                 }
                 return { ...data, updatedAt: new Date().toISOString() };
             },
@@ -121,8 +121,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'delete',
             async () => {
-                if (typeof native.delete_advanced_manufacturing_record === 'function') {
-                    return { success: native.delete_advanced_manufacturing_record(id) };
+                if (typeof native.deleteAdvancedManufacturingRecord === 'function') {
+                    return { success: native.deleteAdvancedManufacturingRecord(id) };
                 }
                 return { success: true, id };
             },
@@ -137,8 +137,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'bulk_create',
             async () => {
-                if (typeof native.bulk_create_advanced_manufacturing_records === 'function') {
-                    return native.bulk_create_advanced_manufacturing_records(records);
+                if (typeof native.bulkCreateAdvancedManufacturingRecords === 'function') {
+                    return native.bulkCreateAdvancedManufacturingRecords(records);
                 }
                 return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
             },
@@ -153,8 +153,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'analytics',
             async () => {
-                if (typeof native.analyze_advanced_manufacturing_performance === 'function') {
-                    return native.analyze_advanced_manufacturing_performance([1, 2, 3, 4, 5]);
+                if (typeof native.analyzeAdvancedManufacturingPerformance === 'function') {
+                    return native.analyzeAdvancedManufacturingPerformance([1, 2, 3, 4, 5]);
                 }
                 return {
                     totalRecords: 0,
@@ -174,8 +174,8 @@ export class AdvancedManufacturingApi {
             'advanced_manufacturing',
             'optimize',
             async () => {
-                if (typeof native.optimize_advanced_manufacturing_performance === 'function') {
-                    return { score: native.optimize_advanced_manufacturing_performance(data) };
+                if (typeof native.optimizeAdvancedManufacturingPerformance === 'function') {
+                    return { score: native.optimizeAdvancedManufacturingPerformance(data) };
                 }
                 return { score: 95.5, optimized: true };
             },
