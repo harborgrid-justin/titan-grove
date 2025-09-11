@@ -33,7 +33,10 @@
       "@analytics/*": ["analytics/*"],
       "@security/*": ["security/*"],
       "@utils/*": ["utils/*"],
-      "@types/*": ["types/*"]
+      "@types/*": ["types/*"],
+      "@shared/*": ["shared/*"],
+      "@modules/*": ["modules/*"],
+      "@domains/*": ["domains/*"]
     }
   },
   "include": [
