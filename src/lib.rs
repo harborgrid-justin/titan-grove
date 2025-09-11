@@ -10,6 +10,12 @@ pub fn sum(a: i32, b: i32) -> i32 {
 // Production-grade enhancements
 pub mod production;
 
+// New production-grade business logic modules
+pub mod business_rules_engine;
+pub mod data_standardization;
+pub mod advanced_workflow_management;
+pub mod enhanced_business_intelligence;
+
 // Export all the native modules
 // Original 10 modules from PR #117
 pub mod risk;
@@ -292,3 +298,9 @@ pub use universal_business::*;
 
 // Production-grade capabilities  
 pub use production::*;
+
+// Production-grade business logic enhancements
+pub use business_rules_engine::*;
+pub use data_standardization::*;
+pub use advanced_workflow_management::*;
+pub use enhanced_business_intelligence::*;
