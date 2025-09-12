@@ -33,9 +33,15 @@ services:
     environment:
       - NODE_ENV=development
       - USER_SERVICE_URL=http://user-service:3001
-      - ORDER_SERVICE_URL=http://order-service:3002
+      - FINANCIAL_SERVICE_URL=http://financial-service:3002
+      - CRM_SERVICE_URL=http://crm-service:3003
+      - ANALYTICS_SERVICE_URL=http://analytics-service:3004
+      - ORDER_SERVICE_URL=http://order-service:3005
     depends_on:
       - user-service
+      - financial-service
+      - crm-service
+      - analytics-service
       - order-service
       - redis
 
@@ -54,12 +60,54 @@ services:
       - user-db
       - redis
 
+  financial-service:
+    build:
+      context: ./backend/services/financial-service
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://titan_user:titan_pass@financial-db:5432/financial_service
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - financial-db
+      - redis
+
+  crm-service:
+    build:
+      context: ./backend/services/crm-service
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://titan_user:titan_pass@crm-db:5432/crm_service
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - crm-db
+      - redis
+
+  analytics-service:
+    build:
+      context: ./backend/services/analytics-service
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://titan_user:titan_pass@analytics-db:5432/analytics_service
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - analytics-db
+      - redis
+
   order-service:
     build:
       context: ./backend/services/order-service
       dockerfile: Dockerfile
     ports:
-      - "3002:3002"
+      - "3005:3005"
     environment:
       - RUST_ENV=development
       - DATABASE_URL=postgresql://titan_user:titan_pass@order-db:5432/order_service
@@ -80,6 +128,39 @@ services:
     ports:
       - "5432:5432"
 
+  financial-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: financial_service
+      POSTGRES_USER: titan_user
+      POSTGRES_PASSWORD: titan_pass
+    volumes:
+      - financial_db_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  crm-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: crm_service
+      POSTGRES_USER: titan_user
+      POSTGRES_PASSWORD: titan_pass
+    volumes:
+      - crm_db_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+  analytics-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: analytics_service
+      POSTGRES_USER: titan_user
+      POSTGRES_PASSWORD: titan_pass
+    volumes:
+      - analytics_db_data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+
   order-db:
     image: postgres:15-alpine
     environment:
@@ -89,7 +170,7 @@ services:
     volumes:
       - order_db_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "5436:5432"
 
   # Cache & Message Queue
   redis:
@@ -120,6 +201,9 @@ services:
 
 volumes:
   user_db_data:
+  financial_db_data:
+  crm_db_data:
+  analytics_db_data:
   order_db_data:
   redis_data:
   prometheus_data:
