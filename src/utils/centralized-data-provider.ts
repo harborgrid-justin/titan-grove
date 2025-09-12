@@ -305,8 +305,57 @@ export class CentralizedDataProvider {
   }
 
   /**
-   * Get all available data for debugging/administration
+   * Get procurement dashboard data
+   * Centralizes hardcoded procurement values from service files
    */
+  public getProcurementDashboard() {
+    return {
+      totalSpend: this.getConfigValue('PROCUREMENT_TOTAL_SPEND', 5200000),
+      activeSuppliers: this.getConfigValue('PROCUREMENT_ACTIVE_SUPPLIERS', 147),
+      pendingOrders: this.getConfigValue('PROCUREMENT_PENDING_ORDERS', 23),
+      costSavings: this.getConfigValue('PROCUREMENT_COST_SAVINGS', 312000),
+      topCategories: this.getConfigValue('PROCUREMENT_TOP_CATEGORIES', [
+        { category: 'Raw Materials', spend: 2100000 },
+        { category: 'IT Services', spend: 850000 },
+        { category: 'Facility Services', spend: 650000 },
+      ]),
+      topSuppliers: this.getConfigValue('PROCUREMENT_TOP_SUPPLIERS', [
+        { supplierId: 'supp_001', name: 'ABC Materials Corp', spend: 980000 },
+        { supplierId: 'supp_002', name: 'TechServ Solutions', spend: 720000 },
+      ]),
+      purchaseOrderStats: {
+        totalOrders: this.getConfigValue('PROCUREMENT_TOTAL_ORDERS', 416),
+        averageProcessingTime: this.getConfigValue('PROCUREMENT_AVG_PROCESSING_TIME', 2.8), // days
+        automationRate: this.getConfigValue('PROCUREMENT_AUTOMATION_RATE', 73.5), // percentage
+      },
+    };
+  }
+
+  /**
+   * Get manufacturing routing defaults
+   * Centralizes hardcoded manufacturing operation values
+   */
+  public getManufacturingRoutingDefaults() {
+    return {
+      operations: {
+        assembly: {
+          setupTime: this.getConfigValue('MFG_ASSEMBLY_SETUP_TIME', 0.5),
+          runTime: this.getConfigValue('MFG_ASSEMBLY_RUN_TIME', 2.0),
+          laborRate: this.getConfigValue('MFG_ASSEMBLY_LABOR_RATE', 35.0),
+        },
+        configuration: {
+          setupTime: this.getConfigValue('MFG_CONFIG_SETUP_TIME', 0.25),
+          runTime: this.getConfigValue('MFG_CONFIG_RUN_TIME', 1.5),
+          laborRate: this.getConfigValue('MFG_CONFIG_LABOR_RATE', 45.0),
+        },
+        testing: {
+          setupTime: this.getConfigValue('MFG_TEST_SETUP_TIME', 0.1),
+          runTime: this.getConfigValue('MFG_TEST_RUN_TIME', 0.5),
+          laborRate: this.getConfigValue('MFG_TEST_LABOR_RATE', 40.0),
+        },
+      },
+    };
+  }
   public getAllData() {
     return {
       serviceMetrics: this.getServiceMetrics(),
@@ -317,6 +366,8 @@ export class CentralizedDataProvider {
       qualityPrediction: this.getQualityPrediction(),
       implementationTimelines: this.getImplementationTimelines(),
       costSavings: this.getCostSavings(),
+      procurementDashboard: this.getProcurementDashboard(),
+      manufacturingRoutingDefaults: this.getManufacturingRoutingDefaults(),
       overrides: Object.fromEntries(this.overrides),
     };
   }

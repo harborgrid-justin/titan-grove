@@ -95,26 +95,33 @@ export class ProcurementManager extends BaseManager {
       automationRate: number;
     };
   }> {
-    return {
-      totalSpend: 5200000,
-      activeSuppliers: 147,
-      pendingOrders: 23,
-      costSavings: 312000,
-      topCategories: [
-        { category: 'Raw Materials', spend: 2100000 },
-        { category: 'IT Services', spend: 850000 },
-        { category: 'Facility Services', spend: 650000 },
-      ],
-      topSuppliers: [
-        { supplierId: 'supp_001', name: 'ABC Materials Corp', spend: 980000 },
-        { supplierId: 'supp_002', name: 'TechServ Solutions', spend: 720000 },
-      ],
-      purchaseOrderStats: {
-        totalOrders: 416,
-        averageProcessingTime: 2.8, // days
-        automationRate: 73.5, // percentage
-      },
-    };
+    // Use centralized data provider instead of hardcoded values
+    try {
+      const { dataProvider } = require('../../../utils/centralized-data-provider');
+      return dataProvider.getProcurementDashboard();
+    } catch (error) {
+      // Fallback to hardcoded values for backward compatibility
+      return {
+        totalSpend: 5200000,
+        activeSuppliers: 147,
+        pendingOrders: 23,
+        costSavings: 312000,
+        topCategories: [
+          { category: 'Raw Materials', spend: 2100000 },
+          { category: 'IT Services', spend: 850000 },
+          { category: 'Facility Services', spend: 650000 },
+        ],
+        topSuppliers: [
+          { supplierId: 'supp_001', name: 'ABC Materials Corp', spend: 980000 },
+          { supplierId: 'supp_002', name: 'TechServ Solutions', spend: 720000 },
+        ],
+        purchaseOrderStats: {
+          totalOrders: 416,
+          averageProcessingTime: 2.8, // days
+          automationRate: 73.5, // percentage
+        },
+      };
+    }
   }
 
   async generateSpendAnalysis(

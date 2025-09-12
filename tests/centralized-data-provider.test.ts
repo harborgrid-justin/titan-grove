@@ -223,4 +223,50 @@ describe('Centralized Data Provider', () => {
       expect(timelines.diagnosticTools).toBe(SERVICE_ANALYTICS_CONSTANTS.IMPLEMENTATION_TIME_DIAGNOSTIC_TOOLS);
     });
   });
+
+  describe('Procurement Dashboard', () => {
+    test('should return procurement dashboard data', () => {
+      const dashboard = provider.getProcurementDashboard();
+      
+      expect(dashboard.totalSpend).toBe(5200000);
+      expect(dashboard.activeSuppliers).toBe(147);
+      expect(dashboard.pendingOrders).toBe(23);
+      expect(dashboard.costSavings).toBe(312000);
+      expect(dashboard.topCategories).toHaveLength(3);
+      expect(dashboard.topSuppliers).toHaveLength(2);
+      expect(dashboard.purchaseOrderStats.totalOrders).toBe(416);
+    });
+
+    test('should be configurable via environment variables', () => {
+      process.env.TG_PROCUREMENT_TOTAL_SPEND = '8500000';
+      process.env.TG_PROCUREMENT_ACTIVE_SUPPLIERS = '220';
+      
+      const dashboard = provider.getProcurementDashboard();
+      
+      expect(dashboard.totalSpend).toBe(8500000);
+      expect(dashboard.activeSuppliers).toBe(220);
+    });
+  });
+
+  describe('Manufacturing Routing Defaults', () => {
+    test('should return manufacturing routing defaults', () => {
+      const defaults = provider.getManufacturingRoutingDefaults();
+      
+      expect(defaults.operations.assembly.setupTime).toBe(0.5);
+      expect(defaults.operations.assembly.runTime).toBe(2.0);
+      expect(defaults.operations.assembly.laborRate).toBe(35.0);
+      expect(defaults.operations.configuration.setupTime).toBe(0.25);
+      expect(defaults.operations.testing.laborRate).toBe(40.0);
+    });
+
+    test('should be configurable via environment variables', () => {
+      process.env.TG_MFG_ASSEMBLY_LABOR_RATE = '42.5';
+      process.env.TG_MFG_CONFIG_SETUP_TIME = '0.3';
+      
+      const defaults = provider.getManufacturingRoutingDefaults();
+      
+      expect(defaults.operations.assembly.laborRate).toBe(42.5);
+      expect(defaults.operations.configuration.setupTime).toBe(0.3);
+    });
+  });
 });
