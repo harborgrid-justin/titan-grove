@@ -24,7 +24,6 @@ export class AdvisoryConsultingApi {
         return moduleHealth || { status: 'healthy', module: 'AdvisoryConsulting'.toLowerCase() };
       }
       return { status: 'healthy', module: 'AdvisoryConsulting'.toLowerCase() };
-      return { status: 'healthy', module: 'advisory_consulting' };
     });
   }
 
@@ -37,7 +36,6 @@ export class AdvisoryConsultingApi {
         version: '1.0.0',
         features: { enabled: true }
       };
-      return { module: 'advisory_consulting', version: '1.0.0' };
     });
   }
 
@@ -66,7 +64,6 @@ export class AdvisoryConsultingApi {
           return { isValid: false, score: 0, errors: ['Invalid data format'] };
         }
         return { isValid: true, score: 100 };
-        return { isValid: true, score: 100 };
       },
       data
     );
@@ -85,7 +82,6 @@ export class AdvisoryConsultingApi {
           createdAt: new Date().toISOString(),
           module: 'advisoryconsulting'
         };
-        return { id: Date.now().toString(), ...data };
       },
       data,
       userId
@@ -107,7 +103,6 @@ export class AdvisoryConsultingApi {
             createdAt: new Date().toISOString()
           }
         };
-        return { id, status: 'found' };
       },
       { id },
       userId
@@ -125,7 +120,6 @@ export class AdvisoryConsultingApi {
           updatedAt: new Date().toISOString(),
           module: 'advisoryconsulting'
         };
-        return { ...data, updatedAt: new Date().toISOString() };
       },
       data,
       userId
@@ -143,7 +137,6 @@ export class AdvisoryConsultingApi {
           id,
           deletedAt: new Date().toISOString()
         };
-        return { success: true, id };
       },
       { id },
       userId
@@ -163,7 +156,6 @@ export class AdvisoryConsultingApi {
           createdAt: new Date().toISOString(),
           module: 'advisoryconsulting'
         }));
-        return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
       },
       records,
       userId
@@ -187,12 +179,6 @@ export class AdvisoryConsultingApi {
             avgResponseTime: '150ms'
           }
         };
-        return {
-          totalRecords: 0,
-          successRate: 100,
-          averageProcessingTime: 0,
-          timeRange: timeRange || 'last_24h',
-        };
       },
       { timeRange },
       userId
@@ -215,7 +201,6 @@ export class AdvisoryConsultingApi {
             cacheHitRate: '+30% improvement'
           }
         };
-        return { score: 95.5, optimized: true };
       },
       data,
       userId

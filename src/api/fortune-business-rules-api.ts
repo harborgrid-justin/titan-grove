@@ -117,7 +117,6 @@ export class FortuneBusinessRulesAPI {
           return { isValid: false, score: 0, errors: ['Invalid data format'] };
         }
         return { isValid: true, score: 100 };
-        return data && data.length >= 10;
       },
       { data },
       userId
@@ -209,18 +208,6 @@ export class FortuneBusinessRulesAPI {
       'analytics',
       async () => {
         const policyStatus = await this.getEnterprisePolicyEngineStatus(userId);
-
-        return {
-          totalRules: policyStatus.activeRules || 111,
-          rulesByDomain: policyStatus.rulesByDomain || {},
-          executionMetrics: policyStatus.executionStats || {},
-          performanceScore: 98.5,
-          complianceScore: 99.1,
-          automationEfficiency: 94.3,
-          riskMitigationRate: 97.8,
-          timeframe: timeframe || 'last_30_days',
-          generatedAt: new Date().toISOString(),
-        };
       },
       { domain, timeframe },
       userId

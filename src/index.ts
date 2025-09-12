@@ -83,8 +83,8 @@ if (require.main === module) {
 // Export the Business Suite and all modules - following tree-shaking best practices
 export { TitanGrove } from './business-suite';
 export * from './business-suite';
-export * from '@/types';
+export * from './types';
 
 // Re-export core functionality
-export * from '@/core';
-export * from '@/shared';
+export * from './core';
+export * from './shared';

@@ -2,83 +2,84 @@
 // 🚀 Production-Grade NAPI-RS API Integration - Complete Module Export
 // ============================================================================
 
-export { accountingApi } from './accounting-api';
-export { advancedManufacturingApi } from './advanced_manufacturing-api';
-export { advisoryConsultingApi } from './advisory_consulting-api';
-export { algorithmicTradingApi } from './algorithmic_trading-api';
-export { analyticsApi } from './analytics-api';
-export { assetsApi } from './assets-api';
-export { auditApi } from './audit-api';
-export { augmentedRealityApi } from './augmented_reality-api';
-export { autonomousSystemsApi } from './autonomous_systems-api';
-export { bankingApi } from './banking-api';
-export { biApi } from './bi-api';
-export { budgetingApi } from './budgeting-api';
-export { businessContinuityApi } from './business_continuity-api';
-export { calculationsApi } from './calculations-api';
-export { capitalAssetApi } from './capital_asset-api';
-export { complianceApi } from './compliance-api';
-export { computerVisionApi } from './computer_vision-api';
-export { corporateGovernanceApi } from './corporate_governance-api';
-export { creditRiskApi } from './credit_risk-api';
-export { crmApi } from './crm-api';
-export { customerApi } from './customer-api';
-export { digitalForensicsApi } from './digital_forensics-api';
-export { digitalTwinApi } from './digital_twin-api';
-export { documentApi } from './document-api';
-export { edgeComputingApi } from './edge_computing-api';
-export { enterpriseAssetApi } from './enterprise_asset-api';
-export { equipmentCostApi } from './equipment_cost-api';
-export { factoryAutomationApi } from './factory_automation-api';
-export { fieldServiceApi } from './field_service-api';
-export { financialApi } from './financial-api';
-export { hrApi } from './hr-api';
-export { integrationApi } from './integration-api';
-export { internationalTradeApi } from './international_trade-api';
-export { inventoryApi } from './inventory-api';
-export { investmentApi } from './investment-api';
-export { investmentPortfolioApi } from './investment_portfolio-api';
-export { leanManufacturingApi } from './lean_manufacturing-api';
-export { logisticsApi } from './logistics-api';
-export { maintenanceApi } from './maintenance-api';
-export { manufacturingApi } from './manufacturing-api';
-export { marketingApi } from './marketing-api';
-export { multiCurrencyApi } from './multi_currency-api';
-export { neuralNetworksApi } from './neural_networks-api';
-export { ordersApi } from './orders-api';
-export { paymentProcessingApi } from './payment_processing-api';
-export { performanceApi } from './performance-api';
-export { planningApi } from './planning-api';
-export { predictiveAnalyticsApi } from './predictive_analytics-api';
-export { pricingApi } from './pricing-api';
-export { procurementApi } from './procurement-api';
-export { productLifecycleApi } from './product_lifecycle-api';
-export { productionPlanningApi } from './production_planning-api';
-export { professionalServicesApi } from './professional_services-api';
-export { projectApi } from './project-api';
-export { qualityApi } from './quality-api';
-export { quantumComputingApi } from './quantum_computing-api';
-export { realEstateApi } from './real_estate-api';
-export { regulatoryComplianceApi } from './regulatory_compliance-api';
-export { regulatoryReportingApi } from './regulatory_reporting-api';
-export { rentalApi } from './rental-api';
-export { reportingApi } from './reporting-api';
-export { researchDevelopmentApi } from './research_development-api';
-export { resourceOptimizationApi } from './resource_optimization-api';
-export { riskApi } from './risk-api';
-export { salesApi } from './sales-api';
-export { scmApi } from './scm-api';
-export { serviceApi } from './service-api';
-export { smartCityApi } from './smart_city-api';
-export { smartGridApi } from './smart_grid-api';
-export { sustainabilityApi } from './sustainability-api';
-export { taxApi } from './tax-api';
-export { testingValidationApi } from './testing_validation-api';
-export { trainingApi } from './training-api';
-export { treasuryApi } from './treasury-api';
-export { vendorApi } from './vendor-api';
-export { workflowApi } from './workflow-api';
-export { yardManagementApi } from './yard_management-api';
+// Import all APIs for aggregation
+import { accountingApi } from './accounting-api';
+import { advancedManufacturingApi } from './advanced_manufacturing-api';
+import { advisoryConsultingApi } from './advisory_consulting-api';
+import { algorithmicTradingApi } from './algorithmic_trading-api';
+import { analyticsApi } from './analytics-api';
+import { assetsApi } from './assets-api';
+import { auditApi } from './audit-api';
+import { augmentedRealityApi } from './augmented_reality-api';
+import { autonomousSystemsApi } from './autonomous_systems-api';
+import { bankingApi } from './banking-api';
+import { biApi } from './bi-api';
+import { budgetingApi } from './budgeting-api';
+import { businessContinuityApi } from './business_continuity-api';
+import { calculationsApi } from './calculations-api';
+import { capitalAssetApi } from './capital_asset-api';
+import { complianceApi } from './compliance-api';
+import { computerVisionApi } from './computer_vision-api';
+import { corporateGovernanceApi } from './corporate_governance-api';
+import { creditRiskApi } from './credit_risk-api';
+import { crmApi } from './crm-api';
+import { customerApi } from './customer-api';
+import { digitalForensicsApi } from './digital_forensics-api';
+import { digitalTwinApi } from './digital_twin-api';
+import { documentApi } from './document-api';
+import { edgeComputingApi } from './edge_computing-api';
+import { enterpriseAssetApi } from './enterprise_asset-api';
+import { equipmentCostApi } from './equipment_cost-api';
+import { factoryAutomationApi } from './factory_automation-api';
+import { fieldServiceApi } from './field_service-api';
+import { financialApi } from './financial-api';
+import { hrApi } from './hr-api';
+import { integrationApi } from './integration-api';
+import { internationalTradeApi } from './international_trade-api';
+import { inventoryApi } from './inventory-api';
+import { investmentApi } from './investment-api';
+import { investmentPortfolioApi } from './investment_portfolio-api';
+import { leanManufacturingApi } from './lean_manufacturing-api';
+import { logisticsApi } from './logistics-api';
+import { maintenanceApi } from './maintenance-api';
+import { manufacturingApi } from './manufacturing-api';
+import { marketingApi } from './marketing-api';
+import { multiCurrencyApi } from './multi_currency-api';
+import { neuralNetworksApi } from './neural_networks-api';
+import { ordersApi } from './orders-api';
+import { paymentProcessingApi } from './payment_processing-api';
+import { performanceApi } from './performance-api';
+import { planningApi } from './planning-api';
+import { predictiveAnalyticsApi } from './predictive_analytics-api';
+import { pricingApi } from './pricing-api';
+import { procurementApi } from './procurement-api';
+import { productLifecycleApi } from './product_lifecycle-api';
+import { productionPlanningApi } from './production_planning-api';
+import { professionalServicesApi } from './professional_services-api';
+import { projectApi } from './project-api';
+import { qualityApi } from './quality-api';
+import { quantumComputingApi } from './quantum_computing-api';
+import { realEstateApi } from './real_estate-api';
+import { regulatoryComplianceApi } from './regulatory_compliance-api';
+import { regulatoryReportingApi } from './regulatory_reporting-api';
+import { rentalApi } from './rental-api';
+import { reportingApi } from './reporting-api';
+import { researchDevelopmentApi } from './research_development-api';
+import { resourceOptimizationApi } from './resource_optimization-api';
+import { riskApi } from './risk-api';
+import { salesApi } from './sales-api';
+import { scmApi } from './scm-api';
+import { serviceApi } from './service-api';
+import { smartCityApi } from './smart_city-api';
+import { smartGridApi } from './smart_grid-api';
+import { sustainabilityApi } from './sustainability-api';
+import { taxApi } from './tax-api';
+import { testingValidationApi } from './testing_validation-api';
+import { trainingApi } from './training-api';
+import { treasuryApi } from './treasury-api';
+import { vendorApi } from './vendor-api';
+import { workflowApi } from './workflow-api';
+import { yardManagementApi } from './yard_management-api';
 
 // Export production framework
 export { default as ProductionManager } from '../production/framework';
@@ -162,6 +163,87 @@ export const TitanGroveApi = {
   vendor: vendorApi,
   workflow: workflowApi,
   yardManagement: yardManagementApi,
+};
+
+// Re-export all APIs individually for tree-shaking
+export {
+  accountingApi,
+  advancedManufacturingApi,
+  advisoryConsultingApi,
+  algorithmicTradingApi,
+  analyticsApi,
+  assetsApi,
+  auditApi,
+  augmentedRealityApi,
+  autonomousSystemsApi,
+  bankingApi,
+  biApi,
+  budgetingApi,
+  businessContinuityApi,
+  calculationsApi,
+  capitalAssetApi,
+  complianceApi,
+  computerVisionApi,
+  corporateGovernanceApi,
+  creditRiskApi,
+  crmApi,
+  customerApi,
+  digitalForensicsApi,
+  digitalTwinApi,
+  documentApi,
+  edgeComputingApi,
+  enterpriseAssetApi,
+  equipmentCostApi,
+  factoryAutomationApi,
+  fieldServiceApi,
+  financialApi,
+  hrApi,
+  integrationApi,
+  internationalTradeApi,
+  inventoryApi,
+  investmentApi,
+  investmentPortfolioApi,
+  leanManufacturingApi,
+  logisticsApi,
+  maintenanceApi,
+  manufacturingApi,
+  marketingApi,
+  multiCurrencyApi,
+  neuralNetworksApi,
+  ordersApi,
+  paymentProcessingApi,
+  performanceApi,
+  planningApi,
+  predictiveAnalyticsApi,
+  pricingApi,
+  procurementApi,
+  productLifecycleApi,
+  productionPlanningApi,
+  professionalServicesApi,
+  projectApi,
+  qualityApi,
+  quantumComputingApi,
+  realEstateApi,
+  regulatoryComplianceApi,
+  regulatoryReportingApi,
+  rentalApi,
+  reportingApi,
+  researchDevelopmentApi,
+  resourceOptimizationApi,
+  riskApi,
+  salesApi,
+  scmApi,
+  serviceApi,
+  smartCityApi,
+  smartGridApi,
+  sustainabilityApi,
+  taxApi,
+  testingValidationApi,
+  trainingApi,
+  treasuryApi,
+  vendorApi,
+  workflowApi,
+  yardManagementApi,
 };
 
 export default TitanGroveApi;

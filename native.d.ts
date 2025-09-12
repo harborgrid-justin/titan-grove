@@ -761,7 +761,7 @@ export interface InventoryMetrics {
   daysSalesOutstanding: number
   stockoutRiskItems: number
   excessStockItems: number
-  abcDistribution: Array<AbcClassDistribution>
+  abcDistribution: Array<ABCClassDistribution>
 }
 export interface AbcClassDistribution {
   class: string
