@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  # Frontend Services
+  web-portal:
+    build: 
+      context: ./frontend/web-portal
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://gateway:8080
+    depends_on:
+      - gateway
+
+  admin-console:
+    build:
+      context: ./frontend/admin-console
+      dockerfile: Dockerfile
+    ports:
+      - "3001:80"
+    depends_on:
+      - gateway
+
+  # Backend Gateway
+  gateway:
+    build:
+      context: ./backend/gateway/nodejs-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - USER_SERVICE_URL=http://user-service:3001
+      - ORDER_SERVICE_URL=http://order-service:3002
+    depends_on:
+      - user-service
+      - order-service
+      - redis
+
+  # Backend Services
+  user-service:
+    build:
+      context: ./backend/services/user-service
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://titan_user:titan_pass@user-db:5432/user_service
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - user-db
+      - redis
+
+  order-service:
+    build:
+      context: ./backend/services/order-service
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - RUST_ENV=development
+      - DATABASE_URL=postgresql://titan_user:titan_pass@order-db:5432/order_service
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - order-db
+      - redis
+
+  # Databases
+  user-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: user_service
+      POSTGRES_USER: titan_user
+      POSTGRES_PASSWORD: titan_pass
+    volumes:
+      - user_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  order-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: order_service
+      POSTGRES_USER: titan_user
+      POSTGRES_PASSWORD: titan_pass
+    volumes:
+      - order_db_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  # Cache & Message Queue
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/monitoring/prometheus/config:/etc/prometheus
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3003:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infrastructure/monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+
+volumes:
+  user_db_data:
+  order_db_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:

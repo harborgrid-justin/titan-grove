@@ -82,6 +82,12 @@ out
 .nuxt
 dist
 
+# Build output for services
+frontend/*/dist/
+frontend/*/.next/
+backend/services/*/dist/
+backend/shared/*/dist/
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js
@@ -151,3 +157,20 @@ Cargo.lock
 # NAPI-RS generated files
 index.*.node
 *.d.ts.backup
+
+# Database data
+data/databases/*/data/
+data/cache/*/data/
+data/search/*/data/
+
+# Infrastructure secrets
+infrastructure/**/*.key
+infrastructure/**/*.pem
+infrastructure/**/*.crt
+infrastructure/**/secrets/
+
+# Monitoring data
+infrastructure/monitoring/*/data/
+
+# Docker volumes
+docker-compose.override.yml
