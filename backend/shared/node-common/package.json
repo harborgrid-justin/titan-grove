@@ -1,0 +1,37 @@
+{
+  "name": "@titan-grove/node-common",
+  "version": "1.0.0",
+  "description": "Shared Node.js utilities and middleware for Titan Grove services",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts"
+  },
+  "keywords": ["shared", "common", "utilities", "microservices"],
+  "author": "Titan Grove Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.0",
+    "jsonwebtoken": "^9.0.0",
+    "winston": "^3.8.0",
+    "joi": "^17.9.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^6.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/express": "^4.17.0",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/cors": "^2.8.0",
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "titan-grove-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise SOA Project - Node.js/Rust Microservices",
+  "workspaces": [
+    "frontend/web-portal",
+    "frontend/mobile-app", 
+    "frontend/admin-console",
+    "frontend/shared/ui-components",
+    "frontend/shared/api-client",
+    "frontend/shared/types",
+    "frontend/shared/utils",
+    "backend/services/user-service",
+    "backend/services/product-service",
+    "backend/services/notification-service",
+    "backend/services/config-service",
+    "backend/shared/node-common",
+    "backend/shared/types"
+  ],
+  "scripts": {
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "npm run build:frontend:web && npm run build:frontend:admin",
+    "build:frontend:web": "cd frontend/web-portal && npm run build",
+    "build:frontend:admin": "cd frontend/admin-console && npm run build",
+    "build:backend": "npm run build:backend:node && npm run build:backend:rust",
+    "build:backend:node": "npm run build -w backend/shared/node-common && npm run build -w backend/services/user-service",
+    "build:backend:rust": "cd backend/services/order-service && cargo build --release && cd ../payment-service && cargo build --release",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev:frontend": "cd frontend/web-portal && npm run dev",
+    "dev:backend": "cd backend/services/user-service && npm run dev",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "npm run test -w frontend/web-portal",
+    "test:backend": "npm run test -w backend/services/user-service && cd backend/services/order-service && cargo test",
+    "clean": "rm -rf */*/node_modules */*/dist */*/target",
+    "install:all": "npm install && npm run install:rust",
+    "install:rust": "cd backend/services/order-service && cargo build && cd ../payment-service && cargo build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "lerna": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
