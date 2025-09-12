@@ -1,6 +1,9 @@
 /* Import Carbon Design System styles */
 @import '@carbon/styles/css/styles.css';
 
+/* Import Titan Grove Production Styles */
+@import './production.css';
+
 /* Carbon theme overrides for Titan Grove */
 :root {
   /* Carbon design tokens are imported via @carbon/styles */
