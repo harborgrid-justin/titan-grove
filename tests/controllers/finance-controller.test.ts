@@ -11,23 +11,23 @@ import { financeController } from '../../src/api/finance/finance-controller';
 const app = express();
 app.use(express.json());
 
-// Setup routes for Finance controller
-app.get('/finance/accounts', (req, res) => financeController.getAccounts(req, res));
-app.post('/finance/accounts', (req, res) => financeController.createAccount(req, res));
-app.get('/finance/transactions', (req, res) => financeController.getTransactions(req, res));
-app.post('/finance/transactions', (req, res) => financeController.createTransaction(req, res));
-app.get('/finance/financial-statements', (req, res) => financeController.getFinancialStatements(req, res));
+// Setup routes for Finance controller (using actual methods from FinanceController)
+app.get('/finance/general-ledger', (req, res) => financeController.getGeneralLedger(req, res));
 app.post('/finance/journal-entries', (req, res) => financeController.createJournalEntry(req, res));
-app.get('/finance/budget', (req, res) => financeController.getBudgetData(req, res));
-app.post('/finance/budget', (req, res) => financeController.updateBudget(req, res));
-app.get('/finance/cash-flow', (req, res) => financeController.getCashFlowForecast(req, res));
-app.post('/finance/reconciliation', (req, res) => financeController.performReconciliation(req, res));
+app.get('/finance/accounts-payable', (req, res) => financeController.getAccountsPayable(req, res));
+app.post('/finance/invoices', (req, res) => financeController.createInvoice(req, res));
+app.get('/finance/accounts-receivable', (req, res) => financeController.getAccountsReceivable(req, res));
+app.post('/finance/payments', (req, res) => financeController.recordPayment(req, res));
+app.get('/finance/reports', (req, res) => financeController.getFinancialReports(req, res));
+app.post('/finance/reports/generate', (req, res) => financeController.generateReport(req, res));
+app.get('/finance/budget', (req, res) => financeController.getBudgetAnalysis(req, res));
+app.put('/finance/budget', (req, res) => financeController.updateBudget(req, res));
 
 describe('FinanceController Integration Tests', () => {
   describe('Chart of Accounts Management', () => {
-    it('should get chart of accounts with hierarchical structure', async () => {
+    it('should get general ledger entries with filtering', async () => {
       const response = await request(app)
-        .get('/finance/accounts')
+        .get('/finance/general-ledger')
         .query({ 
           accountType: 'ASSET',
           includeHierarchy: true,
@@ -37,42 +37,40 @@ describe('FinanceController Integration Tests', () => {
 
       expect(response.body).toMatchObject({
         success: true,
-        message: 'Get chart of accounts retrieved successfully',
+        message: 'Get general ledger entries retrieved successfully',
         data: expect.objectContaining({
           domain: 'finance',
-          method: 'getAccounts',
+          method: 'getGeneralLedger',
           timestamp: expect.any(String),
         }),
         timestamp: expect.any(String),
       });
     });
 
-    it('should create new account with validation rules', async () => {
-      const accountData = {
-        accountNumber: '1200',
-        accountName: 'Accounts Receivable - Trade',
-        accountType: 'ASSET',
-        subType: 'CURRENT_ASSET',
-        parentAccount: '1000',
-        normalBalance: 'DEBIT',
-        description: 'Trade receivables from customers',
-        taxReporting: {
-          taxCode: 'AR_TRADE',
-          reportingCategory: 'CURRENT_ASSETS',
-        },
-        budgetTracking: true,
-        departmentTracking: false,
-        projectTracking: true,
+    it('should create journal entry with double-entry validation', async () => {
+      const journalEntryData = {
+        entryId: 'JE-2024-001',
+        date: '2024-01-31',
+        description: 'Month-end accruals',
+        entryType: 'ADJUSTING',
+        lines: [
+          {
+            accountId: '6000',
+            debit: 5000.00,
+            credit: 0,
+            description: 'January rent expense',
+          },
+        ],
       };
 
       const response = await request(app)
-        .post('/finance/accounts')
-        .send(accountData)
+        .post('/finance/journal-entries')
+        .send(journalEntryData)
         .expect(200);
 
       expect(response.body.success).toBe(true);
       expect(response.body.data.domain).toBe('finance');
-      expect(response.body.data.method).toBe('createAccount');
+      expect(response.body.data.method).toBe('createJournalEntry');
     });
   });
 

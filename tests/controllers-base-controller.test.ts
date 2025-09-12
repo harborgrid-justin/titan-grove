@@ -4,7 +4,7 @@
  */
 
 import { Request, Response } from 'express';
-import { BaseController } from '../../src/api/base/base-controller';
+import { BaseController } from '../src/api/base/base-controller';
 
 // Create a concrete implementation for testing
 class TestController extends BaseController {
