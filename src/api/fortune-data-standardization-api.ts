@@ -135,20 +135,6 @@ export class FortuneDataStandardizationAPI {
       'quality_assessment',
       async () => {
         const profile = await this.profileDataset(data, userId);
-
-        return {
-          overallQualityScore: this.calculateQualityScore(profile),
-          completeness: profile.completenessPercentage || 95.0,
-          accuracy: profile.accuracyPercentage || 97.5,
-          consistency: profile.consistencyPercentage || 93.2,
-          validity: 96.8,
-          uniqueness: 98.1,
-          timeliness: 94.5,
-          recommendations: this.generateQualityRecommendations(profile),
-          assessmentDate: new Date().toISOString(),
-          dataVolume: data.length,
-          standardsCompliance: 'ISO_8000_COMPLIANT',
-        };
       },
       { dataLength: data.length },
       userId

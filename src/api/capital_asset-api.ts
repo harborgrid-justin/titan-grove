@@ -23,7 +23,6 @@ export class CapitalAssetApi {
         return moduleHealth || { status: 'healthy', module: 'CapitalAsset'.toLowerCase() };
       }
       return { status: 'healthy', module: 'CapitalAsset'.toLowerCase() };
-      return { status: 'healthy', module: 'capital_asset' };
     });
   }
 
@@ -36,7 +35,6 @@ export class CapitalAssetApi {
         version: '1.0.0',
         features: { enabled: true }
       };
-      return { module: 'capital_asset', version: '1.0.0' };
     });
   }
 
@@ -63,7 +61,6 @@ export class CapitalAssetApi {
           return { isValid: false, score: 0, errors: ['Invalid data format'] };
         }
         return { isValid: true, score: 100 };
-        return { isValid: true, score: 100 };
       },
       data
     );
@@ -82,7 +79,6 @@ export class CapitalAssetApi {
           createdAt: new Date().toISOString(),
           module: 'capitalasset'
         };
-        return { id: Date.now().toString(), ...data };
       },
       data,
       userId
@@ -104,7 +100,6 @@ export class CapitalAssetApi {
             createdAt: new Date().toISOString()
           }
         };
-        return { id, status: 'found' };
       },
       { id },
       userId
@@ -122,7 +117,6 @@ export class CapitalAssetApi {
           updatedAt: new Date().toISOString(),
           module: 'capitalasset'
         };
-        return { ...data, updatedAt: new Date().toISOString() };
       },
       data,
       userId
@@ -140,7 +134,6 @@ export class CapitalAssetApi {
           id,
           deletedAt: new Date().toISOString()
         };
-        return { success: true, id };
       },
       { id },
       userId
@@ -160,7 +153,6 @@ export class CapitalAssetApi {
           createdAt: new Date().toISOString(),
           module: 'capitalasset'
         }));
-        return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
       },
       records,
       userId
@@ -184,12 +176,6 @@ export class CapitalAssetApi {
             avgResponseTime: '150ms'
           }
         };
-        return {
-          totalRecords: 0,
-          successRate: 100,
-          averageProcessingTime: 0,
-          timeRange: timeRange || 'last_24h',
-        };
       },
       { timeRange },
       userId
@@ -212,7 +198,6 @@ export class CapitalAssetApi {
             cacheHitRate: '+30% improvement'
           }
         };
-        return { score: 95.5, optimized: true };
       },
       data,
       userId

@@ -23,7 +23,6 @@ export class AccountingApi {
         const moduleHealth = healthStatuses.find(h => h.component === 'Accounting'.toLowerCase());
         return moduleHealth || { status: 'healthy', module: 'Accounting'.toLowerCase() };
       }
-      return { status: 'healthy', module: 'Accounting'.toLowerCase() };
       return { status: 'healthy', module: 'accounting' };
     });
   }
@@ -33,11 +32,10 @@ export class AccountingApi {
     return this.production.executeOperation('accounting', 'get_config', async () => {
       // Return default configuration for Accounting module
       return { 
-        module: 'Accounting'.toLowerCase(), 
+        module: 'accounting', 
         version: '1.0.0',
         features: { enabled: true }
       };
-      return { module: 'accounting', version: '1.0.0' };
     });
   }
 
@@ -62,7 +60,6 @@ export class AccountingApi {
           return { isValid: false, score: 0, errors: ['Invalid data format'] };
         }
         return { isValid: true, score: 100 };
-        return { isValid: true, score: 100 };
       },
       data
     );
@@ -81,7 +78,6 @@ export class AccountingApi {
           createdAt: new Date().toISOString(),
           module: 'accounting'
         };
-        return { id: Date.now().toString(), ...data };
       },
       data,
       userId
@@ -103,7 +99,6 @@ export class AccountingApi {
             createdAt: new Date().toISOString()
           }
         };
-        return { id, status: 'found' };
       },
       { id },
       userId
@@ -136,7 +131,6 @@ export class AccountingApi {
           id,
           deletedAt: new Date().toISOString()
         };
-        return { success: true, id };
       },
       { id },
       userId
@@ -156,7 +150,6 @@ export class AccountingApi {
           createdAt: new Date().toISOString(),
           module: 'accounting'
         }));
-        return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
       },
       records,
       userId
@@ -200,7 +193,6 @@ export class AccountingApi {
             cacheHitRate: '+30% improvement'
           }
         };
-        return { score: 95.5, optimized: true };
       },
       data,
       userId

@@ -23,7 +23,6 @@ export class CustomerApi {
         return moduleHealth || { status: 'healthy', module: 'Customer'.toLowerCase() };
       }
       return { status: 'healthy', module: 'Customer'.toLowerCase() };
-      return { status: 'healthy', module: 'customer' };
     });
   }
 
@@ -36,7 +35,6 @@ export class CustomerApi {
         version: '1.0.0',
         features: { enabled: true }
       };
-      return { module: 'customer', version: '1.0.0' };
     });
   }
 
@@ -63,7 +61,6 @@ export class CustomerApi {
           return { isValid: false, score: 0, errors: ['Invalid data format'] };
         }
         return { isValid: true, score: 100 };
-        return { isValid: true, score: 100 };
       },
       data
     );
@@ -82,7 +79,6 @@ export class CustomerApi {
           createdAt: new Date().toISOString(),
           module: 'customer'
         };
-        return { id: Date.now().toString(), ...data };
       },
       data,
       userId
@@ -104,7 +100,6 @@ export class CustomerApi {
             createdAt: new Date().toISOString()
           }
         };
-        return { id, status: 'found' };
       },
       { id },
       userId
@@ -122,7 +117,6 @@ export class CustomerApi {
           updatedAt: new Date().toISOString(),
           module: 'customer'
         };
-        return { ...data, updatedAt: new Date().toISOString() };
       },
       data,
       userId
@@ -140,7 +134,6 @@ export class CustomerApi {
           id,
           deletedAt: new Date().toISOString()
         };
-        return { success: true, id };
       },
       { id },
       userId
@@ -160,7 +153,6 @@ export class CustomerApi {
           createdAt: new Date().toISOString(),
           module: 'customer'
         }));
-        return records.map((record, index) => ({ id: (Date.now() + index).toString(), ...record }));
       },
       records,
       userId
@@ -184,12 +176,6 @@ export class CustomerApi {
             avgResponseTime: '150ms'
           }
         };
-        return {
-          totalRecords: 0,
-          successRate: 100,
-          averageProcessingTime: 0,
-          timeRange: timeRange || 'last_24h',
-        };
       },
       { timeRange },
       userId
@@ -212,7 +198,6 @@ export class CustomerApi {
             cacheHitRate: '+30% improvement'
           }
         };
-        return { score: 95.5, optimized: true };
       },
       data,
       userId
