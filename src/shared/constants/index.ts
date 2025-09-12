@@ -49,20 +49,20 @@ export const SERVICE_ANALYTICS_CONSTANTS = {
   TIME_REDUCTION_TARGET: 25, // percentage improvement
   CUSTOMER_SATISFACTION_GAIN: 0.3, // rating points
 
-  // Oracle EBS Competitive Ratings
+  // Oracle EBS Competitive Ratings (Centralized from demo files)
   ORACLE_EBS_DASHBOARD_RATING: 6.0,
-  ORACLE_EBS_MOBILE_RATING: 5.5,
-  ORACLE_EBS_OPTIMIZATION_RATING: 7.0,
-  ORACLE_EBS_EMERGENCY_RATING: 6.5,
-  ORACLE_EBS_ANALYTICS_RATING: 7.5,
-  ORACLE_EBS_INTEGRATION_RATING: 6.0,
+  ORACLE_EBS_MOBILE_RATING: 4.0, // Updated from demo file hardcoded value
+  ORACLE_EBS_OPTIMIZATION_RATING: 6.5, // Updated from demo file hardcoded value
+  ORACLE_EBS_EMERGENCY_RATING: 7.0, // Updated from demo file hardcoded value
+  ORACLE_EBS_ANALYTICS_RATING: 5.0, // Updated from demo file hardcoded value
+  ORACLE_EBS_INTEGRATION_RATING: 6.8, // Updated from demo file hardcoded value
 
   TITAN_GROVE_DASHBOARD_RATING: 9.5,
   TITAN_GROVE_MOBILE_RATING: 9.2,
-  TITAN_GROVE_OPTIMIZATION_RATING: 9.4,
+  TITAN_GROVE_OPTIMIZATION_RATING: 9.1, // Updated from demo file hardcoded value
   TITAN_GROVE_EMERGENCY_RATING: 9.3,
-  TITAN_GROVE_ANALYTICS_RATING: 9.1,
-  TITAN_GROVE_INTEGRATION_RATING: 9.6,
+  TITAN_GROVE_ANALYTICS_RATING: 8.9, // Updated from demo file hardcoded value
+  TITAN_GROVE_INTEGRATION_RATING: 9.0, // Updated from demo file hardcoded value
 
   // Business Value Metrics
   ORACLE_COMPETITIVE_COST_SAVINGS: 2850000, // Annual savings
@@ -72,14 +72,13 @@ export const SERVICE_ANALYTICS_CONSTANTS = {
   ORACLE_COMPETITIVE_MIGRATION_COSTS: 750000,
   ORACLE_COMPETITIVE_ROI_MONTHS: 14, // months to payback
 
-  // Service Metrics Mock Data (for development/demo)
+  // Service Metrics Mock Data (for development/demo) - Organized and Centralized
   MOCK_TOTAL_SERVICE_REQUESTS: 1247,
   MOCK_COMPLETED_WORK_ORDERS: 1183,
   MOCK_AVERAGE_RESOLUTION_TIME: 4.7, // hours
   MOCK_FIRST_TIME_FIX_RATE: 89.3, // percentage
   MOCK_CUSTOMER_SATISFACTION: 4.7, // 1-5 scale
   MOCK_ESCALATION_RATE: 2.1, // percentage
-  MOCK_RESOURCE_UTILIZATION: 78.9, // percentage (this duplicates existing constant, use existing one)
   MOCK_TECHNICIANS_ACTIVE: 45,
   MOCK_EQUIPMENT_UTILIZATION: 84.2, // percentage
   MOCK_TOTAL_SERVICE_REVENUE: 2847000,
@@ -508,27 +507,70 @@ export const ServiceAnalyticsUtils = {
 
   /**
    * Generate mock service metrics for development/demo purposes
+   * DEPRECATED: Use CentralizedDataProvider.getServiceMetrics() instead
+   * This function is maintained for backward compatibility
    */
-  generateMockServiceMetrics: () => ({
-    // Volume metrics
-    totalServiceRequests: SERVICE_ANALYTICS_CONSTANTS.MOCK_TOTAL_SERVICE_REQUESTS,
-    completedWorkOrders: SERVICE_ANALYTICS_CONSTANTS.MOCK_COMPLETED_WORK_ORDERS,
-    averageResolutionTime: SERVICE_ANALYTICS_CONSTANTS.MOCK_AVERAGE_RESOLUTION_TIME,
+  generateMockServiceMetrics: () => {
+    // Try to use centralized data provider if available
+    try {
+      const { dataProvider } = require('../utils/centralized-data-provider');
+      return dataProvider.getServiceMetrics();
+    } catch (error) {
+      // Fallback to direct constants for backward compatibility
+      return {
+        // Volume metrics
+        totalServiceRequests: SERVICE_ANALYTICS_CONSTANTS.MOCK_TOTAL_SERVICE_REQUESTS,
+        completedWorkOrders: SERVICE_ANALYTICS_CONSTANTS.MOCK_COMPLETED_WORK_ORDERS,
+        averageResolutionTime: SERVICE_ANALYTICS_CONSTANTS.MOCK_AVERAGE_RESOLUTION_TIME,
 
-    // Quality metrics
-    firstTimeFixRate: SERVICE_ANALYTICS_CONSTANTS.MOCK_FIRST_TIME_FIX_RATE,
-    customerSatisfaction: SERVICE_ANALYTICS_CONSTANTS.MOCK_CUSTOMER_SATISFACTION,
-    escalationRate: SERVICE_ANALYTICS_CONSTANTS.MOCK_ESCALATION_RATE,
+        // Quality metrics
+        firstTimeFixRate: SERVICE_ANALYTICS_CONSTANTS.MOCK_FIRST_TIME_FIX_RATE,
+        customerSatisfaction: SERVICE_ANALYTICS_CONSTANTS.MOCK_CUSTOMER_SATISFACTION,
+        escalationRate: SERVICE_ANALYTICS_CONSTANTS.MOCK_ESCALATION_RATE,
 
-    // Resource metrics
-    resourceUtilization: SERVICE_ANALYTICS_CONSTANTS.RESOURCE_UTILIZATION_CURRENT,
-    techniciansActive: SERVICE_ANALYTICS_CONSTANTS.MOCK_TECHNICIANS_ACTIVE,
-    equipmentUtilization: SERVICE_ANALYTICS_CONSTANTS.MOCK_EQUIPMENT_UTILIZATION,
+        // Resource metrics
+        resourceUtilization: SERVICE_ANALYTICS_CONSTANTS.RESOURCE_UTILIZATION_CURRENT,
+        techniciansActive: SERVICE_ANALYTICS_CONSTANTS.MOCK_TECHNICIANS_ACTIVE,
+        equipmentUtilization: SERVICE_ANALYTICS_CONSTANTS.MOCK_EQUIPMENT_UTILIZATION,
 
-    // Financial metrics
-    totalServiceRevenue: SERVICE_ANALYTICS_CONSTANTS.MOCK_TOTAL_SERVICE_REVENUE,
-    serviceCosts: SERVICE_ANALYTICS_CONSTANTS.MOCK_SERVICE_COSTS,
-    profitMargin: SERVICE_ANALYTICS_CONSTANTS.MOCK_PROFIT_MARGIN,
-    costPerServiceCall: SERVICE_ANALYTICS_CONSTANTS.MOCK_COST_PER_SERVICE_CALL,
-  }),
+        // Financial metrics
+        totalServiceRevenue: SERVICE_ANALYTICS_CONSTANTS.MOCK_TOTAL_SERVICE_REVENUE,
+        serviceCosts: SERVICE_ANALYTICS_CONSTANTS.MOCK_SERVICE_COSTS,
+        profitMargin: SERVICE_ANALYTICS_CONSTANTS.MOCK_PROFIT_MARGIN,
+        costPerServiceCall: SERVICE_ANALYTICS_CONSTANTS.MOCK_COST_PER_SERVICE_CALL,
+      };
+    }
+  },
+
+  /**
+   * Get competitive comparison data
+   * DEPRECATED: Use CentralizedDataProvider.getCompetitiveComparison() instead
+   * This function is maintained for backward compatibility
+   */
+  getOracleEBSCompetitiveComparison: () => {
+    try {
+      const { dataProvider } = require('../utils/centralized-data-provider');
+      return dataProvider.getCompetitiveComparison();
+    } catch (error) {
+      // Fallback for backward compatibility
+      return {
+        oracle: {
+          dashboardRating: SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_DASHBOARD_RATING,
+          mobileRating: SERVICE_ANALYTICS_CONSTANTS.ORACLE_EBS_MOBILE_RATING,
+          overallRating: 5.9,
+        },
+        titanGrove: {
+          dashboardRating: SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_DASHBOARD_RATING,
+          mobileRating: SERVICE_ANALYTICS_CONSTANTS.TITAN_GROVE_MOBILE_RATING,
+          overallRating: 9.2,
+        },
+        businessValue: {
+          costSavings: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_COST_SAVINGS,
+          efficiencyGains: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_EFFICIENCY_GAINS,
+          revenueIncrease: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_REVENUE_INCREASE,
+          riskReduction: SERVICE_ANALYTICS_CONSTANTS.ORACLE_COMPETITIVE_RISK_REDUCTION,
+        }
+      };
+    }
+  },
 };

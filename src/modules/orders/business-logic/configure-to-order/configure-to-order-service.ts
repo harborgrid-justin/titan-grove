@@ -612,39 +612,61 @@ export class ConfigureToOrderService {
 
     console.log(`Generating routing for configuration: ${configurationId}`);
 
+    // Use centralized data provider for manufacturing defaults
+    let routingDefaults;
+    try {
+      const { dataProvider } = require('../../../../utils/centralized-data-provider');
+      routingDefaults = dataProvider.getManufacturingRoutingDefaults();
+    } catch (error) {
+      // Fallback to hardcoded values for backward compatibility
+      routingDefaults = {
+        operations: {
+          assembly: { setupTime: 0.5, runTime: 2.0, laborRate: 35.0 },
+          configuration: { setupTime: 0.25, runTime: 1.5, laborRate: 45.0 },
+          testing: { setupTime: 0.1, runTime: 0.5, laborRate: 40.0 },
+        },
+      };
+    }
+
+    const operations = [
+      {
+        operationNumber: 10,
+        operationCode: 'ASSEMBLY',
+        description: 'Base product assembly',
+        workCenter: 'ASSEMBLY_001',
+        setupTime: routingDefaults.operations.assembly.setupTime,
+        runTime: routingDefaults.operations.assembly.runTime,
+        laborRate: routingDefaults.operations.assembly.laborRate,
+      },
+      {
+        operationNumber: 20,
+        operationCode: 'CONFIG',
+        description: 'Configuration customization',
+        workCenter: 'CONFIG_001',
+        setupTime: routingDefaults.operations.configuration.setupTime,
+        runTime: routingDefaults.operations.configuration.runTime,
+        laborRate: routingDefaults.operations.configuration.laborRate,
+      },
+      {
+        operationNumber: 30,
+        operationCode: 'TEST',
+        description: 'Final testing and validation',
+        workCenter: 'TEST_001',
+        setupTime: routingDefaults.operations.testing.setupTime,
+        runTime: routingDefaults.operations.testing.runTime,
+        laborRate: routingDefaults.operations.testing.laborRate,
+      },
+    ];
+
+    // Calculate totals from centralized data
+    const totalLaborHours = operations.reduce((sum, op) => sum + op.setupTime + op.runTime, 0);
+    const totalLaborCost = operations.reduce((sum, op) => sum + (op.setupTime + op.runTime) * op.laborRate, 0);
+
     return {
       routingId,
-      operations: [
-        {
-          operationNumber: 10,
-          operationCode: 'ASSEMBLY',
-          description: 'Base product assembly',
-          workCenter: 'ASSEMBLY_001',
-          setupTime: 0.5,
-          runTime: 2.0,
-          laborRate: 35.0,
-        },
-        {
-          operationNumber: 20,
-          operationCode: 'CONFIG',
-          description: 'Configuration customization',
-          workCenter: 'CONFIG_001',
-          setupTime: 0.25,
-          runTime: 1.5,
-          laborRate: 45.0,
-        },
-        {
-          operationNumber: 30,
-          operationCode: 'TEST',
-          description: 'Final testing and validation',
-          workCenter: 'TEST_001',
-          setupTime: 0.1,
-          runTime: 0.5,
-          laborRate: 40.0,
-        },
-      ],
-      totalLaborHours: 4.85,
-      totalLaborCost: 194.0,
+      operations,
+      totalLaborHours,
+      totalLaborCost,
     };
   }
 }
