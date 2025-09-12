@@ -11,8 +11,8 @@ import {
   BusinessSystemConfig,
   CustomerSystemConfig,
   IntegrationConfig,
-} from '@/core/architecture';
-import { createLogger, businessLogger } from '@/core/logger';
+} from './core/architecture';
+import { createLogger, businessLogger } from './core/logger';
 
 // Domain Orchestration
 import {
@@ -20,28 +20,28 @@ import {
   domainOrchestrator,
   CentralBusinessLogicRegistry,
   DomainManagers,
-} from '@/domains';
+} from './domains';
 
 // Legacy module imports (for backward compatibility) - using path aliases
-import { financialManager, FinancialManager } from '@/modules/financial';
-import { hrManager, HRManager } from '@/modules/hr';
-import { crmManager, CRMManager } from '@/modules/crm';
-import { scmManager, SCMManager } from '@/modules/scm';
-import { projectManager, ProjectManager } from '@/modules/project';
-import { biManager, BIManager } from '@/modules/bi';
-import { assetManager, AssetManager } from '@/modules/assets';
-import { manufacturingManager, ManufacturingManager } from '@/modules/manufacturing';
-import { procurementManager, ProcurementManager } from '@/modules/procurement';
-import { orderManager, OrderManager } from '@/modules/orders';
-import { inventoryManager, InventoryManager } from '@/modules/inventory';
-import { qualityManager, QualityManager } from '@/modules/quality';
-import { serviceManager, ServiceManager } from '@/modules/service';
-import { maintenanceManager, MaintenanceManager } from '@/modules/maintenance';
-import { riskManager, RiskManager } from '@/modules/risk';
-import { complianceManager, ComplianceManager } from '@/modules/compliance';
-import { documentManager, DocumentManager } from '@/modules/document';
-import { workflowManager, WorkflowManager } from '@/modules/workflow';
-import { integrationManager, IntegrationManager } from '@/modules/integration';
+import { financialManager, FinancialManager } from './modules/financial';
+import { hrManager, HRManager } from './modules/hr';
+import { crmManager, CRMManager } from './modules/crm';
+import { scmManager, SCMManager } from './modules/scm';
+import { projectManager, ProjectManager } from './modules/project';
+import { biManager, BIManager } from './modules/bi';
+import { assetManager, AssetManager } from './modules/assets';
+import { manufacturingManager, ManufacturingManager } from './modules/manufacturing';
+import { procurementManager, ProcurementManager } from './modules/procurement';
+import { orderManager, OrderManager } from './modules/orders';
+import { inventoryManager, InventoryManager } from './modules/inventory';
+import { qualityManager, QualityManager } from './modules/quality';
+import { serviceManager, ServiceManager } from './modules/service';
+import { maintenanceManager, MaintenanceManager } from './modules/maintenance';
+import { riskManager, RiskManager } from './modules/risk';
+import { complianceManager, ComplianceManager } from './modules/compliance';
+import { documentManager, DocumentManager } from './modules/document';
+import { workflowManager, WorkflowManager } from './modules/workflow';
+import { integrationManager, IntegrationManager } from './modules/integration';
 import {
   createServiceCommandCenterService,
   ServiceCommandCenterService,
