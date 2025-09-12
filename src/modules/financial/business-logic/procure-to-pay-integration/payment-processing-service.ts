@@ -210,7 +210,7 @@ export class PaymentProcessingService {
     discountAmount?: number;
     discountDate?: Date;
   }> {
-    let scheduledDate = new Date(invoiceDate);
+    const scheduledDate = new Date(invoiceDate);
     let discountAvailable = false;
     let discountAmount: number | undefined;
     let discountDate: Date | undefined;

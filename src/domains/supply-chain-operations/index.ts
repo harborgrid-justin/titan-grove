@@ -812,7 +812,7 @@ export class SupplyChainOperationsBusinessLogic {
       config.logistics.routeOptimization;
 
     // Assign deliveries to vehicles based on capacity and constraints
-    let remainingDeliveries = [...deliveries];
+    const remainingDeliveries = [...deliveries];
 
     for (const vehicle of vehicles) {
       const route = {

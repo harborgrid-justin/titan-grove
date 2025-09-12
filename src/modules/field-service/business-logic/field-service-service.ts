@@ -586,7 +586,7 @@ export class FieldServiceService extends StandardServiceBase {
   ): Promise<ServiceAnalytics> {
     const analyticsId = `SA_${Date.now()}`;
 
-    let analyticsData: ServiceAnalytics = {
+    const analyticsData: ServiceAnalytics = {
       analyticsId,
       reportType,
       reportingPeriod: { startDate, endDate },
