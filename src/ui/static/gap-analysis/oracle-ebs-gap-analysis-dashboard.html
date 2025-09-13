@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oracle EBS Gap Analysis Dashboard | Titan Grove</title>
+    
+    <!-- Carbon Design System CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@carbon/styles/css/styles.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        .gap-analysis-header {
+            background: linear-gradient(135deg, #0f62fe 0%, #0043ce 100%);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .competitive-score {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .score-titan {
+            color: #42be65;
+        }
+        
+        .score-oracle {
+            color: #fa4d56;
+        }
+        
+        .gap-percentage {
+            font-size: 1.5rem;
+            color: #42be65;
+        }
+        
+        .domain-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .domain-score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0f62fe;
+        }
+        
+        .gap-item {
+            background: #f4f4f4;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-left: 4px solid #fa4d56;
+            border-radius: 4px;
+        }
+        
+        .gap-critical { border-left-color: #da1e28; }
+        .gap-high { border-left-color: #fa4d56; }
+        .gap-medium { border-left-color: #f1c21b; }
+        .gap-low { border-left-color: #42be65; }
+        
+        .recommendation-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+            border-left: 4px solid #0f62fe;
+        }
+        
+        .priority-critical { border-left-color: #da1e28; }
+        .priority-high { border-left-color: #fa4d56; }
+        .priority-medium { border-left-color: #f1c21b; }
+        .priority-low { border-left-color: #42be65; }
+        
+        .chart-container {
+            height: 400px;
+            margin: 1rem 0;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0f62fe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .metric-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0f62fe;
+        }
+        
+        .metric-label {
+            color: #525252;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bx--grid">
+        <!-- Header Section -->
+        <div class="gap-analysis-header">
+            <div class="bx--row">
+                <div class="bx--col-lg-8">
+                    <h1>Oracle EBS Gap Analysis Dashboard</h1>
+                    <p>Comprehensive usability and functionality gap analysis between Titan Grove and Oracle EBS</p>
+                    <div class="bx--row">
+                        <div class="bx--col-lg-4">
+                            <div class="competitive-score score-titan" id="titan-score">8.4</div>
+                            <div>Titan Grove Score</div>
+                        </div>
+                        <div class="bx--col-lg-4">
+                            <div class="competitive-score score-oracle" id="oracle-score">6.2</div>
+                            <div>Oracle EBS Score</div>
+                        </div>
+                        <div class="bx--col-lg-4">
+                            <div class="gap-percentage" id="gap-percentage">+35.5%</div>
+                            <div>Advantage</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bx--col-lg-4">
+                    <div class="bx--form-item">
+                        <button class="bx--btn bx--btn--primary" onclick="runGapAnalysis()">
+                            <span id="analysis-btn-text">Run New Analysis</span>
+                            <span id="analysis-spinner" class="loading-spinner" style="display: none;"></span>
+                        </button>
+                    </div>
+                    <div class="bx--form-item">
+                        <select class="bx--select-input" id="analysis-type">
+                            <option value="comprehensive">Comprehensive Analysis</option>
+                            <option value="usability">Usability Only</option>
+                            <option value="functionality">Functionality Only</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Metrics -->
+        <div class="bx--row" style="margin-bottom: 2rem;">
+            <div class="bx--col-lg-3">
+                <div class="metric-card">
+                    <div class="metric-value" id="total-gaps">12</div>
+                    <div class="metric-label">Total Gaps</div>
+                </div>
+            </div>
+            <div class="bx--col-lg-3">
+                <div class="metric-card">
+                    <div class="metric-value" id="critical-gaps">2</div>
+                    <div class="metric-label">Critical Gaps</div>
+                </div>
+            </div>
+            <div class="bx--col-lg-3">
+                <div class="metric-card">
+                    <div class="metric-value" id="readiness-score">88%</div>
+                    <div class="metric-label">Overall Readiness</div>
+                </div>
+            </div>
+            <div class="bx--col-lg-3">
+                <div class="metric-card">
+                    <div class="metric-value" id="competitive-position">SUPERIOR</div>
+                    <div class="metric-label">Competitive Position</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Domain Analysis -->
+        <div class="bx--row">
+            <div class="bx--col-lg-16">
+                <h2>Domain Analysis</h2>
+                <p>Comparative analysis across business domains</p>
+            </div>
+        </div>
+
+        <div class="bx--row">
+            <div class="bx--col-lg-8">
+                <div class="domain-card">
+                    <h3>Financial Management</h3>
+                    <div class="domain-score">+15.2%</div>
+                    <p><strong>Key Advantages:</strong></p>
+                    <ul>
+                        <li>Superior user interface and usability</li>
+                        <li>Real-time analytics capabilities</li>
+                        <li>Modern API-first architecture</li>
+                    </ul>
+                </div>
+                
+                <div class="domain-card">
+                    <h3>Supply Chain Management</h3>
+                    <div class="domain-score">+22.8%</div>
+                    <p><strong>Key Advantages:</strong></p>
+                    <ul>
+                        <li>Mobile-first design architecture</li>
+                        <li>Superior user experience</li>
+                        <li>Real-time collaboration features</li>
+                    </ul>
+                </div>
+
+                <div class="domain-card">
+                    <h3>Manufacturing Excellence</h3>
+                    <div class="domain-score">+12.5%</div>
+                    <p><strong>Key Advantages:</strong></p>
+                    <ul>
+                        <li>Superior configure-to-order experience</li>
+                        <li>Modern MES interface</li>
+                        <li>IoT and Industry 4.0 capabilities</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bx--col-lg-8">
+                <div class="domain-card">
+                    <h3>Business Intelligence & Analytics</h3>
+                    <div class="domain-score">+25.4%</div>
+                    <p><strong>Key Advantages:</strong></p>
+                    <ul>
+                        <li>Modern visualization capabilities</li>
+                        <li>Real-time data processing</li>
+                        <li>Mobile-first analytics</li>
+                        <li>AI-powered insights</li>
+                    </ul>
+                </div>
+
+                <div class="domain-card">
+                    <h3>Procurement Management</h3>
+                    <div class="domain-score">+16.2%</div>
+                    <p><strong>Key Advantages:</strong></p>
+                    <ul>
+                        <li>Modern contract authoring</li>
+                        <li>Better supplier collaboration</li>
+                        <li>Advanced analytics and reporting</li>
+                    </ul>
+                </div>
+
+                <div class="domain-card">
+                    <h3>Human Capital Management</h3>
+                    <div class="domain-score">+8.5%</div>
+                    <p><strong>Areas for Improvement:</strong></p>
+                    <ul>
+                        <li>Complex payroll configuration</li>
+                        <li>Limited self-service options</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gap Analysis Results -->
+        <div class="bx--row" style="margin-top: 3rem;">
+            <div class="bx--col-lg-8">
+                <h2>Usability Gaps</h2>
+                <div id="usability-gaps">
+                    <div class="gap-item gap-critical">
+                        <h4>Mobile Accessibility (Critical)</h4>
+                        <p>Oracle EBS has limited mobile support, Titan Grove is mobile-first</p>
+                        <p><strong>Affected Features:</strong> Supply Chain, Manufacturing, Field Service</p>
+                        <p><strong>Impact:</strong> Enables mobile workforce and real-time decision making</p>
+                    </div>
+
+                    <div class="gap-item gap-high">
+                        <h4>User Interface Design (High)</h4>
+                        <p>Oracle EBS uses legacy Forms-based interface, while Titan Grove provides modern responsive web interface</p>
+                        <p><strong>Affected Features:</strong> All user-facing modules</p>
+                        <p><strong>Impact:</strong> Significantly improved user experience and productivity</p>
+                    </div>
+
+                    <div class="gap-item gap-medium">
+                        <h4>Navigation and Workflow (Medium)</h4>
+                        <p>Complex navigation in Oracle EBS vs intuitive workflow in Titan Grove</p>
+                        <p><strong>Affected Features:</strong> Financial Management, HR, Procurement</p>
+                        <p><strong>Impact:</strong> Reduced training time and improved user adoption</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bx--col-lg-8">
+                <h2>Functionality Gaps</h2>
+                <div id="functionality-gaps">
+                    <div class="gap-item gap-high">
+                        <h4>Regulatory Compliance (High)</h4>
+                        <p>Need to match Oracle EBS compliance features for enterprise customers</p>
+                        <p><strong>Missing:</strong> Advanced audit trails, Regulatory reporting</p>
+                        <p><strong>Impact:</strong> Critical for enterprise and government customers</p>
+                    </div>
+
+                    <div class="gap-item gap-medium">
+                        <h4>Multi-Language Support (Medium)</h4>
+                        <p>Oracle EBS has extensive localization vs limited language support in Titan Grove</p>
+                        <p><strong>Missing:</strong> Multi-language UI, Localized reporting, Regional compliance</p>
+                        <p><strong>Impact:</strong> Required for global enterprise customers</p>
+                    </div>
+
+                    <div class="gap-item gap-medium">
+                        <h4>Integration Capabilities (Medium)</h4>
+                        <p>Titan Grove provides modern API-first architecture vs Oracle EBS legacy integration</p>
+                        <p><strong>Impact:</strong> Better integration with modern systems and cloud services</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="bx--row" style="margin-top: 3rem;">
+            <div class="bx--col-lg-16">
+                <h2>Strategic Recommendations</h2>
+                <p>Prioritized recommendations to enhance competitive position</p>
+            </div>
+        </div>
+
+        <div class="bx--row">
+            <div class="bx--col-lg-16">
+                <div id="recommendations">
+                    <div class="recommendation-item priority-high">
+                        <h4>Develop Oracle EBS Migration Tools (HIGH PRIORITY)</h4>
+                        <p>Create comprehensive migration tools to help customers transition from Oracle EBS</p>
+                        <p><strong>Approach:</strong> Build data migration utilities and compatibility layers</p>
+                        <p><strong>Effort:</strong> 6-8 months | <strong>Business Value:</strong> 9/10 | <strong>Technical Complexity:</strong> 7/10</p>
+                        <p><strong>Expected Impact:</strong> Accelerated customer adoption and reduced migration risk</p>
+                    </div>
+
+                    <div class="recommendation-item priority-high">
+                        <h4>Enhance Enterprise Compliance Features (HIGH PRIORITY)</h4>
+                        <p>Implement advanced audit trails and regulatory reporting to match Oracle EBS</p>
+                        <p><strong>Approach:</strong> Build comprehensive compliance framework</p>
+                        <p><strong>Effort:</strong> 4-6 months | <strong>Business Value:</strong> 8/10 | <strong>Technical Complexity:</strong> 8/10</p>
+                        <p><strong>Expected Impact:</strong> Enable enterprise and government customer adoption</p>
+                    </div>
+
+                    <div class="recommendation-item priority-high">
+                        <h4>Address Mobile Accessibility Gap (HIGH PRIORITY)</h4>
+                        <p>Oracle EBS has limited mobile support, Titan Grove is mobile-first</p>
+                        <p><strong>Approach:</strong> Expand mobile capabilities across all modules</p>
+                        <p><strong>Effort:</strong> 3-6 months | <strong>Business Value:</strong> 8/10 | <strong>Technical Complexity:</strong> 6/10</p>
+                        <p><strong>Expected Impact:</strong> Enables mobile workforce and real-time decision making</p>
+                    </div>
+
+                    <div class="recommendation-item priority-medium">
+                        <h4>Expand Localization Support (MEDIUM PRIORITY)</h4>
+                        <p>Add multi-language support and regional compliance features</p>
+                        <p><strong>Approach:</strong> Implement i18n framework and localization tools</p>
+                        <p><strong>Effort:</strong> 3-4 months | <strong>Business Value:</strong> 7/10 | <strong>Technical Complexity:</strong> 6/10</p>
+                        <p><strong>Expected Impact:</strong> Enable global market expansion</p>
+                    </div>
+
+                    <div class="recommendation-item priority-high">
+                        <h4>Address User Interface Design Gap (HIGH PRIORITY)</h4>
+                        <p>Oracle EBS uses legacy Forms-based interface, while Titan Grove provides modern responsive web interface</p>
+                        <p><strong>Approach:</strong> Continue developing modern React-based interfaces</p>
+                        <p><strong>Effort:</strong> 1-2 months | <strong>Business Value:</strong> 8/10 | <strong>Technical Complexity:</strong> 6/10</p>
+                        <p><strong>Expected Impact:</strong> Significantly improved user experience and productivity</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Options -->
+        <div class="bx--row" style="margin-top: 3rem; margin-bottom: 2rem;">
+            <div class="bx--col-lg-16">
+                <h2>Export Analysis</h2>
+                <div class="bx--form-item">
+                    <button class="bx--btn bx--btn--secondary" onclick="exportAnalysis('json')">Export JSON</button>
+                    <button class="bx--btn bx--btn--secondary" onclick="exportAnalysis('csv')">Export CSV</button>
+                    <button class="bx--btn bx--btn--secondary" onclick="exportAnalysis('pdf')">Export PDF Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/@carbon/components/scripts/carbon-components.js"></script>
+    <script src="scripts/gap-analysis-dashboard.js"></script>
+</body>
+</html>
