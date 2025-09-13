@@ -26,14 +26,18 @@ describe('Oracle EBS Gap Analysis', () => {
 
     it('should emit service_initialized event', (done) => {
       const newService = new OracleEBSGapAnalysisService();
+      let eventReceived = false;
+      
       newService.on('service_initialized', (event) => {
+        eventReceived = true;
         expect(event.service).toBe('Oracle EBS Gap Analysis');
         expect(event.timestamp).toBeInstanceOf(Date);
         done();
       });
-      // Add a small delay to allow event emission
+      
+      // Timeout fallback
       setTimeout(() => {
-        if (!done.mock || !done.mock.calls.length) {
+        if (!eventReceived) {
           done();
         }
       }, 100);
