@@ -1,0 +1,1 @@
+export * from './business-logic/talent-intelligence/talent-intelligence-service';

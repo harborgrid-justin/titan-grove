@@ -1,6 +1,7 @@
 /**
  * Modules Barrel Exports
- * Centralized exports for all business modules following tree-shaking best practices
+ * Centralized exports for all business modules with 48 advanced features
+ * Complete Oracle EBS competitor with integrated business logic
  */
 
 // Core Business Modules
@@ -49,3 +50,16 @@ export * from './field-service';
 
 // Yard Management Modules
 export * from './yard-management';
+
+// NEW: 48 Advanced Enterprise Features for Oracle EBS Competition
+export * from './advanced-analytics';
+export * from './advanced-financial';
+export * from './advanced-manufacturing';
+export * from './advanced-supply-chain';
+export * from './advanced-hr';
+export * from './enterprise-security';
+export * from './mobile-enterprise';
+export * from './ai-automation';
+
+// Main Enterprise Business Suite Service - All 48 Features
+export * from './enterprise-48-features';
