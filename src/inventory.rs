@@ -8,12 +8,12 @@ pub struct InventoryItem {
     pub item_code: String,
     pub description: String,
     pub category: String,
-    pub unit_cost: f64,
-    pub current_stock: i32,
-    pub reserved_stock: i32,
-    pub available_stock: i32,
-    pub reorder_point: i32,
-    pub max_stock_level: i32,
+    pub unit_cost: f64,       // Keep f64 for precise financial calculations
+    pub current_stock: i32,   // Keep as integer for exact counts
+    pub reserved_stock: i32,  // Keep as integer for exact counts
+    pub available_stock: i32, // Keep as integer for exact counts
+    pub reorder_point: i32,   // Keep as integer for exact counts
+    pub max_stock_level: i32, // Keep as integer for exact counts
     pub abc_classification: String,
 }
 
@@ -21,32 +21,32 @@ pub struct InventoryItem {
 #[napi(object)]
 pub struct EOQCalculation {
     pub item_id: String,
-    pub economic_order_quantity: i32,
-    pub total_annual_cost: f64,
-    pub ordering_cost_component: f64,
-    pub holding_cost_component: f64,
-    pub order_frequency: f64,
-    pub optimal_cycle_time_days: f64,
+    pub economic_order_quantity: i32,  // Keep as integer for exact quantities
+    pub total_annual_cost: f64,        // Keep f64 for precise financial calculations
+    pub ordering_cost_component: f64,  // Keep f64 for precise financial calculations
+    pub holding_cost_component: f64,   // Keep f64 for precise financial calculations
+    pub order_frequency: f32,          // Changed to f32 for frequency metrics
+    pub optimal_cycle_time_days: f32,  // Changed to f32 for time calculations
 }
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct SafetyStockCalculation {
     pub item_id: String,
-    pub safety_stock: i32,
-    pub service_level: f64,
-    pub demand_variability: f64,
-    pub lead_time_variability: f64,
-    pub reorder_point: i32,
+    pub safety_stock: i32,           // Keep as integer for exact quantities
+    pub service_level: f32,          // Changed to f32 for percentage metrics
+    pub demand_variability: f32,     // Changed to f32 for statistical metrics
+    pub lead_time_variability: f32,  // Changed to f32 for statistical metrics
+    pub reorder_point: i32,          // Keep as integer for exact quantities
 }
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct ABCAnalysis {
     pub item_id: String,
-    pub annual_usage_value: f64,
-    pub percentage_of_total_value: f64,
-    pub cumulative_percentage: f64,
+    pub annual_usage_value: f64,      // Keep f64 for precise financial calculations
+    pub percentage_of_total_value: f32, // Changed to f32 for percentage metrics
+    pub cumulative_percentage: f32,     // Changed to f32 for percentage metrics
     pub abc_class: String,
     pub management_priority: String,
 }

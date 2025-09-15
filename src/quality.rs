@@ -4,12 +4,12 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct QualityMetrics {
-    pub defect_rate: f64,
-    pub first_pass_yield: f64,
-    pub customer_satisfaction: f64,
-    pub process_capability: f64,
-    pub supplier_quality_rating: f64,
-    pub overall_quality_score: f64,
+    pub defect_rate: f64,              // Keep f64 for NAPI compatibility
+    pub first_pass_yield: f64,         // Keep f64 for NAPI compatibility  
+    pub customer_satisfaction: f64,    // Keep f64 for NAPI compatibility
+    pub process_capability: f64,       // Keep f64 for NAPI compatibility
+    pub supplier_quality_rating: f64,  // Keep f64 for NAPI compatibility
+    pub overall_quality_score: f64,    // Keep f64 for NAPI compatibility
 }
 
 #[derive(Serialize, Deserialize)]
@@ -20,19 +20,19 @@ pub struct DefectData {
     pub severity: String,
     pub detection_stage: String,
     pub root_cause: String,
-    pub cost_impact: f64,
-    pub occurrence_count: i32,
+    pub cost_impact: f64,      // Keep f64 for precise financial impact calculations
+    pub occurrence_count: i32, // Keep as integer for exact counts
 }
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct ProcessCapability {
     pub process_name: String,
-    pub cp: f64,        // Process Capability
-    pub cpk: f64,       // Process Capability Index
-    pub pp: f64,        // Process Performance
-    pub ppk: f64,       // Process Performance Index
-    pub sigma_level: f64,
+    pub cp: f64,         // Keep f64 for NAPI compatibility
+    pub cpk: f64,        // Keep f64 for NAPI compatibility
+    pub pp: f64,         // Keep f64 for NAPI compatibility
+    pub ppk: f64,        // Keep f64 for NAPI compatibility
+    pub sigma_level: f64, // Keep f64 for NAPI compatibility
 }
 
 #[derive(Serialize, Deserialize)]
@@ -41,11 +41,11 @@ pub struct QualityInspection {
     pub inspection_id: String,
     pub product_batch: String,
     pub inspector: String,
-    pub total_units: i32,
-    pub passed_units: i32,
-    pub failed_units: i32,
+    pub total_units: i32,        // Keep as integer for exact counts
+    pub passed_units: i32,       // Keep as integer for exact counts
+    pub failed_units: i32,       // Keep as integer for exact counts
     pub defects_found: Vec<DefectData>,
-    pub inspection_score: f64,
+    pub inspection_score: f64,   // Keep f64 for NAPI compatibility
 }
 
 #[derive(Serialize, Deserialize)]
