@@ -7,7 +7,7 @@ pub struct IndustrialRoboticsData {
     pub id: String,
     pub name: String,
     pub module_type: String,
-    pub metrics: Vec<f64>,
+    pub metrics: Vec<f32>,      // Changed to f32 for sensor/performance metrics
     pub status: String,
     pub timestamp: String,
 }
@@ -15,7 +15,7 @@ pub struct IndustrialRoboticsData {
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct IndustrialRoboticsAnalytics {
-    pub performance_score: f64,
+    pub performance_score: f32,  // Changed to f32 for performance scores
     pub efficiency_rating: String,
     pub compliance_status: bool,
     pub optimization_suggestions: Vec<String>,
@@ -41,37 +41,37 @@ pub struct ConfigParameter {
 #[napi(object)]
 pub struct Threshold {
     pub metric: String,
-    pub min_value: f64,
-    pub max_value: f64,
-    pub critical_level: f64,
+    pub min_value: f32,     // Changed to f32 for threshold values
+    pub max_value: f32,     // Changed to f32 for threshold values
+    pub critical_level: f32, // Changed to f32 for critical levels
 }
 
 #[napi]
-pub fn calculate_industrial_robotics_metrics(input: f64) -> f64 {
+pub fn calculate_industrial_robotics_metrics(input: f32) -> f32 {
     // Advanced Industrial Robotics calculation
     input * 1.21 + 42.0
 }
 
 #[napi] 
-pub fn process_industrial_robotics_data(data: Vec<f64>) -> Vec<f64> {
+pub fn process_industrial_robotics_data(data: Vec<f32>) -> Vec<f32> {
     data.iter().map(|x| x * 2.0).collect()
 }
 
 #[napi]
-pub fn analyze_industrial_robotics_performance(metrics: Vec<f64>) -> f64 {
+pub fn analyze_industrial_robotics_performance(metrics: Vec<f32>) -> f32 {
     if metrics.is_empty() {
         return 0.0;
     }
-    metrics.iter().sum::<f64>() / metrics.len() as f64
+    metrics.iter().sum::<f32>() / metrics.len() as f32
 }
 
 #[napi]
-pub fn optimize_industrial_robotics_operations(parameters: Vec<f64>) -> Vec<f64> {
+pub fn optimize_industrial_robotics_operations(parameters: Vec<f32>) -> Vec<f32> {
     parameters.iter().map(|x| x * 1.15 + 10.0).collect()
 }
 
 #[napi]
-pub fn validate_industrial_robotics_compliance(score: f64) -> bool {
+pub fn validate_industrial_robotics_compliance(score: f32) -> bool {
     score >= 85.0
 }
 
