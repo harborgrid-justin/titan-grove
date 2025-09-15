@@ -6,8 +6,8 @@ use serde::{Deserialize, Serialize};
 pub struct ProductionOrder {
     pub order_id: String,
     pub product_id: String,
-    pub quantity_planned: f64,
-    pub quantity_produced: f64,
+    pub quantity_planned: f32,
+    pub quantity_produced: f32,
     pub start_date: String,
     pub end_date: String,
     pub status: String,
@@ -19,10 +19,10 @@ pub struct ProductionOrder {
 pub struct WorkCenter {
     pub work_center_id: String,
     pub name: String,
-    pub capacity_per_hour: f64,
-    pub efficiency_rate: f64,
-    pub availability_hours: f64,
-    pub current_utilization: f64,
+    pub capacity_per_hour: f32,
+    pub efficiency_rate: f32,
+    pub availability_hours: f32,
+    pub current_utilization: f32,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -30,8 +30,8 @@ pub struct WorkCenter {
 pub struct ProductionSchedule {
     pub work_center_id: String,
     pub production_orders: Vec<String>,
-    pub total_scheduled_hours: f64,
-    pub capacity_utilization: f64,
+    pub total_scheduled_hours: f32,
+    pub capacity_utilization: f32,
     pub completion_date: String,
 }
 
@@ -41,22 +41,22 @@ pub struct ManufacturingQualityMetrics {
     pub batch_id: String,
     pub total_units: i32,
     pub defective_units: i32,
-    pub defect_rate: f64,
-    pub first_pass_yield: f64,
-    pub rework_rate: f64,
-    pub scrap_rate: f64,
+    pub defect_rate: f32,
+    pub first_pass_yield: f32,
+    pub rework_rate: f32,
+    pub scrap_rate: f32,
 }
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct ProductionEfficiency {
     pub work_center_id: String,
-    pub planned_production_time: f64,
-    pub actual_production_time: f64,
-    pub efficiency_percentage: f64,
-    pub downtime_hours: f64,
-    pub setup_time_hours: f64,
-    pub oee_score: f64, // Overall Equipment Effectiveness
+    pub planned_production_time: f32,
+    pub actual_production_time: f32,
+    pub efficiency_percentage: f32,
+    pub downtime_hours: f32,
+    pub setup_time_hours: f32,
+    pub oee_score: f32, // Overall Equipment Effectiveness
 }
 
 #[derive(Serialize, Deserialize)]
@@ -74,18 +74,18 @@ pub struct BillOfMaterials {
 #[napi(object)]
 pub struct MaterialComponent {
     pub component_id: String,
-    pub quantity_required: f64,
-    pub unit_cost: f64,
-    pub total_cost: f64,
+    pub quantity_required: f32, // Changed to f32 for quantities
+    pub unit_cost: f64,         // Keep f64 for precise financial calculations
+    pub total_cost: f64,        // Keep f64 for precise financial calculations
     pub lead_time_days: i32,
 }
 
 #[napi]
 pub fn calculate_production_capacity(
     work_centers: Vec<WorkCenter>,
-    planned_hours: f64,
-) -> f64 {
-    let total_capacity: f64 = work_centers.iter()
+    planned_hours: f32,
+) -> f32 {
+    let total_capacity: f32 = work_centers.iter()
         .map(|wc| wc.capacity_per_hour * wc.efficiency_rate * planned_hours)
         .sum();
     total_capacity
@@ -93,10 +93,10 @@ pub fn calculate_production_capacity(
 
 #[napi]
 pub fn calculate_production_time_required(
-    quantity: f64,
-    production_rate_per_hour: f64,
-    setup_time_hours: f64,
-) -> f64 {
+    quantity: f32,
+    production_rate_per_hour: f32,
+    setup_time_hours: f32,
+) -> f32 {
     if production_rate_per_hour > 0.0 {
         setup_time_hours + (quantity / production_rate_per_hour)
     } else {
@@ -106,10 +106,10 @@ pub fn calculate_production_time_required(
 
 #[napi]
 pub fn calculate_oee_score(
-    availability_percentage: f64,
-    performance_percentage: f64,
-    quality_percentage: f64,
-) -> f64 {
+    availability_percentage: f32,
+    performance_percentage: f32,
+    quality_percentage: f32,
+) -> f32 {
     (availability_percentage / 100.0) * 
     (performance_percentage / 100.0) * 
     (quality_percentage / 100.0) * 100.0
@@ -119,7 +119,7 @@ pub fn calculate_oee_score(
 pub fn optimize_production_sequence(
     orders: Vec<String>, // Order IDs
     priorities: Vec<i32>,
-    processing_times: Vec<f64>,
+    processing_times: Vec<f32>,
 ) -> Vec<String> {
     if orders.is_empty() {
         return Vec::new();
@@ -145,7 +145,7 @@ pub fn optimize_production_sequence(
 
 #[napi]
 pub fn calculate_material_requirements(
-    production_quantity: f64,
+    production_quantity: f32,
     components: Vec<MaterialComponent>,
     product_id: String,
 ) -> BillOfMaterials {
@@ -165,7 +165,7 @@ pub fn calculate_material_requirements(
     
     for component in components {
         let required_quantity = component.quantity_required * production_quantity;
-        let component_total_cost = required_quantity * component.unit_cost;
+        let component_total_cost = required_quantity as f64 * component.unit_cost; // Convert to f64 for financial calc
         total_material_cost += component_total_cost;
         
         updated_components.push(MaterialComponent {

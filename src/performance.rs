@@ -6,18 +6,18 @@ use serde::{Deserialize, Serialize};
 pub struct KPI {
     pub kpi_id: String,
     pub kpi_name: String,
-    pub current_value: f64,
-    pub target_value: f64,
+    pub current_value: f32,
+    pub target_value: f32,
     pub unit: String,
     pub frequency: String,
 }
 
 #[napi]
 pub fn calculate_kpi_performance(
-    current_value: f64,
-    target_value: f64,
+    current_value: f32,
+    target_value: f32,
     is_higher_better: bool,
-) -> f64 {
+) -> f32 {
     if target_value == 0.0 {
         return 0.0;
     }
@@ -33,11 +33,11 @@ pub fn calculate_kpi_performance(
 
 #[napi]
 pub fn calculate_balanced_scorecard(
-    financial_score: f64,
-    customer_score: f64,
-    process_score: f64,
-    learning_score: f64,
-) -> f64 {
+    financial_score: f32,
+    customer_score: f32,
+    process_score: f32,
+    learning_score: f32,
+) -> f32 {
     (financial_score * 0.30) + (customer_score * 0.25) + 
     (process_score * 0.25) + (learning_score * 0.20)
 }
