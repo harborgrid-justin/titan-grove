@@ -7,8 +7,8 @@ pub struct SupplyChainNode {
     pub node_id: String,
     pub node_type: String, // SUPPLIER, WAREHOUSE, DISTRIBUTION_CENTER, CUSTOMER
     pub location: String,
-    pub capacity: f32,          // Changed to f32 for capacity metrics
-    pub current_inventory: f32, // Changed to f32 for inventory quantities
+    pub capacity: f64,          // Changed to f64 for capacity metrics
+    pub current_inventory: f64, // Changed to f64 for inventory quantities
     pub lead_time_days: i32,
 }
 
@@ -18,10 +18,10 @@ pub struct ShipmentRoute {
     pub route_id: String,
     pub origin: String,
     pub destination: String,
-    pub distance_km: f32,          // Changed to f32 for distance metrics
+    pub distance_km: f64,          // Changed to f64 for distance metrics
     pub transport_cost_per_km: f64, // Keep f64 for financial calculations
-    pub transit_time_hours: f32,   // Changed to f32 for time metrics
-    pub capacity_limit: f32,       // Changed to f32 for capacity
+    pub transit_time_hours: f64,   // Changed to f64 for time metrics
+    pub capacity_limit: f64,       // Changed to f64 for capacity
     pub transport_mode: String,    // TRUCK, RAIL, AIR, SHIP
 }
 
@@ -30,44 +30,44 @@ pub struct ShipmentRoute {
 pub struct DemandForecast {
     pub product_id: String,
     pub period: String,
-    pub forecasted_demand: f32,    // Changed to f32 for demand quantities
-    pub confidence_interval: f32,  // Changed to f32 for statistical metrics
-    pub seasonal_factor: f32,      // Changed to f32 for seasonal adjustments
-    pub trend_factor: f32,         // Changed to f32 for trend metrics
+    pub forecasted_demand: f64,    // Changed to f64 for demand quantities
+    pub confidence_interval: f64,  // Changed to f64 for statistical metrics
+    pub seasonal_factor: f64,      // Changed to f64 for seasonal adjustments
+    pub trend_factor: f64,         // Changed to f64 for trend metrics
 }
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct ScmInventoryOptimization {
     pub product_id: String,
-    pub current_stock: f32,        // Changed to f32 for stock quantities
-    pub optimal_stock_level: f32,  // Changed to f32 for stock levels
-    pub reorder_point: f32,        // Changed to f32 for reorder quantities
-    pub economic_order_quantity: f32, // Changed to f32 for order quantities
-    pub safety_stock: f32,         // Changed to f32 for safety stock
-    pub stockout_risk: f32,        // Changed to f32 for risk percentages
+    pub current_stock: f64,        // Changed to f64 for stock quantities
+    pub optimal_stock_level: f64,  // Changed to f64 for stock levels
+    pub reorder_point: f64,        // Changed to f64 for reorder quantities
+    pub economic_order_quantity: f64, // Changed to f64 for order quantities
+    pub safety_stock: f64,         // Changed to f64 for safety stock
+    pub stockout_risk: f64,        // Changed to f64 for risk percentages
 }
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct SupplyChainMetrics {
     pub total_cost: f64,              // Keep f64 for financial cost calculations
-    pub average_lead_time: f32,       // Changed to f32 for time metrics
-    pub fill_rate: f32,               // Changed to f32 for percentage metrics
-    pub inventory_turnover: f32,      // Changed to f32 for ratio metrics
-    pub supply_chain_efficiency: f32, // Changed to f32 for efficiency metrics
-    pub carbon_footprint: f32,        // Changed to f32 for environmental metrics
+    pub average_lead_time: f64,       // Changed to f64 for time metrics
+    pub fill_rate: f64,               // Changed to f64 for percentage metrics
+    pub inventory_turnover: f64,      // Changed to f64 for ratio metrics
+    pub supply_chain_efficiency: f64, // Changed to f64 for efficiency metrics
+    pub carbon_footprint: f64,        // Changed to f64 for environmental metrics
 }
 
 #[derive(Serialize, Deserialize)]
 #[napi(object)]
 pub struct ScmRiskAssessment {
     pub risk_type: String,
-    pub probability: f32,       // Changed to f32 for probability percentages
-    pub impact_score: f32,      // Changed to f32 for scoring metrics
-    pub risk_score: f32,        // Changed to f32 for risk scores
+    pub probability: f64,       // Changed to f64 for probability percentages
+    pub impact_score: f64,      // Changed to f64 for scoring metrics
+    pub risk_score: f64,        // Changed to f64 for risk scores
     pub mitigation_cost: f64,   // Keep f64 for financial cost calculations
-    pub residual_risk: f32,     // Changed to f32 for risk percentages
+    pub residual_risk: f64,     // Changed to f64 for risk percentages
 }
 
 #[napi]
@@ -339,15 +339,15 @@ pub fn calculate_order_fulfillment_rate(
 #[napi]
 pub fn optimize_production_distribution(
     production_capacities: Vec<f64>, // Keep f64 for capacity calculations that may involve costs
-    demand_requirements: Vec<f32>,   // Use f32 for demand quantities
+    demand_requirements: Vec<f64>,   // Use f64 for demand quantities
     _transportation_costs: Vec<f64>, // Keep f64 for cost calculations, prefix with _ to avoid warning
-) -> Vec<f32> {
+) -> Vec<f64> {
     if production_capacities.is_empty() || demand_requirements.is_empty() {
         return Vec::new();
     }
     
     let total_capacity: f64 = production_capacities.iter().sum();
-    let total_demand: f32 = demand_requirements.iter().sum();
+    let total_demand: f64 = demand_requirements.iter().sum();
     
     // Simple proportional allocation
     let allocation_ratio = if total_capacity > 0.0 {
@@ -357,7 +357,7 @@ pub fn optimize_production_distribution(
     };
     
     production_capacities.iter()
-        .map(|&capacity| (capacity * allocation_ratio.min(1.0)) as f32)
+        .map(|&capacity| (capacity * allocation_ratio.min(1.0)) as f64)
         .collect()
 }
 
@@ -365,7 +365,7 @@ pub fn optimize_production_distribution(
 pub fn generate_supply_chain_metrics(
     nodes: Vec<SupplyChainNode>,
     routes: Vec<ShipmentRoute>,
-    demand_forecast: f32,
+    demand_forecast: f64,
 ) -> SupplyChainMetrics {
     // Calculate total transportation cost
     let total_transport_cost: f64 = routes.iter()
@@ -374,13 +374,13 @@ pub fn generate_supply_chain_metrics(
     
     // Calculate average lead time
     let average_lead_time = if !nodes.is_empty() {
-        nodes.iter().map(|n| n.lead_time_days as f32).sum::<f32>() / nodes.len() as f32
+        nodes.iter().map(|n| n.lead_time_days as f64).sum::<f64>() / nodes.len() as f64
     } else {
         0.0
     };
     
     // Calculate total inventory
-    let total_inventory: f32 = nodes.iter().map(|n| n.current_inventory).sum();
+    let total_inventory: f64 = nodes.iter().map(|n| n.current_inventory).sum();
     
     // Calculate inventory turnover
     let inventory_turnover = if total_inventory > 0.0 {
@@ -409,13 +409,13 @@ pub fn generate_supply_chain_metrics(
 }
 
 // Helper function to calculate actual fill rate from supply chain data
-fn calculate_supply_chain_fill_rate(nodes: &[SupplyChainNode], demand_forecast: f32) -> f32 {
+fn calculate_supply_chain_fill_rate(nodes: &[SupplyChainNode], demand_forecast: f64) -> f64 {
     if nodes.is_empty() || demand_forecast <= 0.0 {
         return 0.0;
     }
     
     // Calculate fill rate based on available inventory vs demand
-    let total_available_inventory: f32 = nodes.iter()
+    let total_available_inventory: f64 = nodes.iter()
         .filter(|node| node.node_type == "WAREHOUSE" || node.node_type == "DISTRIBUTION_CENTER")
         .map(|node| node.current_inventory)
         .sum();
@@ -428,7 +428,7 @@ fn calculate_supply_chain_fill_rate(nodes: &[SupplyChainNode], demand_forecast: 
 }
 
 // Helper function to calculate carbon footprint from transportation routes
-fn calculate_carbon_footprint(routes: &[ShipmentRoute]) -> f32 {
+fn calculate_carbon_footprint(routes: &[ShipmentRoute]) -> f64 {
     routes.iter()
         .map(|route| {
             // Carbon emission factors by transport mode (kg CO2 per km)

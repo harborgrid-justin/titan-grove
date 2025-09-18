@@ -1,6 +1,6 @@
 use napi_derive::napi;
 use serde::{Deserialize, Serialize};
-use chrono::{DateTime, Utc};
+use chrono::Utc;
 
 #[derive(Serialize, Deserialize, Clone)]
 #[napi(object)]
