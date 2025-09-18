@@ -3,7 +3,7 @@
  * Provides consistent logging across the platform architecture
  */
 
-import winston, { Logger } from 'winston';
+import * as winston from 'winston';
 
 export interface LoggerConfig {
   level: 'error' | 'warn' | 'info' | 'debug';
@@ -29,7 +29,7 @@ const defaultLoggerConfig: LoggerConfig = {
 /**
  * Create a standardized Winston logger instance
  */
-export function createLogger(serviceName: string, config: Partial<LoggerConfig> = {}): Logger {
+export function createLogger(serviceName: string, config: Partial<LoggerConfig> = {}): winston.Logger {
   const loggerConfig = { ...defaultLoggerConfig, ...config };
 
   const logFormat = winston.format.combine(

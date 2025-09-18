@@ -34,7 +34,7 @@ import {
   performPredictiveAnalysis,
   generateBusinessIntelligenceReport,
   detectBusinessAnomalies,
-} from '../native';
+} from '../native.js';
 
 const router = express.Router();
 
