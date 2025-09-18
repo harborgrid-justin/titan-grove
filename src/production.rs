@@ -4,7 +4,7 @@
 use napi_derive::napi;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use chrono::{DateTime, Utc};
+use chrono::Utc;
 use uuid::Uuid;
 
 /// Production-grade error types for NAPI-RS modules

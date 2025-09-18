@@ -1,6 +1,5 @@
 use napi_derive::napi;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 /// Production-Grade Real-Time Business Intelligence Engine
 /// Provides advanced analytics, KPI monitoring, and predictive insights

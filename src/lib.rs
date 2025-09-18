@@ -160,23 +160,52 @@ pub mod dimensional_commerce;
 pub mod consciousness_economy;
 pub mod universal_business;
 
-// Re-export all functions from modules
+// Re-export all functions from modules - with controlled exports to avoid ambiguity
 // Original modules
-pub use risk::*;
+pub use risk::{
+    RiskAssessment as RiskModuleRiskAssessment, 
+    calculate_risk_score,
+    calculate_residual_risk,
+    create_risk_assessment,
+    generate_risk_metrics
+};
 pub use compliance::*;
 pub use document::*;
 pub use workflow::*;
 pub use quality::*;
-pub use inventory::*;
+pub use inventory::{
+    InventoryItem, 
+    calculate_safety_stock as inventory_calculate_safety_stock,
+    calculate_inventory_turnover as inventory_calculate_inventory_turnover,
+    calculate_days_sales_outstanding as inventory_calculate_days_sales_outstanding
+};
 pub use integration::*;
 pub use maintenance::*;
-pub use assets::*;
-pub use calculations::*;
+pub use assets::{
+    Asset,
+    calculate_straight_line_depreciation as assets_calculate_straight_line_depreciation,
+    calculate_declining_balance_depreciation,
+    generate_asset_metrics
+};
+pub use calculations::{
+    calculate_safety_stock as calc_calculate_safety_stock,
+    calculate_inventory_turnover as calc_calculate_inventory_turnover,
+    calculate_days_sales_outstanding as calc_calculate_days_sales_outstanding,
+    calculate_economic_value_added as calc_calculate_economic_value_added,
+    calculate_debt_to_equity_ratio as calc_calculate_debt_to_equity_ratio
+};
 
 // New modules
 pub use procurement::*;
 pub use orders::*;
-pub use financial::*;
+pub use financial::{
+    FinancialMetrics,
+    Account,
+    Transaction,
+    calculate_account_balance,
+    calculate_budget_variance,
+    calculate_financial_ratios
+};
 pub use hr::*;
 pub use manufacturing::*;
 pub use crm::*;

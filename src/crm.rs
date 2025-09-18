@@ -267,7 +267,7 @@ pub fn calculate_sales_pipeline_velocity(
     average_sales_cycle_days: f64,
 ) -> f64 {
     if average_sales_cycle_days > 0.0 {
-        let pipeline_value = (number_of_opportunities as f64 * average_deal_size * win_rate_percentage / 100.0);
+        let pipeline_value = number_of_opportunities as f64 * average_deal_size * win_rate_percentage / 100.0;
         pipeline_value / average_sales_cycle_days
     } else {
         0.0

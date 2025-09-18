@@ -21,9 +21,9 @@ pub fn calculate_model_accuracy(
 ) -> f64 {
     let total = true_positives + true_negatives + false_positives + false_negatives;
     if total > 0 {
-        // Internal calculation using f32 for performance, convert to f64 for API
-        let accuracy_f32 = ((true_positives + true_negatives) as f32 / total as f32) * 100.0;
-        accuracy_f32 as f64
+        // Internal calculation using f64 for performance, convert to f64 for API
+        let accuracy_f64 = ((true_positives + true_negatives) as f64 / total as f64) * 100.0;
+        accuracy_f64 as f64
     } else {
         0.0
     }
@@ -38,18 +38,18 @@ pub fn calculate_regression_metrics(
         return 0.0;
     }
 
-    // Internal calculations using f32 for performance optimization
-    let actual_f32: Vec<f32> = actual_values.iter().map(|&x| x as f32).collect();
-    let predicted_f32: Vec<f32> = predicted_values.iter().map(|&x| x as f32).collect();
+    // Internal calculations using f64 for performance optimization
+    let actual_f64: Vec<f64> = actual_values.iter().map(|&x| x as f64).collect();
+    let predicted_f64: Vec<f64> = predicted_values.iter().map(|&x| x as f64).collect();
     
-    let mean_actual = actual_f32.iter().sum::<f32>() / actual_f32.len() as f32;
+    let mean_actual = actual_f64.iter().sum::<f64>() / actual_f64.len() as f64;
     
-    let ss_res: f32 = actual_f32.iter()
-        .zip(predicted_f32.iter())
+    let ss_res: f64 = actual_f64.iter()
+        .zip(predicted_f64.iter())
         .map(|(actual, predicted)| (actual - predicted).powi(2))
         .sum();
     
-    let ss_tot: f32 = actual_f32.iter()
+    let ss_tot: f64 = actual_f64.iter()
         .map(|actual| (actual - mean_actual).powi(2))
         .sum();
     
@@ -72,12 +72,12 @@ pub fn calculate_predictive_accuracy(
         return 0.0;
     }
 
-    // Internal calculations using f32 for performance optimization
-    let predictions_f32: Vec<f32> = predictions.iter().map(|&x| x as f32).collect();
-    let actuals_f32: Vec<f32> = actuals.iter().map(|&x| x as f32).collect();
+    // Internal calculations using f64 for performance optimization
+    let predictions_f64: Vec<f64> = predictions.iter().map(|&x| x as f64).collect();
+    let actuals_f64: Vec<f64> = actuals.iter().map(|&x| x as f64).collect();
 
-    let mape: f32 = predictions_f32.iter()
-        .zip(actuals_f32.iter())
+    let mape: f64 = predictions_f64.iter()
+        .zip(actuals_f64.iter())
         .map(|(pred, actual)| {
             if *actual != 0.0 {
                 ((actual - pred) / actual).abs()
@@ -85,7 +85,7 @@ pub fn calculate_predictive_accuracy(
                 0.0
             }
         })
-        .sum::<f32>() / predictions_f32.len() as f32;
+        .sum::<f64>() / predictions_f64.len() as f64;
 
     let accuracy = (1.0 - mape) * 100.0;
     accuracy as f64

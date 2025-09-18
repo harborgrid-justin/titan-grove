@@ -1,6 +1,5 @@
 use napi_derive::napi;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 /// Fortune 100 Data Standardization Engine
 /// Provides enterprise-grade data standardization, cleansing, and normalization
