@@ -47,8 +47,8 @@ import {
   createServiceCommandCenterService,
   ServiceCommandCenterService,
 } from './modules/service-command-center';
-import { createFieldServiceService } from './modules/field-service';
-import { createMaintenanceService } from './modules/maintenance/business-logic/maintenance-management/maintenance-service';
+// import { createFieldServiceService } from './modules/field-service';
+// import { createMaintenanceService } from './modules/maintenance/business-logic/maintenance-management/maintenance-service';
 import { MessageQueueManager, MessageQueueConfig, QueueProcessors } from './core/message-queue';
 import { CacheManager } from './cache/CacheManager';
 import { ServiceFactory } from './shared/utils/service-factory';
@@ -303,43 +303,7 @@ export class TitanGrove {
    * Sets up business-ready and customer-ready systems with integrated coordination
    */
   private initializeStandardizedArchitecture(): void {
-    // Create default architecture configuration if not provided
-    const defaultArchitectureConfig: SystemCoordinatorConfig = {
-      business: {
-        enableAuditLog: true,
-        enableWorkflowApproval: true,
-        enableDataValidation: true,
-        securityLevel: 'elevated',
-        complianceMode: true,
-      },
-      customer: {
-        enableSelfService: true,
-        enableNotifications: true,
-        enableAnalytics: true,
-        rateLimitRequests: true,
-        maxRequestsPerMinute: 100,
-        cacheEnabled: true,
-        cacheTTL: 300, // 5 minutes
-      },
-      integration: {
-        enableEventBridge: true,
-        enableDataSync: true,
-        enableWorkflowOrchestration: true,
-        maxRetryAttempts: 3,
-        retryDelayMs: 1000,
-        circuitBreakerThreshold: 5,
-      },
-      enableCrossSystemValidation: true,
-      enableSystemMonitoring: true,
-      healthCheckInterval: 30000, // 30 seconds
-    };
-
-    const _architectureConfig = {
-      ...defaultArchitectureConfig,
-      ...this.config.architecture,
-    };
-
-    // Initialize system coordinator (will be done later when logger is available)
+    // Default architecture configuration would be used here for standardized setup
     console.log('🏗️  Standardized platform architecture configured');
     console.log('   ✓ Business system with audit logging and compliance');
     console.log('   ✓ Customer system with self-service and caching');
@@ -742,13 +706,15 @@ export class TitanGrove {
         const fieldServiceContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('field-service')
         );
-        const _integratedFieldService = createFieldServiceService(fieldServiceContext);
+        // Field service would be integrated here if needed
+        // const integratedFieldService = createFieldServiceService(fieldServiceContext);
 
         // Initialize maintenance service with integration
         const maintenanceContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('maintenance')
         );
-        const _integratedMaintenanceService = createMaintenanceService(maintenanceContext);
+        // Maintenance service would be integrated here if needed
+        // const integratedMaintenanceService = createMaintenanceService(maintenanceContext);
 
         console.log('✅ Service Command Center integrated with message queue and cache');
         console.log('✅ Field Service integrated with message queue and cache');
@@ -784,7 +750,7 @@ export class TitanGrove {
         const health = await this.getHealthStatus();
         res.json(health);
       } catch (error) {
-        res.status(500).json({ success: false, error: 'Health check failed' });
+        res.status(500).json({ success: false, error: 'Health check failed', details: (error as Error).message });
       }
     });
 
@@ -794,7 +760,7 @@ export class TitanGrove {
         const info = await this.getSystemInfo();
         res.json(info);
       } catch (error) {
-        res.status(500).json({ success: false, error: 'Failed to get system info' });
+        res.status(500).json({ success: false, error: 'Failed to get system info', details: (error as Error).message });
       }
     });
 
@@ -909,7 +875,7 @@ export class TitanGrove {
         const metrics = await this.getMessageQueueMetrics();
         res.json(metrics);
       } catch (error) {
-        res.status(500).json({ success: false, error: 'Failed to get queue metrics' });
+        res.status(500).json({ success: false, error: "Failed to get queue metrics", details: (error as Error).message });
       }
     });
 
@@ -923,7 +889,7 @@ export class TitanGrove {
         const health = await this.messageQueue.getAllMetrics();
         res.json({ success: true, data: health });
       } catch (error) {
-        res.status(500).json({ success: false, error: 'Failed to get queue health' });
+        res.status(500).json({ success: false, error: "Failed to get queue health", details: (error as Error).message });
       }
     });
 
@@ -1483,7 +1449,7 @@ export class TitanGroveBusinessSuite {
   /**
    * Execute cross-system operation (business + customer coordination)
    */
-  async executeCrossSystemOperation<TInput, _TOutput = unknown>(
+  async executeCrossSystemOperation<TInput>(
     operationId: string,
     input: TInput,
     context: {

@@ -18,7 +18,7 @@ import {
 
 import { ProductionIntegrationService } from '../src/services/production-integration-service';
 
-const app = express();
+const app: express.Application = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 

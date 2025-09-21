@@ -34,7 +34,7 @@ import {
   // calculateROA,
 } from '../native';
 
-const router = express.Router();
+const router: express.Router = express.Router();
 
 // Middleware for request correlation and logging
 router.use(async (req: Request, res: Response, next: NextFunction) => {

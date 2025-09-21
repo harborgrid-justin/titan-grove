@@ -5,7 +5,7 @@
 
 import express from 'express';
 
-const router = express.Router();
+const router: express.Router = express.Router();
 
 // ==================== FIELD SERVICE ENDPOINTS ====================
 
@@ -2784,7 +2784,7 @@ router.get('/field-service/technicians/:techId/schedule', async (req, res) => {
  */
 router.get('/field-service/technicians/:techId/profile', async (req, res) => {
   try {
-    const { techId: _techId } = req.params;
+    const { techId } = req.params;
 
     const profiles = {
       tech_001: {

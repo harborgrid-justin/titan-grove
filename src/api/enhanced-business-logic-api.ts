@@ -36,7 +36,7 @@ import {
   detectBusinessAnomalies,
 } from '../native.js';
 
-const router = express.Router();
+const router: express.Router = express.Router();
 
 // Middleware for enhanced request validation and logging
 router.use(async (req: Request, res: Response, next: NextFunction) => {
