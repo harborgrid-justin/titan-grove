@@ -17,6 +17,15 @@ module.exports = [
         ...require('globals').es2022,
         ...require('globals').jest,
         ...require('globals').browser,
+        NodeJS: 'readonly',
+        Buffer: 'readonly',
+        process: 'readonly',
+        global: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'readonly',
       },
     },
     plugins: {
@@ -40,7 +49,13 @@ module.exports = [
       'eslint.config.js', 
       'dist/**/*',
       'node_modules/**/*',
-      'src/ui/static/**/*.js'
+      'src/ui/static/**/*.js',
+      'src/ui/react/**/*',
+      'target/**/*',
+      'build/**/*',
+      'cypress/**/*',
+      'scripts/**/*',
+      '.development/**/*'
     ],
   },
 ];

@@ -2724,7 +2724,7 @@ router.post('/field-service/routes/email', async (req, res) => {
  */
 router.delete('/field-service/routes/stops/:stopId', async (req, res) => {
   try {
-    const { stopId } = req.params;
+    const { stopId: _stopId } = req.params;
 
     // Simulate stop deletion
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -2742,7 +2742,7 @@ router.delete('/field-service/routes/stops/:stopId', async (req, res) => {
  */
 router.get('/field-service/technicians/:techId/schedule', async (req, res) => {
   try {
-    const { techId } = req.params;
+    const { techId: _techId } = req.params;
     const { week } = req.query;
     console.log('Query params:', { week });
 
@@ -2784,7 +2784,7 @@ router.get('/field-service/technicians/:techId/schedule', async (req, res) => {
  */
 router.get('/field-service/technicians/:techId/profile', async (req, res) => {
   try {
-    const { techId } = req.params;
+    const { techId: _techId } = req.params;
 
     const profiles = {
       tech_001: {
@@ -2882,7 +2882,7 @@ router.post('/field-service/schedule/update', async (req, res) => {
  */
 router.delete('/field-service/schedule/items/:scheduleId', async (req, res) => {
   try {
-    const { scheduleId } = req.params;
+    const { scheduleId: _scheduleId } = req.params;
 
     // Simulate deletion
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -2966,7 +2966,7 @@ router.get('/field-service/performance/technicians', async (req, res) => {
  */
 router.post('/field-service/performance/export', async (req, res) => {
   try {
-    const filters = req.body;
+    const _filters = req.body;
 
     // Simulate report generation
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -2989,7 +2989,7 @@ router.post('/field-service/performance/export', async (req, res) => {
  */
 router.post('/field-service/performance/generate-report', async (req, res) => {
   try {
-    const filters = req.body;
+    const _filters = req.body;
 
     // Simulate report generation
     await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -3128,8 +3128,8 @@ router.get('/field-service/training/sessions', async (req, res) => {
  */
 router.put('/field-service/certifications/:certId', async (req, res) => {
   try {
-    const { certId } = req.params;
-    const updateData = req.body;
+    const { certId: _certId } = req.params;
+    const _updateData = req.body;
 
     // Simulate certification update
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -3145,7 +3145,7 @@ router.put('/field-service/certifications/:certId', async (req, res) => {
  */
 router.delete('/field-service/certifications/:certId', async (req, res) => {
   try {
-    const { certId } = req.params;
+    const { certId: _certId } = req.params;
 
     // Simulate certification deletion
     await new Promise((resolve) => setTimeout(resolve, 500));

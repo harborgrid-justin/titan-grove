@@ -664,6 +664,7 @@ router.use((error: any, req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Add TypeScript interface extensions
+// eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
   namespace Express {
     interface Request {

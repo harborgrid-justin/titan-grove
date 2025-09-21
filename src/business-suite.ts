@@ -334,7 +334,7 @@ export class TitanGrove {
       healthCheckInterval: 30000, // 30 seconds
     };
 
-    const architectureConfig = {
+    const _architectureConfig = {
       ...defaultArchitectureConfig,
       ...this.config.architecture,
     };
@@ -568,7 +568,7 @@ export class TitanGrove {
     console.log(`Processing business transaction: ${type}`, data);
 
     switch (type) {
-      case 'CREATE_CUSTOMER_ORDER':
+      case 'CREATE_CUSTOMER_ORDER': {
         // Example: Create customer order that involves CRM and SCM
         const customer = await this.crm.createCustomer(data.customer);
         const salesOrder = await this.scm.createSalesOrder({
@@ -583,28 +583,32 @@ export class TitanGrove {
           salesRep: data.salesRep,
         });
         return { customer, salesOrder };
+      }
 
-      case 'HIRE_EMPLOYEE':
+      case 'HIRE_EMPLOYEE': {
         // Example: Hire employee that involves HR and Project modules
         const employee = await this.hr.createEmployee(data.employee);
         // Could also allocate to projects, setup payroll, etc.
         return { employee };
+      }
 
-      case 'CLOSE_PROJECT':
+      case 'CLOSE_PROJECT': {
         // Example: Close project that involves Project, Financial, and HR modules
         // await this.project.updateProjectStatus(data.projectId, 'COMPLETED'); // Method not implemented yet
         const laborCost = await this.project.calculateProjectLaborCost(data.projectId);
         // Record financial impact, update resource allocations, etc.
         return { projectId: data.projectId, laborCost };
+      }
 
-      case 'CREATE_ASSET':
+      case 'CREATE_ASSET': {
         // Example: Create asset that involves Asset and Financial modules
         const asset = await this.assets.createAsset(data.asset);
         // Record initial depreciation schedule, update fixed assets
         const depreciation = await this.assets.calculateAssetDepreciation(asset.id, new Date());
         return { asset, depreciation };
+      }
 
-      case 'TRANSFER_ASSET':
+      case 'TRANSFER_ASSET': {
         // Example: Transfer asset between locations with audit trail
         await this.assets.transferAsset(
           data.assetId,
@@ -615,8 +619,9 @@ export class TitanGrove {
         );
         const updatedLocation = await this.assets.trackAssetLocation(data.assetId);
         return { assetId: data.assetId, newLocation: updatedLocation };
+      }
 
-      case 'CREATE_WORK_ORDER':
+      case 'CREATE_WORK_ORDER': {
         // Example: Create work order for asset maintenance
         const workOrder = await this.assets.createWorkOrder(data.workOrder);
         // Reserve inventory items, schedule resources
@@ -631,8 +636,9 @@ export class TitanGrove {
           }
         }
         return { workOrder };
+      }
 
-      case 'INSTALL_BASE_SERVICE':
+      case 'INSTALL_BASE_SERVICE': {
         // Example: Record service for install base
         const serviceRecord = await this.assets.recordServiceActivity(
           data.installBaseId,
@@ -640,6 +646,7 @@ export class TitanGrove {
         );
         // Update customer service history, potentially create invoice
         return { serviceRecord };
+      }
 
       default:
         throw new Error(`Unknown business transaction type: ${type}`);
@@ -735,13 +742,13 @@ export class TitanGrove {
         const fieldServiceContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('field-service')
         );
-        const integratedFieldService = createFieldServiceService(fieldServiceContext);
+        const _integratedFieldService = createFieldServiceService(fieldServiceContext);
 
         // Initialize maintenance service with integration
         const maintenanceContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('maintenance')
         );
-        const integratedMaintenanceService = createMaintenanceService(maintenanceContext);
+        const _integratedMaintenanceService = createMaintenanceService(maintenanceContext);
 
         console.log('✅ Service Command Center integrated with message queue and cache');
         console.log('✅ Field Service integrated with message queue and cache');
@@ -1476,7 +1483,7 @@ export class TitanGroveBusinessSuite {
   /**
    * Execute cross-system operation (business + customer coordination)
    */
-  async executeCrossSystemOperation<TInput, TOutput>(
+  async executeCrossSystemOperation<TInput, _TOutput = unknown>(
     operationId: string,
     input: TInput,
     context: {

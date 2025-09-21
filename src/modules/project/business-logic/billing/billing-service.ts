@@ -284,3 +284,8 @@ export class ProjectBillingService {
 
 // Export singleton instance with centralized configuration
 export const projectBillingService = new ProjectBillingService();
+
+// Factory function for creating configurable instances
+export function createProjectBillingService(config?: ProjectConfig): ProjectBillingService {
+  return new ProjectBillingService();
+}
