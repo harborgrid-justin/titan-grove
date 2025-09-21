@@ -1,6 +1,7 @@
 import * as Joi from 'joi';
 import * as os from 'os';
 import { ExtendedTitanConfig, BusinessConfig } from '../types/business-config';
+import { ConfigurationError } from '../shared/utils/error-handling';
 
 // Business configuration schema with production-grade defaults
 const businessConfigSchema = Joi.object({
@@ -561,7 +562,11 @@ export function validateExtendedConfig(config: any): ExtendedTitanConfig {
   });
 
   if (error) {
-    throw new Error(`Invalid configuration: ${(error as Error).message}`);
+    throw new ConfigurationError(
+      'BUSINESS_CONFIG_VALIDATION_FAILED',
+      `Invalid business configuration: ${error.message}`,
+      { validationError: error.details }
+    );
   }
 
   return value as ExtendedTitanConfig;
