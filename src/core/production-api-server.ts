@@ -161,6 +161,7 @@ export class ProductionAPIServer {
           data: kpiData
         }, req.context?.correlationId);
       } catch (error) {
+        console.error('Operation failed:', error);
         this.sendError(res, 'Failed to fetch KPI data', 500, req.context?.correlationId);
       }
     });
@@ -200,6 +201,7 @@ export class ProductionAPIServer {
           data: operations
         }, req.context?.correlationId);
       } catch (error) {
+        console.error('Operation failed:', error);
         this.sendError(res, 'Failed to fetch operations data', 500, req.context?.correlationId);
       }
     });
@@ -239,6 +241,7 @@ export class ProductionAPIServer {
           data: productionLines
         }, req.context?.correlationId);
       } catch (error) {
+        console.error('Operation failed:', error);
         this.sendError(res, 'Failed to fetch production lines', 500, req.context?.correlationId);
       }
     });
@@ -255,6 +258,7 @@ export class ProductionAPIServer {
         const result = await manufacturingService.calculateOEE(availability, performance, quality);
         this.sendResponse(res, result, req.context?.correlationId);
       } catch (error) {
+        console.error('Operation failed:', error);
         this.sendError(res, 'Failed to calculate OEE', 500, req.context?.correlationId);
       }
     });
@@ -288,6 +292,7 @@ export class ProductionAPIServer {
           data: workOrders
         }, req.context?.correlationId);
       } catch (error) {
+        console.error('Operation failed:', error);
         this.sendError(res, 'Failed to fetch work orders', 500, req.context?.correlationId);
       }
     });
@@ -302,6 +307,7 @@ export class ProductionAPIServer {
         const result = await financialService.getFinancialMetrics();
         this.sendResponse(res, result, req.context?.correlationId);
       } catch (error) {
+        console.error('Operation failed:', error);
         this.sendError(res, 'Failed to fetch financial metrics', 500, req.context?.correlationId);
       }
     });
@@ -318,6 +324,7 @@ export class ProductionAPIServer {
         const result = await financialService.recognizeRevenue(amount, currency, contractTerms);
         this.sendResponse(res, result, req.context?.correlationId);
       } catch (error) {
+        console.error('Operation failed:', error);
         this.sendError(res, 'Failed to calculate revenue recognition', 500, req.context?.correlationId);
       }
     });
@@ -340,6 +347,7 @@ export class ProductionAPIServer {
         );
         this.sendResponse(res, result, req.context?.correlationId);
       } catch (error) {
+        console.error('Operation failed:', error);
         this.sendError(res, 'Failed to calculate safety stock', 500, req.context?.correlationId);
       }
     });

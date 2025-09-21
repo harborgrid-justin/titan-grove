@@ -234,7 +234,8 @@ export function createProjectServices(config?: BusinessConfig) {
   const businessConfig = config || loadBusinessConfig();
   const projectConfig = businessConfig.project;
 
-  // Import project services
+  // TODO: Convert to ES6 import when module is updated
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const {
     createProjectBillingService,
   } = require('../modules/project/business-logic/billing/billing-service');

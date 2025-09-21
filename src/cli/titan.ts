@@ -66,6 +66,7 @@ async function main() {
         console.log(chalk.green('✅ Server is healthy'));
         console.log(JSON.stringify(health, null, 2));
       } catch (error) {
+        console.error('Operation failed:', error);
         console.log(chalk.red('❌ Server is not responding'));
       }
     });

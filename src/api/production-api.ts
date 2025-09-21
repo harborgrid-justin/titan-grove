@@ -4,13 +4,13 @@
  */
 
 import express, { Request, Response, NextFunction } from 'express';
+// Removed unused ServiceResponse import
 import {
   productionManager,
   withProductionLogging,
-  ServiceResponse,
 } from '../modules/production/production-manager';
 
-// Import enhanced NAPI-RS modules
+// Import enhanced NAPI-RS modules  
 import {
   calculateRiskScore,
   determineRiskLevel,
@@ -19,18 +19,19 @@ import {
   performSixSigmaAnalysis,
   calculateNetPresentValue,
   calculateIrr,
-  calculateCompoundInterest,
-  calculatePresentValue,
+  // Removed unused functions:
+  // calculateCompoundInterest,
+  // calculatePresentValue,
   calculateEOQ,
   performABCAnalysis,
-  calculateSafetyStock,
+  // calculateSafetyStock,
   performMaintenancePriority,
-  calculateEquipmentUptime,
-  optimizeMaintenanceSchedule,
+  // calculateEquipmentUptime,
+  // optimizeMaintenanceSchedule,
   calculateStraightLineDepreciation,
-  calculateDecliningBalanceDepreciation,
-  analyzeAssetReplacement,
-  calculateROA,
+  // calculateDecliningBalanceDepreciation,
+  // analyzeAssetReplacement,
+  // calculateROA,
 } from '../native';
 
 const router = express.Router();
@@ -480,7 +481,7 @@ router.put('/api/system/config', async (req: Request, res: Response) => {
 });
 
 // Error handling middleware
-router.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+router.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   productionManager.logError('API_GATEWAY', err.message, req.correlationId);
 
   res.status(500).json({
