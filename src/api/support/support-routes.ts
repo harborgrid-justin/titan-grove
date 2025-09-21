@@ -5,7 +5,8 @@
 
 import { Router } from 'express';
 import { authenticate } from '../../middleware/auth';
-import { validateBusiness, validateIdParam } from '../../middleware/validation';
+// Removed unused import: validateBusiness  
+import { validateIdParam } from '../../middleware/validation';
 import { supportController } from './support-controller';
 import type { Router as RouterType } from 'express';
 

@@ -208,6 +208,7 @@ export class FortuneBusinessRulesAPI {
       'analytics',
       async () => {
         const policyStatus = await this.getEnterprisePolicyEngineStatus(userId);
+        console.log(`Enterprise policy status: ${policyStatus}`);
       },
       { domain, timeframe },
       userId

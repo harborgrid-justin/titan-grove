@@ -27,7 +27,7 @@ import {
   completeWorkflowStep,
   calculateWorkflowAnalytics,
   getWorkflowsRequiringEscalation,
-  optimizeWorkflowPerformance,
+  // optimizeWorkflowPerformance, // Removed unused function
 
   // Enhanced Business Intelligence
   calculateAdvancedBusinessKpis,
@@ -380,6 +380,8 @@ router.post(
     try {
       const { instanceId, stepId } = req.params;
       const { assignedTo, decision, comments, instance } = req.body;
+      
+      console.log(`Completing step ${stepId} for instance ${instanceId}`);
 
       if (!assignedTo || !instance) {
         return res.status(400).json({
@@ -650,7 +652,7 @@ router.get('/api/v1/health', async (req: Request, res: Response) => {
 });
 
 // Error handling middleware
-router.use((error: any, req: Request, res: Response, next: NextFunction) => {
+router.use((error: any, req: Request, res: Response, _next: NextFunction) => {
   console.error(`Unhandled error - ${req.correlationId}:`, error);
 
   res.status(500).json({

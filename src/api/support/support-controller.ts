@@ -25,6 +25,8 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
+      console.error('Failed to get support desk management data:', error);
       res
         .status(500)
         .json({ status: 'error', message: 'Failed to get support desk management data' });
@@ -40,6 +42,8 @@ class SupportController {
         data: { id: `new-${Date.now()}`, ...data },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
+      console.error('Failed to create support desk record:', error);
       res.status(500).json({ status: 'error', message: 'Failed to create support desk record' });
     }
   }
@@ -52,6 +56,8 @@ class SupportController {
         message: `Support desk record ${id} updated successfully`,
       });
     } catch (error) {
+      console.error("Operation failed:", error);
+      console.error('Failed to update support desk record:', error);
       res.status(500).json({ status: 'error', message: 'Failed to update support desk record' });
     }
   }
@@ -64,6 +70,7 @@ class SupportController {
         message: `Support desk record ${id} deleted successfully`,
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to delete support desk record' });
     }
   }
@@ -81,6 +88,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get ticket lifecycle data' });
     }
   }
@@ -89,6 +97,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Ticket lifecycle record created' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res
         .status(500)
         .json({ status: 'error', message: 'Failed to create ticket lifecycle record' });
@@ -106,6 +115,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res
         .status(500)
         .json({ status: 'error', message: 'Failed to get multi-channel support data' });
@@ -116,6 +126,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Multi-channel record created' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to create multi-channel record' });
     }
   }
@@ -132,6 +143,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res
         .status(500)
         .json({ status: 'error', message: 'Failed to get escalation management data' });
@@ -142,6 +154,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Escalation record created' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to create escalation record' });
     }
   }
@@ -156,6 +169,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get team collaboration data' });
     }
   }
@@ -164,6 +178,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Collaboration record created' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to create collaboration record' });
     }
   }
@@ -179,6 +194,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res
         .status(500)
         .json({ status: 'error', message: 'Failed to get customer communication data' });
@@ -189,6 +205,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Communication record created' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to create communication record' });
     }
   }
@@ -204,6 +221,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get support automation data' });
     }
   }
@@ -212,6 +230,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Automation record created' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to create automation record' });
     }
   }
@@ -228,6 +247,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get incident tracking data' });
     }
   }
@@ -236,6 +256,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Incident created successfully' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to create incident' });
     }
   }
@@ -250,6 +271,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res
         .status(500)
         .json({ status: 'error', message: 'Failed to get incident classification data' });
@@ -260,6 +282,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Incident classified successfully' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to classify incident' });
     }
   }
@@ -275,6 +298,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get incident response data' });
     }
   }
@@ -283,6 +307,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Incident response initiated' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to initiate incident response' });
     }
   }
@@ -298,6 +323,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get major incident data' });
     }
   }
@@ -306,6 +332,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Major incident created' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to create major incident' });
     }
   }
@@ -321,6 +348,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get incident resolution data' });
     }
   }
@@ -329,6 +357,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Incident resolved successfully' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to resolve incident' });
     }
   }
@@ -344,6 +373,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get post-incident review data' });
     }
   }
@@ -352,6 +382,7 @@ class SupportController {
     try {
       res.json({ status: 'success', message: 'Post-incident review created' });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to create post-incident review' });
     }
   }
@@ -367,6 +398,7 @@ class SupportController {
         },
       });
     } catch (error) {
+      console.error("Operation failed:", error);
       res.status(500).json({ status: 'error', message: 'Failed to get incident analytics' });
     }
   }

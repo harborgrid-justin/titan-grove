@@ -1,6 +1,7 @@
 import { FortuneBusinessRulesAPI } from './api/fortune-business-rules-api';
 import { FortuneDataStandardizationAPI } from './api/fortune-data-standardization-api';
 import { ProductionFramework } from './production/framework';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Fortune 100 Enterprise Integration Hub

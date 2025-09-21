@@ -14,6 +14,7 @@ import {
 
 // Import native modules
 import {
+import { v4 as uuidv4 } from 'uuid';
   evaluateBusinessRule,
   evaluateMultipleRules,
   validateBusinessRule,
@@ -519,7 +520,7 @@ export class ProductionIntegrationService extends EventEmitter {
    * Generate correlation ID
    */
   private generateCorrelationId(): string {
-    return `corr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `corr_${Date.now()}_${uuidv4().substring(0, 8)}`;
   }
 
   /**

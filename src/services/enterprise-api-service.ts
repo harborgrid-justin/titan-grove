@@ -6,6 +6,7 @@
 
 import axios from 'axios';
 import { createLogger } from '../core/logger';
+import { v4 as uuidv4 } from 'uuid';
 
 const logger = createLogger('EnterpriseAPIService');
 
@@ -290,7 +291,7 @@ export class EnterpriseAPIService {
   }
 
   private generateCorrelationId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return `${Date.now()}-${uuidv4().substring(0, 8)}`;
   }
 }
 
