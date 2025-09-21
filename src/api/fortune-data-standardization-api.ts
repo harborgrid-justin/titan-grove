@@ -1,4 +1,4 @@
-import { ProductionFramework } from '../production/framework';
+import ProductionManager from '../production/framework';
 
 import * as native from '../../native';
 
@@ -7,10 +7,10 @@ import * as native from '../../native';
  * Enterprise-grade data standardization, cleansing, and normalization
  */
 export class FortuneDataStandardizationAPI {
-  private production: ProductionFramework;
+  private production: ProductionManager;
 
   constructor() {
-    this.production = new ProductionFramework('fortune_data_standardization');
+    this.production = ProductionManager.getInstance();
   }
 
   // Fortune 100 Financial Data Standardization

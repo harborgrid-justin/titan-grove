@@ -1,4 +1,4 @@
-import { ProductionFramework } from '../production/framework';
+import ProductionManager from '../production/framework';
 
 import * as native from '../../native';
 
@@ -7,10 +7,10 @@ import * as native from '../../native';
  * Enterprise-grade business rules engine for Fortune 100 companies
  */
 export class FortuneBusinessRulesAPI {
-  private production: ProductionFramework;
+  private production: ProductionManager;
 
   constructor() {
-    this.production = new ProductionFramework('fortune_business_rules');
+    this.production = ProductionManager.getInstance();
   }
 
   // Fortune 100 Enterprise Business Rule Management

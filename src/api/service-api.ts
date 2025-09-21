@@ -963,7 +963,7 @@ router.get('/financial/cashflow', async (req, res) => {
 router.post('/financial/reports/generate', async (req, res) => {
   try {
     const { reportType, period, format = 'PDF' } = req.body;
-    console.log('Request data:', { reportType, period, format = 'PDF' });
+    console.log('Request data:', { reportType, period, format });
 
     const report = {
       reportId: 'rpt_' + Date.now(),
@@ -1011,7 +1011,7 @@ router.post('/financial/payments/process', async (req, res) => {
       reference: reference,
       status: 'PROCESSING',
       createdAt: new Date().toISOString(),
-      processedAt: null,
+      processedAt: null as string | null,
       fees: amount * 0.002, // 0.2% processing fee
       netAmount: amount - amount * 0.002,
     };
@@ -1373,7 +1373,7 @@ router.get('/modules/health', async (req, res) => {
 router.post('/main/reports/generate', async (req, res) => {
   try {
     const { reportType = 'system-overview', period = 'current-month' } = req.body;
-    console.log('Request data:', { reportType = 'system-overview', period = 'current-month' });
+    console.log('Request data:', { reportType, period });
 
     const report = {
       reportId: 'sys_rpt_' + Date.now(),
@@ -2475,7 +2475,7 @@ router.post('/field-service/dispatch/emergency', async (req, res) => {
 router.get('/field-service/communications/:type', async (req, res) => {
   try {
     const { type } = req.params;
-    let data = [];
+    let data: any[] = [];
 
     switch (type) {
       case 'messages':
@@ -2625,7 +2625,7 @@ router.get('/field-service/routes/:routeId/stops', async (req, res) => {
     const { routeId } = req.params;
 
     // Sample route stops data
-    const sampleStops = {
+    const sampleStops: Record<string, any[]> = {
       route1: [
         {
           id: 'stop_001',
@@ -2786,7 +2786,7 @@ router.get('/field-service/technicians/:techId/profile', async (req, res) => {
   try {
     const { techId } = req.params;
 
-    const profiles = {
+    const profiles: Record<string, any> = {
       tech_001: {
         id: 'TECH001',
         name: 'John Smith',
@@ -7528,7 +7528,7 @@ router.post('/workflow-management/:category/:page/export', async (req, res) => {
   try {
     const { category, page } = req.params;
     const { format = 'csv' } = req.body;
-    console.log('Request data:', { format = 'csv' });
+    console.log('Request data:', { format });
 
     const exportData = {
       category: category,
@@ -7573,4 +7573,6 @@ console.log(
   '✅ Workflow Management API - 49 business-ready pages with complete backend integration loaded'
 );
 
-export = router;
+// Create singleton instance for external imports
+export const serviceApi = router;
+export default router;

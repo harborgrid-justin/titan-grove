@@ -32,7 +32,7 @@ import {
   // calculateDecliningBalanceDepreciation,
   // analyzeAssetReplacement,
   // calculateROA,
-} from '../native';
+} from '../../native';
 
 const router: express.Router = express.Router();
 
