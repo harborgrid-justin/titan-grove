@@ -1,8 +1,9 @@
 import { BaseRepositoryImpl } from '../../../shared/data-access/base-repository';
+import { v4 as uuidv4 } from 'uuid';
 
 export class ServiceRepository extends BaseRepositoryImpl<any> {
   protected generateId(): string {
-    return `service_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `service_${uuidv4()}`;
   }
 }
 

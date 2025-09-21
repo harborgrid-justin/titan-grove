@@ -134,7 +134,7 @@ export class FortuneDataStandardizationAPI {
       'fortune_data_standardization',
       'quality_assessment',
       async () => {
-        const profile = await this.profileDataset(data, userId);
+        await this.profileDataset(data, userId);
       },
       { dataLength: data.length },
       userId

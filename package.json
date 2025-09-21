@@ -6,11 +6,11 @@
   "private": true,
   "workspaces": [
     "frontend/web-portal",
-    "frontend/admin-console", 
+    "frontend/admin-console",
     "frontend/shared/ui-components",
     "backend/services/user-service",
     "backend/services/financial-service",
-    "backend/services/crm-service", 
+    "backend/services/crm-service",
     "backend/services/analytics-service",
     "backend/shared/node-common"
   ],
@@ -102,6 +102,7 @@
     "@types/axios": "^0.9.36",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
+    "@types/validator": "^13.15.3",
     "@vitejs/plugin-react": "^5.0.2",
     "agenda": "^5.0.0",
     "async": "^3.2.6",
@@ -126,6 +127,7 @@
     "helmet": "^8.1.0",
     "http-proxy-middleware": "^3.0.5",
     "ioredis": "^5.7.0",
+    "isomorphic-dompurify": "^2.28.0",
     "joi": "^18.0.1",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
@@ -152,6 +154,7 @@
     "swagger-ui-express": "^5.0.1",
     "ts-jest": "^29.4.1",
     "uuid": "^11.1.0",
+    "validator": "^13.15.15",
     "vite": "^7.1.4",
     "winston": "^3.17.0"
   },
