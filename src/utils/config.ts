@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import * as os from 'os';
 import { TitanConfig } from '../types';
+import { ConfigurationError } from '../shared/utils/error-handling';
 
 // Re-export extended configuration loaders
 export { loadExtendedConfig, loadBusinessConfig, validateExtendedConfig } from './business-config';
@@ -139,7 +140,11 @@ export function validateConfig(config: any): TitanConfig {
   });
 
   if (error) {
-    throw new Error(`Invalid configuration: ${(error as Error).message}`);
+    throw new ConfigurationError(
+      'CONFIG_VALIDATION_FAILED',
+      `Invalid configuration: ${error.message}`,
+      { validationError: error.details }
+    );
   }
 
   return value as TitanConfig;

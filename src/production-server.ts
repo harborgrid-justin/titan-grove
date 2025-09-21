@@ -9,12 +9,14 @@
 import 'dotenv/config';
 import { ProductionAPIServer } from './core/production-api-server';
 import { businessLogicRegistry, businessServiceFactory } from './core/business-logic-registry';
+import { getLogger } from './utils/enterprise-logger';
 import path from 'path';
 import express from 'express';
 
 class TitanGroveProductionServer {
   private apiServer: ProductionAPIServer;
   private port: number;
+  private logger = getLogger('production-server');
 
   constructor() {
     this.port = parseInt(process.env.PORT || '3000', 10);
@@ -25,31 +27,50 @@ class TitanGroveProductionServer {
    * Initialize production services
    */
   private async initializeServices(): Promise<void> {
-    console.log('🔧 Initializing Titan Grove Enterprise Services...');
+    this.logger.info('Initializing Titan Grove Enterprise Services', { 
+      operation: 'service_initialization' 
+    });
 
     // Initialize business logic registry
-    console.log('📋 Loading centralized business rules...');
+    this.logger.info('Loading centralized business rules', { 
+      operation: 'business_rules_load' 
+    });
     const businessRules = businessLogicRegistry.getBusinessRulesByCategory('financial');
-    console.log(`✅ Loaded ${businessRules.length} financial business rules`);
+    this.logger.info('Loaded financial business rules', { 
+      operation: 'business_rules_load',
+      rulesCount: businessRules.length 
+    });
 
     // Initialize manufacturing service
-    console.log('🏭 Initializing manufacturing service...');
+    this.logger.info('Initializing manufacturing service', { 
+      operation: 'manufacturing_init' 
+    });
     const manufacturingService = businessServiceFactory.getService('ManufacturingService');
     const oeeTest = await manufacturingService.calculateOEE(95, 88, 99);
     if (oeeTest.success) {
-      console.log(`✅ Manufacturing service ready - OEE calculation test: ${(oeeTest.data * 100).toFixed(1)}%`);
+      this.logger.info('Manufacturing service ready', {
+        operation: 'manufacturing_init',
+        oeeTest: `${(oeeTest.data * 100).toFixed(1)}%`
+      });
     }
 
     // Initialize financial service
-    console.log('💰 Initializing financial service...');
+    this.logger.info('Initializing financial service', { 
+      operation: 'financial_init' 
+    });
     const financialService = businessServiceFactory.getService('FinancialService');
     const financialMetrics = await financialService.getFinancialMetrics();
     if (financialMetrics.success) {
-      console.log(`✅ Financial service ready - Revenue: $${(financialMetrics.data.totalRevenue / 1000000).toFixed(1)}M`);
+      this.logger.info('Financial service ready', {
+        operation: 'financial_init',
+        revenue: `$${(financialMetrics.data.totalRevenue / 1000000).toFixed(1)}M`
+      });
     }
 
     // Initialize supply chain service
-    console.log('🚚 Initializing supply chain service...');
+    this.logger.info('Initializing supply chain service', { 
+      operation: 'supply_chain_init' 
+    });
     const supplyChainService = businessServiceFactory.getService('SupplyChainService');
     const safetyStockTest = await supplyChainService.calculateSafetyStock(100, 7, 95, 15);
     if (safetyStockTest.success) {

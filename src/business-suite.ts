@@ -703,14 +703,14 @@ export class TitanGrove {
         this.serviceCommandCenter = createServiceCommandCenterService(serviceCommandCenterContext);
 
         // Initialize field service with integration
-        const fieldServiceContext = ServiceFactory.createContext(
+        const _fieldServiceContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('field-service')
         );
         // Field service would be integrated here if needed
         // const integratedFieldService = createFieldServiceService(fieldServiceContext);
 
         // Initialize maintenance service with integration
-        const maintenanceContext = ServiceFactory.createContext(
+        const _maintenanceContext = ServiceFactory.createContext(
           ServiceFactory.createStandardConfig('maintenance')
         );
         // Maintenance service would be integrated here if needed

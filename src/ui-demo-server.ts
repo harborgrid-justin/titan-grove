@@ -313,7 +313,7 @@ app.use((req, res) => {
   });
 });
 
-app.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((error: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Server error:', error);
   res.status(500).json({
     success: false,

@@ -395,8 +395,8 @@ export class IntegrationLayerService {
    */
   private async syncBusinessToCustomer(
     rule: DataSyncRule,
-    data: any,
-    context: ServiceContext
+    _data: any,
+    _context: ServiceContext
   ): Promise<ServiceResult<any>> {
     // Implementation would depend on specific customer system capabilities
     // This is a placeholder for the actual sync logic
@@ -416,8 +416,8 @@ export class IntegrationLayerService {
    */
   private async syncCustomerToBusiness(
     rule: DataSyncRule,
-    data: any,
-    context: ServiceContext
+    _data: any,
+    _context: ServiceContext
   ): Promise<ServiceResult<any>> {
     // Implementation would depend on specific business system capabilities
     // This is a placeholder for the actual sync logic

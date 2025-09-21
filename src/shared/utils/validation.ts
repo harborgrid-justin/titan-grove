@@ -71,6 +71,7 @@ export class InputSanitizer {
     return input
       .replace(/\.\./g, '')
       .replace(/[<>:"|?*]/g, '')
+      // eslint-disable-next-line no-control-regex
       .replace(/[\x00-\x1f\x80-\x9f]/g, '')
       .trim();
   }
@@ -83,6 +84,7 @@ export class InputSanitizer {
     
     return input
       .trim()
+      // eslint-disable-next-line no-control-regex  
       .replace(/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/g, '') // Remove control chars
       .replace(/\s+/g, ' ') // Normalize whitespace
       .substring(0, 10000); // Reasonable length limit
@@ -94,7 +96,7 @@ export class InputSanitizer {
   static sanitizePhone(input: string): string {
     if (!input) return '';
     
-    return input.replace(/[^\d\+\-\(\)\s]/g, '');
+    return input.replace(/[^\d+\-()\\s]/g, '');
   }
 
   /**
@@ -106,7 +108,7 @@ export class InputSanitizer {
     return input
       .toLowerCase()
       .trim()
-      .replace(/[^\w@\.\-\+]/g, '');
+      .replace(/[^\w@.-+]/g, '');
   }
 
   /**
@@ -115,7 +117,7 @@ export class InputSanitizer {
   static sanitizeCurrency(input: string): string {
     if (!input) return '';
     
-    return input.replace(/[^\d\.\-]/g, '');
+    return input.replace(/[^\d.-]/g, '');
   }
 }
 
@@ -136,7 +138,7 @@ export class Validator {
    * Validate phone number format
    */
   static isValidPhone(phone: string): boolean {
-    const phoneRegex = /^\+?[\d\s\-\(\)]{10,}$/;
+    const phoneRegex = /^\+?[\d\s\-()]{10,}$/;
     return phoneRegex.test(phone);
   }
 
@@ -208,7 +210,7 @@ export class Validator {
     const hasLowerCase = /[a-z]/.test(password);
     const hasUpperCase = /[A-Z]/.test(password);
     const hasNumbers = /\d/.test(password);
-    const hasSpecialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+    const hasSpecialChars = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
 
     if (!hasLowerCase) {
       errors.push({

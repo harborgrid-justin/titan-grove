@@ -6,6 +6,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface GapAnalysisConfig {
   analysisType: 'usability' | 'functionality' | 'comprehensive';
@@ -114,7 +115,7 @@ export class OracleEBSGapAnalysisService extends EventEmitter {
    * Perform comprehensive gap analysis
    */
   async performGapAnalysis(config: GapAnalysisConfig): Promise<GapAnalysisResult> {
-    const analysisId = `gap_analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const analysisId = `gap_analysis_${uuidv4()}`;
     
     this.emit('analysis_started', { analysisId, config });
 
