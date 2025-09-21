@@ -548,7 +548,7 @@ export function MonitorPerformance(
  * Class decorator for monitoring all methods
  */
 export function MonitorClass(category: string = 'PERFORMANCE') {
-  return function <T extends { new (...args: any[]): {} }>(constructor: T) {
+  return function <T extends { new (...args: any[]): object }>(constructor: T) {
     const className = constructor.name;
 
     // Get all method names

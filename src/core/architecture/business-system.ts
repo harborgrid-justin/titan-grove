@@ -96,7 +96,7 @@ export class BusinessSystemService extends BaseService {
 
     // Execute with audit logging
     return this.executeWithMetrics(async () => {
-      const startTime = Date.now();
+      const _startTime = Date.now();
 
       try {
         const result = await operation.execute(input, context);
@@ -154,7 +154,7 @@ export class BusinessSystemService extends BaseService {
     }
 
     // Check security level requirements
-    const requiredPermission = `${operation.category}:${operation.securityLevel}`;
+    const _requiredPermission = `${operation.category}:${operation.securityLevel}`;
     if (operation.securityLevel === 'maximum' && !context.permissions.includes('admin')) {
       return {
         success: false,
