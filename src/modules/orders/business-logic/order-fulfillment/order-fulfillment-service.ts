@@ -503,7 +503,7 @@ export class OrderFulfillmentService {
         status: 'ERROR',
         trackingNumbers: [],
         shippingCost: shipment.shippingCost,
-        errorMessage: error instanceof Error ? error.message : 'Unknown shipping error',
+        errorMessage: error instanceof Error ? (error as Error).message : 'Unknown shipping error',
       };
     }
   }

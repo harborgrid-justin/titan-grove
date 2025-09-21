@@ -331,7 +331,7 @@ export class SelfServiceHRService {
         }
       } catch (error) {
         errors.push(
-          `Failed to update ${field}: ${error instanceof Error ? error.message : 'Unknown error'}`
+          `Failed to update ${field}: ${error instanceof Error ? (error as Error).message : 'Unknown error'}`
         );
       }
     }

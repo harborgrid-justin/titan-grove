@@ -61,7 +61,7 @@ export class FinancialProductionIntegrationService implements ProductionFinancia
       return enhancedAssessment;
     } catch (error) {
       console.error('Credit risk assessment error:', error);
-      throw new Error(`Credit risk assessment failed: ${error.message}`);
+      throw new Error(`Credit risk assessment failed: ${(error as Error).message}`);
     }
   }
 
@@ -172,7 +172,7 @@ export class FinancialProductionIntegrationService implements ProductionFinancia
       return enhancedReport;
     } catch (error) {
       console.error('Compliance report generation error:', error);
-      throw new Error(`Compliance report generation failed: ${error.message}`);
+      throw new Error(`Compliance report generation failed: ${(error as Error).message}`);
     }
   }
 
@@ -229,7 +229,7 @@ export class FinancialProductionIntegrationService implements ProductionFinancia
       return enhancedOptimization;
     } catch (error) {
       console.error('Cash flow optimization error:', error);
-      throw new Error(`Cash flow optimization failed: ${error.message}`);
+      throw new Error(`Cash flow optimization failed: ${(error as Error).message}`);
     }
   }
 
@@ -275,7 +275,7 @@ export class FinancialProductionIntegrationService implements ProductionFinancia
       return enhancedForecast;
     } catch (error) {
       console.error('Budget forecasting error:', error);
-      throw new Error(`Budget forecasting failed: ${error.message}`);
+      throw new Error(`Budget forecasting failed: ${(error as Error).message}`);
     }
   }
 
@@ -408,7 +408,7 @@ export class FinancialProductionIntegrationService implements ProductionFinancia
       return 'VALIDATION_PASSED: Transaction approved for processing';
     } catch (error) {
       console.error('Transaction validation error:', error);
-      return `ERROR: Validation failed - ${error.message}`;
+      return `ERROR: Validation failed - ${(error as Error).message}`;
     }
   }
 

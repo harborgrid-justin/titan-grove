@@ -5,8 +5,8 @@
  * Check that all modules have the expected CRUD structure
  */
 
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
 
 const modulesDir = path.join(__dirname, 'modules');
 

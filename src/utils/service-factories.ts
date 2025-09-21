@@ -7,6 +7,7 @@ import { BusinessConfig } from '../types/business-config';
 import { loadBusinessConfig } from './business-config';
 import { QuoteService } from '../modules/orders/business-logic/quote-management/quote-service';
 import { OrderPromisingService } from '../modules/orders/business-logic/order-promising/order-promising-service';
+import { createProjectBillingService } from '../modules/project/business-logic/billing/billing-service';
 
 // ================================
 // WAREHOUSE MANAGEMENT FACTORY
@@ -233,12 +234,6 @@ export function createProcurementServiceConfig(config?: BusinessConfig) {
 export function createProjectServices(config?: BusinessConfig) {
   const businessConfig = config || loadBusinessConfig();
   const projectConfig = businessConfig.project;
-
-  // TODO: Convert to ES6 import when module is updated
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const {
-    createProjectBillingService,
-  } = require('../modules/project/business-logic/billing/billing-service');
 
   return {
     billing: createProjectBillingService(projectConfig),

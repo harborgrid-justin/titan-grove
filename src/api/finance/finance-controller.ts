@@ -24,7 +24,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Get general ledger entries retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getgeneralledger', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getgeneralledger', 500);
     }
   }
 
@@ -45,7 +45,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Create journal entry retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createjournalentry', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createjournalentry', 500);
     }
   }
 
@@ -66,7 +66,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Get accounts payable retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getaccountspayable', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getaccountspayable', 500);
     }
   }
 
@@ -87,7 +87,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Create new invoice retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createinvoice', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createinvoice', 500);
     }
   }
 
@@ -108,7 +108,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Get accounts receivable retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getaccountsreceivable', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getaccountsreceivable', 500);
     }
   }
 
@@ -129,7 +129,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Record payment retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to recordpayment', 500);
+      this.sendError(res, (error as Error).message || 'Failed to recordpayment', 500);
     }
   }
 
@@ -150,7 +150,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Get financial reports retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getfinancialreports', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getfinancialreports', 500);
     }
   }
 
@@ -171,7 +171,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Generate financial report retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to generatereport', 500);
+      this.sendError(res, (error as Error).message || 'Failed to generatereport', 500);
     }
   }
 
@@ -192,7 +192,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Get budget analysis retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getbudgetanalysis', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getbudgetanalysis', 500);
     }
   }
 
@@ -213,7 +213,7 @@ export class FinanceController extends BaseController {
 
       this.sendSuccess(res, result, 'Update budget allocation retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to updatebudget', 500);
+      this.sendError(res, (error as Error).message || 'Failed to updatebudget', 500);
     }
   }
 }

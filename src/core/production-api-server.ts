@@ -361,7 +361,7 @@ export class ProductionAPIServer {
 
     // Global error handler
     this.app.use((error: Error, req: RequestWithContext, res: Response, next: NextFunction) => {
-      console.error(`[ERROR] ${error.message}`, error.stack);
+      console.error(`[ERROR] ${(error as Error).message}`, error.stack);
       this.sendError(res, 'Internal server error', 500, req.context?.correlationId);
     });
   }

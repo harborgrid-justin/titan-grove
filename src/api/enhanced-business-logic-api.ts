@@ -34,9 +34,9 @@ import {
   performPredictiveAnalysis,
   generateBusinessIntelligenceReport,
   detectBusinessAnomalies,
-} from '../native.js';
+} from '../native';
 
-const router = express.Router();
+const router: express.Router = express.Router();
 
 // Middleware for enhanced request validation and logging
 router.use(async (req: Request, res: Response, next: NextFunction) => {
@@ -206,7 +206,7 @@ router.post('/api/v1/data/standardize', async (req: Request, res: Response) => {
         validationResults,
         qualityReport,
         standardizedData: validationResults.reduce(
-          (acc, result) => {
+          (acc: Record<string, string>, result: any) => {
             acc[result.fieldName] = result.standardizedValue;
             return acc;
           },
@@ -605,7 +605,7 @@ router.post('/api/v1/bi/anomalies/detect', async (req: Request, res: Response) =
       data: {
         alerts,
         anomaliesDetected: alerts.length,
-        criticalAnomalies: alerts.filter((a) => a.severity === 'critical').length,
+        criticalAnomalies: alerts.filter((a: any) => a.severity === 'critical').length,
       },
       correlationId: req.correlationId,
     });
@@ -664,6 +664,7 @@ router.use((error: any, req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Add TypeScript interface extensions
+// eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
   namespace Express {
     interface Request {

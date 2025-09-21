@@ -96,7 +96,7 @@ export abstract class StandardServiceBase
       this.metrics.messageQueue.failed++;
       this.logger.error(`Failed to send message to ${queueType} queue`, {
         messageType,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? (error as Error).message : 'Unknown error',
         serviceName: this.serviceConfig.serviceName,
       });
       throw error;
@@ -138,7 +138,7 @@ export abstract class StandardServiceBase
       }
     } catch (error) {
       this.logger.error(`Cache get error for key: ${key}`, {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? (error as Error).message : 'Unknown error',
         serviceName: this.serviceConfig.serviceName,
       });
       return null;
@@ -160,7 +160,7 @@ export abstract class StandardServiceBase
       });
     } catch (error) {
       this.logger.error(`Cache set error for key: ${key}`, {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? (error as Error).message : 'Unknown error',
         serviceName: this.serviceConfig.serviceName,
       });
       throw error;
@@ -179,7 +179,7 @@ export abstract class StandardServiceBase
       });
     } catch (error) {
       this.logger.error(`Cache delete error for key: ${key}`, {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? (error as Error).message : 'Unknown error',
         serviceName: this.serviceConfig.serviceName,
       });
       throw error;
@@ -250,7 +250,7 @@ export abstract class StandardServiceBase
       }
     } catch (error) {
       healthCheck.status = 'unhealthy';
-      (healthCheck.details as any).error = error instanceof Error ? error.message : 'Unknown error';
+      (healthCheck.details as any).error = error instanceof Error ? (error as Error).message : 'Unknown error';
     }
 
     return healthCheck;

@@ -11,6 +11,7 @@ import { ServiceRegistry } from './error-handling/ServiceRegistry';
 import { FederalComplianceService } from '../modules/financial/business-logic/federal-compliance/federal-compliance-service';
 import { createLogger } from '../utils/logger';
 import { validateConfig } from '../utils/config';
+import packageJson from '../../package.json';
 
 export class TitanGrove extends EventEmitter {
   private config: TitanConfig;
@@ -413,6 +414,6 @@ export class TitanGrove extends EventEmitter {
   }
 
   get version(): string {
-    return require('../../package.json').version;
+    return packageJson.version;
   }
 }

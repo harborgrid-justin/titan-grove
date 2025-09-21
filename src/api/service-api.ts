@@ -5,7 +5,7 @@
 
 import express from 'express';
 
-const router = express.Router();
+const router: express.Router = express.Router();
 
 // ==================== FIELD SERVICE ENDPOINTS ====================
 
@@ -38,7 +38,7 @@ router.get('/field-service/work-orders', async (req, res) => {
     ];
     res.json({ success: true, data: workOrders });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -55,7 +55,7 @@ router.post('/field-service/work-orders', async (req, res) => {
     };
     res.json({ success: true, data: workOrder });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -84,7 +84,7 @@ router.get('/field-service/technicians', async (req, res) => {
     ];
     res.json({ success: true, data: technicians });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -137,7 +137,7 @@ router.get('/field-service/work-orders/:id', async (req, res) => {
     };
     res.json({ success: true, data: workOrder });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -153,7 +153,7 @@ router.put('/field-service/work-orders/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedWorkOrder });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -169,7 +169,7 @@ router.patch('/field-service/work-orders/:id/status', async (req, res) => {
       data: { id: req.params.id, status, updatedAt: new Date().toISOString() },
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -185,7 +185,7 @@ router.post('/field-service/work-orders/:id/notes', async (req, res) => {
     };
     res.json({ success: true, data: note });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -201,7 +201,7 @@ router.post('/field-service/work-orders/:id/parts', async (req, res) => {
     };
     res.json({ success: true, data: part });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -244,7 +244,7 @@ router.get('/field-service/customers', async (req, res) => {
     ];
     res.json({ success: true, data: customers });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -265,7 +265,7 @@ router.get('/field-service/customers/:id', async (req, res) => {
     };
     res.json({ success: true, data: customer });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -286,7 +286,7 @@ router.get('/field-service/technicians/suggest', async (req, res) => {
     ];
     res.json({ success: true, data: suggestions });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -354,7 +354,7 @@ router.get('/field-service/technicians/:id', async (req, res) => {
     };
     res.json({ success: true, data: technician });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -379,7 +379,7 @@ router.post('/field-service/optimize-schedule', async (req, res) => {
     };
     res.json({ success: true, data: optimization });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -414,7 +414,7 @@ router.get('/maintenance/orders', async (req, res) => {
     ];
     res.json({ success: true, data: maintenanceOrders });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -445,7 +445,7 @@ router.get('/maintenance/assets/health', async (req, res) => {
     ];
     res.json({ success: true, data: assetHealth });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -472,7 +472,7 @@ router.post('/maintenance/predictive-analysis', async (req, res) => {
     ];
     res.json({ success: true, data: predictions });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -526,7 +526,7 @@ router.get('/manufacturing/production-orders', async (req, res) => {
     ];
     res.json({ success: true, data: productionOrders });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -545,7 +545,7 @@ router.post('/manufacturing/production-orders', async (req, res) => {
     };
     res.json({ success: true, data: productionOrder });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -561,7 +561,7 @@ router.put('/manufacturing/production-orders/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedOrder });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -572,7 +572,7 @@ router.delete('/manufacturing/production-orders/:id', async (req, res) => {
   try {
     res.json({ success: true, message: `Production order ${req.params.id} deleted successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -594,7 +594,7 @@ router.get('/manufacturing/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -643,7 +643,7 @@ router.get('/manufacturing/production-lines', async (req, res) => {
     ];
     res.json({ success: true, data: productionLines });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -673,7 +673,7 @@ router.get('/manufacturing/quality-metrics', async (req, res) => {
     };
     res.json({ success: true, data: qualityMetrics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -693,7 +693,7 @@ router.get('/service-command/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -715,7 +715,7 @@ router.post('/service-command/optimize-dispatch', async (req, res) => {
     };
     res.json({ success: true, data: optimization });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -733,7 +733,7 @@ router.post('/service-command/emergency-response', async (req, res) => {
     };
     res.json({ success: true, data: response });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -784,7 +784,7 @@ router.get('/financial/accounts/balances', async (req, res) => {
     ];
     res.json({ success: true, data: accounts });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -850,7 +850,7 @@ router.get('/financial/transactions', async (req, res) => {
 
     res.json({ success: true, data: transactions, meta: { period, count: transactions.length } });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -915,7 +915,7 @@ router.get('/financial/budgets', async (req, res) => {
       meta: { period, totalAllocated: budgets.reduce((sum, b) => sum + b.allocated, 0) },
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -953,7 +953,7 @@ router.get('/financial/cashflow', async (req, res) => {
 
     res.json({ success: true, data: cashFlow });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -990,7 +990,7 @@ router.post('/financial/reports/generate', async (req, res) => {
 
     res.json({ success: true, data: report });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1024,7 +1024,7 @@ router.post('/financial/payments/process', async (req, res) => {
 
     res.json({ success: true, data: payment });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1053,7 +1053,7 @@ router.get('/financial/kpis', async (req, res) => {
 
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1093,7 +1093,7 @@ router.get('/financial/updates/latest', async (req, res) => {
       data: hasUpdates ? updates : [],
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1144,7 +1144,7 @@ router.get('/main/kpis', async (req, res) => {
 
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1193,7 +1193,7 @@ router.get('/system/status', async (req, res) => {
 
     res.json({ success: true, data: systemComponents });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1227,7 +1227,7 @@ router.get('/system/health', async (req, res) => {
 
     res.json({ success: true, data: healthData });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1337,7 +1337,7 @@ router.get('/modules/status', async (req, res) => {
 
     res.json({ success: true, data: modules });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1363,7 +1363,7 @@ router.get('/modules/health', async (req, res) => {
 
     res.json({ success: true, data: moduleHealthData });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1398,7 +1398,7 @@ router.post('/main/reports/generate', async (req, res) => {
 
     res.json({ success: true, data: report });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1473,7 +1473,7 @@ router.get('/hr/employees', async (req, res) => {
     ];
     res.json({ success: true, data: employees });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1492,7 +1492,7 @@ router.post('/hr/employees', async (req, res) => {
     };
     res.json({ success: true, data: employee });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1508,7 +1508,7 @@ router.put('/hr/employees/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedEmployee });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1519,7 +1519,7 @@ router.delete('/hr/employees/:id', async (req, res) => {
   try {
     res.json({ success: true, message: `Employee ${req.params.id} deleted successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1540,7 +1540,7 @@ router.get('/hr/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1630,7 +1630,7 @@ router.get('/supply-chain/purchase-orders', async (req, res) => {
     ];
     res.json({ success: true, data: purchaseOrders });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1649,7 +1649,7 @@ router.post('/supply-chain/purchase-orders', async (req, res) => {
     };
     res.json({ success: true, data: purchaseOrder });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1665,7 +1665,7 @@ router.put('/supply-chain/purchase-orders/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedOrder });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1676,7 +1676,7 @@ router.delete('/supply-chain/purchase-orders/:id', async (req, res) => {
   try {
     res.json({ success: true, message: `Purchase order ${req.params.id} deleted successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1697,7 +1697,7 @@ router.get('/supply-chain/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1772,7 +1772,7 @@ router.get('/crm/customers', async (req, res) => {
     ];
     res.json({ success: true, data: customers });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1790,7 +1790,7 @@ router.post('/crm/customers', async (req, res) => {
     };
     res.json({ success: true, data: customer });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1806,7 +1806,7 @@ router.put('/crm/customers/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedCustomer });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1817,7 +1817,7 @@ router.delete('/crm/customers/:id', async (req, res) => {
   try {
     res.json({ success: true, message: `Customer ${req.params.id} deleted successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1838,7 +1838,7 @@ router.get('/crm/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1915,7 +1915,7 @@ router.get('/projects/projects', async (req, res) => {
     ];
     res.json({ success: true, data: projects });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1934,7 +1934,7 @@ router.post('/projects/projects', async (req, res) => {
     };
     res.json({ success: true, data: project });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1950,7 +1950,7 @@ router.put('/projects/projects/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedProject });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1961,7 +1961,7 @@ router.delete('/projects/projects/:id', async (req, res) => {
   try {
     res.json({ success: true, message: `Project ${req.params.id} deleted successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -1982,7 +1982,7 @@ router.get('/projects/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2065,7 +2065,7 @@ router.get('/assets/assets', async (req, res) => {
     ];
     res.json({ success: true, data: assets });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2084,7 +2084,7 @@ router.post('/assets/assets', async (req, res) => {
     };
     res.json({ success: true, data: asset });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2100,7 +2100,7 @@ router.put('/assets/assets/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedAsset });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2111,7 +2111,7 @@ router.delete('/assets/assets/:id', async (req, res) => {
   try {
     res.json({ success: true, message: `Asset ${req.params.id} deleted successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2132,7 +2132,7 @@ router.get('/assets/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2203,7 +2203,7 @@ router.get('/compliance/items', async (req, res) => {
     ];
     res.json({ success: true, data: complianceItems });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2221,7 +2221,7 @@ router.post('/compliance/items', async (req, res) => {
     };
     res.json({ success: true, data: complianceItem });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2237,7 +2237,7 @@ router.put('/compliance/items/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedItem });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2248,7 +2248,7 @@ router.delete('/compliance/items/:id', async (req, res) => {
   try {
     res.json({ success: true, message: `Compliance item ${req.params.id} deleted successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2269,7 +2269,7 @@ router.get('/compliance/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2291,7 +2291,7 @@ router.get('/field-service/optimization/status', async (req, res) => {
     };
     res.json({ success: true, data: status });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2320,7 +2320,7 @@ router.post('/field-service/optimization/run', async (req, res) => {
 
     res.json({ success: true, data: results });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2334,7 +2334,7 @@ router.post('/field-service/optimization/save', async (req, res) => {
 
     res.json({ success: true, message: 'Schedule saved successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2355,7 +2355,7 @@ router.get('/field-service/dispatch/status', async (req, res) => {
     };
     res.json({ success: true, data: status });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2396,7 +2396,7 @@ router.get('/field-service/technicians/status', async (req, res) => {
     ];
     res.json({ success: true, data: technicians });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2424,7 +2424,7 @@ router.get('/field-service/dispatch/pending', async (req, res) => {
     ];
     res.json({ success: true, data: dispatches });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2440,7 +2440,7 @@ router.get('/field-service/technicians/available', async (req, res) => {
     ];
     res.json({ success: true, data: technicians });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2465,7 +2465,7 @@ router.post('/field-service/dispatch/emergency', async (req, res) => {
 
     res.json({ success: true, data: emergencyDispatch });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2531,7 +2531,7 @@ router.get('/field-service/communications/:type', async (req, res) => {
 
     res.json({ success: true, data });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2548,7 +2548,7 @@ router.post('/field-service/communications/send', async (req, res) => {
 
     res.json({ success: true, message: 'Message sent successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2574,7 +2574,7 @@ router.get('/field-service/routes/current', async (req, res) => {
     };
     res.json({ success: true, data: routes });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2599,7 +2599,7 @@ router.post('/field-service/routes/optimize', async (req, res) => {
 
     res.json({ success: true, data: results });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2613,7 +2613,7 @@ router.post('/field-service/routes/save', async (req, res) => {
 
     res.json({ success: true, message: 'Routes saved successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2677,7 +2677,7 @@ router.get('/field-service/routes/:routeId/stops', async (req, res) => {
     const stops = sampleStops[routeId] || [];
     res.json({ success: true, data: stops });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2701,7 +2701,7 @@ router.post('/field-service/routes/export', async (req, res) => {
     // Send empty file for demo
     res.send(Buffer.from('Sample route export data'));
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2715,7 +2715,7 @@ router.post('/field-service/routes/email', async (req, res) => {
 
     res.json({ success: true, message: 'Routes emailed to technicians' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2724,14 +2724,14 @@ router.post('/field-service/routes/email', async (req, res) => {
  */
 router.delete('/field-service/routes/stops/:stopId', async (req, res) => {
   try {
-    const { stopId } = req.params;
+    const { stopId: _stopId } = req.params;
 
     // Simulate stop deletion
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     res.json({ success: true, message: 'Stop removed successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2742,7 +2742,7 @@ router.delete('/field-service/routes/stops/:stopId', async (req, res) => {
  */
 router.get('/field-service/technicians/:techId/schedule', async (req, res) => {
   try {
-    const { techId } = req.params;
+    const { techId: _techId } = req.params;
     const { week } = req.query;
     console.log('Query params:', { week });
 
@@ -2775,7 +2775,7 @@ router.get('/field-service/technicians/:techId/schedule', async (req, res) => {
 
     res.json({ success: true, data: schedule });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2810,7 +2810,7 @@ router.get('/field-service/technicians/:techId/profile', async (req, res) => {
     const profile = profiles[techId] || profiles['tech_001'];
     res.json({ success: true, data: profile });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2827,7 +2827,7 @@ router.get('/field-service/work-orders/unassigned', async (req, res) => {
 
     res.json({ success: true, data: workOrders });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2856,7 +2856,7 @@ router.post('/field-service/schedule/assign', async (req, res) => {
 
     res.json({ success: true, data: assignment });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2873,7 +2873,7 @@ router.post('/field-service/schedule/update', async (req, res) => {
 
     res.json({ success: true, message: 'Schedule updated successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2882,14 +2882,14 @@ router.post('/field-service/schedule/update', async (req, res) => {
  */
 router.delete('/field-service/schedule/items/:scheduleId', async (req, res) => {
   try {
-    const { scheduleId } = req.params;
+    const { scheduleId: _scheduleId } = req.params;
 
     // Simulate deletion
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     res.json({ success: true, message: 'Schedule item removed' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2923,7 +2923,7 @@ router.get('/field-service/performance/metrics', async (req, res) => {
 
     res.json({ success: true, data: metrics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2957,7 +2957,7 @@ router.get('/field-service/performance/technicians', async (req, res) => {
 
     res.json({ success: true, data: technicians });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2966,7 +2966,7 @@ router.get('/field-service/performance/technicians', async (req, res) => {
  */
 router.post('/field-service/performance/export', async (req, res) => {
   try {
-    const filters = req.body;
+    const _filters = req.body;
 
     // Simulate report generation
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -2980,7 +2980,7 @@ router.post('/field-service/performance/export', async (req, res) => {
     // Send empty file for demo
     res.send(Buffer.from('Sample performance report data'));
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -2989,14 +2989,14 @@ router.post('/field-service/performance/export', async (req, res) => {
  */
 router.post('/field-service/performance/generate-report', async (req, res) => {
   try {
-    const filters = req.body;
+    const _filters = req.body;
 
     // Simulate report generation
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     res.json({ success: true, message: 'Performance report generated successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3039,7 +3039,7 @@ router.get('/field-service/certifications', async (req, res) => {
 
     res.json({ success: true, data: certifications });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3062,7 +3062,7 @@ router.post('/field-service/certifications', async (req, res) => {
 
     res.json({ success: true, data: certification });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3085,7 +3085,7 @@ router.post('/field-service/training/schedule', async (req, res) => {
 
     res.json({ success: true, data: training });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3119,7 +3119,7 @@ router.get('/field-service/training/sessions', async (req, res) => {
 
     res.json({ success: true, data: sessions });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3128,15 +3128,15 @@ router.get('/field-service/training/sessions', async (req, res) => {
  */
 router.put('/field-service/certifications/:certId', async (req, res) => {
   try {
-    const { certId } = req.params;
-    const updateData = req.body;
+    const { certId: _certId } = req.params;
+    const _updateData = req.body;
 
     // Simulate certification update
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     res.json({ success: true, message: 'Certification updated successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3145,14 +3145,14 @@ router.put('/field-service/certifications/:certId', async (req, res) => {
  */
 router.delete('/field-service/certifications/:certId', async (req, res) => {
   try {
-    const { certId } = req.params;
+    const { certId: _certId } = req.params;
 
     // Simulate certification deletion
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     res.json({ success: true, message: 'Certification deleted successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3223,7 +3223,7 @@ router.get('/bi/reports', async (req, res) => {
     ];
     res.json({ success: true, data: reports });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3242,7 +3242,7 @@ router.post('/bi/reports', async (req, res) => {
     };
     res.json({ success: true, data: report });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3258,7 +3258,7 @@ router.put('/bi/reports/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedReport });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3269,7 +3269,7 @@ router.delete('/bi/reports/:id', async (req, res) => {
   try {
     res.json({ success: true, message: `Report ${req.params.id} deleted successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3290,7 +3290,7 @@ router.get('/bi/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3371,7 +3371,7 @@ router.get('/procurement/suppliers', async (req, res) => {
     ];
     res.json({ success: true, data: suppliers });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3392,7 +3392,7 @@ router.post('/procurement/suppliers', async (req, res) => {
     };
     res.json({ success: true, data: supplier });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3408,7 +3408,7 @@ router.put('/procurement/suppliers/:id', async (req, res) => {
     };
     res.json({ success: true, data: updatedSupplier });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3433,7 +3433,7 @@ router.get('/procurement/suppliers/:id/performance', async (req, res) => {
     };
     res.json({ success: true, data: performance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3493,7 +3493,7 @@ router.get('/procurement/requisitions', async (req, res) => {
     ];
     res.json({ success: true, data: requisitions });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3512,7 +3512,7 @@ router.post('/procurement/requisitions', async (req, res) => {
     };
     res.json({ success: true, data: requisition });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3565,7 +3565,7 @@ router.get('/procurement/contracts', async (req, res) => {
     ];
     res.json({ success: true, data: contracts });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3583,7 +3583,7 @@ router.post('/procurement/contracts', async (req, res) => {
     };
     res.json({ success: true, data: contract });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3642,7 +3642,7 @@ router.get('/procurement/rfqs', async (req, res) => {
     ];
     res.json({ success: true, data: rfqs });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3662,7 +3662,7 @@ router.post('/procurement/rfqs', async (req, res) => {
     };
     res.json({ success: true, data: rfq });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3702,7 +3702,7 @@ router.get('/procurement/analytics/spend', async (req, res) => {
     };
     res.json({ success: true, data: spendAnalytics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3742,7 +3742,7 @@ router.get('/procurement/analytics/performance', async (req, res) => {
     };
     res.json({ success: true, data: performance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3787,7 +3787,7 @@ router.get('/procurement/analytics/compliance', async (req, res) => {
     };
     res.json({ success: true, data: compliance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3816,7 +3816,7 @@ router.get('/procurement/kpis', async (req, res) => {
     };
     res.json({ success: true, data: kpis });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3842,7 +3842,7 @@ router.get('/financial/pages/status', async (req, res) => {
     };
     res.json({ success: true, data: pageStatuses });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3861,7 +3861,7 @@ router.get('/financial/metrics/overview', async (req, res) => {
     };
     res.json({ success: true, data: metrics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3941,7 +3941,7 @@ router.get('/financial/general-ledger/chart-of-accounts', async (req, res) => {
     ];
     res.json({ success: true, data: accounts });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3953,7 +3953,7 @@ router.post('/financial/general-ledger/chart-of-accounts/test', async (req, res)
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3978,7 +3978,7 @@ router.get('/financial/general-ledger/journal-entries', async (req, res) => {
     ];
     res.json({ success: true, data: entries });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -3990,7 +3990,7 @@ router.post('/financial/general-ledger/journal-entries/test', async (req, res) =
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4013,7 +4013,7 @@ router.get('/financial/general-ledger/trial-balance', async (req, res) => {
     };
     res.json({ success: true, data: trialBalance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4025,7 +4025,7 @@ router.post('/financial/general-ledger/trial-balance/test', async (req, res) => 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4051,7 +4051,7 @@ router.get('/financial/general-ledger/gl-reconciliation', async (req, res) => {
     };
     res.json({ success: true, data: reconciliation });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4063,7 +4063,7 @@ router.post('/financial/general-ledger/gl-reconciliation/test', async (req, res)
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4085,7 +4085,7 @@ router.get('/financial/general-ledger/period-close', async (req, res) => {
     };
     res.json({ success: true, data: periodClose });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4097,7 +4097,7 @@ router.post('/financial/general-ledger/period-close/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4122,7 +4122,7 @@ router.get('/financial/general-ledger/multi-currency', async (req, res) => {
     };
     res.json({ success: true, data: currencies });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4134,7 +4134,7 @@ router.post('/financial/general-ledger/multi-currency/test', async (req, res) =>
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4158,7 +4158,7 @@ router.get('/financial/general-ledger/consolidation', async (req, res) => {
     };
     res.json({ success: true, data: consolidation });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4170,7 +4170,7 @@ router.post('/financial/general-ledger/consolidation/test', async (req, res) => 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4209,7 +4209,7 @@ router.get('/financial/general-ledger/allocations', async (req, res) => {
     };
     res.json({ success: true, data: allocations });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4221,7 +4221,7 @@ router.post('/financial/general-ledger/allocations/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4265,7 +4265,7 @@ router.get('/financial/planning-analysis/budget-planning', async (req, res) => {
     };
     res.json({ success: true, data: budgets });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4277,7 +4277,7 @@ router.post('/financial/planning-analysis/budget-planning/test', async (req, res
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4300,7 +4300,7 @@ router.get('/financial/planning-analysis/forecasting', async (req, res) => {
     };
     res.json({ success: true, data: forecast });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4312,7 +4312,7 @@ router.post('/financial/planning-analysis/forecasting/test', async (req, res) =>
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4339,7 +4339,7 @@ router.get('/financial/planning-analysis/performance-mgmt', async (req, res) => 
     };
     res.json({ success: true, data: performance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4351,7 +4351,7 @@ router.post('/financial/planning-analysis/performance-mgmt/test', async (req, re
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4408,7 +4408,7 @@ router.get('/financial/planning-analysis/profitability', async (req, res) => {
     };
     res.json({ success: true, data: profitability });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4420,7 +4420,7 @@ router.post('/financial/planning-analysis/profitability/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4463,7 +4463,7 @@ router.get('/financial/planning-analysis/variance-analysis', async (req, res) =>
     };
     res.json({ success: true, data: variance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4475,7 +4475,7 @@ router.post('/financial/planning-analysis/variance-analysis/test', async (req, r
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4514,7 +4514,7 @@ router.get('/financial/planning-analysis/cost-management', async (req, res) => {
     };
     res.json({ success: true, data: costManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4526,7 +4526,7 @@ router.post('/financial/planning-analysis/cost-management/test', async (req, res
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4556,7 +4556,7 @@ router.get('/financial/planning-analysis/financial-analytics', async (req, res) 
     };
     res.json({ success: true, data: analytics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4568,7 +4568,7 @@ router.post('/financial/planning-analysis/financial-analytics/test', async (req,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4613,7 +4613,7 @@ router.get('/financial/planning-analysis/rolling-forecasts', async (req, res) =>
     };
     res.json({ success: true, data: rollingForecast });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4625,7 +4625,7 @@ router.post('/financial/planning-analysis/rolling-forecasts/test', async (req, r
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4659,7 +4659,7 @@ router.get('/financial/treasury/cash-flow-management', async (req, res) => {
     };
     res.json({ success: true, data: cashFlow });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4671,7 +4671,7 @@ router.post('/financial/treasury/cash-flow-management/test', async (req, res) =>
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4710,7 +4710,7 @@ router.get('/financial/treasury/banking-payments', async (req, res) => {
     };
     res.json({ success: true, data: banking });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4722,7 +4722,7 @@ router.post('/financial/treasury/banking-payments/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4752,7 +4752,7 @@ router.get('/financial/treasury/investment-management', async (req, res) => {
     };
     res.json({ success: true, data: investments });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4764,7 +4764,7 @@ router.post('/financial/treasury/investment-management/test', async (req, res) =
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4813,7 +4813,7 @@ router.get('/financial/treasury/risk-management', async (req, res) => {
     };
     res.json({ success: true, data: riskManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4825,7 +4825,7 @@ router.post('/financial/treasury/risk-management/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4866,7 +4866,7 @@ router.get('/financial/treasury/debt-management', async (req, res) => {
     };
     res.json({ success: true, data: debtManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4878,7 +4878,7 @@ router.post('/financial/treasury/debt-management/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4910,7 +4910,7 @@ router.get('/financial/treasury/foreign-exchange', async (req, res) => {
     };
     res.json({ success: true, data: forex });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4922,7 +4922,7 @@ router.post('/financial/treasury/foreign-exchange/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4954,7 +4954,7 @@ router.get('/financial/treasury/liquidity-management', async (req, res) => {
     };
     res.json({ success: true, data: liquidity });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -4966,7 +4966,7 @@ router.post('/financial/treasury/liquidity-management/test', async (req, res) =>
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5028,7 +5028,7 @@ router.get('/financial/treasury/treasury-operations', async (req, res) => {
     };
     res.json({ success: true, data: operations });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5040,7 +5040,7 @@ router.post('/financial/treasury/treasury-operations/test', async (req, res) => 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5084,7 +5084,7 @@ router.get('/financial/reporting-compliance/financial-statements', async (req, r
     };
     res.json({ success: true, data: statements });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5096,7 +5096,7 @@ router.post('/financial/reporting-compliance/financial-statements/test', async (
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5129,7 +5129,7 @@ router.get('/financial/reporting-compliance/regulatory-reporting', async (req, r
     };
     res.json({ success: true, data: regulatory });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5141,7 +5141,7 @@ router.post('/financial/reporting-compliance/regulatory-reporting/test', async (
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5177,7 +5177,7 @@ router.get('/financial/reporting-compliance/tax-management', async (req, res) =>
     };
     res.json({ success: true, data: taxManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5189,7 +5189,7 @@ router.post('/financial/reporting-compliance/tax-management/test', async (req, r
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5241,7 +5241,7 @@ router.get('/financial/reporting-compliance/audit-management', async (req, res) 
     };
     res.json({ success: true, data: auditManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5253,7 +5253,7 @@ router.post('/financial/reporting-compliance/audit-management/test', async (req,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5317,7 +5317,7 @@ router.get('/financial/reporting-compliance/internal-controls', async (req, res)
     };
     res.json({ success: true, data: internalControls });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5329,7 +5329,7 @@ router.post('/financial/reporting-compliance/internal-controls/test', async (req
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5394,7 +5394,7 @@ router.get('/financial/reporting-compliance/management-reporting', async (req, r
     };
     res.json({ success: true, data: managementReporting });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5406,7 +5406,7 @@ router.post('/financial/reporting-compliance/management-reporting/test', async (
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5457,7 +5457,7 @@ router.get('/financial/reporting-compliance/data-governance', async (req, res) =
     };
     res.json({ success: true, data: dataGovernance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5469,7 +5469,7 @@ router.post('/financial/reporting-compliance/data-governance/test', async (req, 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5511,7 +5511,7 @@ router.get('/financial/reporting-compliance/report-builder', async (req, res) =>
     };
     res.json({ success: true, data: reportBuilder });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5523,7 +5523,7 @@ router.post('/financial/reporting-compliance/report-builder/test', async (req, r
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5550,7 +5550,7 @@ router.get('/financial/:category/:page/export', async (req, res) => {
 
     res.json({ success: true, data: exportData, message: `${page} data exported successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5582,7 +5582,7 @@ router.get('/hr/pages/status', async (req, res) => {
     };
     res.json({ success: true, data: pageStatuses });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5608,7 +5608,7 @@ router.get('/hr/user/context', async (req, res) => {
     };
     res.json({ success: true, data: userContext });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5657,7 +5657,7 @@ router.get('/hr/employee-management/employee-onboarding', async (req, res) => {
     };
     res.json({ success: true, data: onboarding });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5669,7 +5669,7 @@ router.post('/hr/employee-management/employee-onboarding/test', async (req, res)
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5701,7 +5701,7 @@ router.get('/hr/employee-management/employee-profiles', async (req, res) => {
     };
     res.json({ success: true, data: profiles });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5713,7 +5713,7 @@ router.post('/hr/employee-management/employee-profiles/test', async (req, res) =
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5740,7 +5740,7 @@ router.get('/hr/employee-management/employee-lifecycle', async (req, res) => {
     };
     res.json({ success: true, data: lifecycle });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5752,7 +5752,7 @@ router.post('/hr/employee-management/employee-lifecycle/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5781,7 +5781,7 @@ router.get('/hr/employee-management/organization-chart', async (req, res) => {
     };
     res.json({ success: true, data: orgChart });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5793,7 +5793,7 @@ router.post('/hr/employee-management/organization-chart/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5823,7 +5823,7 @@ router.get('/hr/employee-management/employee-directory', async (req, res) => {
     };
     res.json({ success: true, data: directory });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5835,7 +5835,7 @@ router.post('/hr/employee-management/employee-directory/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5861,7 +5861,7 @@ router.get('/hr/employee-management/workforce-planning', async (req, res) => {
     };
     res.json({ success: true, data: workforcePlanning });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5873,7 +5873,7 @@ router.post('/hr/employee-management/workforce-planning/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5904,7 +5904,7 @@ router.get('/hr/employee-management/employee-transfers', async (req, res) => {
     };
     res.json({ success: true, data: transfers });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5916,7 +5916,7 @@ router.post('/hr/employee-management/employee-transfers/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5943,7 +5943,7 @@ router.get('/hr/employee-management/employee-analytics', async (req, res) => {
     };
     res.json({ success: true, data: analytics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5955,7 +5955,7 @@ router.post('/hr/employee-management/employee-analytics/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5986,7 +5986,7 @@ router.get('/hr/payroll-benefits/payroll-processing', async (req, res) => {
     };
     res.json({ success: true, data: payroll });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -5998,7 +5998,7 @@ router.post('/hr/payroll-benefits/payroll-processing/test', async (req, res) => 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6026,7 +6026,7 @@ router.get('/hr/payroll-benefits/benefits-administration', async (req, res) => {
     };
     res.json({ success: true, data: benefits });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6038,7 +6038,7 @@ router.post('/hr/payroll-benefits/benefits-administration/test', async (req, res
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6065,7 +6065,7 @@ router.get('/hr/payroll-benefits/compensation-management', async (req, res) => {
     };
     res.json({ success: true, data: compensation });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6077,7 +6077,7 @@ router.post('/hr/payroll-benefits/compensation-management/test', async (req, res
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6109,7 +6109,7 @@ router.get('/hr/payroll-benefits/time-attendance', async (req, res) => {
     };
     res.json({ success: true, data: timeAttendance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6121,7 +6121,7 @@ router.post('/hr/payroll-benefits/time-attendance/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6148,7 +6148,7 @@ router.get('/hr/payroll-benefits/payroll-analytics', async (req, res) => {
     };
     res.json({ success: true, data: payrollAnalytics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6160,7 +6160,7 @@ router.post('/hr/payroll-benefits/payroll-analytics/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6191,7 +6191,7 @@ router.get('/hr/payroll-benefits/tax-compliance', async (req, res) => {
     };
     res.json({ success: true, data: taxCompliance });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6203,7 +6203,7 @@ router.post('/hr/payroll-benefits/tax-compliance/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6230,7 +6230,7 @@ router.get('/hr/payroll-benefits/leave-management', async (req, res) => {
     };
     res.json({ success: true, data: leaveManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6242,7 +6242,7 @@ router.post('/hr/payroll-benefits/leave-management/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6268,7 +6268,7 @@ router.get('/hr/payroll-benefits/expense-management', async (req, res) => {
     };
     res.json({ success: true, data: expenseManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6280,7 +6280,7 @@ router.post('/hr/payroll-benefits/expense-management/test', async (req, res) => 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6316,7 +6316,7 @@ router.get('/hr/talent-management/recruitment-management', async (req, res) => {
     };
     res.json({ success: true, data: recruitment });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6328,7 +6328,7 @@ router.post('/hr/talent-management/recruitment-management/test', async (req, res
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6352,7 +6352,7 @@ router.get('/hr/talent-management/learning-development', async (req, res) => {
     };
     res.json({ success: true, data: learning });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6364,7 +6364,7 @@ router.post('/hr/talent-management/learning-development/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6391,7 +6391,7 @@ router.get('/hr/talent-management/career-development', async (req, res) => {
     };
     res.json({ success: true, data: careerDevelopment });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6403,7 +6403,7 @@ router.post('/hr/talent-management/career-development/test', async (req, res) =>
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6427,7 +6427,7 @@ router.get('/hr/talent-management/succession-planning', async (req, res) => {
     };
     res.json({ success: true, data: successionPlanning });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6439,7 +6439,7 @@ router.post('/hr/talent-management/succession-planning/test', async (req, res) =
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6466,7 +6466,7 @@ router.get('/hr/talent-management/talent-acquisition', async (req, res) => {
     };
     res.json({ success: true, data: talentAcquisition });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6478,7 +6478,7 @@ router.post('/hr/talent-management/talent-acquisition/test', async (req, res) =>
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6506,7 +6506,7 @@ router.get('/hr/talent-management/skills-management', async (req, res) => {
     };
     res.json({ success: true, data: skillsManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6518,7 +6518,7 @@ router.post('/hr/talent-management/skills-management/test', async (req, res) => 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6544,7 +6544,7 @@ router.get('/hr/talent-management/talent-analytics', async (req, res) => {
     };
     res.json({ success: true, data: talentAnalytics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6556,7 +6556,7 @@ router.post('/hr/talent-management/talent-analytics/test', async (req, res) => {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6583,7 +6583,7 @@ router.get('/hr/talent-management/internal-mobility', async (req, res) => {
     };
     res.json({ success: true, data: internalMobility });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6595,7 +6595,7 @@ router.post('/hr/talent-management/internal-mobility/test', async (req, res) => 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6627,7 +6627,7 @@ router.get('/hr/performance-management/performance-reviews', async (req, res) =>
     };
     res.json({ success: true, data: performanceReviews });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6639,7 +6639,7 @@ router.post('/hr/performance-management/performance-reviews/test', async (req, r
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6666,7 +6666,7 @@ router.get('/hr/performance-management/goal-management', async (req, res) => {
     };
     res.json({ success: true, data: goalManagement });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6678,7 +6678,7 @@ router.post('/hr/performance-management/goal-management/test', async (req, res) 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6705,7 +6705,7 @@ router.get('/hr/performance-management/feedback-coaching', async (req, res) => {
     };
     res.json({ success: true, data: feedbackCoaching });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6717,7 +6717,7 @@ router.post('/hr/performance-management/feedback-coaching/test', async (req, res
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6744,7 +6744,7 @@ router.get('/hr/performance-management/performance-analytics', async (req, res) 
     };
     res.json({ success: true, data: performanceAnalytics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6756,7 +6756,7 @@ router.post('/hr/performance-management/performance-analytics/test', async (req,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6779,7 +6779,7 @@ router.get('/hr/performance-management/talent-calibration', async (req, res) => 
     };
     res.json({ success: true, data: talentCalibration });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6791,7 +6791,7 @@ router.post('/hr/performance-management/talent-calibration/test', async (req, re
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6818,7 +6818,7 @@ router.get('/hr/performance-management/recognition-rewards', async (req, res) =>
     };
     res.json({ success: true, data: recognitionRewards });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6830,7 +6830,7 @@ router.post('/hr/performance-management/recognition-rewards/test', async (req, r
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6857,7 +6857,7 @@ router.get('/hr/performance-management/development-planning', async (req, res) =
     };
     res.json({ success: true, data: developmentPlanning });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6869,7 +6869,7 @@ router.post('/hr/performance-management/development-planning/test', async (req, 
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6896,7 +6896,7 @@ router.get('/hr/performance-management/career-progression', async (req, res) => 
     };
     res.json({ success: true, data: careerProgression });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6908,7 +6908,7 @@ router.post('/hr/performance-management/career-progression/test', async (req, re
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6930,7 +6930,7 @@ router.get('/hr/:category/:page/export', async (req, res) => {
 
     res.json({ success: true, data: exportData, message: `${page} data exported successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6946,7 +6946,7 @@ router.post('/hr/:category/:page/test', async (req, res) => {
       page: page,
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -6974,7 +6974,7 @@ router.get('/hr/:category/:page', async (req, res) => {
 
     res.json({ success: true, data: sampleData });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7007,7 +7007,7 @@ router.get('/workflow-management/pages/status', async (req, res) => {
     };
     res.json({ success: true, data: pageStatuses });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7044,7 +7044,7 @@ router.get(
       };
       res.json({ success: true, data: processDesigner });
     } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+      res.status(500).json({ success: false, error: (error as Error).message });
     }
   }
 );
@@ -7076,7 +7076,7 @@ router.get('/workflow-management/process-automation/workflow-orchestration', asy
     };
     res.json({ success: true, data: orchestration });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7107,7 +7107,7 @@ router.get('/workflow-management/process-automation/process-optimization', async
     };
     res.json({ success: true, data: optimization });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7138,7 +7138,7 @@ router.get('/workflow-management/process-automation/automation-engine', async (r
     };
     res.json({ success: true, data: automationEngine });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7169,7 +7169,7 @@ router.get('/workflow-management/process-automation/process-analytics', async (r
     };
     res.json({ success: true, data: processAnalytics });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7201,7 +7201,7 @@ router.get('/workflow-management/process-automation/workflow-templates', async (
     };
     res.json({ success: true, data: workflowTemplates });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7232,7 +7232,7 @@ router.get('/workflow-management/process-automation/process-monitoring', async (
     };
     res.json({ success: true, data: processMonitoring });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7267,7 +7267,7 @@ router.get('/workflow-management/business-rules/rules-engine', async (req, res) 
     };
     res.json({ success: true, data: rulesEngine });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7298,7 +7298,7 @@ router.get('/workflow-management/business-rules/decision-tables', async (req, re
     };
     res.json({ success: true, data: decisionTables });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7329,7 +7329,7 @@ router.get('/workflow-management/business-rules/rule-validation', async (req, re
     };
     res.json({ success: true, data: ruleValidation });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7360,7 +7360,7 @@ router.get('/workflow-management/business-rules/compliance-rules', async (req, r
     };
     res.json({ success: true, data: complianceRules });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7391,7 +7391,7 @@ router.get('/workflow-management/business-rules/rule-versioning', async (req, re
     };
     res.json({ success: true, data: ruleVersioning });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7422,7 +7422,7 @@ router.get('/workflow-management/business-rules/dynamic-rules', async (req, res)
     };
     res.json({ success: true, data: dynamicRules });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7454,7 +7454,7 @@ router.get('/workflow-management/business-rules/rule-testing', async (req, res) 
     };
     res.json({ success: true, data: ruleTesting });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7494,7 +7494,7 @@ router.get('/workflow-management/:category/:page', async (req, res) => {
 
     res.json({ success: true, data: sampleData });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7519,7 +7519,7 @@ router.post('/workflow-management/:category/:page/execute', async (req, res) => 
 
     res.json({ success: true, data: execution, message: `${page} executed successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7542,7 +7542,7 @@ router.post('/workflow-management/:category/:page/export', async (req, res) => {
 
     res.json({ success: true, data: exportData, message: `${page} data exported successfully` });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 
@@ -7565,7 +7565,7 @@ router.post('/workflow-management/:category/:page/test', async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: (error as Error).message });
   }
 });
 

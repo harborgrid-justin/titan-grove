@@ -834,7 +834,7 @@ export class EnterpriseMessageQueue extends EventEmitter {
         retryCount: job.attemptsMade,
         metadata: {
           ...job.data.metadata,
-          originalError: error.message,
+          originalError: (error as Error).message,
           failedAt: new Date(),
           originalQueue: job.queue.name
         }
@@ -849,7 +849,7 @@ export class EnterpriseMessageQueue extends EventEmitter {
         'WARNING',
         {
           originalType: job.data.type,
-          errorMessage: error.message,
+          errorMessage: (error as Error).message,
           attempts: job.attemptsMade
         }
       );

@@ -17,6 +17,15 @@ module.exports = [
         ...require('globals').es2022,
         ...require('globals').jest,
         ...require('globals').browser,
+        NodeJS: 'readonly',
+        Buffer: 'readonly',
+        process: 'readonly',
+        global: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'readonly',
       },
     },
     plugins: {
@@ -30,6 +39,7 @@ module.exports = [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true, allowDefinitionFiles: true }],
       'prefer-const': 'error',
       'no-var': 'error',
     },
@@ -40,7 +50,13 @@ module.exports = [
       'eslint.config.js', 
       'dist/**/*',
       'node_modules/**/*',
-      'src/ui/static/**/*.js'
+      'src/ui/static/**/*.js',
+      'src/ui/react/**/*',
+      'target/**/*',
+      'build/**/*',
+      'cypress/**/*',
+      'scripts/**/*',
+      '.development/**/*'
     ],
   },
 ];

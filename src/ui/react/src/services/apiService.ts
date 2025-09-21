@@ -255,7 +255,7 @@ class ApiService {
     if (error?.message?.includes('Failed to fetch')) {
       return 'Unable to connect to server. Please check if the service is running.';
     }
-    return error instanceof Error ? error.message : 'An unexpected error occurred';
+    return error instanceof Error ? (error as Error).message : 'An unexpected error occurred';
   }
 
   // Health Check

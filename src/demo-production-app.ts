@@ -18,7 +18,7 @@ import {
 
 import { ProductionIntegrationService } from '../src/services/production-integration-service';
 
-const app = express();
+const app: express.Application = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
@@ -42,7 +42,7 @@ app.get('/api/health', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Health check failed',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? (error as Error).message : 'Unknown error',
     });
   }
 });
@@ -75,7 +75,7 @@ app.post('/api/business-rules/evaluate', (req, res) => {
     res.status(400).json({
       success: false,
       error: 'Business rule evaluation failed',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? (error as Error).message : 'Unknown error',
     });
   }
 });
@@ -111,7 +111,7 @@ app.post('/api/data-standardization/process', (req, res) => {
     res.status(400).json({
       success: false,
       error: 'Data standardization failed',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? (error as Error).message : 'Unknown error',
     });
   }
 });
@@ -163,7 +163,7 @@ app.post('/api/calculations/financial', (req, res) => {
     res.status(400).json({
       success: false,
       error: 'Financial calculation failed',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? (error as Error).message : 'Unknown error',
     });
   }
 });
@@ -208,7 +208,7 @@ app.post('/api/process/business-data', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Business process failed',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? (error as Error).message : 'Unknown error',
     });
   }
 });
@@ -232,7 +232,7 @@ app.post('/api/utils/validate-email', (req, res) => {
     res.status(400).json({
       success: false,
       error: 'Email validation failed',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? (error as Error).message : 'Unknown error',
     });
   }
 });
@@ -253,7 +253,7 @@ app.post('/api/utils/validate-phone', (req, res) => {
     res.status(400).json({
       success: false,
       error: 'Phone validation failed',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      details: error instanceof Error ? (error as Error).message : 'Unknown error',
     });
   }
 });
@@ -487,7 +487,7 @@ app.get('/', (req, res) => {
                     '</div>';
             } catch (error) {
                 document.getElementById('health-status').innerHTML = 
-                    '<div class="error">Error: ' + error.message + '</div>';
+                    '<div class="error">Error: ' + (error as Error).message + '</div>';
             }
         }
 
@@ -505,7 +505,7 @@ app.get('/', (req, res) => {
                     JSON.stringify(result, null, 2) + '</pre>';
             } catch (error) {
                 document.getElementById('email-status').innerHTML = 
-                    '<div class="error">Error: ' + error.message + '</div>';
+                    '<div class="error">Error: ' + (error as Error).message + '</div>';
             }
         }
 
@@ -529,7 +529,7 @@ app.get('/', (req, res) => {
                     JSON.stringify(result, null, 2) + '</pre>';
             } catch (error) {
                 document.getElementById('calculation-status').innerHTML = 
-                    '<div class="error">Error: ' + error.message + '</div>';
+                    '<div class="error">Error: ' + (error as Error).message + '</div>';
             }
         }
 
@@ -580,7 +580,7 @@ app.get('/', (req, res) => {
                     JSON.stringify(result, null, 2) + '</pre>';
             } catch (error) {
                 document.getElementById('rule-status').innerHTML = 
-                    '<div class="error">Error: ' + error.message + '</div>';
+                    '<div class="error">Error: ' + (error as Error).message + '</div>';
             }
         }
 

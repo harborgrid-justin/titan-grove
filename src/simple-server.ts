@@ -9,7 +9,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { createServer } from 'http';
 
-const app = express();
+const app: express.Application = express();
 const port = process.env.PORT || 3000;
 
 // Middleware

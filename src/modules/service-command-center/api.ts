@@ -41,7 +41,7 @@ router.post('/initialize', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -63,7 +63,7 @@ router.get('/:commandCenterId/status', async (req, res) => {
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -90,7 +90,7 @@ router.post('/:commandCenterId/optimize-dispatch', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -117,7 +117,7 @@ router.post('/:commandCenterId/emergency-response', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -144,7 +144,7 @@ router.post('/:commandCenterId/resources', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -171,7 +171,7 @@ router.post('/dashboard/create', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -193,7 +193,7 @@ router.get('/:commandCenterId/kpis', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -220,7 +220,7 @@ router.post('/:commandCenterId/heat-map', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -247,7 +247,7 @@ router.post('/analytics/generate', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -268,7 +268,7 @@ router.get('/oracle-comparison', async (req, res) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -294,7 +294,7 @@ router.post('/:commandCenterId/predictive-insights', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -317,7 +317,7 @@ router.get('/:commandCenterId/benchmarks', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -344,7 +344,7 @@ router.post('/mobile/initialize', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -366,7 +366,7 @@ router.get('/mobile/:sessionId/dashboard', async (req, res) => {
   } catch (error: any) {
     res.status(404).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -390,7 +390,7 @@ router.post('/mobile/:sessionId/emergency-dispatch', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -414,7 +414,7 @@ router.put('/mobile/:sessionId/location', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });
@@ -437,7 +437,7 @@ router.post('/mobile/:sessionId/offline-mode', async (req, res) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     });
   }
 });

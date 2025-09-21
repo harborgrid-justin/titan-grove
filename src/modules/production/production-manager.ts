@@ -167,7 +167,7 @@ export class ProductionManager {
       };
     } catch (error) {
       const executionTime = Date.now() - startTime;
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? (error as Error).message : String(error);
 
       await this.logError(moduleName, `Operation failed: ${operationName} - ${errorMessage}`, id);
 

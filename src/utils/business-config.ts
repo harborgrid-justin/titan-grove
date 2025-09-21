@@ -561,7 +561,7 @@ export function validateExtendedConfig(config: any): ExtendedTitanConfig {
   });
 
   if (error) {
-    throw new Error(`Invalid configuration: ${error.message}`);
+    throw new Error(`Invalid configuration: ${(error as Error).message}`);
   }
 
   return value as ExtendedTitanConfig;

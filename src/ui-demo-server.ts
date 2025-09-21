@@ -319,7 +319,7 @@ app.use((error: Error, req: express.Request, res: express.Response, next: expres
     success: false,
     error: {
       code: 'INTERNAL_ERROR',
-      message: process.env.NODE_ENV === 'production' ? 'An internal error occurred' : error.message,
+      message: process.env.NODE_ENV === 'production' ? 'An internal error occurred' : (error as Error).message,
     },
   });
 });

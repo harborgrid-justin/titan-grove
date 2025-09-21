@@ -283,7 +283,7 @@ export class EnterpriseValidationEngine {
     violationsByStandard: Record<string, number>;
     criticalViolations: ValidationError[];
   }> {
-    let totalRecords = data.length;
+    const totalRecords = data.length;
     let compliantRecords = 0;
     const violationsByStandard: Record<string, number> = {};
     const criticalViolations: ValidationError[] = [];

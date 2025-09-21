@@ -24,7 +24,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Get customer list retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getcustomers', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getcustomers', 500);
     }
   }
 
@@ -45,7 +45,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Create new customer retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createcustomer', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createcustomer', 500);
     }
   }
 
@@ -66,7 +66,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Get customer by ID retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getcustomerbyid', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getcustomerbyid', 500);
     }
   }
 
@@ -87,7 +87,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Update customer information retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to updatecustomer', 500);
+      this.sendError(res, (error as Error).message || 'Failed to updatecustomer', 500);
     }
   }
 
@@ -108,7 +108,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Get sales opportunities retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getopportunities', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getopportunities', 500);
     }
   }
 
@@ -129,7 +129,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Create new opportunity retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createopportunity', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createopportunity', 500);
     }
   }
 
@@ -150,7 +150,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Get contact list retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getcontacts', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getcontacts', 500);
     }
   }
 
@@ -171,7 +171,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Create new contact retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createcontact', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createcontact', 500);
     }
   }
 
@@ -192,7 +192,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Get sales leads retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getleads', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getleads', 500);
     }
   }
 
@@ -213,7 +213,7 @@ export class CrmController extends BaseController {
 
       this.sendSuccess(res, result, 'Convert lead to opportunity retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to convertlead', 500);
+      this.sendError(res, (error as Error).message || 'Failed to convertlead', 500);
     }
   }
 }

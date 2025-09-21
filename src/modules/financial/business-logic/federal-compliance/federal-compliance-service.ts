@@ -83,7 +83,7 @@ export class FederalComplianceService extends BaseComplianceService {
     monitoringPeriod: 60000, // 1 minute
     expectedErrors: (error: Error) => {
       // Don't trigger circuit breaker for validation errors
-      return error.message.includes('validation') || error.message.includes('compliance');
+      return (error as Error).message.includes('validation') || (error as Error).message.includes('compliance');
     },
   };
 
@@ -98,11 +98,11 @@ export class FederalComplianceService extends BaseComplianceService {
       retryableErrors: (error: Error) => {
         // Retry on network errors, timeouts, but not validation errors
         return (
-          !error.message.includes('validation') &&
-          !error.message.includes('compliance') &&
-          (error.message.includes('timeout') ||
-            error.message.includes('network') ||
-            error.message.includes('connection'))
+          !(error as Error).message.includes('validation') &&
+          !(error as Error).message.includes('compliance') &&
+          ((error as Error).message.includes('timeout') ||
+            (error as Error).message.includes('network') ||
+            (error as Error).message.includes('connection'))
         );
       },
     },
@@ -123,7 +123,7 @@ export class FederalComplianceService extends BaseComplianceService {
               {
                 findingType: 'OBSERVATION',
                 severity: 'MEDIUM',
-                description: `Compliance check deferred due to service error: ${error.message}`,
+                description: `Compliance check deferred due to service error: ${(error as Error).message}`,
                 requiresAction: true,
               },
             ],
@@ -136,13 +136,13 @@ export class FederalComplianceService extends BaseComplianceService {
       },
     },
     errorClassification: (error: Error) => {
-      if (error.message.includes('CRITICAL') || error.message.includes('security')) {
+      if ((error as Error).message.includes('CRITICAL') || (error as Error).message.includes('security')) {
         return ErrorSeverity.CRITICAL;
       }
-      if (error.message.includes('compliance') || error.message.includes('regulation')) {
+      if ((error as Error).message.includes('compliance') || (error as Error).message.includes('regulation')) {
         return ErrorSeverity.HIGH;
       }
-      if (error.message.includes('validation')) {
+      if ((error as Error).message.includes('validation')) {
         return ErrorSeverity.MEDIUM;
       }
       return ErrorSeverity.LOW;

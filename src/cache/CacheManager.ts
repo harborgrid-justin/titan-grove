@@ -290,7 +290,7 @@ export class CacheManager extends EventEmitter {
         timestamp: new Date(),
         details: {
           type: this.config.type,
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: error instanceof Error ? (error as Error).message : 'Unknown error',
         },
       };
     }

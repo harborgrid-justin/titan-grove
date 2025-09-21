@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: (error as Error).message
     });
   }
 });
@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: (error as Error).message
     });
   }
 });
@@ -80,7 +80,7 @@ router.get('/:id', async (req, res) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: (error as Error).message
     });
   }
 });
@@ -117,7 +117,7 @@ router.get('/:id/export/:format', async (req, res) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: (error as Error).message
     });
   }
 });

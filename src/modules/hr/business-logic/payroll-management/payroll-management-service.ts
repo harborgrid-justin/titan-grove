@@ -154,7 +154,7 @@ export class HRPayrollService extends StandardServiceBase {
         } catch (error) {
           results.errors.push({
             employeeId: employee.id,
-            error: error instanceof Error ? error.message : 'Unknown error',
+            error: error instanceof Error ? (error as Error).message : 'Unknown error',
           });
         }
       }

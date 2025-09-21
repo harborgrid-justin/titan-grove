@@ -168,7 +168,7 @@ export class ErrorBoundary {
     };
 
     this.config.logger?.error(`Error in ${context.service}:${context.operation}`, {
-      error: error.message,
+      error: (error as Error).message,
       stack: error.stack,
       context,
       severity,
@@ -180,14 +180,14 @@ export class ErrorBoundary {
         return await this.executeFallback(error, context);
       } catch (fallbackError) {
         this.config.logger?.error(`Fallback failed for ${context.service}:${context.operation}`, {
-          originalError: error.message,
+          originalError: (error as Error).message,
           fallbackError: (fallbackError as Error).message,
         });
       }
     }
 
     throw new ErrorBoundaryError(
-      `Error boundary caught error in ${context.service}:${context.operation}: ${error.message}`,
+      `Error boundary caught error in ${context.service}:${context.operation}: ${(error as Error).message}`,
       error,
       context,
       severity
