@@ -1112,14 +1112,20 @@ export class TitanGrove {
   /**
    * Setup Manufacturing APIs - 49 endpoints for comprehensive manufacturing management
    */
-  private setupManufacturingAPIs(app: any): void {
+  private async setupManufacturingAPIs(app: any): Promise<void> {
     console.log('🏭 Setting up Manufacturing APIs (49 endpoints)...');
 
-    // Import manufacturing routes
-    const manufacturingRoutes = require('./api/manufacturing/manufacturing-routes').default;
+    // Import manufacturing routes using dynamic import
+    try {
+      const manufacturingModule = await import('./api/manufacturing/manufacturing-routes');
+      const manufacturingRoutes = manufacturingModule.default;
 
-    // Mount manufacturing routes
-    app.use('/api/manufacturing', manufacturingRoutes);
+      // Mount manufacturing routes
+      app.use('/api/manufacturing', manufacturingRoutes);
+    } catch (error) {
+      console.error('Failed to load manufacturing routes:', error);
+      // Continue without manufacturing routes if they don't exist
+    }
 
     // Additional manufacturing endpoints integrated with business logic
 
@@ -1248,12 +1254,13 @@ export class TitanGrove {
   /**
    * Setup ETL Data Integration APIs - 49 endpoints for comprehensive ETL management
    */
-  private setupETLAPIs(app: any): void {
+  private async setupETLAPIs(app: any): Promise<void> {
     console.log('🔄 Setting up ETL Data Integration APIs (49 endpoints)...');
 
     try {
-      // Import ETL routes
-      const etlRoutes = require('./api/database/etl-routes').default;
+      // Import ETL routes using dynamic import
+      const etlModule = await import('./api/database/etl-routes');
+      const etlRoutes = etlModule.default;
 
       // Mount ETL routes
       app.use('/api/database/data-integration-etl', etlRoutes);

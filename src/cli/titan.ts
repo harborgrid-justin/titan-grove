@@ -24,8 +24,13 @@ async function main() {
       console.log(chalk.blue('🚀 Starting Titan Grove server...'));
 
       try {
-        const { TitanGrove } = require('../dist/index.js');
-        const { loadConfig } = require('../dist/utils/config.js');
+        const { dynamicImport } = await import('../shared/utils/async-pattern-converter');
+        
+        const TitanGroveModule = await dynamicImport('../dist/index.js');
+        const configModule = await dynamicImport('../dist/utils/config.js');
+        
+        const TitanGrove = TitanGroveModule.TitanGrove || TitanGroveModule.default?.TitanGrove;
+        const loadConfig = configModule.loadConfig || configModule.default?.loadConfig;
 
         const config = loadConfig();
         if (options.port) {
