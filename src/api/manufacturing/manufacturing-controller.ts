@@ -24,7 +24,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Get production planning data retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getproductionplanning', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getproductionplanning', 500);
     }
   }
 
@@ -45,7 +45,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Create new production plan retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createproductionplan', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createproductionplan', 500);
     }
   }
 
@@ -66,7 +66,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Get work orders retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getworkorders', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getworkorders', 500);
     }
   }
 
@@ -87,7 +87,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Create new work order retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createworkorder', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createworkorder', 500);
     }
   }
 
@@ -108,7 +108,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Get quality control metrics retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getqualitymetrics', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getqualitymetrics', 500);
     }
   }
 
@@ -129,7 +129,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Record quality check result retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to recordqualitycheck', 500);
+      this.sendError(res, (error as Error).message || 'Failed to recordqualitycheck', 500);
     }
   }
 
@@ -150,7 +150,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Get inventory tracking data retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getinventorytracking', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getinventorytracking', 500);
     }
   }
 
@@ -171,7 +171,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Update inventory level retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to updateinventorylevel', 500);
+      this.sendError(res, (error as Error).message || 'Failed to updateinventorylevel', 500);
     }
   }
 
@@ -192,7 +192,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Get machine monitoring data retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getmachinemonitoring', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getmachinemonitoring', 500);
     }
   }
 
@@ -213,7 +213,7 @@ export class ManufacturingController extends BaseController {
 
       this.sendSuccess(res, result, 'Record machine status update retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to recordmachinestatus', 500);
+      this.sendError(res, (error as Error).message || 'Failed to recordmachinestatus', 500);
     }
   }
 }

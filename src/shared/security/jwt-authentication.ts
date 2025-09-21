@@ -399,7 +399,7 @@ export class JWTAuthenticationService {
     } catch (error) {
       this.logger.logSecurityEvent('ACCESS_TOKEN_VERIFICATION_FAILED', 'LOW', {
         token: token.substring(0, 20) + '...',
-        error: error.message
+        error: (error as Error).message
       });
       return null;
     }

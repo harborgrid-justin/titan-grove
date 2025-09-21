@@ -372,7 +372,7 @@ export class MessageQueueUtils {
       id: this.generateMessageId('dlq'),
       originalMessage,
       error: {
-        message: error.message,
+        message: (error as Error).message,
         stack: error.stack,
         name: error.name,
       },

@@ -85,7 +85,7 @@ export class EnterpriseAPIService {
         logger.error('API Response Error', {
           status: error.response?.status,
           url: error.config?.url,
-          message: error.message,
+          message: (error as Error).message,
           correlationId: error.config?.headers?.['X-Correlation-ID'],
         });
         return Promise.reject(error);
@@ -285,7 +285,7 @@ export class EnterpriseAPIService {
   private formatError(error: Error): APIResponse<never> {
     return {
       success: false,
-      error: error.message,
+      error: (error as Error).message,
       timestamp: new Date().toISOString(),
     };
   }

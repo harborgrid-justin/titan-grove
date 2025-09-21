@@ -398,12 +398,12 @@ export class ErrorHandler {
 
     // Transform common error types
     if (error.name === 'ValidationError' || error.code === 'VALIDATION_ERROR') {
-      return new ValidationError(error.message, context, correlationId);
+      return new ValidationError((error as Error).message, context, correlationId);
     }
 
     if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
       return new ExternalServiceError(
-        error.message,
+        (error as Error).message,
         'unknown-service',
         undefined,
         undefined,
@@ -412,12 +412,12 @@ export class ErrorHandler {
     }
 
     if (error.code?.startsWith('ER_') || error.code?.startsWith('SQLITE_')) {
-      return new DatabaseError(error.message, 'unknown', error.sql, correlationId);
+      return new DatabaseError((error as Error).message, 'unknown', error.sql, correlationId);
     }
 
     // Default to generic system error
     return new SystemError(
-      error.message || 'An unexpected error occurred',
+      (error as Error).message || 'An unexpected error occurred',
       context,
       correlationId
     );
@@ -575,7 +575,7 @@ export function extractErrorInfo(error: any) {
       code: error.code,
       category: error.category,
       severity: error.severity,
-      message: error.message,
+      message: (error as Error).message,
       correlationId: error.correlationId,
       context: error.context
     };
@@ -583,7 +583,7 @@ export function extractErrorInfo(error: any) {
 
   return {
     name: error.name || 'Unknown',
-    message: error.message || 'Unknown error',
+    message: (error as Error).message || 'Unknown error',
     code: error.code,
     stack: error.stack
   };

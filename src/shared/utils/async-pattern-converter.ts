@@ -355,7 +355,7 @@ export class AsyncPatternConverter {
       try {
         return require(modulePath);
       } catch (requireError) {
-        throw new Error(`Failed to import module ${modulePath}: ${error.message}`);
+        throw new Error(`Failed to import module ${modulePath}: ${(error as Error).message}`);
       }
     }
   }

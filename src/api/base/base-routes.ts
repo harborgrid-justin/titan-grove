@@ -57,7 +57,7 @@ export const handleRouteErrors = (router: Router) => {
 
     res.status(error.status || 500).json({
       success: false,
-      error: error.message || 'Internal Server Error',
+      error: (error as Error).message || 'Internal Server Error',
       timestamp: new Date().toISOString(),
     });
   });

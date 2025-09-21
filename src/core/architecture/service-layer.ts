@@ -91,7 +91,7 @@ export abstract class BaseService {
       this.metrics.errorRate = (this.metrics.errorRate + 1) / this.metrics.requestCount;
 
       this.logger.error(`Error in ${this.serviceName}`, {
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? (error as Error).message : String(error),
         requestId: context.requestId,
         executionTime,
       });
@@ -100,7 +100,7 @@ export abstract class BaseService {
         success: false,
         error: {
           code: error instanceof Error ? error.constructor.name : 'UNKNOWN_ERROR',
-          message: error instanceof Error ? error.message : String(error),
+          message: error instanceof Error ? (error as Error).message : String(error),
           details: error,
         },
         metadata: {

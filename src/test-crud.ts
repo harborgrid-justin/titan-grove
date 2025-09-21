@@ -76,7 +76,7 @@ async function testCRUDOperations() {
 
     console.log('\n🎉 All CRUD operations completed successfully!');
   } catch (error) {
-    console.error('❌ Error testing CRUD operations:', error.message);
+    console.error('❌ Error testing CRUD operations:', (error as Error).message);
   }
 }
 

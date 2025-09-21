@@ -99,7 +99,7 @@ export abstract class BaseComplianceService extends BaseService {
         success: false,
         error: {
           code: 'COMPLIANCE_VALIDATION_FAILED',
-          message: `Failed to validate compliance: ${error.message}`,
+          message: `Failed to validate compliance: ${(error as Error).message}`,
           details: { entityId, entityType, rulesCount: rules.length },
         },
         timestamp: new Date(),
@@ -353,7 +353,7 @@ export abstract class BaseComplianceService extends BaseService {
         success: false,
         error: {
           code: 'COMPLIANCE_RULES_LOAD_FAILED',
-          message: `Failed to load compliance rules: ${error.message}`,
+          message: `Failed to load compliance rules: ${(error as Error).message}`,
           details: { entityType, regulationType },
         },
         timestamp: new Date(),

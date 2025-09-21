@@ -38,7 +38,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       return validationResult;
     } catch (error) {
       console.error('Customer validation error:', error);
-      return `ERROR: Validation failed - ${error.message}`;
+      return `ERROR: Validation failed - ${(error as Error).message}`;
     }
   }
 
@@ -195,7 +195,7 @@ export class CrmProductionIntegrationService implements ProductionCrmService {
       return syncResult;
     } catch (error) {
       console.error('External sync error:', error);
-      return `ERROR: Sync failed - ${error.message}`;
+      return `ERROR: Sync failed - ${(error as Error).message}`;
     }
   }
 

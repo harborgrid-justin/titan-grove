@@ -456,7 +456,7 @@ export class ServerManager extends EventEmitter {
         error: {
           code: 'INTERNAL_ERROR',
           message:
-            process.env.NODE_ENV === 'production' ? 'An internal error occurred' : error.message,
+            process.env.NODE_ENV === 'production' ? 'An internal error occurred' : (error as Error).message,
         },
       };
 

@@ -24,7 +24,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Get employee list retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getemployees', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getemployees', 500);
     }
   }
 
@@ -45,7 +45,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Create new employee retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createemployee', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createemployee', 500);
     }
   }
 
@@ -66,7 +66,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Get employee by ID retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getemployeebyid', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getemployeebyid', 500);
     }
   }
 
@@ -87,7 +87,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Update employee information retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to updateemployee', 500);
+      this.sendError(res, (error as Error).message || 'Failed to updateemployee', 500);
     }
   }
 
@@ -108,7 +108,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Get payroll data retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getpayroll', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getpayroll', 500);
     }
   }
 
@@ -129,7 +129,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Process payroll run retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to processpayroll', 500);
+      this.sendError(res, (error as Error).message || 'Failed to processpayroll', 500);
     }
   }
 
@@ -150,7 +150,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Get performance reviews retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to getperformancereviews', 500);
+      this.sendError(res, (error as Error).message || 'Failed to getperformancereviews', 500);
     }
   }
 
@@ -171,7 +171,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Create performance review retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to createperformancereview', 500);
+      this.sendError(res, (error as Error).message || 'Failed to createperformancereview', 500);
     }
   }
 
@@ -192,7 +192,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Get time tracking data retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to gettimetracking', 500);
+      this.sendError(res, (error as Error).message || 'Failed to gettimetracking', 500);
     }
   }
 
@@ -213,7 +213,7 @@ export class HrController extends BaseController {
 
       this.sendSuccess(res, result, 'Record time entry retrieved successfully');
     } catch (error) {
-      this.sendError(res, error.message || 'Failed to recordtimeentry', 500);
+      this.sendError(res, (error as Error).message || 'Failed to recordtimeentry', 500);
     }
   }
 }

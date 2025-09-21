@@ -172,7 +172,7 @@ export class OracleEBSGapAnalysisService extends EventEmitter {
       return result;
 
     } catch (error: any) {
-      this.emit('analysis_error', { analysisId, error: error.message });
+      this.emit('analysis_error', { analysisId, error: (error as Error).message });
       throw error;
     }
   }

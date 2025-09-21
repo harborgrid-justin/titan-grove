@@ -125,7 +125,7 @@ export class EnterpriseCacheManager {
 
     this.redis.on('error', (error) => {
       this.metrics.connectionStatus = 'error';
-      this.metrics.lastError = error.message;
+      this.metrics.lastError = (error as Error).message;
       this.metrics.errors++;
       this.handleCircuitBreaker();
       

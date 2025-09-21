@@ -617,7 +617,7 @@ export class AdvancedBOMManagementService {
         bom.massUpdateHistory.push(massUpdate);
       } catch (error) {
         massUpdate.errors = massUpdate.errors || [];
-        const errorMessage = error instanceof Error ? error.message : String(error);
+        const errorMessage = error instanceof Error ? (error as Error).message : String(error);
         massUpdate.errors.push(`Error updating BOM ${bom.bomId}: ${errorMessage}`);
       }
     }

@@ -124,7 +124,7 @@ export class IntegrationLayerService {
     } catch (error) {
       this.logger.error('Failed to publish integration event', {
         eventId: event.eventId,
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? (error as Error).message : String(error),
       });
 
       return {
@@ -376,7 +376,7 @@ export class IntegrationLayerService {
     } catch (error) {
       this.logger.error('Workflow execution failed', {
         workflowId,
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? (error as Error).message : String(error),
       });
 
       return {

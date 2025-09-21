@@ -423,7 +423,7 @@ export class SystemCoordinator extends BaseService {
     } catch (error) {
       this.logger.warn('Failed to publish system event', {
         eventType: event.eventType,
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? (error as Error).message : String(error),
       });
     }
   }
@@ -442,7 +442,7 @@ export class SystemCoordinator extends BaseService {
         }
       } catch (error) {
         this.logger.error('Health check failed', {
-          error: error instanceof Error ? error.message : String(error),
+          error: error instanceof Error ? (error as Error).message : String(error),
         });
       }
     }, this.config.healthCheckInterval);

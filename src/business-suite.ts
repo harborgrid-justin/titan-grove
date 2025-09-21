@@ -863,7 +863,7 @@ export class TitanGrove {
         const result = await this.processBusinessTransaction(req.body.type, req.body.data);
         res.json({ success: true, data: result });
       } catch (error: any) {
-        res.status(400).json({ success: false, error: error.message });
+        res.status(400).json({ success: false, error: (error as Error).message });
       }
     });
   }
@@ -1108,7 +1108,7 @@ export class TitanGrove {
         const dashboard = await this.manufacturing.generateManufacturingDashboard();
         res.json({ success: true, data: dashboard });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1122,7 +1122,7 @@ export class TitanGrove {
         const metrics = await this.manufacturing.getProductionMetrics(startDate, endDate);
         res.json({ success: true, data: metrics });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1132,7 +1132,7 @@ export class TitanGrove {
         const leanCapabilities = await this.manufacturing.getLeanManufacturingCapabilities();
         res.json({ success: true, data: leanCapabilities });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1141,7 +1141,7 @@ export class TitanGrove {
         const industry40Capabilities = await this.manufacturing.getIndustry40Capabilities();
         res.json({ success: true, data: industry40Capabilities });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1150,7 +1150,7 @@ export class TitanGrove {
         const advancedDashboard = await this.manufacturing.getAdvancedManufacturingDashboard();
         res.json({ success: true, data: advancedDashboard });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1160,7 +1160,7 @@ export class TitanGrove {
         const integration = await this.manufacturing.integrateWithSupplyChain();
         res.json({ success: true, data: integration });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1170,7 +1170,7 @@ export class TitanGrove {
         const status = await this.manufacturing.getRealtimeProductionStatus();
         res.json({ success: true, data: status });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1186,7 +1186,7 @@ export class TitanGrove {
         );
         res.json({ success: true, data: costs });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1197,7 +1197,7 @@ export class TitanGrove {
         const requirements = await this.manufacturing.generateMaterialRequirements(workOrderId);
         res.json({ success: true, data: requirements });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1217,7 +1217,7 @@ export class TitanGrove {
         );
         res.json({ success: true, data: capacity });
       } catch (error: any) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false, error: (error as Error).message });
       }
     });
 
@@ -1262,7 +1262,7 @@ export class TitanGrove {
           };
           res.json(overview);
         } catch (error: any) {
-          res.status(500).json({ success: false, error: error.message });
+          res.status(500).json({ success: false, error: (error as Error).message });
         }
       });
 

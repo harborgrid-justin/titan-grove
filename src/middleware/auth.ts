@@ -86,7 +86,7 @@ export class AuthenticationService {
       return jwt.verify(token, this.config.jwtSecret);
     } catch (error) {
       this.logger.warn('Token verification failed', {
-        error: error instanceof Error ? error.message : String(error),
+        error: error instanceof Error ? (error as Error).message : String(error),
       });
       return null;
     }

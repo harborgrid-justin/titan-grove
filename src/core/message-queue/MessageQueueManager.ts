@@ -565,7 +565,7 @@ export class MessageQueueManager extends EventEmitter {
       // Send to dead letter queue
       const deadLetterMessage: DeadLetterMessage = {
         originalMessage: message,
-        failureReason: error.message,
+        failureReason: (error as Error).message,
         failureCount: job.attemptsMade,
         firstFailureTime: new Date(job.timestamp),
         lastFailureTime: new Date(),

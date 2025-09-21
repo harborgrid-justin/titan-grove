@@ -25,7 +25,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve transportation planning data',
       });
     }
@@ -42,7 +42,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to create transportation plan',
       });
     }
@@ -59,7 +59,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to update transportation plan',
       });
     }
@@ -75,7 +75,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to delete transportation plan',
       });
     }
@@ -93,7 +93,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve carrier management data',
       });
     }
@@ -110,7 +110,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to create carrier',
       });
     }
@@ -127,7 +127,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to update carrier',
       });
     }
@@ -143,7 +143,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to delete carrier',
       });
     }
@@ -161,7 +161,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve shipment execution data',
       });
     }
@@ -178,7 +178,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to create shipment',
       });
     }
@@ -195,7 +195,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to update shipment',
       });
     }
@@ -211,7 +211,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to delete shipment',
       });
     }
@@ -229,7 +229,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve bid management data',
       });
     }
@@ -246,7 +246,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to create bid',
       });
     }
@@ -263,7 +263,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to update bid',
       });
     }
@@ -279,7 +279,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to delete bid',
       });
     }
@@ -297,7 +297,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve fleet management data',
       });
     }
@@ -314,7 +314,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to create fleet vehicle',
       });
     }
@@ -331,7 +331,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to update fleet vehicle',
       });
     }
@@ -347,7 +347,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to delete fleet vehicle',
       });
     }
@@ -365,7 +365,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve transportation analytics',
       });
     }
@@ -383,7 +383,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve warehouse operations data',
       });
     }
@@ -400,7 +400,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to create warehouse operation',
       });
     }
@@ -417,7 +417,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to update warehouse operation',
       });
     }
@@ -433,7 +433,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to delete warehouse operation',
       });
     }
@@ -454,7 +454,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve inventory management data',
       });
     }
@@ -471,7 +471,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to create inventory item',
       });
     }
@@ -488,7 +488,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to update inventory item',
       });
     }
@@ -504,7 +504,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to delete inventory item',
       });
     }
@@ -522,7 +522,7 @@ class LogisticsController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to retrieve slotting optimization data',
       });
     }
@@ -539,7 +539,7 @@ class LogisticsController {
     } catch (error) {
       res.status(400).json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         message: 'Failed to optimize slotting',
       });
     }
@@ -558,7 +558,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve labor management data',
         });
     }
@@ -571,7 +571,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to create labor record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to create labor record' });
     }
   };
 
@@ -582,7 +582,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to update labor record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to update labor record' });
     }
   };
 
@@ -593,7 +593,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to delete labor record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to delete labor record' });
     }
   };
 
@@ -611,7 +611,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve warehouse automation data',
         });
     }
@@ -628,7 +628,7 @@ class LogisticsController {
         .status(400)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to create automation rule',
         });
     }
@@ -643,7 +643,7 @@ class LogisticsController {
         .status(400)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to update automation rule',
         });
     }
@@ -658,7 +658,7 @@ class LogisticsController {
         .status(400)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to delete automation rule',
         });
     }
@@ -673,7 +673,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve warehouse analytics',
         });
     }
@@ -689,7 +689,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve route optimization data',
         });
     }
@@ -702,7 +702,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to optimize route' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to optimize route' });
     }
   };
 
@@ -715,7 +715,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve delivery planning data',
         });
     }
@@ -728,7 +728,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to create delivery plan' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to create delivery plan' });
     }
   };
 
@@ -739,7 +739,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to update delivery plan' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to update delivery plan' });
     }
   };
 
@@ -750,7 +750,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to delete delivery plan' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to delete delivery plan' });
     }
   };
 
@@ -763,7 +763,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve load optimization data',
         });
     }
@@ -776,7 +776,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to optimize load' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to optimize load' });
     }
   };
 
@@ -789,7 +789,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve dynamic routing data',
         });
     }
@@ -802,7 +802,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to update dynamic route' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to update dynamic route' });
     }
   };
 
@@ -815,7 +815,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve routing analytics',
         });
     }
@@ -831,7 +831,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve network design data',
         });
     }
@@ -844,7 +844,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to create network design' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to create network design' });
     }
   };
 
@@ -855,7 +855,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to update network design' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to update network design' });
     }
   };
 
@@ -866,7 +866,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to delete network design' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to delete network design' });
     }
   };
 
@@ -883,7 +883,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve fulfillment strategy data',
         });
     }
@@ -900,7 +900,7 @@ class LogisticsController {
         .status(400)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to create fulfillment strategy',
         });
     }
@@ -915,7 +915,7 @@ class LogisticsController {
         .status(400)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to update fulfillment strategy',
         });
     }
@@ -930,7 +930,7 @@ class LogisticsController {
         .status(400)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to delete fulfillment strategy',
         });
     }
@@ -949,7 +949,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve supply chain visibility data',
         });
     }
@@ -968,7 +968,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve distribution optimization data',
         });
     }
@@ -985,7 +985,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to optimize distribution' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to optimize distribution' });
     }
   };
 
@@ -998,7 +998,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve demand planning data',
         });
     }
@@ -1011,7 +1011,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to create demand plan' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to create demand plan' });
     }
   };
 
@@ -1022,7 +1022,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to update demand plan' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to update demand plan' });
     }
   };
 
@@ -1033,7 +1033,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to delete demand plan' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to delete demand plan' });
     }
   };
 
@@ -1047,7 +1047,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve freight management data',
         });
     }
@@ -1060,7 +1060,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to create freight record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to create freight record' });
     }
   };
 
@@ -1071,7 +1071,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to update freight record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to update freight record' });
     }
   };
 
@@ -1082,7 +1082,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to delete freight record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to delete freight record' });
     }
   };
 
@@ -1095,7 +1095,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve rate optimization data',
         });
     }
@@ -1108,7 +1108,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to optimize rates' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to optimize rates' });
     }
   };
 
@@ -1121,7 +1121,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve freight audit data',
         });
     }
@@ -1134,7 +1134,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to create audit record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to create audit record' });
     }
   };
 
@@ -1145,7 +1145,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to update audit record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to update audit record' });
     }
   };
 
@@ -1156,7 +1156,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to delete audit record' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to delete audit record' });
     }
   };
 
@@ -1169,7 +1169,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve contract management data',
         });
     }
@@ -1182,7 +1182,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to create contract' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to create contract' });
     }
   };
 
@@ -1193,7 +1193,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to update contract' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to update contract' });
     }
   };
 
@@ -1204,7 +1204,7 @@ class LogisticsController {
     } catch (error) {
       res
         .status(400)
-        .json({ success: false, error: error.message, message: 'Failed to delete contract' });
+        .json({ success: false, error: (error as Error).message, message: 'Failed to delete contract' });
     }
   };
 
@@ -1217,7 +1217,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve freight analytics',
         });
     }
@@ -1233,7 +1233,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve logistics KPIs',
         });
     }
@@ -1248,7 +1248,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve predictive analytics',
         });
     }
@@ -1263,7 +1263,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve cost analytics',
         });
     }
@@ -1282,7 +1282,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve performance optimization data',
         });
     }
@@ -1301,7 +1301,7 @@ class LogisticsController {
         .status(500)
         .json({
           success: false,
-          error: error.message,
+          error: (error as Error).message,
           message: 'Failed to retrieve business intelligence data',
         });
     }

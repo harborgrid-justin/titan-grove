@@ -130,7 +130,7 @@ export class BusinessSystemService extends BaseService {
             action: 'EXECUTE',
             inputData: this.sanitizeForAudit(input),
             success: false,
-            errorMessage: error instanceof Error ? error.message : String(error),
+            errorMessage: error instanceof Error ? (error as Error).message : String(error),
           });
         }
         throw error;

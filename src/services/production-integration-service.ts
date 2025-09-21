@@ -163,7 +163,7 @@ export class ProductionIntegrationService extends EventEmitter {
         success: false,
         error: {
           code: 'BUSINESS_PROCESS_ERROR',
-          message: error instanceof Error ? error.message : 'Unknown error occurred',
+          message: error instanceof Error ? (error as Error).message : 'Unknown error occurred',
           details: {
             correlationId,
             context: context,
@@ -265,7 +265,7 @@ export class ProductionIntegrationService extends EventEmitter {
       console.error('Error in native calculations:', error);
       return {
         error: 'Calculation error',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        details: error instanceof Error ? (error as Error).message : 'Unknown error',
       };
     }
   }
@@ -303,7 +303,7 @@ export class ProductionIntegrationService extends EventEmitter {
           JSON.stringify({
             type: 'error',
             message: 'Failed to process request',
-            error: error instanceof Error ? error.message : 'Unknown error',
+            error: error instanceof Error ? (error as Error).message : 'Unknown error',
           })
         );
       }
@@ -547,7 +547,7 @@ export class ProductionIntegrationService extends EventEmitter {
         success: false,
         error: {
           code: 'HEALTH_CHECK_FAILED',
-          message: error instanceof Error ? error.message : 'Health check failed',
+          message: error instanceof Error ? (error as Error).message : 'Health check failed',
         },
         timestamp: new Date(),
       };
