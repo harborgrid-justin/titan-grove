@@ -17,6 +17,11 @@ export * from './business-logic/mes-process/process-manufacturing-mes-service';
 export * from './business-logic/master-production-scheduling/master-production-scheduling-service';
 export * from './business-logic/flow-manufacturing/flow-manufacturing-service';
 
+// Phase 2 Advanced Planning & Scheduling Services
+export * from './business-logic/material-requirements-planning/mrp-service';
+export * from './business-logic/capacity-requirements-planning/crp-service';
+export * from './business-logic/advanced-bom-management/advanced-bom-service';
+
 // Export data access layer
 export * from './data-access';
 
