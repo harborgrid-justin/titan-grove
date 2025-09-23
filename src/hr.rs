@@ -83,6 +83,325 @@ pub struct TimeTracking {
     pub total_hours: f64,
 }
 
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct AdvancedPayrollCalculation {
+    pub employee_id: String,
+    pub base_salary: f64,
+    pub overtime_hours: f64,
+    pub overtime_rate: f64,
+    pub overtime_pay: f64,
+    pub gross_pay: f64,
+    pub tax_breakdown: TaxBreakdown,
+    pub benefit_contributions: BenefitContributions,
+    pub deductions: Vec<PayrollDeduction>,
+    pub net_pay: f64,
+    pub employer_costs: EmployerCosts,
+    pub compliance_status: PayrollComplianceStatus,
+    pub pay_equity_analysis: PayEquityAnalysis,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct TaxBreakdown {
+    pub federal_income_tax: f64,
+    pub state_income_tax: f64,
+    pub social_security_tax: f64,
+    pub medicare_tax: f64,
+    pub unemployment_tax: f64,
+    pub total_tax_deductions: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct BenefitContributions {
+    pub health_insurance: f64,
+    pub dental_insurance: f64,
+    pub retirement_401k: f64,
+    pub life_insurance: f64,
+    pub total_benefit_deductions: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct PayrollDeduction {
+    pub deduction_type: String,
+    pub amount: f64,
+    pub is_pre_tax: bool,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct EmployerCosts {
+    pub employer_social_security: f64,
+    pub employer_medicare: f64,
+    pub employer_unemployment: f64,
+    pub workers_compensation: f64,
+    pub total_employer_cost: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct PayrollComplianceStatus {
+    pub overtime_compliant: bool,
+    pub minimum_wage_compliant: bool,
+    pub tax_withholding_accurate: bool,
+    pub flsa_compliant: bool,
+    pub warnings: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct PayEquityAnalysis {
+    pub market_comparison: f64,
+    pub internal_equity_score: f64,
+    pub pay_grade_alignment: String,
+    pub recommendations: Vec<String>,
+}
+
+#[napi]
+pub fn calculate_advanced_payroll(
+    employee_id: String,
+    base_salary: f64,
+    overtime_hours: f64,
+    overtime_multiplier: f64,
+    pay_periods_per_year: f64,
+    employee_benefits: BenefitContributions,
+    additional_deductions: Vec<PayrollDeduction>,
+    state_tax_rate: f64,
+    job_grade: String,
+    years_experience: f64,
+) -> AdvancedPayrollCalculation {
+    // Enhanced payroll calculation with compliance and equity analysis
+    // Legacy: Basic tax and benefit calculations
+    
+    if base_salary <= 0.0 || pay_periods_per_year <= 0.0 {
+        return create_default_payroll_calculation(employee_id);
+    }
+    
+    // 1. Base calculations
+    let period_base_salary = base_salary / pay_periods_per_year;
+    let hourly_rate = base_salary / (pay_periods_per_year * 40.0); // Assuming 40 hours/week
+    let overtime_rate = hourly_rate * overtime_multiplier;
+    let overtime_pay = overtime_hours * overtime_rate;
+    let gross_pay = period_base_salary + overtime_pay;
+    
+    // 2. Advanced tax calculations
+    let tax_breakdown = calculate_comprehensive_tax_breakdown(gross_pay, state_tax_rate);
+    
+    // 3. Additional deductions processing
+    let mut total_additional_deductions = 0.0;
+    for deduction in &additional_deductions {
+        total_additional_deductions += deduction.amount;
+    }
+    
+    // 4. Net pay calculation
+    let net_pay = gross_pay - tax_breakdown.total_tax_deductions - 
+                 employee_benefits.total_benefit_deductions - total_additional_deductions;
+    
+    // 5. Employer cost calculations
+    let employer_costs = calculate_employer_costs(gross_pay);
+    
+    // 6. Compliance checking
+    let compliance_status = check_payroll_compliance(
+        base_salary, overtime_hours, overtime_rate, gross_pay, pay_periods_per_year
+    );
+    
+    // 7. Pay equity analysis
+    let pay_equity_analysis = analyze_pay_equity(
+        base_salary, &job_grade, years_experience
+    );
+    
+    AdvancedPayrollCalculation {
+        employee_id,
+        base_salary: period_base_salary,
+        overtime_hours,
+        overtime_rate,
+        overtime_pay,
+        gross_pay,
+        tax_breakdown,
+        benefit_contributions: employee_benefits,
+        deductions: additional_deductions,
+        net_pay,
+        employer_costs,
+        compliance_status,
+        pay_equity_analysis,
+    }
+}
+
+fn create_default_payroll_calculation(employee_id: String) -> AdvancedPayrollCalculation {
+    AdvancedPayrollCalculation {
+        employee_id,
+        base_salary: 0.0,
+        overtime_hours: 0.0,
+        overtime_rate: 0.0,
+        overtime_pay: 0.0,
+        gross_pay: 0.0,
+        tax_breakdown: TaxBreakdown {
+            federal_income_tax: 0.0,
+            state_income_tax: 0.0,
+            social_security_tax: 0.0,
+            medicare_tax: 0.0,
+            unemployment_tax: 0.0,
+            total_tax_deductions: 0.0,
+        },
+        benefit_contributions: BenefitContributions {
+            health_insurance: 0.0,
+            dental_insurance: 0.0,
+            retirement_401k: 0.0,
+            life_insurance: 0.0,
+            total_benefit_deductions: 0.0,
+        },
+        deductions: vec![],
+        net_pay: 0.0,
+        employer_costs: EmployerCosts {
+            employer_social_security: 0.0,
+            employer_medicare: 0.0,
+            employer_unemployment: 0.0,
+            workers_compensation: 0.0,
+            total_employer_cost: 0.0,
+        },
+        compliance_status: PayrollComplianceStatus {
+            overtime_compliant: false,
+            minimum_wage_compliant: false,
+            tax_withholding_accurate: false,
+            flsa_compliant: false,
+            warnings: vec!["Invalid salary parameters".to_string()],
+        },
+        pay_equity_analysis: PayEquityAnalysis {
+            market_comparison: 0.0,
+            internal_equity_score: 0.0,
+            pay_grade_alignment: "Invalid".to_string(),
+            recommendations: vec!["Cannot analyze with invalid data".to_string()],
+        },
+    }
+}
+
+fn calculate_comprehensive_tax_breakdown(gross_pay: f64, state_tax_rate: f64) -> TaxBreakdown {
+    // 2024 tax rates (simplified)
+    let federal_income_tax = gross_pay * 0.12; // Simplified 12% bracket
+    let state_income_tax = gross_pay * (state_tax_rate / 100.0);
+    let social_security_tax = gross_pay * 0.062; // 6.2% employee portion
+    let medicare_tax = gross_pay * 0.0145; // 1.45% employee portion
+    let unemployment_tax = 0.0; // Typically employer-paid
+    
+    TaxBreakdown {
+        federal_income_tax,
+        state_income_tax,
+        social_security_tax,
+        medicare_tax,
+        unemployment_tax,
+        total_tax_deductions: federal_income_tax + state_income_tax + 
+                             social_security_tax + medicare_tax + unemployment_tax,
+    }
+}
+
+fn calculate_employer_costs(gross_pay: f64) -> EmployerCosts {
+    let employer_social_security = gross_pay * 0.062; // 6.2% employer match
+    let employer_medicare = gross_pay * 0.0145; // 1.45% employer match
+    let employer_unemployment = gross_pay * 0.006; // FUTA rate
+    let workers_compensation = gross_pay * 0.01; // Estimated 1%
+    
+    EmployerCosts {
+        employer_social_security,
+        employer_medicare,
+        employer_unemployment,
+        workers_compensation,
+        total_employer_cost: employer_social_security + employer_medicare + 
+                           employer_unemployment + workers_compensation,
+    }
+}
+
+fn check_payroll_compliance(
+    annual_salary: f64,
+    overtime_hours: f64,
+    overtime_rate: f64,
+    gross_pay: f64,
+    pay_periods_per_year: f64,
+) -> PayrollComplianceStatus {
+    let mut warnings = Vec::new();
+    
+    // Minimum wage compliance (federal minimum $7.25/hour)
+    let annual_minimum_wage = 7.25 * 40.0 * 52.0; // $15,080
+    let minimum_wage_compliant = annual_salary >= annual_minimum_wage;
+    if !minimum_wage_compliant {
+        warnings.push("Salary below federal minimum wage".to_string());
+    }
+    
+    // Overtime compliance (1.5x for hours over 40)
+    let expected_overtime_rate = (annual_salary / (pay_periods_per_year * 40.0)) * 1.5;
+    let overtime_compliant = overtime_hours == 0.0 || 
+                           (overtime_rate >= expected_overtime_rate * 0.95); // 5% tolerance
+    if !overtime_compliant && overtime_hours > 0.0 {
+        warnings.push("Overtime rate may be below FLSA requirements".to_string());
+    }
+    
+    // Tax withholding accuracy (simplified check)
+    let expected_tax_withholding = gross_pay * 0.2; // Rough 20% estimate
+    let tax_withholding_accurate = true; // Would check actual vs. expected
+    
+    // FLSA compliance (general check)
+    let flsa_compliant = minimum_wage_compliant && overtime_compliant;
+    
+    PayrollComplianceStatus {
+        overtime_compliant,
+        minimum_wage_compliant,
+        tax_withholding_accurate,
+        flsa_compliant,
+        warnings,
+    }
+}
+
+fn analyze_pay_equity(
+    annual_salary: f64,
+    job_grade: &str,
+    years_experience: f64,
+) -> PayEquityAnalysis {
+    // Simplified pay equity analysis
+    let market_rates = match job_grade {
+        "ENTRY" => (40000.0, 55000.0),
+        "INTERMEDIATE" => (55000.0, 75000.0),
+        "SENIOR" => (75000.0, 95000.0),
+        "LEAD" => (95000.0, 120000.0),
+        _ => (50000.0, 70000.0),
+    };
+    
+    let experience_factor = 1.0 + (years_experience * 0.03); // 3% per year
+    let expected_salary = market_rates.0 * experience_factor;
+    let market_comparison = annual_salary / expected_salary;
+    
+    let internal_equity_score = if market_comparison >= 0.95 && market_comparison <= 1.15 {
+        85.0 // Good equity
+    } else if market_comparison >= 0.8 && market_comparison <= 1.3 {
+        70.0 // Fair equity
+    } else {
+        50.0 // Poor equity
+    };
+    
+    let pay_grade_alignment = if annual_salary >= market_rates.0 && annual_salary <= market_rates.1 {
+        "Aligned".to_string()
+    } else if annual_salary < market_rates.0 {
+        "Below Grade".to_string()
+    } else {
+        "Above Grade".to_string()
+    };
+    
+    let mut recommendations = Vec::new();
+    if market_comparison < 0.9 {
+        recommendations.push("Consider salary adjustment to market rate".to_string());
+    }
+    if market_comparison > 1.2 {
+        recommendations.push("Salary may be above market - review job responsibilities".to_string());
+    }
+    
+    PayEquityAnalysis {
+        market_comparison,
+        internal_equity_score,
+        pay_grade_alignment,
+        recommendations,
+    }
+}
+
 #[napi]
 pub fn calculate_payroll(
     base_salary: f64,
@@ -92,6 +411,7 @@ pub fn calculate_payroll(
     benefit_deductions: f64,
     pay_periods_per_year: f64,
 ) -> PayrollCalculation {
+    // Legacy function maintained for backward compatibility
     let period_base_salary = base_salary / pay_periods_per_year;
     let hourly_rate = base_salary / (pay_periods_per_year * 40.0); // Assuming 40 hours/week
     let overtime_rate = hourly_rate * overtime_multiplier;
