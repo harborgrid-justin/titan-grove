@@ -5133,6 +5133,41 @@ export interface UniversalBusinessConfig {
   parameters: Array<ConfigParameter>
   thresholds: Array<Threshold>
 }
+export interface FinancialHealthInput {
+  revenue: number
+  costs: number
+  assets: number
+  liabilities: number
+  cashFlow: number
+  industrySector: string
+  companySize: string
+}
+export interface FinancialHealthResult {
+  healthScore: number
+  rating: string
+  componentScores: ComponentScores
+  benchmarks: BenchmarkData
+  recommendations: Array<string>
+  riskFactors: Array<string>
+}
+export interface ComponentScores {
+  profitability: number
+  liquidity: number
+  solvency: number
+  efficiency: number
+}
+export interface BenchmarkData {
+  industryAverage: number
+  peerComparison: string
+  percentileRanking: number
+}
+export interface IndustryWeights {
+  profitability: number
+  liquidity: number
+  solvency: number
+  efficiency: number
+}
+export declare function calculateAdvancedFinancialHealthScore(input: FinancialHealthInput): FinancialHealthResult
 export declare function calculateUniversalBusinessMetrics(input: number): number
 export declare function processUniversalBusinessData(data: Array<number>): Array<number>
 export declare function analyzeUniversalBusinessPerformance(metrics: Array<number>): number

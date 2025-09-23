@@ -141,9 +141,8 @@ export function validateConfig(config: any): TitanConfig {
 
   if (error) {
     throw new ConfigurationError(
-      'CONFIG_VALIDATION_FAILED',
       `Invalid configuration: ${error.message}`,
-      { validationError: error.details }
+      'CONFIG_VALIDATION_FAILED'
     );
   }
 
