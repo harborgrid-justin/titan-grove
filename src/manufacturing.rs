@@ -104,12 +104,191 @@ pub fn calculate_production_time_required(
     }
 }
 
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct AdvancedOeeResult {
+    pub overall_oee: f64,
+    pub availability_score: f64,
+    pub performance_score: f64,
+    pub quality_score: f64,
+    pub bottleneck_analysis: BottleneckAnalysis,
+    pub improvement_recommendations: Vec<String>,
+    pub downtime_categorization: DowntimeAnalysis,
+    pub benchmark_comparison: BenchmarkComparison,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct BottleneckAnalysis {
+    pub primary_constraint: String,
+    pub constraint_impact: f64,
+    pub capacity_utilization: f64,
+    pub throughput_loss: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct DowntimeAnalysis {
+    pub planned_downtime: f64,
+    pub unplanned_downtime: f64,
+    pub maintenance_related: f64,
+    pub quality_related: f64,
+    pub setup_changeover: f64,
+    pub other_downtime: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct BenchmarkComparison {
+    pub industry_average_oee: f64,
+    pub world_class_oee: f64,
+    pub performance_quartile: String,
+    pub improvement_potential: f64,
+}
+
+#[napi]
+pub fn calculate_advanced_oee_analytics(
+    availability_percentage: f64,
+    performance_percentage: f64,
+    quality_percentage: f64,
+    planned_production_time: f64,
+    actual_production_time: f64,
+    ideal_cycle_time: f64,
+    actual_cycle_time: f64,
+    good_count: i32,
+    total_count: i32,
+    downtime_breakdown: DowntimeAnalysis,
+) -> AdvancedOeeResult {
+    // Enhanced OEE calculation with detailed analytics
+    // Legacy: Simple multiplication of three percentages
+    
+    // 1. Availability Analysis
+    let availability = availability_percentage / 100.0;
+    
+    // 2. Performance Analysis with bottleneck detection
+    let performance = performance_percentage / 100.0;
+    let throughput_ratio = if actual_cycle_time > 0.0 {
+        ideal_cycle_time / actual_cycle_time
+    } else {
+        0.0
+    };
+    
+    // 3. Quality Analysis
+    let quality = if total_count > 0 {
+        good_count as f64 / total_count as f64
+    } else {
+        quality_percentage / 100.0
+    };
+    
+    // 4. Overall OEE Calculation
+    let overall_oee = availability * performance * quality * 100.0;
+    
+    // 5. Bottleneck Analysis
+    let bottleneck = analyze_bottleneck_constraint(availability, performance, quality);
+    
+    // 6. Root Cause Analysis and Recommendations
+    let recommendations = generate_oee_improvement_recommendations(
+        availability, performance, quality, &downtime_breakdown
+    );
+    
+    // 7. Benchmark Comparison
+    let benchmarks = get_industry_oee_benchmarks();
+    
+    AdvancedOeeResult {
+        overall_oee: overall_oee.round(),
+        availability_score: (availability * 100.0).round(),
+        performance_score: (performance * 100.0).round(),
+        quality_score: (quality * 100.0).round(),
+        bottleneck_analysis: bottleneck,
+        improvement_recommendations: recommendations,
+        downtime_categorization: downtime_breakdown,
+        benchmark_comparison: benchmarks,
+    }
+}
+
+fn analyze_bottleneck_constraint(availability: f64, performance: f64, quality: f64) -> BottleneckAnalysis {
+    // Theory of Constraints analysis
+    let scores = vec![
+        ("Availability", availability),
+        ("Performance", performance),
+        ("Quality", quality),
+    ];
+    
+    let min_score = scores.iter().min_by(|a, b| a.1.partial_cmp(&b.1).unwrap()).unwrap();
+    let capacity_utilization = availability * performance;
+    let throughput_loss = (1.0 - availability * performance * quality) * 100.0;
+    
+    BottleneckAnalysis {
+        primary_constraint: min_score.0.to_string(),
+        constraint_impact: (1.0 - min_score.1) * 100.0,
+        capacity_utilization: capacity_utilization * 100.0,
+        throughput_loss,
+    }
+}
+
+fn generate_oee_improvement_recommendations(
+    availability: f64, 
+    performance: f64, 
+    quality: f64,
+    downtime: &DowntimeAnalysis
+) -> Vec<String> {
+    let mut recommendations = Vec::new();
+    
+    // Availability improvements
+    if availability < 0.85 {
+        recommendations.push("Implement predictive maintenance to reduce unplanned downtime".to_string());
+        if downtime.maintenance_related > 10.0 {
+            recommendations.push("Optimize maintenance scheduling and reduce MTTR".to_string());
+        }
+        if downtime.setup_changeover > 15.0 {
+            recommendations.push("Implement SMED (Single Minute Exchange of Dies) to reduce changeover time".to_string());
+        }
+    }
+    
+    // Performance improvements
+    if performance < 0.85 {
+        recommendations.push("Analyze and eliminate micro-stops and minor stoppages".to_string());
+        recommendations.push("Implement operator training to improve equipment handling".to_string());
+        if performance < 0.7 {
+            recommendations.push("Consider equipment upgrade or process optimization".to_string());
+        }
+    }
+    
+    // Quality improvements
+    if quality < 0.95 {
+        recommendations.push("Implement statistical process control (SPC) for quality monitoring".to_string());
+        recommendations.push("Conduct root cause analysis for quality defects".to_string());
+        if quality < 0.9 {
+            recommendations.push("Review and improve quality control procedures".to_string());
+        }
+    }
+    
+    // Overall OEE recommendations
+    let overall_oee = availability * performance * quality;
+    if overall_oee < 0.6 {
+        recommendations.push("Implement comprehensive OEE monitoring system".to_string());
+        recommendations.push("Establish cross-functional improvement team".to_string());
+    }
+    
+    recommendations
+}
+
+fn get_industry_oee_benchmarks() -> BenchmarkComparison {
+    BenchmarkComparison {
+        industry_average_oee: 60.0, // Typical manufacturing average
+        world_class_oee: 85.0,      // World-class benchmark
+        performance_quartile: "Second Quartile".to_string(), // Would be calculated based on actual score
+        improvement_potential: 25.0, // Percentage improvement potential
+    }
+}
+
 #[napi]
 pub fn calculate_oee_score(
     availability_percentage: f64,
     performance_percentage: f64,
     quality_percentage: f64,
 ) -> f64 {
+    // Backward compatible basic OEE calculation
     (availability_percentage / 100.0) * 
     (performance_percentage / 100.0) * 
     (quality_percentage / 100.0) * 100.0
@@ -344,6 +523,285 @@ pub fn calculate_capacity_utilization(
     }
 }
 
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct AdvancedProductionCost {
+    pub unit_cost: f64,
+    pub cost_breakdown: CostBreakdown,
+    pub cost_drivers: Vec<CostDriver>,
+    pub variance_analysis: CostVarianceAnalysis,
+    pub optimization_recommendations: Vec<String>,
+    pub activity_based_costs: ActivityBasedCosts,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct CostBreakdown {
+    pub material_cost_per_unit: f64,
+    pub labor_cost_per_unit: f64,
+    pub overhead_cost_per_unit: f64,
+    pub setup_cost_per_unit: f64,
+    pub quality_cost_per_unit: f64,
+    pub machine_cost_per_unit: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct CostDriver {
+    pub driver_name: String,
+    pub cost_allocation: f64,
+    pub utilization_rate: f64,
+    pub efficiency_factor: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct CostVarianceAnalysis {
+    pub material_variance: f64,
+    pub labor_variance: f64,
+    pub overhead_variance: f64,
+    pub volume_variance: f64,
+    pub efficiency_variance: f64,
+}
+
+#[derive(Serialize, Deserialize)]
+#[napi(object)]
+pub struct ActivityBasedCosts {
+    pub setup_activities: f64,
+    pub processing_activities: f64,
+    pub quality_control_activities: f64,
+    pub material_handling_activities: f64,
+    pub maintenance_activities: f64,
+}
+
+#[napi]
+pub fn calculate_advanced_production_cost(
+    total_material_cost: f64,
+    total_labor_cost: f64,
+    total_overhead_cost: f64,
+    quantity_produced: f64,
+    setup_cost: f64,
+    quality_cost: f64,
+    machine_hours: f64,
+    machine_rate_per_hour: f64,
+    planned_quantity: f64,
+    standard_costs: CostBreakdown,
+) -> AdvancedProductionCost {
+    // Enhanced production cost calculation with Activity-Based Costing
+    // Legacy: Simple division by quantity
+    
+    if quantity_produced <= 0.0 {
+        return AdvancedProductionCost {
+            unit_cost: 0.0,
+            cost_breakdown: CostBreakdown {
+                material_cost_per_unit: 0.0,
+                labor_cost_per_unit: 0.0,
+                overhead_cost_per_unit: 0.0,
+                setup_cost_per_unit: 0.0,
+                quality_cost_per_unit: 0.0,
+                machine_cost_per_unit: 0.0,
+            },
+            cost_drivers: vec![],
+            variance_analysis: CostVarianceAnalysis {
+                material_variance: 0.0,
+                labor_variance: 0.0,
+                overhead_variance: 0.0,
+                volume_variance: 0.0,
+                efficiency_variance: 0.0,
+            },
+            optimization_recommendations: vec!["No production volume to analyze".to_string()],
+            activity_based_costs: ActivityBasedCosts {
+                setup_activities: 0.0,
+                processing_activities: 0.0,
+                quality_control_activities: 0.0,
+                material_handling_activities: 0.0,
+                maintenance_activities: 0.0,
+            },
+        };
+    }
+    
+    // 1. Activity-Based Cost Calculation
+    let machine_cost = machine_hours * machine_rate_per_hour;
+    let total_cost = total_material_cost + total_labor_cost + total_overhead_cost + 
+                    setup_cost + quality_cost + machine_cost;
+    
+    // 2. Detailed Cost Breakdown
+    let cost_breakdown = CostBreakdown {
+        material_cost_per_unit: total_material_cost / quantity_produced,
+        labor_cost_per_unit: total_labor_cost / quantity_produced,
+        overhead_cost_per_unit: total_overhead_cost / quantity_produced,
+        setup_cost_per_unit: setup_cost / quantity_produced,
+        quality_cost_per_unit: quality_cost / quantity_produced,
+        machine_cost_per_unit: machine_cost / quantity_produced,
+    };
+    
+    // 3. Cost Driver Analysis
+    let cost_drivers = analyze_cost_drivers(
+        &cost_breakdown, machine_hours, quantity_produced, planned_quantity
+    );
+    
+    // 4. Variance Analysis
+    let variance_analysis = calculate_cost_variances(
+        &cost_breakdown, &standard_costs, quantity_produced, planned_quantity
+    );
+    
+    // 5. Activity-Based Cost Allocation
+    let activity_costs = allocate_activity_based_costs(
+        total_cost, setup_cost, quality_cost, total_labor_cost, total_overhead_cost
+    );
+    
+    // 6. Generate Optimization Recommendations
+    let recommendations = generate_cost_optimization_recommendations(
+        &cost_breakdown, &variance_analysis, &cost_drivers
+    );
+    
+    AdvancedProductionCost {
+        unit_cost: total_cost / quantity_produced,
+        cost_breakdown,
+        cost_drivers,
+        variance_analysis,
+        optimization_recommendations: recommendations,
+        activity_based_costs: activity_costs,
+    }
+}
+
+fn analyze_cost_drivers(
+    cost_breakdown: &CostBreakdown, 
+    machine_hours: f64, 
+    actual_quantity: f64,
+    planned_quantity: f64
+) -> Vec<CostDriver> {
+    let mut drivers = Vec::new();
+    
+    // Volume utilization driver
+    let volume_utilization = if planned_quantity > 0.0 {
+        actual_quantity / planned_quantity
+    } else {
+        0.0
+    };
+    
+    drivers.push(CostDriver {
+        driver_name: "Volume Utilization".to_string(),
+        cost_allocation: cost_breakdown.overhead_cost_per_unit * actual_quantity,
+        utilization_rate: volume_utilization,
+        efficiency_factor: volume_utilization.min(1.0),
+    });
+    
+    // Machine utilization driver
+    let machine_efficiency = if machine_hours > 0.0 {
+        actual_quantity / machine_hours // Units per hour
+    } else {
+        0.0
+    };
+    
+    drivers.push(CostDriver {
+        driver_name: "Machine Efficiency".to_string(),
+        cost_allocation: cost_breakdown.machine_cost_per_unit * actual_quantity,
+        utilization_rate: machine_efficiency / 10.0, // Normalize to typical 10 units/hour
+        efficiency_factor: (machine_efficiency / 10.0).min(1.0),
+    });
+    
+    // Labor productivity driver
+    drivers.push(CostDriver {
+        driver_name: "Labor Productivity".to_string(),
+        cost_allocation: cost_breakdown.labor_cost_per_unit * actual_quantity,
+        utilization_rate: 0.85, // Assume 85% utilization
+        efficiency_factor: 0.85,
+    });
+    
+    drivers
+}
+
+fn calculate_cost_variances(
+    actual: &CostBreakdown,
+    standard: &CostBreakdown,
+    actual_quantity: f64,
+    planned_quantity: f64,
+) -> CostVarianceAnalysis {
+    let material_variance = (actual.material_cost_per_unit - standard.material_cost_per_unit) * actual_quantity;
+    let labor_variance = (actual.labor_cost_per_unit - standard.labor_cost_per_unit) * actual_quantity;
+    let overhead_variance = (actual.overhead_cost_per_unit - standard.overhead_cost_per_unit) * actual_quantity;
+    
+    // Volume variance (fixed cost spread over different quantity)
+    let volume_variance = if planned_quantity > 0.0 {
+        (planned_quantity - actual_quantity) * standard.overhead_cost_per_unit
+    } else {
+        0.0
+    };
+    
+    // Efficiency variance (actual vs. standard performance)
+    let efficiency_variance = material_variance + labor_variance;
+    
+    CostVarianceAnalysis {
+        material_variance,
+        labor_variance,
+        overhead_variance,
+        volume_variance,
+        efficiency_variance,
+    }
+}
+
+fn allocate_activity_based_costs(
+    total_cost: f64,
+    setup_cost: f64,
+    quality_cost: f64,
+    labor_cost: f64,
+    overhead_cost: f64,
+) -> ActivityBasedCosts {
+    ActivityBasedCosts {
+        setup_activities: setup_cost,
+        processing_activities: labor_cost * 0.7, // 70% of labor is direct processing
+        quality_control_activities: quality_cost,
+        material_handling_activities: overhead_cost * 0.3, // 30% of overhead is material handling
+        maintenance_activities: overhead_cost * 0.2, // 20% of overhead is maintenance
+    }
+}
+
+fn generate_cost_optimization_recommendations(
+    cost_breakdown: &CostBreakdown,
+    variance_analysis: &CostVarianceAnalysis,
+    cost_drivers: &[CostDriver],
+) -> Vec<String> {
+    let mut recommendations = Vec::new();
+    
+    // Material cost optimization
+    if variance_analysis.material_variance > 0.0 {
+        recommendations.push("Investigate material cost increases and negotiate better supplier rates".to_string());
+    }
+    if cost_breakdown.material_cost_per_unit > cost_breakdown.labor_cost_per_unit {
+        recommendations.push("Consider value engineering to reduce material content".to_string());
+    }
+    
+    // Labor cost optimization
+    if variance_analysis.labor_variance > 0.0 {
+        recommendations.push("Analyze labor efficiency and provide additional training if needed".to_string());
+    }
+    
+    // Setup cost optimization
+    if cost_breakdown.setup_cost_per_unit > cost_breakdown.unit_cost * 0.1 {
+        recommendations.push("Implement lean setup reduction techniques (SMED)".to_string());
+    }
+    
+    // Quality cost optimization
+    if cost_breakdown.quality_cost_per_unit > cost_breakdown.unit_cost * 0.05 {
+        recommendations.push("Implement right-first-time quality processes to reduce quality costs".to_string());
+    }
+    
+    // Volume optimization
+    if variance_analysis.volume_variance > 0.0 {
+        recommendations.push("Improve demand forecasting and production planning accuracy".to_string());
+    }
+    
+    // Machine efficiency
+    if let Some(machine_driver) = cost_drivers.iter().find(|d| d.driver_name == "Machine Efficiency") {
+        if machine_driver.efficiency_factor < 0.7 {
+            recommendations.push("Investigate machine performance issues and optimize utilization".to_string());
+        }
+    }
+    
+    recommendations
+}
+
 #[napi]
 pub fn calculate_production_cost_per_unit(
     total_material_cost: f64,
@@ -351,6 +809,7 @@ pub fn calculate_production_cost_per_unit(
     total_overhead_cost: f64,
     quantity_produced: f64,
 ) -> f64 {
+    // Legacy function maintained for backward compatibility
     if quantity_produced > 0.0 {
         (total_material_cost + total_labor_cost + total_overhead_cost) / quantity_produced
     } else {

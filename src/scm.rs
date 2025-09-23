@@ -89,20 +89,75 @@ pub fn calculate_optimal_route(
         return "NO_ROUTE_FOUND".to_string();
     }
     
-    let mut best_route = &routes[0];
-    let mut best_cost = f64::MAX;
+    // Enhanced multi-objective route optimization
+    // Legacy: Simple cost comparison
+    
+    let mut route_scores = Vec::new();
     
     for route in &routes {
         if route.capacity_limit >= shipment_volume {
-            let total_cost = route.distance_km * route.transport_cost_per_km;
-            if total_cost < best_cost {
-                best_cost = total_cost;
-                best_route = route;
-            }
+            // Multi-factor optimization score
+            let cost_score = calculate_route_cost_score(route, shipment_volume);
+            let time_score = calculate_route_time_score(route);
+            let reliability_score = calculate_route_reliability_score(route);
+            let sustainability_score = calculate_route_sustainability_score(route, shipment_volume);
+            
+            // Weighted composite score (configurable weights)
+            let composite_score = cost_score * 0.4 + 
+                                time_score * 0.25 + 
+                                reliability_score * 0.2 + 
+                                sustainability_score * 0.15;
+            
+            route_scores.push((route, composite_score));
         }
     }
     
+    if route_scores.is_empty() {
+        return "NO_FEASIBLE_ROUTE".to_string();
+    }
+    
+    // Find optimal route (highest score)
+    let best_route = route_scores.iter()
+        .max_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal))
+        .map(|(route, _)| route)
+        .unwrap();
+    
     best_route.route_id.clone()
+}
+
+fn calculate_route_cost_score(route: &ShipmentRoute, volume: f64) -> f64 {
+    let total_cost = route.distance_km * route.transport_cost_per_km;
+    let cost_per_unit = total_cost / volume.max(1.0);
+    
+    // Normalize cost score (lower cost = higher score)
+    let max_acceptable_cost = 100.0; // Configurable threshold
+    (1.0 - (cost_per_unit / max_acceptable_cost).min(1.0)).max(0.0)
+}
+
+fn calculate_route_time_score(route: &ShipmentRoute) -> f64 {
+    let transit_time_hours = route.distance_km / 60.0; // Assume 60 km/h average
+    let max_acceptable_time = 48.0; // 48 hours max
+    
+    (1.0 - (transit_time_hours / max_acceptable_time).min(1.0)).max(0.0)
+}
+
+fn calculate_route_reliability_score(route: &ShipmentRoute) -> f64 {
+    // Simplified reliability based on carrier performance
+    // In production, this would use historical data
+    let base_reliability = 0.85;
+    let distance_penalty = (route.distance_km / 1000.0) * 0.05;
+    
+    (base_reliability - distance_penalty).max(0.0).min(1.0)
+}
+
+fn calculate_route_sustainability_score(route: &ShipmentRoute, volume: f64) -> f64 {
+    // Carbon emissions calculation (simplified)
+    let emissions_per_km = 2.5; // kg CO2 per km (truck)
+    let total_emissions = route.distance_km * emissions_per_km;
+    let emissions_per_unit = total_emissions / volume.max(1.0);
+    
+    let max_acceptable_emissions = 50.0; // kg CO2 per unit
+    (1.0 - (emissions_per_unit / max_acceptable_emissions).min(1.0)).max(0.0)
 }
 
 #[napi]
@@ -115,20 +170,89 @@ pub fn calculate_demand_forecast(
         return 0.0;
     }
     
-    // Simple moving average with trend and seasonality
-    let moving_average: f64 = historical_demand.iter().sum::<f64>() / historical_demand.len() as f64;
+    // Enhanced demand forecasting with advanced analytics
+    // Legacy: Simple moving average with basic trend and seasonality
     
-    // Apply trend factor
-    let trended_forecast = moving_average * (1.0 + trend_factor);
+    let len = historical_demand.len();
     
-    // Apply seasonal factor (use average if provided)
-    let seasonal_factor = if !seasonal_factors.is_empty() {
-        seasonal_factors.iter().sum::<f64>() / seasonal_factors.len() as f64
+    // 1. Exponential smoothing with trend (Holt's method)
+    let alpha = 0.3; // Level smoothing parameter
+    let beta = 0.2;  // Trend smoothing parameter
+    
+    let mut level = historical_demand[0];
+    let mut trend = if len > 1 {
+        historical_demand[1] - historical_demand[0]
     } else {
-        1.0
+        0.0
     };
     
-    trended_forecast * seasonal_factor
+    // Apply exponential smoothing
+    for i in 1..len {
+        let previous_level = level;
+        level = alpha * historical_demand[i] + (1.0 - alpha) * (level + trend);
+        trend = beta * (level - previous_level) + (1.0 - beta) * trend;
+    }
+    
+    // 2. Seasonal decomposition
+    let seasonal_factor = if !seasonal_factors.is_empty() {
+        let period = seasonal_factors.len();
+        let current_season_index = len % period;
+        seasonal_factors[current_season_index]
+    } else {
+        // Calculate implicit seasonality if factors not provided
+        calculate_implicit_seasonality(&historical_demand)
+    };
+    
+    // 3. Trend adjustment with dampening
+    let dampened_trend = trend * (1.0 + trend_factor).tanh(); // Dampen extreme trends
+    
+    // 4. Calculate base forecast
+    let base_forecast = level + dampened_trend;
+    
+    // 5. Apply seasonal adjustment
+    let seasonal_forecast = base_forecast * seasonal_factor;
+    
+    // 6. Add noise reduction and bounds checking
+    let final_forecast = apply_forecast_constraints(seasonal_forecast, &historical_demand);
+    
+    final_forecast.max(0.0)
+}
+
+fn calculate_implicit_seasonality(data: &[f64]) -> f64 {
+    if data.len() < 4 {
+        return 1.0; // No seasonality
+    }
+    
+    let mean = data.iter().sum::<f64>() / data.len() as f64;
+    if mean == 0.0 {
+        return 1.0;
+    }
+    
+    // Simple seasonality detection based on recent vs. historical average
+    let recent_window = (data.len() / 4).max(1);
+    let recent_avg = data.iter()
+        .rev()
+        .take(recent_window)
+        .sum::<f64>() / recent_window as f64;
+    
+    (recent_avg / mean).min(2.0).max(0.5) // Bound seasonal factor
+}
+
+fn apply_forecast_constraints(forecast: f64, historical_data: &[f64]) -> f64 {
+    if historical_data.is_empty() {
+        return forecast;
+    }
+    
+    let mean = historical_data.iter().sum::<f64>() / historical_data.len() as f64;
+    let std_dev = (historical_data.iter()
+        .map(|x| (x - mean).powi(2))
+        .sum::<f64>() / historical_data.len() as f64).sqrt();
+    
+    // Constrain forecast within reasonable bounds (3 standard deviations)
+    let lower_bound = (mean - 3.0 * std_dev).max(0.0);
+    let upper_bound = mean + 3.0 * std_dev;
+    
+    forecast.max(lower_bound).min(upper_bound)
 }
 
 #[napi]

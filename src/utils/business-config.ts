@@ -563,9 +563,8 @@ export function validateExtendedConfig(config: any): ExtendedTitanConfig {
 
   if (error) {
     throw new ConfigurationError(
-      'BUSINESS_CONFIG_VALIDATION_FAILED',
       `Invalid business configuration: ${error.message}`,
-      { validationError: error.details }
+      'BUSINESS_CONFIG_VALIDATION_FAILED'
     );
   }
 
