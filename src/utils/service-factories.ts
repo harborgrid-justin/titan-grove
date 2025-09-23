@@ -8,6 +8,9 @@ import { loadBusinessConfig } from './business-config';
 import { QuoteService } from '../modules/orders/business-logic/quote-management/quote-service';
 import { OrderPromisingService } from '../modules/orders/business-logic/order-promising/order-promising-service';
 import { createProjectBillingService } from '../modules/project/business-logic/billing/billing-service';
+import { MaterialRequirementsPlanningService } from '../modules/manufacturing/business-logic/material-requirements-planning/mrp-service';
+import { CapacityRequirementsPlanningService } from '../modules/manufacturing/business-logic/capacity-requirements-planning/crp-service';
+import { AdvancedBOMManagementService } from '../modules/manufacturing/business-logic/advanced-bom-management/advanced-bom-service';
 
 // ================================
 // WAREHOUSE MANAGEMENT FACTORY
@@ -165,6 +168,34 @@ export function createManufacturingIntegrationService(config?: BusinessConfig) {
 }
 
 // ================================
+// PHASE 2 MANUFACTURING SERVICES FACTORIES
+// ================================
+
+/**
+ * Creates a configurable Material Requirements Planning (MRP) service instance
+ */
+export function createMRPService(config?: BusinessConfig) {
+  const businessConfig = config || loadBusinessConfig();
+  return new MaterialRequirementsPlanningService();
+}
+
+/**
+ * Creates a configurable Capacity Requirements Planning (CRP) service instance
+ */
+export function createCRPService(config?: BusinessConfig) {
+  const businessConfig = config || loadBusinessConfig();
+  return new CapacityRequirementsPlanningService();
+}
+
+/**
+ * Creates a configurable Advanced BOM Management service instance
+ */
+export function createAdvancedBOMService(config?: BusinessConfig) {
+  const businessConfig = config || loadBusinessConfig();
+  return new AdvancedBOMManagementService();
+}
+
+// ================================
 // QUOTE MANAGEMENT FACTORY
 // ================================
 
@@ -244,6 +275,9 @@ export function createProjectServices(config?: BusinessConfig) {
 // Export singleton instances
 export const warehouseManagementServiceFactory = createWarehouseManagementService();
 export const manufacturingIntegrationServiceFactory = createManufacturingIntegrationService();
+export const mrpServiceFactory = createMRPService();
+export const crpServiceFactory = createCRPService();
+export const advancedBOMServiceFactory = createAdvancedBOMService();
 export const quoteManagementServiceFactory = createQuoteManagementService();
 export const orderPromisingServiceFactory = createOrderPromisingService();
 export const procurementServiceConfigFactory = createProcurementServiceConfig();

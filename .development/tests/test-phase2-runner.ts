@@ -4,9 +4,9 @@
  */
 
 // Import the services directly
-import { MaterialRequirementsPlanningService, MRPParameters } from './src/modules/manufacturing/business-logic/material-requirements-planning/mrp-service';
-import { CapacityRequirementsPlanningService, CRPParameters } from './src/modules/manufacturing/business-logic/capacity-requirements-planning/crp-service';
-import { AdvancedBOMManagementService, AdvancedBOM } from './src/modules/manufacturing/business-logic/advanced-bom-management/advanced-bom-service';
+import { MaterialRequirementsPlanningService, MRPParameters } from '../../src/modules/manufacturing/business-logic/material-requirements-planning/mrp-service';
+import { CapacityRequirementsPlanningService, CRPParameters } from '../../src/modules/manufacturing/business-logic/capacity-requirements-planning/crp-service';
+import { AdvancedBOMManagementService, AdvancedBOM } from '../../src/modules/manufacturing/business-logic/advanced-bom-management/advanced-bom-service';
 
 async function testPhase2Implementation(): Promise<void> {
   console.log('🧪 Starting Manufacturing Phase 2 Implementation Tests...\n');
@@ -83,7 +83,7 @@ async function testPhase2Implementation(): Promise<void> {
       { componentItemCode: 'PHANTOM_COMP_1', componentDescription: 'Phantom Component 1', quantityPer: 1 }
     ]);
     
-    if (phantomBOM.bomType === 'PHANTOM' && phantomBOM.components.every(c => c.phantom)) {
+    if (phantomBOM.bomType === 'PHANTOM' && phantomBOM.components.every((c: any) => c.phantom)) {
       console.log(`   ✅ Phantom BOM test passed: ${phantomBOM.bomId}`);
     } else {
       throw new Error('Phantom BOM test failed');
