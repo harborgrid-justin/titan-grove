@@ -16,6 +16,7 @@ import BusinessIntelligence from './pages/BusinessIntelligence';
 import ProjectManagement from './pages/ProjectManagement';
 import AssetManagement from './pages/AssetManagement';
 import Compliance from './pages/Compliance';
+import EnterpriseSuite from './pages/EnterpriseSuite';
 
 // Advanced Analytics & Reporting (8 features)
 import {
@@ -109,6 +110,7 @@ function App() {
                 <Route path="/" element={<ProductionDashboard />} />
                 <Route path="/dashboard" element={<ProductionDashboard />} />
                 <Route path="/legacy-dashboard" element={<Dashboard />} />
+                <Route path="/enterprise-suite" element={<EnterpriseSuite />} />
                 
                 {/* Legacy Module Routes */}
                 <Route path="/manufacturing" element={<EnhancedManufacturing />} />
