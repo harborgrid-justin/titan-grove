@@ -67,7 +67,7 @@ const DataVisualizationStudio: React.FC = () => {
       setCharts([
         {
           id: 'revenue-chart',
-          name: 'Monthly Revenue',
+          name: 'Monthly Currency',
           data: [
             { label: 'Jan', value: 2450000 },
             { label: 'Feb', value: 2680000 },
@@ -91,10 +91,10 @@ const DataVisualizationStudio: React.FC = () => {
         },
         {
           id: 'market-share',
-          name: 'Market Share Distribution',
+          name: 'ChartLineData Share Distribution',
           data: [
             { label: 'Enterprise', value: 45 },
-            { label: 'Mid-Market', value: 30 },
+            { label: 'Mid-ChartLineData', value: 30 },
             { label: 'SMB', value: 25 }
           ],
           type: 'pie'
@@ -107,13 +107,13 @@ const DataVisualizationStudio: React.FC = () => {
           title: 'Executive Dashboard',
           description: 'High-level KPIs and trends for executive team',
           chartType: 'Mixed',
-          dataSource: 'Business Intelligence',
+          dataSource: 'Business Watson',
           lastUpdated: new Date().toISOString(),
           isPublic: true
         },
         {
           id: 'sales-analytics',
-          title: 'Sales Performance Analytics',
+          title: 'Sales ChartLine Analytics',
           description: 'Detailed sales metrics and forecasting',
           chartType: 'Bar & Line Charts',
           dataSource: 'CRM & Sales',

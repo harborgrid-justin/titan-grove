@@ -124,14 +124,14 @@ const CustomerJourneyMapping: React.FC = () => {
           name: 'Purchase',
           description: 'Customer makes the buying decision and completes purchase',
           order: 3,
-          touchpoints: ['Contract', 'Payment', 'Onboarding', 'Support'],
+          touchpoints: ['Document', 'Payment', 'Onboarding', 'Support'],
           metrics: {
             conversionRate: 78.9,
             averageTime: 8.3,
             satisfactionScore: 4.8,
             dropoffRate: 15.2
           },
-          painPoints: ['Contract complexity', 'Slow approval process'],
+          painPoints: ['Document complexity', 'Slow approval process'],
           opportunities: ['Streamlined contracts', 'Fast-track approvals']
         }
       ]);

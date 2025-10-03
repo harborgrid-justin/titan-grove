@@ -22,9 +22,9 @@ import {
   NumberInput
 } from '@carbon/react';
 import {
-  Predict,
+  ChartLineSmooth,
   Analytics,
-  TrendUp,
+  ArrowUp,
   ChartLine,
   Add,
   View,
@@ -108,8 +108,8 @@ const DemandForecastingEngine: React.FC = () => {
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
-      case 'increasing': return <TrendUp size={16} style={{ color: 'var(--cds-support-02)' }} />;
-      case 'decreasing': return <TrendUp size={16} style={{ color: 'var(--cds-support-01)', transform: 'rotate(180deg)' }} />;
+      case 'increasing': return <ArrowUp size={16} style={{ color: 'var(--cds-support-02)' }} />;
+      case 'decreasing': return <ArrowUp size={16} style={{ color: 'var(--cds-support-01)', transform: 'rotate(180deg)' }} />;
       default: return <span style={{ color: 'var(--cds-text-02)' }}>→</span>;
     }
   };
@@ -239,7 +239,7 @@ const DemandForecastingEngine: React.FC = () => {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <Predict size={32} />
+            <ChartLineSmooth size={32} />
             Demand Forecasting Engine
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
@@ -265,7 +265,7 @@ const DemandForecastingEngine: React.FC = () => {
               renderIcon={Add}
               onClick={() => setShowForecastModal(true)}
             >
-              Create Forecast
+              Create ChartLineSmooth
             </Button>
             
             <Button kind="secondary" renderIcon={ChartLine}>
@@ -303,7 +303,7 @@ const DemandForecastingEngine: React.FC = () => {
                 alignItems: 'center',
                 gap: '0.5rem'
               }}>
-                <Predict size={20} />
+                <ChartLineSmooth size={20} />
                 Demand Forecasts
               </h3>
               
@@ -342,8 +342,8 @@ const DemandForecastingEngine: React.FC = () => {
         <Modal
           open={showForecastModal}
           onRequestClose={() => setShowForecastModal(false)}
-          modalHeading="Create Demand Forecast"
-          primaryButtonText="Create Forecast"
+          modalHeading="Create Demand ChartLineSmooth"
+          primaryButtonText="Create ChartLineSmooth"
           secondaryButtonText="Cancel"
           onRequestSubmit={createForecast}
         >

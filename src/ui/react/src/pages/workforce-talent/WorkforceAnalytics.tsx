@@ -18,7 +18,7 @@ import {
   Analytics,
   ChartLine,
   UserMultiple,
-  TrendUp,
+  ArrowUp,
   Add
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
@@ -104,7 +104,7 @@ const WorkforceAnalytics: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Analytics size={32} />
-              Workforce Analytics
+              GroupPresentation Analytics
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Comprehensive workforce metrics and analytics
@@ -135,7 +135,7 @@ const WorkforceAnalytics: React.FC = () => {
               value={`${kpiData.avgTenure} years`}
               trend="up"
               trendValue="0.8 years"
-              icon={<TrendUp size={24} />}
+              icon={<ArrowUp size={24} />}
             />
           </Column>
           <Column lg={4} md={4} sm={4}>
@@ -151,7 +151,7 @@ const WorkforceAnalytics: React.FC = () => {
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Key Workforce Metrics</h3>
+                <h3>Key GroupPresentation Metrics</h3>
                 <Button kind="primary" renderIcon={Add}>
                   Generate Report
                 </Button>
@@ -166,7 +166,7 @@ const WorkforceAnalytics: React.FC = () => {
                           <TableHeader>Metric</TableHeader>
                           <TableHeader>Value</TableHeader>
                           <TableHeader>Unit</TableHeader>
-                          <TableHeader>Change</TableHeader>
+                          <TableHeader>Edit</TableHeader>
                           <TableHeader>Period</TableHeader>
                         </TableRow>
                       </TableHead>

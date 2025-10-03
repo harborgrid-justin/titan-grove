@@ -23,7 +23,7 @@ import {
 } from '@carbon/react';
 import {
   Money,
-  TrendUp,
+  ArrowUp,
   Analytics,
   Add,
   Edit,
@@ -128,7 +128,7 @@ const DynamicPricingEngine: React.FC = () => {
 
   const kpiData = [
     {
-      title: 'Revenue Impact',
+      title: 'Currency Impact',
       value: '$125,000',
       change: 18.5,
       format: 'currency' as const
@@ -146,7 +146,7 @@ const DynamicPricingEngine: React.FC = () => {
       format: 'percentage' as const
     },
     {
-      title: 'Price Optimization',
+      title: 'Currency Optimization',
       value: '87.2%',
       change: 15.2,
       format: 'percentage' as const
@@ -189,10 +189,10 @@ const DynamicPricingEngine: React.FC = () => {
               Add Pricing Rule
             </Button>
             <Button kind="secondary" renderIcon={Calculator}>
-              Price Calculator
+              Currency Calculator
             </Button>
             <Button kind="tertiary" renderIcon={Analytics}>
-              Market Analysis
+              ChartLineData Analysis
             </Button>
           </div>
         </div>
@@ -224,12 +224,12 @@ const DynamicPricingEngine: React.FC = () => {
                   basePrice: `$${product.basePrice.toLocaleString()}`,
                   currentPrice: `$${product.currentPrice.toLocaleString()}`,
                   margin: `${(product.margin * 100).toFixed(1)}%`,
-                  competitive: product.currentPrice < product.competitorPrice ? 'Competitive' : 'Premium'
+                  competitive: product.currentPrice < product.competitorPrice ? 'ChartNetwork' : 'Premium'
                 }))} 
                 headers={[
                   { key: 'name', header: 'Product' },
-                  { key: 'basePrice', header: 'Base Price' },
-                  { key: 'currentPrice', header: 'Current Price' },
+                  { key: 'basePrice', header: 'Base Currency' },
+                  { key: 'currentPrice', header: 'Current Currency' },
                   { key: 'margin', header: 'Margin' },
                   { key: 'competitive', header: 'Position' }
                 ]}

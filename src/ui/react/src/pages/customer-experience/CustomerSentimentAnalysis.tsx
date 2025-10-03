@@ -24,11 +24,11 @@ import {
 import {
   FaceNeutral,
   FaceWink,
-  FaceSad,
+  FaceDissatisfied,
   Analytics,
   Time,
-  TrendUp,
-  TrendDown,
+  ArrowUp,
+  ArrowDown,
   Email,
   Phone
 } from '@carbon/icons-react';
@@ -165,7 +165,7 @@ const CustomerSentimentAnalysis: React.FC = () => {
   const getSentimentIcon = (sentiment: string) => {
     switch (sentiment) {
       case 'positive': return <FaceWink size={16} style={{ color: 'var(--cds-support-02)' }} />;
-      case 'negative': return <FaceSad size={16} style={{ color: 'var(--cds-support-01)' }} />;
+      case 'negative': return <FaceDissatisfied size={16} style={{ color: 'var(--cds-support-01)' }} />;
       default: return <FaceNeutral size={16} style={{ color: 'var(--cds-support-03)' }} />;
     }
   };
@@ -355,7 +355,7 @@ const CustomerSentimentAnalysis: React.FC = () => {
               Generate Report
             </Button>
             
-            <Button kind="secondary" renderIcon={TrendUp}>
+            <Button kind="secondary" renderIcon={ArrowUp}>
               Sentiment Trends
             </Button>
           </div>

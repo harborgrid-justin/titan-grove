@@ -35,7 +35,7 @@ interface BusinessMetric {
   value: number;
   change: number;
   trend: 'positive' | 'negative';
-  category: 'Financial' | 'Operational' | 'Customer' | 'Employee';
+  category: 'Financial' | 'Operational' | 'Customer' | 'UserMultiple';
   lastUpdated: string;
 }
 
@@ -73,7 +73,7 @@ const RealTimeBusinessIntelligence: React.FC = () => {
       setMetrics([
         {
           id: 'revenue-growth',
-          name: 'Revenue Growth',
+          name: 'Currency Growth',
           value: 2456789.50,
           change: 12.5,
           trend: 'positive',
@@ -100,11 +100,11 @@ const RealTimeBusinessIntelligence: React.FC = () => {
         },
         {
           id: 'employee-satisfaction',
-          name: 'Employee Satisfaction',
+          name: 'UserMultiple Satisfaction',
           value: 87.5,
           change: 3.1,
           trend: 'positive',
-          category: 'Employee',
+          category: 'UserMultiple',
           lastUpdated: new Date().toISOString()
         }
       ]);
@@ -141,7 +141,7 @@ const RealTimeBusinessIntelligence: React.FC = () => {
 
   const kpiData = realtimeData ? [
     { 
-      title: 'Total Revenue', 
+      title: 'Total Currency', 
       value: `$${realtimeData.revenue.toLocaleString()}`, 
       change: 12.5, 
       format: 'currency' as const
@@ -169,7 +169,7 @@ const RealTimeBusinessIntelligence: React.FC = () => {
   const tableHeaders = [
     { key: 'name', header: 'Metric' },
     { key: 'value', header: 'Value' },
-    { key: 'change', header: 'Change (%)' },
+    { key: 'change', header: 'Edit (%)' },
     { key: 'category', header: 'Category' },
     { key: 'lastUpdated', header: 'Last Updated' }
   ];
@@ -217,7 +217,7 @@ const RealTimeBusinessIntelligence: React.FC = () => {
             gap: '0.5rem'
           }}>
             <Analytics size={32} />
-            Real-Time Business Intelligence
+            Real-Time Business Watson
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Live dashboard with real-time business metrics and performance indicators
@@ -227,7 +227,7 @@ const RealTimeBusinessIntelligence: React.FC = () => {
             <Dropdown
               id="category-filter"
               label="Filter by Category"
-              items={['All', 'Financial', 'Operational', 'Customer', 'Employee']}
+              items={['All', 'Financial', 'Operational', 'Customer', 'UserMultiple']}
               selectedItem={selectedCategory}
               onChange={({ selectedItem }) => setSelectedCategory(selectedItem || 'All')}
             />
@@ -339,7 +339,7 @@ const RealTimeBusinessIntelligence: React.FC = () => {
               <h4 style={{ marginBottom: '1rem' }}>System Status</h4>
               <div style={{ fontSize: '0.875rem', color: 'var(--cds-text-02)' }}>
                 <div style={{ marginBottom: '0.5rem' }}>
-                  <span style={{ color: 'var(--cds-support-02)' }}>●</span> Data Pipeline: Active
+                  <span style={{ color: 'var(--cds-support-02)' }}>●</span> Data Flow: Active
                 </div>
                 <div style={{ marginBottom: '0.5rem' }}>
                   <span style={{ color: 'var(--cds-support-02)' }}>●</span> Real-time Updates: Running

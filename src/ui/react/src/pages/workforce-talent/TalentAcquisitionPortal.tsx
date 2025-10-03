@@ -92,7 +92,7 @@ const TalentAcquisitionPortal: React.FC = () => {
           position: 'Product Manager',
           department: 'Product',
           experience: 6,
-          skills: ['Product Strategy', 'Agile', 'Analytics', 'Leadership'],
+          skills: ['Product ChartNetwork', 'Agile', 'Analytics', 'Leadership'],
           status: 'Offer',
           source: 'Referral',
           matchScore: 88,
@@ -104,9 +104,9 @@ const TalentAcquisitionPortal: React.FC = () => {
           id: 'cand-3',
           name: 'Emily Rodriguez',
           position: 'UX Designer',
-          department: 'Design',
+          department: 'Draw',
           experience: 5,
-          skills: ['Figma', 'User Research', 'Prototyping', 'Design Systems'],
+          skills: ['Figma', 'User Research', 'Prototyping', 'Draw Systems'],
           status: 'Screening',
           source: 'Job Board',
           matchScore: 91,
@@ -259,7 +259,7 @@ const TalentAcquisitionPortal: React.FC = () => {
             gap: '0.5rem'
           }}>
             <UserFollow size={32} />
-            Talent Acquisition Portal
+            UserMultiple Acquisition Portal
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Streamline recruitment with AI-powered candidate matching and workflow automation
@@ -291,7 +291,7 @@ const TalentAcquisitionPortal: React.FC = () => {
               <SelectItem value="All" text="All Departments" />
               <SelectItem value="Engineering" text="Engineering" />
               <SelectItem value="Product" text="Product" />
-              <SelectItem value="Design" text="Design" />
+              <SelectItem value="Draw" text="Draw" />
               <SelectItem value="Sales" text="Sales" />
             </Select>
             
@@ -304,7 +304,7 @@ const TalentAcquisitionPortal: React.FC = () => {
             </Button>
             
             <Button kind="secondary" renderIcon={Analytics}>
-              Hiring Analytics
+              UserFollow Analytics
             </Button>
           </div>
         </div>
@@ -335,7 +335,7 @@ const TalentAcquisitionPortal: React.FC = () => {
                 gap: '0.5rem'
               }}>
                 <UserFollow size={20} />
-                Candidate Pipeline
+                Candidate Flow
               </h3>
               
               <DataTable 
@@ -403,7 +403,7 @@ const TalentAcquisitionPortal: React.FC = () => {
             >
               <SelectItem value="Engineering" text="Engineering" />
               <SelectItem value="Product" text="Product" />
-              <SelectItem value="Design" text="Design" />
+              <SelectItem value="Draw" text="Draw" />
               <SelectItem value="Sales" text="Sales" />
               <SelectItem value="Marketing" text="Marketing" />
             </Select>

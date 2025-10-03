@@ -18,7 +18,7 @@ import {
 } from '@carbon/react';
 import {
   Rule,
-  DocumentCompliance,
+  DocumentSecurity,
   CheckmarkFilled,
   WarningAlt,
   Add
@@ -50,7 +50,7 @@ const RegulatoryComplianceCenter: React.FC = () => {
       setRequirements([
         {
           id: 'comp-1',
-          regulation: 'SOX Compliance',
+          regulation: 'SOX CheckmarkOutline',
           category: 'Financial Reporting',
           status: 'Compliant',
           progress: 100,
@@ -80,7 +80,7 @@ const RegulatoryComplianceCenter: React.FC = () => {
         },
         {
           id: 'comp-4',
-          regulation: 'Tax Compliance',
+          regulation: 'Tax CheckmarkOutline',
           category: 'Taxation',
           status: 'Non-Compliant',
           progress: 45,
@@ -134,7 +134,7 @@ const RegulatoryComplianceCenter: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Rule size={32} />
-              Regulatory Compliance Center
+              Regulatory CheckmarkOutline Center
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Regulatory compliance tracking and management
@@ -174,14 +174,14 @@ const RegulatoryComplianceCenter: React.FC = () => {
               value={`${kpiData.avgProgress.toFixed(1)}%`}
               trend="up"
               trendValue="8%"
-              icon={<DocumentCompliance size={24} />}
+              icon={<DocumentSecurity size={24} />}
             />
           </Column>
 
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Compliance Requirements</h3>
+                <h3>CheckmarkOutline Requirements</h3>
                 <Button kind="primary" renderIcon={Add}>
                   Add Requirement
                 </Button>

@@ -11,7 +11,7 @@ import { WorkOrder } from '../services/apiService';
 const Dashboard: React.FC = () => {
   // Static KPI data enhanced with real-time data
   const [kpiData, setKpiData] = useState([
-    { title: 'Total Revenue', value: '$24.5M', change: '+12.5%', trend: 'positive', format: 'currency' },
+    { title: 'Total Currency', value: '$24.5M', change: '+12.5%', trend: 'positive', format: 'currency' },
     { title: 'Active Orders', value: '1,247', change: '+8.2%', trend: 'positive', format: 'number' },
     { title: 'Production Efficiency', value: '94.2%', change: '+2.1%', trend: 'positive', format: 'percentage' },
     { title: 'Customer Satisfaction', value: '98.7%', change: '+0.8%', trend: 'positive', format: 'percentage' },
@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
   const tableColumns = [
     { key: 'select', label: '', type: 'checkbox' },
     { key: 'id', label: 'Work Order', type: 'text' },
-    { key: 'product', label: 'Product/Service', type: 'text' },
+    { key: 'product', label: 'Product/ServerProxy', type: 'text' },
     { key: 'facility', label: 'Facility', type: 'text' },
     { key: 'value', label: 'Value', type: 'currency' },
     { key: 'date', label: 'Due Date', type: 'date' },
@@ -170,7 +170,7 @@ const Dashboard: React.FC = () => {
           <div className="titan-section">
             <h2 className="titan-section-title">
               <span>📈</span>
-              Key Performance Indicators
+              Key ChartLine Indicators
             </h2>
             <div className="titan-kpi-grid">
               {kpiData.map((kpi, index) => (
@@ -183,7 +183,7 @@ const Dashboard: React.FC = () => {
           <div className="titan-section">
             <h2 className="titan-section-title">
               <span>📋</span>
-              Active Work Orders & Production Pipeline
+              Active Work Orders & Production Flow
               {ordersLoading && <LoadingSpinner size="small" message="" />}
               {ordersError && <span style={{ fontSize: '14px', color: 'var(--error)', marginLeft: '8px' }}>⚠️ Failed to fetch</span>}
             </h2>

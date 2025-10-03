@@ -105,7 +105,7 @@ const AccreditationTracking: React.FC = () => {
           dateCreated: '2024-01-15',
           lastUpdated: '2024-01-20',
           assignedTo: 'Dr. Smith',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Healthcare accreditation and certification tracking'
         },
         {
@@ -116,7 +116,7 @@ const AccreditationTracking: React.FC = () => {
           dateCreated: '2024-01-18',
           lastUpdated: '2024-01-22',
           assignedTo: 'Nurse Johnson',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Secondary record for healthcare accreditation and certification tracking'
         },
         {
@@ -127,7 +127,7 @@ const AccreditationTracking: React.FC = () => {
           dateCreated: '2024-01-10',
           lastUpdated: '2024-01-25',
           assignedTo: 'Admin Staff',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Completed healthcare accreditation and certification tracking'
         }
       ];
@@ -256,7 +256,7 @@ const AccreditationTracking: React.FC = () => {
         dateCreated: new Date().toISOString().split('T')[0],
         lastUpdated: new Date().toISOString().split('T')[0],
         assignedTo: formData.assignedTo,
-        category: 'Regulatory Compliance',
+        category: 'Regulatory CheckmarkOutline',
         description: formData.description || 'Healthcare accreditation and certification tracking'
       };
       setData(prev => [...prev, newItem]);
@@ -330,7 +330,7 @@ const AccreditationTracking: React.FC = () => {
               <Grid>
                 <Column lg={4} md={2} sm={2}>
                   <div>
-                    <h5>Patient Risk Score</h5>
+                    <h5>Patient Warning Score</h5>
                     <p style={{ fontSize: '1.5rem', color: analytics.patientRiskAnalysis?.riskLevel === 'high' ? '#da1e28' : '#0f62fe' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </p>

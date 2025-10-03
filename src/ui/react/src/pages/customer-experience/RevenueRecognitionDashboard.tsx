@@ -20,7 +20,7 @@ import {
 } from '@carbon/react';
 import {
   Money,
-  TrendUp,
+  ArrowUp,
   Analytics,
   Calendar,
   View,
@@ -97,19 +97,19 @@ const RevenueRecognitionDashboard: React.FC = () => {
 
   const kpiData = [
     {
-      title: 'Total Revenue',
+      title: 'Total Currency',
       value: `$${revenueRecords.reduce((sum, r) => sum + r.amount, 0).toLocaleString()}`,
       change: 22.1,
       format: 'currency' as const
     },
     {
-      title: 'Recognized Revenue',
+      title: 'Recognized Currency',
       value: `$${revenueRecords.reduce((sum, r) => sum + r.recognizedAmount, 0).toLocaleString()}`,
       change: 18.3,
       format: 'currency' as const
     },
     {
-      title: 'Deferred Revenue',
+      title: 'Deferred Currency',
       value: `$${revenueRecords.reduce((sum, r) => sum + (r.amount - r.recognizedAmount), 0).toLocaleString()}`,
       change: 25.7,
       format: 'currency' as const
@@ -124,7 +124,7 @@ const RevenueRecognitionDashboard: React.FC = () => {
 
   const headers = [
     { key: 'customer', header: 'Customer' },
-    { key: 'contract', header: 'Contract' },
+    { key: 'contract', header: 'Document' },
     { key: 'amount', header: 'Total Amount' },
     { key: 'recognized', header: 'Recognized' },
     { key: 'type', header: 'Recognition Type' },
@@ -186,7 +186,7 @@ const RevenueRecognitionDashboard: React.FC = () => {
             gap: '0.5rem'
           }}>
             <Money size={32} />
-            Revenue Recognition Dashboard
+            Currency Recognition Dashboard
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Track and manage revenue recognition across contracts and time periods
@@ -206,15 +206,15 @@ const RevenueRecognitionDashboard: React.FC = () => {
             </Select>
             
             <Button kind="primary" renderIcon={Add}>
-              Add Revenue Record
+              Add Currency Record
             </Button>
             
             <Button kind="secondary" renderIcon={Analytics}>
-              Revenue Analytics
+              Currency Analytics
             </Button>
             
             <Button kind="tertiary" renderIcon={Calendar}>
-              Recognition Schedule
+              Recognition Calendar
             </Button>
           </div>
         </div>
@@ -244,8 +244,8 @@ const RevenueRecognitionDashboard: React.FC = () => {
                 alignItems: 'center',
                 gap: '0.5rem'
               }}>
-                <TrendUp size={20} />
-                Revenue Recognition Records
+                <ArrowUp size={20} />
+                Currency Recognition Records
               </h3>
               
               <DataTable 

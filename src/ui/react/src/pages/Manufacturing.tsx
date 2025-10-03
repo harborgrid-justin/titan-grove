@@ -60,7 +60,7 @@ const Manufacturing: React.FC = () => {
     { title: 'Production Volume', value: '12,847 units', change: '+5.8%', trend: 'positive', format: 'number' },
     { title: 'Quality Score', value: '99.2%', change: '+0.3%', trend: 'positive', format: 'percentage' },
     { title: 'Downtime Hours', value: '2.3 hrs', change: '-15.2%', trend: 'positive', format: 'time' },
-    { title: 'Energy Efficiency', value: '94.1%', change: '+2.1%', trend: 'positive', format: 'percentage' },
+    { title: 'EnergyRenewable Efficiency', value: '94.1%', change: '+2.1%', trend: 'positive', format: 'percentage' },
     { title: 'Cost per Unit', value: '$45.23', change: '-3.8%', trend: 'positive', format: 'currency' }
   ]);
 

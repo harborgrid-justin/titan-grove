@@ -76,7 +76,7 @@ const ProductionPlanning: React.FC = () => {
     { key: 'planName', label: 'Plan Name', type: 'text' },
     { key: 'planPeriod', label: 'Period', type: 'text' },
     { key: 'status', label: 'Status', type: 'status' },
-    { key: 'demandForecast', label: 'Demand Forecast', type: 'number' },
+    { key: 'demandForecast', label: 'Demand ChartLineSmooth', type: 'number' },
     { key: 'plannedCapacity', label: 'Planned Capacity', type: 'number' },
     { key: 'utilizationRate', label: 'Utilization', type: 'text' },
     { key: 'createdDate', label: 'Created', type: 'date' },
@@ -87,7 +87,7 @@ const ProductionPlanning: React.FC = () => {
     { key: 'planName', label: 'Plan Name', type: 'text', required: true },
     { key: 'planPeriod', label: 'Plan Period', type: 'text', required: true },
     { key: 'status', label: 'Status', type: 'select', options: ['ACTIVE', 'DRAFT', 'COMPLETED'] },
-    { key: 'demandForecast', label: 'Demand Forecast', type: 'number', required: true },
+    { key: 'demandForecast', label: 'Demand ChartLineSmooth', type: 'number', required: true },
     { key: 'plannedCapacity', label: 'Planned Capacity', type: 'number', required: true }
   ];
 

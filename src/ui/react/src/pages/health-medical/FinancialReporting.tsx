@@ -105,7 +105,7 @@ const FinancialReporting: React.FC = () => {
           dateCreated: '2024-01-15',
           lastUpdated: '2024-01-20',
           assignedTo: 'Dr. Smith',
-          category: 'Revenue Cycle',
+          category: 'Currency Cycle',
           description: 'Financial performance and revenue cycle analytics'
         },
         {
@@ -116,7 +116,7 @@ const FinancialReporting: React.FC = () => {
           dateCreated: '2024-01-18',
           lastUpdated: '2024-01-22',
           assignedTo: 'Nurse Johnson',
-          category: 'Revenue Cycle',
+          category: 'Currency Cycle',
           description: 'Secondary record for financial performance and revenue cycle analytics'
         },
         {
@@ -127,7 +127,7 @@ const FinancialReporting: React.FC = () => {
           dateCreated: '2024-01-10',
           lastUpdated: '2024-01-25',
           assignedTo: 'Admin Staff',
-          category: 'Revenue Cycle',
+          category: 'Currency Cycle',
           description: 'Completed financial performance and revenue cycle analytics'
         }
       ];
@@ -256,7 +256,7 @@ const FinancialReporting: React.FC = () => {
         dateCreated: new Date().toISOString().split('T')[0],
         lastUpdated: new Date().toISOString().split('T')[0],
         assignedTo: formData.assignedTo,
-        category: 'Revenue Cycle',
+        category: 'Currency Cycle',
         description: formData.description || 'Financial performance and revenue cycle analytics'
       };
       setData(prev => [...prev, newItem]);
@@ -330,7 +330,7 @@ const FinancialReporting: React.FC = () => {
               <Grid>
                 <Column lg={4} md={2} sm={2}>
                   <div>
-                    <h5>Patient Risk Score</h5>
+                    <h5>Patient Warning Score</h5>
                     <p style={{ fontSize: '1.5rem', color: analytics.patientRiskAnalysis?.riskLevel === 'high' ? '#da1e28' : '#0f62fe' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </p>

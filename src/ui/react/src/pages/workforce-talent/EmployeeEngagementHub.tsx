@@ -84,7 +84,7 @@ const EmployeeEngagementHub: React.FC = () => {
       format: 'percentage' as const
     },
     {
-      title: 'High Risk Employees',
+      title: 'High Warning Employees',
       value: metrics.filter(m => m.retentionRisk === 'High').length.toString(),
       change: -12.5,
       format: 'number' as const
@@ -128,7 +128,7 @@ const EmployeeEngagementHub: React.FC = () => {
             gap: '0.5rem'
           }}>
             <FaceWink size={32} />
-            Employee Engagement Hub
+            UserMultiple Engagement Hub
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Monitor and improve employee engagement, satisfaction, and retention
@@ -166,7 +166,7 @@ const EmployeeEngagementHub: React.FC = () => {
         <Grid style={{ marginTop: '2rem' }}>
           <Column lg={12} md={8} sm={4}>
             <Tile style={{ padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>Employee Engagement Metrics</h3>
+              <h3 style={{ marginBottom: '1rem' }}>UserMultiple Engagement Metrics</h3>
               <DataTable 
                 rows={metrics.map(metric => ({
                   id: metric.id,
@@ -196,12 +196,12 @@ const EmployeeEngagementHub: React.FC = () => {
                   )
                 }))} 
                 headers={[
-                  { key: 'employee', header: 'Employee' },
+                  { key: 'employee', header: 'UserMultiple' },
                   { key: 'department', header: 'Department' },
                   { key: 'engagement', header: 'Engagement' },
                   { key: 'satisfaction', header: 'Satisfaction' },
                   { key: 'productivity', header: 'Productivity' },
-                  { key: 'risk', header: 'Retention Risk' },
+                  { key: 'risk', header: 'Retention Warning' },
                   { key: 'trend', header: 'Trend' },
                   { key: 'actions', header: 'Actions' }
                 ]}

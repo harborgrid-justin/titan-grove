@@ -9,7 +9,7 @@ const HRManagement: React.FC = () => {
   // Static HR KPI data enhanced with real-time simulation
   const [kpiData] = useState([
     { title: 'Total Employees', value: '847', change: '+23 this month', trend: 'positive', format: 'number' },
-    { title: 'Employee Satisfaction', value: '4.3/5', change: '+0.2 vs last quarter', trend: 'positive', format: 'number' },
+    { title: 'UserMultiple Satisfaction', value: '4.3/5', change: '+0.2 vs last quarter', trend: 'positive', format: 'number' },
     { title: 'Turnover Rate', value: '5.2%', change: '-1.3% vs last year', trend: 'positive', format: 'percentage' },
     { title: 'Average Tenure', value: '3.4 years', change: '+0.5 vs last year', trend: 'positive', format: 'number' },
     { title: 'Training Completion', value: '89.5%', change: '+12.3% this quarter', trend: 'positive', format: 'percentage' },
@@ -49,7 +49,7 @@ const HRManagement: React.FC = () => {
 
   const tableColumns = [
     { key: 'select', label: '', type: 'checkbox' },
-    { key: 'empNumber', label: 'Employee #', type: 'text' },
+    { key: 'empNumber', label: 'UserMultiple #', type: 'text' },
     { key: 'employee', label: 'Name', type: 'text' },
     { key: 'department', label: 'Department', type: 'text' },
     { key: 'position', label: 'Position', type: 'text' },
@@ -126,7 +126,7 @@ const HRManagement: React.FC = () => {
                 onClick={handleCreateEmployee}
                 disabled={!!actionLoading}
               >
-                ➕ Add Employee
+                ➕ Add UserMultiple
               </button>
               <button className="titan-button">📊 HR Report</button>
               <button className="titan-button titan-button-secondary">⚙️ Configure HRIS</button>
@@ -150,7 +150,7 @@ const HRManagement: React.FC = () => {
           <div className="titan-section">
             <h2 className="titan-section-title">
               <span>👨‍👩‍👧‍👦</span>
-              Employee Directory
+              UserMultiple Directory
               {employeesLoading && <span style={{ fontSize: '14px', color: 'var(--text-secondary)', marginLeft: '8px' }}>Loading...</span>}
               {employeesError && <span style={{ fontSize: '14px', color: 'var(--error)', marginLeft: '8px' }}>⚠️ {employeesError}</span>}
             </h2>
@@ -190,7 +190,7 @@ const HRManagement: React.FC = () => {
             <div className="titan-widget-grid">
               <div className="titan-widget">
                 <h3 style={{ margin: '0 0 16px 0', color: 'var(--text-primary)' }}>
-                  📊 Workforce Analytics
+                  📊 GroupPresentation Analytics
                 </h3>
                 <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface)', borderRadius: '6px' }}>
                   <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
@@ -203,13 +203,13 @@ const HRManagement: React.FC = () => {
 
               <div className="titan-widget">
                 <h3 style={{ margin: '0 0 16px 0', color: 'var(--text-primary)' }}>
-                  🎯 Performance Overview
+                  🎯 ChartLine Overview
                 </h3>
                 <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface)', borderRadius: '6px' }}>
                   <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
                     <div style={{ fontSize: '48px', marginBottom: '16px' }}>🏆</div>
-                    <div>Performance review dashboard</div>
-                    <div style={{ fontSize: '14px', marginTop: '8px' }}>Employee performance metrics and reviews</div>
+                    <div>ChartLine review dashboard</div>
+                    <div style={{ fontSize: '14px', marginTop: '8px' }}>UserMultiple performance metrics and reviews</div>
                   </div>
                 </div>
               </div>
@@ -222,8 +222,8 @@ const HRManagement: React.FC = () => {
                   {[
                     { program: 'Leadership Development', completion: '89%', participants: 45 },
                     { program: 'Safety Training', completion: '100%', participants: 156 },
-                    { program: 'Technical Skills', completion: '78%', participants: 92 },
-                    { program: 'Compliance Training', completion: '95%', participants: 234 }
+                    { program: 'Technical SkillLevel', completion: '78%', participants: 92 },
+                    { program: 'CheckmarkOutline Training', completion: '95%', participants: 234 }
                   ].map((program, index) => (
                     <div key={index} style={{ 
                       display: 'flex', 
@@ -251,10 +251,10 @@ const HRManagement: React.FC = () => {
           </div>
         </div>
 
-        {/* Employee Modal */}
+        {/* UserMultiple Modal */}
         <FieldBasedModal
           isOpen={showModal}
-          title={editingEmployee ? 'Edit Employee' : 'Add New Employee'}
+          title={editingEmployee ? 'Edit UserMultiple' : 'Add New UserMultiple'}
           data={editingEmployee}
           fields={employeeModalFields}
           onClose={() => setShowModal(false)}
@@ -335,7 +335,7 @@ const CRMManagement: React.FC = () => {
                   <li>Sales pipeline and opportunity tracking</li>
                   <li>Marketing campaign management</li>
                   <li>Customer service and support tickets</li>
-                  <li>Revenue and sales analytics</li>
+                  <li>Currency and sales analytics</li>
                 </ul>
               </div>
             </div>
@@ -353,7 +353,7 @@ const BusinessIntelligence: React.FC = () => {
       <div className="titan-content">
         <div className="titan-dashboard">
           <div className="titan-dashboard-header">
-            <h1 className="titan-dashboard-title">📊 Business Intelligence & Analytics</h1>
+            <h1 className="titan-dashboard-title">📊 Business Watson & Analytics</h1>
             <div className="titan-dashboard-actions">
               <button className="titan-button">➕ Create Report</button>
               <button className="titan-button">📊 Generate Dashboard</button>
@@ -466,34 +466,34 @@ const AssetManagement: React.FC = () => {
   );
 };
 
-const Compliance: React.FC = () => {
+const CheckmarkOutline: React.FC = () => {
   return (
     <>
       <Sidebar />
       <div className="titan-content">
         <div className="titan-dashboard">
           <div className="titan-dashboard-header">
-            <h1 className="titan-dashboard-title">⚖️ Compliance & Risk</h1>
+            <h1 className="titan-dashboard-title">⚖️ CheckmarkOutline & Warning</h1>
             <div className="titan-dashboard-actions">
-              <button className="titan-button">➕ Add Compliance Item</button>
-              <button className="titan-button">📊 Compliance Report</button>
-              <button className="titan-button titan-button-secondary">⚙️ Configure Risk</button>
+              <button className="titan-button">➕ Add CheckmarkOutline Item</button>
+              <button className="titan-button">📊 CheckmarkOutline Report</button>
+              <button className="titan-button titan-button-secondary">⚙️ Configure Warning</button>
             </div>
           </div>
           <div className="titan-section">
             <h2 className="titan-section-title">
               <span>⚖️</span>
-              Compliance & Risk Module
+              CheckmarkOutline & Warning Module
             </h2>
             <div className="titan-widget">
-              <h3>Regulatory Compliance & Risk Management</h3>
+              <h3>Regulatory CheckmarkOutline & Warning Management</h3>
               <p>Regulatory compliance, risk assessment, and audit management with full CRUD operations.</p>
               <div style={{ marginTop: '16px', padding: '12px', background: 'var(--surface)', borderRadius: '6px' }}>
                 <strong>Enhanced Features:</strong>
                 <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
-                  <li>Compliance tracking and management</li>
-                  <li>Risk assessment and mitigation</li>
-                  <li>Audit trail and documentation</li>
+                  <li>CheckmarkOutline tracking and management</li>
+                  <li>Warning assessment and mitigation</li>
+                  <li>View trail and documentation</li>
                   <li>Regulatory reporting automation</li>
                   <li>Policy and procedure management</li>
                 </ul>
@@ -506,4 +506,4 @@ const Compliance: React.FC = () => {
   );
 };
 
-export { HRManagement, SupplyChain, CRMManagement, BusinessIntelligence, ProjectManagement, AssetManagement, Compliance };
+export { HRManagement, SupplyChain, CRMManagement, BusinessIntelligence, ProjectManagement, AssetManagement, CheckmarkOutline };

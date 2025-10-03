@@ -26,19 +26,19 @@ const ServiceLevelManagement: React.FC = () => {
       <Sidebar />
       <div style={{ flex: 1, padding: '2rem', backgroundColor: '#f4f4f4', overflowY: 'auto' }}>
         <Grid>
-          <Column lg={16}><h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Time size={32} />Service Level Management</h1></Column>
+          <Column lg={16}><h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Time size={32} />ServerProxy ChartLine Management</h1></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Total SLAs" value="3" trend="neutral" trendValue="0%" icon={<Time size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Met" value="2" trend="up" trendValue="10%" icon={<CheckmarkFilled size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Missed" value="1" trend="down" trendValue="5%" icon={<Time size={24} />} /></Column>
-          <Column lg={4} md={4} sm={4}><KPIWidget title="Compliance" value="67%" trend="up" trendValue="8%" icon={<CheckmarkFilled size={24} />} /></Column>
+          <Column lg={4} md={4} sm={4}><KPIWidget title="CheckmarkOutline" value="67%" trend="up" trendValue="8%" icon={<CheckmarkFilled size={24} />} /></Column>
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}><h3>Service Level Agreements</h3><Button kind="primary" renderIcon={Add}>New SLA</Button></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}><h3>ServerProxy ChartLine Agreements</h3><Button kind="primary" renderIcon={Add}>New SLA</Button></div>
               <DataTable rows={[]} headers={[]}>
                 {() => (
                   <TableContainer>
                     <Table>
-                      <TableHead><TableRow><TableHeader>Service</TableHeader><TableHeader>Target</TableHeader><TableHeader>Actual</TableHeader><TableHeader>Status</TableHeader></TableRow></TableHead>
+                      <TableHead><TableRow><TableHeader>ServerProxy</TableHeader><TableHeader>Task</TableHeader><TableHeader>Actual</TableHeader><TableHeader>Status</TableHeader></TableRow></TableHead>
                       <TableBody>
                         {slas.map(s => (
                           <TableRow key={s.id}>

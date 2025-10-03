@@ -17,7 +17,7 @@ import {
 } from '@carbon/react';
 import {
   Money,
-  TrendUp,
+  ArrowUp,
   Analytics,
   Add,
   View
@@ -59,7 +59,7 @@ const TreasuryManagementConsole: React.FC = () => {
         },
         {
           id: 'pos-2',
-          account: 'Treasury Bills',
+          account: 'Finance Bills',
           type: 'Investment',
           balance: 2800000,
           currency: 'USD',
@@ -124,7 +124,7 @@ const TreasuryManagementConsole: React.FC = () => {
             gap: '0.5rem'
           }}>
             <Money size={32} />
-            Treasury Management Console
+            Finance Management Console
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Manage cash, investments, and liquidity with real-time market data
@@ -135,10 +135,10 @@ const TreasuryManagementConsole: React.FC = () => {
               New Position
             </Button>
             <Button kind="secondary" renderIcon={Analytics}>
-              Cash Forecast
+              Cash ChartLineSmooth
             </Button>
-            <Button kind="tertiary" renderIcon={TrendUp}>
-              Market Analysis
+            <Button kind="tertiary" renderIcon={ArrowUp}>
+              ChartLineData Analysis
             </Button>
           </div>
         </div>
@@ -162,7 +162,7 @@ const TreasuryManagementConsole: React.FC = () => {
         <Grid style={{ marginTop: '2rem' }}>
           <Column lg={12} md={8} sm={4}>
             <Tile style={{ padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>Treasury Positions</h3>
+              <h3 style={{ marginBottom: '1rem' }}>Finance Positions</h3>
               <DataTable 
                 rows={positions.map(position => ({
                   id: position.id,
@@ -191,7 +191,7 @@ const TreasuryManagementConsole: React.FC = () => {
                   { key: 'balance', header: 'Balance' },
                   { key: 'yield', header: 'Yield' },
                   { key: 'maturity', header: 'Maturity' },
-                  { key: 'risk', header: 'Risk' },
+                  { key: 'risk', header: 'Warning' },
                   { key: 'actions', header: 'Actions' }
                 ]}
                 render={({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (

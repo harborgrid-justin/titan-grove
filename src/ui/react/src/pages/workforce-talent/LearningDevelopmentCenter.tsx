@@ -60,7 +60,7 @@ const LearningDevelopmentCenter: React.FC = () => {
         },
         {
           id: 'prog-2',
-          title: 'Technical Skills Bootcamp',
+          title: 'Technical SkillLevel Bootcamp',
           category: 'Technical',
           participants: 45,
           duration: 8,
@@ -80,8 +80,8 @@ const LearningDevelopmentCenter: React.FC = () => {
         },
         {
           id: 'prog-4',
-          title: 'Communication Skills Workshop',
-          category: 'Soft Skills',
+          title: 'Communication SkillLevel Workshop',
+          category: 'Soft SkillLevel',
           participants: 20,
           duration: 4,
           completion: 0,
@@ -125,10 +125,10 @@ const LearningDevelopmentCenter: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Education size={32} />
-              Learning & Development Center
+              Education & Development Center
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
-              Employee training and development programs
+              UserMultiple training and development programs
             </p>
           </Column>
 
@@ -172,7 +172,7 @@ const LearningDevelopmentCenter: React.FC = () => {
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Learning Programs</h3>
+                <h3>Education Programs</h3>
                 <Button kind="primary" renderIcon={Add}>
                   New Program
                 </Button>

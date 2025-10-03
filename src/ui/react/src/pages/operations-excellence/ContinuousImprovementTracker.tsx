@@ -20,7 +20,7 @@ import {
   Renew,
   ChartLine,
   CheckmarkFilled,
-  TrendUp,
+  ArrowUp,
   Add
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
@@ -50,7 +50,7 @@ const ContinuousImprovementTracker: React.FC = () => {
         {
           id: 'init-1',
           title: 'Lean Manufacturing',
-          type: 'Process',
+          type: 'Progress',
           progress: 75,
           impact: 'High',
           status: 'Active',
@@ -68,7 +68,7 @@ const ContinuousImprovementTracker: React.FC = () => {
         {
           id: 'init-3',
           title: 'Workflow Optimization',
-          type: 'Process',
+          type: 'Progress',
           progress: 50,
           impact: 'Medium',
           status: 'Active',
@@ -120,7 +120,7 @@ const ContinuousImprovementTracker: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Renew size={32} />
-              Continuous Improvement Tracker
+              Continuous ArrowUp Tracker
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Track and manage continuous improvement initiatives
@@ -160,14 +160,14 @@ const ContinuousImprovementTracker: React.FC = () => {
               value={`$${(kpiData.totalSavings / 1000).toFixed(0)}K`}
               trend="up"
               trendValue="25%"
-              icon={<TrendUp size={24} />}
+              icon={<ArrowUp size={24} />}
             />
           </Column>
 
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Improvement Initiatives</h3>
+                <h3>ArrowUp Initiatives</h3>
                 <Button kind="primary" renderIcon={Add}>
                   New Initiative
                 </Button>

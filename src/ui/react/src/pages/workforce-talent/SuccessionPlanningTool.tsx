@@ -18,7 +18,7 @@ import {
 } from '@carbon/react';
 import {
   UserFollow,
-  ChartTree,
+  ChartTreemap,
   Trophy,
   StarFilled,
   Add
@@ -134,8 +134,8 @@ const SuccessionPlanningTool: React.FC = () => {
         <Grid>
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <ChartTree size={32} />
-              Succession Planning Tool
+              <ChartTreemap size={32} />
+              Flow Planning Tool
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Strategic succession planning and talent pipeline management
@@ -148,7 +148,7 @@ const SuccessionPlanningTool: React.FC = () => {
               value={kpiData.totalPlans.toString()}
               trend="neutral"
               trendValue="0%"
-              icon={<ChartTree size={24} />}
+              icon={<ChartTreemap size={24} />}
             />
           </Column>
           <Column lg={4} md={4} sm={4}>
@@ -182,7 +182,7 @@ const SuccessionPlanningTool: React.FC = () => {
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Succession Plans</h3>
+                <h3>Flow Plans</h3>
                 <Button kind="primary" renderIcon={Add}>
                   New Plan
                 </Button>
@@ -198,7 +198,7 @@ const SuccessionPlanningTool: React.FC = () => {
                           <TableHeader>Current Holder</TableHeader>
                           <TableHeader>Successor</TableHeader>
                           <TableHeader>Readiness</TableHeader>
-                          <TableHeader>Risk Level</TableHeader>
+                          <TableHeader>Warning ChartLine</TableHeader>
                           <TableHeader>Timeframe</TableHeader>
                           <TableHeader>Status</TableHeader>
                         </TableRow>

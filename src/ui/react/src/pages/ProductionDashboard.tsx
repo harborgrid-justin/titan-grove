@@ -47,7 +47,7 @@ interface BusinessOperation {
 const ProductionDashboard: React.FC = () => {
   const [kpiMetrics] = useState<KPIMetric[]>([
     {
-      title: 'Revenue (YTD)',
+      title: 'Currency (YTD)',
       value: '$47.2M',
       change: '+18.4%',
       trend: 'positive',
@@ -103,7 +103,7 @@ const ProductionDashboard: React.FC = () => {
     },
     {
       id: 'hr-001',
-      name: 'Talent Management',
+      name: 'UserMultiple Management',
       type: 'hr',
       status: 'critical',
       efficiency: 78,
@@ -111,7 +111,7 @@ const ProductionDashboard: React.FC = () => {
     },
     {
       id: 'sales-001',
-      name: 'Sales Pipeline',
+      name: 'Sales Flow',
       type: 'sales',
       status: 'active',
       efficiency: 91,
@@ -222,7 +222,7 @@ const ProductionDashboard: React.FC = () => {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontSize: '0.75rem', color: 'var(--cds-text-secondary)' }}>
-                    Target
+                    Task
                   </div>
                   <div style={{ fontSize: '1rem', fontWeight: 600 }}>
                     {metric.target}
@@ -317,7 +317,7 @@ const ProductionDashboard: React.FC = () => {
           <Tile style={{ padding: '1.5rem', textAlign: 'center', cursor: 'pointer' }}
                 onClick={() => window.location.href = '/business-intelligence'}>
             <Dashboard size={32} style={{ marginBottom: '1rem' }} />
-            <h4>Business Intelligence</h4>
+            <h4>Business Watson</h4>
             <p style={{ fontSize: '0.875rem', color: 'var(--cds-text-secondary)' }}>
               Analytics, reporting, and business insights
             </p>

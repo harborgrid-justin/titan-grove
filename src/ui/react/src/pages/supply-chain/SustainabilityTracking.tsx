@@ -19,8 +19,8 @@ import {
 import {
   EarthFilled,
   Renew,
-  Energy,
-  Trees,
+  EnergyRenewable,
+  Wheat,
   Add
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
@@ -34,7 +34,7 @@ interface SustainabilityMetric {
   target: number;
   unit: string;
   trend: 'improving' | 'declining' | 'stable';
-  status: 'On Track' | 'At Risk' | 'Critical';
+  status: 'On Track' | 'At Warning' | 'Critical';
 }
 
 const SustainabilityTracking: React.FC = () => {
@@ -60,8 +60,8 @@ const SustainabilityTracking: React.FC = () => {
         },
         {
           id: 'metric-2',
-          metric: 'Renewable Energy Usage',
-          category: 'Energy',
+          metric: 'Renewable EnergyRenewable Usage',
+          category: 'EnergyRenewable',
           current: 65,
           target: 80,
           unit: '%',
@@ -76,7 +76,7 @@ const SustainabilityTracking: React.FC = () => {
           target: 70000,
           unit: 'gallons',
           trend: 'declining',
-          status: 'At Risk'
+          status: 'At Warning'
         },
         {
           id: 'metric-4',
@@ -96,7 +96,7 @@ const SustainabilityTracking: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'On Track': return 'green';
-      case 'At Risk': return 'yellow';
+      case 'At Warning': return 'yellow';
       case 'Critical': return 'red';
       default: return 'gray';
     }
@@ -108,7 +108,7 @@ const SustainabilityTracking: React.FC = () => {
 
   const kpiData = {
     onTrackMetrics: metrics.filter(m => m.status === 'On Track').length,
-    atRiskMetrics: metrics.filter(m => m.status === 'At Risk').length,
+    atRiskMetrics: metrics.filter(m => m.status === 'At Warning').length,
     improvingTrends: metrics.filter(m => m.trend === 'improving').length,
     totalMetrics: metrics.length
   };
@@ -148,7 +148,7 @@ const SustainabilityTracking: React.FC = () => {
           </Column>
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="At Risk Metrics"
+              title="At Warning Metrics"
               value={kpiData.atRiskMetrics.toString()}
               trend="down"
               trendValue="8%"
@@ -161,7 +161,7 @@ const SustainabilityTracking: React.FC = () => {
               value={kpiData.improvingTrends.toString()}
               trend="up"
               trendValue="18%"
-              icon={<Energy size={24} />}
+              icon={<EnergyRenewable size={24} />}
             />
           </Column>
           <Column lg={4} md={4} sm={4}>
@@ -170,7 +170,7 @@ const SustainabilityTracking: React.FC = () => {
               value={kpiData.totalMetrics.toString()}
               trend="neutral"
               trendValue="0%"
-              icon={<Trees size={24} />}
+              icon={<Wheat size={24} />}
             />
           </Column>
 
@@ -193,7 +193,7 @@ const SustainabilityTracking: React.FC = () => {
                           <TableHeader>Metric</TableHeader>
                           <TableHeader>Category</TableHeader>
                           <TableHeader>Current</TableHeader>
-                          <TableHeader>Target</TableHeader>
+                          <TableHeader>Task</TableHeader>
                           <TableHeader>Progress</TableHeader>
                           <TableHeader>Trend</TableHeader>
                           <TableHeader>Status</TableHeader>

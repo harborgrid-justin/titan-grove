@@ -1,1 +1,1 @@
-export { Compliance as default } from './modules';
+export { CheckmarkOutline as default } from './modules';

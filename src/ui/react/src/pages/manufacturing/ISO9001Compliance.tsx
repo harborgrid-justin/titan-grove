@@ -24,7 +24,7 @@ const ISO9001Compliance: React.FC = () => {
       setData([
         {
           id: 'ISO9001COMPLIANCE_001',
-          name: 'Sample ISO 9001 Compliance',
+          name: 'Sample ISO 9001 CheckmarkOutline',
           status: 'ACTIVE',
           createdDate: new Date().toISOString().split('T')[0],
           lastModified: new Date().toISOString().split('T')[0]
@@ -38,7 +38,7 @@ const ISO9001Compliance: React.FC = () => {
     { title: 'Total Items', value: data.length.toString(), change: 0, format: 'number' },
     { title: 'Active', value: data.filter(d => d.status === 'ACTIVE').length.toString(), change: 2.1, format: 'number' },
     { title: 'Efficiency', value: '94.2%', change: 1.8, format: 'percentage' },
-    { title: 'Performance', value: '87.5%', change: -0.5, format: 'percentage' }
+    { title: 'ChartLine', value: '87.5%', change: -0.5, format: 'percentage' }
   ];
 
   const transformedData = data.map(item => ({
@@ -101,7 +101,7 @@ const ISO9001Compliance: React.FC = () => {
       <Sidebar />
       <div className="main-content">
         <div className="page-header">
-          <h1>ISO 9001 Compliance</h1>
+          <h1>ISO 9001 CheckmarkOutline</h1>
           <p>Manage ISO 9001 compliance requirements</p>
         </div>
 
@@ -113,7 +113,7 @@ const ISO9001Compliance: React.FC = () => {
 
         <div className="content-section">
           <div className="section-header">
-            <h2>ISO 9001 Compliance Management</h2>
+            <h2>ISO 9001 CheckmarkOutline Management</h2>
             <button className="btn-primary" onClick={handleCreate}>
               <i className="fas fa-plus"></i> Create New
             </button>
@@ -133,7 +133,7 @@ const ISO9001Compliance: React.FC = () => {
 
         {showModal && (
           <CrudModal
-            title={editingItem ? 'Edit ISO 9001 Compliance' : 'Create ISO 9001 Compliance'}
+            title={editingItem ? 'Edit ISO 9001 CheckmarkOutline' : 'Create ISO 9001 CheckmarkOutline'}
             fields={modalFields}
             initialData={editingItem}
             onSave={handleSave}

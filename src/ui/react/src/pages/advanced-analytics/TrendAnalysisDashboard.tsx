@@ -19,8 +19,8 @@ import {
   ProgressBar
 } from '@carbon/react';
 import {
-  TrendUp,
-  TrendDown,
+  ArrowUp,
+  ArrowDown,
   Analytics,
   ChartLine,
   Time,
@@ -57,7 +57,7 @@ const TrendAnalysisDashboard: React.FC = () => {
       setTrends([
         {
           id: 'revenue-trend',
-          metric: 'Monthly Revenue',
+          metric: 'Monthly Currency',
           category: 'Financial',
           currentValue: 2850000,
           previousValue: 2650000,
@@ -82,7 +82,7 @@ const TrendAnalysisDashboard: React.FC = () => {
         {
           id: 'support-tickets',
           metric: 'Support Tickets',
-          category: 'Service',
+          category: 'ServerProxy',
           currentValue: 89,
           previousValue: 104,
           trendDirection: 'down',
@@ -98,8 +98,8 @@ const TrendAnalysisDashboard: React.FC = () => {
 
   const getTrendIcon = (direction: string) => {
     switch (direction) {
-      case 'up': return <TrendUp size={16} style={{ color: 'var(--cds-support-02)' }} />;
-      case 'down': return <TrendDown size={16} style={{ color: 'var(--cds-support-01)' }} />;
+      case 'up': return <ArrowUp size={16} style={{ color: 'var(--cds-support-02)' }} />;
+      case 'down': return <ArrowDown size={16} style={{ color: 'var(--cds-support-01)' }} />;
       default: return <span style={{ color: 'var(--cds-text-02)' }}>→</span>;
     }
   };
@@ -128,7 +128,7 @@ const TrendAnalysisDashboard: React.FC = () => {
       format: 'number' as const
     },
     {
-      title: 'Forecast Accuracy',
+      title: 'ChartLineSmooth Accuracy',
       value: '91.2%',
       change: 3.4,
       format: 'percentage' as const
@@ -140,7 +140,7 @@ const TrendAnalysisDashboard: React.FC = () => {
     { key: 'category', header: 'Category' },
     { key: 'current', header: 'Current' },
     { key: 'trend', header: 'Trend' },
-    { key: 'forecast', header: 'Forecast' },
+    { key: 'forecast', header: 'ChartLineSmooth' },
     { key: 'confidence', header: 'Confidence' }
   ];
 
@@ -225,7 +225,7 @@ const TrendAnalysisDashboard: React.FC = () => {
               <SelectItem value="All" text="All Categories" />
               <SelectItem value="Financial" text="Financial" />
               <SelectItem value="Sales" text="Sales" />
-              <SelectItem value="Service" text="Service" />
+              <SelectItem value="ServerProxy" text="ServerProxy" />
             </Select>
             
             <Button kind="primary" renderIcon={Analytics}>
@@ -259,7 +259,7 @@ const TrendAnalysisDashboard: React.FC = () => {
                 alignItems: 'center',
                 gap: '0.5rem'
               }}>
-                <TrendUp size={20} />
+                <ArrowUp size={20} />
                 Trend Analysis
               </h3>
               

@@ -44,7 +44,7 @@ interface QuoteItem {
   total: number;
 }
 
-interface Quote {
+interface Quotes {
   id: string;
   customer: string;
   status: 'Draft' | 'Sent' | 'Approved' | 'Rejected' | 'Expired';
@@ -57,7 +57,7 @@ interface Quote {
 }
 
 const QuoteConfigurationSystem: React.FC = () => {
-  const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [quotes, setQuotes] = useState<Quotes[]>([]);
   const [loading, setLoading] = useState(true);
   const [showQuoteModal, setShowQuoteModal] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('All');
@@ -129,7 +129,7 @@ const QuoteConfigurationSystem: React.FC = () => {
   };
 
   const createQuote = () => {
-    const newQuote: Quote = {
+    const newQuote: Quotes = {
       id: `quote-${Date.now()}`,
       customer: quoteForm.customer,
       status: 'Draft',
@@ -156,7 +156,7 @@ const QuoteConfigurationSystem: React.FC = () => {
 
   const kpiData = [
     {
-      title: 'Total Quote Value',
+      title: 'Total Quotes Value',
       value: `$${quotes.reduce((sum, q) => sum + q.total, 0).toLocaleString()}`,
       change: 18.5,
       format: 'currency' as const
@@ -168,7 +168,7 @@ const QuoteConfigurationSystem: React.FC = () => {
       format: 'number' as const
     },
     {
-      title: 'Avg Quote Size',
+      title: 'Avg Quotes Size',
       value: `$${Math.round(quotes.reduce((sum, q) => sum + q.total, 0) / quotes.length).toLocaleString()}`,
       change: 8.7,
       format: 'currency' as const
@@ -253,7 +253,7 @@ const QuoteConfigurationSystem: React.FC = () => {
             gap: '0.5rem'
           }}>
             <DocumentAdd size={32} />
-            Quote Configuration System
+            Quotes Configuration System
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Create, configure, and manage sales quotes with automated pricing and approval workflows
@@ -265,11 +265,11 @@ const QuoteConfigurationSystem: React.FC = () => {
               renderIcon={Add}
               onClick={() => setShowQuoteModal(true)}
             >
-              Create Quote
+              Create Quotes
             </Button>
             
             <Button kind="secondary" renderIcon={Calculator}>
-              Price Calculator
+              Currency Calculator
             </Button>
             
             <Select
@@ -287,7 +287,7 @@ const QuoteConfigurationSystem: React.FC = () => {
             </Select>
             
             <Button kind="tertiary" renderIcon={Analytics}>
-              Quote Analytics
+              Quotes Analytics
             </Button>
           </div>
         </div>
@@ -356,8 +356,8 @@ const QuoteConfigurationSystem: React.FC = () => {
         <Modal
           open={showQuoteModal}
           onRequestClose={() => setShowQuoteModal(false)}
-          modalHeading="Create New Quote"
-          primaryButtonText="Create Quote"
+          modalHeading="Create New Quotes"
+          primaryButtonText="Create Quotes"
           secondaryButtonText="Cancel"
           onRequestSubmit={createQuote}
         >

@@ -24,7 +24,7 @@ const RegulatoryCompliance: React.FC = () => {
       setData([
         {
           id: 'REGULATORYCOMPLIANCE_001',
-          name: 'Sample Regulatory Compliance',
+          name: 'Sample Regulatory CheckmarkOutline',
           status: 'ACTIVE',
           createdDate: new Date().toISOString().split('T')[0],
           lastModified: new Date().toISOString().split('T')[0]
@@ -38,7 +38,7 @@ const RegulatoryCompliance: React.FC = () => {
     { title: 'Total Items', value: data.length.toString(), change: 0, format: 'number' },
     { title: 'Active', value: data.filter(d => d.status === 'ACTIVE').length.toString(), change: 2.1, format: 'number' },
     { title: 'Efficiency', value: '94.2%', change: 1.8, format: 'percentage' },
-    { title: 'Performance', value: '87.5%', change: -0.5, format: 'percentage' }
+    { title: 'ChartLine', value: '87.5%', change: -0.5, format: 'percentage' }
   ];
 
   const transformedData = data.map(item => ({
@@ -101,7 +101,7 @@ const RegulatoryCompliance: React.FC = () => {
       <Sidebar />
       <div className="main-content">
         <div className="page-header">
-          <h1>Regulatory Compliance</h1>
+          <h1>Regulatory CheckmarkOutline</h1>
           <p>Ensure regulatory compliance</p>
         </div>
 
@@ -113,7 +113,7 @@ const RegulatoryCompliance: React.FC = () => {
 
         <div className="content-section">
           <div className="section-header">
-            <h2>Regulatory Compliance Management</h2>
+            <h2>Regulatory CheckmarkOutline Management</h2>
             <button className="btn-primary" onClick={handleCreate}>
               <i className="fas fa-plus"></i> Create New
             </button>
@@ -133,7 +133,7 @@ const RegulatoryCompliance: React.FC = () => {
 
         {showModal && (
           <CrudModal
-            title={editingItem ? 'Edit Regulatory Compliance' : 'Create Regulatory Compliance'}
+            title={editingItem ? 'Edit Regulatory CheckmarkOutline' : 'Create Regulatory CheckmarkOutline'}
             fields={modalFields}
             initialData={editingItem}
             onSave={handleSave}

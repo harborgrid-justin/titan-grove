@@ -3,7 +3,7 @@ import {
   Grid, Column, Tile, Button, Loading, DataTable, TableContainer, Table,
   TableHead, TableRow, TableHeader, TableBody, TableCell, Tag
 } from '@carbon/react';
-import { Analytics, ChartLine, TrendUp, Add } from '@carbon/icons-react';
+import { Analytics, ChartLine, ArrowUp, Add } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
 
@@ -66,21 +66,21 @@ const MarketIntelligenceCenter: React.FC = () => {
         <Grid>
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Analytics size={32} />Market Intelligence Center
+              <Analytics size={32} />ChartLineData Watson Center
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
-              Market trends, competitive intelligence, and opportunity analysis
+              ChartLineData trends, competitive intelligence, and opportunity analysis
             </p>
           </Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Markets Tracked" value={kpiData.totalMarkets.toString()} trend="up" trendValue="5%" icon={<Analytics size={24} />} /></Column>
-          <Column lg={4} md={4} sm={4}><KPIWidget title="Avg Growth" value={`${kpiData.avgGrowth.toFixed(1)}%`} trend="up" trendValue="10%" icon={<TrendUp size={24} />} /></Column>
+          <Column lg={4} md={4} sm={4}><KPIWidget title="Avg Growth" value={`${kpiData.avgGrowth.toFixed(1)}%`} trend="up" trendValue="10%" icon={<ArrowUp size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Positive Sentiment" value={kpiData.positive.toString()} trend="up" trendValue="8%" icon={<ChartLine size={24} />} /></Column>
-          <Column lg={4} md={4} sm={4}><KPIWidget title="High Opportunity" value={kpiData.highOpportunity.toString()} trend="up" trendValue="12%" icon={<Analytics size={24} />} /></Column>
+          <Column lg={4} md={4} sm={4}><KPIWidget title="High Idea" value={kpiData.highOpportunity.toString()} trend="up" trendValue="12%" icon={<Analytics size={24} />} /></Column>
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                <h3>Market Intelligence</h3>
-                <Button kind="primary" renderIcon={Add}>Add Market</Button>
+                <h3>ChartLineData Watson</h3>
+                <Button kind="primary" renderIcon={Add}>Add ChartLineData</Button>
               </div>
               <DataTable rows={[]} headers={[]}>
                 {() => (
@@ -88,11 +88,11 @@ const MarketIntelligenceCenter: React.FC = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableHeader>Market</TableHeader>
+                          <TableHeader>ChartLineData</TableHeader>
                           <TableHeader>Trend</TableHeader>
                           <TableHeader>Sentiment</TableHeader>
                           <TableHeader>Growth</TableHeader>
-                          <TableHeader>Opportunity</TableHeader>
+                          <TableHeader>Idea</TableHeader>
                         </TableRow>
                       </TableHead>
                       <TableBody>

@@ -3,7 +3,7 @@ import {
   Grid, Column, Tile, Button, Loading, DataTable, TableContainer, Table,
   TableHead, TableRow, TableHeader, TableBody, TableCell, Tag, ProgressBar
 } from '@carbon/react';
-import { Transform, ChartLine, Add } from '@carbon/icons-react';
+import { Migrate, ChartLine, Add } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
 
@@ -39,17 +39,17 @@ const DigitalTransformationHub: React.FC = () => {
         <Grid>
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Transform size={32} />Digital Transformation Hub
+              <Migrate size={32} />Chip Migrate Hub
             </h1>
           </Column>
-          <Column lg={4} md={4} sm={4}><KPIWidget title="Total Projects" value="3" trend="up" trendValue="10%" icon={<Transform size={24} />} /></Column>
+          <Column lg={4} md={4} sm={4}><KPIWidget title="Total Projects" value="3" trend="up" trendValue="10%" icon={<Migrate size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Active" value="2" trend="up" trendValue="5%" icon={<ChartLine size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Completed" value="1" trend="up" trendValue="15%" icon={<ChartLine size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Avg Progress" value="68%" trend="up" trendValue="8%" icon={<ChartLine size={24} />} /></Column>
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                <h3>Digital Projects</h3>
+                <h3>Chip Projects</h3>
                 <Button kind="primary" renderIcon={Add}>New Project</Button>
               </div>
               <DataTable rows={[]} headers={[]}>

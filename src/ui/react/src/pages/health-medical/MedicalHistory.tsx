@@ -330,7 +330,7 @@ const MedicalHistory: React.FC = () => {
               <Grid>
                 <Column lg={4} md={2} sm={2}>
                   <div>
-                    <h5>Patient Risk Score</h5>
+                    <h5>Patient Warning Score</h5>
                     <p style={{ fontSize: '1.5rem', color: analytics.patientRiskAnalysis?.riskLevel === 'high' ? '#da1e28' : '#0f62fe' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </p>
