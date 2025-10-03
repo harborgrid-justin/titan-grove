@@ -128,14 +128,14 @@ const CustomReportBuilder: React.FC = () => {
         },
         {
           id: 'revenue',
-          name: 'Revenue',
+          name: 'Currency',
           type: 'currency',
           table: 'financials',
           description: 'Total revenue'
         },
         {
           id: 'employee_count',
-          name: 'Employee Count',
+          name: 'UserMultiple Count',
           type: 'number',
           table: 'hr',
           description: 'Number of employees'
@@ -289,7 +289,7 @@ const CustomReportBuilder: React.FC = () => {
     { key: 'name', header: 'Report Name' },
     { key: 'description', header: 'Description' },
     { key: 'format', header: 'Format' },
-    { key: 'schedule', header: 'Schedule' },
+    { key: 'schedule', header: 'Calendar' },
     { key: 'status', header: 'Status' },
     { key: 'lastRun', header: 'Last Run' },
     { key: 'actions', header: 'Actions' }
@@ -367,7 +367,7 @@ const CustomReportBuilder: React.FC = () => {
             </Button>
             
             <Button kind="tertiary" renderIcon={Calendar}>
-              Schedule Manager
+              Calendar Manager
             </Button>
           </div>
         </div>
@@ -605,7 +605,7 @@ const CustomReportBuilder: React.FC = () => {
 
           {currentStep === 4 && (
             <div style={{ display: 'grid', gap: '1rem' }}>
-              <h4>Output & Schedule</h4>
+              <h4>Output & Calendar</h4>
               
               <Select
                 id="report-format"
@@ -620,7 +620,7 @@ const CustomReportBuilder: React.FC = () => {
               
               <Select
                 id="report-schedule"
-                labelText="Schedule"
+                labelText="Calendar"
                 value={reportForm.schedule}
                 onChange={(e) => setReportForm(prev => ({ ...prev, schedule: e.target.value }))}
               >

@@ -90,7 +90,7 @@ const ComplianceMonitoring: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [analytics, setAnalytics] = useState<any>(null);
 
-  // Sample data specific to Compliance Monitoring
+  // Sample data specific to CheckmarkOutline Monitoring
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -99,35 +99,35 @@ const ComplianceMonitoring: React.FC = () => {
       const mockData: ComplianceMonitoringData[] = [
         {
           id: 'compliancemonitoring-001',
-          name: 'Sample Compliance Monitoring Record 1',
+          name: 'Sample CheckmarkOutline Monitoring Record 1',
           status: 'active',
           priority: 'high',
           dateCreated: '2024-01-15',
           lastUpdated: '2024-01-20',
           assignedTo: 'Dr. Smith',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Real-time compliance monitoring and alerts'
         },
         {
           id: 'compliancemonitoring-002',
-          name: 'Sample Compliance Monitoring Record 2',
+          name: 'Sample CheckmarkOutline Monitoring Record 2',
           status: 'pending',
           priority: 'medium',
           dateCreated: '2024-01-18',
           lastUpdated: '2024-01-22',
           assignedTo: 'Nurse Johnson',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Secondary record for real-time compliance monitoring and alerts'
         },
         {
           id: 'compliancemonitoring-003',
-          name: 'Sample Compliance Monitoring Record 3',
+          name: 'Sample CheckmarkOutline Monitoring Record 3',
           status: 'completed',
           priority: 'low',
           dateCreated: '2024-01-10',
           lastUpdated: '2024-01-25',
           assignedTo: 'Admin Staff',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Completed real-time compliance monitoring and alerts'
         }
       ];
@@ -250,13 +250,13 @@ const ComplianceMonitoring: React.FC = () => {
       // Add new item
       const newItem: ComplianceMonitoringData = {
         id: `compliancemonitoring-${Date.now()}`,
-        name: formData.name || 'New Compliance Monitoring',
+        name: formData.name || 'New CheckmarkOutline Monitoring',
         status: formData.status || 'pending',
         priority: formData.priority || 'medium',
         dateCreated: new Date().toISOString().split('T')[0],
         lastUpdated: new Date().toISOString().split('T')[0],
         assignedTo: formData.assignedTo,
-        category: 'Regulatory Compliance',
+        category: 'Regulatory CheckmarkOutline',
         description: formData.description || 'Real-time compliance monitoring and alerts'
       };
       setData(prev => [...prev, newItem]);
@@ -274,7 +274,7 @@ const ComplianceMonitoring: React.FC = () => {
   if (loading) {
     return (
       <div style={{ padding: '2rem' }}>
-        <Loading description="Loading Compliance Monitoring..." />
+        <Loading description="Loading CheckmarkOutline Monitoring..." />
       </div>
     );
   }
@@ -285,7 +285,7 @@ const ComplianceMonitoring: React.FC = () => {
       <Grid>
         <Column lg={16} md={8} sm={4}>
           <div style={{ marginBottom: '2rem' }}>
-            <h1>Compliance Monitoring</h1>
+            <h1>CheckmarkOutline Monitoring</h1>
             <p style={{ color: '#6f6f6f', marginTop: '0.5rem' }}>
               Real-time compliance monitoring and alerts
             </p>
@@ -330,7 +330,7 @@ const ComplianceMonitoring: React.FC = () => {
               <Grid>
                 <Column lg={4} md={2} sm={2}>
                   <div>
-                    <h5>Patient Risk Score</h5>
+                    <h5>Patient Warning Score</h5>
                     <p style={{ fontSize: '1.5rem', color: analytics.patientRiskAnalysis?.riskLevel === 'high' ? '#da1e28' : '#0f62fe' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </p>
@@ -418,7 +418,7 @@ const ComplianceMonitoring: React.FC = () => {
             rows={rows}
             headers={headers}
             render={({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
-              <TableContainer title="Compliance Monitoring Management">
+              <TableContainer title="CheckmarkOutline Monitoring Management">
                 <Table {...getTableProps()}>
                   <TableHead>
                     <TableRow>
@@ -449,13 +449,13 @@ const ComplianceMonitoring: React.FC = () => {
       <Modal
         open={showModal}
         onRequestClose={() => setShowModal(false)}
-        modalHeading={editingItem ? `Edit ${editingItem.name}` : 'Add New Compliance Monitoring'}
+        modalHeading={editingItem ? `Edit ${editingItem.name}` : 'Add New CheckmarkOutline Monitoring'}
         primaryButtonText="Save"
         secondaryButtonText="Cancel"
         onRequestSubmit={() => {
           // Get form data and save
           const formData = {
-            name: 'Updated Compliance Monitoring',
+            name: 'Updated CheckmarkOutline Monitoring',
             status: 'active' as const,
             priority: 'medium' as const,
             assignedTo: 'Current User',

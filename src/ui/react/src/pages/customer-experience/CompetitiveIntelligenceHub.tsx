@@ -18,7 +18,7 @@ import {
 import {
   Search,
   Analytics,
-  TrendUp,
+  ArrowUp,
   View,
   Add
 } from '@carbon/icons-react';
@@ -64,8 +64,8 @@ const CompetitiveIntelligenceHub: React.FC = () => {
           competitor: 'Competitor B',
           industry: 'Software',
           marketShare: 18.7,
-          pricing: 'Competitive',
-          strengths: ['Innovation', 'Strong R&D'],
+          pricing: 'ChartNetwork',
+          strengths: ['Idea', 'Strong R&D'],
           weaknesses: ['Limited market presence', 'High prices'],
           lastUpdated: new Date().toISOString(),
           threatLevel: 'Medium'
@@ -83,7 +83,7 @@ const CompetitiveIntelligenceHub: React.FC = () => {
       format: 'number' as const
     },
     {
-      title: 'Market Coverage',
+      title: 'ChartLineData Coverage',
       value: '87.5%',
       change: 12.1,
       format: 'percentage' as const
@@ -95,7 +95,7 @@ const CompetitiveIntelligenceHub: React.FC = () => {
       format: 'number' as const
     },
     {
-      title: 'Intelligence Score',
+      title: 'Watson Score',
       value: '92.1',
       change: 15.7,
       format: 'number' as const
@@ -127,7 +127,7 @@ const CompetitiveIntelligenceHub: React.FC = () => {
             gap: '0.5rem'
           }}>
             <Search size={32} />
-            Competitive Intelligence Hub
+            ChartNetwork Watson Hub
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Monitor competitors, analyze market positioning, and track industry trends
@@ -138,9 +138,9 @@ const CompetitiveIntelligenceHub: React.FC = () => {
               Add Competitor
             </Button>
             <Button kind="secondary" renderIcon={Analytics}>
-              Market Analysis
+              ChartLineData Analysis
             </Button>
-            <Button kind="tertiary" renderIcon={TrendUp}>
+            <Button kind="tertiary" renderIcon={ArrowUp}>
               Trend Report
             </Button>
           </div>
@@ -165,7 +165,7 @@ const CompetitiveIntelligenceHub: React.FC = () => {
         <Grid style={{ marginTop: '2rem' }}>
           <Column lg={12} md={8} sm={4}>
             <Tile style={{ padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>Competitive Intelligence</h3>
+              <h3 style={{ marginBottom: '1rem' }}>ChartNetwork Watson</h3>
               <DataTable 
                 rows={intelligence.map(intel => ({
                   id: intel.id,
@@ -189,9 +189,9 @@ const CompetitiveIntelligenceHub: React.FC = () => {
                 }))} 
                 headers={[
                   { key: 'competitor', header: 'Competitor' },
-                  { key: 'marketShare', header: 'Market Share' },
-                  { key: 'pricing', header: 'Pricing Strategy' },
-                  { key: 'threatLevel', header: 'Threat Level' },
+                  { key: 'marketShare', header: 'ChartLineData Share' },
+                  { key: 'pricing', header: 'Pricing ChartNetwork' },
+                  { key: 'threatLevel', header: 'Threat ChartLine' },
                   { key: 'lastUpdated', header: 'Last Updated' },
                   { key: 'actions', header: 'Actions' }
                 ]}

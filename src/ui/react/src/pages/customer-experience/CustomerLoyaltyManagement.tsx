@@ -17,10 +17,10 @@ import {
   ProgressBar
 } from '@carbon/react';
 import {
-  Award,
+  Trophy,
   Gift,
   Analytics,
-  TrendUp,
+  ArrowUp,
   Add,
   View
 } from '@carbon/icons-react';
@@ -125,8 +125,8 @@ const CustomerLoyaltyManagement: React.FC = () => {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <Award size={32} />
-            Customer Loyalty Management
+            <Trophy size={32} />
+            Customer FavoriteFilled Management
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Manage customer loyalty programs, rewards, and engagement initiatives
@@ -134,13 +134,13 @@ const CustomerLoyaltyManagement: React.FC = () => {
           
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <Button kind="primary" renderIcon={Add}>
-              Add Member
+              Add UserMultiple
             </Button>
             <Button kind="secondary" renderIcon={Gift}>
-              Reward Campaigns
+              Gift Campaigns
             </Button>
             <Button kind="tertiary" renderIcon={Analytics}>
-              Loyalty Analytics
+              FavoriteFilled Analytics
             </Button>
           </div>
         </div>
@@ -164,7 +164,7 @@ const CustomerLoyaltyManagement: React.FC = () => {
         <Grid style={{ marginTop: '2rem' }}>
           <Column lg={12} md={8} sm={4}>
             <Tile style={{ padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>Loyalty Members</h3>
+              <h3 style={{ marginBottom: '1rem' }}>FavoriteFilled Members</h3>
               <DataTable 
                 rows={members.map(member => ({
                   id: member.id,

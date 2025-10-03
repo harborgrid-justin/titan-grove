@@ -17,9 +17,9 @@ import {
 } from '@carbon/react';
 import {
   Money,
-  Predict,
+  ChartLineSmooth,
   ChartLine,
-  TrendUp,
+  ArrowUp,
   Add
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
@@ -114,7 +114,7 @@ const CashFlowForecasting: React.FC = () => {
         <Grid>
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Predict size={32} />
+              <ChartLineSmooth size={32} />
               Cash Flow Forecasting
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
@@ -128,7 +128,7 @@ const CashFlowForecasting: React.FC = () => {
               value={`$${(kpiData.totalInflow / 1000000).toFixed(1)}M`}
               trend="up"
               trendValue="12%"
-              icon={<TrendUp size={24} />}
+              icon={<ArrowUp size={24} />}
             />
           </Column>
           <Column lg={4} md={4} sm={4}>
@@ -155,16 +155,16 @@ const CashFlowForecasting: React.FC = () => {
               value={`${kpiData.avgConfidence.toFixed(1)}%`}
               trend="neutral"
               trendValue="0%"
-              icon={<Predict size={24} />}
+              icon={<ChartLineSmooth size={24} />}
             />
           </Column>
 
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Quarterly Cash Flow Forecast</h3>
+                <h3>Quarterly Cash Flow ChartLineSmooth</h3>
                 <Button kind="primary" renderIcon={Add}>
-                  New Forecast
+                  New ChartLineSmooth
                 </Button>
               </div>
 

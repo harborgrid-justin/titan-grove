@@ -24,7 +24,7 @@ const ContinuousImprovement: React.FC = () => {
       setData([
         {
           id: 'CONTINUOUSIMPROVEMENT_001',
-          name: 'Sample Continuous Improvement',
+          name: 'Sample Continuous ArrowUp',
           status: 'ACTIVE',
           createdDate: new Date().toISOString().split('T')[0],
           lastModified: new Date().toISOString().split('T')[0]
@@ -38,7 +38,7 @@ const ContinuousImprovement: React.FC = () => {
     { title: 'Total Items', value: data.length.toString(), change: 0, format: 'number' },
     { title: 'Active', value: data.filter(d => d.status === 'ACTIVE').length.toString(), change: 2.1, format: 'number' },
     { title: 'Efficiency', value: '94.2%', change: 1.8, format: 'percentage' },
-    { title: 'Performance', value: '87.5%', change: -0.5, format: 'percentage' }
+    { title: 'ChartLine', value: '87.5%', change: -0.5, format: 'percentage' }
   ];
 
   const transformedData = data.map(item => ({
@@ -101,7 +101,7 @@ const ContinuousImprovement: React.FC = () => {
       <Sidebar />
       <div className="main-content">
         <div className="page-header">
-          <h1>Continuous Improvement</h1>
+          <h1>Continuous ArrowUp</h1>
           <p>Drive continuous improvement initiatives</p>
         </div>
 
@@ -113,7 +113,7 @@ const ContinuousImprovement: React.FC = () => {
 
         <div className="content-section">
           <div className="section-header">
-            <h2>Continuous Improvement Management</h2>
+            <h2>Continuous ArrowUp Management</h2>
             <button className="btn-primary" onClick={handleCreate}>
               <i className="fas fa-plus"></i> Create New
             </button>
@@ -133,7 +133,7 @@ const ContinuousImprovement: React.FC = () => {
 
         {showModal && (
           <CrudModal
-            title={editingItem ? 'Edit Continuous Improvement' : 'Create Continuous Improvement'}
+            title={editingItem ? 'Edit Continuous ArrowUp' : 'Create Continuous ArrowUp'}
             fields={modalFields}
             initialData={editingItem}
             onSave={handleSave}

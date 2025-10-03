@@ -90,7 +90,7 @@ const RiskAssessment: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [analytics, setAnalytics] = useState<any>(null);
 
-  // Sample data specific to Risk Assessment
+  // Sample data specific to Warning Assessment
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -99,7 +99,7 @@ const RiskAssessment: React.FC = () => {
       const mockData: RiskAssessmentData[] = [
         {
           id: 'riskassessment-001',
-          name: 'Sample Risk Assessment Record 1',
+          name: 'Sample Warning Assessment Record 1',
           status: 'active',
           priority: 'high',
           dateCreated: '2024-01-15',
@@ -110,7 +110,7 @@ const RiskAssessment: React.FC = () => {
         },
         {
           id: 'riskassessment-002',
-          name: 'Sample Risk Assessment Record 2',
+          name: 'Sample Warning Assessment Record 2',
           status: 'pending',
           priority: 'medium',
           dateCreated: '2024-01-18',
@@ -121,7 +121,7 @@ const RiskAssessment: React.FC = () => {
         },
         {
           id: 'riskassessment-003',
-          name: 'Sample Risk Assessment Record 3',
+          name: 'Sample Warning Assessment Record 3',
           status: 'completed',
           priority: 'low',
           dateCreated: '2024-01-10',
@@ -250,7 +250,7 @@ const RiskAssessment: React.FC = () => {
       // Add new item
       const newItem: RiskAssessmentData = {
         id: `riskassessment-${Date.now()}`,
-        name: formData.name || 'New Risk Assessment',
+        name: formData.name || 'New Warning Assessment',
         status: formData.status || 'pending',
         priority: formData.priority || 'medium',
         dateCreated: new Date().toISOString().split('T')[0],
@@ -274,7 +274,7 @@ const RiskAssessment: React.FC = () => {
   if (loading) {
     return (
       <div style={{ padding: '2rem' }}>
-        <Loading description="Loading Risk Assessment..." />
+        <Loading description="Loading Warning Assessment..." />
       </div>
     );
   }
@@ -285,7 +285,7 @@ const RiskAssessment: React.FC = () => {
       <Grid>
         <Column lg={16} md={8} sm={4}>
           <div style={{ marginBottom: '2rem' }}>
-            <h1>Risk Assessment</h1>
+            <h1>Warning Assessment</h1>
             <p style={{ color: '#6f6f6f', marginTop: '0.5rem' }}>
               Patient risk stratification and assessment tools
             </p>
@@ -330,7 +330,7 @@ const RiskAssessment: React.FC = () => {
               <Grid>
                 <Column lg={4} md={2} sm={2}>
                   <div>
-                    <h5>Patient Risk Score</h5>
+                    <h5>Patient Warning Score</h5>
                     <p style={{ fontSize: '1.5rem', color: analytics.patientRiskAnalysis?.riskLevel === 'high' ? '#da1e28' : '#0f62fe' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </p>
@@ -418,7 +418,7 @@ const RiskAssessment: React.FC = () => {
             rows={rows}
             headers={headers}
             render={({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
-              <TableContainer title="Risk Assessment Management">
+              <TableContainer title="Warning Assessment Management">
                 <Table {...getTableProps()}>
                   <TableHead>
                     <TableRow>
@@ -449,13 +449,13 @@ const RiskAssessment: React.FC = () => {
       <Modal
         open={showModal}
         onRequestClose={() => setShowModal(false)}
-        modalHeading={editingItem ? `Edit ${editingItem.name}` : 'Add New Risk Assessment'}
+        modalHeading={editingItem ? `Edit ${editingItem.name}` : 'Add New Warning Assessment'}
         primaryButtonText="Save"
         secondaryButtonText="Cancel"
         onRequestSubmit={() => {
           // Get form data and save
           const formData = {
-            name: 'Updated Risk Assessment',
+            name: 'Updated Warning Assessment',
             status: 'active' as const,
             priority: 'medium' as const,
             assignedTo: 'Current User',

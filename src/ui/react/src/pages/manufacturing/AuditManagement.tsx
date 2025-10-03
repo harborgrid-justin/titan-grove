@@ -24,7 +24,7 @@ const AuditManagement: React.FC = () => {
       setData([
         {
           id: 'AUDITMANAGEMENT_001',
-          name: 'Sample Audit Management',
+          name: 'Sample View Management',
           status: 'ACTIVE',
           createdDate: new Date().toISOString().split('T')[0],
           lastModified: new Date().toISOString().split('T')[0]
@@ -38,7 +38,7 @@ const AuditManagement: React.FC = () => {
     { title: 'Total Items', value: data.length.toString(), change: 0, format: 'number' },
     { title: 'Active', value: data.filter(d => d.status === 'ACTIVE').length.toString(), change: 2.1, format: 'number' },
     { title: 'Efficiency', value: '94.2%', change: 1.8, format: 'percentage' },
-    { title: 'Performance', value: '87.5%', change: -0.5, format: 'percentage' }
+    { title: 'ChartLine', value: '87.5%', change: -0.5, format: 'percentage' }
   ];
 
   const transformedData = data.map(item => ({
@@ -101,7 +101,7 @@ const AuditManagement: React.FC = () => {
       <Sidebar />
       <div className="main-content">
         <div className="page-header">
-          <h1>Audit Management</h1>
+          <h1>View Management</h1>
           <p>Manage manufacturing audits</p>
         </div>
 
@@ -113,7 +113,7 @@ const AuditManagement: React.FC = () => {
 
         <div className="content-section">
           <div className="section-header">
-            <h2>Audit Management Management</h2>
+            <h2>View Management Management</h2>
             <button className="btn-primary" onClick={handleCreate}>
               <i className="fas fa-plus"></i> Create New
             </button>
@@ -133,7 +133,7 @@ const AuditManagement: React.FC = () => {
 
         {showModal && (
           <CrudModal
-            title={editingItem ? 'Edit Audit Management' : 'Create Audit Management'}
+            title={editingItem ? 'Edit View Management' : 'Create View Management'}
             fields={modalFields}
             initialData={editingItem}
             onSave={handleSave}

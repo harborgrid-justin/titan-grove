@@ -38,7 +38,7 @@ const CostRollup: React.FC = () => {
     { title: 'Total Items', value: data.length.toString(), change: 0, format: 'number' },
     { title: 'Active', value: data.filter(d => d.status === 'ACTIVE').length.toString(), change: 2.1, format: 'number' },
     { title: 'Efficiency', value: '94.2%', change: 1.8, format: 'percentage' },
-    { title: 'Performance', value: '87.5%', change: -0.5, format: 'percentage' }
+    { title: 'ChartLine', value: '87.5%', change: -0.5, format: 'percentage' }
   ];
 
   const transformedData = data.map(item => ({

@@ -21,9 +21,9 @@ import {
 import {
   Analytics,
   Trophy,
-  TrendUp,
-  TrendDown,
-  Target,
+  ArrowUp,
+  ArrowDown,
+  Task,
   Compare,
   Dashboard
 } from '@carbon/icons-react';
@@ -56,7 +56,7 @@ const PerformanceMetricsCenter: React.FC = () => {
       setMetrics([
         {
           id: 'revenue-per-employee',
-          name: 'Revenue per Employee',
+          name: 'Currency per UserMultiple',
           category: 'Financial',
           currentValue: 245000,
           targetValue: 250000,
@@ -114,7 +114,7 @@ const PerformanceMetricsCenter: React.FC = () => {
       format: 'number' as const
     },
     {
-      title: 'Excellent Performance',
+      title: 'Excellent ChartLine',
       value: metrics.filter(m => m.performance === 'excellent').length.toString(),
       change: 12.1,
       format: 'number' as const
@@ -126,7 +126,7 @@ const PerformanceMetricsCenter: React.FC = () => {
       format: 'number' as const
     },
     {
-      title: 'On Target',
+      title: 'On Task',
       value: metrics.filter(m => m.currentValue >= m.targetValue * 0.95).length.toString(),
       change: 3.7,
       format: 'number' as const
@@ -136,10 +136,10 @@ const PerformanceMetricsCenter: React.FC = () => {
   const headers = [
     { key: 'name', header: 'Metric' },
     { key: 'current', header: 'Current' },
-    { key: 'target', header: 'Target' },
+    { key: 'target', header: 'Task' },
     { key: 'benchmark', header: 'Benchmark' },
     { key: 'progress', header: 'Progress' },
-    { key: 'performance', header: 'Performance' }
+    { key: 'performance', header: 'ChartLine' }
   ];
 
   const rows = filteredMetrics.map(metric => ({
@@ -202,8 +202,8 @@ const PerformanceMetricsCenter: React.FC = () => {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <Target size={32} />
-            Performance Metrics Center
+            <Task size={32} />
+            ChartLine Metrics Center
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Track and analyze key performance indicators against targets and benchmarks
@@ -224,7 +224,7 @@ const PerformanceMetricsCenter: React.FC = () => {
             </Select>
             
             <Button kind="primary" renderIcon={Analytics}>
-              Performance Report
+              ChartLine Report
             </Button>
             
             <Button kind="secondary" renderIcon={Compare}>
@@ -258,8 +258,8 @@ const PerformanceMetricsCenter: React.FC = () => {
                 alignItems: 'center',
                 gap: '0.5rem'
               }}>
-                <Target size={20} />
-                Performance Metrics
+                <Task size={20} />
+                ChartLine Metrics
               </h3>
               
               <DataTable 

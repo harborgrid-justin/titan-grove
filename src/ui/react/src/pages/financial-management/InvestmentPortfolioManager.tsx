@@ -18,8 +18,8 @@ import {
 import {
   Money,
   ChartLine,
-  TrendUp,
-  TrendDown,
+  ArrowUp,
+  ArrowDown,
   Add
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
@@ -79,7 +79,7 @@ const InvestmentPortfolioManager: React.FC = () => {
         },
         {
           id: 'inv-4',
-          assetName: 'Money Market',
+          assetName: 'Money ChartLineData',
           type: 'Cash',
           value: 1700000,
           allocation: 12,
@@ -146,7 +146,7 @@ const InvestmentPortfolioManager: React.FC = () => {
               value={`${kpiData.avgReturn.toFixed(1)}%`}
               trend="up"
               trendValue="2.3%"
-              icon={<TrendUp size={24} />}
+              icon={<ArrowUp size={24} />}
             />
           </Column>
           <Column lg={4} md={4} sm={4}>
@@ -160,11 +160,11 @@ const InvestmentPortfolioManager: React.FC = () => {
           </Column>
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="High Risk Assets"
+              title="High Warning Assets"
               value={kpiData.highRisk.toString()}
               trend="down"
               trendValue="5%"
-              icon={<TrendDown size={24} />}
+              icon={<ArrowDown size={24} />}
             />
           </Column>
 
@@ -188,7 +188,7 @@ const InvestmentPortfolioManager: React.FC = () => {
                           <TableHeader>Value</TableHeader>
                           <TableHeader>Allocation</TableHeader>
                           <TableHeader>Return</TableHeader>
-                          <TableHeader>Risk</TableHeader>
+                          <TableHeader>Warning</TableHeader>
                           <TableHeader>Status</TableHeader>
                         </TableRow>
                       </TableHead>

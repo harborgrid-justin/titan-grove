@@ -18,7 +18,7 @@ import {
 import {
   Money,
   ChartLine,
-  TrendUp,
+  ArrowUp,
   Analytics,
   Add
 } from '@carbon/icons-react';
@@ -32,7 +32,7 @@ interface CompensationData {
   medianSalary: number;
   totalHeadcount: number;
   marketRatio: number;
-  payEquity: 'Fair' | 'Below Market' | 'Above Market';
+  payEquity: 'Fair' | 'Below ChartLineData' | 'Above ChartLineData';
   budgetUtilization: number;
 }
 
@@ -54,7 +54,7 @@ const CompensationAnalysis: React.FC = () => {
           medianSalary: 120000,
           totalHeadcount: 150,
           marketRatio: 1.05,
-          payEquity: 'Above Market',
+          payEquity: 'Above ChartLineData',
           budgetUtilization: 92
         },
         {
@@ -74,7 +74,7 @@ const CompensationAnalysis: React.FC = () => {
           medianSalary: 72000,
           totalHeadcount: 120,
           marketRatio: 0.92,
-          payEquity: 'Below Market',
+          payEquity: 'Below ChartLineData',
           budgetUtilization: 85
         },
         {
@@ -95,8 +95,8 @@ const CompensationAnalysis: React.FC = () => {
   const getEquityColor = (equity: string) => {
     switch (equity) {
       case 'Fair': return 'green';
-      case 'Below Market': return 'red';
-      case 'Above Market': return 'blue';
+      case 'Below ChartLineData': return 'red';
+      case 'Above ChartLineData': return 'blue';
       default: return 'gray';
     }
   };
@@ -104,7 +104,7 @@ const CompensationAnalysis: React.FC = () => {
   const kpiData = {
     totalPayroll: compensation.reduce((sum, c) => sum + (c.avgSalary * c.totalHeadcount), 0),
     avgMarketRatio: compensation.reduce((sum, c) => sum + c.marketRatio, 0) / compensation.length,
-    belowMarket: compensation.filter(c => c.payEquity === 'Below Market').length,
+    belowMarket: compensation.filter(c => c.payEquity === 'Below ChartLineData').length,
     avgBudgetUtil: compensation.reduce((sum, c) => sum + c.budgetUtilization, 0) / compensation.length
   };
 
@@ -124,7 +124,7 @@ const CompensationAnalysis: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Money size={32} />
-              Compensation Analysis
+              Currency Analysis
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Comprehensive compensation and market analysis
@@ -142,7 +142,7 @@ const CompensationAnalysis: React.FC = () => {
           </Column>
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="Market Ratio"
+              title="ChartLineData Ratio"
               value={kpiData.avgMarketRatio.toFixed(2)}
               trend="up"
               trendValue="2%"
@@ -151,7 +151,7 @@ const CompensationAnalysis: React.FC = () => {
           </Column>
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="Below Market"
+              title="Below ChartLineData"
               value={kpiData.belowMarket.toString()}
               trend="down"
               trendValue="10%"
@@ -164,14 +164,14 @@ const CompensationAnalysis: React.FC = () => {
               value={`${kpiData.avgBudgetUtil.toFixed(1)}%`}
               trend="up"
               trendValue="3%"
-              icon={<TrendUp size={24} />}
+              icon={<ArrowUp size={24} />}
             />
           </Column>
 
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Compensation by Department</h3>
+                <h3>Currency by Department</h3>
                 <Button kind="primary" renderIcon={Add}>
                   Generate Report
                 </Button>
@@ -187,7 +187,7 @@ const CompensationAnalysis: React.FC = () => {
                           <TableHeader>Avg Salary</TableHeader>
                           <TableHeader>Median Salary</TableHeader>
                           <TableHeader>Headcount</TableHeader>
-                          <TableHeader>Market Ratio</TableHeader>
+                          <TableHeader>ChartLineData Ratio</TableHeader>
                           <TableHeader>Pay Equity</TableHeader>
                           <TableHeader>Budget Util.</TableHeader>
                         </TableRow>

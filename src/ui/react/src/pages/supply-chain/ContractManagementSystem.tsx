@@ -26,7 +26,7 @@ import {
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
 
-interface Contract {
+interface Document {
   id: string;
   contractName: string;
   vendor: string;
@@ -39,7 +39,7 @@ interface Contract {
 }
 
 const ContractManagementSystem: React.FC = () => {
-  const [contracts, setContracts] = useState<Contract[]>([]);
+  const [contracts, setContracts] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -62,9 +62,9 @@ const ContractManagementSystem: React.FC = () => {
         },
         {
           id: 'contract-2',
-          contractName: 'Logistics Service Agreement',
+          contractName: 'Logistics ServerProxy Agreement',
           vendor: 'Logistics Partners LLC',
-          type: 'Service',
+          type: 'ServerProxy',
           value: 850000,
           startDate: '2024-02-01',
           endDate: '2025-01-31',
@@ -73,7 +73,7 @@ const ContractManagementSystem: React.FC = () => {
         },
         {
           id: 'contract-3',
-          contractName: 'Raw Materials Contract',
+          contractName: 'Raw Materials Document',
           vendor: 'Steel Dynamics Corp',
           type: 'Supply',
           value: 1200000,
@@ -86,7 +86,7 @@ const ContractManagementSystem: React.FC = () => {
           id: 'contract-4',
           contractName: 'Maintenance Agreement',
           vendor: 'Quality Supplies Co',
-          type: 'Service',
+          type: 'ServerProxy',
           value: 450000,
           startDate: '2024-03-01',
           endDate: '2024-08-31',
@@ -131,10 +131,10 @@ const ContractManagementSystem: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <DocumentSigned size={32} />
-              Contract Management System
+              Document Management System
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
-              Contract lifecycle management and compliance tracking
+              Document lifecycle management and compliance tracking
             </p>
           </Column>
 
@@ -168,7 +168,7 @@ const ContractManagementSystem: React.FC = () => {
           </Column>
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="Avg Compliance"
+              title="Avg CheckmarkOutline"
               value={`${kpiData.avgCompliance.toFixed(1)}%`}
               trend="up"
               trendValue="2%"
@@ -176,13 +176,13 @@ const ContractManagementSystem: React.FC = () => {
             />
           </Column>
 
-          {/* Contract Registry */}
+          {/* Document Registry */}
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Contract Registry</h3>
+                <h3>Document Registry</h3>
                 <Button kind="primary" renderIcon={Add}>
-                  New Contract
+                  New Document
                 </Button>
               </div>
 
@@ -192,14 +192,14 @@ const ContractManagementSystem: React.FC = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableHeader>Contract Name</TableHeader>
-                          <TableHeader>Vendor</TableHeader>
+                          <TableHeader>Document Name</TableHeader>
+                          <TableHeader>Store</TableHeader>
                           <TableHeader>Type</TableHeader>
                           <TableHeader>Value</TableHeader>
                           <TableHeader>Start Date</TableHeader>
                           <TableHeader>End Date</TableHeader>
                           <TableHeader>Status</TableHeader>
-                          <TableHeader>Compliance</TableHeader>
+                          <TableHeader>CheckmarkOutline</TableHeader>
                         </TableRow>
                       </TableHead>
                       <TableBody>

@@ -20,7 +20,7 @@ import {
   Security,
   ChartRadar,
   Warning,
-  ShieldCheck,
+  Security,
   Add
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
@@ -50,7 +50,7 @@ const RiskAssessmentDashboard: React.FC = () => {
       setRisks([
         {
           id: 'risk-1',
-          riskType: 'Credit Risk',
+          riskType: 'Credit Warning',
           category: 'Counterparty',
           severity: 'High',
           likelihood: 65,
@@ -60,7 +60,7 @@ const RiskAssessmentDashboard: React.FC = () => {
         },
         {
           id: 'risk-2',
-          riskType: 'Market Risk',
+          riskType: 'ChartLineData Warning',
           category: 'Trading',
           severity: 'Medium',
           likelihood: 45,
@@ -70,7 +70,7 @@ const RiskAssessmentDashboard: React.FC = () => {
         },
         {
           id: 'risk-3',
-          riskType: 'Liquidity Risk',
+          riskType: 'Liquidity Warning',
           category: 'Cash Flow',
           severity: 'Critical',
           likelihood: 35,
@@ -80,13 +80,13 @@ const RiskAssessmentDashboard: React.FC = () => {
         },
         {
           id: 'risk-4',
-          riskType: 'Operational Risk',
+          riskType: 'Operational Warning',
           category: 'Internal',
           severity: 'Low',
           likelihood: 25,
           impact: 40,
           exposure: 850000,
-          mitigation: 'Process controls, automation'
+          mitigation: 'Progress controls, automation'
         }
       ]);
       setLoading(false);
@@ -126,7 +126,7 @@ const RiskAssessmentDashboard: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Security size={32} />
-              Risk Assessment Dashboard
+              Warning Assessment Dashboard
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Financial risk identification, assessment, and monitoring
@@ -166,16 +166,16 @@ const RiskAssessmentDashboard: React.FC = () => {
               value={`${kpiData.avgLikelihood.toFixed(1)}%`}
               trend="down"
               trendValue="3%"
-              icon={<ShieldCheck size={24} />}
+              icon={<Security size={24} />}
             />
           </Column>
 
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Risk Register</h3>
+                <h3>Warning Register</h3>
                 <Button kind="primary" renderIcon={Add}>
-                  Add Risk
+                  Add Warning
                 </Button>
               </div>
 
@@ -185,7 +185,7 @@ const RiskAssessmentDashboard: React.FC = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableHeader>Risk Type</TableHeader>
+                          <TableHeader>Warning Type</TableHeader>
                           <TableHeader>Category</TableHeader>
                           <TableHeader>Severity</TableHeader>
                           <TableHeader>Likelihood</TableHeader>

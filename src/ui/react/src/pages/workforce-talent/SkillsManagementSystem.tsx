@@ -18,7 +18,7 @@ import {
 } from '@carbon/react';
 import {
   Education,
-  Skill,
+  SkillLevel,
   Trophy,
   UserMultiple,
   Add
@@ -82,7 +82,7 @@ const SkillsManagementSystem: React.FC = () => {
           id: 'skill-4',
           employee: 'Sarah Williams',
           skill: 'Leadership',
-          category: 'Soft Skills',
+          category: 'Soft SkillLevel',
           proficiency: 88,
           level: 'Advanced',
           certification: false,
@@ -125,8 +125,8 @@ const SkillsManagementSystem: React.FC = () => {
         <Grid>
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Skill size={32} />
-              Skills Management System
+              <SkillLevel size={32} />
+              SkillLevel Management System
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Track and develop employee skills and competencies
@@ -135,11 +135,11 @@ const SkillsManagementSystem: React.FC = () => {
 
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="Total Skills"
+              title="Total SkillLevel"
               value={kpiData.totalSkills.toString()}
               trend="up"
               trendValue="12%"
-              icon={<Skill size={24} />}
+              icon={<SkillLevel size={24} />}
             />
           </Column>
           <Column lg={4} md={4} sm={4}>
@@ -153,7 +153,7 @@ const SkillsManagementSystem: React.FC = () => {
           </Column>
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="Certified Skills"
+              title="Certified SkillLevel"
               value={kpiData.certified.toString()}
               trend="up"
               trendValue="8%"
@@ -162,7 +162,7 @@ const SkillsManagementSystem: React.FC = () => {
           </Column>
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="Expert Level"
+              title="Expert ChartLine"
               value={kpiData.expertLevel.toString()}
               trend="up"
               trendValue="10%"
@@ -173,9 +173,9 @@ const SkillsManagementSystem: React.FC = () => {
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Employee Skills Matrix</h3>
+                <h3>UserMultiple SkillLevel Matrix</h3>
                 <Button kind="primary" renderIcon={Add}>
-                  Add Skill
+                  Add SkillLevel
                 </Button>
               </div>
 
@@ -185,11 +185,11 @@ const SkillsManagementSystem: React.FC = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableHeader>Employee</TableHeader>
-                          <TableHeader>Skill</TableHeader>
+                          <TableHeader>UserMultiple</TableHeader>
+                          <TableHeader>SkillLevel</TableHeader>
                           <TableHeader>Category</TableHeader>
                           <TableHeader>Proficiency</TableHeader>
-                          <TableHeader>Level</TableHeader>
+                          <TableHeader>ChartLine</TableHeader>
                           <TableHeader>Certification</TableHeader>
                           <TableHeader>Last Assessed</TableHeader>
                         </TableRow>

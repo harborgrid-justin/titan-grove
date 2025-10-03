@@ -106,7 +106,7 @@ const ClinicalRounding: React.FC = () => {
           lastUpdated: '2024-01-20',
           assignedTo: 'Dr. Smith',
           category: 'Clinical Operations',
-          description: 'Digital rounds and bedside care management'
+          description: 'Chip rounds and bedside care management'
         },
         {
           id: 'clinicalrounding-002',
@@ -257,7 +257,7 @@ const ClinicalRounding: React.FC = () => {
         lastUpdated: new Date().toISOString().split('T')[0],
         assignedTo: formData.assignedTo,
         category: 'Clinical Operations',
-        description: formData.description || 'Digital rounds and bedside care management'
+        description: formData.description || 'Chip rounds and bedside care management'
       };
       setData(prev => [...prev, newItem]);
     }
@@ -287,7 +287,7 @@ const ClinicalRounding: React.FC = () => {
           <div style={{ marginBottom: '2rem' }}>
             <h1>Clinical Rounding</h1>
             <p style={{ color: '#6f6f6f', marginTop: '0.5rem' }}>
-              Digital rounds and bedside care management
+              Chip rounds and bedside care management
             </p>
           </div>
         </Column>
@@ -330,7 +330,7 @@ const ClinicalRounding: React.FC = () => {
               <Grid>
                 <Column lg={4} md={2} sm={2}>
                   <div>
-                    <h5>Patient Risk Score</h5>
+                    <h5>Patient Warning Score</h5>
                     <p style={{ fontSize: '1.5rem', color: analytics.patientRiskAnalysis?.riskLevel === 'high' ? '#da1e28' : '#0f62fe' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </p>

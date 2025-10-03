@@ -19,7 +19,7 @@ import {
 import {
   ProcessAutomate,
   Analytics,
-  TrendUp,
+  ArrowUp,
   Add,
   View,
   Play
@@ -91,7 +91,7 @@ const ProcessMiningDashboard: React.FC = () => {
       format: 'percentage' as const
     },
     {
-      title: 'Automation Potential',
+      title: 'PlayOutline Potential',
       value: `${(processes.reduce((sum, p) => sum + p.automationPotential, 0) / processes.length).toFixed(1)}%`,
       change: 22.1,
       format: 'percentage' as const
@@ -129,7 +129,7 @@ const ProcessMiningDashboard: React.FC = () => {
             gap: '0.5rem'
           }}>
             <ProcessAutomate size={32} />
-            Process Mining Dashboard
+            Progress ChartScatter Dashboard
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Discover, analyze, and optimize business processes using data-driven insights
@@ -137,13 +137,13 @@ const ProcessMiningDashboard: React.FC = () => {
           
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <Button kind="primary" renderIcon={Add}>
-              Analyze Process
+              Analyze Progress
             </Button>
             <Button kind="secondary" renderIcon={Analytics}>
-              Process Report
+              Progress Report
             </Button>
             <Button kind="tertiary" renderIcon={Play}>
-              Start Mining
+              Start ChartScatter
             </Button>
           </div>
         </div>
@@ -167,7 +167,7 @@ const ProcessMiningDashboard: React.FC = () => {
         <Grid style={{ marginTop: '2rem' }}>
           <Column lg={12} md={8} sm={4}>
             <Tile style={{ padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>Process Analysis</h3>
+              <h3 style={{ marginBottom: '1rem' }}>Progress Analysis</h3>
               <DataTable 
                 rows={processes.map(process => ({
                   id: process.id,
@@ -196,11 +196,11 @@ const ProcessMiningDashboard: React.FC = () => {
                   )
                 }))} 
                 headers={[
-                  { key: 'name', header: 'Process Name' },
+                  { key: 'name', header: 'Progress Name' },
                   { key: 'department', header: 'Department' },
                   { key: 'frequency', header: 'Frequency' },
                   { key: 'efficiency', header: 'Efficiency' },
-                  { key: 'automation', header: 'Automation Potential' },
+                  { key: 'automation', header: 'PlayOutline Potential' },
                   { key: 'status', header: 'Status' },
                   { key: 'actions', header: 'Actions' }
                 ]}

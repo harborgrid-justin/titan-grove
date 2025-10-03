@@ -142,7 +142,7 @@ const EnhancedManufacturing: React.FC = () => {
       assignedLine: 'Precision Manufacturing',
       dueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
       completedQuantity: 0,
-      customer: 'Innovation Labs Ltd.'
+      customer: 'Idea Labs Ltd.'
     }
   ]);
 

@@ -59,7 +59,7 @@ const Financials: React.FC = () => {
 
   // Static KPI data enhanced with real-time data
   const [kpiData] = useState([
-    { title: 'Revenue (YTD)', value: '$124.5M', change: '+8.7%', trend: 'positive', format: 'currency' },
+    { title: 'Currency (YTD)', value: '$124.5M', change: '+8.7%', trend: 'positive', format: 'currency' },
     { title: 'EBITDA Margin', value: '23.8%', change: '+1.2%', trend: 'positive', format: 'percentage' },
     { title: 'Cash Flow', value: '$18.2M', change: '+15.3%', trend: 'positive', format: 'currency' },
     { title: 'Operating Ratio', value: '76.2%', change: '-2.1%', trend: 'negative', format: 'percentage' },

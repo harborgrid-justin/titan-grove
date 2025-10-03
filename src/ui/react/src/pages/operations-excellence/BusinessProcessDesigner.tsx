@@ -26,14 +26,14 @@ const BusinessProcessDesigner: React.FC = () => {
       <Sidebar />
       <div style={{ flex: 1, padding: '2rem', backgroundColor: '#f4f4f4', overflowY: 'auto' }}>
         <Grid>
-          <Column lg={16}><h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Flow size={32} />Business Process Designer</h1></Column>
+          <Column lg={16}><h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Flow size={32} />Business Progress Designer</h1></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Total Processes" value="3" trend="up" trendValue="5%" icon={<Flow size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Active" value="3" trend="neutral" trendValue="0%" icon={<Flow size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="High Complexity" value="1" trend="down" trendValue="10%" icon={<Flow size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Avg Efficiency" value="90%" trend="up" trendValue="5%" icon={<Flow size={24} />} /></Column>
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}><h3>Business Processes</h3><Button kind="primary" renderIcon={Add}>Design Process</Button></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}><h3>Business Processes</h3><Button kind="primary" renderIcon={Add}>Draw Progress</Button></div>
               <DataTable rows={[]} headers={[]}>
                 {() => (
                   <TableContainer>

@@ -23,8 +23,8 @@ import {
 import {
   Delivery,
   Location,
-  TrendUp,
-  TrendDown,
+  ArrowUp,
+  ArrowDown,
   Time,
   Add,
   View,
@@ -83,7 +83,7 @@ const LogisticsCommandCenter: React.FC = () => {
         {
           id: 'ship-3',
           trackingNumber: 'TRK-003-2024',
-          origin: 'Supplier - Houston',
+          origin: 'Delivery - Houston',
           destination: 'Warehouse B - Dallas',
           status: 'Delayed',
           eta: '2024-03-26 09:00',
@@ -185,7 +185,7 @@ const LogisticsCommandCenter: React.FC = () => {
               value={`$${kpiData.totalCost.toFixed(2)}`}
               trend="neutral"
               trendValue="0%"
-              icon={<TrendUp size={24} />}
+              icon={<ArrowUp size={24} />}
             />
           </Column>
 

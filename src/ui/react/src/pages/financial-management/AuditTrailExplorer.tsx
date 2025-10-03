@@ -73,7 +73,7 @@ const AuditTrailExplorer: React.FC = () => {
           timestamp: '2024-03-22 14:15:08',
           user: 'mike.johnson@company.com',
           action: 'Delete',
-          entity: 'Expense Report #EXP-2024-089',
+          entity: 'Purchase Report #EXP-2024-089',
           changes: 'Report deleted',
           status: 'Failed',
           ipAddress: '192.168.1.89'
@@ -125,7 +125,7 @@ const AuditTrailExplorer: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Document size={32} />
-              Audit Trail Explorer
+              View Trail Explorer
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Comprehensive audit logging and compliance tracking
@@ -172,7 +172,7 @@ const AuditTrailExplorer: React.FC = () => {
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Audit Log</h3>
+                <h3>View Log</h3>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                   <TextInput
                     id="search-audit"

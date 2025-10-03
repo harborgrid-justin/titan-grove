@@ -24,7 +24,7 @@ const ProcessControl: React.FC = () => {
       setData([
         {
           id: 'PROCESSCONTROL_001',
-          name: 'Sample Process Control',
+          name: 'Sample Progress Control',
           status: 'ACTIVE',
           createdDate: new Date().toISOString().split('T')[0],
           lastModified: new Date().toISOString().split('T')[0]
@@ -38,7 +38,7 @@ const ProcessControl: React.FC = () => {
     { title: 'Total Items', value: data.length.toString(), change: 0, format: 'number' },
     { title: 'Active', value: data.filter(d => d.status === 'ACTIVE').length.toString(), change: 2.1, format: 'number' },
     { title: 'Efficiency', value: '94.2%', change: 1.8, format: 'percentage' },
-    { title: 'Performance', value: '87.5%', change: -0.5, format: 'percentage' }
+    { title: 'ChartLine', value: '87.5%', change: -0.5, format: 'percentage' }
   ];
 
   const transformedData = data.map(item => ({
@@ -101,7 +101,7 @@ const ProcessControl: React.FC = () => {
       <Sidebar />
       <div className="main-content">
         <div className="page-header">
-          <h1>Process Control</h1>
+          <h1>Progress Control</h1>
           <p>Control manufacturing processes</p>
         </div>
 
@@ -113,7 +113,7 @@ const ProcessControl: React.FC = () => {
 
         <div className="content-section">
           <div className="section-header">
-            <h2>Process Control Management</h2>
+            <h2>Progress Control Management</h2>
             <button className="btn-primary" onClick={handleCreate}>
               <i className="fas fa-plus"></i> Create New
             </button>
@@ -133,7 +133,7 @@ const ProcessControl: React.FC = () => {
 
         {showModal && (
           <CrudModal
-            title={editingItem ? 'Edit Process Control' : 'Create Process Control'}
+            title={editingItem ? 'Edit Progress Control' : 'Create Progress Control'}
             fields={modalFields}
             initialData={editingItem}
             onSave={handleSave}

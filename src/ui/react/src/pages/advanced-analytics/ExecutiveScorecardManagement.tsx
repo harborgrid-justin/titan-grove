@@ -26,8 +26,8 @@ import {
 import {
   Dashboard,
   Trophy,
-  TrendUp,
-  TrendDown,
+  ArrowUp,
+  ArrowDown,
   Settings,
   Add,
   Edit,
@@ -96,7 +96,7 @@ const ExecutiveScorecardManagement: React.FC = () => {
       setKpis([
         {
           id: 'revenue-growth',
-          name: 'Revenue Growth',
+          name: 'Currency Growth',
           category: 'Financial',
           currentValue: 18.5,
           targetValue: 20.0,
@@ -135,7 +135,7 @@ const ExecutiveScorecardManagement: React.FC = () => {
         },
         {
           id: 'market-share',
-          name: 'Market Share',
+          name: 'ChartLineData Share',
           category: 'Strategic',
           currentValue: 15.3,
           targetValue: 18.0,
@@ -263,7 +263,7 @@ const ExecutiveScorecardManagement: React.FC = () => {
       format: 'number' as const
     },
     {
-      title: 'At Risk',
+      title: 'At Warning',
       value: kpis.filter(k => k.status === 'at-risk').length.toString(),
       change: -10.5,
       format: 'number' as const
@@ -281,7 +281,7 @@ const ExecutiveScorecardManagement: React.FC = () => {
     { key: 'category', header: 'Category' },
     { key: 'progress', header: 'Progress' },
     { key: 'current', header: 'Current' },
-    { key: 'target', header: 'Target' },
+    { key: 'target', header: 'Task' },
     { key: 'status', header: 'Status' },
     { key: 'owner', header: 'Owner' },
     { key: 'actions', header: 'Actions' }
@@ -418,7 +418,7 @@ const ExecutiveScorecardManagement: React.FC = () => {
                 gap: '0.5rem'
               }}>
                 <Dashboard size={20} />
-                Key Performance Indicators
+                Key ChartLine Indicators
               </h3>
               
               <DataTable 
@@ -494,7 +494,7 @@ const ExecutiveScorecardManagement: React.FC = () => {
             
             <NumberInput
               id="target-value"
-              label="Target Value"
+              label="Task Value"
               value={kpiForm.targetValue}
               onChange={(e) => setKPIForm(prev => ({ ...prev, targetValue: Number(e.target.value) }))}
             />

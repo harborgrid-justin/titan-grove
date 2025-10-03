@@ -22,7 +22,7 @@ import {
   Tag
 } from '@carbon/react';
 import {
-  Pipeline,
+  Flow,
   Analytics,
   Add,
   Edit,
@@ -167,7 +167,7 @@ const SalesPipelineAutomation: React.FC = () => {
         },
         {
           id: 'opp-3',
-          title: 'Digital Transformation Project',
+          title: 'Chip Transform Project',
           company: 'Global Industries',
           value: 500000,
           stage: 'negotiation',
@@ -182,7 +182,7 @@ const SalesPipelineAutomation: React.FC = () => {
       setAutomationRules([
         {
           id: 'rule-1',
-          name: 'Lead Scoring Automation',
+          name: 'Lead Scoring PlayOutline',
           trigger: 'new_lead_created',
           action: 'calculate_lead_score',
           stage: 'lead',
@@ -263,7 +263,7 @@ const SalesPipelineAutomation: React.FC = () => {
 
   const kpiData = [
     {
-      title: 'Total Pipeline Value',
+      title: 'Total Flow Value',
       value: `$${opportunities.reduce((sum, opp) => sum + opp.value, 0).toLocaleString()}`,
       change: 18.5,
       format: 'currency' as const
@@ -281,7 +281,7 @@ const SalesPipelineAutomation: React.FC = () => {
       format: 'currency' as const
     },
     {
-      title: 'Automation Rules',
+      title: 'PlayOutline Rules',
       value: automationRules.filter(rule => rule.isActive).length.toString(),
       change: 25.0,
       format: 'number' as const
@@ -289,7 +289,7 @@ const SalesPipelineAutomation: React.FC = () => {
   ];
 
   const opportunityHeaders = [
-    { key: 'title', header: 'Opportunity' },
+    { key: 'title', header: 'Idea' },
     { key: 'company', header: 'Company' },
     { key: 'value', header: 'Value' },
     { key: 'stage', header: 'Stage' },
@@ -351,8 +351,8 @@ const SalesPipelineAutomation: React.FC = () => {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <Pipeline size={32} />
-            Sales Pipeline Automation
+            <Flow size={32} />
+            Sales Flow PlayOutline
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Automate sales processes and track opportunities through the pipeline
@@ -364,7 +364,7 @@ const SalesPipelineAutomation: React.FC = () => {
               renderIcon={Add}
               onClick={() => setShowOpportunityModal(true)}
             >
-              Add Opportunity
+              Add Idea
             </Button>
             
             <Button 
@@ -415,7 +415,7 @@ const SalesPipelineAutomation: React.FC = () => {
                 alignItems: 'center',
                 gap: '0.5rem'
               }}>
-                <Pipeline size={20} />
+                <Flow size={20} />
                 Sales Opportunities
               </h3>
               
@@ -452,7 +452,7 @@ const SalesPipelineAutomation: React.FC = () => {
 
           <Column lg={4} md={2} sm={4}>
             <Tile style={{ padding: '1.5rem', marginBottom: '1rem' }}>
-              <h4 style={{ marginBottom: '1rem' }}>Pipeline Stages</h4>
+              <h4 style={{ marginBottom: '1rem' }}>Flow Stages</h4>
               {stages.map(stage => (
                 <div key={stage.id} style={{ 
                   marginBottom: '1rem',
@@ -474,7 +474,7 @@ const SalesPipelineAutomation: React.FC = () => {
             </Tile>
             
             <Tile style={{ padding: '1.5rem' }}>
-              <h4 style={{ marginBottom: '1rem' }}>Active Automation</h4>
+              <h4 style={{ marginBottom: '1rem' }}>Active PlayOutline</h4>
               <div style={{ fontSize: '0.875rem' }}>
                 <div style={{ marginBottom: '0.5rem' }}>
                   <span style={{ color: 'var(--cds-support-02)' }}>●</span> Lead Scoring: Active
@@ -493,15 +493,15 @@ const SalesPipelineAutomation: React.FC = () => {
         <Modal
           open={showOpportunityModal}
           onRequestClose={() => setShowOpportunityModal(false)}
-          modalHeading="Create New Opportunity"
-          primaryButtonText="Create Opportunity"
+          modalHeading="Create New Idea"
+          primaryButtonText="Create Idea"
           secondaryButtonText="Cancel"
           onRequestSubmit={createOpportunity}
         >
           <div style={{ display: 'grid', gap: '1rem' }}>
             <TextInput
               id="opp-title"
-              labelText="Opportunity Title"
+              labelText="Idea Title"
               value={opportunityForm.title}
               onChange={(e) => setOpportunityForm(prev => ({ ...prev, title: e.target.value }))}
             />
@@ -536,7 +536,7 @@ const SalesPipelineAutomation: React.FC = () => {
         <Modal
           open={showRuleModal}
           onRequestClose={() => setShowRuleModal(false)}
-          modalHeading="Create Automation Rule"
+          modalHeading="Create PlayOutline Rule"
           primaryButtonText="Create Rule"
           secondaryButtonText="Cancel"
           onRequestSubmit={createAutomationRule}
@@ -555,7 +555,7 @@ const SalesPipelineAutomation: React.FC = () => {
               value={ruleForm.trigger}
               onChange={(e) => setRuleForm(prev => ({ ...prev, trigger: e.target.value }))}
             >
-              <SelectItem value="stage_change" text="Stage Change" />
+              <SelectItem value="stage_change" text="Stage Edit" />
               <SelectItem value="time_based" text="Time Based" />
               <SelectItem value="activity_completed" text="Activity Completed" />
             </Select>

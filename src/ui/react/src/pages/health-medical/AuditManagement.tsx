@@ -90,7 +90,7 @@ const AuditManagement: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [analytics, setAnalytics] = useState<any>(null);
 
-  // Sample data specific to Audit Management
+  // Sample data specific to View Management
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -99,35 +99,35 @@ const AuditManagement: React.FC = () => {
       const mockData: AuditManagementData[] = [
         {
           id: 'auditmanagement-001',
-          name: 'Sample Audit Management Record 1',
+          name: 'Sample View Management Record 1',
           status: 'active',
           priority: 'high',
           dateCreated: '2024-01-15',
           lastUpdated: '2024-01-20',
           assignedTo: 'Dr. Smith',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Healthcare audit preparation and management'
         },
         {
           id: 'auditmanagement-002',
-          name: 'Sample Audit Management Record 2',
+          name: 'Sample View Management Record 2',
           status: 'pending',
           priority: 'medium',
           dateCreated: '2024-01-18',
           lastUpdated: '2024-01-22',
           assignedTo: 'Nurse Johnson',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Secondary record for healthcare audit preparation and management'
         },
         {
           id: 'auditmanagement-003',
-          name: 'Sample Audit Management Record 3',
+          name: 'Sample View Management Record 3',
           status: 'completed',
           priority: 'low',
           dateCreated: '2024-01-10',
           lastUpdated: '2024-01-25',
           assignedTo: 'Admin Staff',
-          category: 'Regulatory Compliance',
+          category: 'Regulatory CheckmarkOutline',
           description: 'Completed healthcare audit preparation and management'
         }
       ];
@@ -250,13 +250,13 @@ const AuditManagement: React.FC = () => {
       // Add new item
       const newItem: AuditManagementData = {
         id: `auditmanagement-${Date.now()}`,
-        name: formData.name || 'New Audit Management',
+        name: formData.name || 'New View Management',
         status: formData.status || 'pending',
         priority: formData.priority || 'medium',
         dateCreated: new Date().toISOString().split('T')[0],
         lastUpdated: new Date().toISOString().split('T')[0],
         assignedTo: formData.assignedTo,
-        category: 'Regulatory Compliance',
+        category: 'Regulatory CheckmarkOutline',
         description: formData.description || 'Healthcare audit preparation and management'
       };
       setData(prev => [...prev, newItem]);
@@ -274,7 +274,7 @@ const AuditManagement: React.FC = () => {
   if (loading) {
     return (
       <div style={{ padding: '2rem' }}>
-        <Loading description="Loading Audit Management..." />
+        <Loading description="Loading View Management..." />
       </div>
     );
   }
@@ -285,7 +285,7 @@ const AuditManagement: React.FC = () => {
       <Grid>
         <Column lg={16} md={8} sm={4}>
           <div style={{ marginBottom: '2rem' }}>
-            <h1>Audit Management</h1>
+            <h1>View Management</h1>
             <p style={{ color: '#6f6f6f', marginTop: '0.5rem' }}>
               Healthcare audit preparation and management
             </p>
@@ -330,7 +330,7 @@ const AuditManagement: React.FC = () => {
               <Grid>
                 <Column lg={4} md={2} sm={2}>
                   <div>
-                    <h5>Patient Risk Score</h5>
+                    <h5>Patient Warning Score</h5>
                     <p style={{ fontSize: '1.5rem', color: analytics.patientRiskAnalysis?.riskLevel === 'high' ? '#da1e28' : '#0f62fe' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </p>
@@ -418,7 +418,7 @@ const AuditManagement: React.FC = () => {
             rows={rows}
             headers={headers}
             render={({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
-              <TableContainer title="Audit Management Management">
+              <TableContainer title="View Management Management">
                 <Table {...getTableProps()}>
                   <TableHead>
                     <TableRow>
@@ -449,13 +449,13 @@ const AuditManagement: React.FC = () => {
       <Modal
         open={showModal}
         onRequestClose={() => setShowModal(false)}
-        modalHeading={editingItem ? `Edit ${editingItem.name}` : 'Add New Audit Management'}
+        modalHeading={editingItem ? `Edit ${editingItem.name}` : 'Add New View Management'}
         primaryButtonText="Save"
         secondaryButtonText="Cancel"
         onRequestSubmit={() => {
           // Get form data and save
           const formData = {
-            name: 'Updated Audit Management',
+            name: 'Updated View Management',
             status: 'active' as const,
             priority: 'medium' as const,
             assignedTo: 'Current User',

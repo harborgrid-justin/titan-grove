@@ -26,7 +26,7 @@ import {
   MachineLearningModel,
   Analytics,
   ChartScatter,
-  Prediction,
+  ChartLineSmooth,
   Time,
   Settings,
   Play,
@@ -38,7 +38,7 @@ import KPIWidget from '../../components/KPIWidget';
 interface PredictionModel {
   id: string;
   name: string;
-  type: 'Sales' | 'Demand' | 'Risk' | 'Churn' | 'Quality';
+  type: 'Sales' | 'Demand' | 'Warning' | 'Churn' | 'Quality';
   accuracy: number;
   status: 'Training' | 'Ready' | 'Running' | 'Error';
   lastTrained: string;
@@ -95,8 +95,8 @@ const PredictiveAnalyticsEngine: React.FC = () => {
         },
         {
           id: 'risk-assessment',
-          name: 'Risk Assessment Model',
-          type: 'Risk',
+          name: 'Warning Assessment Model',
+          type: 'Warning',
           accuracy: 91.5,
           status: 'Training',
           lastTrained: '2024-01-13T09:20:00Z',
@@ -104,7 +104,7 @@ const PredictiveAnalyticsEngine: React.FC = () => {
         },
         {
           id: 'churn-prediction',
-          name: 'Customer Churn Prediction',
+          name: 'Customer Churn ChartLineSmooth',
           type: 'Churn',
           accuracy: 89.3,
           status: 'Ready',
@@ -120,8 +120,8 @@ const PredictiveAnalyticsEngine: React.FC = () => {
           prediction: 2850000,
           confidence: 94.2,
           timeframe: 'Q1 2024',
-          category: 'Revenue',
-          factors: ['Seasonal trends', 'Market conditions', 'Product launches']
+          category: 'Currency',
+          factors: ['Seasonal trends', 'ChartLineData conditions', 'Product launches']
         },
         {
           id: 'pred-2',
@@ -130,11 +130,11 @@ const PredictiveAnalyticsEngine: React.FC = () => {
           confidence: 87.8,
           timeframe: 'Next 30 days',
           category: 'Units',
-          factors: ['Historical demand', 'Inventory levels', 'Market analysis']
+          factors: ['Historical demand', 'Inventory levels', 'ChartLineData analysis']
         },
         {
           id: 'pred-3',
-          model: 'Customer Churn Prediction',
+          model: 'Customer Churn ChartLineSmooth',
           prediction: 8.5,
           confidence: 89.3,
           timeframe: 'Next Quarter',
@@ -254,7 +254,7 @@ const PredictiveAnalyticsEngine: React.FC = () => {
 
   const predictionHeaders = [
     { key: 'model', header: 'Model' },
-    { key: 'prediction', header: 'Prediction' },
+    { key: 'prediction', header: 'ChartLineSmooth' },
     { key: 'confidence', header: 'Confidence' },
     { key: 'timeframe', header: 'Timeframe' },
     { key: 'category', header: 'Category' }
@@ -263,7 +263,7 @@ const PredictiveAnalyticsEngine: React.FC = () => {
   const predictionRows = predictions.map(pred => ({
     id: pred.id,
     model: pred.model,
-    prediction: pred.category === 'Revenue' 
+    prediction: pred.category === 'Currency' 
       ? `$${pred.prediction.toLocaleString()}` 
       : pred.prediction.toLocaleString(),
     confidence: `${pred.confidence}%`,
@@ -312,11 +312,11 @@ const PredictiveAnalyticsEngine: React.FC = () => {
             </Button>
             
             <Button kind="secondary" renderIcon={Analytics}>
-              Model Performance
+              Model ChartLine
             </Button>
             
             <Button kind="tertiary" renderIcon={ChartScatter}>
-              Prediction History
+              ChartLineSmooth History
             </Button>
           </div>
         </div>
@@ -347,7 +347,7 @@ const PredictiveAnalyticsEngine: React.FC = () => {
                 gap: '0.5rem'
               }}>
                 <MachineLearningModel size={20} />
-                Prediction Models
+                ChartLineSmooth Models
               </h3>
               
               <DataTable 
@@ -391,7 +391,7 @@ const PredictiveAnalyticsEngine: React.FC = () => {
                 alignItems: 'center',
                 gap: '0.5rem'
               }}>
-                <Prediction size={20} />
+                <ChartLineSmooth size={20} />
                 Recent Predictions
               </h3>
               
@@ -430,7 +430,7 @@ const PredictiveAnalyticsEngine: React.FC = () => {
         <Modal
           open={showNewModelModal}
           onRequestClose={() => setShowNewModelModal(false)}
-          modalHeading="Create New Prediction Model"
+          modalHeading="Create New ChartLineSmooth Model"
           primaryButtonText="Create Model"
           secondaryButtonText="Cancel"
           onRequestSubmit={createNewModel}
@@ -454,9 +454,9 @@ const PredictiveAnalyticsEngine: React.FC = () => {
             >
               <SelectItem value="Sales" text="Sales Forecasting" />
               <SelectItem value="Demand" text="Demand Planning" />
-              <SelectItem value="Risk" text="Risk Assessment" />
+              <SelectItem value="Warning" text="Warning Assessment" />
               <SelectItem value="Churn" text="Customer Churn" />
-              <SelectItem value="Quality" text="Quality Prediction" />
+              <SelectItem value="Quality" text="Quality ChartLineSmooth" />
             </Select>
           </div>
           

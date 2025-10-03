@@ -19,7 +19,7 @@ import {
 import {
   InventoryManagement,
   Analytics,
-  TrendUp,
+  ArrowUp,
   Add,
   View,
   Settings
@@ -209,7 +209,7 @@ const InventoryOptimizationHub: React.FC = () => {
                   { key: 'category', header: 'Category' },
                   { key: 'stock', header: 'Current Stock' },
                   { key: 'optimal', header: 'Optimal' },
-                  { key: 'level', header: 'Stock Level' },
+                  { key: 'level', header: 'Stock ChartLine' },
                   { key: 'turnover', header: 'Turnover' },
                   { key: 'status', header: 'Status' },
                   { key: 'actions', header: 'Actions' }

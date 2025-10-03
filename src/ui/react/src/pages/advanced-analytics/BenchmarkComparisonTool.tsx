@@ -21,9 +21,9 @@ import {
 import {
   Compare,
   Trophy,
-  TrendUp,
-  TrendDown,
-  Target,
+  ArrowUp,
+  ArrowDown,
+  Task,
   Analytics
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
@@ -57,7 +57,7 @@ const BenchmarkComparisonTool: React.FC = () => {
       setBenchmarks([
         {
           id: 'revenue-per-employee',
-          metric: 'Revenue per Employee',
+          metric: 'Currency per UserMultiple',
           category: 'Financial',
           companyValue: 245000,
           industryAverage: 210000,
@@ -93,7 +93,7 @@ const BenchmarkComparisonTool: React.FC = () => {
         },
         {
           id: 'employee-turnover',
-          metric: 'Employee Turnover Rate',
+          metric: 'UserMultiple Turnover Rate',
           category: 'HR',
           companyValue: 12.3,
           industryAverage: 15.2,
@@ -120,9 +120,9 @@ const BenchmarkComparisonTool: React.FC = () => {
 
   const getGapIndicator = (gap: number) => {
     if (gap > 0) {
-      return <TrendUp size={16} style={{ color: 'var(--cds-support-02)' }} />;
+      return <ArrowUp size={16} style={{ color: 'var(--cds-support-02)' }} />;
     } else if (gap < 0) {
-      return <TrendDown size={16} style={{ color: 'var(--cds-support-01)' }} />;
+      return <ArrowDown size={16} style={{ color: 'var(--cds-support-01)' }} />;
     }
     return <span style={{ color: 'var(--cds-text-02)' }}>→</span>;
   };
@@ -151,7 +151,7 @@ const BenchmarkComparisonTool: React.FC = () => {
       format: 'percentage' as const
     },
     {
-      title: 'Performance Score',
+      title: 'ChartLine Score',
       value: '78.5',
       change: 12.1,
       format: 'number' as const
@@ -164,7 +164,7 @@ const BenchmarkComparisonTool: React.FC = () => {
     { key: 'industry', header: 'Industry Avg' },
     { key: 'topQuartile', header: 'Top Quartile' },
     { key: 'bestInClass', header: 'Best in Class' },
-    { key: 'performance', header: 'Performance' },
+    { key: 'performance', header: 'ChartLine' },
     { key: 'gap', header: 'Gap' }
   ];
 
@@ -275,7 +275,7 @@ const BenchmarkComparisonTool: React.FC = () => {
               Benchmark Report
             </Button>
             
-            <Button kind="secondary" renderIcon={Target}>
+            <Button kind="secondary" renderIcon={Task}>
               Set Targets
             </Button>
           </div>

@@ -22,14 +22,14 @@ import {
   Security,
   Warning,
   ChartRadar,
-  TrendUp,
+  ArrowUp,
   Add,
   View
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
 
-interface Risk {
+interface Warning {
   id: string;
   riskName: string;
   category: string;
@@ -41,7 +41,7 @@ interface Risk {
 }
 
 const RiskManagementConsole: React.FC = () => {
-  const [risks, setRisks] = useState<Risk[]>([]);
+  const [risks, setRisks] = useState<Warning[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedSeverity, setSelectedSeverity] = useState('All');
 
@@ -54,8 +54,8 @@ const RiskManagementConsole: React.FC = () => {
       setRisks([
         {
           id: 'risk-1',
-          riskName: 'Supplier Financial Instability',
-          category: 'Supplier Risk',
+          riskName: 'Delivery Financial Instability',
+          category: 'Delivery Warning',
           severity: 'High',
           probability: 65,
           impact: 85,
@@ -65,7 +65,7 @@ const RiskManagementConsole: React.FC = () => {
         {
           id: 'risk-2',
           riskName: 'Transportation Delays',
-          category: 'Logistics Risk',
+          category: 'Logistics Warning',
           severity: 'Medium',
           probability: 45,
           impact: 60,
@@ -75,7 +75,7 @@ const RiskManagementConsole: React.FC = () => {
         {
           id: 'risk-3',
           riskName: 'Quality Control Issues',
-          category: 'Quality Risk',
+          category: 'Quality Warning',
           severity: 'Critical',
           probability: 30,
           impact: 95,
@@ -85,7 +85,7 @@ const RiskManagementConsole: React.FC = () => {
         {
           id: 'risk-4',
           riskName: 'Currency Fluctuation',
-          category: 'Financial Risk',
+          category: 'Financial Warning',
           severity: 'Low',
           probability: 55,
           impact: 40,
@@ -134,7 +134,7 @@ const RiskManagementConsole: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Security size={32} />
-              Risk Management Console
+              Warning Management Console
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Supply chain risk assessment and mitigation strategies
@@ -175,15 +175,15 @@ const RiskManagementConsole: React.FC = () => {
               value={`${kpiData.avgProbability.toFixed(1)}%`}
               trend="down"
               trendValue="3%"
-              icon={<TrendUp size={24} />}
+              icon={<ArrowUp size={24} />}
             />
           </Column>
 
-          {/* Risk Register */}
+          {/* Warning Register */}
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Risk Register</h3>
+                <h3>Warning Register</h3>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                   <Select
                     id="severity-filter"
@@ -198,7 +198,7 @@ const RiskManagementConsole: React.FC = () => {
                     <SelectItem value="Low" text="Low" />
                   </Select>
                   <Button kind="primary" renderIcon={Add}>
-                    Add Risk
+                    Add Warning
                   </Button>
                 </div>
               </div>
@@ -209,7 +209,7 @@ const RiskManagementConsole: React.FC = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableHeader>Risk Name</TableHeader>
+                          <TableHeader>Warning Name</TableHeader>
                           <TableHeader>Category</TableHeader>
                           <TableHeader>Severity</TableHeader>
                           <TableHeader>Probability</TableHeader>

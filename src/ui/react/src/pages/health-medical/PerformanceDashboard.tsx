@@ -90,7 +90,7 @@ const PerformanceDashboard: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [analytics, setAnalytics] = useState<any>(null);
 
-  // Sample data specific to Clinical Performance Dashboard
+  // Sample data specific to Clinical ChartLine Dashboard
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -99,7 +99,7 @@ const PerformanceDashboard: React.FC = () => {
       const mockData: PerformanceDashboardData[] = [
         {
           id: 'performancedashboard-001',
-          name: 'Sample Clinical Performance Dashboard Record 1',
+          name: 'Sample Clinical ChartLine Dashboard Record 1',
           status: 'active',
           priority: 'high',
           dateCreated: '2024-01-15',
@@ -110,7 +110,7 @@ const PerformanceDashboard: React.FC = () => {
         },
         {
           id: 'performancedashboard-002',
-          name: 'Sample Clinical Performance Dashboard Record 2',
+          name: 'Sample Clinical ChartLine Dashboard Record 2',
           status: 'pending',
           priority: 'medium',
           dateCreated: '2024-01-18',
@@ -121,7 +121,7 @@ const PerformanceDashboard: React.FC = () => {
         },
         {
           id: 'performancedashboard-003',
-          name: 'Sample Clinical Performance Dashboard Record 3',
+          name: 'Sample Clinical ChartLine Dashboard Record 3',
           status: 'completed',
           priority: 'low',
           dateCreated: '2024-01-10',
@@ -250,7 +250,7 @@ const PerformanceDashboard: React.FC = () => {
       // Add new item
       const newItem: PerformanceDashboardData = {
         id: `performancedashboard-${Date.now()}`,
-        name: formData.name || 'New Clinical Performance Dashboard',
+        name: formData.name || 'New Clinical ChartLine Dashboard',
         status: formData.status || 'pending',
         priority: formData.priority || 'medium',
         dateCreated: new Date().toISOString().split('T')[0],
@@ -274,7 +274,7 @@ const PerformanceDashboard: React.FC = () => {
   if (loading) {
     return (
       <div style={{ padding: '2rem' }}>
-        <Loading description="Loading Clinical Performance Dashboard..." />
+        <Loading description="Loading Clinical ChartLine Dashboard..." />
       </div>
     );
   }
@@ -285,7 +285,7 @@ const PerformanceDashboard: React.FC = () => {
       <Grid>
         <Column lg={16} md={8} sm={4}>
           <div style={{ marginBottom: '2rem' }}>
-            <h1>Clinical Performance Dashboard</h1>
+            <h1>Clinical ChartLine Dashboard</h1>
             <p style={{ color: '#6f6f6f', marginTop: '0.5rem' }}>
               Real-time clinical performance monitoring
             </p>
@@ -330,7 +330,7 @@ const PerformanceDashboard: React.FC = () => {
               <Grid>
                 <Column lg={4} md={2} sm={2}>
                   <div>
-                    <h5>Patient Risk Score</h5>
+                    <h5>Patient Warning Score</h5>
                     <p style={{ fontSize: '1.5rem', color: analytics.patientRiskAnalysis?.riskLevel === 'high' ? '#da1e28' : '#0f62fe' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </p>
@@ -418,7 +418,7 @@ const PerformanceDashboard: React.FC = () => {
             rows={rows}
             headers={headers}
             render={({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
-              <TableContainer title="Clinical Performance Dashboard Management">
+              <TableContainer title="Clinical ChartLine Dashboard Management">
                 <Table {...getTableProps()}>
                   <TableHead>
                     <TableRow>
@@ -449,13 +449,13 @@ const PerformanceDashboard: React.FC = () => {
       <Modal
         open={showModal}
         onRequestClose={() => setShowModal(false)}
-        modalHeading={editingItem ? `Edit ${editingItem.name}` : 'Add New Clinical Performance Dashboard'}
+        modalHeading={editingItem ? `Edit ${editingItem.name}` : 'Add New Clinical ChartLine Dashboard'}
         primaryButtonText="Save"
         secondaryButtonText="Cancel"
         onRequestSubmit={() => {
           // Get form data and save
           const formData = {
-            name: 'Updated Clinical Performance Dashboard',
+            name: 'Updated Clinical ChartLine Dashboard',
             status: 'active' as const,
             priority: 'medium' as const,
             assignedTo: 'Current User',

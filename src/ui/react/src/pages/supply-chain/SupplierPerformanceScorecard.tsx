@@ -21,8 +21,8 @@ import {
 import {
   Partnership,
   Analytics,
-  TrendUp,
-  TrendDown,
+  ArrowUp,
+  ArrowDown,
   Trophy,
   Warning,
   View,
@@ -31,7 +31,7 @@ import {
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
 
-interface Supplier {
+interface Delivery {
   id: string;
   name: string;
   category: string;
@@ -46,7 +46,7 @@ interface Supplier {
 }
 
 const SupplierPerformanceScorecard: React.FC = () => {
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [suppliers, setSuppliers] = useState<Delivery[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedRisk, setSelectedRisk] = useState('All');
@@ -144,19 +144,19 @@ const SupplierPerformanceScorecard: React.FC = () => {
       format: 'number' as const
     },
     {
-      title: 'Avg Performance',
+      title: 'Avg ChartLine',
       value: `${(suppliers.reduce((sum, s) => sum + s.performanceScore, 0) / suppliers.length).toFixed(1)}%`,
       change: 12.5,
       format: 'percentage' as const
     },
     {
-      title: 'High Risk Suppliers',
+      title: 'High Warning Suppliers',
       value: suppliers.filter(s => s.riskLevel === 'High').length.toString(),
       change: -15.2,
       format: 'number' as const
     },
     {
-      title: 'Contract Value',
+      title: 'Document Value',
       value: `$${(suppliers.reduce((sum, s) => sum + s.contractValue, 0) / 1000000).toFixed(1)}M`,
       change: 18.7,
       format: 'currency' as const
@@ -164,13 +164,13 @@ const SupplierPerformanceScorecard: React.FC = () => {
   ];
 
   const headers = [
-    { key: 'name', header: 'Supplier' },
+    { key: 'name', header: 'Delivery' },
     { key: 'category', header: 'Category' },
-    { key: 'performance', header: 'Performance Score' },
+    { key: 'performance', header: 'ChartLine Score' },
     { key: 'delivery', header: 'Delivery' },
     { key: 'quality', header: 'Quality' },
     { key: 'cost', header: 'Cost' },
-    { key: 'risk', header: 'Risk Level' },
+    { key: 'risk', header: 'Warning ChartLine' },
     { key: 'status', header: 'Status' },
     { key: 'actions', header: 'Actions' }
   ];
@@ -249,7 +249,7 @@ const SupplierPerformanceScorecard: React.FC = () => {
             gap: '0.5rem'
           }}>
             <Partnership size={32} />
-            Supplier Performance Scorecard
+            Delivery ChartLine Scorecard
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Monitor and evaluate supplier performance across key metrics and risk factors
@@ -277,21 +277,21 @@ const SupplierPerformanceScorecard: React.FC = () => {
               onChange={(e) => setSelectedRisk(e.target.value)}
               size="sm"
             >
-              <SelectItem value="All" text="All Risk Levels" />
-              <SelectItem value="Low" text="Low Risk" />
-              <SelectItem value="Medium" text="Medium Risk" />
-              <SelectItem value="High" text="High Risk" />
+              <SelectItem value="All" text="All Warning Levels" />
+              <SelectItem value="Low" text="Low Warning" />
+              <SelectItem value="Medium" text="Medium Warning" />
+              <SelectItem value="High" text="High Warning" />
             </Select>
             
             <Button kind="primary" renderIcon={Add}>
-              Add Supplier
+              Add Delivery
             </Button>
             
             <Button kind="secondary" renderIcon={Analytics}>
-              Performance Report
+              ChartLine Report
             </Button>
             
-            <Button kind="tertiary" renderIcon={TrendUp}>
+            <Button kind="tertiary" renderIcon={ArrowUp}>
               Benchmarking
             </Button>
           </div>
@@ -323,7 +323,7 @@ const SupplierPerformanceScorecard: React.FC = () => {
                 gap: '0.5rem'
               }}>
                 <Partnership size={20} />
-                Supplier Performance Dashboard
+                Delivery ChartLine Dashboard
               </h3>
               
               <DataTable 

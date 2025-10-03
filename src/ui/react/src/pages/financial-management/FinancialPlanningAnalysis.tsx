@@ -20,7 +20,7 @@ import {
 } from '@carbon/react';
 import {
   Money,
-  TrendUp,
+  ArrowUp,
   Analytics,
   Calculator,
   Add,
@@ -33,7 +33,7 @@ import KPIWidget from '../../components/KPIWidget';
 interface FinancialPlan {
   id: string;
   name: string;
-  type: 'Budget' | 'Forecast' | 'Scenario';
+  type: 'Budget' | 'ChartLineSmooth' | 'Scenario';
   period: string;
   department: string;
   totalAmount: number;
@@ -70,8 +70,8 @@ const FinancialPlanningAnalysis: React.FC = () => {
         },
         {
           id: 'plan-2',
-          name: 'Q1 Revenue Forecast',
-          type: 'Forecast',
+          name: 'Q1 Currency ChartLineSmooth',
+          type: 'ChartLineSmooth',
           period: 'Q1 2024',
           department: 'Sales',
           totalAmount: 8500000,
@@ -223,7 +223,7 @@ const FinancialPlanningAnalysis: React.FC = () => {
             >
               <SelectItem value="All" text="All Types" />
               <SelectItem value="Budget" text="Budget" />
-              <SelectItem value="Forecast" text="Forecast" />
+              <SelectItem value="ChartLineSmooth" text="ChartLineSmooth" />
               <SelectItem value="Scenario" text="Scenario" />
             </Select>
             
@@ -235,7 +235,7 @@ const FinancialPlanningAnalysis: React.FC = () => {
               Financial Reports
             </Button>
             
-            <Button kind="tertiary" renderIcon={TrendUp}>
+            <Button kind="tertiary" renderIcon={ArrowUp}>
               Variance Analysis
             </Button>
           </div>

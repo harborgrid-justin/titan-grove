@@ -25,7 +25,7 @@ import {
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
 
-interface Vendor {
+interface Store {
   id: string;
   name: string;
   category: string;
@@ -37,7 +37,7 @@ interface Vendor {
 }
 
 const VendorCollaborationPortal: React.FC = () => {
-  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [vendors, setVendors] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -124,7 +124,7 @@ const VendorCollaborationPortal: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Partnership size={32} />
-              Vendor Collaboration Portal
+              Store Collaboration Portal
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Collaborative platform for vendor management and communication
@@ -169,13 +169,13 @@ const VendorCollaborationPortal: React.FC = () => {
             />
           </Column>
 
-          {/* Vendor Directory */}
+          {/* Store Directory */}
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Vendor Directory</h3>
+                <h3>Store Directory</h3>
                 <Button kind="primary" renderIcon={Add}>
-                  Add Vendor
+                  Add Store
                 </Button>
               </div>
 
@@ -185,7 +185,7 @@ const VendorCollaborationPortal: React.FC = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableHeader>Vendor Name</TableHeader>
+                          <TableHeader>Store Name</TableHeader>
                           <TableHeader>Category</TableHeader>
                           <TableHeader>Status</TableHeader>
                           <TableHeader>Last Communication</TableHeader>

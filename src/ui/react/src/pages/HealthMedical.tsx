@@ -110,13 +110,13 @@ const HealthMedical: React.FC = () => {
               <Tag type="blue">HIPAA Compliant</Tag>
               <Tag type="green">Clinical Decision Support</Tag>
               <Tag type="purple">Population Health</Tag>
-              <Tag type="teal">Revenue Cycle Management</Tag>
+              <Tag type="teal">Currency Cycle Management</Tag>
             </div>
           </div>
         </Column>
       </Grid>
 
-      {/* Key Performance Indicators */}
+      {/* Key ChartLine Indicators */}
       <Grid style={{ marginBottom: '2rem' }}>
         <Column lg={4} md={2} sm={2}>
           <Tile style={{ padding: '1.5rem', textAlign: 'center', height: '120px' }}>
@@ -151,7 +151,7 @@ const HealthMedical: React.FC = () => {
             <h3 style={{ margin: '0 0 0.25rem 0', fontSize: '2rem', color: '#8a3ffc' }}>
               {healthMetrics?.complianceScore ? `${healthMetrics.complianceScore}%` : 'N/A'}
             </h3>
-            <p style={{ margin: 0, color: '#6f6f6f', fontWeight: 500 }}>Compliance Score</p>
+            <p style={{ margin: 0, color: '#6f6f6f', fontWeight: 500 }}>CheckmarkOutline Score</p>
           </Tile>
         </Column>
       </Grid>
@@ -171,7 +171,7 @@ const HealthMedical: React.FC = () => {
                     <h4 style={{ color: '#0f62fe', fontSize: '1.5rem', margin: '0 0 0.5rem 0' }}>
                       {analytics.patientRiskAnalysis?.riskScore || 'N/A'}
                     </h4>
-                    <p style={{ margin: 0, fontSize: '0.9rem', color: '#6f6f6f' }}>Patient Risk Score</p>
+                    <p style={{ margin: 0, fontSize: '0.9rem', color: '#6f6f6f' }}>Patient Warning Score</p>
                     <Tag type={analytics.patientRiskAnalysis?.riskLevel === 'high' ? 'red' : 'green'} size="sm">
                       {analytics.patientRiskAnalysis?.riskLevel?.toUpperCase() || 'N/A'}
                     </Tag>
@@ -249,9 +249,9 @@ const HealthMedical: React.FC = () => {
                               {category === 'Clinical Operations' && <HealthCross size={24} style={{ color: '#198038' }} />}
                               {category === 'Medical Records' && <Document size={24} style={{ color: '#8a3ffc' }} />}
                               {category === 'Healthcare Analytics' && <Analytics size={24} style={{ color: '#da1e28' }} />}
-                              {category === 'Regulatory Compliance' && <Security size={24} style={{ color: '#f1c21b' }} />}
+                              {category === 'Regulatory CheckmarkOutline' && <Security size={24} style={{ color: '#f1c21b' }} />}
                               {category === 'Clinical Decision Support' && <Settings size={24} style={{ color: '#6f6f6f' }} />}
-                              {category === 'Revenue Cycle' && <ChartLine size={24} style={{ color: '#570408' }} />}
+                              {category === 'Currency Cycle' && <ChartLine size={24} style={{ color: '#570408' }} />}
                               {category === 'Care Coordination' && <Report size={24} style={{ color: '#1192e8' }} />}
                             </div>
                             <h5 style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem' }}>{page.title}</h5>
@@ -306,7 +306,7 @@ const HealthMedical: React.FC = () => {
             <h4 style={{ marginBottom: '1rem' }}>Healthcare System Status</h4>
             <ProgressIndicator currentIndex={2}>
               <ProgressStep
-                label="HIPAA Compliance"
+                label="HIPAA CheckmarkOutline"
                 description="Security measures active"
                 complete
               />
@@ -316,7 +316,7 @@ const HealthMedical: React.FC = () => {
                 complete
               />
               <ProgressStep
-                label="Revenue Cycle"
+                label="Currency Cycle"
                 description="Processing claims efficiently"
                 current
               />

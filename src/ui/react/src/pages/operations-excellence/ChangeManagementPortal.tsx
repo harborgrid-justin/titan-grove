@@ -11,8 +11,8 @@ const ChangeManagementPortal: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [changes, setChanges] = useState([
     { id: 'chg-1', title: 'System Upgrade', priority: 'High', status: 'Approved', date: '2024-03-25' },
-    { id: 'chg-2', title: 'Process Update', priority: 'Medium', status: 'In Review', date: '2024-03-26' },
-    { id: 'chg-3', title: 'Policy Change', priority: 'Low', status: 'Scheduled', date: '2024-03-27' }
+    { id: 'chg-2', title: 'Progress Update', priority: 'Medium', status: 'In Review', date: '2024-03-26' },
+    { id: 'chg-3', title: 'Policy Edit', priority: 'Low', status: 'Scheduled', date: '2024-03-27' }
   ]);
 
   useEffect(() => {
@@ -26,14 +26,14 @@ const ChangeManagementPortal: React.FC = () => {
       <Sidebar />
       <div style={{ flex: 1, padding: '2rem', backgroundColor: '#f4f4f4', overflowY: 'auto' }}>
         <Grid>
-          <Column lg={16}><h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><DataBackup size={32} />Change Management Portal</h1></Column>
+          <Column lg={16}><h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><DataBackup size={32} />Edit Management Portal</h1></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Total Changes" value="3" trend="neutral" trendValue="0%" icon={<DataBackup size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Approved" value="1" trend="up" trendValue="5%" icon={<DataBackup size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="In Review" value="1" trend="neutral" trendValue="0%" icon={<DataBackup size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Scheduled" value="1" trend="up" trendValue="10%" icon={<DataBackup size={24} />} /></Column>
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}><h3>Change Requests</h3><Button kind="primary" renderIcon={Add}>New Change</Button></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}><h3>Edit Requests</h3><Button kind="primary" renderIcon={Add}>New Edit</Button></div>
               <DataTable rows={[]} headers={[]}>
                 {() => (
                   <TableContainer>

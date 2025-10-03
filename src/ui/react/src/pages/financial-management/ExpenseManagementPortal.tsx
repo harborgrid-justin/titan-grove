@@ -21,13 +21,13 @@ import {
   Receipt,
   Money,
   Analytics,
-  TrendDown,
+  ArrowDown,
   Add
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
 
-interface Expense {
+interface Purchase {
   id: string;
   description: string;
   category: string;
@@ -39,7 +39,7 @@ interface Expense {
 }
 
 const ExpenseManagementPortal: React.FC = () => {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState('All');
 
@@ -131,7 +131,7 @@ const ExpenseManagementPortal: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Receipt size={32} />
-              Expense Management Portal
+              Purchase Management Portal
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Track, approve, and manage organizational expenses
@@ -167,18 +167,18 @@ const ExpenseManagementPortal: React.FC = () => {
           </Column>
           <Column lg={4} md={4} sm={4}>
             <KPIWidget
-              title="Avg Expense"
+              title="Avg Purchase"
               value={`$${kpiData.avgExpense.toFixed(0)}`}
               trend="down"
               trendValue="3%"
-              icon={<TrendDown size={24} />}
+              icon={<ArrowDown size={24} />}
             />
           </Column>
 
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Expense Reports</h3>
+                <h3>Purchase Reports</h3>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                   <Select
                     id="status-filter"
@@ -192,7 +192,7 @@ const ExpenseManagementPortal: React.FC = () => {
                     <SelectItem value="Rejected" text="Rejected" />
                   </Select>
                   <Button kind="primary" renderIcon={Add}>
-                    Submit Expense
+                    Submit Purchase
                   </Button>
                 </div>
               </div>

@@ -24,7 +24,7 @@ const PerformanceDashboard: React.FC = () => {
       setData([
         {
           id: 'PERFORMANCEDASHBOARD_001',
-          name: 'Sample Performance Dashboard',
+          name: 'Sample ChartLine Dashboard',
           status: 'ACTIVE',
           createdDate: new Date().toISOString().split('T')[0],
           lastModified: new Date().toISOString().split('T')[0]
@@ -38,7 +38,7 @@ const PerformanceDashboard: React.FC = () => {
     { title: 'Total Items', value: data.length.toString(), change: 0, format: 'number' },
     { title: 'Active', value: data.filter(d => d.status === 'ACTIVE').length.toString(), change: 2.1, format: 'number' },
     { title: 'Efficiency', value: '94.2%', change: 1.8, format: 'percentage' },
-    { title: 'Performance', value: '87.5%', change: -0.5, format: 'percentage' }
+    { title: 'ChartLine', value: '87.5%', change: -0.5, format: 'percentage' }
   ];
 
   const transformedData = data.map(item => ({
@@ -101,7 +101,7 @@ const PerformanceDashboard: React.FC = () => {
       <Sidebar />
       <div className="main-content">
         <div className="page-header">
-          <h1>Performance Dashboard</h1>
+          <h1>ChartLine Dashboard</h1>
           <p>Manufacturing performance dashboard</p>
         </div>
 
@@ -113,7 +113,7 @@ const PerformanceDashboard: React.FC = () => {
 
         <div className="content-section">
           <div className="section-header">
-            <h2>Performance Dashboard Management</h2>
+            <h2>ChartLine Dashboard Management</h2>
             <button className="btn-primary" onClick={handleCreate}>
               <i className="fas fa-plus"></i> Create New
             </button>
@@ -133,7 +133,7 @@ const PerformanceDashboard: React.FC = () => {
 
         {showModal && (
           <CrudModal
-            title={editingItem ? 'Edit Performance Dashboard' : 'Create Performance Dashboard'}
+            title={editingItem ? 'Edit ChartLine Dashboard' : 'Create ChartLine Dashboard'}
             fields={modalFields}
             initialData={editingItem}
             onSave={handleSave}

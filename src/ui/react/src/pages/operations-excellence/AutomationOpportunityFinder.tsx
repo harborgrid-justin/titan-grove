@@ -17,7 +17,7 @@ import {
   ProgressBar
 } from '@carbon/react';
 import {
-  Automation,
+  PlayOutline,
   ChartLine,
   Time,
   Money,
@@ -81,7 +81,7 @@ const AutomationOpportunityFinder: React.FC = () => {
         {
           id: 'opp-4',
           process: 'Customer Support',
-          department: 'Service',
+          department: 'ServerProxy',
           effort: 150,
           roi: 200,
           priority: 'Medium',
@@ -133,8 +133,8 @@ const AutomationOpportunityFinder: React.FC = () => {
         <Grid>
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Automation size={32} />
-              Automation Opportunity Finder
+              <PlayOutline size={32} />
+              PlayOutline Idea Finder
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Identify and prioritize automation opportunities across operations
@@ -147,7 +147,7 @@ const AutomationOpportunityFinder: React.FC = () => {
               value={kpiData.totalOpportunities.toString()}
               trend="up"
               trendValue="15%"
-              icon={<Automation size={24} />}
+              icon={<PlayOutline size={24} />}
             />
           </Column>
           <Column lg={4} md={4} sm={4}>
@@ -181,9 +181,9 @@ const AutomationOpportunityFinder: React.FC = () => {
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Automation Opportunities</h3>
+                <h3>PlayOutline Opportunities</h3>
                 <Button kind="primary" renderIcon={Add}>
-                  Add Opportunity
+                  Add Idea
                 </Button>
               </div>
 
@@ -193,7 +193,7 @@ const AutomationOpportunityFinder: React.FC = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableHeader>Process</TableHeader>
+                          <TableHeader>Progress</TableHeader>
                           <TableHeader>Department</TableHeader>
                           <TableHeader>Effort (hrs)</TableHeader>
                           <TableHeader>ROI</TableHeader>

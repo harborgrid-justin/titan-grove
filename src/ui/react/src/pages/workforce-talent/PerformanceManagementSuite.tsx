@@ -31,7 +31,7 @@ interface PerformanceReview {
   employee: string;
   period: string;
   score: number;
-  rating: 'Exceptional' | 'Exceeds' | 'Meets' | 'Needs Improvement';
+  rating: 'Exceptional' | 'Exceeds' | 'Meets' | 'Needs ArrowUp';
   goals: number;
   completed: number;
   status: 'Complete' | 'In Progress' | 'Pending';
@@ -98,7 +98,7 @@ const PerformanceManagementSuite: React.FC = () => {
       case 'Exceptional': return 'green';
       case 'Exceeds': return 'blue';
       case 'Meets': return 'yellow';
-      case 'Needs Improvement': return 'red';
+      case 'Needs ArrowUp': return 'red';
       default: return 'gray';
     }
   };
@@ -135,10 +135,10 @@ const PerformanceManagementSuite: React.FC = () => {
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Star size={32} />
-              Performance Management Suite
+              ChartLine Management Suite
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
-              Employee performance reviews and goal tracking
+              UserMultiple performance reviews and goal tracking
             </p>
           </Column>
 
@@ -182,7 +182,7 @@ const PerformanceManagementSuite: React.FC = () => {
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3>Performance Reviews</h3>
+                <h3>ChartLine Reviews</h3>
                 <Button kind="primary" renderIcon={Add}>
                   New Review
                 </Button>
@@ -194,7 +194,7 @@ const PerformanceManagementSuite: React.FC = () => {
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableHeader>Employee</TableHeader>
+                          <TableHeader>UserMultiple</TableHeader>
                           <TableHeader>Period</TableHeader>
                           <TableHeader>Score</TableHeader>
                           <TableHeader>Rating</TableHeader>

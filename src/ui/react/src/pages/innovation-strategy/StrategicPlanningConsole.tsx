@@ -3,7 +3,7 @@ import {
   Grid, Column, Tile, Button, Loading, DataTable, TableContainer, Table,
   TableHead, TableRow, TableHeader, TableBody, TableCell, Tag, ProgressBar
 } from '@carbon/react';
-import { Strategy, ChartLine, Add } from '@carbon/icons-react';
+import { ChartNetwork, ChartLine, Add } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
 
@@ -13,7 +13,7 @@ interface StrategicInitiative {
   objective: string;
   progress: number;
   priority: 'High' | 'Medium' | 'Low';
-  status: 'On Track' | 'At Risk' | 'Completed';
+  status: 'On Track' | 'At Warning' | 'Completed';
 }
 
 const StrategicPlanningConsole: React.FC = () => {
@@ -23,10 +23,10 @@ const StrategicPlanningConsole: React.FC = () => {
   useEffect(() => {
     setTimeout(() => {
       setInitiatives([
-        { id: 'si-1', name: 'Market Expansion', objective: 'Enter new markets', progress: 65, priority: 'High', status: 'On Track' },
-        { id: 'si-2', name: 'Product Innovation', objective: 'Launch new product line', progress: 45, priority: 'High', status: 'At Risk' },
-        { id: 'si-3', name: 'Operational Excellence', objective: 'Improve efficiency', progress: 100, priority: 'Medium', status: 'Completed' },
-        { id: 'si-4', name: 'Digital Transformation', objective: 'Modernize technology', progress: 80, priority: 'High', status: 'On Track' }
+        { id: 'si-1', name: 'ChartLineData Expansion', objective: 'Enter new markets', progress: 65, priority: 'High', status: 'On Track' },
+        { id: 'si-2', name: 'Product Idea', objective: 'Launch new product line', progress: 45, priority: 'High', status: 'At Warning' },
+        { id: 'si-3', name: 'Operational Trophy', objective: 'Improve efficiency', progress: 100, priority: 'Medium', status: 'Completed' },
+        { id: 'si-4', name: 'Chip Transform', objective: 'Modernize technology', progress: 80, priority: 'High', status: 'On Track' }
       ]);
       setLoading(false);
     }, 1000);
@@ -35,7 +35,7 @@ const StrategicPlanningConsole: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'On Track': return 'green';
-      case 'At Risk': return 'yellow';
+      case 'At Warning': return 'yellow';
       case 'Completed': return 'blue';
       default: return 'gray';
     }
@@ -66,16 +66,16 @@ const StrategicPlanningConsole: React.FC = () => {
         <Grid>
           <Column lg={16}>
             <h1 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Strategy size={32} />Strategic Planning Console
+              <ChartNetwork size={32} />Strategic Planning Console
             </h1>
             <p style={{ marginBottom: '2rem', color: '#525252' }}>
               Strategic initiative planning and execution tracking
             </p>
           </Column>
-          <Column lg={4} md={4} sm={4}><KPIWidget title="Total Initiatives" value={kpiData.totalInitiatives.toString()} trend="up" trendValue="10%" icon={<Strategy size={24} />} /></Column>
+          <Column lg={4} md={4} sm={4}><KPIWidget title="Total Initiatives" value={kpiData.totalInitiatives.toString()} trend="up" trendValue="10%" icon={<ChartNetwork size={24} />} /></Column>
           <Column lg={4} md={4} sm={4}><KPIWidget title="Avg Progress" value={`${kpiData.avgProgress.toFixed(1)}%`} trend="up" trendValue="8%" icon={<ChartLine size={24} />} /></Column>
-          <Column lg={4} md={4} sm={4}><KPIWidget title="On Track" value={kpiData.onTrack.toString()} trend="up" trendValue="5%" icon={<Strategy size={24} />} /></Column>
-          <Column lg={4} md={4} sm={4}><KPIWidget title="Completed" value={kpiData.completed.toString()} trend="up" trendValue="15%" icon={<Strategy size={24} />} /></Column>
+          <Column lg={4} md={4} sm={4}><KPIWidget title="On Track" value={kpiData.onTrack.toString()} trend="up" trendValue="5%" icon={<ChartNetwork size={24} />} /></Column>
+          <Column lg={4} md={4} sm={4}><KPIWidget title="Completed" value={kpiData.completed.toString()} trend="up" trendValue="15%" icon={<ChartNetwork size={24} />} /></Column>
           <Column lg={16} style={{ marginTop: '2rem' }}>
             <Tile style={{ padding: '1.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>

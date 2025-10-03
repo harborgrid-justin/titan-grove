@@ -21,7 +21,7 @@ import {
   Analytics,
   Add,
   View,
-  Lightbulb
+  Idea
 } from '@carbon/icons-react';
 import Sidebar from '../../components/Sidebar';
 import KPIWidget from '../../components/KPIWidget';
@@ -51,7 +51,7 @@ const InnovationPipelineManager: React.FC = () => {
       setProjects([
         {
           id: 'inn-1',
-          name: 'AI-Powered Customer Service',
+          name: 'AI-Powered Customer ServerProxy',
           category: 'AI/ML',
           stage: 'Development',
           potential: 85,
@@ -127,8 +127,8 @@ const InnovationPipelineManager: React.FC = () => {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <Lightbulb size={32} />
-            Innovation Pipeline Manager
+            <Idea size={32} />
+            Idea Flow Manager
           </h1>
           <p style={{ color: 'var(--cds-text-02)', marginBottom: '1rem' }}>
             Manage innovation projects from ideation to market launch
@@ -139,7 +139,7 @@ const InnovationPipelineManager: React.FC = () => {
               Add Project
             </Button>
             <Button kind="secondary" renderIcon={Analytics}>
-              Innovation Report
+              Idea Report
             </Button>
             <Button kind="tertiary" renderIcon={IbmWatsonDiscovery}>
               Trend Analysis
@@ -166,7 +166,7 @@ const InnovationPipelineManager: React.FC = () => {
         <Grid style={{ marginTop: '2rem' }}>
           <Column lg={12} md={8} sm={4}>
             <Tile style={{ padding: '1.5rem' }}>
-              <h3 style={{ marginBottom: '1rem' }}>Innovation Projects</h3>
+              <h3 style={{ marginBottom: '1rem' }}>Idea Projects</h3>
               <DataTable 
                 rows={projects.map(project => ({
                   id: project.id,
