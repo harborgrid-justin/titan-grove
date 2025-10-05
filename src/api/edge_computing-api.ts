@@ -40,13 +40,16 @@ export class EdgeComputingApi {
 
   // Production Feature: Data Validation
   async validateData(data: any): Promise<any> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _rules: ValidationRule[] = [{ field: 'data', type: 'required' }];
+    const rules: ValidationRule[] = [{ field: 'data', type: 'required' }];
 
-    // TODO: Implement actual validation logic using _rules
-
-    const errors =
-      ProductionManager.getInstance().constructor.name === 'ProductionManager' ? [] : []; // Simplified validation
+    // Implement actual validation logic using rules
+    const errors: string[] = [];
+    
+    for (const rule of rules) {
+      if (rule.type === 'required' && (!data || !data[rule.field])) {
+        errors.push(`${rule.field} is required`);
+      }
+    }
 
     if (errors.length > 0) {
       throw new Error(`Validation failed: ${errors.join(', ')}`);
