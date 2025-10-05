@@ -40,13 +40,19 @@ export class ManufacturingApi {
 
   // Production Feature: Data Validation
   async validateData(data: any): Promise<any> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _rules: ValidationRule[] = [{ field: 'data', type: 'required' }];
+    const rules: ValidationRule[] = [
+      { field: 'data', type: 'required' },
+      // Manufacturing-specific validation rules
+    ];
 
-    // TODO: Implement actual validation logic using _rules
-
-    const errors =
-      ProductionManager.getInstance().constructor.name === 'ProductionManager' ? [] : []; // Simplified validation
+    // Implement actual validation logic using rules
+    const errors: string[] = [];
+    
+    for (const rule of rules) {
+      if (rule.type === 'required' && (!data || !data[rule.field])) {
+        errors.push(`${rule.field} is required`);
+      }
+    }
 
     if (errors.length > 0) {
       throw new Error(`Validation failed: ${errors.join(', ')}`);
@@ -56,11 +62,15 @@ export class ManufacturingApi {
       'manufacturing',
       'validate_data',
       async () => {
-        // Use basic validation instead of missing native function
+        // Validate data format and structure
         if (!data || typeof data !== 'object') {
           return { isValid: false, score: 0, errors: ['Invalid data format'] };
         }
-        return { isValid: true, score: 100 };
+        
+        // Calculate validation score based on data completeness
+        const score = errors.length === 0 ? 100 : Math.max(0, 100 - (errors.length * 10));
+        
+        return { isValid: errors.length === 0, score, errors };
       },
       data
     );
