@@ -50,37 +50,9 @@ impl SportsRecreationRecord {
 
 
 // Sports & Recreation Management Functions
-#[napi]
-pub fn calculate_efficiency(input: f64, output: f64) -> f64 {
-    if input > 0.0 {
-        (output / input) * 100.0
-    } else {
-        0.0
-    }
-}
-
-#[napi]
-pub fn validate_data_quality(data_points: Vec<f64>) -> bool {
-    !data_points.is_empty() && data_points.iter().all(|&x| x >= 0.0)
-}
-
-#[napi]
-pub fn calculate_trend(values: Vec<f64>) -> String {
-    if values.len() < 2 {
-        return "Insufficient data".to_string();
-    }
-    
-    let first = values[0];
-    let last = values[values.len() - 1];
-    
-    if last > first {
-        "Increasing".to_string()
-    } else if last < first {
-        "Decreasing".to_string()
-    } else {
-        "Stable".to_string()
-    }
-}
+// Note: Common utility functions (calculate_efficiency, validate_data_quality, calculate_trend)
+// have been moved to the rust-common shared library to eliminate code duplication.
+// They are now available in the backend/shared/rust-common package.
 
 // Additional utility functions
 #[napi]
