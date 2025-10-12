@@ -764,6 +764,14 @@ fn generate_cost_optimization_recommendations(
 ) -> Vec<String> {
     let mut recommendations = Vec::new();
     
+    // Calculate total unit cost from breakdown components
+    let total_unit_cost = cost_breakdown.material_cost_per_unit 
+        + cost_breakdown.labor_cost_per_unit 
+        + cost_breakdown.overhead_cost_per_unit 
+        + cost_breakdown.setup_cost_per_unit 
+        + cost_breakdown.quality_cost_per_unit 
+        + cost_breakdown.machine_cost_per_unit;
+    
     // Material cost optimization
     if variance_analysis.material_variance > 0.0 {
         recommendations.push("Investigate material cost increases and negotiate better supplier rates".to_string());
@@ -778,12 +786,12 @@ fn generate_cost_optimization_recommendations(
     }
     
     // Setup cost optimization
-    if cost_breakdown.setup_cost_per_unit > cost_breakdown.unit_cost * 0.1 {
+    if cost_breakdown.setup_cost_per_unit > total_unit_cost * 0.1 {
         recommendations.push("Implement lean setup reduction techniques (SMED)".to_string());
     }
     
     // Quality cost optimization
-    if cost_breakdown.quality_cost_per_unit > cost_breakdown.unit_cost * 0.05 {
+    if cost_breakdown.quality_cost_per_unit > total_unit_cost * 0.05 {
         recommendations.push("Implement right-first-time quality processes to reduce quality costs".to_string());
     }
     

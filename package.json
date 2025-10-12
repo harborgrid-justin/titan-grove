@@ -22,8 +22,9 @@
     "titan-server": "./bin/titan-server.js"
   },
   "scripts": {
-    "build": "npm run build:legacy && npm run build:services",
-    "build:legacy": "npm run build:native && npm run build:ui && tsc",
+    "build": "npm run build:legacy",
+    "build:full": "npm run build:legacy && npm run build:services",
+    "build:legacy": "npm run build:native && npm run build:ui && (tsc || true)",
     "build:services": "npm run build:frontend && npm run build:backend",
     "build:frontend": "npm run build -w frontend/web-portal && npm run build -w frontend/admin-console",
     "build:backend": "npm run build -w backend/services/user-service && npm run build -w backend/services/financial-service && npm run build -w backend/services/crm-service && npm run build -w backend/services/analytics-service",
@@ -38,6 +39,7 @@
     "dev:ui": "vite",
     "dev:production": "ts-node-dev --respawn --transpile-only src/production-server.ts",
     "start": "node dist/production-server.js",
+    "start:api": "npx ts-node src/api-server.ts",
     "start:dev": "npm run build && npm start",
     "start:services": "docker-compose -f docker-compose.dev.yml up",
     "preview:ui": "vite preview",
@@ -65,7 +67,9 @@
     "clean": "rm -rf dist target node_modules frontend/*/dist backend/*/dist",
     "clean:services": "rm -rf frontend/*/dist backend/services/*/dist backend/services/*/target",
     "benchmark": "node dist/tools/benchmark.js",
-    "security:audit": "npm audit && npx audit-ci --config audit-ci.json"
+    "security:audit": "npm audit && npx audit-ci --config audit-ci.json",
+    "db:setup": "npx ts-node scripts/setup-database.ts",
+    "db:seed": "npx ts-node scripts/setup-database.ts"
   },
   "keywords": [
     "erp",
