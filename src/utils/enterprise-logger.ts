@@ -29,7 +29,7 @@ export class EnterpriseLogger {
         winston.format.timestamp(),
         winston.format.errors({ stack: true }),
         winston.format.json(),
-        winston.format.printf((info: LogEntry) => {
+        winston.format.printf((info: any) => {
           const { timestamp, level, message, ...meta } = info;
           return JSON.stringify({
             timestamp,
