@@ -113,14 +113,29 @@ The repository provides methods for:
 ### Development
 
 ```bash
+# Install dependencies
 npm install
+
+# Run database migrations (optional, models auto-sync in dev)
+npm run db:migrate
+
+# Start development server
 npm run dev
 ```
 
 ### Production
 
 ```bash
+# Install dependencies
+npm install
+
+# Build TypeScript
 npm run build
+
+# Run migrations
+npm run db:migrate
+
+# Start production server
 npm start
 ```
 
@@ -128,6 +143,19 @@ npm start
 
 ```bash
 npm test
+```
+
+### Database Migrations
+
+```bash
+# Run all pending migrations
+npm run db:migrate
+
+# Undo last migration
+npm run db:migrate:undo
+
+# Run seeders
+npm run db:seed
 ```
 
 ## API Endpoints
