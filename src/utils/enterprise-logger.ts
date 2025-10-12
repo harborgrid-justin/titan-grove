@@ -82,6 +82,11 @@ export class EnterpriseLogger {
     });
   }
 
+  // Alias for error method for backward compatibility
+  logError(message: string, error?: Error, context?: LogContext): void {
+    this.error(message, error, context);
+  }
+
   warn(message: string, context?: LogContext): void {
     this.logger.warn(message, {
       ...context,

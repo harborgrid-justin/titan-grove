@@ -1398,6 +1398,62 @@ export interface TimeTracking {
   sickHours: number
   totalHours: number
 }
+export interface AdvancedPayrollCalculation {
+  employeeId: string
+  baseSalary: number
+  overtimeHours: number
+  overtimeRate: number
+  overtimePay: number
+  grossPay: number
+  taxBreakdown: TaxBreakdown
+  benefitContributions: BenefitContributions
+  deductions: Array<PayrollDeduction>
+  netPay: number
+  employerCosts: EmployerCosts
+  complianceStatus: PayrollComplianceStatus
+  payEquityAnalysis: PayEquityAnalysis
+}
+export interface TaxBreakdown {
+  federalIncomeTax: number
+  stateIncomeTax: number
+  socialSecurityTax: number
+  medicareTax: number
+  unemploymentTax: number
+  totalTaxDeductions: number
+}
+export interface BenefitContributions {
+  healthInsurance: number
+  dentalInsurance: number
+  retirement401K: number
+  lifeInsurance: number
+  totalBenefitDeductions: number
+}
+export interface PayrollDeduction {
+  deductionType: string
+  amount: number
+  isPreTax: boolean
+}
+export interface EmployerCosts {
+  employerSocialSecurity: number
+  employerMedicare: number
+  employerUnemployment: number
+  workersCompensation: number
+  totalEmployerCost: number
+}
+export interface PayrollComplianceStatus {
+  overtimeCompliant: boolean
+  minimumWageCompliant: boolean
+  taxWithholdingAccurate: boolean
+  flsaCompliant: boolean
+  warnings: Array<string>
+}
+export interface PayEquityAnalysis {
+  marketComparison: number
+  internalEquityScore: number
+  payGradeAlignment: string
+  recommendations: Array<string>
+}
+export declare function calculateAdvancedPayroll(employeeId: string, baseSalary: number, overtimeHours: number, overtimeMultiplier: number, payPeriodsPerYear: number, employeeBenefits: BenefitContributions, additionalDeductions: Array<PayrollDeduction>, stateTaxRate: number, jobGrade: string, yearsExperience: number): AdvancedPayrollCalculation
 export declare function calculatePayroll(baseSalary: number, overtimeHours: number, overtimeMultiplier: number, taxRate: number, benefitDeductions: number, payPeriodsPerYear: number): PayrollCalculation
 export declare function calculatePerformanceScore(goalsCompleted: number, totalGoals: number, qualityScore: number, productivityScore: number, teamworkScore: number): PerformanceMetrics
 export declare function calculateBenefitsValue(salary: number, healthInsurancePercentage: number, dentalInsurancePercentage: number, retirementMatchPercentage: number, lifeInsuranceFlatRate: number): BenefitCalculation
@@ -1469,6 +1525,37 @@ export interface MaterialComponent {
 }
 export declare function calculateProductionCapacity(workCenters: Array<WorkCenter>, plannedHours: number): number
 export declare function calculateProductionTimeRequired(quantity: number, productionRatePerHour: number, setupTimeHours: number): number
+export interface AdvancedOeeResult {
+  overallOee: number
+  availabilityScore: number
+  performanceScore: number
+  qualityScore: number
+  bottleneckAnalysis: BottleneckAnalysis
+  improvementRecommendations: Array<string>
+  downtimeCategorization: DowntimeAnalysis
+  benchmarkComparison: BenchmarkComparison
+}
+export interface BottleneckAnalysis {
+  primaryConstraint: string
+  constraintImpact: number
+  capacityUtilization: number
+  throughputLoss: number
+}
+export interface DowntimeAnalysis {
+  plannedDowntime: number
+  unplannedDowntime: number
+  maintenanceRelated: number
+  qualityRelated: number
+  setupChangeover: number
+  otherDowntime: number
+}
+export interface BenchmarkComparison {
+  industryAverageOee: number
+  worldClassOee: number
+  performanceQuartile: string
+  improvementPotential: number
+}
+export declare function calculateAdvancedOeeAnalytics(availabilityPercentage: number, performancePercentage: number, qualityPercentage: number, plannedProductionTime: number, actualProductionTime: number, idealCycleTime: number, actualCycleTime: number, goodCount: number, totalCount: number, downtimeBreakdown: DowntimeAnalysis): AdvancedOeeResult
 export declare function calculateOeeScore(availabilityPercentage: number, performancePercentage: number, qualityPercentage: number): number
 export declare function optimizeProductionSequence(orders: Array<string>, priorities: Array<number>, processingTimes: Array<number>): Array<string>
 export declare function calculateMaterialRequirements(productionQuantity: number, components: Array<MaterialComponent>, productId: string): BillOfMaterials
@@ -1477,6 +1564,43 @@ export declare function calculateProductionEfficiency(plannedOutput: number, act
 export declare function calculateBatchSizeOptimization(annualDemand: number, setupCost: number, holdingCostPerUnit: number): number
 export declare function calculateChangeoverTime(fromProductId: string, toProductId: string, baseChangeoverTime: number, complexityFactor: number): number
 export declare function calculateCapacityUtilization(scheduledHours: number, availableHours: number): number
+export interface AdvancedProductionCost {
+  unitCost: number
+  costBreakdown: CostBreakdown
+  costDrivers: Array<CostDriver>
+  varianceAnalysis: CostVarianceAnalysis
+  optimizationRecommendations: Array<string>
+  activityBasedCosts: ActivityBasedCosts
+}
+export interface CostBreakdown {
+  materialCostPerUnit: number
+  laborCostPerUnit: number
+  overheadCostPerUnit: number
+  setupCostPerUnit: number
+  qualityCostPerUnit: number
+  machineCostPerUnit: number
+}
+export interface CostDriver {
+  driverName: string
+  costAllocation: number
+  utilizationRate: number
+  efficiencyFactor: number
+}
+export interface CostVarianceAnalysis {
+  materialVariance: number
+  laborVariance: number
+  overheadVariance: number
+  volumeVariance: number
+  efficiencyVariance: number
+}
+export interface ActivityBasedCosts {
+  setupActivities: number
+  processingActivities: number
+  qualityControlActivities: number
+  materialHandlingActivities: number
+  maintenanceActivities: number
+}
+export declare function calculateAdvancedProductionCost(totalMaterialCost: number, totalLaborCost: number, totalOverheadCost: number, quantityProduced: number, setupCost: number, qualityCost: number, machineHours: number, machineRatePerHour: number, plannedQuantity: number, standardCosts: CostBreakdown): AdvancedProductionCost
 export declare function calculateProductionCostPerUnit(totalMaterialCost: number, totalLaborCost: number, totalOverheadCost: number, quantityProduced: number): number
 export declare function calculateLeadTimeVariance(plannedLeadTimes: Array<number>, actualLeadTimes: Array<number>): number
 export declare function calculateWorkCenterEfficiency(workCenters: Array<WorkCenter>): number
@@ -1795,6 +1919,41 @@ export interface ScmRiskAssessment {
 export declare function calculateTotalLogisticsCost(transportationCost: number, warehousingCost: number, inventoryCarryingCost: number, administrativeCost: number): number
 export declare function calculateOptimalRoute(routes: Array<ShipmentRoute>, shipmentVolume: number): string
 export declare function calculateDemandForecast(historicalDemand: Array<number>, seasonalFactors: Array<number>, trendFactor: number): number
+export interface AdvancedInventoryOptimization {
+  productId: string
+  currentStock: number
+  optimalStockLevel: number
+  reorderPoint: number
+  economicOrderQuantity: number
+  safetyStock: number
+  stockoutRisk: number
+  serviceLevelAnalysis: ServiceLevelAnalysis
+  abcClassification: string
+  inventoryCosts: InventoryCostBreakdown
+  optimizationRecommendations: Array<string>
+  performanceMetrics: InventoryPerformanceMetrics
+}
+export interface ServiceLevelAnalysis {
+  targetServiceLevel: number
+  actualServiceLevel: number
+  fillRate: number
+  cycleServiceLevel: number
+  stockoutFrequency: number
+}
+export interface InventoryCostBreakdown {
+  holdingCostAnnual: number
+  orderingCostAnnual: number
+  stockoutCostAnnual: number
+  totalCostAnnual: number
+  costPerUnit: number
+}
+export interface InventoryPerformanceMetrics {
+  inventoryTurnover: number
+  daysOfSupply: number
+  inventoryAccuracy: number
+  carryingCostRatio: number
+}
+export declare function optimizeAdvancedInventoryLevels(annualDemand: number, orderingCost: number, holdingCostPerUnit: number, leadTimeDays: number, serviceLevel: number, productId: string, currentStock: number, demandVariability: number, leadTimeVariability: number, unitCost: number, stockoutCostPerUnit: number): AdvancedInventoryOptimization
 export declare function optimizeInventoryLevels(annualDemand: number, orderingCost: number, holdingCostPerUnit: number, leadTimeDays: number, serviceLevel: number, productId: string, currentStock: number): ScmInventoryOptimization
 export declare function calculateSupplyChainResilience(supplierDiversification: number, geographicDistribution: number, inventoryBuffer: number, alternativeRoutes: number): number
 export declare function calculateBullwhipEffect(demandVariance: number, orderVariance: number): number
