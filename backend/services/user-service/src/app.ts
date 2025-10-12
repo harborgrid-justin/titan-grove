@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import { config } from './config/database';
+import { initializeModels, closeDatabase } from './models';
 import { authRoutes } from './routes/auth.routes';
 import { userRoutes } from './routes/user.routes';
 import { errorMiddleware } from './middleware/error.middleware';
@@ -43,6 +43,10 @@ async function startServer() {
   try {
     logger.info('Starting User Service...');
     
+    // Initialize Sequelize models and database connection
+    await initializeModels();
+    logger.info('Database initialized successfully');
+    
     app.listen(PORT, () => {
       logger.info(`User Service running on port ${PORT}`);
     });
@@ -53,13 +57,15 @@ async function startServer() {
 }
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
+process.on('SIGTERM', async () => {
   logger.info('SIGTERM received. Shutting down gracefully...');
+  await closeDatabase();
   process.exit(0);
 });
 
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
   logger.info('SIGINT received. Shutting down gracefully...');
+  await closeDatabase();
   process.exit(0);
 });
 
