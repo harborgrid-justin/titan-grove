@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm test:*)",
+      "Bash(npm run test:*)",
+      "Bash(npx jest:*)",
+      "Bash(npm run lint:check)",
+      "Bash(npm run format:check)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:native:*)",
+      "Bash(npm run build:ui)",
+      "Bash(cargo check:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(cargo test:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.business)",
+      "Read(./.env.production)",
+      "Read(./.env.local)",
+      "Read(./**/.env)",
+      "Read(./**/.env.local)",
+      "Edit(./native.js)",
+      "Edit(./native.d.ts)",
+      "Write(./native.js)",
+      "Write(./native.d.ts)",
+      "Edit(./packages/**/index.js)",
+      "Edit(./packages/**/index.d.ts)",
+      "Write(./packages/**/index.js)",
+      "Write(./packages/**/index.d.ts)",
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git branch -D:*)",
+      "Bash(git branch -d:*)",
+      "Bash(git clean -f:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git clean -xfd:*)"
+    ]
+  },
+  "cleanupPeriodDays": 30
+}

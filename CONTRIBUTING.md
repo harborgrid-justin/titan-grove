@@ -81,6 +81,21 @@ git commit -m "feat: add amazing new feature"
 git push origin feature/amazing-new-feature
 ```
 
+### AI-Assisted Development with Claude
+
+Titan Grove is set up for **Claude** and **Claude Code** as the default coding
+agents. Before using an AI agent on this repo:
+
+- Read [`CLAUDE.md`](CLAUDE.md) — the project memory Claude loads every session
+  (build/test commands, the Rust-native rebuild step, conventions).
+- The [`docs/CLAUDE_BEST_PRACTICES.md`](docs/CLAUDE_BEST_PRACTICES.md) guide covers
+  the enterprise playbook: specialized subagents in `.claude/agents/`, path-scoped
+  rules in `.claude/rules/`, team permissions in `.claude/settings.json`, and how to
+  maximize token usage while minimizing waste.
+- Keep `CLAUDE.md` and `.claude/rules/` lean and accurate — they are checked into git
+  and shared with the whole team. See the official guidance at
+  https://code.claude.com/docs/en/best-practices.
+
 ## Contribution Guidelines
 
 ### Types of Contributions
