@@ -51,20 +51,25 @@ titan-grove/
 ├── CLAUDE.md                     # Project memory — loaded EVERY session. Kept lean.
 ├── docs/CLAUDE_BEST_PRACTICES.md # This guide — loaded on demand.
 └── .claude/
-    ├── settings.json             # Team permission allowlist + deny rules.
+    ├── settings.json             # Team permissions: allowlist + deny (destructive ops,
+    │                             #   secret reads, hand-edits to generated bindings)
+    ├── skills/                   # Reusable workflows, loaded on demand
+    │   └── scaffold-package/     #   /scaffold-package — new @titan-grove/<name> NAPI crate
     ├── rules/                    # Path-scoped instructions (load only for matching files)
     │   ├── rust-native.md        #   src/**/*.rs, packages/**/*.rs, Cargo.toml, build.rs
-    │   ├── typescript.md         #   src/**/*.ts, backend/**, frontend/**
+    │   ├── typescript.md         #   src|frontend/**/*.{ts,tsx}, backend/**/*.ts
     │   ├── testing.md            #   *.test.ts, tests/**, cypress/**
     │   └── security.md           #   always on (enterprise gate)
     └── agents/                   # Specialized subagents (isolated context windows)
-        ├── codebase-explorer.md  #   read-only research        (haiku)
-        ├── rust-napi-engineer.md #   native core + bindings    (inherit)
-        ├── typescript-service-engineer.md  # service layer     (inherit)
-        ├── domain-package-expert.md        # packages/* crates  (inherit)
-        ├── test-runner.md        #   run tests, report failures (sonnet)
-        ├── security-reviewer.md  #   read-only security review  (opus)
-        └── docs-writer.md        #   documentation maintenance  (sonnet)
+        ├── codebase-explorer.md           #  read-only research        (haiku)
+        ├── rust-napi-engineer.md          #  native core + bindings    (inherit)
+        ├── typescript-service-engineer.md #  service layer             (inherit)
+        ├── frontend-engineer.md           #  React/Carbon/Vite UI      (inherit)
+        ├── domain-package-expert.md       #  packages/* crates         (inherit)
+        ├── test-runner.md                 #  run tests, report failures (sonnet)
+        ├── code-reviewer.md               #  general quality review    (inherit)
+        ├── security-reviewer.md           #  read-only security review (opus)
+        └── docs-writer.md                 #  documentation maintenance (sonnet)
 ```
 
 ### Memory hierarchy (load order, broad → specific)
@@ -194,8 +199,12 @@ invocations and `--allowedTools` to scope each run.
 ## Enterprise governance
 
 - **Permissions.** `.claude/settings.json` (checked into git) allowlists clearly-safe
-  commands (tests, lint/type checks, native build, read-only git) and denies
-  destructive ones (`rm -rf`, force-push, hard reset) and reads of `.env*`. Tighten
+  commands (tests, lint/type checks, native & UI build, read-only git) and denies:
+  destructive ops (`rm -rf`, force-push, hard reset, branch delete, `git clean`),
+  reads of the real `.env*` secret files (the `*.example` files stay readable), and
+  **hand-edits to generated bindings** (`native.js`, `native.d.ts`,
+  `packages/*/index.{js,d.ts}`) — `napi build` still regenerates them via Bash; only
+  the Edit/Write tools are blocked, so change the Rust source and rebuild. Tighten
   per environment with [managed settings](https://code.claude.com/docs/en/settings)
   for `permissions.deny`, sandboxing, and auth — these are *enforced by the client*,
   unlike `CLAUDE.md`, which is advisory.
@@ -204,6 +213,9 @@ invocations and `--allowedTools` to scope each run.
   cannot be excluded by individual users.
 - **Secrets.** Never read or commit `.env`, `.env.business`, `.env.production`. Only
   `*.example` files belong in git. The deny rules in `settings.json` enforce this.
+  Personal `CLAUDE.local.md`, `.claude/settings.local.json`, and local agent memory
+  are gitignored; the shared config (`CLAUDE.md`, `.claude/agents`, `rules`, `skills`,
+  `settings.json`) is committed for the whole team.
 - **Security gate.** Changes touching auth, the API surface, the DB layer, secrets,
   or the TS↔Rust FFI boundary get a `security-reviewer` pass before merge (see
   `.claude/rules/security.md`).
@@ -237,5 +249,10 @@ invocations and `--allowedTools` to scope each run.
   instructions — contradictions make Claude pick arbitrarily.
 - Add to `CLAUDE.md` when Claude makes the same mistake twice or a review catches
   something it should have known. Cut anything Claude already gets right.
+- Add **skills** under `.claude/skills/<name>/SKILL.md` for repeatable workflows that
+  load on demand (we ship `/scaffold-package`). Follow Anthropic's pattern for more,
+  e.g. a `fix-issue` or `release` workflow: https://code.claude.com/docs/en/skills.
+- If you adopt other AI tools that read `AGENTS.md`, create one and import it from
+  `CLAUDE.md` with `@AGENTS.md` so both read the same instructions without duplication.
 - Use the `docs-writer` subagent to keep these files accurate and lean as the code
   evolves. Treat them like code: review, prune, and verify behavior actually shifts.

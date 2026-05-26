@@ -1,8 +1,10 @@
 ---
 paths:
   - "src/**/*.ts"
+  - "src/**/*.tsx"
   - "backend/**/*.ts"
   - "frontend/**/*.ts"
+  - "frontend/**/*.tsx"
 ---
 
 # TypeScript rules

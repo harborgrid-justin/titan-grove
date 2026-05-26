@@ -12,7 +12,7 @@ paths:
   each `packages/<name>/src/lib.rs` compiles into that package's binary.
 - **After editing Rust, rebuild bindings** so TypeScript sees the change:
   - Root: `npm run build:native` (release) or `npm run build:native:debug`.
-  - A package: `cd packages/<name> && npx napi build --release`.
+  - A package: `cd packages/<name> && npm run build` (wraps `napi build --platform --release`).
 - Never hand-edit generated bindings: `native.js`, `native.d.ts`, `*.node`,
   `packages/*/index.js`, `packages/*/index.d.ts`. Change the Rust source and rebuild.
 - Run `cargo check` and `cargo clippy`; fix warnings rather than suppressing them.

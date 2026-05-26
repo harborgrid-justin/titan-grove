@@ -21,7 +21,7 @@ Workflow:
 2. Make the minimal change; match the file's existing style. Rust files are `snake_case`.
 3. `cargo check` and `cargo clippy` — fix warnings, don't suppress them.
 4. **Rebuild bindings**: `npm run build:native` (root) or
-   `cd packages/<name> && npx napi build --release`. Without this, TypeScript keeps
+   `cd packages/<name> && npm run build`. Without this, TypeScript keeps
    calling the old binary.
 5. `cargo test` for affected logic.
 

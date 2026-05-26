@@ -23,7 +23,7 @@ package (e.g. `packages/financial`) rather than inventing a new shape.
 Workflow:
 1. Read a comparable existing package first and copy its structure exactly.
 2. Implement in `src/lib.rs`; run `cargo check` + `cargo clippy` in the package dir.
-3. Build bindings: `cd packages/<name> && npx napi build --release`.
+3. Build bindings: `cd packages/<name> && npm run build` (wraps `napi build --platform --release --js index.js --dts index.d.ts`).
 4. Run `node packages/<name>/test.js` (or the package's npm test).
 
 When scaffolding a new package, keep it consistent with siblings — same file set,

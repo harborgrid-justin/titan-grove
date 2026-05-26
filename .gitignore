@@ -174,3 +174,8 @@ infrastructure/monitoring/*/data/
 
 # Docker volumes
 docker-compose.override.yml
+
+# Claude Code — personal/local only (shared config IS committed: CLAUDE.md, .claude/agents, .claude/rules, .claude/skills, .claude/settings.json)
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/agent-memory-local/

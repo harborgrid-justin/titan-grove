@@ -18,7 +18,7 @@ layer, plus **121 independent NAPI-RS domain packages** under `packages/`.
 - After editing any `src/*.rs` file you MUST re-run `npm run build:native` or the
   TypeScript layer keeps calling the old compiled binary.
 - Full legacy build: `npm run build` (native + `vite build` + `tsc || true`).
-- A single domain package builds from its own folder: `cd packages/<name> && npx napi build --release`.
+- A single domain package builds from its own folder: `cd packages/<name> && npm run build` (wraps `napi build --platform --release`).
 
 ## Run
 
@@ -76,7 +76,8 @@ Context is the scarce resource — performance degrades as it fills. Default hab
 - Reference files with `@path`; don't paste large files. Read only the slice you need.
 - Prefer CLI tools and single-test runs over broad commands.
 
-Specialized subagents live in `.claude/agents/`; path-scoped rules in
+Specialized subagents live in `.claude/agents/`, reusable workflows in
+`.claude/skills/` (e.g. `/scaffold-package`), and path-scoped rules in
 `.claude/rules/`. Full playbook: `docs/CLAUDE_BEST_PRACTICES.md`.
 
 ## Don't
