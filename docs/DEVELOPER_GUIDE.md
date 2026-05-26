@@ -2,6 +2,11 @@
 
 This guide provides detailed information for developers working on Titan Grove.
 
+> **Using Claude / Claude Code?** Start with [`CLAUDE.md`](../CLAUDE.md) (session
+> memory) and the [`LLM Development Guide`](CLAUDE_BEST_PRACTICES.md) for the
+> enterprise agent setup: subagents, path-scoped rules, permissions, and token
+> discipline.
+
 ## Table of Contents
 
 - [Development Setup](#development-setup)
