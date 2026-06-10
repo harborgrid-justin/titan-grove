@@ -71,14 +71,32 @@ Context is the scarce resource — performance degrades as it fills. Default hab
   out of the main context. Scope every search narrowly.
 - **Run tests via a subagent** (`test-runner`) so logs don't flood the conversation;
   ask for only the failing tests and their errors.
+- **Plan before non-trivial changes** (plan mode / the Plan subagent) — wrong-direction
+  rework is the most expensive token waste. Give every change a verification target.
 - **`/clear` between unrelated tasks**; after two failed corrections, clear and
-  restart with a sharper prompt rather than piling on.
+  restart with a sharper prompt rather than piling on. Check `/context` when a
+  session feels sluggish; `/usage` attributes consumption to skills/agents/MCP.
 - Reference files with `@path`; don't paste large files. Read only the slice you need.
-- Prefer CLI tools and single-test runs over broad commands.
+- Prefer CLI tools (`git`, `cargo`, `npm`) over MCP equivalents and single-test
+  runs over broad commands.
+
+**Hooks enforce some of this deterministically** (`.claude/hooks/`, wired in
+`.claude/settings.json`): bare `npm test` / `cargo test` are rewritten to print
+only failures + summary (full log path is echoed — read it if needed); shell
+access to real `.env*` files and shell writes to generated bindings are denied;
+session start warns if the native addon is missing or stale. These rewrites are
+expected behavior — work with them, not around them.
 
 Specialized subagents live in `.claude/agents/`, reusable workflows in
 `.claude/skills/` (e.g. `/scaffold-package`), and path-scoped rules in
 `.claude/rules/`. Full playbook: `docs/CLAUDE_BEST_PRACTICES.md`.
+
+## Compact instructions
+
+When compacting, preserve: the active task and remaining steps, the list of
+modified files, verification commands already run with their pass/fail results,
+and unresolved errors. Drop file contents already committed, passing-test logs,
+and exploration that led nowhere.
 
 ## Don't
 

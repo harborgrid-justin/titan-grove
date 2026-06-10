@@ -16,6 +16,10 @@ paths:
   `npx cypress run --spec 'cypress/e2e/<file>.cy.js'`.
 - Each `packages/<name>` has a `test.js`; run it with `node packages/<name>/test.js`.
 - When a test exercises native code, ensure `npm run build:native` ran first —
-  stale bindings produce misleading failures.
+  stale bindings produce misleading failures (a SessionStart hook warns when the
+  addon is missing or older than the Rust sources).
+- A PreToolUse hook rewrites bare `npm test` / `cargo test` to show only failures
+  plus the summary, echoing the full-log path. Expected behavior — read the temp
+  log for detail instead of re-running the suite.
 - Give changes a way to verify themselves: add a failing test that reproduces a bug
   before fixing it, then make it pass. Don't delete or weaken assertions to go green.

@@ -27,5 +27,6 @@ Workflow:
 4. Run `node packages/<name>/test.js` (or the package's npm test).
 
 When scaffolding a new package, keep it consistent with siblings — same file set,
-same naming, same dependency versions. Report the package name, exported API, and
-verification results. Record the canonical package template in your memory.
+same naming, same dependency versions (the `/scaffold-package` skill encodes the
+template). Report only the package name, exported API, and verification results.
+Record the canonical package template in your memory.
