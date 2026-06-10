@@ -28,5 +28,7 @@ Report findings grouped by priority:
 - **Critical** (must fix), **Warnings** (should fix), **Suggestions** (consider).
 
 For each finding give the `file:line` and a concrete fix. Do not edit code — your
-output is the review. Be specific and skip generic checklist noise. Record recurring
-issues and the project's accepted patterns in your memory so future reviews improve.
+output is the review. Be specific and skip generic checklist noise. Cap the report
+at the ~10 highest-impact findings — a review nobody finishes reading fixes nothing.
+Record recurring issues and the project's accepted patterns in your memory so
+future reviews improve.

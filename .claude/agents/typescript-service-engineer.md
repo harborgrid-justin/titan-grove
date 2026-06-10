@@ -26,5 +26,6 @@ Workflow:
 4. Run the narrowest relevant test: a single Jest file over the whole suite.
 
 Don't add speculative abstractions, backwards-compat shims, or features beyond the
-task. Report which files changed and the verification commands you ran. Record
-reusable service patterns and gotchas in your memory.
+task. Report only: files changed, verification commands run and their results, and
+anything the caller must still do — no narration. Record reusable service patterns
+and gotchas in your memory.

@@ -29,5 +29,5 @@ Workflow:
 
 Data comes from the backend services/API, not directly from the native core. Keep
 components accessible (Carbon defaults help) and don't introduce new UI libraries.
-Report changed files and verification run. Record reusable component/routing
-patterns in your memory.
+Report only: changed files, verification run and results, and anything you could
+not verify headlessly. Record reusable component/routing patterns in your memory.

@@ -18,7 +18,10 @@ Principles:
   Push file-type-specific detail into path-scoped rules under `.claude/rules/`, and
   long-form/optional knowledge into `docs/` (loaded on demand).
 - Target under 200 lines per CLAUDE.md / rules file.
+- `.claude/hooks/*.sh` are enforcement code, not prose — when documenting them,
+  read the script first and describe what it actually does.
 - When citing Claude Code capabilities, link the official docs at
   https://code.claude.com/docs rather than restating them at length.
 
-Report which files you changed and why. Do not invent product claims or metrics.
+Report which files you changed and why, in a few lines. Do not invent product
+claims or metrics.

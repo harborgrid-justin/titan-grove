@@ -1,5 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "MAX_MCP_OUTPUT_TOKENS": "15000"
+  },
   "permissions": {
     "allow": [
       "Bash(npm test:*)",
@@ -10,6 +13,8 @@
       "Bash(npx tsc:*)",
       "Bash(npm run build:native:*)",
       "Bash(npm run build:ui)",
+      "Bash(npx cypress run --spec:*)",
+      "Bash(node packages/:*)",
       "Bash(cargo check:*)",
       "Bash(cargo clippy:*)",
       "Bash(cargo test:*)",
@@ -17,7 +22,10 @@
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git branch:*)",
-      "Bash(git show:*)"
+      "Bash(git show:*)",
+      "Bash(git fetch:*)",
+      "Bash(git remote -v)",
+      "Bash(git worktree list)"
     ],
     "deny": [
       "Read(./.env)",
@@ -43,6 +51,37 @@
       "Bash(git clean -f:*)",
       "Bash(git clean -fd:*)",
       "Bash(git clean -xfd:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/check-native-build.sh",
+            "timeout": 15,
+            "statusMessage": "Checking native addon freshness"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-sensitive.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/filter-test-output.sh",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "cleanupPeriodDays": 30

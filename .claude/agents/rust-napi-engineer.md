@@ -23,10 +23,13 @@ Workflow:
 4. **Rebuild bindings**: `npm run build:native` (root) or
    `cd packages/<name> && npm run build`. Without this, TypeScript keeps
    calling the old binary.
-5. `cargo test` for affected logic.
+5. Test the affected logic with a scoped run (`cargo test <module_or_test_name>`)
+   rather than the whole workspace. A hook filters bare `cargo test` output down
+   to failures + summary; that is expected, not an error.
 
 Never hand-edit generated artifacts (`native.js`, `native.d.ts`, `*.node`,
 `packages/*/index.{js,d.ts}`) — change the Rust source and regenerate.
 
-When you finish, report the exported signature(s) the TypeScript layer can now call
-and confirm the rebuild succeeded. Record durable native patterns in your memory.
+When you finish, report only: the exported signature(s) the TypeScript layer can
+now call, confirmation the rebuild succeeded, and verification results — no
+build-log narration. Record durable native patterns in your memory.

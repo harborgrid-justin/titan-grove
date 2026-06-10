@@ -51,8 +51,12 @@ titan-grove/
 ├── CLAUDE.md                     # Project memory — loaded EVERY session. Kept lean.
 ├── docs/CLAUDE_BEST_PRACTICES.md # This guide — loaded on demand.
 └── .claude/
-    ├── settings.json             # Team permissions: allowlist + deny (destructive ops,
-    │                             #   secret reads, hand-edits to generated bindings)
+    ├── settings.json             # Team permissions (allowlist + deny), hooks wiring,
+    │                             #   MAX_MCP_OUTPUT_TOKENS cap
+    ├── hooks/                    # Deterministic enforcement (see "Hooks" below)
+    │   ├── filter-test-output.sh #   full-suite test runs → failures + summary only
+    │   ├── guard-sensitive.sh    #   deny shell access to .env / generated bindings
+    │   └── check-native-build.sh #   SessionStart warning when *.node is missing/stale
     ├── skills/                   # Reusable workflows, loaded on demand
     │   └── scaffold-package/     #   /scaffold-package — new @titan-grove/<name> NAPI crate
     ├── rules/                    # Path-scoped instructions (load only for matching files)
@@ -61,14 +65,14 @@ titan-grove/
     │   ├── testing.md            #   *.test.ts, tests/**, cypress/**
     │   └── security.md           #   always on (enterprise gate)
     └── agents/                   # Specialized subagents (isolated context windows)
-        ├── codebase-explorer.md           #  read-only research        (haiku)
+        ├── codebase-explorer.md           #  read-only research        (haiku, maxTurns 30)
         ├── rust-napi-engineer.md          #  native core + bindings    (inherit)
         ├── typescript-service-engineer.md #  service layer             (inherit)
         ├── frontend-engineer.md           #  React/Carbon/Vite UI      (inherit)
         ├── domain-package-expert.md       #  packages/* crates         (inherit)
-        ├── test-runner.md                 #  run tests, report failures (sonnet)
+        ├── test-runner.md                 #  run tests, report failures (sonnet, effort low)
         ├── code-reviewer.md               #  general quality review    (inherit)
-        ├── security-reviewer.md           #  read-only security review (opus)
+        ├── security-reviewer.md           #  security review           (opus, effort high)
         └── docs-writer.md                 #  documentation maintenance (sonnet)
 ```
 
@@ -121,7 +125,16 @@ Have the security-reviewer subagent review the staged auth changes before I comm
 Design principles (we already follow these in `.claude/agents/`): one job per
 subagent, a detailed `description` so Claude knows when to delegate, the minimum
 tool set, an explicit `model`, and `memory: project` on the agents whose knowledge
-compounds. Built-in **Explore** (fast, read-only, Haiku) and **Plan** are available
+compounds. Two newer frontmatter levers worth knowing:
+
+- **`effort`** (`low`…`max`) tunes thinking depth per agent — `test-runner` runs at
+  `low` (mechanical work), `security-reviewer` at `high` (adversarial reasoning).
+  Thinking tokens are billed as output tokens, so this is a direct cost dial.
+- **`maxTurns`** caps runaway agents — the read-only `codebase-explorer` and
+  `test-runner` carry caps so an unscoped question can't burn unbounded turns.
+  Agents are instructed to report partial findings when they hit the cap.
+
+Built-in **Explore** (fast, read-only, Haiku) and **Plan** are available
 without any setup and skip `CLAUDE.md` to stay cheap.
 
 > Subagents cannot spawn subagents. For sustained parallelism use
@@ -134,31 +147,95 @@ without any setup and skip `CLAUDE.md` to stay cheap.
 Concrete tactics, in rough order of impact:
 
 1. **`/clear` between unrelated tasks.** The single biggest win. A clean window with
-   a sharp prompt beats a long one polluted with stale context.
+   a sharp prompt beats a long one polluted with stale context. `/rename` first so
+   `/resume` can find the session later.
 2. **Delegate exploration and test runs to subagents** so their output stays out of
    the main context (see above).
-3. **Scope every search.** "Find the EOQ calc in `src/scm.rs`" not "how does
+3. **Plan mode for non-trivial work.** Wrong-direction rework is the most expensive
+   waste there is. Shift+Tab into plan mode (or use the Plan subagent), approve the
+   approach, then implement. Course-correct early — Escape to stop, `/rewind` to
+   restore a checkpoint — instead of letting a bad direction run.
+4. **Scope every search.** "Find the EOQ calc in `src/scm.rs`" not "how does
    inventory work?" Unscoped investigation reads hundreds of files and fills context.
-4. **Read slices, not whole files.** Reference exact files with `@path`; read only
+5. **Read slices, not whole files.** Reference exact files with `@path`; read only
    the relevant line ranges instead of pasting large files.
-5. **Run the narrowest verification.** A single Jest file or one Cypress spec, not
-   the whole suite (see `.claude/rules/testing.md`).
-6. **Route by model.** Haiku for search/format/boilerplate, Sonnet for normal coding
-   and review, Opus for hard architecture/security reasoning. Our subagents are
-   pre-tuned this way.
-7. **Use `/compact <focus>`** when a long, valuable session approaches the limit
-   (e.g. `/compact keep the modified files and test commands`). Customize what
-   survives compaction via a note in `CLAUDE.md`.
-8. **Use `/btw` for throwaway questions** so the answer never enters history.
-9. **Keep `CLAUDE.md` lean.** A bloated memory file makes Claude *ignore* rules
-   because the important ones get lost. For each line: "would removing this cause a
-   mistake?" If not, cut it. Target < 200 lines.
-10. **Prefer CLI tools** (`gh`, `cargo`, `npm`) — they are the most token-efficient
-    way to interact with external systems.
-11. **Lean on prompt caching.** Stable context (system prompt, `CLAUDE.md`, repeated
+6. **Run the narrowest verification.** A single Jest file or one Cypress spec, not
+   the whole suite (see `.claude/rules/testing.md`). Our hooks filter full-suite
+   output down to failures as a backstop, but a scoped run is still cheaper.
+7. **Route by model AND effort.** Haiku for search/format/boilerplate, Sonnet for
+   normal coding and review, Opus for hard architecture/security reasoning. Effort
+   levels (`/effort`, or `effort:` frontmatter in skills/agents) tune thinking
+   depth — thinking tokens bill as output tokens. Our subagents are pre-tuned.
+8. **Use `/compact <focus>`** when a long, valuable session approaches the limit
+   (e.g. `/compact keep the modified files and test commands`). The
+   "Compact instructions" section in `CLAUDE.md` defines what survives by default.
+9. **Inspect before you guess.** `/context` shows what is filling the window
+   (MCP tools, rules, conversation); `/usage` attributes consumption to skills,
+   subagents, plugins, and individual MCP servers over the last 24 h / 7 days.
+10. **Use `/btw` for throwaway questions** so the answer never enters history.
+11. **Keep `CLAUDE.md` lean.** A bloated memory file makes Claude *ignore* rules
+    because the important ones get lost. For each line: "would removing this cause a
+    mistake?" If not, cut it. Target < 200 lines.
+12. **Prefer CLI tools** (`gh`, `cargo`, `npm`) over MCP servers — CLIs add zero
+    per-tool listing overhead. MCP tool definitions are deferred by default (only
+    names load until used), and `settings.json` caps any single MCP result via
+    `MAX_MCP_OUTPUT_TOKENS=15000`. Disable unused servers from `/mcp`.
+13. **Lean on prompt caching.** Stable context (system prompt, `CLAUDE.md`, repeated
     file reads) is cached; forks reuse the parent's cache. See
     https://code.claude.com/docs/en/prompt-caching. More cost levers:
     https://code.claude.com/docs/en/costs#reduce-token-usage.
+
+## Hooks: deterministic enforcement and preprocessing
+
+`CLAUDE.md` is advisory; **hooks are enforced**. Ours live in `.claude/hooks/` and
+are wired in `.claude/settings.json` (see https://code.claude.com/docs/en/hooks):
+
+- **`filter-test-output.sh`** (`PreToolUse`, Bash) — rewrites bare full-suite runs
+  (`npm test`, `npx jest`, `cargo test`) via the hook `updatedInput` mechanism: the
+  suite logs to a temp file, only failure lines plus the summary enter context, the
+  full-log path is echoed, and the original exit code is preserved. Scoped, piped,
+  or chained commands pass through untouched. This is the documented
+  "offload processing to hooks" pattern — thousands of log tokens become dozens.
+- **`guard-sensitive.sh`** (`PreToolUse`, Bash) — denies shell commands that touch
+  real `.env*` secret files (the `*.example` files stay allowed) or that write to
+  generated NAPI bindings via redirection/`sed -i`/`tee`/`mv`/`cp`. This closes the
+  gap left by `permissions.deny`, which only covers the Read/Edit/Write tools, not
+  `cat`/`grep` through Bash.
+- **`check-native-build.sh`** (`SessionStart`) — injects at most one line of context
+  when the compiled `*.node` addon is missing or older than `src/*.rs`. This
+  pre-empts the most common Titan Grove failure mode (TypeScript silently calling
+  stale bindings) for the cost of a single sentence — and zero tokens when the
+  build is fresh. It also gives Claude Code on the web / fresh-container sessions
+  an immediate signal that `npm run build:native` must run first.
+
+All three fail open if `jq` is missing (permission rules still apply), preserve
+the user's intent, and emit JSON per the hooks contract. When a hook rewrites or
+denies a command, that is policy — agents are instructed to work with it, not
+rephrase around it. Audit them with `/hooks`.
+
+## Lessons from the Claude Code changelog
+
+Recurring problems Anthropic has been working through in Claude Code releases, and
+the safeguard this repo carries for each — kept even where the product now handles
+it natively, so we stay protected across versions and on the web/remote runtime:
+
+| Recurring issue (changelog theme)              | Product answer                          | Our safeguard |
+| ---------------------------------------------- | --------------------------------------- | ------------- |
+| Context fills; model degrades, "forgets" rules | Auto-compact, microcompaction, "summarize up to here", CLAUDE.md size warnings | Lean `CLAUDE.md` + path-scoped rules; "Compact instructions" section; `/clear` discipline; subagent delegation |
+| Verbose tool output flooding context           | Hook `updatedInput`/`updatedToolOutput` rewriting | `filter-test-output.sh`; test-runner subagent reports failures only |
+| MCP servers bloating every prompt              | Deferred tool definitions; `/context`, `/usage` per-server attribution | Prefer CLIs; `MAX_MCP_OUTPUT_TOKENS=15000` in `settings.json`; disable unused servers |
+| Runaway/looping agents burning turns           | `maxTurns` frontmatter; Agent View      | Turn caps on `codebase-explorer` (30) and `test-runner` (25) with partial-report instructions |
+| Over-thinking on mechanical tasks              | Effort levels per session/skill/agent; `MAX_THINKING_TOKENS` | `effort: low` on test-runner, `effort: high` only where reasoning pays (security-reviewer) |
+| Permission fatigue → users bypass safety       | Finer permission rules, auto mode, `hard_deny` | Curated allowlist for safe verification commands (incl. single-spec Cypress); deny list for destructive ops |
+| Destructive cleanup (`rm -rf` fallbacks, force push) | Worktree-removal fixes, protected-path prompts | `permissions.deny` on `rm -rf`, force-push, hard reset, `git clean`; `guard-sensitive.sh` |
+| Secrets/config exposure via shell              | Shell-startup-file write prompts, sandboxing | `.env` deny rules **plus** the Bash-level guard hook |
+| Subagent edits colliding with the main session | `isolation: worktree`, shared-checkout blocking | Worktree isolation available on all agents; engineers report files changed |
+| Lost knowledge between sessions                | Agent `memory` scopes, session resume   | `memory: project` on explorer, engineers, and both reviewers |
+| Model availability/cost drift                  | `fallbackModel`, fast mode, model aliases | Subagents pin by alias (`haiku`/`sonnet`/`opus`), never full model IDs |
+
+Re-check the changelog (https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md)
+quarterly: when a workaround here becomes a first-class feature, adopt the feature
+and keep the safeguard only if it still adds defense in depth.
 
 ## Core workflows
 
@@ -199,7 +276,8 @@ invocations and `--allowedTools` to scope each run.
 ## Enterprise governance
 
 - **Permissions.** `.claude/settings.json` (checked into git) allowlists clearly-safe
-  commands (tests, lint/type checks, native & UI build, read-only git) and denies:
+  commands (tests, lint/type checks, native & UI build, read-only git, single-spec
+  Cypress runs — the full suite still prompts, by design) and denies:
   destructive ops (`rm -rf`, force-push, hard reset, branch delete, `git clean`),
   reads of the real `.env*` secret files (the `*.example` files stay readable), and
   **hand-edits to generated bindings** (`native.js`, `native.d.ts`,
@@ -221,10 +299,10 @@ invocations and `--allowedTools` to scope each run.
   `.claude/rules/security.md`).
 - **Auditability.** Subagent transcripts persist per session; auto-memory is plain
   markdown you can inspect with `/memory`.
-- **Hooks** (https://code.claude.com/docs/en/hooks) give *deterministic* enforcement
-  for things that must happen every time (e.g. run ESLint after each edit, block
-  writes to generated bindings). Use a hook, not a `CLAUDE.md` rule, when "advisory"
-  isn't enough.
+- **Hooks** give *deterministic* enforcement for things that must happen every
+  time. We ship three (see "Hooks" above): test-output filtering, the shell-level
+  secrets/bindings guard, and the stale-native-build session warning. Use a hook,
+  not a `CLAUDE.md` rule, whenever "advisory" isn't enough.
 
 ## Anti-patterns (and the fix)
 
